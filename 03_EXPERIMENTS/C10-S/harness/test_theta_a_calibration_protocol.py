@@ -18,6 +18,7 @@ from theta_a_calibration_protocol import (
     summarize_theta_a_calibration,
     validate_theta_a_seed_banks,
     _validate_interval_s3_seed_provenance,
+    _validate_truth_assignment_population_bindings,
 )
 
 
@@ -56,6 +57,61 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
             fp(row.randomization_salt), fp(row.run_id + "|evidence"),
             fp(row.run_id + "|analyzer"),
         )
+
+    def test_capture_binding_accepts_source_superset_with_target_standardization(self):
+        fp = lambda value: hashlib.sha256(value.encode("utf-8")).hexdigest()
+        assignment = SimpleNamespace(
+            q_x_sha256=fp("source-qx"),
+            g_a0_sha256=fp("source-g0"),
+            g_a1_sha256=fp("source-g1"),
+            r_common_sha256=fp("source-r"),
+        )
+        truth = SimpleNamespace(
+            q_x_fingerprint=fp("target-qx"),
+            g_a0_fingerprint=fp("target-g0"),
+            g_a1_fingerprint=fp("target-g1"),
+        )
+        contract = SimpleNamespace(
+            q_x_sha256=fp("target-qx"),
+            source_q_x_sha256=fp("source-qx"),
+            g_a0_sha256=fp("source-g0"),
+            g_a1_sha256=fp("source-g1"),
+            target_g_a0_sha256=fp("target-g0"),
+            target_g_a1_sha256=fp("target-g1"),
+            r_common_sha256=fp("source-r"),
+            structural_support_contract=None,
+        )
+        policy_fingerprint = _validate_truth_assignment_population_bindings(
+            truth, assignment, contract,
+        )
+        self.assertEqual(len(policy_fingerprint), 64)
+        self.assertTrue(all(ch in "0123456789abcdef" for ch in policy_fingerprint))
+
+    def test_capture_binding_rejects_truth_on_source_instead_of_target_qx(self):
+        fp = lambda value: hashlib.sha256(value.encode("utf-8")).hexdigest()
+        assignment = SimpleNamespace(
+            q_x_sha256=fp("source-qx"),
+            g_a0_sha256=fp("source-g0"),
+            g_a1_sha256=fp("source-g1"),
+            r_common_sha256=fp("source-r"),
+        )
+        truth = SimpleNamespace(
+            q_x_fingerprint=fp("source-qx"),
+            g_a0_fingerprint=fp("target-g0"),
+            g_a1_fingerprint=fp("target-g1"),
+        )
+        contract = SimpleNamespace(
+            q_x_sha256=fp("target-qx"),
+            source_q_x_sha256=fp("source-qx"),
+            g_a0_sha256=fp("source-g0"),
+            g_a1_sha256=fp("source-g1"),
+            target_g_a0_sha256=fp("target-g0"),
+            target_g_a1_sha256=fp("target-g1"),
+            r_common_sha256=fp("source-r"),
+            structural_support_contract=None,
+        )
+        with self.assertRaises(ThetaACalibrationError):
+            _validate_truth_assignment_population_bindings(truth, assignment, contract)
 
     def test_pipeline_inference_options_follow_explicit_independence_contract(self):
         identified = self._design()
