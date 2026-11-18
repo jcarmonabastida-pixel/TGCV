@@ -70,7 +70,7 @@ jobs:
         run: |
           python -m py_compile theta_a_nested_mc_precision.py test_theta_a_nested_mc_precision.py theta_a_calibration_protocol.py test_theta_a_calibration_protocol.py c10s_nested_mr_fixtures.py run_c10s_nested_mr_validation.py validate_c10s_nested_mr_execution_authorization.py test_c10s_nested_mr_validation.py
 
-      - name: Run only the two authorized software-contract test modules
+      - name: Run only the authorized software-contract test modules
         id: tests
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
