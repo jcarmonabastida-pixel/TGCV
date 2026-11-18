@@ -13,7 +13,7 @@ on:
       - '03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock'
   pull_request:
     branches:
-      - main
+      - research/c10-d1-protocol-draft
     paths:
       - '.github/workflows/c10-s-nested-mc-static-validation.yml'
       - '03_EXPERIMENTS/C10-S/harness/theta_a_nested_mc_precision.py'
