@@ -1,1 +1,1 @@
-Authorized EP-02 retry: restrict sealed S3 evidence to target q_X while retaining source-roster assignment and generated histories. Technical suite and replay only.
+Authorized EP-02 retry: canonical dataclass serialization for structural-support fingerprint; source/target support regression and replay. Technical only.
