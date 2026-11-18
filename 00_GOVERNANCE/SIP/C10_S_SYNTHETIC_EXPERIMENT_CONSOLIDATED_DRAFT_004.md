@@ -3641,3 +3641,44 @@ La validación numérica de cobertura/estabilidad del bootstrap (incluidos compo
 **Fuera de este gate:** ejecución de tests, workflows, fixtures simulados, benchmark P178, seed-bank builders, calibration/evaluation banks, Monte Carlo o experimento científico. No se seleccionan nuevos N/M/R, confianza, targets, tolerancias ni valores históricos confirmatorios. PR #116 sigue Draft; `main` intacta; `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente operación:** implementar el módulo auxiliar y sus tests estáticos en el harness, en una unidad de cambio integrada. Primero inspeccionar si el summary expone los R individuales; si no, añadir una proyección inmutable mínima de registros R con identidad y métricas, preservando los hashes y la salida actual. No ejecutar los tests ni workflows sin autorización expresa.
+
+
+## 384. Implementación integrada inicial del análisis auxiliar N/M/R (2026-11-18)
+
+**Estado:** IMPLEMENTED_STATIC_CANDIDATE / NOT_EXECUTED / NOT_STATISTICALLY_VALIDATED / NO_EXECUTION_AUTHORIZATION.
+
+### 384.1 Piezas implementadas
+
+Se incorporan en `03_EXPERIMENTS/C10-S/harness/`:
+
+- `theta_a_nested_mc_precision.py`: módulo puro `analyze_nested_precision`, con estimadores MSW/MSB, componente between raw y bootstrap jerárquico M-outer/R-inner. La entrada son contribuciones escalares por asignación R completa, sin ejecutar Generator, Analyzer, Evaluator ni bancos.
+- `theta_a_calibration_protocol.py`: helper `theta_a_nested_metric_contributions`, que expone contribuciones por R en el orden canónico M×R y reutiliza las reglas métricas, la aplicabilidad y los denominadores ya establecidos por el protocolo. Devuelve `None` cuando la métrica no es evaluable; no hace complete-case ni imputación. Para `point_rmse`, devuelve errores cuadrados en escala MSE, coherente con las contribuciones MSE que ya conserva el resumen legado.
+- `test_theta_a_nested_mc_precision.py`: contratos estáticos de componentes analíticos, frontera negativa, degeneración within, entradas no balanceadas/no finitas, reconciliación con el resumen y reproducibilidad con semilla bootstrap explícita.
+- `test_theta_a_calibration_protocol.py`: prueba de extracción de contribuciones point_bias y point_rmse desde registros R completos.
+
+### 384.2 Integración y preservación del legado
+
+El flujo de uso previsto es: obtener el `ThetaACalibrationSummary` existente; extraer la métrica con `theta_a_nested_metric_contributions`; localizar el `ThetaAMetricSummary` correspondiente; y pasar las filas M×R, en el orden canónico, a `analyze_nested_precision`, junto con `outer_world_sampling_mode`, proyecciones M*/R* y semilla bootstrap explícita.
+
+El auxiliar comprueba que cada media por mundo y la media global (raíz de MSE para point_rmse) reconcilian con el resumen legado antes de calcular. Para point_rmse conserva el cálculo de componentes en escala MSE y aplica la aproximación delta a la proyección de MCSE de RMSE; si la media MSE bootstrap no es positiva, esa réplica no contribuye a la proyección. El MCSE observado de RMSE se toma del resumen legado, sin recalcularlo ni sustituirlo.
+
+El módulo no modifica ni recalcula el resumen, los registros fuente, el Analyzer, el Evaluator, el DGP, los seeds, el generador, el plan N×M×R ni el MCSE legado. No se ha añadido ningún PASS_PRECISION ni decisión confirmatoria basada en el bootstrap.
+
+### 384.3 Guardas implementadas y limitaciones deliberadas
+
+- Rechazo de M<2, R<2, diseños R no balanceados, valores no finitos, identidad de métrica incorrecta, discrepancias con contribuciones por mundo y modos de muestreo desconocidos.
+- El remuestreo exterior selecciona mundos completos; el interior selecciona registros R completos dentro de cada mundo seleccionado.
+- Réplicas bootstrap que contienen menos de dos clusters M distintos se excluyen del cálculo de componentes. Se registra el número válido. Si la fracción válida es inferior al 95% del número solicitado, las proyecciones se abstienen con `SENSITIVITY_REQUIRED`.
+- Con M<3, la salida declara `INSUFFICIENT_OUTER_SUPPORT` y no produce intervalos de proyección. Este umbral es una guarda mínima de soporte, no una afirmación de suficiencia estadística para ningún objetivo confirmatorio.
+- El componente between raw negativo se conserva; `between_ms` representa únicamente la versión restringida descriptiva max(0, raw), no reemplaza el valor raw.
+- Los intervalos bootstrap de componentes son percentiles descriptivos del remuestreo válido. No están validados en cobertura; la selección condicional de réplicas con dos o más clusters distintos debe considerarse al interpretar los intervalos.
+- El helper retorna `None` ante no evaluabilidad. El consumidor debe abstenerse y no llamar al análisis con los mundos supervivientes como si fueran el denominador completo.
+- La función es genérica sobre escala escalar por R. En métricas derivadas no lineales, la transformación debe respetar la semántica del resumen legado; RMSE está tratado explícitamente en MSE.
+
+### 384.4 Estado de verificación
+
+Se han guardado y recuperado los cuatro archivos en la rama de investigación. La revisión realizada es de contenido y coherencia estática del código; **no se han ejecutado** tests unitarios, fixtures, linters, type-checkers, workflows, calibraciones ni simulaciones. Por ello, el estado no es `PASS_STATIC`: es `IMPLEMENTED_STATIC_CANDIDATE / NOT_EXECUTED` hasta que la ejecución de tests estáticos sea autorizada y se obtengan resultados observables.
+
+No se afirma que el bootstrap esté validado estadísticamente, que sus intervalos tengan cobertura nominal, ni que las proyecciones puedan adjudicar PASS_PRECISION. La validación numérica frente a DGPs controlados, M pequeño, fronteras, métricas discretas y RMSE cerca de cero sigue siendo una fase separada.
+
+**Siguiente operación:** revisar el diff integrado y completar tests estáticos adicionales para cada métrica registrada, no evaluabilidad, M<3, RMSE y abstención por soporte; después solicitar/esperar autorización explícita para ejecutar exclusivamente la batería estática. No ejecutar bancos, workflows, DGP, Analyzer, Evaluator, calibraciones ni Monte Carlo. PR #116 permanece Draft; `main` intacta; `scientific_execution=false`; `execution_authorized=false`.
