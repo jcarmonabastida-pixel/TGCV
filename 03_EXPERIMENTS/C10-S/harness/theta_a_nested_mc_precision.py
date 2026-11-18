@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from math import isfinite, sqrt
-import random
+import numpy as np
 from statistics import mean, stdev
 from typing import Mapping, Sequence
 
@@ -99,8 +99,8 @@ def analyze_nested_precision(
     m, r = len(rows), len(rows[0])
     if type(bootstrap_replicates) is not int or bootstrap_replicates < 100:
         raise NestedPrecisionError("bootstrap_replicates must be an integer >=100")
-    if type(bootstrap_seed) is not int:
-        raise NestedPrecisionError("bootstrap_seed must be an exact integer")
+    if type(bootstrap_seed) is not int or bootstrap_seed < 0 or bootstrap_seed > (2**64 - 1):
+        raise NestedPrecisionError("bootstrap_seed must be an unsigned 64-bit integer")
     if not projections or any(
         type(mm) is not int or type(rr) is not int or mm < 2 or rr < 2
         for mm, rr in projections
@@ -185,21 +185,35 @@ def analyze_nested_precision(
         if within_world_sampling_mode != "DECLARED_IID_PSEUDORANDOM"
         else "ESTIMABLE_UNDER_DECLARED_SAMPLING"
     )
-    rng = random.Random(bootstrap_seed)
+    # Vectorized implementation of the same ordinary two-stage cluster
+    # bootstrap law. Chunking bounds peak memory at O(batch*M*R), while every
+    # outer cluster draw (including all-same-source draws) is retained.
+    matrix = np.asarray(rows, dtype=np.float64)
+    rng = np.random.default_rng(bootstrap_seed)
     boot: list[tuple[float, float, float, float]] = []
     boundary = 0
-    for _ in range(bootstrap_replicates):
-        selected_indices = [rng.randrange(m) for _ in range(m)]
-        # Repeated source clusters remain valid bootstrap cluster copies.
-        # Each copy receives its own inner R resample; dropping all-same-ID
-        # draws would condition the bootstrap law on outer sample diversity.
-        selected = [rows[index] for index in selected_indices]
-        nested = tuple(tuple(row[rng.randrange(r)] for _ in range(r)) for row in selected)
-        b_msw, _, b_between, _ = _components(nested)
-        boot.append((b_msw, b_between, b_between + b_msw / r, mean(mean(row) for row in nested)))
-        boundary += b_between < 0.0
+    batch_size = 64
+    for start in range(0, bootstrap_replicates, batch_size):
+        count = min(batch_size, bootstrap_replicates - start)
+        selected_indices = rng.integers(0, m, size=(count, m))
+        selected = matrix[selected_indices]
+        inner_indices = rng.integers(0, r, size=(count, m, r))
+        nested = np.take_along_axis(selected, inner_indices, axis=2)
+        world_means = nested.mean(axis=2)
+        b_msw_values = nested.var(axis=2, ddof=1).mean(axis=1)
+        world_variance_values = world_means.var(axis=1, ddof=1)
+        b_between_values = world_variance_values - b_msw_values / r
+        sampled_means = nested.mean(axis=(1, 2))
+        for b_msw, b_between, world_variance, sampled_mean in zip(
+            b_msw_values.tolist(),
+            b_between_values.tolist(),
+            world_variance_values.tolist(),
+            sampled_means.tolist(),
+        ):
+            boot.append((b_msw, b_between, world_variance, sampled_mean))
+        boundary += int(np.count_nonzero(b_between_values < 0.0))
     if not boot:
-        raise NestedPrecisionError("bootstrap produced no replicate with at least two distinct outer worlds")
+        raise NestedPrecisionError("bootstrap produced no replicate")
 
     def percentile(values: Sequence[float], probability: float) -> float:
         ordered = sorted(values)
