@@ -254,7 +254,6 @@ def build_theta_a_candidate_scenario_roster() -> tuple[ThetaACalibrationScenario
         target_unsupported_history_masses=(("TARGET-ONLY-HISTORY-001", 0.5),),
         expected_abstention_reason="TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
         generator_variant="positive_target_only",
-        expected_theta_a_truth=0.5,
     )
     scenarios.append(ThetaACalibrationScenario(
         scenario_id="THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1",
