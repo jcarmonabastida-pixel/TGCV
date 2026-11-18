@@ -244,7 +244,7 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         )
         self.assertEqual(
             [item.dgp_profile.expected_theta_a_truth for item in roster],
-            [0.5, 0.0, -0.5, 0.0, 0.5],
+            [0.5, 0.0, -0.5, 0.0, None],
         )
         self.assertEqual(roster[-1].expected_identification, "NOT_IDENTIFIED")
         self.assertEqual(
