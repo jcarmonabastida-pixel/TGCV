@@ -522,6 +522,50 @@ def _validate_interval_s3_seed_provenance(result, assignment: ThetaASeedAssignme
             raise ThetaACalibrationError("all units must share the exact same interval boundaries")
 
 
+def _validate_truth_assignment_population_bindings(
+    truth_bundle,
+    assignment_bundle,
+    analysis_contract,
+) -> str:
+    """Validate source-assignment and target-estimand fingerprints separately.
+
+    Assignment/evidence are materialized over the source roster; the reserved
+    focal truth is standardized over q_X*. These fingerprints coincide only
+    when source and target populations (and their policy restrictions) coincide.
+    """
+    source_q_x = analysis_contract.source_q_x_sha256 or analysis_contract.q_x_sha256
+    target_g_a0 = analysis_contract.target_g_a0_sha256 or analysis_contract.g_a0_sha256
+    target_g_a1 = analysis_contract.target_g_a1_sha256 or analysis_contract.g_a1_sha256
+    if (
+        assignment_bundle.q_x_sha256 != source_q_x
+        or assignment_bundle.g_a0_sha256 != analysis_contract.g_a0_sha256
+        or assignment_bundle.g_a1_sha256 != analysis_contract.g_a1_sha256
+        or assignment_bundle.r_common_sha256 != analysis_contract.r_common_sha256
+    ):
+        raise ThetaACalibrationError(
+            "source assignment bundle fingerprints differ from the Analyzer source contract"
+        )
+    if (
+        truth_bundle.q_x_fingerprint != analysis_contract.q_x_sha256
+        or truth_bundle.g_a0_fingerprint != target_g_a0
+        or truth_bundle.g_a1_fingerprint != target_g_a1
+    ):
+        raise ThetaACalibrationError(
+            "reserved truth fingerprints differ from the Analyzer target estimand contract"
+        )
+    return _digest("|".join((
+        source_q_x,
+        assignment_bundle.g_a0_sha256,
+        assignment_bundle.g_a1_sha256,
+        assignment_bundle.r_common_sha256,
+        analysis_contract.q_x_sha256,
+        target_g_a0,
+        target_g_a1,
+        analysis_contract.structural_support_contract.result_sha256
+        if analysis_contract.structural_support_contract is not None else "",
+    )))
+
+
 def capture_theta_a_replicate(
     result,
     assignment: ThetaASeedAssignment,
@@ -553,14 +597,9 @@ def capture_theta_a_replicate(
     assignment_bundle = result.theta_a_assignments
     if (assignment_bundle.randomization_salt_sha256 != _canonical_hash(assignment.randomization_salt)):
         raise ThetaACalibrationError("actual assignment salt differs from its focal R seed assignment")
-    if (truth_bundle.q_x_fingerprint != assignment_bundle.q_x_sha256
-            or truth_bundle.g_a0_fingerprint != assignment_bundle.g_a0_sha256
-            or truth_bundle.g_a1_fingerprint != assignment_bundle.g_a1_sha256):
-        raise ThetaACalibrationError("reserved truth and assignment bundle have different q_X/g_A fingerprints")
-    policy_design_sha256 = _digest("|".join((
-        assignment_bundle.q_x_sha256, assignment_bundle.g_a0_sha256,
-        assignment_bundle.g_a1_sha256, assignment_bundle.r_common_sha256,
-    )))
+    policy_design_sha256 = _validate_truth_assignment_population_bindings(
+        truth_bundle, assignment_bundle, result.analyzer_contract,
+    )
     if (truth_bundle.estimand_id != FOCAL_ESTIMAND_ID
             or truth_bundle.outcome_id != FOCAL_OUTCOME_ID
             or result.analyzer_result.estimand_id != truth_bundle.estimand_id
