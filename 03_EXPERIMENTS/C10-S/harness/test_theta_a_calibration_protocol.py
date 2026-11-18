@@ -357,6 +357,8 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         self.assertAlmostEqual(metrics["point_bias"].mean, 0.01)
         self.assertAlmostEqual(metrics["point_rmse"].mean, 0.01)
         self.assertEqual(metrics["interval_coverage"].precision_status, "PASS_PRECISION")
+        self.assertEqual(set(metrics), {item.metric for item in THETA_A_METRIC_REGISTRY})
+        self.assertIsNotNone(summary.metric_target_manifest_sha256)
         self.assertEqual(summary.type_i_error_status, "NOT_DEFINED_NO_TEST_PROCEDURE")
         self.assertEqual(summary.power_status, "NOT_DEFINED_NO_TEST_PROCEDURE")
 
