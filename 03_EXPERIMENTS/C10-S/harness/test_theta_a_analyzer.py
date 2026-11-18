@@ -1,8 +1,11 @@
 import unittest
 
 from theta_a_observation_harness import SealedThetaAEvidence, _hash
-from theta_a_analyzer import (ThetaAObservationAnalysisContract,
-                              ThetaAObservationAnalyzer)
+from theta_a_analyzer import (
+    ThetaAObservationAnalysisContract, ThetaAObservationAnalyzer,
+    ThetaAStructuralSupportRow, ThetaAStructuralSupportContract,
+    adjudicate_theta_a_structural_support,
+)
 from c10s_synthetic_components import ContractError
 
 
@@ -92,6 +95,49 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
         with self.assertRaises(ContractError):
             ThetaAObservationAnalyzer().analyze(self.evidence, bad)
 
+
+    def test_structural_target_history_outside_source_support_is_not_identified(self):
+        contract = ThetaAStructuralSupportContract(
+            "support-fixture", "1.0", "target-qx-sha", "source-qx-sha",
+            (
+                ThetaAStructuralSupportRow("h0", 0.7, 0.7, True, True, True, 0.5),
+                ThetaAStructuralSupportRow("h1", 0.3, 0.0, True, True, True, 0.5),
+            ),
+        )
+        result = adjudicate_theta_a_structural_support(contract)
+        self.assertEqual(result.status, "NOT_IDENTIFIED")
+        self.assertEqual(result.reason, "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT")
+        self.assertEqual(result.unsupported_target_histories, ("h1",))
+        self.assertTrue(result.contract_sha256)
+
+    def test_structural_support_sufficient_is_not_confused_with_realized_arm_support(self):
+        contract = ThetaAStructuralSupportContract(
+            "support-fixture", "1.0", "target-qx-sha", "source-qx-sha",
+            (ThetaAStructuralSupportRow("h0", 1.0, 1.0, True, True, True, 0.5),),
+        )
+        result = adjudicate_theta_a_structural_support(contract)
+        self.assertEqual(result.status, "STRUCTURAL_SUPPORT_SUFFICIENT")
+        self.assertEqual(result.unsupported_target_histories, ())
+
+    def test_undefined_or_infeasible_policy_is_contract_error_not_nonidentification(self):
+        for row in (
+            ThetaAStructuralSupportRow("h0", 1.0, 0.0, False, True, True, 0.5),
+            ThetaAStructuralSupportRow("h0", 1.0, 0.0, True, False, True, 0.5),
+            ThetaAStructuralSupportRow("h0", 1.0, 0.0, True, True, False, 0.5),
+        ):
+            contract = ThetaAStructuralSupportContract(
+                "support-fixture", "1.0", "target-qx-sha", "source-qx-sha", (row,),
+            )
+            with self.assertRaises(ContractError):
+                adjudicate_theta_a_structural_support(contract)
+
+    def test_structural_support_contract_rejects_zero_or_invalid_assignment_probability(self):
+        contract = ThetaAStructuralSupportContract(
+            "support-fixture", "1.0", "target-qx-sha", "source-qx-sha",
+            (ThetaAStructuralSupportRow("h0", 1.0, 1.0, True, True, True, 0.0),),
+        )
+        with self.assertRaises(ContractError):
+            adjudicate_theta_a_structural_support(contract)
 
 if __name__ == "__main__":
     unittest.main()
