@@ -279,6 +279,65 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertTrue(result.evaluator_result.correct_adjudication)
         self.assertEqual(result.evaluator_result.disposition, "CORRECT_ABSTENTION")
 
+    def test_target_only_truth_oracle_weights_target_specific_contrast(self):
+        # Adversarial §369.4 control: source histories retain delta=+0.5,
+        # but the target-only history starts non-compliant under both g_A
+        # policies, so its own contrast is zero. The oracle must weight that
+        # target-only contribution rather than silently copying source truth.
+        scenario = next(
+            item for item in build_theta_a_candidate_scenario_roster()
+            if item.scenario_id == "THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1"
+        )
+        design = ThetaACalibrationDesign(
+            scenario_specs=(scenario,), n_grid=(4,), outer_worlds_m=2,
+            assignment_replicates_r=2, confidence_level=0.95,
+            namespace="theta-a-target-specific-truth-weighting-adversarial-v1",
+        )
+        assignment = build_theta_a_seed_bank(design, "calibration")[0]
+        fixture = self._fixture("positive", seed_assignment=assignment, n_units=4)
+        fixture = self._configure_target_only_support_fixture(fixture, scenario)
+        extra_ref = scenario.dgp_profile.target_unsupported_history_masses[0][0]
+
+        # enabled=False with ADMIT is non-compliant in both intervals.
+        # g_A0 changes admission to NO_ADMISSION; g_A1 leaves ADMIT unchanged.
+        # Neither potential becomes compliant, so delta_target_only = 0.
+        source_state = fixture["initial_by_history"][extra_ref]
+        target_state = replace(source_state, enabled=False)
+        fixture["initial_by_history"][extra_ref] = target_state
+        target_materialization = fixture["target_materialization"]
+        target_materialization = replace(
+            target_materialization, initial_functional_state=target_state,
+        )
+        fixture["target_materialization"] = target_materialization
+        population_args = dict(fixture["theta_a_population_args"])
+        population_args["theta_a_target_history_materializations"] = (
+            target_materialization,
+        )
+        fixture["theta_a_population_args"] = population_args
+
+        result = self._run_pipeline(fixture)
+        source_mass = 0.5
+        target_only_mass = 0.5
+        source_history_contrast = 0.5
+        target_only_history_contrast = 0.0
+        independently_expected_truth = (
+            source_mass * source_history_contrast
+            + target_only_mass * target_only_history_contrast
+        )
+        self.assertAlmostEqual(independently_expected_truth, 0.25)
+        self.assertAlmostEqual(
+            result.theta_a_truth.theta_a_truth.theta_a_truth,
+            independently_expected_truth,
+        )
+        self.assertAlmostEqual(result.evaluator_result.truth, independently_expected_truth)
+        self.assertEqual(result.analyzer_result.identification, "NOT_IDENTIFIED")
+        self.assertEqual(
+            result.analyzer_result.abstention_reason,
+            "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
+        )
+        self.assertTrue(result.evaluator_result.correct_adjudication)
+        self.assertEqual(result.evaluator_result.disposition, "CORRECT_ABSTENTION")
+
     def test_source_support_strict_superset_of_target_is_benign_end_to_end(self):
         # Use enough predeclared units that the fixed target subset retains
         # realized support in both randomized arms; this avoids conflating
