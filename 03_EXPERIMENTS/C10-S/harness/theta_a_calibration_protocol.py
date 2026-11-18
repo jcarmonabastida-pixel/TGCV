@@ -176,7 +176,10 @@ class ThetaACalibrationDesign:
                 "interval_coverage", "interval_width", "point_bias", "point_mae",
                 "point_rmse", "point_recovery_rate", "false_abstention_rate",
             }
-            abstention_only = {"correct_abstention_rate", "false_identification_rate"}
+            abstention_only = {
+                "correct_abstention_rate", "wrong_cause_abstention_rate",
+                "partial_identification_rate", "false_identification_rate",
+            }
             if metric in identified_only and scenario.expected_identification != "IDENTIFIED":
                 raise ThetaACalibrationError("identified-only metric target assigned to a nonidentified scenario")
             if metric in abstention_only and scenario.expected_identification == "IDENTIFIED":
@@ -681,6 +684,11 @@ def capture_theta_a_replicate(
             for row in structural_contract.rows if row.source_mass == 0.0
         ))
         expected_unsupported = tuple(sorted(profile.target_unsupported_history_masses))
+        source_only_refs = tuple(result.analyzer_contract.source_only_history_refs)
+        if profile.support_relation == "EQUAL" and source_only_refs:
+            raise ThetaACalibrationError("equal-support profile materialized undeclared source-only histories")
+        if profile.support_relation == "SOURCE_STRICT_SUPERSET" and not source_only_refs:
+            raise ThetaACalibrationError("source-superset profile has no source-only histories")
         if actual_unsupported != expected_unsupported:
             raise ThetaACalibrationError("materialized target-only histories/masses differ from the typed DGP profile")
         unsupported_mass = sum(mass for _, mass in actual_unsupported)
