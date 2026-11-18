@@ -98,6 +98,11 @@ class ThetaAObservationEvaluator:
             raise ContractError("Analyzer result and sealed evidence run identity mismatch")
         if result.estimand_id != truth.estimand_id or result.estimand_version != truth.estimand_version:
             raise ContractError("Analyzer result estimand identity/version mismatch")
+        source_qx_sha256 = contract.source_q_x_sha256 or contract.q_x_sha256
+        structural = (
+            adjudicate_theta_a_structural_support(contract.structural_support_contract)
+            if contract.structural_support_contract is not None else None
+        )
         if result.input_sha256 != evidence.sha256:
             raise ContractError("Analyzer result is not bound to the supplied sealed evidence")
         expected_support_sha = structural.contract_sha256 if structural is not None else None
@@ -117,11 +122,6 @@ class ThetaAObservationEvaluator:
             raise ContractError("sealed theta_A evidence digest is invalid")
         if _canonical_hash(_result_payload(result)) != result.output_sha256:
             raise ContractError("Analyzer result digest is invalid")
-        source_qx_sha256 = contract.source_q_x_sha256 or contract.q_x_sha256
-        structural = (
-            adjudicate_theta_a_structural_support(contract.structural_support_contract)
-            if contract.structural_support_contract is not None else None
-        )
         if (assignment_bundle.result_sha256 != contract.assignment_bundle_sha256
                 or assignment_bundle.q_x_sha256 != source_qx_sha256
                 or assignment_bundle.g_a0_sha256 != contract.g_a0_sha256
