@@ -691,10 +691,20 @@ def capture_theta_a_replicate(
         ))
         expected_unsupported = tuple(sorted(profile.target_unsupported_history_masses))
         source_only_refs = tuple(result.analyzer_contract.source_only_history_refs)
-        if profile.support_relation == "EQUAL" and source_only_refs:
-            raise ThetaACalibrationError("equal-support profile materialized undeclared source-only histories")
-        if profile.support_relation == "SOURCE_STRICT_SUPERSET" and not source_only_refs:
-            raise ThetaACalibrationError("source-superset profile has no source-only histories")
+        source_qx = structural_contract.source_q_x_sha256
+        target_qx = structural_contract.target_q_x_sha256
+        if profile.support_relation == "EQUAL" and (
+            source_only_refs or source_qx != target_qx
+        ):
+            raise ThetaACalibrationError("equal-support profile differs from materialized source/target support")
+        if profile.support_relation == "SOURCE_STRICT_SUPERSET" and (
+            not source_only_refs or source_qx == target_qx
+        ):
+            raise ThetaACalibrationError("source-superset profile lacks a strict materialized source-only support difference")
+        if profile.support_relation == "TARGET_HAS_UNSUPPORTED_HISTORIES" and (
+            not actual_unsupported or source_qx == target_qx
+        ):
+            raise ThetaACalibrationError("target-only profile lacks a strict materialized target/source support difference")
         if actual_unsupported != expected_unsupported:
             raise ThetaACalibrationError("materialized target-only histories/masses differ from the typed DGP profile")
         unsupported_mass = sum(mass for _, mass in actual_unsupported)
