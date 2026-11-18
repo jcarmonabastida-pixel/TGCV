@@ -2388,3 +2388,77 @@ No iniciar implementación hasta que se completen, en este orden:
 **Siguiente operación:** §367, reconciliación escenario por escenario de los cinco escenarios focales y su verdad DGP/régimen informativo/expectativa Analyzer, contrastando perfiles DGP, soporte, independencia y pruebas existentes. La prioridad es resolver la semántica legacy INDETERMINATE y evitar una migración de etiquetas que cambie el significado causal. No ejecutar tests ni calibración.
 
 **Controles y autorización:** solo se modificará este documento en la rama de investigación. No se modifican código/tests/DGP/roster/seeds/targets/workflows ni main/RMA/Matrix/STATUS/Core. No se ejecutan tests, EP-02, world executor, seed builder, calibración, Monte Carlo ni evaluación. PR #116 permanece Draft. `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
+
+
+## 367. Reconciliación semántica de los cinco escenarios focales θ_A — revisión estática contra roster, protocolo y materializador DGP (2026-11-18)
+
+**Estado:** SCENARIO_RECONCILIATION_STATIC / CANDIDATE_MAPPING / NOT_APPROVED / NOT_FROZEN / NOT_EXECUTED.  
+**Precedencia:** §367 desarrolla la siguiente operación indicada en §366. No modifica el roster, el perfil DGP, los estimandos, las verdades históricas ni el Analyzer. La reconciliación distingue lo que declara el protocolo de lo que demuestra el materializador y de lo que aún debe adjudicarse mediante la integración reservada.  
+**Fuentes contrastadas:** §§336, 348, 355, 360–366; `theta_a_calibration_protocol.py` (blob `9675b9f6805b11f1a1037a3e4b2f95af53038e4c`); `theta_a_calibration_dgp.py` (blob `e334ee62502a9bb012512305075a8b071fd8efed`); `test_theta_a_calibration_protocol.py` (blob `a15454020c1043c1d5244193d8c8feb64d3442b9`); `harness/README.md`. Revisión solo de contenido GitHub; no se ejecutó código ni test.
+
+### 367.1 Resultado de la reconciliación del roster
+
+El roster devuelto por `build_theta_a_candidate_scenario_roster()` contiene exactamente cinco escenarios: cuatro con `expected_identification=IDENTIFIED` y uno con `NOT_IDENTIFIED`. Ninguno de los cinco tiene `expected_identification=INDETERMINATE`. Esta precisión corrige cualquier lectura de §366 que pudiera atribuir el legacy INDETERMINATE a uno de los cinco escenarios.
+
+| Scenario ID | Variante DGP | TruthClass candidata | Truth focal declarada | Soporte | Disposición Analyzer esperada candidata | Fundamento y límite |
+|---|---|---|---:|---|---|---|
+| `THETA_A_POSITIVE_V1` | `positive` | `IDENTIFIED_POINT` | +0.5 | `EQUAL` | `IDENTIFIED` | Contraste focal positivo bajo soporte fuente/objetivo igual y régimen común sin vía alternativa activa. La verdad +0.5 procede del contrato histórico §336 y del perfil; aún requiere concordancia con la verdad reservada del pipeline completo. |
+| `THETA_A_NULL_V1` | `null` | `IDENTIFIED_POINT` | 0.0 | `EQUAL` | `IDENTIFIED` | Control nulo bajo soporte igual. Cero es el valor del contraste focal, no ausencia de identificación. Debe permanecer distinguido del escenario de vía alternativa común. |
+| `THETA_A_NEGATIVE_V1` | `negative` | `IDENTIFIED_POINT` | −0.5 | `EQUAL` | `IDENTIFIED` | Contraste focal negativo bajo soporte igual. Verificar verdad reservada y simetría del mecanismo respecto al positivo; no inferir simetría solo por los nombres. |
+| `THETA_A_ALTERNATIVE_COMMON_V1` | `alternative` | `IDENTIFIED_POINT` | 0.0 | `EQUAL` | `IDENTIFIED` | El componente alternativo está activo en ambos brazos; la regla funcional alternativa actúa antes de la regla focal, que solo se activa cuando el componente alternativo está ausente. El contraste focal se enmascara sin retirar soporte. No equivale al DGP null: representa una vía funcional alternativa común. |
+| `THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1` | `positive_target_only` (materializada reutilizando la base `positive`) | `NOT_IDENTIFIED_POINT` | No declarada en `expected_theta_a_truth` | `TARGET_HAS_UNSUPPORTED_HISTORIES` | `NOT_IDENTIFIED`, causa `TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT` | Añade historia objetivo de masa 0.5 fuera del soporte fuente; las intervenciones se mantienen definidas y factibles, pero no hay propensión fuente para esa historia. La no-identificación se refiere a identificar el contraste en la población objetivo desde la información fuente, no a que el generador carezca de un parámetro latente. La verdad generadora sobre el objetivo completo debe enlazarse y auditarse separadamente; no rellenar el campo de truth identificada ni puntuar error puntual. |
+
+Las cuatro verdades puntuales y su rol se conservan como **contrato candidato histórico de §336**, no como una nueva demostración. El quinto escenario amplía el roster de cuatro a cinco conforme a §348; no es un sexto tipo de mecanismo ni un nuevo estimando.
+
+### 367.2 Separación de cuatro objetos que el código actual aún fusiona
+
+1. **TruthClass:** propiedad del estimando bajo población objetivo, soporte y régimen de información formalmente definidos. La tabla anterior es un mapeo candidato de las clases históricas; la etiqueta no se deriva de la respuesta del Analyzer.
+2. **ExpectedAnalyzerDisposition:** expectativa de conformidad del fixture. Para los cinco escenarios, el protocolo actual la expresa indirectamente mediante `expected_identification` y, en el quinto, `expected_abstention_reason`; todavía no existe un objeto independiente.
+3. **Observed AnalyzerDisposition:** resultado real producido por Analyzer para cada réplica. No está demostrado por el roster ni por los tests de agregación que fabrican registros.
+4. **EvaluatorAudit:** adjudicación independiente frente a la verdad reservada. No convierte una abstención correcta en identificación ni redefine TruthClass.
+
+El campo actual `ThetaACalibrationScenario.expected_identification` sigue siendo una representación heredada que mezcla al menos clase esperada y expectativa de disposición. La migración futura debe preservar su valor histórico y añadir los contratos separados; no renombrarlo silenciosamente como TruthClass.
+
+### 367.3 Qué significa exactamente el escenario target-only
+
+El perfil candidato fija una historia objetivo exclusiva `TARGET-ONLY-HISTORY-001` con masa 0.5. El materializador:
+- construye la población fuente base del modo positivo;
+- reescala sus masas a la fracción soportada restante;
+- añade la historia objetivo exclusiva con masa 0.5 y masa fuente 0;
+- añade las políticas `g_A0/g_A1` y el certificado `r_common` para esa historia;
+- deja su probabilidad de asignación fuente como `None`;
+- materializa un estado funcional objetivo usando covariables ancla de una unidad fuente, con referencia de procedencia sintética explícita.
+
+Por tanto, la causa estructural de no-identificación es la ausencia de soporte fuente para una masa positiva de la población objetivo, no la ausencia de definición de políticas ni la falta de materialización de potenciales. La reutilización de covariables ancla es una convención de fixture y no prueba representatividad de la historia objetivo; debe permanecer declarada como tal y no generalizarse.
+
+El perfil quinto deja `expected_theta_a_truth=None`, mientras que el materializador selecciona el modo base `positive`. Esto es coherente con no publicar una verdad puntual identificada al Analyzer, pero deja una obligación de auditoría: la verdad generadora reservada sobre el q_X* completo debe conservarse en el TruthBundle/Evaluator y verificarse contra una derivación independiente. Hasta entonces, la cifra latente exacta es **NOT_VERIFIABLE en esta reconciliación estática**. §348 permite afirmar que tal contraste DGP puede existir; no autoriza a copiar +0.5 en el campo de verdad identificada del escenario quinto.
+
+### 367.4 Régimen informativo, independencia y límites de interpretación
+
+- Los cuatro escenarios con soporte `EQUAL` declaran `unit_independence_certified=True` y documentan independencia de historias potenciales y draws de asignación por unidad, sin interferencia. Es una declaración del contrato del diseño que debe seguir vinculada al generador y a las dos etapas de asignación; no certifica por sí misma IID de mundos exteriores M.
+- El quinto escenario declara independencia por unidad como no certificada. No debe usarse la opción de intervalo/SE que exige esa certificación; el protocolo retira el nivel de confianza solicitado para ese escenario.
+- El canal de observación de intervalo de la fábrica es deliberadamente ideal, completo y de cobertura continua; la ruta point-S3 es un fixture adversarial distinto. La fábrica ideal no valida medición pasiva imperfecta ni sus propiedades de missingness.
+- El escenario de vía alternativa común mantiene soporte igual. Su truth focal cero no debe clasificarse como no-identificación, ni su ruta alternativa como fallo de positividad.
+- El escenario target-only no es el caso benigno fuente-superset/objetivo-subset. Este último sigue siendo una regresión separada y abierta en §348.2.
+
+### 367.5 Reconciliación del legacy INDETERMINATE
+
+El test de opciones de inferencia construye un escenario sintético adicional con `expected_identification=INDETERMINATE` para verificar que el protocolo aún puede pasar confianza 0.95 cuando `unit_independence_certified=True`. Ese objeto no forma parte del roster de cinco. También existen fixtures de point-S3 y N=1 para probar abstenciones por falta de continuidad o de brazo observado; §336.2 los excluye expresamente del roster numérico de primera ola.
+
+Conclusión: `INDETERMINATE` debe permanecer como categoría legacy/observada del Analyzer en los contratos que ya la contienen. No hay base para convertirla en TruthClass ni para asignarla a ninguno de los cinco escenarios focales. Para esos fixtures auxiliares, la verdad estructural y la disposición esperada siguen sin estar reconciliadas individualmente: `UNMAPPED_LEGACY` hasta una decisión específica, sin bloquear por ello la clasificación ya tipada de los cinco escenarios candidatos.
+
+### 367.6 Bloqueos residuales antes de implementación
+
+1. Verificar la verdad focal reservada para los cuatro escenarios identificados contra una derivación analítica independiente del DGP, y registrar por separado ITT-D2 de paquete.
+2. Exponer y auditar la verdad generadora latente del escenario target-only sin presentarla como parámetro identificado desde la fuente.
+3. Separar formalmente TruthClass, ExpectedAnalyzerDisposition, Observed AnalyzerDisposition e EvaluatorAudit en el contrato de réplica.
+4. Reconciliar la unidad ancla usada para materializar la historia objetivo exclusiva y justificar su papel en la población sintética, sin asumir que una covariable copiada equivale a muestreo independiente.
+5. Mantener el test source-superset/target-subset como regresión independiente; no inferir que queda cubierto por el quinto escenario.
+6. Vincular la certificación de independencia de unidades a los generadores y asignadores efectivos; definir aparte el contrato de muestreo de mundos M.
+7. Mantener separados el canal ideal continuo y los fixtures point-S3/missingness; no usar los últimos como escenarios confirmatorios sin contrato de verdad/régimen.
+
+**Dictamen:** el mapeo de las cinco filas a las clases candidatas queda **CONDITIONAL**. La semántica del legacy INDETERMINATE queda **NOT_MAPPED / NOT_REINTERPRETED**. La verdad latente del target-only queda **NOT_VERIFIABLE** con los campos estáticos del perfil actual. La implementación end-to-end de los cinco escenarios y la adjudicación real Analyzer/Evaluator no se han ejecutado. §367 no congela el roster ni autoriza implementación, calibración o evaluación.
+
+**Siguiente operación conforme a la misión §325:** no abrir otra capa documental genérica. Cerrar en el código existente —sin ejecución— la trazabilidad de verdad reservada del target-only y la correspondencia de las cinco configuraciones DGP con el pipeline completo; después priorizar la integración y los tests de software ya definidos, manteniendo separadas las autorizaciones para tests, dispatch, calibración y ejecución científica. No reabrir §367 salvo discrepancia concreta de código/contrato.
+
+**Controles:** solo se actualiza este documento en `research/c10-s-consolidation-draft`. No se modifican código, tests, roster, targets, seeds, workflows, main, RMA, Matrix, STATUS, Core ni claims. No se ejecutan tests, EP-02, builders, calibración, Monte Carlo ni experimento científico. PR #116 permanece Draft. `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
