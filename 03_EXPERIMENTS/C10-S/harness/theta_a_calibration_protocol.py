@@ -1270,6 +1270,8 @@ def summarize_theta_a_calibration(
                                 outer_id,
                                 sum(abs(x) <= design.point_recovery_tolerance for x in errors) / r_count,
                             ))
+                        else:
+                            metric_values.setdefault("point_recovery_rate", []).append(None)
                     else:
                         for name in ("point_bias", "point_mae", "point_rmse_mse"):
                             metric_values.setdefault(name, []).append(None)
@@ -1328,6 +1330,13 @@ def summarize_theta_a_calibration(
                     metric_values.setdefault(name, [None] * design.outer_worlds_m)
 
             names = sorted(metric_values)
+            output_metric_names = {
+                "point_rmse" if name == "point_rmse_mse" else name for name in names
+            }
+            if output_metric_names != set(_THETA_A_METRIC_BY_NAME):
+                raise ThetaACalibrationError(
+                    "aggregator output does not match the exhaustive focal metric registry"
+                )
             metric_summaries = []
             for name in names:
                 contributions = metric_values[name]
