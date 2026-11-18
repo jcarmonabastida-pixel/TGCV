@@ -143,6 +143,39 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
         self.assertEqual(result.unsupported_target_histories, ())
         self.assertEqual(result.assignment_positivity_failure_histories, ("h0",))
 
+    def test_source_assignment_positivity_failure_reaches_analyzer_as_distinct_nonidentification(self):
+        rows = (
+            dict(self.evidence.rows[0], assignment_probability=1.0, q_x_sha256="source-qx"),
+            dict(self.evidence.rows[1], q_x_sha256="source-qx"),
+        )
+        manifest = {"run_id": "run-1", "schema": "test"}
+        evidence = SealedThetaAEvidence(
+            "run-1", rows, manifest,
+            _hash({"manifest": manifest, "rows": rows}),
+        )
+        support = ThetaAStructuralSupportContract(
+            "support-fixture", "1.0", "target-qx", "source-qx",
+            (
+                ThetaAStructuralSupportRow("h0", 0.4, 0.4, True, True, True, 0.0),
+                ThetaAStructuralSupportRow("h1", 0.6, 0.6, True, True, True, 0.5),
+            ),
+        )
+        contract = ThetaAObservationAnalysisContract(
+            q_x_mass_by_history=(("h0", 0.4), ("h1", 0.6)),
+            q_x_sha256="target-qx", source_q_x_sha256="source-qx",
+            assignment_bundle_sha256="ab", g_a0_sha256="ga0",
+            g_a1_sha256="ga1", r_common_sha256="rc",
+            probability_a1_by_history=(("h0", 0.0), ("h1", 0.5)),
+            structural_support_contract=support,
+        )
+        result = ThetaAObservationAnalyzer().analyze(evidence, contract)
+        self.assertEqual(result.identification, "NOT_IDENTIFIED")
+        self.assertEqual(result.abstention_reason, "SOURCE_ASSIGNMENT_POSITIVITY_FAILURE")
+        self.assertEqual(result.missing_target_histories, ())
+        self.assertEqual(result.assignment_positivity_failure_histories, ("h0",))
+        self.assertAlmostEqual(result.target_q_x_coverage, 1.0)
+        self.assertIsNone(result.point_estimate)
+
     def test_structural_target_source_support_reaches_analyzer_not_identified(self):
         rows = (dict(self.evidence.rows[0], q_x_sha256="source-qx"),)
         manifest = {"run_id": "run-1", "schema": "test"}
