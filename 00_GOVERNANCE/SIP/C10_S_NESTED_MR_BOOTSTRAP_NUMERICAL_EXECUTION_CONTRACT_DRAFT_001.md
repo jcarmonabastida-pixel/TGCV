@@ -28,7 +28,7 @@ The actual C10-S outer-world and conditional assignment sampling mechanisms are 
 | Software tests | `test_c10s_nested_mr_validation.py` plus existing nested precision tests | Checks fixture truth contracts, schedule determinism, cell counts, coverage adjudication and deterministic degeneracy guards |
 | Remote controller | `.github/workflows/c10-s-nested-mr-numerical-validation.yml` | Runs only after a dedicated authorization-manifest commit; uploads immutable run artifacts |
 
-The bootstrap implementation is vectorized in batches of 64 using an explicitly pinned NumPy PCG64 stream. The fixture generator also uses PCG64, with separate SHA-256-derived dataset and bootstrap seed namespaces. It retains all outer cluster draws, including all-same-source draws, and resamples R independently within every selected cluster copy. The estimator, raw component definitions, projection formula, legacy observed-MCSE reconciliation, 95% percentile interval and boundary abstention semantics remain those of method version 1.2. The optimization changes execution mechanics and deterministic stream implementation, not the frozen statistical resampling law. There are no prior numerical outputs whose seed stream would need migration.
+The bootstrap implementation is vectorized in batches of 64 using explicitly pinned NumPy PCG64 child streams for outer-cluster and inner-R resampling. The fixture generator is version 1.1: its dataset seed is split through `SeedSequence.spawn(2)` into an outer-world stream and an inner stream; the inner stream is itself split into one independent R stream per world. The bootstrap seed is independently split into outer and inner bootstrap streams. The root dataset and bootstrap seeds remain separate SHA-256-derived namespaces. It retains all outer cluster draws, including all-same-source draws, and resamples R independently within every selected cluster copy. The estimator, raw component definitions, projection formula, legacy observed-MCSE reconciliation, 95% percentile interval and boundary abstention semantics remain those of method version 1.2. The optimization changes execution mechanics and deterministic stream implementation, not the frozen statistical resampling law. There are no prior numerical outputs whose seed stream would need migration.
 
 ## 3. Frozen fixture inventory
 
@@ -92,7 +92,7 @@ The two namespaces are exactly:
 - `fixture_dataset`
 - `bootstrap`
 
-The seed is independent of iteration order, runner identity and workflow attempt. Both fixture and bootstrap draws use the explicitly selected PCG64 bit generator. Re-running a cell under the same code/protocol/schedule and pinned NumPy dependency reproduces the same generated dataset and bootstrap stream. M and R are not paired across cells or N; no coupling is inferred from row order, IDs or coincident seeds.
+The seed is independent of iteration order, runner identity and workflow attempt. Both fixture and bootstrap draws use explicitly selected PCG64 child streams. Re-running a cell under the same code/protocol/schedule, fixture-generator version 1.1 and pinned NumPy dependency reproduces the same generated dataset and bootstrap stream. M and R are not paired across cells or N; no coupling is inferred from row order, IDs or coincident seeds.
 
 ## 6. Computational resource estimate
 
