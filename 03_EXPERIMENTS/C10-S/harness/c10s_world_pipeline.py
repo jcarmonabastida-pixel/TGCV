@@ -376,6 +376,9 @@ def materialize_c10s_complete_world_from_dgp(
     interval_monitor_seeds_by_unit: dict[str, int] | None = None,
     theta_a_confidence_level: float | None = None,
     theta_a_unit_independence_certified: bool = False,
+    theta_a_q_x: Sequence[QXHistoryMass] | None = None,
+    theta_a_unit_id_by_history: dict[str, str] | None = None,
+    theta_a_structural_support_contract: ThetaAStructuralSupportContract | None = None,
 ) -> C10SCompleteWorldResult:
     """Generate D2 and direct-g_A potential EventHistories inside the DGP pipeline.
 
@@ -398,9 +401,17 @@ def materialize_c10s_complete_world_from_dgp(
         world, functional_history_config, initial_state_by_unit_z,
         trajectories_by_unit_z_target=trajectory_map if trajectory_rules_declared else None,
     )
+    target_unit_ids = theta_a_unit_id_by_history or {
+        unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
+    }
+    if theta_a_q_x is not None and set(target_unit_ids) != {
+        row.history_ref for row in theta_a_q_x
+    }:
+        raise ContractError("DGP target q_X and target unit identities must cover the same histories")
     policy_histories = generate_g_a_event_history_potentials(
         world, functional_history_config, g_a0, g_a1,
         r_common_certificates, initial_state_by_history,
+        unit_id_by_history=target_unit_ids,
     )
     return materialize_c10s_complete_world(
         world_config=world_config, d2_config=d2_config,
@@ -421,4 +432,7 @@ def materialize_c10s_complete_world_from_dgp(
         interval_monitor_seeds_by_unit=interval_monitor_seeds_by_unit,
         theta_a_confidence_level=theta_a_confidence_level,
         theta_a_unit_independence_certified=theta_a_unit_independence_certified,
+        theta_a_q_x=theta_a_q_x,
+        theta_a_unit_id_by_history=target_unit_ids,
+        theta_a_structural_support_contract=theta_a_structural_support_contract,
     )
