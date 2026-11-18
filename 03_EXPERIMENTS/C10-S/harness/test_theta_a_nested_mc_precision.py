@@ -1,0 +1,118 @@
+from __future__ import annotations
+
+import unittest
+from types import SimpleNamespace
+
+from theta_a_nested_mc_precision import (
+    NestedPrecisionError,
+    analyze_nested_precision,
+)
+
+
+class NestedPrecisionTests(unittest.TestCase):
+    def _summary(self, rows, metric="identification_rate"):
+        contributions = tuple(
+            (f"outer-{index:06d}", sum(row) / len(row))
+            for index, row in enumerate(rows)
+        )
+        return SimpleNamespace(
+            metric=metric,
+            mean=sum(value for _, value in contributions) / len(contributions),
+            outer_world_contributions=contributions,
+        )
+
+    def test_balanced_components_and_legacy_mcse_reconcile(self):
+        rows = ((0.0, 2.0), (2.0, 4.0), (4.0, 6.0))
+        result = analyze_nested_precision(
+            metric="identification_rate",
+            replicate_contributions=rows,
+            summary_metric=self._summary(rows),
+            outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            projections=((3, 2), (6, 4)),
+            bootstrap_replicates=500,
+            bootstrap_seed=19,
+        )
+        self.assertAlmostEqual(result.within_ms, 2.0)
+        self.assertAlmostEqual(result.between_raw, 4.0)
+        self.assertAlmostEqual(result.observed_world_mean_variance, 4.0)
+        self.assertAlmostEqual(result.observed_mcse, (4.0 / 3.0) ** 0.5)
+        self.assertEqual(result.valid_bootstrap_replicates, 500)
+
+    def test_between_raw_is_preserved_when_negative(self):
+        rows = ((0.0, 2.0), (0.0, 2.0), (0.0, 2.0))
+        result = analyze_nested_precision(
+            metric="identification_rate",
+            replicate_contributions=rows,
+            summary_metric=self._summary(rows),
+            outer_world_sampling_mode="UNVERIFIED",
+            projections=((3, 2),),
+            bootstrap_replicates=500,
+        )
+        self.assertAlmostEqual(result.within_ms, 2.0)
+        self.assertLess(result.between_raw, 0.0)
+        self.assertEqual(result.status, "DESCRIPTIVE_ONLY")
+        self.assertIsNone(result.observed_mcse)
+
+    def test_zero_within_component_is_finite_and_degenerate(self):
+        rows = ((1.0, 1.0), (2.0, 2.0), (3.0, 3.0))
+        result = analyze_nested_precision(
+            metric="identification_rate",
+            replicate_contributions=rows,
+            summary_metric=self._summary(rows),
+            outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            projections=((3, 2),),
+            bootstrap_replicates=500,
+        )
+        self.assertEqual(result.within_ms, 0.0)
+        self.assertAlmostEqual(result.between_raw, 1.0)
+
+    def test_rejects_incomplete_or_unbalanced_r(self):
+        rows = ((0.0, 1.0), (1.0,))
+        with self.assertRaises(NestedPrecisionError):
+            analyze_nested_precision(
+                metric="identification_rate",
+                replicate_contributions=rows,
+                summary_metric=self._summary(((0.0, 1.0), (1.0, 1.0))),
+                outer_world_sampling_mode="UNVERIFIED",
+                projections=((2, 2),),
+            )
+
+    def test_rejects_nonfinite_values(self):
+        rows = ((0.0, float("nan")), (1.0, 1.0))
+        with self.assertRaises(NestedPrecisionError):
+            analyze_nested_precision(
+                metric="identification_rate",
+                replicate_contributions=rows,
+                summary_metric=self._summary(((0.0, 1.0), (1.0, 1.0))),
+                outer_world_sampling_mode="UNVERIFIED",
+                projections=((2, 2),),
+            )
+
+    def test_rejects_contributions_that_do_not_reconcile(self):
+        rows = ((0.0, 2.0), (2.0, 4.0))
+        summary = self._summary(((0.0, 0.0), (2.0, 2.0)))
+        with self.assertRaises(NestedPrecisionError):
+            analyze_nested_precision(
+                metric="identification_rate",
+                replicate_contributions=rows,
+                summary_metric=summary,
+                outer_world_sampling_mode="UNVERIFIED",
+                projections=((2, 2),),
+            )
+
+    def test_bootstrap_is_reproducible_for_explicit_seed(self):
+        rows = ((0.0, 2.0), (2.0, 4.0), (4.0, 6.0))
+        kwargs = dict(
+            metric="identification_rate",
+            replicate_contributions=rows,
+            summary_metric=self._summary(rows),
+            outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            projections=((3, 2),),
+            bootstrap_replicates=500,
+            bootstrap_seed=123,
+        )
+        self.assertEqual(analyze_nested_precision(**kwargs), analyze_nested_precision(**kwargs))
+
+
+if __name__ == "__main__":
+    unittest.main()
