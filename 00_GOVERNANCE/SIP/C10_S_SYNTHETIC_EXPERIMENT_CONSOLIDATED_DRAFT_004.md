@@ -765,3 +765,49 @@ Run 829 (`44204384079`) executed the exact sixteen-module EP-02 software-contrac
 Preconditions and provenance checks also passed: CPython 3.12.10, hash-locked dependencies, compilation of the exact source/test allowlist, byte-identical primary/replay source trees, no residual bytecode caches, successful uploads of payload and execution manifest. Payload artifact ID `14383046746` (SHA-256 `c34eca732e75d3f3ba070f243aa48c0383ffc567ff9bfb533b35ece9d3beda03`); manifest artifact ID `14383560381` (SHA-256 `989a52821a4d0c07dbf36ab77b95bd13ff190dc5b239a321cbdca6f8e7fa925f`).
 
 The temporary push trigger used only to start this previously authorized technical suite was removed; workflow `.github/workflows/c10-s-focal-harness-tests.yml` is restored to its original `workflow_dispatch`-only gate in commit `5df7961cd960f6fccdb02d3c3658dee095fc6683`. The tested source commit remains identifiable and immutable. This evidence is EP-02 software-contract evidence only: it does not constitute statistical calibration, confirmatory experiment execution, or a scientific claim about causal recovery. No banks or Monte Carlo calibration were generated. State: `PASS_STATIC + PASS_DYNAMIC_EP02 / 299+299 / REPLAY_PASS / SCIENTIFIC_EXECUTION_NOT_AUTHORIZED`.
+
+## 336. Refinamiento del roster y precisión de la primera calibración focal — propuesta no congelada (2026-11-18)
+
+Este refinamiento concreta la propuesta §330 utilizando exclusivamente los cuatro modos focales ya presentes en `test_c10s_world_pipeline_integration.py`. No crea DGP, estimando, test ID ni documento paralelo. La selección es una propuesta de primera ola para la calibración de software/DGP directo-g_A; no equivale a roster confirmatorio aprobado ni a evidencia de identificación fuera del mundo sintético especificado.
+
+### 336.1 Roster candidato derivado de fixtures existentes
+
+| Escenario propuesto | Fixture existente | Truth focal del DGP | Identificación esperada | Función |
+|---|---|---:|---|---|
+| `THETA_A_POSITIVE_V1` | `positive` | +0,5 | IDENTIFIED | Recuperación de efecto focal positivo |
+| `THETA_A_NULL_V1` | `null` | 0 | IDENTIFIED | Recuperación del nulo bajo soporte |
+| `THETA_A_NEGATIVE_V1` | `negative` | −0,5 | IDENTIFIED | Recuperación de efecto focal negativo |
+| `THETA_A_ALTERNATIVE_COMMON_V1` | `alternative` | 0 | IDENTIFIED | Vía alternativa común a ambos brazos que enmascara el contraste focal sin retirar soporte |
+
+Las cuatro verdades son potenciales reservados calculados por el DGP/Evaluator del fixture, no valores estimados. El ITT-D2 del paquete permanece separado (−0,5 en estos fixtures) y no se incorpora como truth de θ_A.
+
+Los escenarios positivo y alternativo comparten el mundo/población basal de interacción, pero representan regímenes funcionales distintos. Se ha corregido estáticamente la identidad del fixture para que cada modo tenga un `functional_mechanism_id` diferenciado y el fingerprint de `r_common` refleje si la vía alternativa común está activa. Commit de fuente: `ab816910dc8e50d75be78f54af0b6e9d47de3cf4`. Las aserciones de separación de identidades se añadieron al test, pero este commit **no está cubierto por Run 829** y sigue NOT_EXECUTED.
+
+### 336.2 Alcance real de la primera ola
+
+El roster anterior cubre una distribución finita `q_X*` materializada dentro de cada mundo de fixture, con masas por unidad iguales a `1/N`, historia basal `H0` de soporte único y condiciones basales del fixture. Las políticas `g_A0/g_A1` son vectores conjuntos deterministas versionados por el fingerprint de la política; `r_common` se certifica dentro de cada par de potenciales.
+
+Este es un benchmark mínimo de una sola clase de historia basal, no una validación de heterogeneidad entre múltiples clases `X/H0/C_c`, ni una certificación general de soporte para cualquier `q_X*`. Las unidades y masas son generadas por el mundo sintético; no son un roster empírico ni una población externa B1. La independencia por unidad debe seguir respaldada por el generador y el diseño de asignación, no por la mera separación de seeds.
+
+La ruta point-S3 `PARTIALLY_IDENTIFIED` y el test N=1 `REALIZED_GA_ARM_SUPPORT_MISSING` son controles adversariales de software, no escenarios numéricos de esta primera calibración: el protocolo focal no admite truth PARTIALLY_IDENTIFIED y el N=1 está fuera del grid candidato. La falta de soporte de historias `q_X*` sigue siendo una condición distinta; no se simula retirando unidades ni se declara cubierta por el test N=1.
+
+### 336.3 Dimensionamiento y objetivos de precisión propuestos
+
+| Parámetro | Propuesta primera ola | Justificación / límite |
+|---|---:|---|
+| N | 32, 64, 128 | Grid permitido por el Generator (N≥16 y divisible por cuatro); 32 ancla en el fixture actual |
+| M | 100 mundos exteriores | Unidad de agregación para MCSE; más conservador que el piloto M=30 de §330 |
+| R | 20 asignaciones por mundo | Reduce ruido de asignación dentro de M; no sustituye aumentar M |
+| Confianza | 0,95 | Nivel candidato explícito; no decisión confirmatoria |
+| MCSE de bias, MAE, RMSE y anchura media | ≤0,02 | Precisión Monte Carlo absoluta propuesta para métricas continuas |
+| MCSE de cobertura, identificación y tasas de abstención/falsa clasificación | ≤0,05 | Objetivo separado para métricas de tasa |
+
+Con cuatro escenarios, tres valores N, M=100 y R=20, el presupuesto candidato es **24.000 ejecuciones por banco** (calibración; evaluación independiente solo tras freeze y autorización). Para una tasa binaria agregada por M, el límite de desviación estándar de una contribución acotada en [0,1] es 0,5; M=100 limita su MCSE máximo a 0,05. Exigir MCSE≤0,02 para todas las tasas requeriría hasta M=625 en el peor caso, antes de considerar cualquier refinamiento por la varianza observada. Por ello no se mantiene el objetivo uniforme de 0,02 de §330 para tasas binarias.
+
+M=100 es un punto inicial de diseño, no garantía de que bias/MAE/RMSE alcancen MCSE≤0,02. Si el MCSE observado de una métrica continua supera el objetivo, M debe aumentarse mediante una extensión de calibración con derivación de seeds reproducible; no se aumenta R como sustituto de la independencia entre mundos. No se fijan todavía tolerancia de recuperación puntual, MDE, type-I error ni potencia: estos últimos requieren un test de hipótesis preespecificado.
+
+### 336.4 Dictamen
+
+La primera ola puede evaluar recuperación puntual e intervalar de θ_A en cuatro escenarios identificados de un benchmark directo-g_A, manteniendo separado el ITT-D2. No cubre todavía: una truth focal genuinamente NOT_IDENTIFIED, pérdida de soporte `q_X*` integrada, múltiples clases basales, interferencia, vías directas diferenciales no focales ni corrección de error S3. Esas limitaciones deben permanecer explícitas; no se rellenan con el escenario alternativo común, point-S3 ni N=1.
+
+**Estado:** ROSTER_CANDIDATE / DIMENSIONING_CANDIDATE / NOT_FROZEN / NOT_EXECUTED. La propuesta §330 queda refinada en los puntos de roster y MCSE por este apartado; no se congelan valores ni se selecciona un banco. No se generan seeds/bancos, no se ejecuta calibración, Monte Carlo ni experimento científico. Se mantienen `calibration_authorized=false`, `scientific_execution=false`, `execution_authorized=false`.
