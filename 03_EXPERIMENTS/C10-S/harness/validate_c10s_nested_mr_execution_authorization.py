@@ -56,8 +56,8 @@ def validate_authorization(
     if not isinstance(approved_at, str):
         raise ValueError("approved_at_utc is required")
     approval_time = datetime.fromisoformat(approved_at.replace("Z", "+00:00"))
-    if approval_time.tzinfo is None:
-        raise ValueError("approved_at_utc must include a UTC offset")
+    if approval_time.tzinfo is None or approval_time > datetime.now(timezone.utc):
+        raise ValueError("approved_at_utc must include a UTC offset and cannot be in the future")
     if auth.get("protocol_id") != PROTOCOL_ID or auth.get("protocol_version") != PROTOCOL_VERSION:
         raise ValueError("authorization must bind frozen protocol version 002")
     if auth.get("method_id") != METHOD_ID or auth.get("method_version") != METHOD_VERSION:
