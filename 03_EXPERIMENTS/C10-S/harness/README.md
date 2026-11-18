@@ -785,3 +785,13 @@ The existing 13×4 coverage matrix's `R0_SUPPORT_FAILURE` and `R2_SUPPORT_FAILUR
 **Disposition:** the positive/negative/null/common-alternative first-wave roster remains an identified-support recovery benchmark only. Structural q_X*/g_A support-failure coverage is OPEN / NOT IMPLEMENTED END-TO-END. Do not relabel target-history observation incompleteness or N=1 realized-arm absence as that scenario. No new estimand, ledger, or test ID is created by this audit. Gate 130's restriction remains operative: no approved B1/UE target roster or materialization authorization is inferred from a synthetic fixture. A future test-only DGP case must make the target-vs-source support relation explicit, retain the full declared q_X target (no post-hoc trimming), and produce a provenance-bound NOT_IDENTIFIED adjudication without fabricating replicate records. That requires a narrowly scoped implementation/design decision before adding the case.
 
 **Execution:** static source audit only. No code changes, calibration bank, Monte Carlo run, or scientific execution.
+
+### Structural target/source support contract — implementation step 1 (2026-11-18)
+
+The Analyzer module now defines a versioned, test-only support contract that keeps separate, for every positive-mass target history: target mass, source mass, intervention definition, feasibility of both focal policies, and the declared randomized assignment probability. The adjudicator has deliberately narrow semantics:
+
+- An undefined intervention or infeasible g_A0/g_A1 raises ContractError; it is not mislabeled as non-identification.
+- A well-defined, jointly feasible policy contrast with a positive-mass target history having zero source mass returns NOT_IDENTIFIED / TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT.
+- Complete structural target/source support returns STRUCTURAL_SUPPORT_SUFFICIENT; this does not claim realized-arm support, observation completeness, or final identification.
+
+Four focused unit tests cover structural non-overlap, complete support, undefined/infeasible interventions, and invalid assignment positivity. These are source-level tests only at this stage. The new contract is not yet wired into World Builder, assignment generation, sealed evidence, the observation Analyzer result, or the Evaluator. Therefore this step is not end-to-end coverage and must not be counted as the required structural non-identification scenario. No EP-02 run, replay, calibration, seed bank, Monte Carlo or scientific execution was performed. The existing workflow remains manual-only; no execution authorization is inferred.
