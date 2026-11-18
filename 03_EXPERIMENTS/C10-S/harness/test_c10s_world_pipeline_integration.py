@@ -242,7 +242,25 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(record.expected_abstention_reason, "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT")
         self.assertEqual(record.observed_abstention_reason, "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT")
         self.assertAlmostEqual(record.target_unsupported_mass, 0.5)
-        self.assertTrue(-1.0 <= record.truth <= 1.0)
+
+        # Independent test-side derivation from §369: every source history and
+        # the target-only history has a +0.5 focal contrast under the declared
+        # positive G_A potentials. The target q_X* masses are 0.5 / 0.5.
+        source_mass = 0.5
+        target_only_mass = 0.5
+        source_history_contrast = 0.5
+        target_only_history_contrast = 0.5
+        expected_target_truth = (
+            source_mass * source_history_contrast
+            + target_only_mass * target_only_history_contrast
+        )
+        self.assertAlmostEqual(expected_target_truth, 0.5)
+        self.assertAlmostEqual(record.truth, expected_target_truth)
+        self.assertAlmostEqual(
+            result.theta_a_truth.theta_a_truth.theta_a_truth,
+            expected_target_truth,
+        )
+        self.assertAlmostEqual(result.evaluator_result.truth, expected_target_truth)
         self.assertEqual(record.target_q_x_sha256, digest(target_q_x))
         self.assertEqual(record.source_q_x_sha256, digest(world.q_x))
         self.assertIsNotNone(record.structural_support_contract_sha256)
