@@ -30,6 +30,7 @@ class ThetaAObservationAnalysisContract:
     probability_a1_by_history: tuple[tuple[str, float], ...] = ()
     confidence_level: float | None = None
     unit_independence_certified: bool = False
+    structural_support_contract: "ThetaAStructuralSupportContract | None" = None
 
     def validate(self) -> None:
         if not all((self.q_x_sha256, self.assignment_bundle_sha256,
@@ -50,6 +51,16 @@ class ThetaAObservationAnalysisContract:
                 raise ContractError("theta_A inference probabilities must cover q_X histories exactly")
             if any(not math.isfinite(p) or not 0.0 < p < 1.0 for p in probabilities.values()):
                 raise ContractError("theta_A inference requires strict positivity for both policy arms")
+        if self.structural_support_contract is not None:
+            self.structural_support_contract.validate()
+            if self.structural_support_contract.target_q_x_sha256 != self.q_x_sha256:
+                raise ContractError("structural-support target fingerprint must match analysis q_X")
+            target_masses = dict(self.q_x_mass_by_history)
+            support_rows = self.structural_support_contract.rows
+            if set(target_masses) != {row.history_ref for row in support_rows}:
+                raise ContractError("structural-support contract must cover the full q_X target")
+            if any(not math.isclose(target_masses[row.history_ref], row.target_mass, rel_tol=0.0, abs_tol=1e-10) for row in support_rows):
+                raise ContractError("structural-support target masses must match analysis q_X")
         if self.confidence_level is not None:
             if not math.isfinite(self.confidence_level) or not 0.0 < self.confidence_level < 1.0:
                 raise ContractError("theta_A confidence_level must be explicitly between zero and one")
@@ -84,6 +95,7 @@ class ThetaAObservationAnalysisResult:
     inference_lower_bound: float | None = None
     inference_upper_bound: float | None = None
     hoeffding_range_sum_squares: float | None = None
+    structural_support_sha256: str | None = None
 
 
 def _canonical_hash(value: Any) -> str:
@@ -99,6 +111,7 @@ class ThetaAObservationAnalyzer:
     def analyze(self, evidence: SealedThetaAEvidence,
                 contract: ThetaAObservationAnalysisContract) -> ThetaAObservationAnalysisResult:
         contract.validate()
+        structural = adjudicate_theta_a_structural_support(contract.structural_support_contract) if contract.structural_support_contract is not None else None
         if evidence.manifest.get("temporal_resolution") == "INTERVAL_LEVEL":
             return self._analyze_interval(evidence, contract)
         if not evidence.rows:
@@ -114,7 +127,36 @@ class ThetaAObservationAnalyzer:
                for row in rows):
             raise ContractError("analysis contract fingerprints do not match sealed assignment/q_X provenance")
         qx = dict(contract.q_x_mass_by_history)
-        observed_histories = {row["history_ref"] for row in rows}
+        if structural is not None and structural.status == "NOT_IDENTIFIED":
+            by_unit = {}
+            for row in rows:
+                prior = by_unit.setdefault(row["unit_id"], row)
+                if any(prior[key] != row[key] for key in ("assigned_arm", "assignment_probability", "history_ref")):
+                    raise ContractError("unit-level assignment fields vary across structural-support evidence")
+            arms = [0, 0]
+            for row in by_unit.values():
+                if row["assigned_arm"] not in (0, 1):
+                    raise ContractError("invalid assigned arm in structural-support evidence")
+                arms[row["assigned_arm"]] += 1
+            supported_mass = sum(row.target_mass for row in contract.structural_support_contract.rows if row.source_mass > 0)
+            result_payload = {
+                "run_id": evidence.run_id, "estimand_id": contract.estimand_id,
+                "estimand_version": contract.estimand_version, "identification": "NOT_IDENTIFIED",
+                "point_estimate": None, "lower_bound": -1.0, "upper_bound": 1.0,
+                "target_q_x_coverage": supported_mass,
+                "missing_target_histories": structural.unsupported_target_histories,
+                "assigned_arm_unit_counts": tuple(arms),
+                "temporal_resolution": evidence.manifest.get("temporal_resolution", "POINT_SAMPLE"),
+                "abstention_reason": structural.reason, "input_sha256": evidence.sha256,
+                "measurement_lower_bound": None, "measurement_upper_bound": None,
+                "missing_interval_count": 0, "total_interval_count": 0,
+                "inference_method": None, "inference_confidence_level": None,
+                "inference_lower_bound": None, "inference_upper_bound": None,
+                "hoeffding_range_sum_squares": None,
+                "structural_support_sha256": structural.contract_sha256,
+            }
+            return ThetaAObservationAnalysisResult(**result_payload, output_sha256=_canonical_hash(result_payload))
+        observed_histories = {row["history_ref"] for row in rows)
         missing = tuple(sorted(set(qx) - observed_histories))
         unexpected = observed_histories - set(qx)
         if unexpected:
