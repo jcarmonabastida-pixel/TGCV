@@ -409,6 +409,7 @@ def generate_g_a_event_history_potentials(
     g_a0: Sequence[JointPolicyHistory], g_a1: Sequence[JointPolicyHistory],
     r_common_certificates: Sequence[RCommonPairCertificate],
     initial_state_by_history: dict[str, FunctionalState],
+    *, unit_id_by_history: dict[str, str] | None = None,
 ) -> dict[tuple[str, str, str], EventHistory]:
     """Generate one functional potential per supported joint vector and common regime.
 
@@ -416,10 +417,14 @@ def generate_g_a_event_history_potentials(
     (history_ref, digest(vector), r_common_fingerprint).
     """
     config.validate(world)
-    qx_by_ref = {row.history_ref: row for row in world.q_x}
-    expected_refs = set(qx_by_ref)
-    if set(initial_state_by_history) != expected_refs:
-        raise ContractError("g_A initial functional states must cover q_X* histories exactly")
+    expected_refs = set(initial_state_by_history)
+    if not expected_refs:
+        raise ContractError("g_A target functional-history support must be nonempty")
+    unit_ids = unit_id_by_history or {
+        unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
+    }
+    if set(unit_ids) != expected_refs or any(not value for value in unit_ids.values()):
+        raise ContractError("g_A target unit identities must cover exact target-history support")
     certs = {row.history_ref: row for row in r_common_certificates}
     if len(certs) != len(r_common_certificates) or set(certs) != expected_refs:
         raise ContractError("g_A generation requires one r_common certificate per q_X* history")
@@ -434,8 +439,7 @@ def generate_g_a_event_history_potentials(
         cert = certs[history_ref]
         if cert.status != "COMMON_FIXED" or not cert.regime_id or not cert.regime_version:
             raise ContractError("functional g_A generation requires a certified common fixed regime")
-        unit = next(u for u in world.units if u.d2_baseline.baseline_history_ref == history_ref)
-        unit_id = unit.unit_id
+        unit_id = unit_ids[history_ref]
         vectors = {}
         for policy_map in policy_maps:
             for vector, probability in policy_map[history_ref].distribution:
