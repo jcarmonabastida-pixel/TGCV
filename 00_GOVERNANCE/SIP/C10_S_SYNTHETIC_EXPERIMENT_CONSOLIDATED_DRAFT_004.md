@@ -757,3 +757,11 @@ Se amplía el fixture existente con un parámetro de tamaño de roster y un test
 El contrato exige Analyzer `INDETERMINATE`, razón `REALIZED_GA_ARM_SUPPORT_MISSING`, ausencia de estimación puntual, bounds [-1,1] y Evaluator `CORRECT_ABSTENTION` con truth reservada cubierta. Es una insuficiencia de soporte de brazos en el roster realizado, no una violación de positividad del mecanismo. Reutiliza el DGP/World Builder y el canal point-S3 existentes, sin introducir DGP o estimando nuevo.
 
 Estado: SOURCE_CONTRACT_ADDED / NOT_EXECUTED. La suite no se ha ejecutado; no se han generado bancos ni realizado calibración o experimento científico.
+
+## 335. EP-02 dynamic validation of integrated abstention paths — Run 829 (2026-11-18)
+
+Run 829 (`44204384079`) executed the exact sixteen-module EP-02 software-contract suite against commit `e0c939b43601f140155666b5a9b6a022853b6bbd`. The primary run passed all 299 tests; the clean replay from an equivalent independent source materialization also passed all 299 tests. Both point-S3 partial-identification and one-unit realized-arm-absence World Builder regressions passed in both executions.
+
+Preconditions and provenance checks also passed: CPython 3.12.10, hash-locked dependencies, compilation of the exact source/test allowlist, byte-identical primary/replay source trees, no residual bytecode caches, successful uploads of payload and execution manifest. Payload artifact ID `14383046746` (SHA-256 `c34eca732e75d3f3ba070f243aa48c0383ffc567ff9bfb533b35ece9d3beda03`); manifest artifact ID `14383560381` (SHA-256 `989a52821a4d0c07dbf36ab77b95bd13ff190dc5b239a321cbdca6f8e7fa925f`).
+
+The temporary push trigger used only to start this previously authorized technical suite was removed; workflow `.github/workflows/c10-s-focal-harness-tests.yml` is restored to its original `workflow_dispatch`-only gate in commit `5df7961cd960f6fccdb02d3c3658dee095fc6683`. The tested source commit remains identifiable and immutable. This evidence is EP-02 software-contract evidence only: it does not constitute statistical calibration, confirmatory experiment execution, or a scientific claim about causal recovery. No banks or Monte Carlo calibration were generated. State: `PASS_STATIC + PASS_DYNAMIC_EP02 / 299+299 / REPLAY_PASS / SCIENTIFIC_EXECUTION_NOT_AUTHORIZED`.
