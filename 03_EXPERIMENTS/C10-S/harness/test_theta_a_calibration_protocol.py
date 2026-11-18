@@ -13,6 +13,7 @@ from theta_a_calibration_protocol import (
     ThetaACalibrationError,
     ThetaACalibrationScenario,
     OuterWorldSamplingContract,
+    THETA_A_METRIC_REGISTRY,
     ThetaAReplicateRecord,
     build_theta_a_seed_bank,
     build_theta_a_candidate_scenario_roster,
@@ -47,6 +48,8 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
                 ("THETA_A_IDEAL", "1.0", 4, "interval_coverage", 0.01),
                 ("THETA_A_IDEAL", "1.0", 4, "interval_width", 0.01),
             ) if scenario.expected_identification == "IDENTIFIED" else (),
+            metric_target_manifest_id="TEST-METRIC-TARGETS" if scenario.expected_identification == "IDENTIFIED" else None,
+            metric_target_manifest_version="1.0" if scenario.expected_identification == "IDENTIFIED" else None,
             outer_world_sampling=OuterWorldSamplingContract(
                 mode="DECLARED_IID_PSEUDORANDOM",
                 contract_id="TEST-OUTER-WORLD-IID",
@@ -356,6 +359,37 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         self.assertEqual(metrics["interval_coverage"].precision_status, "PASS_PRECISION")
         self.assertEqual(summary.type_i_error_status, "NOT_DEFINED_NO_TEST_PROCEDURE")
         self.assertEqual(summary.power_status, "NOT_DEFINED_NO_TEST_PROCEDURE")
+
+    def test_metric_registry_is_exhaustive_and_declares_denominators(self):
+        specs = {item.metric: item for item in THETA_A_METRIC_REGISTRY}
+        self.assertEqual(len(specs), 16)
+        self.assertEqual(
+            specs["identification_rate"].within_world_denominator, "ALL_R",
+        )
+        self.assertEqual(
+            specs["point_bias"].within_world_denominator,
+            "ALL_R_IDENTIFIED_REQUIRED",
+        )
+        self.assertEqual(
+            specs["interval_coverage"].within_world_denominator,
+            "ALL_R_INTERVAL_REQUIRED",
+        )
+        self.assertEqual(
+            specs["evaluator_correct_adjudication_rate"].within_world_denominator,
+            "ALL_R_EVALUATOR_AUDIT_REQUIRED",
+        )
+        self.assertEqual(
+            specs["correct_abstention_rate"].applicability, "NOT_IDENTIFIED",
+        )
+
+    def test_metric_targets_require_versioned_manifest_identity(self):
+        design = replace(
+            self._design(),
+            metric_target_manifest_id=None,
+            metric_target_manifest_version=None,
+        )
+        with self.assertRaises(ThetaACalibrationError):
+            design.validate()
 
     def test_unverified_outer_world_sampling_suppresses_inferential_mcse(self):
         design = replace(
