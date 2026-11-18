@@ -141,7 +141,7 @@ The workflow listens only for a push to a dedicated numerical-auth branch that c
 
 ## 8. Checkpoint, restart and artifact integrity
 
-Each cell writes to a temporary JSONL file and is promoted atomically only after all K records are complete. A completed cell can be reused only when:
+Each cell writes to a temporary JSONL file and is promoted atomically only after all K records are complete. After each completed cell, the runner atomically updates `checkpoint_index.json` with the cell identity, K/B, code commit, protocol hash, seed-schedule version, record SHA-256 and summary SHA-256. A completed cell can be reused only when:
 - code commit and protocol SHA-256 match;
 - cell identity, K and B match;
 - record count equals K;
@@ -151,6 +151,7 @@ A partial temporary cell is restarted from replicate index zero with the same de
 
 Outputs:
 - one JSONL record file per cell;
+- one atomic `checkpoint_index.json` enabling verified cell-level restart;
 - one JSON summary per cell;
 - deterministic-guard report for Tier B;
 - run manifest with source hashes, runtime, authorization, code commit and per-cell results;
