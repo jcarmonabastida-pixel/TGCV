@@ -108,7 +108,7 @@ class ThetaAObservationEvaluatorTests(unittest.TestCase):
             "support-fixture", "1.0", "target-qx", "source-qx",
             (
                 ThetaAStructuralSupportRow("h0", 0.4, 1.0, True, True, True, 0.5),
-                ThetaAStructuralSupportRow("h1", 0.6, 0.0, True, True, True, 0.5),
+                ThetaAStructuralSupportRow("h1", 0.6, 0.0, True, True, True, None),
             ),
         )
         contract = ThetaAObservationAnalysisContract(
