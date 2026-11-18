@@ -13,6 +13,7 @@ from c10s_nested_mr_fixtures import (
     tier_a_specs,
     tier_b_specs,
 )
+from validate_c10s_nested_mr_execution_authorization import validate_authorization
 from run_c10s_nested_mr_validation import (
     _run_deterministic_guards,
     analyze_fixture,
@@ -85,6 +86,19 @@ class NestedMRFixtureContractTests(unittest.TestCase):
         self.assertEqual(failing["status"], "NOT_VALIDATED")
         self.assertLessEqual(passing["wilson_95"][0], 0.95)
         self.assertGreaterEqual(passing["wilson_95"][1], 0.95)
+
+
+    def test_authorization_validator_fails_closed_without_approved_status(self):
+        import json
+        with tempfile.TemporaryDirectory() as tmp:
+            auth_path = Path(tmp) / "authorization.json"
+            auth_path.write_text(json.dumps({"schema": "TGCV-C10S-NESTED-MR-EXECUTION-AUTH-001", "status": "PENDING"}), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "not APPROVED"):
+                validate_authorization(
+                    auth_path, Path(tmp), "0" * 40,
+                    "research/c10s-nested-mr-auth-test",
+                )
+
 
 
 if __name__ == "__main__":
