@@ -923,7 +923,15 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(target_metrics["correct_abstention_rate"].mean, 1.0)
         self.assertEqual(target_metrics["wrong_cause_abstention_rate"].mean, 0.0)
         self.assertEqual(target_metrics["false_identification_rate"].mean, 0.0)
-        self.assertEqual(target_metrics["point_bias"].precision_status, "NOT_EVALUABLE")
+        for metric in (
+            "false_abstention_rate", "point_bias", "point_mae", "point_rmse",
+            "point_recovery_rate", "interval_coverage", "interval_width",
+        ):
+            self.assertEqual(
+                target_metrics[metric].precision_status, "NOT_EVALUABLE",
+                f"{metric} must remain explicitly non-evaluable for structural non-identification",
+            )
+            self.assertIsNone(target_metrics[metric].mean)
 
     def test_point_s3_world_pipeline_abstains_with_truth_covered(self):
         fixture = self._fixture("positive")
