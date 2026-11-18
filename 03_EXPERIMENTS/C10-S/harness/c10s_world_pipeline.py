@@ -278,9 +278,6 @@ def materialize_c10s_complete_world(
             or set(target_unit_ids) != {row.history_ref for row in target_q_x}):
         raise ContractError("theta_A target q_X and target-unit identities must cover exactly the same histories")
     assignment_probabilities = dict(assignment_config.probability_a1_by_history)
-    has_boundary_propensity = any(value in (0.0, 1.0) for value in assignment_probabilities.values())
-    if has_boundary_propensity and theta_a_structural_support_contract is None:
-        raise ContractError("boundary assignment propensities require an explicit structural-support adjudication contract")
     if theta_a_structural_support_contract is not None:
         if (theta_a_structural_support_contract.target_q_x_sha256 != digest(target_q_x)
                 or theta_a_structural_support_contract.source_q_x_sha256 != digest(world.q_x)):
