@@ -3,7 +3,7 @@
 Source-level regression only. This module is included in EP-02 but has not
 been executed under the current execution authorization boundary.
 """
-from dataclasses import replace
+from dataclasses import fields, replace
 from decimal import Decimal
 import unittest
 
@@ -339,7 +339,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         # End-to-end oracle boundary: DGP truth is available to the independent
         # Evaluator, never to the Analyzer's contract or sealed observations.
         analyzer_contract_fields = {
-            field.name for field in __import__("dataclasses").fields(result.analyzer_contract)
+            field.name for field in fields(result.analyzer_contract)
         }
         self.assertFalse({
             "truth", "theta_a_truth", "expected_theta_a_truth",
