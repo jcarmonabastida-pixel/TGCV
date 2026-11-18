@@ -487,7 +487,9 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         result = self._run_pipeline(fixture)
         self.assertEqual(len(result.world.units), 4)
         self.assertEqual(len(result.theta_a_truth.event_history_manifest), 10)
-        self.assertEqual(len(result.theta_a_assignments.assignments), 8)
+        # The four source units are randomized; the target-only synthetic
+        # history is not silently added to the source assignment roster.
+        self.assertEqual(len(result.theta_a_assignments.assignments), 4)
         self.assertEqual(result.analyzer_result.identification, "NOT_IDENTIFIED")
         self.assertEqual(
             result.analyzer_result.abstention_reason,
@@ -636,7 +638,9 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(len(world.q_x), 8)
         self.assertEqual(len(result.theta_a_truth.event_history_manifest), 14)
         self.assertEqual(len(result._policy_histories), 16)
-        self.assertEqual(len(result.theta_a_assignments.assignments), 4)
+        # Assignment/evidence materialization retains all eight source units;
+        # target standardization is applied later by the Analyzer.
+        self.assertEqual(len(result.theta_a_assignments.assignments), 8)
         self.assertEqual(len(result.s3_records), 16)
         self.assertEqual(result.analyzer_result.total_interval_count, 14)
         self.assertEqual(result.analyzer_result.missing_interval_count, 0)
