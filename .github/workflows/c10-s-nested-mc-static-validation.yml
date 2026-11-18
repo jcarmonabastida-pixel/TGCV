@@ -7,6 +7,10 @@ on:
     paths:
       - '.github/workflows/c10-s-nested-mc-static-validation.yml'
       - '03_EXPERIMENTS/C10-S/harness/theta_a_nested_mc_precision.py'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py'
+      - '03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_validation.py'
+      - '03_EXPERIMENTS/C10-S/harness/validate_c10s_nested_mr_execution_authorization.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_validation.py'
       - '03_EXPERIMENTS/C10-S/harness/test_theta_a_nested_mc_precision.py'
       - '03_EXPERIMENTS/C10-S/harness/theta_a_calibration_protocol.py'
       - '03_EXPERIMENTS/C10-S/harness/test_theta_a_calibration_protocol.py'
@@ -17,6 +21,10 @@ on:
     paths:
       - '.github/workflows/c10-s-nested-mc-static-validation.yml'
       - '03_EXPERIMENTS/C10-S/harness/theta_a_nested_mc_precision.py'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py'
+      - '03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_validation.py'
+      - '03_EXPERIMENTS/C10-S/harness/validate_c10s_nested_mr_execution_authorization.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_validation.py'
       - '03_EXPERIMENTS/C10-S/harness/test_theta_a_nested_mc_precision.py'
       - '03_EXPERIMENTS/C10-S/harness/theta_a_calibration_protocol.py'
       - '03_EXPERIMENTS/C10-S/harness/test_theta_a_calibration_protocol.py'
@@ -52,7 +60,7 @@ jobs:
         env:
           PYTHONDONTWRITEBYTECODE: '1'
         run: |
-          python -m py_compile theta_a_nested_mc_precision.py test_theta_a_nested_mc_precision.py theta_a_calibration_protocol.py test_theta_a_calibration_protocol.py
+          python -m py_compile theta_a_nested_mc_precision.py test_theta_a_nested_mc_precision.py theta_a_calibration_protocol.py test_theta_a_calibration_protocol.py c10s_nested_mr_fixtures.py run_c10s_nested_mr_validation.py validate_c10s_nested_mr_execution_authorization.py test_c10s_nested_mr_validation.py
 
       - name: Run only the two authorized software-contract test modules
         id: tests
@@ -62,7 +70,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          python -B -m unittest -v test_theta_a_nested_mc_precision test_theta_a_calibration_protocol > "$RUNNER_TEMP/c10s-nested-mr-tests.log" 2>&1
+          python -B -m unittest -v test_theta_a_nested_mc_precision test_theta_a_calibration_protocol test_c10s_nested_mr_validation > "$RUNNER_TEMP/c10s-nested-mr-tests.log" 2>&1
           status=$?
           cat "$RUNNER_TEMP/c10s-nested-mr-tests.log"
           echo "exit_code=$status" >> "$GITHUB_OUTPUT"
@@ -81,6 +89,10 @@ jobs:
               ".github/workflows/c10-s-nested-mc-static-validation.yml",
               "03_EXPERIMENTS/C10-S/harness/theta_a_nested_mc_precision.py",
               "03_EXPERIMENTS/C10-S/harness/test_theta_a_nested_mc_precision.py",
+              "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py",
+              "03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_validation.py",
+              "03_EXPERIMENTS/C10-S/harness/validate_c10s_nested_mr_execution_authorization.py",
+              "03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_validation.py",
               "03_EXPERIMENTS/C10-S/harness/theta_a_calibration_protocol.py",
               "03_EXPERIMENTS/C10-S/harness/test_theta_a_calibration_protocol.py",
               "03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock",
@@ -101,6 +113,7 @@ jobs:
               "test_modules": [
                   "test_theta_a_nested_mc_precision",
                   "test_theta_a_calibration_protocol",
+                  "test_c10s_nested_mr_validation",
               ],
               "compile_scope": [
                   "theta_a_nested_mc_precision.py",
