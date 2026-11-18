@@ -639,7 +639,27 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         # Use enough predeclared units that the fixed target subset retains
         # realized support in both randomized arms; this avoids conflating
         # source/target support compatibility with a tiny-sample arm accident.
-        fixture = self._fixture(n_units=8)
+        scenario = ThetaACalibrationScenario(
+            scenario_id="THETA_A_SOURCE_SUPERSET_IDENTIFIED_V1",
+            scenario_version="1.0", world_version="1",
+            dgp_id="DGP-INTERVAL-INTEGRATION-INTERACTION", dgp_version="1",
+            roster_version="1", unit_id_prefix="U",
+            expected_identification="IDENTIFIED", unit_independence_certified=True,
+            independence_basis="fixture units have independently generated potential histories and independent unit-level assignment draws",
+            dgp_profile=ThetaACalibrationDGPProfile(
+                profile_id="THETA_A_SOURCE_SUPERSET_PROFILE", profile_version="1.0",
+                structural_support_contract_id="SYNTHETIC-SOURCE-SUPERSET-TARGET-SUBSET-001",
+                structural_support_contract_version="1",
+                support_relation="SOURCE_STRICT_SUPERSET",
+            ),
+        )
+        design = ThetaACalibrationDesign(
+            scenario_specs=(scenario,), n_grid=(8,), outer_worlds_m=2,
+            assignment_replicates_r=2, confidence_level=0.95,
+            namespace="theta-a-source-superset-capture-integration-v1",
+        )
+        assignment = build_theta_a_seed_bank(design, "calibration")[0]
+        fixture = self._fixture("positive", seed_assignment=assignment, n_units=8)
         world = SyntheticWorldBuilder().generate(fixture["world_config"], fixture["d2_config"])
         excluded_source_history = world.q_x[-1].history_ref
         target_rows = world.q_x[:-1]
@@ -670,7 +690,17 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             "theta_a_unit_id_by_history": target_unit_ids,
             "theta_a_structural_support_contract": support,
         }
-        result = self._run_pipeline(fixture)
+        inference_options = theta_a_pipeline_inference_options(design, scenario)
+        result = self._run_pipeline(fixture, **inference_options)
+        record = capture_theta_a_replicate(
+            result, assignment, scenario, requested_confidence_level=design.confidence_level,
+        )
+        self.assertEqual(record.expected_abstention_reason, None)
+        self.assertEqual(record.observed_abstention_reason, None)
+        self.assertEqual(record.target_unsupported_mass, 0.0)
+        self.assertEqual(record.target_q_x_sha256, digest(target_q_x))
+        self.assertEqual(record.source_q_x_sha256, digest(world.q_x))
+        self.assertIsNotNone(record.structural_support_contract_sha256)
         self.assertEqual(len(world.q_x), 8)
         self.assertEqual(len(result.theta_a_truth.event_history_manifest), 14)
         self.assertEqual(len(result._policy_histories), 16)
