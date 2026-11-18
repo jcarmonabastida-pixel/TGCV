@@ -1,1 +1,1 @@
-Authorized EP-02 retry: correct source-roster assignment-count assertions; expose remaining target-subset Analyzer adjudication diagnostics. Technical suite/replay only.
+Authorized EP-02 retry: correct evaluator disposition assertion to POINT_RECOVERED after identified interval point recovery. Technical suite and replay only.
