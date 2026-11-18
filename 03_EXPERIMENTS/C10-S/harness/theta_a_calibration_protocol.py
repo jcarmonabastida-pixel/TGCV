@@ -12,7 +12,7 @@ import hashlib
 import json
 from math import isfinite, sqrt
 from statistics import mean, stdev
-from typing import Iterable, Literal, Sequence
+from typing import Callable, Iterable, Literal, Sequence
 
 
 class ThetaACalibrationError(ValueError):
@@ -754,6 +754,57 @@ def capture_theta_a_replicate(
         raise ThetaACalibrationError("Evaluator confidence level differs from the requested focal calibration level")
     record.validate()
     return record
+
+
+def run_theta_a_calibration_replicates(
+    design: ThetaACalibrationDesign,
+    assignments: Iterable[ThetaASeedAssignment],
+    world_executor: Callable[
+        [ThetaASeedAssignment, ThetaACalibrationScenario, dict[str, float | bool | None]],
+        object,
+    ],
+    *,
+    bank: Bank,
+    execution_authorized: bool = False,
+) -> tuple[ThetaAReplicateRecord, ...]:
+    """Execute a declared N×M×R plan through the complete DGP pipeline.
+
+    This orchestrator never creates a seed bank. The caller must supply a
+    previously declared plan and explicitly authorize execution. The executor
+    must return a C10SCompleteWorldResult produced by the complete-world DGP
+    pipeline; capture then validates its actual Analyzer/Evaluator outputs.
+    """
+    if execution_authorized is not True:
+        raise ThetaACalibrationError("replicate execution requires explicit execution_authorized=True")
+    if not callable(world_executor):
+        raise ThetaACalibrationError("a complete-world DGP executor callback is required")
+    design.validate()
+    rows = tuple(assignments)
+    if bank not in ("calibration", "evaluation") or any(row.bank != bank for row in rows):
+        raise ThetaACalibrationError("runner bank label differs from the supplied seed assignments")
+    validate_theta_a_seed_banks(
+        rows if bank == "calibration" else (),
+        rows if bank == "evaluation" else (),
+        design=design,
+    )
+    from c10s_world_pipeline import C10SCompleteWorldResult
+    scenario_map = {(item.scenario_id, item.scenario_version): item for item in design.scenario_specs}
+    records = []
+    for assignment in rows:
+        scenario = scenario_map[(assignment.scenario_id, assignment.scenario_version)]
+        inference_options = theta_a_pipeline_inference_options(design, scenario)
+        result = world_executor(assignment, scenario, inference_options)
+        if not isinstance(result, C10SCompleteWorldResult):
+            raise ThetaACalibrationError(
+                "world executor must return the actual C10SCompleteWorldResult from the DGP pipeline"
+            )
+        records.append(capture_theta_a_replicate(
+            result, assignment, scenario,
+            requested_confidence_level=inference_options["theta_a_confidence_level"],
+        ))
+    if len(records) != len(rows):
+        raise ThetaACalibrationError("runner did not capture exactly one record per N×M×R assignment")
+    return tuple(records)
 
 
 @dataclass(frozen=True)
