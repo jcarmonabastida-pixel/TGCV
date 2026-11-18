@@ -25,16 +25,6 @@ _VALID_IDENTIFICATION = {"IDENTIFIED", "NOT_IDENTIFIED", "INDETERMINATE"}
 _VALID_ANALYZER_IDENTIFICATION = _VALID_IDENTIFICATION | {"PARTIALLY_IDENTIFIED"}
 FOCAL_ESTIMAND_ID = "THETA_A_QX_GA_RCOMMON_VCONT"
 FOCAL_OUTCOME_ID = "V_CONT"
-_ALLOWED_METRICS = {
-    "interval_coverage", "interval_width", "point_bias", "point_mae",
-    "point_rmse", "point_recovery_rate", "identification_rate",
-    "abstention_rate", "interval_availability_rate", "false_abstention_rate",
-    "correct_abstention_rate", "wrong_cause_abstention_rate",
-    "partial_identification_rate", "false_identification_rate",
-    "evaluator_truth_within_bounds_rate", "evaluator_correct_adjudication_rate",
-}
-
-
 @dataclass(frozen=True)
 class ThetaACalibrationDGPProfile:
     """Versioned, synthetic-only support profile for one focal DGP scenario."""
