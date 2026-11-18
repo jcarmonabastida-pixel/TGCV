@@ -112,22 +112,16 @@ class ThetaAObservationAnalyzer:
                 contract: ThetaAObservationAnalysisContract) -> ThetaAObservationAnalysisResult:
         contract.validate()
         structural = adjudicate_theta_a_structural_support(contract.structural_support_contract) if contract.structural_support_contract is not None else None
-        if evidence.manifest.get("temporal_resolution") == "INTERVAL_LEVEL":
-            return self._analyze_interval(evidence, contract)
-        if not evidence.rows:
-            raise ContractError("theta_A Analyzer requires non-empty sealed evidence")
-        if _hash({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256:
-            raise ContractError("theta_A Analyzer received evidence with an invalid seal digest")
-        rows = evidence.rows
-        if any(row.get("assignment_bundle_sha256") != contract.assignment_bundle_sha256
-               or row.get("q_x_sha256") != contract.q_x_sha256
-               or row.get("g_a0_sha256") != contract.g_a0_sha256
-               or row.get("g_a1_sha256") != contract.g_a1_sha256
-               or row.get("r_common_sha256") != contract.r_common_sha256
-               for row in rows):
-            raise ContractError("analysis contract fingerprints do not match sealed assignment/q_X provenance")
-        qx = dict(contract.q_x_mass_by_history)
         if structural is not None and structural.status == "NOT_IDENTIFIED":
+            if not evidence.rows or _hash({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256:
+                raise ContractError("structural-support Analyzer requires non-empty sealed evidence with a valid digest")
+            rows = evidence.rows
+            if any(row.get("assignment_bundle_sha256") != contract.assignment_bundle_sha256
+                   or row.get("q_x_sha256") != contract.q_x_sha256
+                   or row.get("g_a0_sha256") != contract.g_a0_sha256
+                   or row.get("g_a1_sha256") != contract.g_a1_sha256
+                   or row.get("r_common_sha256") != contract.r_common_sha256 for row in rows):
+                raise ContractError("structural-support evidence fingerprints do not match analysis contract")
             by_unit = {}
             for row in rows:
                 prior = by_unit.setdefault(row["unit_id"], row)
@@ -156,6 +150,21 @@ class ThetaAObservationAnalyzer:
                 "structural_support_sha256": structural.contract_sha256,
             }
             return ThetaAObservationAnalysisResult(**result_payload, output_sha256=_canonical_hash(result_payload))
+        if evidence.manifest.get("temporal_resolution") == "INTERVAL_LEVEL":
+            return self._analyze_interval(evidence, contract)
+        if not evidence.rows:
+            raise ContractError("theta_A Analyzer requires non-empty sealed evidence")
+        if _hash({"manifest": evidence.manifest, "rows": evidence.rows}) != evidence.sha256:
+            raise ContractError("theta_A Analyzer received evidence with an invalid seal digest")
+        rows = evidence.rows
+        if any(row.get("assignment_bundle_sha256") != contract.assignment_bundle_sha256
+               or row.get("q_x_sha256") != contract.q_x_sha256
+               or row.get("g_a0_sha256") != contract.g_a0_sha256
+               or row.get("g_a1_sha256") != contract.g_a1_sha256
+               or row.get("r_common_sha256") != contract.r_common_sha256
+               for row in rows):
+            raise ContractError("analysis contract fingerprints do not match sealed assignment/q_X provenance")
+        qx = dict(contract.q_x_mass_by_history)
         observed_histories = {row["history_ref"] for row in rows}
         missing = tuple(sorted(set(qx) - observed_histories))
         unexpected = observed_histories - set(qx)
@@ -213,6 +222,7 @@ class ThetaAObservationAnalyzer:
             "inference_lower_bound": None,
             "inference_upper_bound": None,
             "hoeffding_range_sum_squares": None,
+            "structural_support_sha256": structural.contract_sha256 if structural else None,
         }
         return ThetaAObservationAnalysisResult(**result_payload,
             output_sha256=_canonical_hash(result_payload))
