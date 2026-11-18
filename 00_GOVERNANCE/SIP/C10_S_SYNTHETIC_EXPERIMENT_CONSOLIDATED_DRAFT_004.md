@@ -3255,3 +3255,77 @@ Siguen sin aprobarse: targets confirmatorios, δ, niveles de confianza, componen
 **Dictamen:** queda definida una arquitectura metodológica para separar el papel representacional de N, la replicación exterior M y la replicación intramundo R, y para asignar precisión sin confundir MCSE con validez científica. El dimensionamiento numérico permanece abierto hasta disponer de estimandos/targets aprobados, contrato M verificable y componentes de varianza obtenidos mediante un procedimiento autorizado.
 
 **Siguiente operación:** traducir este marco y el registro §378 a una especificación integrada de cálculo que consuma los campos versionados disponibles, identifique qué métricas admiten la descomposición analítica, y produzca una frontera de factibilidad con sensibilidad e incertidumbre. No cambiar código, tests, DGP, Analyzer, Evaluator, agregador, seeds, workflows, RMA, Evidence→Claim Matrix, STATUS, TGCV Core ni `main`. No ejecutar compilación, tests, calibración, Monte Carlo ni experimento científico. PR #116 permanece Draft.
+
+
+## 380. Especificación de cálculo N/M/R contra el protocolo implementado (2026-11-18)
+
+**Estado:** STATIC_CONFORMANCE_RECONCILIATION / CALCULATION_SPECIFICATION_DEFINED / IMPLEMENTATION_GAPS_OPEN / NOT_EXECUTED. Esta especificación traduce §379 a las estructuras existentes en theta_a_calibration_protocol.py; no modifica el protocolo ni ejecuta cálculos.
+
+### 380.1 Contrato de entrada ya disponible
+
+ThetaACalibrationDesign aporta: roster tipado de escenarios; cuadrícula ordenada n_grid; un valor común de outer_worlds_m y assignment_replicates_r; nivel de confianza; namespace; tolerancia de recuperación opcional; objetivos de MCSE por escenario, versión, N y métrica; identidad/versionado del Target Manifest; y OuterWorldSamplingContract.
+
+ThetaASeedAssignment materializa identidades de escenario, N, M y R, world_id, world_seed, randomization_salt, s3_seed y huella del perfil DGP. El constructor de bancos solo declara y deriva el plan: no invoca el Generator ni ejecuta el DGP. Mantiene un mundo y semilla de mundo fijos para las R asignaciones del mismo escenario/N/M, y separa los streams de aleatorización y observación entre R. La validación exige cardinalidad N×M×R y separación entre bancos calibration/evaluation.
+
+ThetaAReplicateRecord contiene el resultado observado del Analyzer, la verdad reservada para el Evaluator, estimación puntual, intervalo, cobertura/anchura y huellas de procedencia. summarize_theta_a_calibration comprueba correspondencia exacta con el plan de semillas, agrupa R dentro de cada M y exige invariancia intramundo de identidad/configuración/verdad, con streams y evidencias distintos entre R.
+
+### 380.2 Correspondencia de las 16 métricas con la descomposición
+
+Las métricas del registro §378 tienen contribuciones por mundo construidas a partir de observaciones R. En principio, sus contribuciones elementales permiten estimar variación intramundo si se conserva la unidad por R y se declara el supuesto de muestreo condicional correspondiente:
+
+| Familia del registro | Métricas | Contribución por R que puede alimentar la varianza intramundo | Condición |
+|---|---|---|---|
+| Operacionales | identification_rate, abstention_rate, interval_availability_rate | Indicadores binarios por réplica | Todas las R del plan; para MCSE entre M sigue siendo necesario el contrato §377 |
+| Auditoría Evaluator | evaluator_truth_within_bounds_rate, evaluator_correct_adjudication_rate | Indicadores binarios por réplica | Auditoría completa en todas las R del mundo; en otro caso NOT_EVALUABLE |
+| Escenario identificado | false_abstention_rate | Indicador de abstención por réplica | Todas las R |
+| Recuperación puntual | point_bias, point_mae, point_rmse, point_recovery_rate | Error firmado, error absoluto, error cuadrático e indicador de recuperación por réplica | Todas las R identificadas en el mundo; tolerancia explícita para point_recovery_rate |
+| Intervalos | interval_coverage, interval_width | Indicador de cobertura y anchura por réplica | Intervalo disponible para todas las R del mundo |
+| Escenario no identificado | correct_abstention_rate, wrong_cause_abstention_rate, partial_identification_rate, false_identification_rate | Indicadores de adjudicación/estado por réplica | Todas las R; no se computan métricas puntuales o de cobertura como si hubiera identificación |
+
+La transformación RMSE requiere mantener la escala de MSE por mundo: la implementación promedia los MSE de los mundos y aplica raíz cuadrada al agregado. Cualquier extensión de varianza debe conservar esa escala y usar la transformación delta apropiada; no debe aplicar directamente la fórmula de una media al RMSE ya transformado.
+
+### 380.3 Qué calcula hoy el agregador y qué no
+
+Para cada métrica aplicable, el agregador forma una contribución por mundo, calcula la media con igual peso por M y, bajo DECLARED_IID_PSEUDORANDOM, calcula sd(contribuciones_M)/sqrt(M). Para point_rmse aplica la transformación delta a partir del MCSE del MSE. En los otros modos de muestreo suprime el MCSE inferencial y conserva la interpretación descriptiva correspondiente.
+
+Por tanto, el MCSE actual refleja la dispersión entre contribuciones observadas por mundo, que ya incorporan el R finito empleado en cada mundo. No identifica por separado σ²_between y σ²_within de §379. Tampoco estima la curva de precisión en función de R ni calcula el R mínimo condicionado a M. El hecho de que existan registros individuales R no equivale a que el agregador haya implementado esa descomposición.
+
+La especificación adicional necesaria, antes de cualquier implementación, es un cálculo auxiliar que, para cada escenario × N × métrica:
+
+1. derive la contribución elemental por R usando exactamente la regla del registro y sus denominadores;
+2. estime la media condicional y varianza intramundo por M, sin mezclar mundos;
+3. estime la varianza entre las medias condicionales de M;
+4. produzca la descomposición observada y la curva analítica de precisión para R candidatos, condicionada al contrato exterior;
+5. propague incertidumbre de ambos componentes y marque como no estimables los casos con denominadores incompletos, elegibilidad variable no resuelta o M insuficiente;
+6. mantenga RMSE en escala MSE hasta la transformación final y use diferencias por world_id para cualquier contraste pareado.
+
+No se debe presentar esta estimación como una descomposición identificada si las R no son intercambiables/independientes condicionalmente al mundo, si las reglas de elegibilidad cambian el conjunto de R, o si el contrato de asignación/observación no justifica la varianza muestral intramundo. En esos casos se informará NOT_ESTIMABLE_UNDER_CURRENT_DESIGN y se propondrá un diseño de piloto, no una fórmula forzada.
+
+### 380.4 Limitaciones específicas de N, emparejamiento y coste
+
+La semilla raíz del mundo incluye N. En consecuencia, el constructor actual deriva world_id y world_seed distintos al cambiar N; no implementa un coupling que mantenga un mismo mundo basal anidado entre tamaños N. Por tanto, las comparaciones de estabilidad entre N no pueden interpretarse actualmente como contrastes pareados del mismo mundo. Deben permanecer como comparaciones entre diseños/tamaños con esta limitación explícita, hasta que se defina y autorice un contrato de coupling que preserve la población objetivo y la relación entre unidades.
+
+En cambio, el world-root sí comparte identidad entre escenarios que declaran el mismo world_family_id, versión, DGP, N y M. Esto permite el emparejamiento entre escenarios previsto para las familias compatibles; la pareja se debe comprobar por world_id, no inferir solo por el orden del roster. Escenarios con distinta familia/DGP no se deben forzar a una pareja.
+
+El diseño actual usa un único M y R para todo el objeto ThetaACalibrationDesign; la cuadrícula de N y los targets por escenario/N/métrica no implican que se pueda asignar M/R distintos por celda. La frontera de coste tampoco puede derivarse del resumen actual: ni ThetaAReplicateRecord ni ThetaACalibrationSummary registran telemetría de coste por mundo, N o R. Cualquier frontera empírica requiere instrumentación y un protocolo de medición separado, con overhead y recursos declarados.
+
+### 380.5 Salida requerida del futuro cálculo
+
+La salida de diseño, sin generar bancos ni ejecutar el runner, deberá contener por escenario × N × métrica:
+
+- aplicabilidad, denominador, regla de agregación y transformación;
+- disponibilidad de contribuciones R y M, y causa explícita de no evaluabilidad;
+- σ²_within, σ²_between y su incertidumbre, cuando sean estimables;
+- MCSE actual reproducido como control de reconciliación y MCSE proyectado para cada R/M candidato bajo el contrato §377;
+- R mínimo condicionado a M y M mínimo condicionado a R, solo cuando las condiciones algebraicas se satisfagan;
+- para N, estado de coupling, estabilidad de soporte/q_X* y cambios de identificación/abstención;
+- coste medido y frontera coste–precisión–estabilidad solo cuando exista telemetría válida;
+- huellas de escenario, DGP, target manifest, protocolo, contrato de muestreo y método de cálculo.
+
+No se fabricarán varianzas a partir de valores agregados ya resumidos si las contribuciones R originales no están disponibles. Un target MCSE solo se evalúa bajo el modo de muestreo que permite su interpretación; un target sin autorización/versión confirmatoria continúa siendo una especificación de calibración, no un criterio científico de aceptación.
+
+### 380.6 Dictamen y siguiente paso
+
+La reconciliación estática confirma que la arquitectura de datos necesaria para un futuro cálculo está parcialmente disponible: contribuciones por R, agrupación por M, roster tipado, bancos separados, huellas y registro de métricas. Faltan la descomposición explícita within/between, el coupling entre N, contrastes pareados implementados en el resumen, y telemetría de coste. La inferencia entre M sigue condicionada a §377 y el roster/targets continúan sin congelar.
+
+**Siguiente paso integrado:** cerrar la especificación matemática/algorítmica del cálculo auxiliar y su contrato de salida, incluidos estimadores de varianza, tratamiento de R no evaluables, incertidumbre de componentes y sensibilidad del coupling N. Solo después se decidirá si procede una implementación aislada y sus tests estáticos. No se modifica código, tests, DGP, Analyzer, Evaluator, agregador, seeds, workflows ni artefactos canónicos; no se crean bancos ni se ejecutan calibración, Monte Carlo o experimento científico. PR #116 permanece Draft.
