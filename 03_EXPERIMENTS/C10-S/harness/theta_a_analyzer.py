@@ -492,9 +492,10 @@ def adjudicate_theta_a_structural_support(
     """Adjudicate structural target/source support before inspecting outcomes.
 
     Undefined/infeasible interventions are contract errors, not non-identification.
-    A well-defined policy contrast with target mass outside source support is
-    NOT_IDENTIFIED. Realized sample-arm/evidence failures remain Analyzer-level
-    INDETERMINATE results and are not inferred here.
+    For a well-defined and feasible contrast, target mass outside source support
+    and source-supported histories with boundary assignment propensity are
+    distinct NOT_IDENTIFIED causes. Realized finite-sample arm/evidence failures
+    remain Analyzer-level INDETERMINATE results and are not inferred here.
     """
     contract.validate()
     for row in contract.rows:
