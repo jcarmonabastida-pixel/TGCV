@@ -850,3 +850,16 @@ The typed target-only baseline contract now also validates `H0` against the decl
 EP-02 Run 835 (`44280725936`, run number 835) tested commit `a9a2999309c32bba5cdc89901fdd45e1d9c24c3b`: compilation PASS; primary 307/307 PASS (13.634 s); clean replay 307/307 PASS (13.404 s). Payload `14416543657`, SHA-256 `953dbdbf545d2a91299fc8ec5f0620170c21468aa063e9fee9b2a59ca3d5cb6d`; manifest `14416238830`, SHA-256 `57f11616c56a626435cb79c11b2067ce40429389b9aa404406f02123042ae8ea`.
 
 Workflow restored to `workflow_dispatch` only; blob SHA `28471861a1c94038a11b5997a0b0e761b2659466`. No scientific calibration or population authorization.
+### Structural support adjudication — source overlap vs assignment positivity (2026-11-18)
+
+The focal Analyzer now keeps three contract states distinct:
+
+1. A positive-mass target history with zero source mass is `NOT_IDENTIFIED / TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`.
+2. A source-supported positive-mass target history with `P(A=1|h)=0` or `1` is `NOT_IDENTIFIED / SOURCE_ASSIGNMENT_POSITIVITY_FAILURE`. The adjudication retains the exact affected history refs separately from target-only histories.
+3. An undefined intervention or structurally infeasible `g_A0/g_A1` remains a `ContractError`: this is an invalid/unavailable intervention contrast, not statistical non-identification.
+
+When both support failures occur, the Analyzer records both reason tokens and both history sets. The Analyzer checks sealed assignment probabilities against the structural-support contract; the Evaluator independently checks both sealed evidence and assignment-bundle propensities against the same contract. Finite-sample absence of a realized arm remains the existing Analyzer-level `INDETERMINATE / REALIZED_GA_ARM_SUPPORT_MISSING` and is not promoted to structural positivity failure.
+
+The executable assignment generator continues to require strict positivity. Boundary probabilities are accepted only by the explicit Analyzer structural-support adjudication contract; no assignment mechanism is silently relaxed. Generator-side intervention/potential evaluability remains a separate contract check, not an Analyzer support result.
+
+Software-only synthetic contract scope; no q_X* B1/UE roster, operational `g_A` pair, or scientific population is materialized or authorized. No estimand, causal target, or Gate 130 decision is changed.
