@@ -1,1 +1,1 @@
-Authorized EP-02 retry: source-only evidence remains in the assignment roster but is excluded from target truth, interval, and inferential aggregation; explicit regression assertions added. Technical suite and replay only.
+Authorized EP-02 retry: source-superset target-subset regression now uses a predeclared larger synthetic roster to avoid finite-sample missing-arm ambiguity. Technical suite and replay only.
