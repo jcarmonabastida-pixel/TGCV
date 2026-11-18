@@ -418,6 +418,7 @@ def run_tier(
                         and summary_value.get("code_commit") == code_commit
                         and summary_value.get("protocol_sha256") == protocol_hash
                         and summary_value.get("cell", {}).get("cell_id") == entry.get("cell_id")
+                        and entry.get("k") == summary_value.get("cell", {}).get("k")
                         and summary_value.get("datasets_completed") == entry.get("k")
                         and summary_value.get("cell", {}).get("b") == entry.get("b")
                     ):
@@ -429,7 +430,7 @@ def run_tier(
         cell_path = output_dir / f"{spec.cell_id}.jsonl"
         summary_path = output_dir / f"{spec.cell_id}.summary.json"
         cached_entry = checkpoint_entries.get(spec.cell_id)
-        if cached_entry is not None:
+        if cached_entry is not None and cached_entry.get("k") == spec.k and cached_entry.get("b") == spec.b:
             cached = json.loads(summary_path.read_text(encoding="utf-8"))
             summaries.append(cached)
             records_index.append({
