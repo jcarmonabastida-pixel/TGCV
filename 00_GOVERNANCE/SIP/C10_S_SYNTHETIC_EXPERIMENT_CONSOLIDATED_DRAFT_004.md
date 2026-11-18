@@ -3945,16 +3945,16 @@ El contrato estima, sin atribuir tiempos medidos:
 
 ### 389.6. Evidencia estática remota
 
-**Commit de la rama probado:** `dc2ad13945c730dbdce73ed0fe09d629f2163681`.
+**Commit de la rama probado:** `ed581f1db5ca245782e1273907d8c00e139d715a`.
 
-**Workflow push:** [44398214396](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44398214396) — SUCCESS.
+**Workflow push:** [44398874499](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44398874499) — SUCCESS.
 
 - Compilación: PASS.
 - Parseo YAML del workflow numérico: PASS.
 - Tests: **47/47 PASS**, 0 FAIL, 0 ERROR.
 - Runtime: CPython 3.12.10 / Ubuntu 24.04.
-- Artifact ID: `14471382420`.
-- Digest del artifact: `sha256:bc6bedc28dedc7aaa7e3acbf468a3ca3975e54900809f3523a12d09aa15f89f9`.
+- Artifact ID: `14472227241`.
+- Digest del artifact: `sha256:5d2e27121b07588742fd2321f73f1e3bc53855d419c7950fcc13184c18981240`.
 
 La evidencia cubre contratos de software, oráculos de fixture, guards deterministas y el parseo del workflow. No cubre las distribuciones de cobertura Tier A/B ni un benchmark de rendimiento.
 
