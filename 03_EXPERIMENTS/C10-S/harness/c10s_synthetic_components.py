@@ -3147,8 +3147,8 @@ class ThetaAPolicyAssignmentConfig:
         if len(supplied) != len(set(supplied)) or set(supplied) != refs:
             raise ContractError("theta_A policy-assignment probabilities must cover q_X* histories exactly")
         for history_ref, probability in self.probability_a1_by_history:
-            if not math.isfinite(probability) or not 0.0 < probability < 1.0:
-                raise ContractError(f"theta_A assignment positivity fails for {history_ref}")
+            if not math.isfinite(probability) or not 0.0 <= probability <= 1.0:
+                raise ContractError(f"theta_A assignment probability is outside [0,1] for {history_ref}")
 
 
 @dataclass(frozen=True)
