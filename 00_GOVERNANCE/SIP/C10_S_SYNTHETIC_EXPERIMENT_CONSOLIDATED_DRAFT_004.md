@@ -937,3 +937,38 @@ Artefactos: payload `14435077965`, SHA-256 ZIP `4f192dad5823519bb69f43f028513aa0
 Tras la ejecución, el sentinel temporal fue eliminado y el workflow restaurado al contenido original exclusivamente `workflow_dispatch`; blob SHA restaurado `28471861a1c94038a11b5997a0b0e761b2659466`. Commits de limpieza: restauración `bc91a72f37c50706132afa988e5a75cd9308c11c`, eliminación del sentinel `d6fcf80952ef88e83c92547bc529925a3ff1373c`.
 
 **Alcance:** PASS técnico del contrato software de soporte fuente/objetivo y de la suite EP-02; no valida calibración, MCSE, potencia, Type-I error, identificación científica ni contribución causal a Value. No se generó banco ni se ejecutó calibración/experimento científico. El roster permanece sin congelar.
+
+
+## 348. Reconciliación del roster de calibración tras la brecha de soporte estructural — revisión estática (2026-11-18)
+
+### 348.1 Dictamen sobre el roster
+
+El roster §336 de cuatro escenarios continúa siendo un benchmark candidato de recuperación bajo soporte identificado, pero ya no basta como cobertura de primera ola tras integrar el camino generado q_X objetivo/fuente. Se propone un quinto escenario candidato: `THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1`, basado en el modo DGP sintético de no solapamiento objetivo/fuente.
+
+El escenario debe aislar una causa: mantener una historia objetivo de masa positiva fuera del soporte fuente, con ambas intervenciones focales definidas y factibles sobre todo q_X*, potenciales reservados materializados para todo el objetivo y positividad estricta de asignación en todas las historias objetivo que sí tienen soporte fuente. La adjudicación esperada es `NOT_IDENTIFIED / TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`. No debe concurrir el fallo de positividad de asignación en este escenario de calibración; la fixture combinada de no solapamiento + positividad sigue siendo una regresión adversarial EP-02 separada.
+
+La verdad reservada θ_A puede existir como contraste DGP sobre q_X* completo aunque no sea identificable desde la población fuente observada. El Analyzer debe abstenerse, sin estimación puntual. El Evaluator comprueba que la abstención y las cotas lógicas cubren esa verdad. Esta clase permite medir abstención correcta y falsa identificación; no permite evaluar bias/MAE/RMSE/recuperación puntual como si el estimando estuviera identificado.
+
+### 348.2 Caso benigno adicional: fuente estrictamente mayor que objetivo
+
+La corrección §347 permite historias fuente que no aparecen en q_X*. No se debe confundir con el caso de historia objetivo sin soporte. El caso fuente-superset/objetivo-subset debe tener un test generado propio: q_X* es subconjunto estricto del soporte fuente, todas las historias objetivo están soportadas y las propensiones focales son positivas. La expectativa es que las historias solo-fuente no causen abstención ni invaliden el contrato. La fixture actual de no solapamiento tiene historias objetivo adicionales y no demuestra por sí sola esta propiedad.
+
+### 348.3 Brecha entre protocolo de agregación y roster ejecutable
+
+El protocolo `theta_a_calibration_protocol.py` admite la clase `expected_identification=NOT_IDENTIFIED` y puede resumir `correct_abstention_rate` y `false_identification_rate`. Sin embargo, `ThetaACalibrationScenario` actualmente solo vincula identidad/versión, DGP/world/roster IDs y clase de identificación esperada. No vincula un perfil DGP tipado, el contrato de soporte estructural/versionado, la masa objetivo sin soporte, ni el token de razón de abstención esperado. El seed-bank builder produce identidades/semillas N×M×R, pero no parametriza ni ejecuta el DGP. No existe todavía un roster ejecutable de cinco escenarios ni un runner que capture resultados reales del pipeline para construir `ThetaAReplicateRecord`.
+
+La prueba `test_nonidentified_scenario_reports_correct_abstention` alimenta directamente registros sintéticos fabricados al agregador; solo prueba aritmética de resumen. No demuestra generación, adjudicación ni evaluación end-to-end para cada réplica. Por ello el quinto escenario es un candidato metodológico, no un escenario de calibración implementado.
+
+### 348.4 Revisión de dimensionamiento
+
+Manteniendo provisionalmente N={32,64,128}, M=100 y R=20, el paso de cuatro a cinco escenarios elevaría el coste aritmético de 24.000 a **30.000 ejecuciones por banco** (5×3×100×20). Es un cálculo de capacidad, no un diseño congelado ni autorización para crear bancos. Para el escenario no identificado solo corresponden métricas de identificación/abstención, disponibilidad de intervalo y falsa identificación; métricas de recuperación puntual e intervalar de efecto identificado no aplican. El objetivo de MCSE de tasas binarias se mantiene en ≤0,05 como candidato: con M=100 el peor caso para una contribución acotada en [0,1] tiene MCSE 0,05. No se puede prometer ≤0,02 en todas las tasas sin elevar M potencialmente hasta 625 en el peor caso. Los objetivos de MCSE continuo ≤0,02 para escenarios identificados siguen siendo candidatos, sujetos a varianza observada y extensión reproducible de M. Type-I error/potencia siguen fuera del protocolo hasta definir un test separado.
+
+### 348.5 Trabajo requerido antes de congelar
+
+1. Crear una fixture end-to-end **aislada** de target-only structural support, con positividad estricta en el solapamiento, y verificar Analyzer `NOT_IDENTIFIED / TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT` + Evaluator `CORRECT_ABSTENTION` para la verdad reservada.
+2. Crear la regresión generada source-superset/target-subset, verificando que historias solo-fuente no provocan abstención.
+3. Extender `ThetaACalibrationScenario` con un perfil de escenario tipado/versionado que vincule la configuración DGP, soporte q_X objetivo/fuente, masa objetivo no soportada y razón de adjudicación esperada; incorporar esos valores a la identidad/fingerprint de escenario y a la derivación de seeds/manifiesto.
+4. Construir un runner de calibración de software que, para cada N×M×R, ejecute la cadena completa y construya registros de réplica a partir de Analyzer/Evaluator reales, sin fabricar `ThetaAReplicateRecord`.
+5. Probar el agregador con esos registros capturados y verificar que las métricas inaplicables se marcan `NOT_EVALUABLE`, no se fuerzan a cero ni se omiten mediante complete-case.
+
+**Estado:** FIVE_SCENARIO_ROSTER_CANDIDATE / STRUCTURAL_NONIDENTIFICATION_CALIBRATION_PATH_NOT_IMPLEMENTED / SOURCE_SUPERSET_REGRESSION_OPEN / DIMENSIONING_CANDIDATE / NOT_FROZEN / NOT_EXECUTED. No se generaron bancos/seeds ni se ejecutó calibración, Monte Carlo o experimento científico. No cambia Gate 130, el estimando, las políticas ni la autorización vigente.
