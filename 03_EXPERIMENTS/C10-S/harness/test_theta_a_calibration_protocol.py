@@ -58,7 +58,8 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
             fp("world|" + row.outer_world_id), fp("policy-design"),
             fp(row.randomization_salt), fp(row.run_id + "|evidence"),
             fp(row.run_id + "|analyzer"),
-            row.dgp_profile_sha256, expected_reason, observed_reason, unsupported_mass,
+            row.dgp_profile_sha256, fp("target-qx"), fp("source-qx"), None,
+            expected_reason, observed_reason, unsupported_mass,
         )
 
     def test_capture_binding_accepts_source_superset_with_target_standardization(self):
@@ -130,8 +131,6 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
             dgp_profile=ThetaACalibrationDGPProfile(
                 profile_id="THETA_A_TARGET_SUPPORT_PROFILE",
                 profile_version="1.0",
-                target_q_x_sha256=hashlib.sha256(b"target-qx").hexdigest(),
-                source_q_x_sha256=hashlib.sha256(b"source-qx").hexdigest(),
                 structural_support_contract_id="THETA_A_STRUCTURAL_SUPPORT",
                 structural_support_contract_version="1.0",
                 support_relation="TARGET_HAS_UNSUPPORTED_HISTORIES",
