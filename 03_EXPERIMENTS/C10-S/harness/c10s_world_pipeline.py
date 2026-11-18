@@ -72,6 +72,40 @@ from theta_a_evaluator import (
 
 
 @dataclass(frozen=True)
+class SyntheticThetaATargetHistory:
+    """Explicit test-harness materialization of a target-only baseline history.
+
+    This is synthetic DGP input, not authorization for a B1/UE population.
+    """
+    q_x: QXHistoryMass
+    potential_unit_id: str
+    x_values: tuple[float, ...]
+    h0_value: str
+    c_c_values: tuple[bool, ...]
+    initial_functional_state: FunctionalState
+    provenance_ref: str
+
+    def validate(self, *, source_world: SyntheticWorldBundle) -> None:
+        if not self.potential_unit_id or not self.provenance_ref:
+            raise ContractError("target-only baseline requires explicit synthetic unit and provenance identities")
+        if self.q_x.history_ref in {
+            row.history_ref for row in source_world.q_x
+        } or self.potential_unit_id in {unit.unit_id for unit in source_world.units}:
+            raise ContractError("target-only materialization must not alias a source history or source unit")
+        if (not self.q_x.x_ref or not self.q_x.h0_ref or not self.q_x.c_c_ref
+                or not self.h0_value):
+            raise ContractError("target-only baseline requires explicit X/H0/C_c anchors and H0 value")
+        if (not self.x_values or any(not math.isfinite(value) for value in self.x_values)
+                or not self.c_c_values
+                or any(type(value) is not bool for value in self.c_c_values)):
+            raise ContractError("target-only X/C_c values must be nonempty, finite and typed")
+        source = source_world.units[0]
+        if len(self.x_values) != len(source.x) or len(self.c_c_values) != len(source.c_c):
+            raise ContractError("target-only X/C_c dimensions must match the declared synthetic DGP schema")
+        self.initial_functional_state.validate()
+
+
+@dataclass(frozen=True)
 class C10SCompleteWorldResult:
     """One identity-bound synthetic world and its independent causal adjudication."""
 
@@ -390,6 +424,7 @@ def materialize_c10s_complete_world_from_dgp(
     theta_a_q_x: Sequence[QXHistoryMass] | None = None,
     theta_a_unit_id_by_history: dict[str, str] | None = None,
     theta_a_structural_support_contract: ThetaAStructuralSupportContract | None = None,
+    theta_a_target_history_materializations: Sequence[SyntheticThetaATargetHistory] = (),
 ) -> C10SCompleteWorldResult:
     """Generate D2 and direct-g_A potential EventHistories inside the DGP pipeline.
 
@@ -417,10 +452,31 @@ def materialize_c10s_complete_world_from_dgp(
     target_unit_ids = theta_a_unit_id_by_history or {
         unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
     }
-    if theta_a_q_x is not None and set(target_unit_ids) != {
-        row.history_ref for row in theta_a_q_x
-    }:
+    target_q_x_rows = tuple(theta_a_q_x) if theta_a_q_x is not None else world.q_x
+    target_refs = {row.history_ref for row in target_q_x_rows}
+    source_refs = {row.history_ref for row in world.q_x}
+    if set(target_unit_ids) != target_refs:
         raise ContractError("DGP target q_X and target unit identities must cover the same histories")
+    materializations = {row.q_x.history_ref: row for row in theta_a_target_history_materializations}
+    if len(materializations) != len(theta_a_target_history_materializations):
+        raise ContractError("target-only baseline materializations must have unique history identities")
+    target_only_refs = target_refs - source_refs
+    if set(materializations) != target_only_refs:
+        raise ContractError("every and only target-only histories require an explicit typed baseline materialization")
+    for row in target_q_x_rows:
+        if row.history_ref in source_refs:
+            source_unit = next(unit for unit in world.units
+                               if unit.d2_baseline.baseline_history_ref == row.history_ref)
+            if (row.x_ref, row.h0_ref, row.c_c_ref) != (
+                    source_unit.x_ref, source_unit.h0_ref, source_unit.c_c_ref):
+                raise ContractError("overlapping target history anchors must reproduce source baseline anchors")
+        else:
+            materialization = materializations[row.history_ref]
+            materialization.validate(source_world=world)
+            if materialization.q_x != row or materialization.potential_unit_id != target_unit_ids[row.history_ref]:
+                raise ContractError("typed target-only baseline identity differs from target q_X/unit map")
+            if initial_state_by_history.get(row.history_ref) != materialization.initial_functional_state:
+                raise ContractError("target-only initial functional state must come from its typed baseline materialization")
     policy_histories = generate_g_a_event_history_potentials(
         world, functional_history_config, g_a0, g_a1,
         r_common_certificates, initial_state_by_history,
