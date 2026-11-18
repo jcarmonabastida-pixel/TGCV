@@ -3420,3 +3420,120 @@ La salida por escenario × N × métrica contendrá: M/R observados; número de 
 Queda especificado un estimador candidato para separar variación entre mundos y variación de R en un diseño balanceado, con controles explícitos para componentes en frontera, RMSE, denominadores incompletos, emparejamiento y N. La reconciliación demuestra que el MCSE observado actual es compatible con la varianza total de las medias por mundo; no demuestra que los componentes separados estén ya implementados ni que el método de proyección haya sido validado.
 
 **Gate siguiente:** resolver la selección del método de incertidumbre de componentes y su validación analítica/sintética en fixtures controlados, incluyendo M pequeño, varianza between nula/cercana a cero, varianza within nula, denominadores incompletos, escenarios no identificados, RMSE cercano a cero y contrasts pareados sin coupling R. Solo tras esa decisión podrá formularse un contrato de implementación/tests estáticos. No se implementa ni ejecuta este apartado; no se generan bancos, calibración, Monte Carlo o experimento científico. PR #116 permanece Draft.
+
+
+## 382. Selección del método de incertidumbre within/between y contrato de validación (2026-11-18)
+
+**Estado:** METHOD_SELECTION_CANDIDATE / NESTED_RESAMPLING_PRIMARY_CANDIDATE / PARAMETRIC_SENSITIVITY_ONLY / NOT_IMPLEMENTED / NOT_EXECUTED. Resuelve la elección metodológica planteada en §381.7 hasta el nivel necesario para decidir una implementación auxiliar; no fija targets confirmatorios, nivel de confianza, M/R, ni autoriza ejecución.
+
+### 382.1 Decisión metodológica y alcance
+
+Se selecciona como método primario candidato un **bootstrap jerárquico no paramétrico**, respetando literalmente la estructura de muestreo anidada:
+
+1. remuestrear M mundos completos como clusters exteriores, con reemplazo;
+2. dentro de cada mundo seleccionado, remuestrear R contribuciones elementales con reemplazo, conservando el tamaño intramundo del diseño;
+3. reconstruir en cada réplica bootstrap las medias por mundo, MSW, MSB, componente between raw, componente within y MCSE proyectado para cada combinación M*/R*;
+4. conservar el emparejamiento por world_id cuando el estimando sea un contraste entre escenarios cuyo contrato ya establece mundos comunes;
+5. no crear emparejamiento entre N ni entre R de escenarios cuando el contrato de coupling correspondiente no exista.
+
+El bootstrap no convierte las observaciones en IID: replica el mecanismo jerárquico declarado y su validez depende de que M represente mundos intercambiables de la población objetivo y de que R sean intercambiables/independientes condicionalmente al mundo. La diversidad de seeds o streams es un control de identidad, no una demostración de esos supuestos.
+
+El método cuantifica incertidumbre de los componentes bajo el diseño observado. No valida por sí solo el contrato IID de M, la independencia condicional de R, la corrección del DGP, la identificación causal del Analyzer ni la validez de los targets.
+
+### 382.2 Por qué no usar ANOVA paramétrica como método primario
+
+El estimador de momentos balanceado de §381 permanece como estimador puntual de referencia. Sin embargo, no se adopta como método primario de incertidumbre un intervalo ANOVA exacto basado en normalidad de efectos aleatorios: el conjunto de métricas incluye indicadores binarios, tasas, errores, métricas con límites, distribuciones discretas y denominadores sujetos a reglas de evaluabilidad. No existe una justificación común para imponer normalidad y homocedasticidad a todas ellas.
+
+Los intervalos F/chi-cuadrado y los modelos de efectos aleatorios podrán aparecer como **análisis de sensibilidad** para métricas continuas cuando sus supuestos estén explícitamente defendidos y diagnosticados. Un bootstrap paramétrico o un modelo GLMM no sustituirá al método primario: requiere especificar y validar una distribución/función de enlace por familia de métricas y puede producir precisión aparente si el modelo está mal especificado.
+
+No se selecciona un enfoque bayesiano en esta etapa porque exigiría priors para componentes, especialmente influyentes cerca de cero, y una decisión sobre su interpretación que no está contenida en el protocolo actual.
+
+### 382.3 Estadísticos y tratamiento de la frontera
+
+En cada réplica bootstrap se conservarán sin truncar:
+- MSW y la estimación within;
+- MSB;
+- componente between raw = s²_q̄ − MSW/R;
+- MCSE observado reconstruido y MCSE proyectado;
+- indicadores de degeneración, no estimabilidad y fallo de cálculo.
+
+El componente between raw puede ser negativo por variación muestral. No se reemplazará silenciosamente por cero ni se interpretará como varianza física negativa. La réplica se clasificará como **BOUNDARY_OR_UNSTABLE_COMPONENT** para la proyección que requiera una varianza between no negativa. Se informará la distribución bootstrap del estimador raw, la fracción de réplicas en frontera y los intervalos/percentiles descriptivos, sin convertirlos en una afirmación de que el componente es cero.
+
+Como análisis de sensibilidad separado podrá mostrarse la proyección con componente between restringido a cero, siempre junto al estimador raw y su incertidumbre. Esa proyección restringida no podrá generar PASS_PRECISION ni una recomendación puntual si la incertidumbre del componente permite valores positivos materialmente relevantes.
+
+El MCSE observado de §380–381 seguirá siendo el control de reconciliación. Para el R observado, la descomposición algebraica deberá reproducir la varianza de las medias por mundo y el MCSE vigente, dentro de tolerancias numéricas preespecificadas en la futura implementación. El bootstrap no reemplaza ni recalibra el MCSE ya producido por el agregador.
+
+### 382.4 Métricas discretas, denominadores y no evaluabilidad
+
+El remuestreo se aplicará a las contribuciones elementales definidas en §378, no a estadísticas ya agregadas ni a filas seleccionadas por conveniencia.
+
+- **Indicadores y tasas:** remuestrear indicadores por réplica; conservar la distribución discreta y los casos degenerados (todo cero/todo uno). No introducir correcciones de continuidad ni modelos beta-binomial implícitos.
+- **Errores continuos:** remuestrear errores firmados, absolutos o cuadrados según la definición exacta de la métrica.
+- **RMSE:** remuestrear y descomponer MSE por réplica; transformar a RMSE al final. Cerca de MSE=0, la transformación delta no se considerará regular: se informará la incertidumbre en escala MSE y RMSE como NO_REGULAR/NOT_RESOLVED, salvo que una validación específica justifique otro método.
+- **Denominadores incompletos o elegibilidad variable:** no usar complete-case bootstrap ni cambiar el denominador silenciosamente. Si la regla congelada exige todas las R y alguna falta, la métrica queda NOT_EVALUABLE para esa celda/mundo según §378. Una alternativa con denominador aleatorio requeriría estimando y contrato explícitos propios.
+- **Escenarios no identificados:** remuestrear únicamente las métricas de adjudicación/abstención que sean aplicables. No generar artificialmente errores puntuales, cobertura o RMSE.
+- **Auditoría Evaluator e intervalos:** si falta cualquiera de los elementos requeridos por R, se conserva la no evaluabilidad establecida en §378; no se imputan resultados.
+
+Si una celda no satisface los requisitos de contribuciones completas, no se calcula una varianza sustituta a partir de los mundos restantes como si conservaran el mismo estimando. Se informa causa y denominador observado.
+
+### 382.5 Contrastes y estructura de dependencia
+
+Para contrastes A−B con world_id emparejado, el cluster exterior bootstrap remuestrea pares de mundos (A_m,B_m), no cada escenario por separado. En cada réplica se calcula primero la diferencia por mundo y después sus estadísticos exteriores.
+
+El remuestreo intramundo de diferencias solo se habilita cuando existe un contrato explícito de coupling de las R entre A y B. Si no existe, no se emparejan por índice, orden o coincidencia accidental de seed: la incertidumbre within pareada queda NOT_ESTIMABLE_UNDER_CURRENT_DESIGN. Podrán reportarse por separado las variaciones marginales descriptivas, sin convertirlas en una varianza de diferencia.
+
+Para comparar N se mantiene la restricción de §380.4 y §381.5: world_id/world_seed cambian con N, de modo que el bootstrap no puede fabricar un coupling ausente. Las comparaciones N-a-N permanecen no pareadas y descriptivas hasta que un contrato de mundos anidados y conservación de población objetivo/q_X* sea definido y autorizado.
+
+### 382.6 Adecuación del bootstrap, M pequeño e incertidumbre de proyección
+
+La salida incluirá, además de percentiles, diagnósticos de la distribución bootstrap: número de réplicas válidas, diversidad de clusters exteriores representados, degeneración, frecuencia de componentes en frontera, asimetría y estabilidad de los extremos de intervalo frente al tamaño de remuestreo. El número de réplicas bootstrap y el nivel de confianza se fijarán antes de cualquier uso confirmatorio; ambos permanecen OPEN, no se derivan de los valores históricos.
+
+M pequeño no se resolverá aumentando artificialmente el número de remuestras. Con pocos mundos distintos, la distribución bootstrap puede ser discreta y no representar adecuadamente la cola de la población de mundos. En ese caso se devolverá **INSUFFICIENT_OUTER_SUPPORT** o **BOOTSTRAP_UNSTABLE**, según el diagnóstico, y no habrá recomendación puntual de M/R. No se establece un umbral numérico universal sin una validación de cobertura y estabilidad vinculada a los estimandos y distribuciones pertinentes.
+
+La incertidumbre de MCSE proyectado se calculará transformando cada réplica bootstrap válida a la superficie (M*,R*), sin tratar los componentes estimados como constantes conocidas. Una combinación será:
+- **FEASIBLE_ROBUST** solo si la incertidumbre relevante respalda el cumplimiento del δ aprobado y los supuestos de muestreo son admisibles;
+- **INFEASIBLE_ROBUST** si la incertidumbre respalda que no cumple;
+- **SENSITIVITY_REQUIRED** si el intervalo/distribución cruza la frontera o depende de la restricción del componente;
+- **NOT_ESTIMABLE** si fallan soporte, denominadores o supuestos.
+
+Estos estados describen precisión Monte Carlo de la métrica, nunca potencia, Type-I error, recuperación causal ni aceptación científica del Analyzer.
+
+### 382.7 Validación previa a implementación
+
+La validación metodológica deberá preceder a la implementación y usar fixtures controlados con verdad analítica conocida, sin invocar el Generator, Analyzer, Evaluator, productor de bancos ni workflow. El conjunto mínimo cubrirá conjuntamente:
+
+1. componente between positivo y within positivo;
+2. between exactamente nulo y próximo a cero;
+3. within exactamente nulo;
+4. M pequeño y soporte exterior discreto;
+5. indicadores raros, todos cero y todos uno;
+6. denominadores incompletos y reglas NOT_EVALUABLE;
+7. escenarios no identificados y tasas de abstención;
+8. RMSE con MSE alejado de cero y próximo a cero;
+9. contraste de escenarios con world_id emparejado y coupling R válido;
+10. contraste con world_id común pero sin coupling R;
+11. comparación entre N sin coupling;
+12. reconciliación exacta del MCSE observado para el R de diseño.
+
+Los criterios de validación incluirán sesgo/cobertura de los intervalos de componentes y de la proyección, estabilidad de clasificación de factibilidad, detección de degeneración y ausencia de recomendaciones cuando el soporte no las justifique. Los criterios cuantitativos, nivel de confianza y número de repeticiones de validación se definirán antes de ejecutar esos fixtures; no se inventan aquí.
+
+El bootstrap jerárquico se comparará con la verdad analítica de los fixtures y, cuando sea defendible, con un método paramétrico de sensibilidad. La validación debe examinar explícitamente el comportamiento en frontera: un método que solo funcione cuando ambos componentes son claramente positivos no satisface el objetivo de esta especificación.
+
+### 382.8 Contrato de salida y decisión posterior
+
+Por escenario × N × métrica, la salida auxiliar deberá registrar:
+- identidad y huellas de los inputs, protocolo, contrato de muestreo y versión del método;
+- M/R observados, mundos distintos, contribuciones válidas y denominadores;
+- estimaciones puntuales MSW, MSB, within y between raw;
+- distribución bootstrap e incertidumbre de cada componente;
+- proporción de réplicas en frontera, inválidas o degeneradas;
+- MCSE observado reconciliado y distribución/proyección de MCSE para cada M*/R*;
+- estado de soporte, elegibilidad, IID/intercambiabilidad y evaluabilidad;
+- estado de factibilidad y razón explícita de abstención;
+- salidas separadas para contrastes pareados admisibles y comparaciones N no pareadas.
+
+El cálculo auxiliar será puro y no mutante: consumirá registros ya producidos, no cambiará los registros fuente ni el agregador canónico. No alterará Analyzer, Evaluator, DGP, roster, seeds, protocolo de asignación ni resultados históricos. La eventual implementación y sus tests estáticos deberán tener identidad/versionado propios y demostrar que no modifican el MCSE legado.
+
+**Dictamen:** queda seleccionado el bootstrap jerárquico no paramétrico como método primario candidato, con ANOVA/modelos paramétricos solo como sensibilidad condicionada. La selección no se considera validada hasta superar los fixtures analíticos/sintéticos de §382.7. M pequeño, componentes en frontera, denominadores incompletos y falta de coupling conducen a abstención/no estimabilidad, no a precisión fabricada.
+
+**Siguiente operación:** elaborar el protocolo de validación de §382.7 como una matriz compacta de fixtures, verdades analíticas, invariantes y criterios de adjudicación; reconciliarlo con los tests y contratos existentes para reutilizar cobertura y evitar duplicaciones. Solo después, proponer el contrato mínimo de implementación auxiliar. No modificar código, tests, DGP, Analyzer, Evaluator, agregador, seeds, workflows ni artefactos canónicos; no ejecutar fixtures, tests, calibración, Monte Carlo, productores ni experimento científico. PR #116 permanece Draft; `scientific_execution=false`; `execution_authorized=false`.
