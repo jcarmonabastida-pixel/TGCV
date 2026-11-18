@@ -47,6 +47,7 @@ class ThetaAObservationAnalysisContract:
                     self.target_g_a0_sha256, self.target_g_a1_sha256
                 ))):
             raise ContractError("target-population g_A fingerprints must be supplied together and non-empty")
+        mapping = dict(self.q_x_mass_by_history)
         target_refs = set(mapping)
         source_only_refs = self.source_only_history_refs
         if (len(source_only_refs) != len(set(source_only_refs))
@@ -54,7 +55,6 @@ class ThetaAObservationAnalysisContract:
             raise ContractError("source-only history refs must be unique and disjoint from target q_X")
         if source_only_refs and not (self.source_q_x_sha256 or self.q_x_sha256):
             raise ContractError("source-only histories require a source q_X provenance fingerprint")
-        mapping = dict(self.q_x_mass_by_history)
         if len(mapping) != len(self.q_x_mass_by_history) or not mapping:
             raise ContractError("q_X target masses must have unique, non-empty history support")
         if any(not key or not math.isfinite(value) or value <= 0 for key, value in mapping.items()):
