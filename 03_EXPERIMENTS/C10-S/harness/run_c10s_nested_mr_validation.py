@@ -348,15 +348,23 @@ def run_tier(
         summary_path = output_dir / f"{spec.cell_id}.summary.json"
         if cell_path.exists() and summary_path.exists():
             cached = json.loads(summary_path.read_text(encoding="utf-8"))
+            record_lines = cell_path.read_text(encoding="utf-8").splitlines()
             if (
                 cached.get("code_commit") == code_commit
                 and cached.get("protocol_sha256") == protocol_hash
                 and cached.get("cell", {}).get("cell_id") == spec.cell_id
                 and cached.get("datasets_completed") == spec.k
                 and cached.get("cell", {}).get("b") == spec.b
+                and cached.get("records_sha256") == sha256_file(cell_path)
+                and len(record_lines) == spec.k
             ):
                 summaries.append(cached)
-                records_index.append({"cell_id": spec.cell_id, "records": cell_path.name, "reused": True})
+                records_index.append({
+                    "cell_id": spec.cell_id, "records": cell_path.name,
+                    "records_sha256": cached["records_sha256"],
+                    "summary": summary_path.name, "summary_sha256": sha256_file(summary_path),
+                    "reused": True,
+                })
                 continue
         temp_path = cell_path.with_suffix(".jsonl.tmp")
         if temp_path.exists():
@@ -380,9 +388,15 @@ def run_tier(
         summary["code_commit"] = code_commit
         summary["protocol_sha256"] = protocol_hash
         summary["authorization_id"] = authorization["authorization_id"]
-        summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
+        summary["records_sha256"] = sha256_file(cell_path)
+        summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False) + "\\n", encoding="utf-8")
         summaries.append(summary)
-        records_index.append({"cell_id": spec.cell_id, "records": cell_path.name, "reused": False})
+        records_index.append({
+            "cell_id": spec.cell_id, "records": cell_path.name,
+            "records_sha256": summary["records_sha256"],
+            "summary": summary_path.name, "summary_sha256": sha256_file(summary_path),
+            "reused": False,
+        })
 
     guards = _run_deterministic_guards(output_dir, root, code_commit) if tier == "B" else []
     manifest = {
@@ -420,9 +434,16 @@ def run_tier(
         ],
     }
     manifest_path = output_dir / "run_manifest.json"
-    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
-    manifest["output_manifest_sha256"] = sha256_file(manifest_path)
-    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True, allow_nan=False) + "\\n", encoding="utf-8")
+    output_paths = [
+        item for item in output_dir.iterdir()
+        if item.is_file() and item.name != "SHA256SUMS.txt" and not item.name.endswith(".tmp")
+    ]
+    checksum_lines = [
+        f"{sha256_file(item)}  {item.name}"
+        for item in sorted(output_paths, key=lambda item: item.name)
+    ]
+    (output_dir / "SHA256SUMS.txt").write_text("\\n".join(checksum_lines) + "\\n", encoding="utf-8")
     return manifest
 
 
