@@ -22,6 +22,7 @@ from c10s_synthetic_components import (
     JointPolicyHistory,
     RCommonPairCertificate,
     SyntheticWorldBuilder,
+    digest,
     SyntheticWorldConfig,
     NeedPreZStipulation,
     ThetaAPolicyAssignmentConfig,
@@ -159,10 +160,14 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             JointPolicyHistory(row.history_ref, ((one_vector, 1.0),))
             for row in world.q_x
         )
+        r_common_fingerprint = digest((
+            "R-COMMON", "1",
+            "ALTERNATIVE_ACTIVE" if alternative_active else "ALTERNATIVE_ABSENT",
+        ))
         r_common = tuple(
             RCommonPairCertificate(
                 row.history_ref, "R-COMMON", "1",
-                "R-COMMON-FINGERPRINT", "R-COMMON-FINGERPRINT",
+                r_common_fingerprint, r_common_fingerprint,
                 "COMMON_FIXED",
             )
             for row in world.q_x
@@ -199,7 +204,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         functional_config = FunctionalHistoryDGPConfig(
             dgp_id=world.dgp_id,
             dgp_version=world.dgp_version,
-            mechanism_id=f"FUNCTIONAL-MECHANISM-{scenario}",
+            mechanism_id=f"FUNCTIONAL-MECHANISM-{theta_a_mode.upper()}",
             mechanism_version="1",
             run_id=(seed_assignment.run_id if seed_assignment is not None
                     else f"RUN-INTERVAL-INTEGRATION-{theta_a_mode.upper()}"),
@@ -581,6 +586,14 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         # regime changes between the two focal-policy contrasts.
         alternative_fixture = self._fixture("alternative")
         alternative_result = self._run_pipeline(alternative_fixture)
+        self.assertNotEqual(
+            fixture["functional_config"].mechanism_id,
+            alternative_fixture["functional_config"].mechanism_id,
+        )
+        self.assertNotEqual(
+            fixture["r_common"][0].g_a0_fingerprint,
+            alternative_fixture["r_common"][0].g_a0_fingerprint,
+        )
         self.assertEqual(result.world.world_id, alternative_result.world.world_id)
         self.assertEqual(result.world.q_x, alternative_result.world.q_x)
         self.assertAlmostEqual(alternative_result.theta_a_truth.theta_a_truth.theta_a_truth, 0.0)
