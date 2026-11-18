@@ -2600,15 +2600,15 @@ El materializador:
 Como las reglas G_A del modo positivo solo dependen del vector y el estado inicial, no de X/H0/C_c ni del identificador de historia, cada historia soportada y la historia target-only tienen el mismo contraste focal analítico +0,5.
 
 Sea q_s la distribución fuente normalizada y q_t la distribución objetivo ampliada:
-[
-q_t(h)=(1-u)q_s(h)quad hinmathcal H_s,qquad q_t(h_*)=u.
-]
-Como (delta(h)=V(g_{A1}mid h)-V(g_{A0}mid h)=0.5) para toda historia objetivo de esta construcción:
-[
-	heta_A(q_t)=sum_{hinmathcal H_s}(1-u)q_s(h),0.5+u,0.5
-=0.5(1-u)+0.5u
-=mathbf{+0.5}.
-]
+Con distribución fuente normalizada q_s y distribución objetivo ampliada q_t:
+
+- Para cada historia fuente h: q_t(h) = (1-u) × q_s(h).
+- Para la historia exclusivamente objetivo h*: q_t(h*) = u.
+- Para todas las historias objetivo de esta construcción: delta(h) = V(g_A1 | h) - V(g_A0 | h) = 0.5.
+
+Por tanto:
+
+`theta_A(q_t) = sum_h [(1-u) × q_s(h) × 0.5] + u × 0.5 = 0.5 × (1-u) + 0.5 × u = +0.5.`
 
 Para u=0,5, la mitad de la masa objetivo está fuera del soporte fuente, pero el contraste generador sobre la población objetivo completa sigue siendo +0,5. La no-identificación desde la fuente y la existencia de una verdad generadora conocida son compatibles: la primera es una propiedad de la información/soporte observado; la segunda, del DGP reservado.
 
@@ -2646,3 +2646,54 @@ El punto 7 es un control del agregador y no implica modificar el roster confirma
 **Siguiente paso técnico:** implementar el test unitario independiente de la regla analítica, sin tocar la implementación del oráculo ni relajar los tests existentes. Después añadir la comparación exacta de la verdad target-only al test end-to-end reservado. Esta implementación requiere revisar la autorización vigente para cambios/tests; no autoriza ejecución de DGP, Analyzer/Evaluator, calibración o Monte Carlo.
 
 **Controles:** solo se actualiza este documento en `research/c10-s-consolidation-draft`. No se modifican código, tests, perfiles, roster, seeds, workflows, RMA, Evidence→Claim Matrix, STATUS, Core ni `main`. No se ejecuta ningún test, pipeline, Analyzer, Evaluator ni experimento. PR #116 permanece Draft. `scientific_execution=false`, `execution_authorized=false`, `calibration_authorized=false`.
+
+
+## 370. Reconciliación de reutilización de tests y autorización de implementación (2026-11-18)
+
+**Estado:** HISTORICAL_TEST_REUSE_REVIEW / IMPLEMENTATION_NOT_AUTHORIZED / NO_CODE_CHANGE.  
+**Propósito:** determinar si §369 requiere un test nuevo o si puede ampliarse un contrato existente, y comprobar la autorización antes de tocar código o tests.
+
+### 370.1 Reconstrucción del contrato ya existente
+
+La revisión estática de `test_c10s_world_pipeline_integration.py` confirma que ya existe una ruta end-to-end específica: `test_target_only_support_without_assignment_failure_abstains_end_to_end`. Comprueba:
+- que la historia exclusivamente objetivo está materializada y no entra en el roster de asignación fuente;
+- que el manifiesto reservado contiene diez EventHistory para cinco historias objetivo y dos políticas;
+- que el Analyzer devuelve `NOT_IDENTIFIED` con `TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`;
+- que la masa objetivo no soportada es 0.5 y la cobertura q_X es 0.5;
+- que el Evaluator adjudica `CORRECT_ABSTENTION`.
+
+Pero la verdad capturada se comprueba solo con `-1 <= truth <= 1`; el test no afirma igualdad con +0.5 ni compara el valor por historia. No hace falta crear otro test end-to-end duplicado: el cambio mínimo futuro es reforzar este test existente con las aserciones numéricas independientes de §369, una vez autorizado.
+
+La misma suite tiene un test de captura por roster que compara `row.truth` con `expected_theta_a_truth` solo cuando este último no es `None`. Para el escenario target-only, la expectativa sigue siendo `None`, por lo que la rama alternativa vuelve a comprobar únicamente los límites [-1,1]. Esta es la segunda ubicación que debe reconciliarse si se incorpora una expectativa aprobada al perfil; no debe cambiarse el perfil antes de resolver formalmente si `expected_theta_a_truth` es parámetro confirmatorio del roster o solo una expectativa del oráculo.
+
+### 370.2 Reutilización recomendada, sin duplicación
+
+El paquete mínimo de modificación futuro queda acotado a:
+1. Añadir una función de expectativa analítica pura, independiente de `adjudicate_intervals` y de los oráculos V_CONT implementados, dentro del módulo de tests o de un módulo de referencia exclusivo de tests.
+2. Reforzar `test_target_only_support_without_assignment_failure_abstains_end_to_end` para comparar la verdad del TruthBundle y la verdad observada por el Evaluator con +0.5, además de conservar las aserciones de abstención y causa.
+3. Reforzar el test de captura del roster para no degradar silenciosamente el caso target-only a una mera comprobación de rango.
+4. Añadir una comprobación de ponderación del agregador con una fixture analítica adversarial; mantenerla fuera del roster confirmatorio de cinco escenarios.
+
+No se recomienda crear una nueva suite end-to-end paralela ni duplicar los contratos ya existentes. La expectativa analítica debe quedar en el lado de test, no convertirse automáticamente en una entrada del Analyzer ni en un parámetro productivo del DGP.
+
+### 370.3 Límite de autorización
+
+El artefacto `C10_S_INTEGRATED_DESIGN_CLOSURE_RECONCILIATION_AND_EXECUTION_READINESS_DRAFT_001.md` declara expresamente `IMPLEMENTATION_NOT_AUTHORIZED` y `SCIENTIFIC_EXECUTION_NOT_AUTHORIZED`; su §12 también declara `implementation_authorized=false`. El registro `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md` establece que los contratos registrados no autorizan implementación ni validación ejecutable. La propuesta Gate 201, además, declara que no autoriza cambios de tests/workflows ni dispatch.
+
+Por tanto, el trabajo de este turno se limita a revisión estática y reconciliación documental. No se modifican código, tests, perfiles, roster, workflows, locks ni parámetros; no se ejecutan tests, pipelines, Analyzer/Evaluator, DGP, CI, calibración o Monte Carlo. No se interpreta «Siguiente» como autorización implícita para superar una prohibición expresa.
+
+### 370.4 Dictamen
+
+| Elemento | Estado |
+|---|---|
+| Test end-to-end target-only existente | IMPLEMENTED / NOT EXECUTED |
+| Comparación numérica target-only con +0.5 | MISSING |
+| Captura por roster para target-only | RANGE-ONLY WHILE EXPECTATION IS NULL |
+| Necesidad de duplicar test end-to-end | NO |
+| Modificación mínima identificada | REUSE EXISTING TESTS / ADD INDEPENDENT ASSERTIONS |
+| Implementación de esa modificación | BLOCKED — IMPLEMENTATION_NOT_AUTHORIZED |
+| Ejecución de cualquier test | NOT AUTHORIZED |
+
+**Siguiente operación permitida:** cerrar documentalmente la derivación de expectativa y el contrato de cambio mínimo, o recuperar una autorización vigente y explícita de implementación. Hasta entonces, mantener los artefactos ejecutables intactos.
+
+**Controles:** únicamente documento maestro en `research/c10-s-consolidation-draft`; `main`, RMA v3.38, Evidence→Claim Matrix v1.47, STATUS y Core sin cambios; PR #116 permanece Draft.
