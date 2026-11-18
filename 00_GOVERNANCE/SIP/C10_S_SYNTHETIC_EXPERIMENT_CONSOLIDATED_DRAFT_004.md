@@ -3645,7 +3645,7 @@ La validación numérica de cobertura/estabilidad del bootstrap (incluidos compo
 
 ## 384. Implementación integrada inicial del análisis auxiliar N/M/R (2026-11-18)
 
-**Estado:** IMPLEMENTED_STATIC_CANDIDATE / NOT_EXECUTED / NOT_STATISTICALLY_VALIDATED / NO_EXECUTION_AUTHORIZATION.
+**Estado actualizado:** IMPLEMENTED / PASS_STATIC (alcance de los dos módulos ejecutados remotamente; §385) / NOT_STATISTICALLY_VALIDATED / NO_SCIENTIFIC_EXECUTION.
 
 ### 384.1 Piezas implementadas
 
@@ -3677,8 +3677,60 @@ El módulo no modifica ni recalcula el resumen, los registros fuente, el Analyze
 
 ### 384.4 Estado de verificación
 
-Se han guardado y recuperado los cuatro archivos en la rama de investigación. La revisión realizada es de contenido y coherencia estática del código; **no se han ejecutado** tests unitarios, fixtures, linters, type-checkers, workflows, calibraciones ni simulaciones. Por ello, el estado no es `PASS_STATIC`: es `IMPLEMENTED_STATIC_CANDIDATE / NOT_EXECUTED` hasta que la ejecución de tests estáticos sea autorizada y se obtengan resultados observables.
+Se han guardado y recuperado los cuatro archivos en la rama de investigación. La ejecución remota verificable de compilación y de los dos módulos de tests estáticos quedó completada con éxito en §385. Esta evidencia cubre exclusivamente ese alcance; no valida estadísticamente el bootstrap ni habilita calibraciones, simulaciones o decisiones confirmatorias.
 
 No se afirma que el bootstrap esté validado estadísticamente, que sus intervalos tengan cobertura nominal, ni que las proyecciones puedan adjudicar PASS_PRECISION. La validación numérica frente a DGPs controlados, M pequeño, fronteras, métricas discretas y RMSE cerca de cero sigue siendo una fase separada.
 
 **Siguiente operación:** revisar el diff integrado y completar tests estáticos adicionales para cada métrica registrada, no evaluabilidad, M<3, RMSE y abstención por soporte; después solicitar/esperar autorización explícita para ejecutar exclusivamente la batería estática. No ejecutar bancos, workflows, DGP, Analyzer, Evaluator, calibraciones ni Monte Carlo. PR #116 permanece Draft; `main` intacta; `scientific_execution=false`; `execution_authorized=false`.
+
+
+## 385. Validación estática remota reproducible de la implementación N/M/R (2026-11-18)
+
+**Estado:** PASS_STATIC — alcance acotado y trazable. NOT_STATISTICALLY_VALIDATED. NO_SCIENTIFIC_EXECUTION.
+
+### 385.1 Infraestructura de validación sin entorno local
+
+Se incorpora `.github/workflows/c10-s-nested-mc-static-validation.yml`, ejecutado automáticamente por GitHub Actions al cambiar los archivos focales en `research/c10-s-consolidation-draft` y al actualizar el PR #116 contra su rama base actual.
+
+El workflow:
+- hace checkout del commit exacto que disparó la ejecución;
+- usa runner GitHub-hosted Ubuntu 24.04 y CPython 3.12.10;
+- instala dependencias mediante el lock existente `requirements-vcont-integrated.lock`, con hashes y solo wheels binarios;
+- compila únicamente los cuatro módulos focales;
+- ejecuta únicamente `test_theta_a_nested_mc_precision` y `test_theta_a_calibration_protocol`;
+- genera manifiesto JSON con commit, runtime, módulos, exit code y SHA-256 de los seis artefactos de entrada;
+- publica logs y manifiesto como artifact de GitHub Actions con retención de 30 días.
+
+El workflow tiene `contents: read`, no usa secretos, no escribe en ramas y no invoca otros workflows. Los triggers se restringen a la rama de investigación y al PR #116. La validación no depende del dispositivo ni del entorno local del usuario.
+
+### 385.2 Resultado observado
+
+- **Commit validado:** `25084f0c3ac2fcd429ef9baae41fcd15690711bf`.
+- **Workflow run:** [44382605643](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44382605643).
+- **Job:** `Compile and run the two authorized software-contract modules`.
+- **Conclusión del job:** `success`.
+- **Compilación:** PASS.
+- **Tests:** 29 ejecutados, 29 PASS, 0 FAIL, 0 ERROR.
+  - `test_theta_a_nested_mc_precision`: 9 tests.
+  - `test_theta_a_calibration_protocol`: 20 tests.
+- **Runtime:** CPython 3.12.10, Ubuntu 24.04, x86_64.
+- **Dependencias:** lock con hashes; instalación completada.
+- **Artifact:** ID `14462839115`; digest SHA-256 `358f4af6d5fecdebff6e8bf7f8de50e5e543d22b678db67b31b0fc8dba776299`.
+
+La salida de test observada termina en `Ran 29 tests`, `OK`; el paso de compilación y los pasos de generación/subida de manifiesto también concluyeron correctamente.
+
+### 385.3 Alcance y exclusiones
+
+Esta ejecución valida sintaxis compilable, contratos unitarios del módulo auxiliar, extracción de contribuciones y compatibilidad de integración con el protocolo en el alcance de los dos módulos.
+
+No ejecutó Generator, Analyzer, Evaluator, DGP, banco de calibración, Monte Carlo, workflows científicos, replay ni mediciones de cobertura estadística. No se considera validación de cobertura del bootstrap, suficiencia de M, validez de intervalos de componentes ni recuperación causal del experimento.
+
+El primer intento del workflow no produjo jobs por un error YAML en un comando no entrecomillado; se corrigió y el run citado corresponde al workflow ya corregido, con nombre y job reconocidos por GitHub. No se oculta ni se contabiliza aquel intento fallido como test de software.
+
+### 385.4 Integridad y gobernanza
+
+La ejecución está asociada al commit exacto de la rama `research/c10-s-consolidation-draft`. El PR #116 sigue abierto y Draft; `main` no contiene el módulo auxiliar. No hay promoción ni cierre de PR.
+
+Se actualiza el estado de §384 a `PASS_STATIC` únicamente para el alcance comprobado aquí. Permanecen `scientific_execution=false` y `execution_authorized=false` para bancos, calibraciones, simulaciones y workflows científicos.
+
+**Siguiente operación:** ampliar el mismo patrón de validación remota a contratos estáticos de todas las métricas registradas y casos de no evaluabilidad, sin ejecutar el banco científico. La validación estadística del bootstrap requerirá después un protocolo y autorización diferenciados.
