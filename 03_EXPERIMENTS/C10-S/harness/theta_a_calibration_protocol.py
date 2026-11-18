@@ -241,6 +241,10 @@ class OuterWorldSamplingContract:
                 "dependent outer-world mode requires its dependence structure"
             )
 
+    @property
+    def fingerprint_sha256(self) -> str:
+        return _canonical_hash(asdict(self))
+
 
 @dataclass(frozen=True)
 class ThetaACalibrationDesign:
@@ -1085,6 +1089,7 @@ class ThetaACalibrationSummary:
     assignment_replicates_r: int
     metrics: tuple[ThetaAMetricSummary, ...]
     outer_world_sampling_mode: str = "UNVERIFIED"
+    outer_world_sampling_contract_sha256: str | None = None
     type_i_error_status: str = "NOT_DEFINED_NO_TEST_PROCEDURE"
     power_status: str = "NOT_DEFINED_NO_TEST_PROCEDURE"
 
@@ -1336,5 +1341,6 @@ def summarize_theta_a_calibration(
                 scenario.scenario_id, scenario.scenario_version, n_units,
                 design.outer_worlds_m, design.assignment_replicates_r,
                 tuple(metric_summaries), design.outer_world_sampling.mode,
+                design.outer_world_sampling.fingerprint_sha256,
             ))
     return tuple(summaries)
