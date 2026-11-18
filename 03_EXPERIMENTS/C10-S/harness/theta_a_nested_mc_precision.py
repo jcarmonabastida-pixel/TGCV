@@ -33,7 +33,7 @@ class NestedPrecisionResult:
     component_intervals: tuple[tuple[str, float, float], ...]
     projections: tuple[tuple[int, int, float | None, float | None, str], ...]
     method_id: str = "TGCV_NESTED_MR_BOOTSTRAP"
-    method_version: str = "1.1"
+    method_version: str = "1.2"
     within_world_sampling_mode: str = "UNVERIFIED"
     within_world_sampling_contract_id: str | None = None
     within_world_sampling_contract_version: str | None = None
