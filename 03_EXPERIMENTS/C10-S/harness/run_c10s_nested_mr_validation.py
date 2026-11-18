@@ -314,6 +314,9 @@ def _load_authorization(path: Path, *, tier: str, code_commit: str, protocol_sha
         raise RuntimeError("authorization seed schedule version does not match")
     if not isinstance(auth.get("authorization_id"), str) or not auth["authorization_id"].strip():
         raise RuntimeError("authorization_id is required")
+    if auth.get("numerical_method_validation_authorized") is not True or auth.get("c10_scientific_execution_authorized") is not False:
+        raise RuntimeError("authorization scope flags are invalid")
+    auth["_manifest_sha256"] = sha256_file(path)
     return auth
 
 
@@ -340,6 +343,9 @@ def run_tier(
         root / ".github/workflows/c10-s-nested-mr-numerical-validation.yml",
         root / "00_GOVERNANCE/SIP/C10_S_NESTED_MR_BOOTSTRAP_NUMERICAL_EXECUTION_CONTRACT_DRAFT_001.md",
         root / "03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_validation.py",
+        root / "03_EXPERIMENTS/C10-S/harness/test_theta_a_nested_mc_precision.py",
+        root / "03_EXPERIMENTS/C10-S/harness/test_theta_a_calibration_protocol.py",
+        root / ".github/workflows/c10-s-nested-mc-static-validation.yml",
     ]
     source_hashes = {
         str(path.relative_to(root)): {"sha256": sha256_file(path), "bytes": path.stat().st_size}
@@ -411,6 +417,7 @@ def run_tier(
         "authorization": {
             "authorization_id": authorization["authorization_id"],
             "authorization_status": authorization["status"],
+            "manifest_sha256": authorization["_manifest_sha256"],
             "approved_code_commit": authorization["approved_code_commit"],
         },
         "repository": os.environ.get("GITHUB_REPOSITORY", "jcarmonabastida-pixel/TGCV"),
