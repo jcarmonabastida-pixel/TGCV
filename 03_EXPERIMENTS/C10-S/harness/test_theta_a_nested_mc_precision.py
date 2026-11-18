@@ -53,6 +53,8 @@ class NestedPrecisionTests(unittest.TestCase):
         self.assertLess(result.between_raw, 0.0)
         self.assertEqual(result.status, "DESCRIPTIVE_ONLY")
         self.assertIsNone(result.observed_mcse)
+        self.assertIsNone(result.projections[0][2])
+        self.assertEqual(result.projections[0][-1], "DESCRIPTIVE_ONLY_NO_IID_OUTER_INFERENCE")
 
     def test_zero_within_component_is_finite_and_degenerate(self):
         rows = ((1.0, 1.0), (2.0, 2.0), (3.0, 3.0))
