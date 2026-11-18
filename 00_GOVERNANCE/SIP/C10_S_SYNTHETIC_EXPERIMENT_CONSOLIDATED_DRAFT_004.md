@@ -3329,3 +3329,94 @@ No se fabricarán varianzas a partir de valores agregados ya resumidos si las co
 La reconciliación estática confirma que la arquitectura de datos necesaria para un futuro cálculo está parcialmente disponible: contribuciones por R, agrupación por M, roster tipado, bancos separados, huellas y registro de métricas. Faltan la descomposición explícita within/between, el coupling entre N, contrastes pareados implementados en el resumen, y telemetría de coste. La inferencia entre M sigue condicionada a §377 y el roster/targets continúan sin congelar.
 
 **Siguiente paso integrado:** cerrar la especificación matemática/algorítmica del cálculo auxiliar y su contrato de salida, incluidos estimadores de varianza, tratamiento de R no evaluables, incertidumbre de componentes y sensibilidad del coupling N. Solo después se decidirá si procede una implementación aislada y sus tests estáticos. No se modifica código, tests, DGP, Analyzer, Evaluator, agregador, seeds, workflows ni artefactos canónicos; no se crean bancos ni se ejecutan calibración, Monte Carlo o experimento científico. PR #116 permanece Draft.
+
+
+## 381. Contrato algorítmico candidato para descomposición within/between (2026-11-18)
+
+**Estado:** ALGORITHMIC_SPECIFICATION_CANDIDATE / NOT_IMPLEMENTED / NOT_EXECUTED / METHOD_SELECTION_OPEN. Se concreta el cálculo propuesto en §§379–380 para diseños balanceados con R fijo. No constituye una elección confirmatoria ni autoriza implementación o ejecución.
+
+### 381.1 Unidad elemental y estimandos de varianza
+
+Para una celda escenario × N × métrica, se define y_mr como la contribución elemental de la réplica r en el mundo m, después de aplicar exactamente el indicador, error o regla de denominador de §378. La unidad de análisis exterior es el mundo, no la réplica. Se requiere que, condicionalmente al mundo m, las R contribuciones sean intercambiables y representen repeticiones independientes del mecanismo de asignación/observación definido; la identidad de semillas distintas es evidencia de separación de streams, no prueba suficiente de independencia.
+
+Se definen:
+
+- media intramundo: q̄_m = (1/R) Σ_r y_mr;
+- varianza intramundo observada: s²_m = Σ_r(y_mr − q̄_m)²/(R−1);
+- media de mundos: q̄ = (1/M) Σ_m q̄_m;
+- varianza observada de las medias de mundo: s²_q̄ = Σ_m(q̄_m − q̄)²/(M−1);
+- componente within: σ²_within = E_M[Var_R(Y|m)];
+- componente between: σ²_between = Var_M(E_R[Y|m]).
+
+Este contrato es aplicable a contribuciones escalares con denominador definido y R completo. Para tasas, y_mr es el indicador binario correspondiente. Para bias, MAE y MSE es, respectivamente, el error firmado, el error absoluto y el error cuadrático. Para recuperación y cobertura es el indicador binario por réplica. Para anchura es la anchura individual del intervalo.
+
+### 381.2 Estimadores de componentes con diseño balanceado
+
+Con el mismo R en todos los M mundos, los estimadores de momentos candidatos son:
+
+\[
+MS_W = \frac{1}{M}\sum_{m=1}^{M}s_m^2,
+\qquad
+MS_B = R\,s_{\bar q}^2,
+\]
+
+\[
+\widehat{\sigma}_{within}^2 = MS_W,
+\qquad
+\widehat{\sigma}_{between,raw}^2
+= s_{\bar q}^2 - \frac{MS_W}{R}
+= \frac{MS_B-MS_W}{R}.
+\]
+
+La varianza estimada de la media sobre M mundos para un R de diseño es:
+
+\[
+\widehat{\operatorname{Var}}(\bar q;M,R)
+= \frac{\widehat{\sigma}_{between}^2+
+\widehat{\sigma}_{within}^2/R}{M}.
+\]
+
+La implementación de estos estimadores debe conservar el componente between sin truncar como diagnóstico. Si el estimador raw es negativo o cercano a cero dentro de su incertidumbre, el componente no se declarará estimado con precisión: se marcará BOUNDARY_OR_UNSTABLE_COMPONENT y no se producirá una recomendación puntual de M/R a partir de él. Cualquier estimador restringido no negativo será solo análisis de sensibilidad, con el valor raw y su incertidumbre también reportados. No se ocultará el caso de frontera sustituyéndolo silenciosamente por cero.
+
+La identidad de la fórmula permite una reconciliación importante: para el R observado, la varianza total estimada de q̄_m coincide con s²_q̄/M, que es el MCSE descriptivo calculado hoy por el agregador bajo IID declarado. La nueva descomposición no debe alterar ese MCSE observado; su valor añadido es separar componentes para proyectar cómo cambiaría la precisión al variar R.
+
+### 381.3 Proyección y condiciones de factibilidad
+
+Para cada par candidato (M*,R*) y un objetivo δ aprobado, la proyección puntual sería:
+
+\[
+MCSE_{proj}(M^*,R^*) =
+\sqrt{\frac{\widehat{\sigma}_{between}^2+
+\widehat{\sigma}_{within}^2/R^*}{M^*}}.
+\]
+
+La salida debe incluir la superficie completa de combinaciones factibles, no solo un par elegido. Los despejes algebraicos de §379 pueden usarse únicamente cuando ambos componentes sean estimables, el denominador sea positivo y la incertidumbre de los componentes no invalide la clasificación de factibilidad. Si la incertidumbre permite tanto factibilidad como inviabilidad, el resultado será SENSITIVITY_REQUIRED, no PASS_PRECISION.
+
+La proyección se refiere exclusivamente a la precisión Monte Carlo de la media de la métrica bajo el contrato de mundos de §377 y el mecanismo intramundo declarado. No es un cálculo de potencia, Type-I error, precisión de una réplica individual ni garantía de cobertura o recuperación causal.
+
+### 381.4 Transformaciones, elegibilidad y métricas no regulares
+
+- point_rmse: aplicar la descomposición a y_mr = (estimate_mr − truth_m)², calcular primero el MSE medio sobre mundos y transformar al final mediante raíz cuadrada. La incertidumbre transformada debe usar delta method solo si el MSE está alejado de cero y la aproximación es defendible; cerca de cero se informará la incertidumbre en escala MSE y la transformación como no regular/no resuelta.
+- Métricas identificadas: si una sola R requerida no está identificada, el contrato actual de §378 hace no evaluable la contribución de esa métrica en el mundo. No se realizará bootstrap de casos completos que cambie silenciosamente el denominador. La descomposición de esa métrica será NOT_EVALUABLE salvo que se apruebe un estimando alternativo explícito.
+- Intervalos: si faltan intervalos en alguna R, coverage/width conservan su estado no evaluable; interval_availability_rate permanece como métrica operacional separada.
+- Evaluator: la contribución solo existe si el triplete de auditoría está completo para todas las R del mundo.
+- Escenario no identificado: se descomponen las tasas de adjudicación/abstención; no se extrapolan errores puntuales o cobertura.
+- Ratios, métricas con denominador aleatorio y estimandos no lineales no incluidos en el registro: fuera de este contrato hasta disponer de una derivación específica.
+
+### 381.5 Contrastes entre escenarios y N
+
+Para un contraste entre dos escenarios A y B con mundos emparejados, primero se calcula Δ_m = q̄_m,A − q̄_m,B usando el world_id común. La incertidumbre exterior del contraste se calcula sobre la distribución de Δ_m, no restando errores estándar marginales. La descomposición within de Δ requiere además un contrato explícito de emparejamiento/coupling de las R entre escenarios; el mero uso del mismo índice r no basta. Hasta que exista ese contrato, la proyección M/R de contrastes se limita a la variabilidad observada de las diferencias por mundo y no recomienda reducir R a partir de una varianza within pareada no demostrada.
+
+Para N, los world_id actuales cambian con N. No se calcularán diferencias pareadas N-a-N ni se atribuirán cambios a precisión manteniendo el mundo fijo. La comparación será descriptiva entre tamaños/diseños hasta que un contrato de coupling defina la generación anidada de unidades, la conservación de q_X* y la correspondencia de unidades/mecanismos.
+
+### 381.6 Incertidumbre de componentes y salida
+
+El método para cuantificar incertidumbre de σ²_within y σ²_between debe respetar el muestreo anidado: mundos como clusters exteriores y R como repeticiones intramundo. Se requiere fijar el método antes de usar los resultados para dimensionar. Un bootstrap candidato tendría que remuestrear M mundos completos y, dentro de cada mundo remuestreado, R contribuciones; nunca tratar los M×R registros como IID. Su validez dependerá del contrato IID de M y de la intercambiabilidad condicional de R. Con M pequeño, componentes en frontera, métricas no evaluables o distribución muy discreta, se informará la inestabilidad y no se producirá una recomendación puntual. La elección final entre bootstrap anidado, modelo de efectos aleatorios u otro procedimiento queda OPEN y requiere validación metodológica antes de implementación.
+
+La salida por escenario × N × métrica contendrá: M/R observados; número de mundos y contribuciones válidas; q̄_m por mundo; MSW, MSB, componente between raw y within; estado/diagnóstico de componentes; MCSE observado reconciliado; proyecciones para la cuadrícula M*/R*; incertidumbre de cada componente/proyección; condición del contrato IID; denominador/elegibilidad; y huellas de inputs, método y versión. Para RMSE se reportarán también los cálculos en escala MSE. Las salidas pareadas y N-coupled tendrán estados independientes y no se generarán si sus contratos no están satisfechos.
+
+### 381.7 Dictamen y próximo gate
+
+Queda especificado un estimador candidato para separar variación entre mundos y variación de R en un diseño balanceado, con controles explícitos para componentes en frontera, RMSE, denominadores incompletos, emparejamiento y N. La reconciliación demuestra que el MCSE observado actual es compatible con la varianza total de las medias por mundo; no demuestra que los componentes separados estén ya implementados ni que el método de proyección haya sido validado.
+
+**Gate siguiente:** resolver la selección del método de incertidumbre de componentes y su validación analítica/sintética en fixtures controlados, incluyendo M pequeño, varianza between nula/cercana a cero, varianza within nula, denominadores incompletos, escenarios no identificados, RMSE cercano a cero y contrasts pareados sin coupling R. Solo tras esa decisión podrá formularse un contrato de implementación/tests estáticos. No se implementa ni ejecuta este apartado; no se generan bancos, calibración, Monte Carlo o experimento científico. PR #116 permanece Draft.
