@@ -76,7 +76,7 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
         self.assertEqual((result.lower_bound, result.upper_bound), (-1.0, 1.0))
 
     def test_missing_realized_arm_returns_indeterminate_not_sealer_or_analyzer_crash(self):
-        rows = (self.evidence.rows[0],)
+        rows = (dict(self.evidence.rows[0], q_x_sha256="source-qx"),)
         manifest = {"run_id": "run-1", "schema": "test"}
         sparse = SealedThetaAEvidence(
             "run-1", rows, manifest,
@@ -157,7 +157,7 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
             q_x_mass_by_history=(("h0", 0.4), ("h1", 0.6)),
             q_x_sha256="qx", assignment_bundle_sha256="ab",
             g_a0_sha256="ga0", g_a1_sha256="ga1", r_common_sha256="rc",
-            structural_support_contract=support,
+            structural_support_contract=support, source_q_x_sha256="source-qx",
         )
         result = ThetaAObservationAnalyzer().analyze(sparse, contract)
         self.assertEqual(result.identification, "NOT_IDENTIFIED")
