@@ -1,1 +1,1 @@
-Authorized EP-02 retry: evaluator now distinguishes source-only assigned units from target structural-support rows, preserving exact source roster verification while auditing target propensities only. Technical suite and replay only.
+Authorized EP-02 retry: source-only evidence remains in the assignment roster but is excluded from target truth, interval, and inferential aggregation; explicit regression assertions added. Technical suite and replay only.
