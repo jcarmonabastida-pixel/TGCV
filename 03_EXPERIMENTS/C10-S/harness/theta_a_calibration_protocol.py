@@ -1277,6 +1277,8 @@ def summarize_theta_a_calibration(
                             metric_values.setdefault(name, []).append(None)
                         if design.point_recovery_tolerance is not None:
                             metric_values.setdefault("point_recovery_rate", []).append(None)
+                        else:
+                            metric_values.setdefault("point_recovery_rate", []).append(None)
                     if all(x.inference_covered is not None and x.inference_width is not None for x in group):
                         metric_values.setdefault("interval_coverage", []).append(
                             (outer_id, sum(bool(x.inference_covered) for x in group) / r_count)
