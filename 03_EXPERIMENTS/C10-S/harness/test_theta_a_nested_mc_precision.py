@@ -28,6 +28,11 @@ class NestedPrecisionTests(unittest.TestCase):
             replicate_contributions=rows,
             summary_metric=self._summary(rows),
             outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            outer_world_sampling_contract_id="TEST-M-WORLD-IID",
+            outer_world_sampling_contract_version="1.0",
+            outer_world_sampling_independence_basis=(
+                "Test fixture: independently generated outer worlds from the declared target population."
+            ),
             within_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
             within_world_sampling_contract_id="TEST-R-ASSIGNMENT-IID",
             within_world_sampling_contract_version="1.0",
@@ -43,7 +48,7 @@ class NestedPrecisionTests(unittest.TestCase):
         self.assertAlmostEqual(result.observed_world_mean_variance, 4.0)
         self.assertAlmostEqual(result.observed_mcse, (4.0 / 3.0) ** 0.5)
         self.assertGreater(result.valid_bootstrap_replicates, 0)
-        self.assertLess(result.valid_bootstrap_replicates, 500)
+        self.assertEqual(result.valid_bootstrap_replicates, 500)
 
     def test_between_raw_is_preserved_when_negative(self):
         rows = ((0.0, 2.0), (0.0, 2.0), (0.0, 2.0))
@@ -69,6 +74,11 @@ class NestedPrecisionTests(unittest.TestCase):
             replicate_contributions=rows,
             summary_metric=self._summary(rows),
             outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            outer_world_sampling_contract_id="TEST-M-WORLD-IID",
+            outer_world_sampling_contract_version="1.0",
+            outer_world_sampling_independence_basis=(
+                "Test fixture: independently generated outer worlds from the declared target population."
+            ),
             projections=((3, 2),),
             bootstrap_replicates=500,
         )
@@ -116,6 +126,11 @@ class NestedPrecisionTests(unittest.TestCase):
             replicate_contributions=rows,
             summary_metric=self._summary(rows),
             outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            outer_world_sampling_contract_id="TEST-M-WORLD-IID",
+            outer_world_sampling_contract_version="1.0",
+            outer_world_sampling_independence_basis=(
+                "Test fixture: independently generated outer worlds from the declared target population."
+            ),
             projections=((3, 2),),
             bootstrap_replicates=500,
             bootstrap_seed=123,
@@ -130,6 +145,11 @@ class NestedPrecisionTests(unittest.TestCase):
             replicate_contributions=rows,
             summary_metric=self._summary(rows),
             outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            outer_world_sampling_contract_id="TEST-M-WORLD-IID",
+            outer_world_sampling_contract_version="1.0",
+            outer_world_sampling_independence_basis=(
+                "Test fixture: independently generated outer worlds from the declared target population."
+            ),
             projections=((2, 2),),
             bootstrap_replicates=500,
             bootstrap_seed=4,
@@ -155,6 +175,11 @@ class NestedPrecisionTests(unittest.TestCase):
             replicate_contributions=rows,
             summary_metric=summary,
             outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            outer_world_sampling_contract_id="TEST-M-WORLD-IID",
+            outer_world_sampling_contract_version="1.0",
+            outer_world_sampling_independence_basis=(
+                "Test fixture: independently generated outer worlds from the declared target population."
+            ),
             projections=((3, 2),),
             bootstrap_replicates=500,
             bootstrap_seed=8,
@@ -171,6 +196,11 @@ class NestedPrecisionTests(unittest.TestCase):
             replicate_contributions=rows,
             summary_metric=self._summary(rows),
             outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            outer_world_sampling_contract_id="TEST-M-WORLD-IID",
+            outer_world_sampling_contract_version="1.0",
+            outer_world_sampling_independence_basis=(
+                "Test fixture: independently generated outer worlds from the declared target population."
+            ),
             within_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
             within_world_sampling_contract_id="TEST-R-ASSIGNMENT-IID",
             within_world_sampling_contract_version="1.0",
@@ -201,6 +231,11 @@ class NestedPrecisionTests(unittest.TestCase):
             replicate_contributions=rows,
             summary_metric=summary,
             outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            outer_world_sampling_contract_id="TEST-M-WORLD-IID",
+            outer_world_sampling_contract_version="1.0",
+            outer_world_sampling_independence_basis=(
+                "Test fixture: independently generated outer worlds from the declared target population."
+            ),
             within_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
             within_world_sampling_contract_id="TEST-R-ASSIGNMENT-IID",
             within_world_sampling_contract_version="1.0",
@@ -224,6 +259,11 @@ class NestedPrecisionTests(unittest.TestCase):
                 replicate_contributions=rows,
                 summary_metric=self._summary(rows),
                 outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            outer_world_sampling_contract_id="TEST-M-WORLD-IID",
+            outer_world_sampling_contract_version="1.0",
+            outer_world_sampling_independence_basis=(
+                "Test fixture: independently generated outer worlds from the declared target population."
+            ),
                 within_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
                 projections=((3, 2),),
                 bootstrap_replicates=100,
@@ -236,6 +276,11 @@ class NestedPrecisionTests(unittest.TestCase):
             replicate_contributions=rows,
             summary_metric=self._summary(rows),
             outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            outer_world_sampling_contract_id="TEST-M-WORLD-IID",
+            outer_world_sampling_contract_version="1.0",
+            outer_world_sampling_independence_basis=(
+                "Test fixture: independently generated outer worlds from the declared target population."
+            ),
             within_world_sampling_mode="UNVERIFIED",
             projections=((3, 2),),
             bootstrap_replicates=200,
@@ -246,6 +291,33 @@ class NestedPrecisionTests(unittest.TestCase):
             "DESCRIPTIVE_ONLY_NO_IID_WITHIN_R_INFERENCE",
         )
         self.assertIsNone(result.projections[0][2])
+
+
+    def test_iid_outer_sampling_requires_versioned_contract_identity(self):
+        rows = ((0.0, 0.0), (1.0, 1.0), (2.0, 2.0))
+        with self.assertRaisesRegex(NestedPrecisionError, "versioned contract identity"):
+            analyze_nested_precision(
+                metric="identification_rate",
+                replicate_contributions=rows,
+                summary_metric=self._summary(rows),
+                outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+                within_world_sampling_mode="UNVERIFIED",
+                projections=((3, 2),),
+                bootstrap_replicates=100,
+            )
+
+    def test_all_same_source_cluster_draws_are_retained(self):
+        rows = ((0.0, 0.0), (1.0, 1.0), (2.0, 2.0))
+        result = analyze_nested_precision(
+            metric="identification_rate",
+            replicate_contributions=rows,
+            summary_metric=self._summary(rows),
+            outer_world_sampling_mode="UNVERIFIED",
+            projections=((3, 2),),
+            bootstrap_replicates=500,
+            bootstrap_seed=2,
+        )
+        self.assertEqual(result.valid_bootstrap_replicates, 500)
 
 
 if __name__ == "__main__":
