@@ -1015,3 +1015,44 @@ Se corrigió la vinculación de procedencia en la captura:
 **EP-02 Run 852:** `44337524579`, commit probado `9b10ae3235dae0c28837a45aa824858a2fb27a7c`, SUCCESS. Suite de 16 módulos: 315/315 PASS en primaria y 315/315 PASS en replay limpio. Payload artifact `14441238525`, digest ZIP `0d56ecf8ac014250400a999bbf9a78133465754e8630e59e790d4b9dcbbec6dc`; manifest artifact `14441468115`, digest ZIP `e1f7d5af43055d67d4ece0c7e835d628de55e40f025945febea13b1fc3a28491`.
 
 **Alcance:** PASS técnico del contrato de captura y de la suite EP-02/replay. No valida el runner de calibración, el roster tipado, el rendimiento estadístico, MCSE observado ni la recuperación causal. No se generó banco de seeds ni se ejecutó Monte Carlo/calibración. La workflow temporal por push fue retirada y el workflow queda exclusivamente `workflow_dispatch` con confirmación explícita.
+
+
+## 352. Perfil DGP tipado y adjudicación exacta de abstención en el protocolo θ_A — EP-02 Run 854 (2026-11-18)
+
+Se cierra una parte de la brecha del protocolo de calibración identificada en §348.3–§348.5, sin congelar el roster ni iniciar calibración.
+
+### 352.1 Contrato tipado y vínculo con el diseño
+
+Se añade \`ThetaACalibrationDGPProfile\`, que vincula:
+- identidad y versión del perfil sintético;
+- fingerprints de q_X objetivo y población fuente;
+- identidad y versión del contrato de soporte estructural;
+- relación declarada entre soportes (igualdad, fuente estrictamente mayor o historias objetivo fuera del soporte fuente);
+- referencias y masas de las historias objetivo no soportadas;
+- token exacto de abstención esperado.
+
+Los escenarios \`NOT_IDENTIFIED\` requieren un perfil tipado con causa esperada explícita. Su fingerprint canónico entra en la derivación de identidades/semillas N×M×R y queda registrado en cada \`ThetaASeedAssignment\`. La validación de semillas recalcula esa derivación, por lo que cambiar el perfil altera la identidad reproducible del diseño.
+
+### 352.2 Captura y procedencia
+
+\`capture_theta_a_replicate()\` contrasta el perfil con el contrato estructural realmente materializado: fingerprints fuente/objetivo, ID/versión del contrato, conjunto exacto de historias objetivo sin soporte y sus masas, relación source-only cuando corresponde y digest estructural reportado por Analyzer. El registro captura el fingerprint del perfil, la causa esperada, la causa observada y la masa objetivo no soportada.
+
+Una causa observada distinta no se transforma en error de procedencia ni se oculta: se conserva para que la calibración mida la adjudicación incorrecta. Las incoherencias entre perfil y contrato materializado sí fallan cerradas.
+
+### 352.3 Métricas de adjudicación
+
+Para escenarios cuyo estado esperado es \`NOT_IDENTIFIED\`, el agregador separa:
+- abstención correcta: Analyzer devuelve exactamente \`NOT_IDENTIFIED\` y el token observado coincide con la causa esperada;
+- abstención por causa incorrecta: Analyzer devuelve \`NOT_IDENTIFIED\` o \`INDETERMINATE\` sin esa pareja exacta estado/causa;
+- identificación parcial, como categoría independiente;
+- falsa identificación, cuando Analyzer devuelve \`IDENTIFIED\`.
+
+La regresión del protocolo fuerza las cuatro categorías y añade tanto un \`NOT_IDENTIFIED\` con token equivocado como un \`INDETERMINATE\` por ausencia finita de brazo. Ninguno se contabiliza como abstención estructural correcta. Se elimina así la regla anterior que consideraba cualquier resultado distinto de \`IDENTIFIED\` como éxito.
+
+### 352.4 Validación técnica y límite de evidencia
+
+**EP-02 Run 854:** GitHub Actions \`44340655791\`, commit probado \`2cb1f44f4f4c9aea1372d317359f039263dbf047\`; compilación PASS, 315/315 pruebas primarias PASS y 315/315 replay limpio PASS. Tiempos: 13.742 s y 13.694 s. Payload \`14443996431\` (SHA-256 \`ad041634ecb46af8b035b303ae7a91b2b4c6b1a7e58b74f77c5b83afe0d086e0\`); manifiesto \`14443816333\` (SHA-256 \`be3123bf7897020ac179cb845e8d23e43a5bdb2d3b60edd47ea616f8e1f355a8\`).
+
+El workflow fue restaurado a \`workflow_dispatch\` con confirmación explícita; el sentinel temporal fue eliminado. Commits de restauración/eliminación: \`bb2eafe985e75637ed8942286fc4826809400858\` / \`b0506ce709d1171c03f2dda760c53a14f50d77fd\`.
+
+**Límite:** Run 854 valida contratos de software, derivación de semillas y lógica de agregación. La regresión de agregación todavía utiliza registros deliberadamente construidos; no prueba que un runner haya ejecutado cada réplica real. Sigue pendiente construir y validar el runner que materialice cada mundo N×M y cada asignación R por la cadena DGP → asignación → S3/seal → Analyzer → Evaluator y capture el resultado real mediante \`capture_theta_a_replicate()\`. No se genera banco de calibración, no se ejecuta Monte Carlo ni calibración científica y el roster sigue \`NOT_FROZEN\`. No cambia Gate 130, el estimando ni las autorizaciones científicas.
