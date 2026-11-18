@@ -132,13 +132,16 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
             with self.assertRaises(ContractError):
                 adjudicate_theta_a_structural_support(contract)
 
-    def test_structural_support_contract_rejects_zero_or_invalid_assignment_probability(self):
+    def test_structural_assignment_positivity_failure_is_not_identified_separately(self):
         contract = ThetaAStructuralSupportContract(
             "support-fixture", "1.0", "target-qx-sha", "source-qx-sha",
             (ThetaAStructuralSupportRow("h0", 1.0, 1.0, True, True, True, 0.0),),
         )
-        with self.assertRaises(ContractError):
-            adjudicate_theta_a_structural_support(contract)
+        result = adjudicate_theta_a_structural_support(contract)
+        self.assertEqual(result.status, "NOT_IDENTIFIED")
+        self.assertEqual(result.reason, "SOURCE_ASSIGNMENT_POSITIVITY_FAILURE")
+        self.assertEqual(result.unsupported_target_histories, ())
+        self.assertEqual(result.assignment_positivity_failure_histories, ("h0",))
 
     def test_structural_target_source_support_reaches_analyzer_not_identified(self):
         rows = (dict(self.evidence.rows[0], q_x_sha256="source-qx"),)
