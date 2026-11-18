@@ -25,6 +25,7 @@ from theta_a_calibration_protocol import (
     validate_theta_a_seed_banks,
     _validate_interval_s3_seed_provenance,
     _validate_truth_assignment_population_bindings,
+    # Nested precision is exercised against all registered metric contributions below.
 )
 
 
@@ -545,6 +546,157 @@ class ThetaACalibrationProtocolTests(unittest.TestCase):
         )
         self.assertTrue(all(abs(value - 0.01) < 1e-12 for world in rmse_mse for value in world))
 
+
+
+    def test_nested_contribution_contract_covers_all_sixteen_registered_metrics(self):
+        identified = self._design().scenario_specs[0]
+        nonidentified = ThetaACalibrationScenario(
+            scenario_id="THETA_A_NO_SUPPORT", scenario_version="1.0",
+            world_version="world-v1", dgp_id="C10S-THETA-A", dgp_version="1.0",
+            roster_version="1.0", unit_id_prefix="unit",
+            expected_identification="NOT_IDENTIFIED", unit_independence_certified=False,
+            dgp_profile=ThetaACalibrationDGPProfile(
+                profile_id="THETA_A_TARGET_SUPPORT_PROFILE", profile_version="1.0",
+                structural_support_contract_id="THETA_A_STRUCTURAL_SUPPORT",
+                structural_support_contract_version="1.0",
+                support_relation="TARGET_HAS_UNSUPPORTED_HISTORIES",
+                target_unsupported_history_masses=(("h-target-only", 0.25),),
+                expected_abstention_reason="TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
+            ),
+        )
+        design = replace(
+            self._design(),
+            scenario_specs=(identified, nonidentified),
+            metric_targets=(),
+            metric_target_manifest_id=None,
+            metric_target_manifest_version=None,
+        )
+        assignments = build_theta_a_seed_bank(design, "calibration")
+        records = []
+        for row in assignments:
+            if row.scenario_id == identified.scenario_id:
+                record = self._record(
+                    row, "IDENTIFIED", "IDENTIFIED", 0.3, 0.1, 0.4,
+                    True, 0.3, design.confidence_level,
+                )
+            else:
+                record = self._record(
+                    row, "NOT_IDENTIFIED", "NOT_IDENTIFIED", None, None, None,
+                    None, None, None,
+                    expected_reason="TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
+                    observed_reason="TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT",
+                    unsupported_mass=0.25,
+                )
+            records.append(replace(
+                record,
+                evaluator_truth_within_bounds=True,
+                evaluator_correct_adjudication=True,
+                evaluator_disposition="CORRECT",
+            ))
+
+        by_scenario = {identified.scenario_id: identified, nonidentified.scenario_id: nonidentified}
+        records_by_scenario = {
+            scenario_id: tuple(row for row in records if row.scenario_id == scenario_id)
+            for scenario_id in by_scenario
+        }
+        tested_metrics = set()
+        for spec in THETA_A_METRIC_REGISTRY:
+            applicable = (
+                (identified,) if spec.applicability == "IDENTIFIED"
+                else (nonidentified,) if spec.applicability == "NOT_IDENTIFIED"
+                else (identified, nonidentified)
+            )
+            for scenario in applicable:
+                values = theta_a_nested_metric_contributions(
+                    design, scenario, records_by_scenario[scenario.scenario_id],
+                    n_units=4, metric=spec.metric,
+                )
+                self.assertIsNotNone(values, (spec.metric, scenario.scenario_id))
+                self.assertEqual(len(values), design.outer_worlds_m)
+                self.assertTrue(all(
+                    len(world) == design.assignment_replicates_r for world in values
+                ))
+                world_means = tuple(sum(world) / len(world) for world in values)
+                summary_mean = sum(world_means) / len(world_means)
+                if spec.metric == "point_rmse":
+                    summary_mean = summary_mean ** 0.5
+                summary = SimpleNamespace(
+                    metric=spec.metric,
+                    mean=summary_mean,
+                    mcse=None,
+                    outer_world_contributions=tuple(
+                        (f"outer-{index:06d}", value)
+                        for index, value in enumerate(world_means)
+                    ),
+                )
+                from theta_a_nested_mc_precision import analyze_nested_precision
+                result = analyze_nested_precision(
+                    metric=spec.metric,
+                    replicate_contributions=values,
+                    summary_metric=summary,
+                    outer_world_sampling_mode="UNVERIFIED",
+                    projections=((2, 2),),
+                    bootstrap_replicates=100,
+                    bootstrap_seed=17,
+                )
+                self.assertEqual(result.metric, spec.metric)
+                self.assertEqual(result.status, "INSUFFICIENT_OUTER_SUPPORT")
+                tested_metrics.add(spec.metric)
+
+        self.assertEqual(tested_metrics, {spec.metric for spec in THETA_A_METRIC_REGISTRY})
+        # Applicability is fail-closed: identified-only and nonidentified-only
+        # metrics cannot be manufactured for the opposite truth class.
+        for spec in THETA_A_METRIC_REGISTRY:
+            if spec.applicability == "IDENTIFIED":
+                self.assertIsNone(theta_a_nested_metric_contributions(
+                    design, nonidentified, records_by_scenario[nonidentified.scenario_id],
+                    n_units=4, metric=spec.metric,
+                ))
+            elif spec.applicability == "NOT_IDENTIFIED":
+                self.assertIsNone(theta_a_nested_metric_contributions(
+                    design, identified, records_by_scenario[identified.scenario_id],
+                    n_units=4, metric=spec.metric,
+                ))
+
+    def test_nested_extraction_abstains_on_missing_r_or_required_denominator(self):
+        design = self._design()
+        scenario = design.scenario_specs[0]
+        assignments = build_theta_a_seed_bank(design, "calibration")
+        complete = tuple(
+            self._record(
+                row, "IDENTIFIED", "IDENTIFIED", 0.3, 0.1, 0.4,
+                True, 0.3, design.confidence_level,
+            )
+            for row in assignments
+        )
+        self.assertIsNone(theta_a_nested_metric_contributions(
+            design, scenario, complete[:-1], n_units=4, metric="point_bias",
+        ))
+
+        missing_interval = list(complete)
+        missing_interval[0] = replace(
+            missing_interval[0],
+            inference_lower_bound=None, inference_upper_bound=None,
+            inference_covered=None, inference_width=None,
+        )
+        self.assertIsNone(theta_a_nested_metric_contributions(
+            design, scenario, missing_interval, n_units=4, metric="interval_coverage",
+        ))
+        self.assertIsNotNone(theta_a_nested_metric_contributions(
+            design, scenario, missing_interval, n_units=4, metric="interval_availability_rate",
+        ))
+
+        missing_evaluator = list(complete)
+        missing_evaluator[0] = replace(
+            missing_evaluator[0],
+            evaluator_truth_within_bounds=None,
+            evaluator_correct_adjudication=None,
+            evaluator_disposition=None,
+        )
+        self.assertIsNone(theta_a_nested_metric_contributions(
+            design, scenario, missing_evaluator, n_units=4,
+            metric="evaluator_correct_adjudication_rate",
+        ))
 
 
 if __name__ == "__main__":
