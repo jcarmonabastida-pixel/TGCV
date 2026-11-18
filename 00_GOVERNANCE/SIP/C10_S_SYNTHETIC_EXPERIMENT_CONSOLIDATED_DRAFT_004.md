@@ -1104,3 +1104,50 @@ Se completa la validación de captura para ambas fronteras de soporte fuente/obj
 Workflow restaurado a workflow_dispatch con confirmación explícita y sentinel eliminado. Commits de restauración/eliminación: 5675b681ccadabfac73712d760d2403dd1713c8c / eb1d7ccaf93c1bf7c8c0cbbffb40392bc2155859.
 
 **Alcance:** evidencia de contrato software y captura para ambos sentidos de diferencia de soporte. No acredita todavía una fábrica canónica de los cinco escenarios ni la ejecución completa N×M×R del quinto escenario a través de dicha fábrica. No se generó banco de calibración/evaluación, no se ejecutó Monte Carlo ni calibración científica, y el roster permanece NOT_FROZEN.
+
+
+## 355. Fábrica DGP tipada para los cinco escenarios candidatos y mundos basales emparejados — implementación estática (2026-11-18)
+
+Se implementa la siguiente capa de configuración/materialización reutilizando el roster candidato de §336 y su quinto escenario añadido en §348. No se crea un roster nuevo ni se congelan sus parámetros.
+
+### 355.1 Roster candidato tipado
+
+`build_theta_a_candidate_scenario_roster()` en `theta_a_calibration_protocol.py` devuelve exactamente cinco contratos:
+
+| Escenario | Variante del generador | Truth analítica declarada | Identificación esperada |
+|---|---|---:|---|
+| `THETA_A_POSITIVE_V1` | positive | +0,5 | IDENTIFIED |
+| `THETA_A_NULL_V1` | null | 0 | IDENTIFIED |
+| `THETA_A_NEGATIVE_V1` | negative | −0,5 | IDENTIFIED |
+| `THETA_A_ALTERNATIVE_COMMON_V1` | alternative | 0 | IDENTIFIED |
+| `THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1` | positive + target-only | No se predeclara; la calcula el Evaluator reservado | NOT_IDENTIFIED |
+
+El quinto perfil mantiene la masa target-only candidata de 0,5 y la causa exacta `TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`. Su truth numérica no se fija artificialmente: la verdad reservada se materializa y registra desde el Evaluator. El perfil tipado vincula variante del generador, relación de soportes, contrato estructural, masas y causa esperada; el fingerprint del perfil participa en la identidad reproducible del escenario.
+
+La regresión source-superset/target-subset sigue siendo un control benigno separado y no se convierte en un sexto escenario focal.
+
+### 355.2 Fábrica DGP reutilizable y cadena completa
+
+Se extraen los constructores existentes de la fixture de integración a `theta_a_calibration_dgp.py::ThetaACalibrationDGPFactory`. La fábrica acepta una asignación de semilla y un escenario declarado; materializa el mundo basal, D2, potenciales estructurales, Reach/trajectory, EventHistory funcional, observación S3, sellado, Analyzer y Evaluator. Para soporte igual crea el contrato estructural igual; para target-only materializa la historia objetivo tipada, sus políticas factibles, r_common y soporte estructural, sin incorporarla al roster fuente aleatorizado.
+
+El runner existente `run_theta_a_calibration_replicates()` puede consumir ahora esta fábrica como executor común para los cinco escenarios y capturar cada resultado mediante `capture_theta_a_replicate()`. La captura contrasta las cuatro truths analíticas ya establecidas en §336 con el Evaluator; en el quinto escenario registra la truth independiente sin imponer un valor numérico no establecido por el contrato histórico.
+
+### 355.3 Identidad de mundo basal compartido y streams separados
+
+§336 establece que positivo y alternativa común comparten mundo/población basal; §348 añade target-only sobre la misma base positiva. La derivación anterior usaba scenario ID para generar también la identidad del mundo, por lo que no podía cumplir esa relación al pasar a N×M×R.
+
+Se separan ahora:
+- **Identidad basal:** `world_family_id`, N y M determinan `world_seed`, `world_id`, `roster_id` y `unit_id_prefix`. Positivo, alternativa común y target-only comparten `THETA_A_INTERACTION_BASE_V1`.
+- **Identidad de escenario/R:** scenario ID/versión, fingerprint DGP y R determinan `run_id`, `randomization_salt` y `s3_seed`, que permanecen distintos entre escenarios y réplicas.
+
+El cambio de semántica de derivación queda versionado como `TGCV-C10S-THETA-A-SEED-v2`. `ThetaASeedAssignment` conserva `world_family_id`; la validación comprueba identidad idéntica dentro de cada familia×N×M, distinción entre familias/M y unicidad de streams de asignación/S3. Los bancos de calibración y evaluación siguen separados por namespace de banco.
+
+### 355.4 Métricas inaplicables y pruebas de integración
+
+El agregador materializa como `NOT_EVALUABLE` las métricas propias de escenarios identificados que no aplican a `NOT_IDENTIFIED`: false-abstention, bias, MAE, RMSE, point-recovery, interval coverage y interval width. No se imputan ceros ni se omiten por complete-case. La disponibilidad de intervalos, la abstención correcta, la causa incorrecta, la identificación parcial y la falsa identificación conservan sus métricas diferenciadas.
+
+Se añaden regresiones para: roster tipado de cinco escenarios; mundos compartidos con streams por escenario separados; captura target-only a través de la cadena real; ejecución de software N×M×R de los cinco escenarios mediante la fábrica; y métricas identificadas-only `NOT_EVALUABLE`.
+
+### 355.5 Estado y límites
+
+**Estado:** IMPLEMENTED / STATIC_REVIEW_ONLY / NOT_EXECUTED / ROSTER_NOT_FROZEN. La prueba N=32, M=2, R=2 es una fixture de regresión de software, no una propuesta de dimensionamiento ni una calibración. Las pruebas nuevas no se han compilado ni ejecutado: la autorización puntual de tests técnicos está consumida y no se ha solicitado otra. No se generaron seeds/bancos, no se invocó el runner, no se ejecutó calibración, evaluación, Monte Carlo ni experimento científico. Los valores N/M/R, objetivos MCSE, tolerancias, type-I error/potencia y el freeze del roster siguen abiertos conforme a §330/§336/§348. No se modifica Gate 130, el estimando, las decisiones científicas, `main` ni el estado de autorización.
