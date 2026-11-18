@@ -813,3 +813,24 @@ A structural-support row with positive source mass must declare strict two-arm a
 A focused Evaluator source test now checks a target distribution over h0/h1 against a source containing only h0 and expects `CORRECT_ABSTENTION`. This is still a component-level fixture, not a generated DGP world. `SyntheticWorldBundle`, assignment generation, and EventHistory truth construction remain coupled to the same roster/q_X. A real end-to-end fixture still requires a separate test-only target-history potential population, explicit policy feasibility on the complete target, and truth construction that can retain target histories without source assignment units. No Gate 130 B1/UE materialization authority is inferred.
 
 Static source changes only. EP-02/replay were not run; no calibration, seed bank, Monte Carlo or scientific execution occurred. Status: EVALUATOR_TARGET_SOURCE_CHECKS_IMPLEMENTED / WORLD_GENERATOR_TRUTH_DECOUPLING_OPEN / NOT_DYNAMICALLY_VALIDATED.
+### Generated target/source q_X separation — end-to-end structural abstention (2026-11-18)
+
+The focal direct-g_A pipeline now accepts a distinct target `theta_a_q_x` and a one-to-one `theta_a_unit_id_by_history` map while retaining `SyntheticWorldBundle.q_x` as the source assignment population. The target support can include histories absent from the source roster. For those target-only histories, the DGP functional-history generator materializes reserved g_A EventHistories under separate synthetic potential-unit identities; these units are never inserted into the source world roster or randomized assignment bundle.
+
+Both g_A policy maps, the feasible-vector map and `r_common` certificates cover the complete target support. The assignment mechanism remains source-only: its probability contract covers source histories, and assignments are generated only for `world.units`. Assignment provenance hashes the full target policy/certificate maps while retaining the source q_X fingerprint. The truth constructor computes the evaluator-only V_CONT contrast over the complete target q_X and validates each EventHistory against the explicit target history→potential-unit identity map.
+
+The complete-world DGP pipeline passes the target q_X fingerprint to the estimand and the source q_X fingerprint to assignment/evidence provenance. When a structural-support contract is supplied, the pipeline independently checks that its target/source fingerprints match the generated distributions and that each row's source mass reproduces the actual source q_X. The Analyzer then adjudicates structural non-overlap before point/interval measurement analysis. The Evaluator verifies the same support-contract seal, source assignment/evidence binding, target reserved truth and abstention bounds; interval-measurement checks do not override an earlier structural non-identification.
+
+New end-to-end regression: `test_structural_target_source_nonoverlap_runs_through_generated_world_to_evaluator`. It composes a four-unit source world with a five-history target distribution (four overlapping histories carrying 0.5 total target mass plus one target-only history carrying 0.5), generates the target-only policy potentials, assigns only the four source units, seals the realized interval evidence, and requires Analyzer `NOT_IDENTIFIED / TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT` plus Evaluator `CORRECT_ABSTENTION` with the reserved target truth covered. This is a synthetic software-contract fixture, not an approved B1/UE roster or a scientific population claim.
+
+### EP-02 Run 833 — generated structural target/source support validation (2026-11-18)
+
+- **Result:** PASS. GitHub Actions run `44211416128`, run number 833, tested commit `a14a93e5743ccd09c6396a9b67573563994add82`.
+- **Compilation:** PASS for the exact integrated source/test allowlist.
+- **Primary suite:** **307/307 PASS** in 10.262 s.
+- **Clean replay:** **307/307 PASS** in 10.227 s, from an independently materialized, byte-identical source closure.
+- The new generated target/source end-to-end regression and independent Evaluator structural-abstention regression passed in both primary and replay.
+- **Artifacts:** payload ID `14386501382`; execution manifest ID `14385987836`.
+- The workflow was restored to its original `workflow_dispatch`-only research-branch authorization gate in commit `dee4d4a8fce721f63a00d190e99f7896a508dc7c`; the restored workflow blob SHA is `28471861a1c94038a11b5997a0b0e761b2659466`.
+
+This is bounded software-contract evidence for the generated structural-abstention path. It does not validate the calibration design, MCSE, power, Type-I error, scientific identification or the causal contribution of accessibility. No calibration bank, Monte Carlo calibration or scientific execution was run. Status: `PASS_STATIC + PASS_DYNAMIC_EP02 / 307+307 / REPLAY_PASS / STRUCTURAL_TARGET_SOURCE_ABSTENTION_PATH_TESTED / CALIBRATION_ROSTER_NOT_FROZEN`.
