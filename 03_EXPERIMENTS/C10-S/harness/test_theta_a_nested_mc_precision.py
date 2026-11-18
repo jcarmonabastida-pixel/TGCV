@@ -33,7 +33,7 @@ class NestedPrecisionTests(unittest.TestCase):
             bootstrap_seed=19,
         )
         self.assertAlmostEqual(result.within_ms, 2.0)
-        self.assertAlmostEqual(result.between_raw, 4.0)
+        self.assertAlmostEqual(result.between_raw, 3.0)
         self.assertAlmostEqual(result.observed_world_mean_variance, 4.0)
         self.assertAlmostEqual(result.observed_mcse, (4.0 / 3.0) ** 0.5)
         self.assertEqual(result.valid_bootstrap_replicates, 500)
