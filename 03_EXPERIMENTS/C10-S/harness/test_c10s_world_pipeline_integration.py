@@ -57,7 +57,7 @@ from theta_a_interval_observation import IntervalMonitorConfig
 from theta_a_calibration_protocol import (
     ThetaACalibrationDesign, ThetaACalibrationDGPProfile, ThetaACalibrationScenario,
     build_theta_a_seed_bank, capture_theta_a_replicate,
-    s3_seeds_by_unit, summarize_theta_a_calibration,
+    run_theta_a_calibration_replicates, s3_seeds_by_unit, summarize_theta_a_calibration,
     theta_a_pipeline_inference_options,
 )
 
@@ -775,15 +775,13 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             namespace="theta-a-world-pipeline-integration-test-v1",
         )
         assignments = build_theta_a_seed_bank(design, "calibration")
-        records = []
-        for assignment in assignments:
-            fixture = self._fixture("positive", seed_assignment=assignment)
-            inference_options = theta_a_pipeline_inference_options(design, scenario)
-            result = self._run_pipeline(fixture, **inference_options)
-            records.append(capture_theta_a_replicate(
-                result, assignment, scenario,
-                requested_confidence_level=design.confidence_level,
-            ))
+        records = run_theta_a_calibration_replicates(
+            design, assignments,
+            lambda assignment, scenario, options: self._run_pipeline(
+                self._fixture("positive", seed_assignment=assignment), **options,
+            ),
+            bank="calibration", execution_authorized=True,
+        )
         summaries = summarize_theta_a_calibration(
             design, assignments, records, bank="calibration",
         )
