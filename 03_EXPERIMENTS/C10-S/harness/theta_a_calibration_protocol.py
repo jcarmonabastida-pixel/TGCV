@@ -668,8 +668,8 @@ def capture_theta_a_replicate(
         raise ThetaACalibrationError("complete-world result does not match its focal M/R seed assignment")
     if (scenario.scenario_id, scenario.scenario_version) != (
         assignment.scenario_id, assignment.scenario_version
-    ):
-        raise ThetaACalibrationError("scenario contract differs from focal seed assignment")
+    ) or assignment.dgp_profile_sha256 != scenario.dgp_profile_sha256:
+        raise ThetaACalibrationError("scenario/DGP profile contract differs from focal seed assignment")
     evaluation = result.evaluator_result
     truth_bundle = result.theta_a_truth.theta_a_truth
     profile = scenario.dgp_profile
