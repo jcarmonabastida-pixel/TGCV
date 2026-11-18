@@ -176,7 +176,7 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
             q_x_mass_by_history=(("h0", 1.0),), q_x_sha256="qx",
             assignment_bundle_sha256="ab", g_a0_sha256="ga0",
             g_a1_sha256="ga1", r_common_sha256="rc",
-            structural_support_contract=support,
+            structural_support_contract=support, source_q_x_sha256="source-qx",
         )
         with self.assertRaises(ContractError):
             ThetaAObservationAnalyzer().analyze(self.evidence, contract)
