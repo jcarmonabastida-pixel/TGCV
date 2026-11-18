@@ -139,5 +139,46 @@ class ThetaAObservationAnalyzerTests(unittest.TestCase):
         with self.assertRaises(ContractError):
             adjudicate_theta_a_structural_support(contract)
 
+    def test_structural_target_source_support_reaches_analyzer_not_identified(self):
+        rows = (self.evidence.rows[0],)
+        manifest = {"run_id": "run-1", "schema": "test"}
+        sparse = SealedThetaAEvidence(
+            "run-1", rows, manifest,
+            _hash({"manifest": manifest, "rows": rows}),
+        )
+        support = ThetaAStructuralSupportContract(
+            "support-fixture", "1.0", "qx", "source-qx",
+            (
+                ThetaAStructuralSupportRow("h0", 0.4, 1.0, True, True, True, 0.5),
+                ThetaAStructuralSupportRow("h1", 0.6, 0.0, True, True, True, 0.5),
+            ),
+        )
+        contract = ThetaAObservationAnalysisContract(
+            q_x_mass_by_history=(("h0", 0.4), ("h1", 0.6)),
+            q_x_sha256="qx", assignment_bundle_sha256="ab",
+            g_a0_sha256="ga0", g_a1_sha256="ga1", r_common_sha256="rc",
+            structural_support_contract=support,
+        )
+        result = ThetaAObservationAnalyzer().analyze(sparse, contract)
+        self.assertEqual(result.identification, "NOT_IDENTIFIED")
+        self.assertEqual(result.abstention_reason, "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT")
+        self.assertEqual(result.missing_target_histories, ("h1",))
+        self.assertAlmostEqual(result.target_q_x_coverage, 0.4)
+        self.assertIsNone(result.point_estimate)
+        self.assertTrue(result.structural_support_sha256)
+
+    def test_structural_support_target_fingerprint_must_bind_analysis_qx(self):
+        support = ThetaAStructuralSupportContract(
+            "support-fixture", "1.0", "wrong-qx", "source-qx",
+            (ThetaAStructuralSupportRow("h0", 1.0, 1.0, True, True, True, 0.5),),
+        )
+        contract = ThetaAObservationAnalysisContract(
+            q_x_mass_by_history=(("h0", 1.0),), q_x_sha256="qx",
+            assignment_bundle_sha256="ab", g_a0_sha256="ga0",
+            g_a1_sha256="ga1", r_common_sha256="rc",
+            structural_support_contract=support,
+        )
+        with self.assertRaises(ContractError):
+            ThetaAObservationAnalyzer().analyze(self.evidence, contract)
 if __name__ == "__main__":
     unittest.main()
