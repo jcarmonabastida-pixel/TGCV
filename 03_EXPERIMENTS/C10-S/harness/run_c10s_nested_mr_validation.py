@@ -10,6 +10,7 @@ import hashlib
 import json
 import math
 import os
+import numpy as np
 from pathlib import Path
 import platform
 import sys
@@ -126,7 +127,7 @@ def analyze_fixture(dataset, bootstrap_replicates: int | None = None) -> dict[st
         "intervals_95": intervals,
         "projected_mcse_interval": [projection[2], projection[3]],
         "projected_mcse_status": projection[4],
-        "true_mcse": math.sqrt(
+        "true_mcse": None if dataset.metric == "point_rmse" else math.sqrt(
             spec.true_between / spec.m
             + spec.true_within / (spec.m * spec.r)
         ),
@@ -335,6 +336,10 @@ def run_tier(
         root / "03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_validation.py",
         root / "03_EXPERIMENTS/C10-S/harness/theta_a_nested_mc_precision.py",
         root / "03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock",
+        root / "03_EXPERIMENTS/C10-S/harness/validate_c10s_nested_mr_execution_authorization.py",
+        root / ".github/workflows/c10-s-nested-mr-numerical-validation.yml",
+        root / "00_GOVERNANCE/SIP/C10_S_NESTED_MR_BOOTSTRAP_NUMERICAL_EXECUTION_CONTRACT_DRAFT_001.md",
+        root / "03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_validation.py",
     ]
     source_hashes = {
         str(path.relative_to(root)): {"sha256": sha256_file(path), "bytes": path.stat().st_size}
@@ -389,7 +394,7 @@ def run_tier(
         summary["protocol_sha256"] = protocol_hash
         summary["authorization_id"] = authorization["authorization_id"]
         summary["records_sha256"] = sha256_file(cell_path)
-        summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False) + "\\n", encoding="utf-8")
+        summary_path.write_text(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
         summaries.append(summary)
         records_index.append({
             "cell_id": spec.cell_id, "records": cell_path.name,
@@ -421,10 +426,12 @@ def run_tier(
         "python": sys.version,
         "platform": platform.platform(),
         "architecture": platform.machine(),
+        "numpy": np.__version__,
         "source_hashes": source_hashes,
         "cells": summaries,
         "record_files": records_index,
         "deterministic_guards": guards,
+        "deterministic_guards_sha256": sha256_file(output_dir / "deterministic_guards.json") if guards else None,
         "scope_exclusions": [
             "no C10-S Generator, Analyzer or Evaluator execution",
             "no C10 DGP, calibration bank, seed bank or scientific workflow",
@@ -434,7 +441,7 @@ def run_tier(
         ],
     }
     manifest_path = output_dir / "run_manifest.json"
-    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True, allow_nan=False) + "\\n", encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
     output_paths = [
         item for item in output_dir.iterdir()
         if item.is_file() and item.name != "SHA256SUMS.txt" and not item.name.endswith(".tmp")
@@ -443,7 +450,7 @@ def run_tier(
         f"{sha256_file(item)}  {item.name}"
         for item in sorted(output_paths, key=lambda item: item.name)
     ]
-    (output_dir / "SHA256SUMS.txt").write_text("\\n".join(checksum_lines) + "\\n", encoding="utf-8")
+    (output_dir / "SHA256SUMS.txt").write_text("\n".join(checksum_lines) + "\n", encoding="utf-8")
     return manifest
 
 
