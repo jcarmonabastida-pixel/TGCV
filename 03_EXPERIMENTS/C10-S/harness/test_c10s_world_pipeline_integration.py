@@ -20,6 +20,7 @@ from c10s_synthetic_components import (
     FunctionalState,
     IntervalGrid,
     JointPolicyHistory,
+    QXHistoryMass,
     RCommonPairCertificate,
     SyntheticWorldBuilder,
     digest,
@@ -29,6 +30,7 @@ from c10s_synthetic_components import (
     S3ObservationConfig,
     S3SequenceKernelRow,
 )
+from theta_a_analyzer import ThetaAStructuralSupportRow, ThetaAStructuralSupportContract
 from c10s_functional_history import (
     FunctionalHistoryDGPConfig,
     FunctionalHistoryRule,
@@ -386,6 +388,7 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             outcome_version="VCONT-B1-1",
             evaluation_tolerance=0.25,
             **measurement_args,
+            **fixture.get("theta_a_population_args", {}),
             theta_a_confidence_level=(None if point_s3 else theta_a_confidence_level),
             theta_a_unit_independence_certified=(
                 theta_a_unit_independence_certified
@@ -393,6 +396,63 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 else theta_a_confidence_level is not None
             ),
         )
+
+    def test_structural_target_source_nonoverlap_runs_through_generated_world_to_evaluator(self):
+        fixture = self._fixture(n_units=4)
+        world = SyntheticWorldBuilder().generate(fixture["world_config"], fixture["d2_config"])
+        extra_ref = "TARGET-ONLY-HISTORY-001"
+        extra_unit_id = "TARGET-ONLY-UNIT-001"
+        target_q_x = tuple(
+            QXHistoryMass(row.history_ref, row.x_ref, row.h0_ref, row.c_c_ref, row.mass * 0.5)
+            for row in world.q_x
+        ) + (QXHistoryMass(extra_ref, "TARGET-X-001", "TARGET-H0-001", "TARGET-CC-001", 0.5),)
+        source_unit_ids = {
+            unit.d2_baseline.baseline_history_ref: unit.unit_id for unit in world.units
+        }
+        target_unit_ids = {**source_unit_ids, extra_ref: extra_unit_id}
+        zero_vector = fixture["g_a0"][0].distribution[0][0]
+        one_vector = fixture["g_a1"][0].distribution[0][0]
+        fixture["g_a0"] = fixture["g_a0"] + (JointPolicyHistory(extra_ref, ((zero_vector, 1.0),)),)
+        fixture["g_a1"] = fixture["g_a1"] + (JointPolicyHistory(extra_ref, ((one_vector, 1.0),)),)
+        fixture["r_common"] = fixture["r_common"] + (
+            RCommonPairCertificate(
+                extra_ref, "R-COMMON", "1",
+                fixture["r_common"][0].g_a0_fingerprint,
+                fixture["r_common"][0].g_a1_fingerprint, "COMMON_FIXED",
+            ),
+        )
+        fixture["feasible"][extra_ref] = (zero_vector, one_vector)
+        fixture["initial_by_history"][extra_ref] = FunctionalState(
+            True, "ADMIT", "STANDARD", "PROFILE-1", "1",
+        )
+        support = ThetaAStructuralSupportContract(
+            "SYNTHETIC-TARGET-SOURCE-SUPPORT-001", "1",
+            digest(target_q_x), digest(world.q_x),
+            tuple(
+                ThetaAStructuralSupportRow(
+                    row.history_ref, row.mass, 1.0 / len(world.units),
+                    True, True, True, 0.5,
+                ) for row in target_q_x[:-1]
+            ) + (ThetaAStructuralSupportRow(
+                extra_ref, 0.5, 0.0, True, True, True, None,
+            ),),
+        )
+        fixture["theta_a_population_args"] = {
+            "theta_a_q_x": target_q_x,
+            "theta_a_unit_id_by_history": target_unit_ids,
+            "theta_a_structural_support_contract": support,
+        }
+        result = self._run_pipeline(fixture)
+        self.assertEqual(len(result.world.units), 4)
+        self.assertEqual(len(result.theta_a_truth.event_history_manifest), 10)
+        self.assertEqual(len(result.theta_a_assignments.assignments), 4)
+        self.assertEqual(result.analyzer_result.identification, "NOT_IDENTIFIED")
+        self.assertEqual(result.analyzer_result.abstention_reason, "TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT")
+        self.assertEqual(result.analyzer_result.missing_target_histories, (extra_ref,))
+        self.assertAlmostEqual(result.analyzer_result.target_q_x_coverage, 0.5)
+        self.assertTrue(result.evaluator_result.truth_within_bounds)
+        self.assertTrue(result.evaluator_result.correct_adjudication)
+        self.assertEqual(result.evaluator_result.disposition, "CORRECT_ABSTENTION")
 
     def test_theta_a_nmr_protocol_is_wired_through_complete_world_and_evaluator(self):
         scenario = ThetaACalibrationScenario(
