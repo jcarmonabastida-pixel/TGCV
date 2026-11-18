@@ -28,6 +28,9 @@ class NestedPrecisionTests(unittest.TestCase):
             replicate_contributions=rows,
             summary_metric=self._summary(rows),
             outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            within_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            within_world_sampling_contract_id="TEST-R-ASSIGNMENT-IID",
+            within_world_sampling_contract_version="1.0",
             projections=((3, 2), (6, 4)),
             bootstrap_replicates=500,
             bootstrap_seed=19,
@@ -51,7 +54,7 @@ class NestedPrecisionTests(unittest.TestCase):
         )
         self.assertAlmostEqual(result.within_ms, 2.0)
         self.assertLess(result.between_raw, 0.0)
-        self.assertEqual(result.status, "DESCRIPTIVE_ONLY")
+        self.assertEqual(result.status, "DESCRIPTIVE_ONLY_NO_IID_OUTER_INFERENCE")
         self.assertIsNone(result.observed_mcse)
         self.assertIsNone(result.projections[0][2])
         self.assertEqual(result.projections[0][-1], "DESCRIPTIVE_ONLY_NO_IID_OUTER_INFERENCE")
@@ -165,6 +168,9 @@ class NestedPrecisionTests(unittest.TestCase):
             replicate_contributions=rows,
             summary_metric=self._summary(rows),
             outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            within_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            within_world_sampling_contract_id="TEST-R-ASSIGNMENT-IID",
+            within_world_sampling_contract_version="1.0",
             projections=((3, 2),),
             bootstrap_replicates=500,
             bootstrap_seed=29,
@@ -189,6 +195,9 @@ class NestedPrecisionTests(unittest.TestCase):
             replicate_contributions=rows,
             summary_metric=summary,
             outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            within_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            within_world_sampling_contract_id="TEST-R-ASSIGNMENT-IID",
+            within_world_sampling_contract_version="1.0",
             projections=((3, 2),),
             bootstrap_replicates=500,
             bootstrap_seed=31,
@@ -196,6 +205,38 @@ class NestedPrecisionTests(unittest.TestCase):
         self.assertEqual(result.projections[0][-1], "RMSE_DELTA_NONREGULAR")
         self.assertIsNone(result.projections[0][2])
         self.assertIsNone(result.projections[0][3])
+
+
+    def test_iid_within_world_projection_requires_versioned_contract_identity(self):
+        rows = ((0.0, 0.0), (1.0, 1.0), (2.0, 2.0))
+        with self.assertRaisesRegex(NestedPrecisionError, "versioned contract identity"):
+            analyze_nested_precision(
+                metric="identification_rate",
+                replicate_contributions=rows,
+                summary_metric=self._summary(rows),
+                outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+                within_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+                projections=((3, 2),),
+                bootstrap_replicates=100,
+            )
+
+    def test_unverified_within_world_sampling_suppresses_inferential_projection(self):
+        rows = ((0.0, 0.0), (1.0, 1.0), (2.0, 2.0))
+        result = analyze_nested_precision(
+            metric="identification_rate",
+            replicate_contributions=rows,
+            summary_metric=self._summary(rows),
+            outer_world_sampling_mode="DECLARED_IID_PSEUDORANDOM",
+            within_world_sampling_mode="UNVERIFIED",
+            projections=((3, 2),),
+            bootstrap_replicates=200,
+        )
+        self.assertEqual(result.status, "DESCRIPTIVE_ONLY_NO_IID_WITHIN_R_INFERENCE")
+        self.assertEqual(
+            result.projections[0][-1],
+            "DESCRIPTIVE_ONLY_NO_IID_WITHIN_R_INFERENCE",
+        )
+        self.assertIsNone(result.projections[0][2])
 
 
 if __name__ == "__main__":
