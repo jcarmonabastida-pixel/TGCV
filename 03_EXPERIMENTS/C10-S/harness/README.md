@@ -947,3 +947,28 @@ The benign source-strict-superset/target-subset regression now also uses a typed
 **EP-02 Run 858:** [GitHub Actions](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44342781242), run `44342781242`, tested commit `bfd9d34389b8431056d3914a3e44c88e9ced27ff`. Compilation PASS; 317/317 primary PASS (8.923 s); 317/317 clean replay PASS (8.951 s). Payload artifact `14444242558`, SHA-256 `9e03e6ad35c05a72cfbddfcd7e3ccbb1662f3fb98598fa52da9288e578d988dd`; manifest artifact `14443598826`, SHA-256 `f86670f93fb7d6ae9a078c596012927e85146dbc895d1073265fe67820fae441`.
 
 The workflow was restored to explicit `workflow_dispatch` only and the temporary sentinel removed. Restoration commit `5675b681ccadabfac73712d760d2403dd1713c8c`; sentinel deletion commit `eb1d7ccaf93c1bf7c8c0cbbffb40392bc2155859`. This is EP-02 software-contract evidence only; the canonical five-scenario DGP factory and full fifth-scenario N×M×R execution remain open. No calibration bank, evaluation bank, Monte Carlo or scientific execution was generated.
+
+
+### Canonical five-scenario DGP factory and paired-world identity — STATIC IMPLEMENTATION (2026-11-18)
+
+The candidate roster from consolidated §336 and §348 is now represented by `build_theta_a_candidate_scenario_roster()` in `theta_a_calibration_protocol.py`:
+
+1. `THETA_A_POSITIVE_V1` — identified, analytic DGP truth +0.5.
+2. `THETA_A_NULL_V1` — identified, analytic DGP truth 0.
+3. `THETA_A_NEGATIVE_V1` — identified, analytic DGP truth −0.5.
+4. `THETA_A_ALTERNATIVE_COMMON_V1` — identified, analytic DGP truth 0; common alternative path masks the focal contrast without removing identification.
+5. `THETA_A_TARGET_SUPPORT_NONIDENTIFIED_V1` — target-only support mass 0.5, expected `NOT_IDENTIFIED / TARGET_HISTORY_OUTSIDE_SOURCE_SUPPORT`. Its numeric truth is deliberately not hard-coded: the reserved Evaluator computes and records it; the existing contract does not predeclare an exact numeric value.
+
+The roster is explicitly a candidate factory, not a frozen roster or dimensioning decision. The source-superset/target-subset case remains a separate benign regression, not a sixth focal scenario.
+
+The reusable `theta_a_calibration_dgp.py::ThetaACalibrationDGPFactory` now materializes each declared variant through the existing complete-world pipeline. It reuses the established world builder, D2/structural/Reach/trajectory configurations, functional EventHistory, interval S3, Sealer, Analyzer and independent Evaluator. The target-only profile adds its typed target history, policies, feasibility, r_common and structural-support rows without inserting that target-only history into the source assignment roster. Equal-support variants receive an explicit equal-support contract.
+
+**Paired-world rule:** positive, alternative-common and target-only scenarios share the same interaction-base world family for each bank×N×M: world seed, world ID, roster ID and unit prefix are identical. Scenario run IDs, assignment randomization salts and S3 seeds remain distinct. Null and negative variants have separate base-world families. This implements the shared-world relationship already specified in §336 without conflating scenario identities or assignment/measurement streams.
+
+Because the seed derivation semantics now support shared world families, the namespace is versioned as `TGCV-C10S-THETA-A-SEED-v2`. The seed assignment records `world_family_id`; the validator checks both within-family identity sharing and distinctness between different family×N×M worlds.
+
+Capture now optionally verifies the independently declared analytic truth for the four identified scenarios against the Evaluator's reserved truth. For target-only, no numeric truth is invented. The summary aggregator emits identified-only metrics for a structurally nonidentified scenario as explicit `NOT_EVALUABLE` entries (bias, MAE, RMSE, point recovery, interval coverage/width and false-abstention rate), rather than omitting them or forcing them to zero.
+
+The integration suite now delegates to the reusable DGP factory and contains a complete five-scenario N×M×R runner regression (software fixture N=32, M=2, R=2), plus paired-world seed checks, target-only exact-cause capture and explicit non-evaluable metric assertions.
+
+**Evidence state:** implementation and regression tests are authored and statically inspected only. They have **not** been compiled or executed under the current authorization boundary. No seed bank was generated, no runner was invoked, no calibration/evaluation/Monte Carlo operation was performed, and the five-scenario roster remains `NOT_FROZEN`. No N/M/R or MCSE candidate from §336/§348 is promoted or frozen.
