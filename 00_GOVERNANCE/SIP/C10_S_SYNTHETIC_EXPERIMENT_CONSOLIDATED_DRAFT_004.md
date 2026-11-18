@@ -1158,3 +1158,84 @@ Se añaden regresiones para: roster tipado de cinco escenarios; mundos compartid
 La autorización técnica puntual anterior constaba como consumida (§329 y registros posteriores). El usuario ha concedido una nueva autorización explícita, limitada a la compilación, suite técnica EP-02 de dieciséis módulos y replay limpio del workflow manual. No cubre bancos de calibración/evaluación, runner de calibración, Monte Carlo ni ejecución científica.
 
 Antes del dispatch se corrigió el source closure del workflow para incorporar `theta_a_calibration_dgp.py` en materialización primaria/replay, compilación y manifiesto. Commit: `40e1dcf2414de4285d79b777b30aa6fbd027cc8d`. La suite aún no se ha lanzado. El estado de ejecución permanece pendiente; el roster no se congela y `calibration_authorized=false`, `scientific_execution=false`.
+
+
+## 357. Revisión estática de adecuación estadística del diseño focal N×M×R — posterior a EP-02 Run 862 (2026-11-18)
+
+**Estado:** STATIC_REVIEW_COMPLETED / DESIGN_NOT_FROZEN / CALIBRATION_NOT_AUTHORIZED / SCIENTIFIC_EXECUTION_NOT_AUTHORIZED.  
+**Ámbito:** benchmark focal de recuperación de `θ_A(q_X*,g_A0,g_A1,r_common;V_cont)` con la fábrica DGP de cinco escenarios.  
+**No modifica:** estimando, verdades DGP, roster candidato, Analyzer, Evaluator, tolerancias existentes ni autorizaciones.
+
+### 357.1 Cierre técnico EP-02 y precedencia documental
+
+El registro operativo más reciente está en `03_EXPERIMENTS/C10-S/harness/README.md`: EP-02 Run 862, workflow `44351884258`, commit probado `cdd43c87c6dab61a9521ac78fa4f07109e177e7f`; compilación PASS, 319/319 pruebas primarias PASS y 319/319 replay limpio PASS; materializaciones primaria/replay idénticas. El workflow volvió a `workflow_dispatch` y el centinela temporal fue eliminado. Esto valida la suite de contratos software, incluida la fábrica de cinco escenarios y las expectativas corregidas del Evaluator.
+
+La descripción pendiente de dispatch en §356 corresponde al estado anterior al Run 862 y queda supersedida por este registro posterior, sin reescribir el antecedente. Run 862 no generó bancos, no ejecutó el runner N×M×R, no realizó calibración ni Monte Carlo y no constituye evidencia de recuperación causal.
+
+### 357.2 Identidad del diseño que se está revisando
+
+Se distingue el protocolo focal `theta_a_calibration_protocol.py` del benchmark V_cont anterior de 13 escenarios × 4 estimandos. Para este protocolo focal:
+
+- **N:** unidades independientes dentro de cada mundo sintético.
+- **M:** mundos exteriores independientes, con semilla y world_id distintos.
+- **R:** asignaciones conjuntas repetidas dentro de cada mundo M; el world_id y la verdad focal permanecen fijos y cambian los streams de asignación y observación.
+- Cada banco contiene exactamente escenario × N × M × R registros. No se añade un RUN separado al R de este protocolo focal; la obligación de un RUN designado más R repeticiones del Gate 154 pertenece al contrato anterior y no debe importarse a este diseño.
+
+La propuesta de §336, extendida en §348 y materializada estáticamente en §355, es N={32,64,128}, M=100, R=20, cinco escenarios: cuatro identificados (verdades +0,5; 0; −0,5; 0 con alternativa común) y uno estructuralmente no identificado por masa objetivo fuera del soporte fuente. El coste es 5 × 3 × 100 × 20 = **30.000 ejecuciones completas por banco**. Positivo, alternativa común y target-only comparten identidad de mundo basal por familia; null y negative tienen familias propias. El fixture N=32, M=2, R=2 probado en EP-02 es una regresión de software, no una calibración ni validación del dimensionamiento.
+
+### 357.3 Dictamen sobre N, M y R
+
+**N — insuficientemente justificado para inferencia/precisión del estimador.** El grid 32/64/128 es una cuadrícula piloto permitida por el Generator, pero no se deriva de un MDE, una anchura máxima de intervalo ni una potencia requerida. La regla de selección descrita en el protocolo de calibración se basa en MCSE de métricas de rendimiento; un MCSE pequeño de bias/MAE/RMSE no implica que esos errores sean pequeños. N debe satisfacer por separado criterios de rendimiento del estimador y criterios de precisión Monte Carlo de las métricas.
+
+El Analyzer utiliza un intervalo conservador Hoeffding para el contraste HT de dos etapas. Bajo el fixture actual —q_X uniforme (1/N), asignación 0,5, resultado unitario acotado en [0,1], independencia entre unidades y sin intervalos ausentes— la suma de cuadrados de rangos es 16/N y el radio bilateral al 95% es:
+
+`r_N = sqrt(8 × ln(40) / N) ≈ sqrt(29,511 / N)`.
+
+| N | Radio aproximado | Anchura total aproximada |
+|---:|---:|---:|
+| 32 | 0,961 | 1,922 |
+| 64 | 0,679 | 1,359 |
+| 128 | 0,480 | 0,961 |
+| 512 | 0,240 | 0,480 |
+
+Por tanto, con N=32 y N=64 el radio conservador supera la magnitud focal 0,5; con N=128 apenas queda por debajo. Incluso con estimación puntual exactamente igual a 0,5, N=128 deja un margen muy estrecho para excluir cero. Esto no invalida el intervalo ni prueba falta de cobertura: muestra que el grid propuesto no demuestra por sí mismo precisión inferencial o potencia útil. N=512 aparece aquí solo como referencia matemática para un radio ≤0,25, no como decisión de dimensionamiento.
+
+**M — razonable como candidato para tasas con objetivo 0,05; insuficiente para prometer 0,02 en el peor caso.** Si cada mundo aporta una contribución binaria en [0,1], el MCSE máximo es 0,5/sqrt(M). Con M=100 es 0,05; para garantizar ≤0,02 en el peor caso se necesitaría M≥625. Para métricas continuas, el M requerido depende de la desviación estándar de las contribuciones por mundo y debe estimarse en calibración. El valor M=100 no garantiza MCSE≤0,02.
+
+**R — candidato sin dimensionamiento demostrado.** R=20 reduce el ruido de asignación dentro de cada mundo, pero no sustituye M ni crea mundos independientes. El resumen actual calcula primero una contribución por mundo promediando R y luego el MCSE entre M. No informa por separado la variación entre mundos y la variación dentro del mundo entre asignaciones. Sin esa descomposición no se puede justificar que R=20 sea suficiente ni saber si el coste adicional debe dirigirse a R o a M.
+
+En la fábrica actual, el stream S3 cambia por R, pero el monitor continuo está configurado como benchmark ideal (`missing_probability=0.0`) y sin error de detección. En consecuencia, la primera ola evalúa el mejor caso de observación; no valida robustez frente a medición imperfecta o ausencia.
+
+### 357.4 Adecuación de las métricas y problemas de interpretación
+
+1. **Recuperación puntual:** bias, MAE y RMSE son métricas apropiadas y deben conservarse junto con las distribuciones por mundo. La tolerancia 0,25 usada por el Evaluator es actualmente una regla de adjudicación del harness, no un umbral científico de recuperación. `point_recovery_tolerance` sigue sin decisión científica y no debe heredarse de la prueba de integración.
+
+2. **Tolerancias no enlazadas:** `ThetaACalibrationDesign.point_recovery_tolerance` y la tolerancia que recibe el Evaluator no quedan ligadas en el registro `ThetaAReplicateRecord`; este no conserva el valor de tolerancia utilizado. Si ambos valores difieren, `point_recovery_rate` y `evaluator_correct_adjudication_rate` pueden medir reglas distintas. Antes del freeze debe existir una identidad única/versionada de criterio o dos métricas explícitamente diferenciadas.
+
+3. **Adjudicación no equivale a recuperación:** `evaluator_truth_within_bounds_rate`, `evaluator_correct_adjudication_rate`, identificación y recuperación puntual son resultados distintos. La cobertura de los límites lógicos amplios [-1,1] no demuestra recuperación puntual. La tasa de adjudicación del Evaluator debe interpretarse junto con su disposition y la tolerancia usada; no como una tasa pura de clasificación de identificación.
+
+4. **Abstención agregada:** `abstention_rate = 1 - identification_rate` agrupa `NOT_IDENTIFIED`, `INDETERMINATE` y `PARTIALLY_IDENTIFIED`. Se requieren tasas separadas para cada estado y para sus causas. En el escenario target-only deben distinguirse abstención correcta por la causa prevista, abstención por causa incorrecta, indeterminación, identificación parcial y falsa identificación.
+
+5. **Métricas continuas condicionadas:** si cualquier R de un mundo identificado se abstiene, el agregador marca como no evaluables las contribuciones numéricas de ese mundo; si ocurre en cualquier M, la métrica continua completa queda `NOT_EVALUABLE`. Este comportamiento evita el complete-case silencioso, pero puede ocultar la precisión condicional de las estimaciones que sí se produjeron. El informe debe conservar dos planos: rendimiento numérico entre resultados identificados con denominadores explícitos y rendimiento operacional del procedimiento sobre todos los M×R (abstención, indeterminación, falsa identificación y causas). La primera tasa debe etiquetarse como condicional y no reemplazar la segunda.
+
+6. **Escenario no identificado:** bias, MAE, RMSE, recuperación puntual y cobertura inferencial de un efecto identificado deben ser `NOT_EVALUABLE`, no cero. Sí son evaluables la abstención correcta, falsa identificación, causa, cobertura de límites y adjudicación independiente. La separación implementada en §355 es adecuada y debe preservarse.
+
+7. **Inferencia:** cobertura y anchura de intervalos son necesarias, pero no sustituyen una prueba de hipótesis. Type-I error y potencia continúan correctamente como `NOT_DEFINED_NO_TEST_PROCEDURE`. Si se desea una decisión confirmatoria, deben preespecificarse contraste, nulo, alternativas, alfa, MDE y potencia objetivo; los escenarios +0,5/0/−0,5 no describen por sí solos la curva de potencia para efectos pequeños.
+
+8. **Targets de MCSE:** el contrato admite una lista vacía o parcial de `metric_targets`; por tanto, antes de calibrar debe exigirse cobertura completa de todas las métricas/escenarios/N que se declaren obligatorios. Las métricas sin target deben seguir como `NOT_TARGETED`, nunca presentarse como PASS.
+
+### 357.5 Dictamen y trabajo mínimo antes de Design Freeze
+
+**Dictamen:** la arquitectura N×M×R y la separación de bancos son conceptualmente coherentes para una calibración anidada de mundos y asignaciones. El dimensionamiento N={32,64,128}, M=100, R=20 es todavía una propuesta de capacidad, no una elección estadísticamente justificada. La primera ola solo cubre un historial basal, políticas conjuntas deterministas, independencia por unidad y medición S3 ideal; el quinto escenario prueba una causa estructural concreta de no identificación, no todas las causas adversariales.
+
+Antes de congelar:
+
+- definir si el objetivo es recuperación descriptiva, inferencia confirmatoria o ambos; fijar por separado criterios de error del estimador y MCSE de las métricas;
+- justificar N mediante MDE/precisión inferencial y revisar el grid a la luz de la anchura Hoeffding; no asumir que el MCSE de bias/MAE/RMSE selecciona N suficiente;
+- estimar en una calibración piloto la varianza entre mundos y dentro de mundo, y dimensionar M y R con una regla reproducible y conservadora que incorpore incertidumbre de esas varianzas;
+- fijar targets por escenario × N × métrica, exigir cobertura completa de targets obligatorios y mantener calibración/evaluación disjuntas;
+- separar estados de identificación, indeterminación, abstención y recuperación; conservar denominadores totales y condicionales;
+- versionar y alinear la tolerancia del Evaluator con cualquier métrica de recuperación que la use;
+- mantener explícito que la primera ola es un benchmark ideal. La extensión a error/ausencia S3, heterogeneidad de historias, vías directas diferenciales e interferencia requiere escenarios separados y no debe darse por cubierta por esta calibración.
+
+**Siguiente operación recomendada:** cerrar documentalmente la especificación estadística (estimandos de rendimiento, targets, regla de dimensionamiento M/R, criterios de N y contrato de métricas) antes de generar el banco de calibración. La calibración, el banco de evaluación, Monte Carlo y la ejecución científica siguen sin autorización. No se modificó código, no se generaron seeds y no se ejecutó ningún runner.
