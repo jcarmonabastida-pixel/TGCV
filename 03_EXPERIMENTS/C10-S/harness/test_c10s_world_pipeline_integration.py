@@ -613,13 +613,6 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             for unit in world.units
             if unit.d2_baseline.baseline_history_ref in target_refs
         }
-        fixture["g_a0"] = tuple(row for row in fixture["g_a0"] if row.history_ref in target_refs)
-        fixture["g_a1"] = tuple(row for row in fixture["g_a1"] if row.history_ref in target_refs)
-        fixture["r_common"] = tuple(row for row in fixture["r_common"] if row.history_ref in target_refs)
-        fixture["feasible"] = {
-            history_ref: vectors for history_ref, vectors in fixture["feasible"].items()
-            if history_ref in target_refs
-        }
         support = ThetaAStructuralSupportContract(
             "SYNTHETIC-SOURCE-SUPERSET-TARGET-SUBSET-001", "1",
             digest(target_q_x), digest(world.q_x),
