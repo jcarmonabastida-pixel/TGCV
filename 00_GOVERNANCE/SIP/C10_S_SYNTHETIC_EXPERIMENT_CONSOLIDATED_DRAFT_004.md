@@ -888,3 +888,12 @@ Se añade `test_structural_target_source_nonoverlap_runs_through_generated_world
 El workflow fue restaurado a `workflow_dispatch` solamente en commit `dee4d4a8fce721f63a00d190e99f7896a508dc7c` (blob SHA `28471861a1c94038a11b5997a0b0e761b2659466`).
 
 **Alcance:** evidencia de contrato software acotada; no valida calibración, MCSE, potencia, Type-I error, identificación científica ni contribución causal de accesibilidad. No se generó banco de calibración ni se ejecutó Monte Carlo o experimento científico. **Estado:** `PASS_STATIC + PASS_DYNAMIC_EP02 / 307+307 / REPLAY_PASS / STRUCTURAL_TARGET_SOURCE_ABSTENTION_PATH_TESTED / CALIBRATION_ROSTER_NOT_FROZEN`.
+## 343. Materialización basal tipada de historias objetivo fuera de soporte fuente (2026-11-18)
+
+Se introduce `SyntheticThetaATargetHistory` como contrato de materialización de harness para historias objetivo sintéticas sin unidad en el roster fuente. La fila vincula el `QXHistoryMass` exacto, una identidad de unidad potencial reservada y distinta, valores basales tipados (`X` vector numérico finito, `H0`, vector Booleano `C_c`), estado funcional inicial y referencia de procedencia sintética no vacía. Valida no alias con historias/unidades fuente, dimensiones X/C_c conformes al esquema DGP y validez del estado funcional.
+
+El punto de entrada DGP exige materializaciones para todas y solo las historias objetivo externas al soporte fuente. Para historias con solapamiento, los anclajes X/H0/C_c deben reproducir los de la unidad fuente. El estado inicial entregado al generador EventHistory debe coincidir con el estado de la materialización tipada. Ausencia de materialización o dimensión X incompatible produce fallo cerrado. El contrato es exclusivamente de harness sintético: no crea ni autoriza un roster B1/UE.
+
+**EP-02 Run 834:** GitHub Actions `44280284615`, commit probado `a92bbdc5b6f5a75e6c22d1e0c5a266185b5b106d`: compilación PASS; primaria 307/307 PASS (13.579 s); replay limpio 307/307 PASS (13.379 s). Payload `14416891006`, SHA-256 `d01bb844c4a91e25de8180031c25f860a975c27dc1b0972d6376fe298050691d`; manifiesto `14417325217`, SHA-256 `9656eebe7593761bb7df51edde0f7494c6355be4d171477077777b20f57eafe8`.
+
+Workflow restaurado a `workflow_dispatch` únicamente; blob SHA `28471861a1c94038a11b5997a0b0e761b2659466`. Evidencia técnica acotada del contrato de materialización sintética; no constituye calibración científica ni autorización de población.
