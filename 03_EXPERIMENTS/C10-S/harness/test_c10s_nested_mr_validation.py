@@ -66,6 +66,7 @@ class NestedMRFixtureContractTests(unittest.TestCase):
         self.assertEqual(record["valid_bootstrap_replicates"], 100)
         self.assertIn("within_ms", record["intervals_95"])
         self.assertIn("between_raw", record["intervals_95"])
+        self.assertIsNotNone(record["observed_mcse"])
 
     def test_deterministic_degeneracy_guards_are_explicit_and_fail_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
