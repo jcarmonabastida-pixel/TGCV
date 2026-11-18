@@ -3873,3 +3873,99 @@ Este cierre valida la definición del método y el diseño de su futura validaci
 No se han generado fixtures, seeds, resultados, bancos ni simulaciones. No se ha ejecutado Generator, Analyzer, Evaluator, DGP, calibración ni workflow científico. No se alteran el resumen ni el MCSE legado. **Verificación precisa de ramas:** `main` no contiene el protocolo ni §388 y su árbol de contenidos no incorpora cambios de esta operación; su HEAD actual es `e851a55874247f39632264258de02c859dc8d101`, un commit correctivo que elimina el archivo publicado accidentalmente en la operación anterior. El intento de mover el puntero de `main` al commit previo `0381ded946ad766237a976e16ebfd2ce0c93246f` devolvió un error de API y no se afirma que el puntero haya sido restaurado. No se harán más cambios en `main` en esta operación. PR #116 continúa Draft; `scientific_execution=false`; `execution_authorized=false`.
 
 **Siguiente operación:** construir el generador de fixtures analíticos y el contrato de ejecución remota acotado, con estimación de recursos, manifiesto y hashes. Revisarlo antes de solicitar autorización independiente para ejecutar exclusivamente la validación numérica del método. No iniciar todavía la validación numérica ni el banco C10-S.
+
+
+## 389. Construcción integrada del generador de fixtures y del controlador de validación numérica N/M/R (2026-11-18)
+
+**Estado:** IMPLEMENTED_IN_RESEARCH_BRANCH / PASS_STATIC / EXECUTION_CONTRACT_READY_FOR_REVIEW / NOT_AUTHORIZED / NOT_NUMERICALLY_EXECUTED.
+
+### 389.1. Reconciliación con el protocolo y reutilización
+
+Se ha construido la pieza operativa exigida por §388 y por el protocolo numérico versión 002. No se ha creado un segundo estimador ni un segundo banco de calibración: la pieza reutiliza `TGCV_NESTED_MR_BOOTSTRAP 1.2` y añade el generador de fixtures, el evaluador por celda, la procedencia y el controlador de ejecución.
+
+La separación queda fijada:
+- validación de la implementación estadística con fixtures escalares de verdad analítica conocida;
+- recuperación causal del Analyzer C10-S, que queda fuera de esta operación;
+- aplicación futura a los mecanismos M/R reales de C10-S, cuya independencia no se presume por los contratos sintéticos.
+
+### 389.2. Componentes implementados
+
+| Componente | Artefacto | Estado y responsabilidad |
+|---|---|---|
+| Fixture Generator | `c10s_nested_mr_fixtures.py` | IMPLEMENTED — seis familias F1–F6, oráculos analíticos, contratos M/R y seeds reproducibles |
+| Nested M/R Analyzer | `theta_a_nested_mc_precision.py` | IMPLEMENTED — método 1.2; bootstrap vectorizado en bloques de 64 |
+| Validation Evaluator / Runner | `run_c10s_nested_mr_validation.py` | IMPLEMENTED — ejecución por celda, sesgo, RMSE, cobertura, Wilson, MCSE, disponibilidad y abstenciones |
+| Authorization Validator | `validate_c10s_nested_mr_execution_authorization.py` | IMPLEMENTED — rechazo cerrado de autorizaciones ausentes, pendientes, caducadas o no vinculadas al commit/protocolo |
+| Tests | `test_c10s_nested_mr_validation.py` y módulos existentes | IMPLEMENTED — contratos de fixture, oráculos, seeds, reconciliación MCSE, degeneración y adjudicación |
+| Workflow estático | `.github/workflows/c10-s-nested-mc-static-validation.yml` | PASS_STATIC — compila y ejecuta únicamente tests de software |
+| Workflow numérico | `.github/workflows/c10-s-nested-mr-numerical-validation.yml` | IMPLEMENTED / YAML_PARSE_PASS — solo se activa en una rama de autorización dedicada |
+| Contrato de ejecución | `C10_S_NESTED_MR_BOOTSTRAP_NUMERICAL_EXECUTION_CONTRACT_DRAFT_001.md` | IMPLEMENTED_FOR_REVIEW / NOT_AUTHORIZED |
+
+### 389.3. Contratos de generación y bootstrap
+
+El generador queda en versión `C10S_NESTED_MR_FIXTURES_1.1`. El esquema de seeds raíz es `C10S_NESTED_MR_SEED_SCHEDULE_1.0`: SHA-256 sobre versión, namespace, cell_id e índice de réplica; los namespaces de dataset y bootstrap permanecen separados.
+
+Para no confundir independencia condicional con mera diferencia de seeds:
+- el seed del dataset se divide mediante `SeedSequence.spawn(2)` en un flujo exterior M y otro interior;
+- el flujo interior se divide en un flujo R independiente por cada mundo;
+- el seed bootstrap se divide de forma análoga en flujos exteriores e interiores;
+- todos los flujos usan PCG64 explícito y NumPy está fijado por el lock de dependencias.
+
+El bootstrap vectorizado conserva la ley ordinaria de dos etapas de la versión 1.2: remuestrea M clusters y después R dentro de cada copia seleccionada. No descarta réplicas all-same-source. La vectorización cambia el mecanismo computacional, no los estimandos, las fórmulas, la ley de remuestreo, el intervalo percentil del 95% ni la regla de abstención.
+
+Se incorpora una guarda explícita de distribución bootstrap degenerada. Cuando todos los componentes remuestreados carecen de variación, el método informa `DEGENERATE_BOOTSTRAP_DISTRIBUTION` y no emite una proyección regular. Para MSE exactamente cero conserva la salida específica `RMSE_DELTA_NONREGULAR`.
+
+El evaluador calcula de forma independiente el MCSE legado a partir de la varianza muestral de las medias por mundo y exige su reconciliación con el MCSE observado del método. Una discrepancia falla cerrado.
+
+### 389.4. Inventario y adjudicación congelados
+
+La implementación materializa el inventario exacto de protocolo v002:
+
+- **Tier A:** 8 celdas (F1 Gaussiano, tres parámetros × dos diseños; F5 beta-binomial Beta(2,2) × dos diseños), K=1.000 y B=1.000.
+- **Tier B:** 20 celdas estocásticas (F1, F2, F3, F5 y F6), K=500 y B=500; incluye controles M=2.
+- **Controles deterministas:** cuatro invariantes directos — F4 todo cero, F5 p=0, F5 p=1 y F6 MSE cero — fuera del K/B de las celdas estocásticas.
+
+Tier A calcula cobertura de within y between raw por separado, MCSE binomial de cobertura y Wilson 95%. La disposición distingue PASS, NOT_VALIDATED y CONDITIONAL_NOT_CALIBRATED cuando la disponibilidad de la proyección MCSE no alcanza el 95%. Tier B comprueba finitud, retención de B, frecuencia de between raw negativo, consistencia de abstención en frontera y control M=2. No se aplica un criterio universal de cobertura a Tier B.
+
+No se puntúa cobertura inferencial de RMSE. Los escenarios F6 positivos quedan en diagnóstico/exploración de la escala MSE; no se introduce un umbral universal de MSE cercano a cero.
+
+### 389.5. Control remoto, checkpoints y procedencia
+
+El controlador numérico requiere una autorización independiente en un branch dedicado `research/c10s-nested-mr-auth-<authorization-id>`. El commit de autorización debe tener como único padre el commit de código aprobado y cambiar únicamente el manifiesto de autorización. El validador exige estado APPROVED, identidad de aprobador, ventana temporal UTC, alcance exclusivo de validación numérica, tier/K/B exactos, hash del protocolo, versión de método, versión del generador y seed schedule.
+
+No existe actualmente ese manifiesto ni se ha creado un branch de autorización. Los pushes ordinarios, cambios de código y PR no pueden iniciar la validación numérica.
+
+Cada celda escribe JSONL temporal y se promueve atómicamente al completar K. `checkpoint_index.json` registra commit, protocolo, K/B, seed schedule y hashes de registros/resumen. Un reinicio reutiliza únicamente celdas completas cuyos hashes, número de registros y metadatos concuerdan; la celda incompleta se reinicia con las mismas seeds. El resultado final contiene resumen por celda, manifest de ejecución, hashes de fuentes y `SHA256SUMS.txt`.
+
+El contrato estima, sin atribuir tiempos medidos:
+- Tier A: 8.000.000 réplicas bootstrap y 2.600.000.000 valores q remuestreados.
+- Tier B: 5.000.000 réplicas bootstrap y 128.000.000 valores q remuestreados.
+- Máximo bloque temporal de valores: 64×30×20 float64, aproximadamente 0,30 MiB, más índices y resúmenes.
+- Un tier por ejecución remota, `ubuntu-24.04`, CPython 3.12.10 y timeout duro de 360 minutos. No se reducirá K/B ni se alterará la cuadrícula ante un timeout.
+
+### 389.6. Evidencia estática remota
+
+**Commit de la rama probado:** `dc2ad13945c730dbdce73ed0fe09d629f2163681`.
+
+**Workflow push:** [44398214396](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44398214396) — SUCCESS.
+
+- Compilación: PASS.
+- Parseo YAML del workflow numérico: PASS.
+- Tests: **47/47 PASS**, 0 FAIL, 0 ERROR.
+- Runtime: CPython 3.12.10 / Ubuntu 24.04.
+- Artifact ID: `14471382420`.
+- Digest del artifact: `sha256:bc6bedc28dedc7aaa7e3acbf468a3ca3975e54900809f3523a12d09aa15f89f9`.
+
+La evidencia cubre contratos de software, oráculos de fixture, guards deterministas y el parseo del workflow. No cubre las distribuciones de cobertura Tier A/B ni un benchmark de rendimiento.
+
+### 389.7. Límites y gobernanza
+
+No se han ejecutado K×B de Tier A ni Tier B. No se han generado bancos ni resultados de cobertura. No se ha medido el tiempo real de ejecución. No se ha ejecutado Generator, Analyzer, Evaluator, DGP, calibración científica ni workflow C10-S. Las pruebas deterministas y de integración pequeñas ejecutadas por CI no equivalen a la validación numérica congelada.
+
+No se ha creado manifiesto APPROVED ni se ha solicitado/otorgado autorización de ejecución. `scientific_execution=false`; `execution_authorized=false`.
+
+La implementación y §389 permanecen en `research/c10-s-consolidation-draft`. `main` no se ha modificado. PR #116 permanece abierto y Draft, con su base `research/c10-d1-protocol-draft`; no se ha retargeteado ni promovido.
+
+### 389.8. Siguiente gate
+
+La pieza integrada está construida y supera PASS_STATIC. La siguiente operación es una revisión final del contrato de ejecución y de los artefactos de código, sin reabrir el diseño científico del protocolo v002. Después se podrá solicitar autorización explícita para un solo tier. Hasta entonces, el workflow numérico permanecerá inactivo.
