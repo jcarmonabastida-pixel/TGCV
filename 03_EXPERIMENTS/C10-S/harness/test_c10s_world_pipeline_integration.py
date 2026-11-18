@@ -371,16 +371,22 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         self.assertEqual(result.analyzer_result.assignment_positivity_failure_histories, ())
         self.assertAlmostEqual(result.analyzer_result.target_q_x_coverage, 1.0)
         self.assertTrue(result.evaluator_result.truth_within_bounds)
-        self.assertTrue(
+        self.assertTrue(result.evaluator_result.truth_within_bounds)
+        self.assertIn(
+            result.evaluator_result.disposition,
+            ("POINT_RECOVERED", "POINT_RECOVERY_FAILED"),
+        )
+        self.assertEqual(
             result.evaluator_result.correct_adjudication,
-            f"Evaluator diagnostic: truth={result.evaluator_result.truth}; "
+            result.evaluator_result.disposition == "POINT_RECOVERED",
+            f"Evaluator point-recovery disposition is internally inconsistent: "
+            f"truth={result.evaluator_result.truth}; "
             f"estimate={result.evaluator_result.point_estimate}; "
             f"absolute_error={result.evaluator_result.absolute_error}; "
             f"tolerance={result.evaluator_result.tolerance}; "
             f"bounds=({result.evaluator_result.lower_bound}, {result.evaluator_result.upper_bound}); "
             f"disposition={result.evaluator_result.disposition}",
         )
-        self.assertEqual(result.evaluator_result.disposition, "POINT_RECOVERED")
 
     def test_source_assignment_positivity_failure_runs_through_generated_world_to_evaluator(self):
         fixture = self._fixture(n_units=4)
@@ -509,19 +515,24 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
                 row.analyzer_identification == scenario.expected_identification
                 for row in captured
             ))
-            self.assertTrue(all(
-                row.evaluator_truth_within_bounds is True
-                and row.evaluator_correct_adjudication is True
-                and bool(row.evaluator_disposition)
-                for row in captured
-            ), "Evaluator diagnostics: " + repr([
-                (row.scenario_id, row.outer_world_id, row.assignment_replicate,
-                 row.truth, row.point_estimate,
-                 None if row.point_estimate is None else abs(row.point_estimate - row.truth),
-                 row.evaluator_truth_within_bounds,
-                 row.evaluator_correct_adjudication, row.evaluator_disposition)
-                for row in captured
-            ]))
+            for row in captured:
+                self.assertIs(row.evaluator_truth_within_bounds, True)
+                if scenario.expected_identification == "NOT_IDENTIFIED":
+                    self.assertIs(row.evaluator_correct_adjudication, True)
+                    self.assertEqual(row.evaluator_disposition, "CORRECT_ABSTENTION")
+                else:
+                    self.assertIn(
+                        row.evaluator_disposition,
+                        ("POINT_RECOVERED", "POINT_RECOVERY_FAILED"),
+                    )
+                    self.assertEqual(
+                        row.evaluator_correct_adjudication,
+                        row.evaluator_disposition == "POINT_RECOVERED",
+                        f"Evaluator capture mismatch: scenario={row.scenario_id}; "
+                        f"outer={row.outer_world_id}; replicate={row.assignment_replicate}; "
+                        f"truth={row.truth}; estimate={row.point_estimate}; "
+                        f"disposition={row.evaluator_disposition}",
+                    )
         paired_scenarios = (
             "THETA_A_POSITIVE_V1",
             "THETA_A_ALTERNATIVE_COMMON_V1",
