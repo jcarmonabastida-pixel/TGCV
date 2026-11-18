@@ -312,6 +312,7 @@ def materialize_c10s_complete_world(
     assignments = generate_theta_a_policy_assignments(
         world, assignment_config, g_a0, g_a1,
         feasible_vectors_by_history, r_common_certificates,
+        structural_support_contract=theta_a_structural_support_contract,
     )
     selection = select_theta_a_realized_histories(assignments, policy_histories)
     if interval_monitor_configs_by_history_ref is not None:
