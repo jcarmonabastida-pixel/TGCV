@@ -6,6 +6,8 @@ on:
       - research/c10-s-consolidation-draft
     paths:
       - '.github/workflows/c10-s-nested-mc-static-validation.yml'
+      - '.github/workflows/c10-s-nested-mr-numerical-validation.yml'
+      - '00_GOVERNANCE/SIP/C10_S_NESTED_MR_BOOTSTRAP_NUMERICAL_EXECUTION_CONTRACT_DRAFT_001.md'
       - '03_EXPERIMENTS/C10-S/harness/theta_a_nested_mc_precision.py'
       - '03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py'
       - '03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_validation.py'
@@ -20,6 +22,8 @@ on:
       - research/c10-d1-protocol-draft
     paths:
       - '.github/workflows/c10-s-nested-mc-static-validation.yml'
+      - '.github/workflows/c10-s-nested-mr-numerical-validation.yml'
+      - '00_GOVERNANCE/SIP/C10_S_NESTED_MR_BOOTSTRAP_NUMERICAL_EXECUTION_CONTRACT_DRAFT_001.md'
       - '03_EXPERIMENTS/C10-S/harness/theta_a_nested_mc_precision.py'
       - '03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py'
       - '03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_validation.py'
