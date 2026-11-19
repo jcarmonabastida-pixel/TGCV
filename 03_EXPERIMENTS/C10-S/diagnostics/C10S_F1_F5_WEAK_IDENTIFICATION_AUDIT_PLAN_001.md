@@ -327,3 +327,30 @@ Exact-commit static validation:
 - Companion F1 numerical-stress workflows v1/v3 were skipped by authorization guards; v2 also skipped. No numerical stress was executed.
 
 This closes deterministic propagation coverage for a C5 fit boundary abstention in addition to optimizer-audit absence, finite endpoint mixture, and unresolved nuisance refinement. It remains software-level evidence only.
+
+
+## Integrated deterministic B1 fixture-matrix validation — 2026-11-19
+
+Historical reconstruction confirmed that endpoint-only, low-dispersion and interior-count fixtures were already present as separate deterministic unit tests. The new increment does not recreate those fixtures or alter their generating values. It adds one shared audit-record test that sends all three through the same sequence:
+
+`profile_log_concentration → profiled_boundary_likelihoods → build_profile_audit_record`.
+
+For each fixture the test verifies:
+- the separately nuisance-profiled binomial boundary;
+- whether the two-point mixture boundary is finite or impossible because interior counts occur;
+- the maximum over the supplied finite numerical profile grid;
+- the raw profile-minus-boundary likelihood differences, with null retained when the two-point limit is impossible;
+- profile-curvature vector length and profile status propagation;
+- optimizer convergence status kept as a separate field;
+- `identification_status=INDETERMINATE`;
+- strict JSON serialization without NaN/Infinity.
+
+Exact-commit static validation:
+- Code/test commit: `62c5481f1a4cb5009ebdc9f32eaa928b28da7988`
+- Run: `44595785248`
+- Hash-locked dependencies: PASS
+- Compile: PASS
+- Deterministic suite: **143 tests passed**
+- `test_profile_audit_fixture_matrix_keeps_three_likelihood_regimes_separate`: PASS.
+
+The numerical profile remains explicitly uncertified as a global nuisance maximum. Differences are descriptive comparisons over the supplied finite grid, not a likelihood-ratio test, confidence set, identification threshold or selection rule. No calibration, bootstrap bank, resource preflight, holdout or scientific C10 execution occurred.
