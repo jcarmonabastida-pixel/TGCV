@@ -19,8 +19,8 @@
     "manifest_path": "03_EXPERIMENTS/C10-S/harness/C10S_F1_VALIDATION_FREEZE_MANIFEST_002.md",
     "manifest_commit": "a73e989d67c0be25950073e353e1cc086902e86e",
     "workflow_path": ".github/workflows/c10s-f1-integrated-validation-001.yml",
-    "workflow_commit": "69ffb2e86d1a697f2a5a4ff1cd55f4db7aa313b4",
-    "workflow_blob_sha": "88d828848942b8a52997c7b483aa0407edb02d60",
+    "workflow_commit": "178a5d594f75ea78e8745a89f79e54f0cb3ff6de",
+    "workflow_blob_sha": "9a50c4fc3e09ca73786c14b036c3199baabcfea8",
     "execution_checkout": "Detached HEAD at frozen_commit; no execution from branch tip"
   },
   "protocol": {
