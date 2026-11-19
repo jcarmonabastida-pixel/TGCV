@@ -70,6 +70,14 @@ class F5DevelopmentCalibrationTests(unittest.TestCase):
             "abstention_reasons": [],
         })
         self.assertEqual(passing["status"], "PASS")
+        self.assertTrue(passing["denominator_ok"])
+        wrong_denominator = _component_gate({
+            "n_datasets": 4999,
+            "conditional_coverage": 0.95,
+            "coverage_wilson_95": [0.93, 0.97],
+            "interval_emission_rate": 0.96,
+        }, expected_n=5000)
+        self.assertEqual(wrong_denominator["status"], "FAIL_FROZEN_COMPONENT_GATE")
         failed_coverage = _component_gate({
             "conditional_coverage": 0.98,
             "coverage_wilson_95": [0.96, 0.99],
