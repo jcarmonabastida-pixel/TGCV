@@ -7,6 +7,7 @@ from c10s_f1_between_profile_likelihood import (
     F1ProfileError,
     f1_profile_between_confidence_set,
     f1_profile_loglik,
+    f1_profile_nuisance_optimizer_diagnostic,
 )
 
 
@@ -102,6 +103,27 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
             scaled = tuple(tuple(factor * value for value in row) for row in ROWS)
             value = f1_profile_loglik(scaled, between_variance=0.0)
             self.assertTrue(math.isfinite(value))
+
+    def test_independent_nuisance_score_scan_agrees_with_bounded_optimizer(self):
+        result = f1_profile_nuisance_optimizer_diagnostic(
+            ROWS, between_variance=0.25,
+        )
+        self.assertEqual(result.status, "OPTIMIZATION_CONCORDANT")
+        self.assertGreaterEqual(result.stationary_points, 1)
+        self.assertIsNotNone(result.absolute_loglik_difference)
+        self.assertLessEqual(result.absolute_loglik_difference, 1e-7)
+
+    def test_nuisance_diagnostic_rejects_underresolved_grid(self):
+        with self.assertRaisesRegex(F1ProfileError, "NUISANCE_GRID_POINTS"):
+            f1_profile_nuisance_optimizer_diagnostic(
+                ROWS, between_variance=0.25, grid_points=40,
+            )
+
+    def test_nuisance_diagnostic_rejects_invalid_log_span(self):
+        with self.assertRaisesRegex(F1ProfileError, "NUISANCE_LOG_SPAN"):
+            f1_profile_nuisance_optimizer_diagnostic(
+                ROWS, between_variance=0.25, log_span=0.0,
+            )
 
     def test_rejects_negative_tau(self):
         with self.assertRaises(F1ProfileError):
