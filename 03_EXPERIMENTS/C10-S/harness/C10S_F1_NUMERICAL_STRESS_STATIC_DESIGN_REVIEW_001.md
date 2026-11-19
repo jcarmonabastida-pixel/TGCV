@@ -93,7 +93,7 @@ Before authorization, the execution package must specify:
 - exact runtime and dependency versions;
 - stdout/stderr capture and a one-shot run identity.
 
-The harness now includes an explicit `write_stress_evidence()` function that accepts already-produced result objects and writes canonical JSONL, summary JSON and a SHA-256 manifest containing source-file hashes and runtime versions. It does not invoke the runners. This writer has not been executed; its behavior remains statically reviewed only. Full stdout/stderr capture and workflow-level run identity remain responsibilities of the governed execution workflow.
+The harness now includes an explicit `write_stress_evidence()` function that accepts already-produced result objects and writes canonical JSONL, summary JSON and a SHA-256 manifest containing source-file hashes and runtime versions, including the observed-data interface module used transitively by F1. It does not invoke the runners. This writer has not been executed; its behavior remains statically reviewed only. Full stdout/stderr capture and workflow-level run identity remain responsibilities of the governed execution workflow.
 
 ## 8. Revised scope and counts
 
