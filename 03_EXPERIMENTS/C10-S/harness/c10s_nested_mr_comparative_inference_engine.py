@@ -45,6 +45,8 @@ class DatasetComparison:
     family: str
     input_m: int
     input_r: int
+    target_m: int
+    target_r: int
     baseline: VarianceComparisonResult
     candidates: tuple[CandidateOutput, ...]
     unavailable_methods: tuple[str, ...]
@@ -139,7 +141,7 @@ def compare_dataset(
 
     return DatasetComparison(
         engine_id=ENGINE_ID, family=family, input_m=m, input_r=r,
-        baseline=baseline, candidates=tuple(outputs),
+        target_m=target_m, target_r=target_r, baseline=baseline, candidates=tuple(outputs),
         unavailable_methods=UNIMPLEMENTED_METHODS,
     )
 
@@ -164,10 +166,14 @@ def adjudicate_matched_datasets(
         raise ComparativeEngineError("ONE_FAMILY_PER_ADJUDICATION_BATCH")
     if any(record.engine_id != ENGINE_ID for record in records):
         raise ComparativeEngineError("UNKNOWN_ENGINE_RECORD")
+    target_designs = {(record.target_m, record.target_r) for record in records}
+    if len(target_designs) != 1:
+        raise ComparativeEngineError("STRATIFY_DIFFERENT_TARGET_DESIGNS")
     for truth in truth_rows:
         for name, value in (("within", truth.within), ("between", truth.between), ("mcse", truth.mcse)):
-            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
-                raise ComparativeEngineError(f"TRUTH_{name.upper()}_MUST_BE_FINITE")
+            if (isinstance(value, bool) or not isinstance(value, (int, float))
+                    or not math.isfinite(value) or value < 0.0):
+                raise ComparativeEngineError(f"TRUTH_{name.upper()}_MUST_BE_FINITE_AND_NONNEGATIVE")
     method_ids = sorted({
         candidate.method_id
         for record in records for candidate in record.candidates
