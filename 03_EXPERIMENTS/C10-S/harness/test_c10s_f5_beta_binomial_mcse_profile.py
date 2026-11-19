@@ -7,6 +7,7 @@ from c10s_f5_beta_binomial_mcse_profile import (
     F5ProfileError,
     f5_beta_binomial_mcse_profile_loglik,
     f5_beta_binomial_mcse_profile_confidence_set,
+    _bisect_profile_crossing,
 )
 
 
@@ -95,6 +96,13 @@ class F5BetaBinomialProfileTests(unittest.TestCase):
                 ROWS, target_m=10, target_r=5,
                 likelihood_ratio_cutoff=0.0,
             )
+
+    def test_endpoint_refinement_handles_nonfinite_outside_support(self):
+        root = _bisect_profile_crossing(
+            lambda x: -math.inf if x < 0.25 else x - 0.25,
+            0.0, 1.0,
+        )
+        self.assertAlmostEqual(root, 0.25, places=10)
 
     def test_rejects_non_bernoulli_rows(self):
         with self.assertRaises(F5ProfileError):
