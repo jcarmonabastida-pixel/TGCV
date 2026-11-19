@@ -173,6 +173,7 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         self.assertIn("between_profile_optimizer_stationary_point_counts", diagnostic_map)
         self.assertIn("between_profile_optimizer_grid_span_configurations", diagnostic_map)
         self.assertIn("between_profile_optimizer_loglik_spread", diagnostic_map)
+        self.assertIn("between_profile_optimizer_stationary_location_spread", diagnostic_map)
         self.assertEqual(
             len(diagnostic_map["between_profile_optimizer_stationary_point_counts"].split(",")),
             9,
