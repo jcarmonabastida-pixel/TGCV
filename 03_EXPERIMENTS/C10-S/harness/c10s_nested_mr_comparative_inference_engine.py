@@ -67,6 +67,8 @@ class MethodTargetMetrics:
     point_rmse: float | None
     interval_emission_rate: float
     conditional_coverage: float | None
+    coverage_mcse: float | None
+    coverage_wilson_95: tuple[float, float] | None
     unconditional_cover_rate: float
     lower_miss_rate: float | None
     upper_miss_rate: float | None
@@ -197,7 +199,11 @@ def adjudicate_matched_datasets(
                     errors.append(float(point_value) - true_value)
                 interval = getattr(comparison, f"{target}_interval")
                 if interval is None:
-                    reason = comparison.abstention_reason or "INTERVAL_NOT_PROVIDED"
+                    reason = comparison.abstention_reason or (
+                        "POINT_ONLY_BASELINE_NO_INTERVAL"
+                        if method_id == "RAW_NESTED_MR_COMPONENTS_1.0"
+                        else "INTERVAL_NOT_EMITTED"
+                    )
                     abstentions[reason] = abstentions.get(reason, 0) + 1
                     continue
                 low, high = interval
@@ -216,13 +222,31 @@ def adjudicate_matched_datasets(
             n = len(records)
             point_rate = len(points) / n
             interval_rate = interval_emitted / n
+            conditional = (covered / interval_emitted) if interval_emitted else None
+            coverage_mcse = (
+                math.sqrt(conditional * (1.0 - conditional) / interval_emitted)
+                if conditional is not None else None
+            )
+            if conditional is None:
+                wilson = None
+            else:
+                z = 1.959963984540054
+                denom = 1.0 + z * z / interval_emitted
+                center = (conditional + z * z / (2.0 * interval_emitted)) / denom
+                half = z * math.sqrt(
+                    conditional * (1.0 - conditional) / interval_emitted
+                    + z * z / (4.0 * interval_emitted * interval_emitted)
+                ) / denom
+                wilson = (max(0.0, center - half), min(1.0, center + half))
             output.append(MethodTargetMetrics(
                 method_id=method_id, target=target, n_datasets=n,
                 point_emission_rate=point_rate,
                 point_bias=(math.fsum(errors) / len(errors)) if errors else None,
                 point_rmse=(math.sqrt(math.fsum(e * e for e in errors) / len(errors))) if errors else None,
                 interval_emission_rate=interval_rate,
-                conditional_coverage=(covered / interval_emitted) if interval_emitted else None,
+                conditional_coverage=conditional,
+                coverage_mcse=coverage_mcse,
+                coverage_wilson_95=wilson,
                 unconditional_cover_rate=covered / n,
                 lower_miss_rate=(lower_miss / interval_emitted) if interval_emitted else None,
                 upper_miss_rate=(upper_miss / interval_emitted) if interval_emitted else None,
