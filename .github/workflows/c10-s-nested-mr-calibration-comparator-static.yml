@@ -27,6 +27,8 @@ on:
       - '03_EXPERIMENTS/C10-S/harness/execute_c10s_nested_mr_comparative_holdout.py'
       - '03_EXPERIMENTS/C10-S/harness/c10s_fitted_beta_binomial_bootstrap.py'
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_fitted_beta_binomial_bootstrap.py'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_likelihood_diagnostics.py'
       - '03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock'
 
 permissions:
@@ -53,9 +55,9 @@ jobs:
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PYTHONDONTWRITEBYTECODE: '1'
-        run: python -m py_compile c10s_gaussian_variance_oracles.py test_c10s_gaussian_variance_oracles.py c10s_beta_binomial_variance_oracles.py test_c10s_beta_binomial_variance_oracles.py c10s_variance_comparison_interface.py test_c10s_variance_comparison_interface.py c10s_f1_exact_pivotal_candidate.py test_c10s_f1_exact_pivotal_candidate.py c10s_fitted_beta_binomial_bootstrap.py test_c10s_fitted_beta_binomial_bootstrap.py c10s_nested_mr_comparative_inference_engine.py test_c10s_nested_mr_comparative_inference_engine.py run_c10s_nested_mr_comparative_holdout.py test_c10s_nested_mr_comparative_holdout.py run_c10s_nested_mr_comparative_resource_preflight.py test_c10s_nested_mr_comparative_resource_preflight.py validate_c10s_nested_mr_resource_preflight_authorization.py validate_c10s_nested_mr_comparative_holdout_authorization.py test_c10s_nested_mr_comparative_holdout_authorization.py execute_c10s_nested_mr_comparative_holdout.py
+        run: python -m py_compile c10s_gaussian_variance_oracles.py test_c10s_gaussian_variance_oracles.py c10s_beta_binomial_variance_oracles.py test_c10s_beta_binomial_variance_oracles.py c10s_variance_comparison_interface.py test_c10s_variance_comparison_interface.py c10s_f1_exact_pivotal_candidate.py test_c10s_f1_exact_pivotal_candidate.py c10s_fitted_beta_binomial_bootstrap.py test_c10s_fitted_beta_binomial_bootstrap.py c10s_f5_beta_binomial_likelihood_diagnostics.py test_c10s_f5_beta_binomial_likelihood_diagnostics.py c10s_nested_mr_comparative_inference_engine.py test_c10s_nested_mr_comparative_inference_engine.py run_c10s_nested_mr_comparative_holdout.py test_c10s_nested_mr_comparative_holdout.py run_c10s_nested_mr_comparative_resource_preflight.py test_c10s_nested_mr_comparative_resource_preflight.py validate_c10s_nested_mr_resource_preflight_authorization.py validate_c10s_nested_mr_comparative_holdout_authorization.py test_c10s_nested_mr_comparative_holdout_authorization.py execute_c10s_nested_mr_comparative_holdout.py
       - name: Run comparator oracle tests only
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PYTHONDONTWRITEBYTECODE: '1'
-        run: python -B -m unittest -v test_c10s_gaussian_variance_oracles test_c10s_beta_binomial_variance_oracles test_c10s_variance_comparison_interface test_c10s_f1_exact_pivotal_candidate test_c10s_fitted_beta_binomial_bootstrap test_c10s_nested_mr_comparative_inference_engine test_c10s_nested_mr_comparative_holdout test_c10s_nested_mr_comparative_resource_preflight test_c10s_nested_mr_comparative_holdout_authorization
+        run: python -B -m unittest -v test_c10s_gaussian_variance_oracles test_c10s_beta_binomial_variance_oracles test_c10s_variance_comparison_interface test_c10s_f1_exact_pivotal_candidate test_c10s_fitted_beta_binomial_bootstrap test_c10s_f5_beta_binomial_likelihood_diagnostics test_c10s_nested_mr_comparative_inference_engine test_c10s_nested_mr_comparative_holdout test_c10s_nested_mr_comparative_resource_preflight test_c10s_nested_mr_comparative_holdout_authorization
