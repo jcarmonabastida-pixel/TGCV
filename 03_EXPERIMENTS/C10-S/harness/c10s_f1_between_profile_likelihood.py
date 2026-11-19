@@ -311,6 +311,9 @@ def f1_profile_between_confidence_set(
                 + f"|unresolved={diagnostic.unresolved_tangential_candidates}"
                 + f"|boundary={diagnostic.independent_boundary_sensitive}"
                 + f"|optimizer_error={diagnostic.optimizer_error}"
+                + f"|bounded_ll={diagnostic.bounded_optimizer_loglik}"
+                + f"|independent_ll={diagnostic.independent_loglik}"
+                + f"|ll_difference={diagnostic.absolute_loglik_difference}"
             )
         return diagnostic.independent_loglik
 
