@@ -12,7 +12,7 @@ import math
 from typing import Sequence
 
 import numpy as np
-from scipy.optimize import minimize_scalar
+from scipy.optimize import minimize, minimize_scalar
 from scipy.special import betaln, gammaln
 
 
@@ -256,6 +256,50 @@ def f5_beta_binomial_mcse_profile_loglik(
                     (float(value), math.exp(float(grid[idx])))
                 )
 
+    # Independent multi-start optimization in log(kappa), using Powell
+    # rather than the bounded scalar optimizer above. This is a numerical
+    # cross-check, not a certificate of global optimality.
+    independent_candidates = [[], []]
+    independent_successes = [0, 0]
+    seed_indices = sorted(set(
+        int(round(i * (len(grid) - 1) / 8.0)) for i in range(9)
+    ))
+    for branch_index in (0, 1):
+        for seed_index in seed_indices:
+            seed = float(grid[seed_index])
+            def objective(z):
+                value = branch_pair(float(np.asarray(z).reshape(-1)[0]))[branch_index]
+                return -value if math.isfinite(value) else 1e100
+            try:
+                opt = minimize(
+                    objective, x0=np.asarray([seed]), method="Powell",
+                    bounds=[(float(logk_low), float(logk_high))],
+                    options={"xtol": 1e-9, "ftol": 1e-11, "maxiter": 3000},
+                )
+            except (ArithmeticError, FloatingPointError, ValueError):
+                continue
+            if opt.success and math.isfinite(float(opt.fun)) and float(opt.fun) < 1e99:
+                independent_successes[branch_index] += 1
+                independent_candidates[branch_index].append(
+                    (-float(opt.fun), math.exp(float(np.asarray(opt.x).reshape(-1)[0])))
+                )
+        if independent_candidates[branch_index]:
+            branch_candidates[branch_index].extend(independent_candidates[branch_index])
+
+    independent_gaps = []
+    for branch_index in (0, 1):
+        candidates = sorted(
+            (v for v, _ in independent_candidates[branch_index]), reverse=True
+        )
+        independent_gaps.append(
+            "NA" if not candidates else format(
+                candidates[0] - max(
+                    (v for v, _ in branch_candidates[branch_index]
+                     if math.isfinite(v)), default=candidates[0]
+                ), ".17g"
+            )
+        )
+
     # Explicit analytic concentration limits.
     limit_h0 = h_zero
     if limit_h0 <= 0.25:
@@ -313,6 +357,10 @@ def f5_beta_binomial_mcse_profile_loglik(
             ("mu_minus_grid_local_maxima_kappa", repr(tuple(k for _, k in local_maxima_by_branch[1]))),
             ("mu_plus_top_two_local_maxima_loglik_gap", local_maxima_gaps[0]),
             ("mu_minus_top_two_local_maxima_loglik_gap", local_maxima_gaps[1]),
+            ("mu_plus_independent_multistart_successes", str(independent_successes[0])),
+            ("mu_minus_independent_multistart_successes", str(independent_successes[1])),
+            ("mu_plus_independent_optimizer_gap", independent_gaps[0]),
+            ("mu_minus_independent_optimizer_gap", independent_gaps[1]),
 
         ),
     )
