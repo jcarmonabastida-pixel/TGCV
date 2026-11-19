@@ -143,11 +143,34 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         # C5's MCSE interval remains independently unavailable.
         self.assertIsNone(record.candidates[0].comparison.mcse_interval)
 
-    def test_profile_diagnostic_roster_rejects_non_f5_and_mixed_designs(self):
-        f1 = self._f1()
-        with self.assertRaisesRegex(ComparativeEngineError, "ONE_F5"):
-            adjudicate_profile_diagnostics((f1,))
+    def test_f1_profile_diagnostic_roster_is_separate_from_coverage(self):
+        record = self._f1()
+        metrics, = adjudicate_profile_diagnostics((record,))
+        self.assertEqual(metrics.family, "F1")
+        self.assertEqual(metrics.diagnostic, "BETWEEN_VARIANCE_PROFILE_LOG_LIKELIHOOD")
+        self.assertEqual(metrics.n_datasets, 1)
+        self.assertEqual(
+            metrics.eligible_count + metrics.abstained_count + metrics.not_evaluated_count,
+            metrics.n_datasets,
+        )
+        self.assertEqual(metrics.eligible_rate, metrics.eligible_count / metrics.n_datasets)
+        candidate = record.candidates[0]
+        diagnostic_map = dict(candidate.diagnostics)
+        self.assertEqual(
+            diagnostic_map["between_profile_inference_eligibility"],
+            "PROFILE_DIAGNOSTIC_ELIGIBLE_NOT_COVERAGE_CERTIFIED",
+        )
+        self.assertEqual(
+            diagnostic_map["between_profile_interval"],
+            "NOT_EMITTED_NO_LR_CUTOFF_SELECTED",
+        )
+        self.assertFalse(hasattr(metrics, "conditional_coverage"))
+
+    def test_profile_diagnostic_roster_rejects_unsupported_family_and_mixed_designs(self):
         f5 = self._f5()
+        unsupported = replace(f5, family="F3")
+        with self.assertRaisesRegex(ComparativeEngineError, "ONE_FAMILY_F1_OR_F5"):
+            adjudicate_profile_diagnostics((unsupported,))
         other = replace(f5, dataset_id="F5-DATA-002", target_m=11)
         with self.assertRaisesRegex(ComparativeEngineError, "STRATIFY"):
             adjudicate_profile_diagnostics((f5, other))
