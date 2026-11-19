@@ -294,7 +294,7 @@ def run_holdout(
 def _atomic_json(path: Path, value: Any) -> str:
     """Atomically persist canonical JSON and return its SHA-256."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    payload = json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\\n"
+    payload = json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n"
     temporary = path.with_name(path.name + ".tmp")
     temporary.write_text(payload, encoding="utf-8")
     temporary.replace(path)
