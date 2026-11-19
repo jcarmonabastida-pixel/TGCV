@@ -176,6 +176,8 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         self.assertIn("between_profile_optimizer_unresolved_tangential_candidate_counts", diagnostic_map)
         self.assertIn("between_profile_optimizer_polynomial_degrees", diagnostic_map)
         self.assertIn("between_profile_optimizer_polynomial_root_counts", diagnostic_map)
+        self.assertIn("between_profile_optimizer_polynomial_statuses", diagnostic_map)
+        self.assertIn("between_profile_optimizer_critical_point_solver_statuses", diagnostic_map)
         self.assertIn("between_profile_optimizer_polynomial_scan_discordances", diagnostic_map)
         self.assertIn("between_profile_optimizer_grid_span_configurations", diagnostic_map)
         self.assertIn("between_profile_optimizer_loglik_spread", diagnostic_map)
