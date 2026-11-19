@@ -146,6 +146,15 @@ def _frozen_v002_baseline(
         bootstrap_replicates=bootstrap_replicates,
         bootstrap_seed=bootstrap_seed,
     )
+    reconciliations = (
+        ("within", legacy.within_ms, common.within_estimate),
+        ("between_raw", legacy.between_raw, common.between_estimate_raw),
+        ("world_mean_variance", legacy.observed_world_mean_variance, common.observed_world_variance),
+    )
+    for label, legacy_value, common_value in reconciliations:
+        tolerance = 1e-10 * max(1.0, abs(legacy_value), abs(common_value))
+        if abs(legacy_value - common_value) > tolerance:
+            raise ComparativeEngineError(f"C0_V002_COMMON_ESTIMAND_RECONCILIATION_FAILURE:{label}")
     intervals = {name: (low, high) for name, low, high in legacy.component_intervals}
     projection = legacy.projections[0]
     mcse_interval = (
@@ -173,6 +182,7 @@ def _frozen_v002_baseline(
             ("bootstrap_seed", str(bootstrap_seed)),
             ("bootstrap_law", "frozen_v002_two_stage_outer_cluster_then_inner_R"),
             ("legacy_projection_status", projection[4]),
+            ("common_estimand_reconciliation", "PASS_V002_POINT_TARGETS"),
             ("legacy_boundary_fraction", format(legacy.boundary_fraction or 0.0, ".17g")),
         ),
     )
