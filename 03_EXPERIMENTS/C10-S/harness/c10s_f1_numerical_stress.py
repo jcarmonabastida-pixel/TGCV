@@ -438,11 +438,37 @@ def run_f1_observation_scale_ladder() -> dict[str, object]:
                 "lr_lower_base_variance_abs_error": lower_error,
                 "lr_upper_base_variance_abs_error": upper_error,
             }
+            baseline_roots = list(baseline["polynomial_roots_in_base_units"])
+            current_roots = list(record["polynomial_roots_in_base_units"])
+            root_count_equal = len(current_roots) == len(baseline_roots)
+            root_error = (
+                max(abs(a - b) for a, b in zip(current_roots, baseline_roots))
+                if root_count_equal and current_roots else
+                (0.0 if root_count_equal else math.inf)
+            )
+            root_scale = max(
+                [1.0, *(abs(value) for value in baseline_roots)]
+            )
+            root_relative_error = root_error / root_scale
+            polynomial_status_equal = (
+                record["polynomial_status"] == baseline["polynomial_status"]
+            )
+            adjudication_status_equal = (
+                record["adjudication_status"] == baseline["adjudication_status"]
+            )
+            record["equivariance_errors"].update({
+                "polynomial_root_max_abs_error": root_error,
+                "polynomial_root_max_relative_error": root_relative_error,
+            })
             record["equivariance_checks"] = {
                 "profile_loglik": loglik_error <= 1e-7,
                 "mle": mle_error <= 1e-10,
                 "lr_lower": lower_error <= 1e-8,
                 "lr_upper": upper_error <= 1e-8,
+                "polynomial_root_count": root_count_equal,
+                "polynomial_root_locations": root_relative_error <= 1e-7,
+                "polynomial_status": polynomial_status_equal,
+                "adjudication_status": adjudication_status_equal,
             }
             record["equivariance_status"] = (
                 "PASS" if all(record["equivariance_checks"].values())
@@ -457,6 +483,7 @@ def run_f1_observation_scale_ladder() -> dict[str, object]:
             "profile_loglik_abs": 1e-7,
             "mle_base_variance_abs": 1e-10,
             "lr_endpoint_base_variance_abs": 1e-8,
+            "polynomial_root_max_relative": 1e-7,
         },
         "record_count": len(records),
         "baseline_exponent_zero": baseline,
