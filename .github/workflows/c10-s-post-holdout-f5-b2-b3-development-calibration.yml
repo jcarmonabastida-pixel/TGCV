@@ -1,0 +1,81 @@
+name: C10-S F5 B2/B3 development calibration — one-use authorization gated
+
+on:
+  push:
+    branches:
+      - 'research/c10s-f1-f5-dev-cal-auth-*'
+    paths:
+      - '00_GOVERNANCE/authorizations/C10S_POST_HOLDOUT_F5_B2_B3_DEVELOPMENT_CALIBRATION_AUTHORIZATION.json'
+
+permissions:
+  contents: read
+
+jobs:
+  f5-development-calibration:
+    if: startsWith(github.ref, 'refs/heads/research/c10s-f1-f5-dev-cal-auth-') && contains(github.event.head_commit.message, 'Approve one-use C10-S F5 B2/B3 development calibration')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - name: Checkout one-use authorization commit
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: \${{ github.sha }}
+          fetch-depth: 2
+          persist-credentials: false
+
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+
+      - name: Validate F5-only authorization, exact parent and source hashes
+        id: authorization
+        env:
+          WORKFLOW_COMMIT: \${{ github.sha }}
+          WORKFLOW_BRANCH: \${{ github.ref_name }}
+        run: |
+          python 03_EXPERIMENTS/C10-S/harness/validate_c10s_post_holdout_f5_b2_b3_development_calibration_authorization.py \\
+            --authorization 00_GOVERNANCE/authorizations/C10S_POST_HOLDOUT_F5_B2_B3_DEVELOPMENT_CALIBRATION_AUTHORIZATION.json \\
+            --root . \\
+            --workflow-commit "$WORKFLOW_COMMIT" \\
+            --branch "$WORKFLOW_BRANCH" \\
+            --output-json "$RUNNER_TEMP/validated-f5-authorization.json"
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ["RUNNER_TEMP"]) / "validated-f5-authorization.json"
+          d = json.loads(p.read_text(encoding="utf-8"))
+          for key in ("authorization_id", "approved_code_commit"):
+              print(f"{key}={d[key]}")
+          PY
+
+      - name: Checkout exact approved research code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: \${{ steps.authorization.outputs.approved_code_commit }}
+          path: source
+          persist-credentials: false
+
+      - name: Install hash-locked dependencies
+        working-directory: source/03_EXPERIMENTS/C10-S/harness
+        run: 'python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock'
+
+      - name: Execute F5 B2 calibration, disjoint validation and B3 endpoint sensitivity
+        working-directory: source
+        env:
+          APPROVED_CODE_COMMIT: \${{ steps.authorization.outputs.approved_code_commit }}
+        run: |
+          python 03_EXPERIMENTS/C10-S/harness/run_c10s_post_holdout_f5_b2_b3_development_calibration.py \\
+            --validated-authorization "$RUNNER_TEMP/validated-f5-authorization.json" \\
+            --code-commit "$APPROVED_CODE_COMMIT" \\
+            --output-dir "$RUNNER_TEMP/c10s-f5-b2-b3" \\
+            --root .
+
+      - name: Upload F5 development banks, B3 sensitivity and provenance
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-b2-b3-\${{ steps.authorization.outputs.authorization_id }}-\${{ steps.authorization.outputs.approved_code_commit }}
+          path: \${{ runner.temp }}/c10s-f5-b2-b3/
+          if-no-files-found: warn
+          retention-days: 90
