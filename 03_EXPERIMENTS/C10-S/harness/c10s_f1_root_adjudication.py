@@ -8,6 +8,7 @@ does not expose a certified multiplicity for its floating-point candidates.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 from typing import Sequence
 
 from c10s_f1_between_profile_likelihood import (
@@ -46,10 +47,10 @@ def adjudicate_f1_roots(
     underlying statistical quantities.
     """
     if (isinstance(match_tolerance, bool) or not isinstance(match_tolerance, (int, float))
-            or not (match_tolerance > 0.0)):
+            or not math.isfinite(match_tolerance) or not (match_tolerance > 0.0)):
         raise F1ProfileError("ROOT_MATCH_TOLERANCE_MUST_BE_POSITIVE")
     if (isinstance(isolation_width, bool) or not isinstance(isolation_width, (int, float))
-            or not (isolation_width > 0.0)):
+            or not math.isfinite(isolation_width) or not (isolation_width > 0.0)):
         raise F1ProfileError("ROOT_ISOLATION_WIDTH_MUST_BE_POSITIVE")
 
     f1 = f1_score_polynomial_diagnostic(
