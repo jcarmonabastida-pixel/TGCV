@@ -17,6 +17,8 @@ from scipy.special import betaln, gammaln
 
 
 METHOD_ID = "F5_BETA_BINOMIAL_MCSE_PROFILE_0.1"
+OPTIMIZER_LOG_LIK_TOLERANCE = 1e-7
+OPTIMIZER_MIN_SUCCESSFUL_STARTS_PER_BRANCH = 5
 
 
 class F5ProfileError(ValueError):
@@ -337,6 +339,24 @@ def f5_beta_binomial_mcse_profile_loglik(
             "NA" if len(ordered) < 2 else format(ordered[0] - ordered[1], ".17g")
         )
 
+    optimizer_gap_values = [
+        None if item == "NA" else float(item) for item in independent_gaps
+    ]
+    winner_is_boundary = (
+        kappa is None
+        or math.log(kappa) - logk_low <= 1e-6
+        or logk_high - math.log(kappa) <= 1e-6
+    )
+    if any(n < OPTIMIZER_MIN_SUCCESSFUL_STARTS_PER_BRANCH for n in independent_successes):
+        optimizer_adjudication = "OPTIMIZATION_INSUFFICIENT"
+    elif winner_is_boundary:
+        optimizer_adjudication = "OPTIMIZATION_BOUNDARY_SENSITIVE"
+    elif any(gap is None or gap > OPTIMIZER_LOG_LIK_TOLERANCE
+             for gap in optimizer_gap_values):
+        optimizer_adjudication = "OPTIMIZATION_DISCORDANT"
+    else:
+        optimizer_adjudication = "OPTIMIZATION_CONCORDANT"
+
     if not math.isfinite(value):
         status = "PROFILE_NONFINITE_OR_UNSUPPORTED_BOUNDARY"
     elif kappa is None:
@@ -362,6 +382,9 @@ def f5_beta_binomial_mcse_profile_loglik(
             ("mu_minus_independent_multistart_successes", str(independent_successes[1])),
             ("mu_plus_independent_optimizer_gap", independent_gaps[0]),
             ("mu_minus_independent_optimizer_gap", independent_gaps[1]),
+            ("optimizer_adjudication", optimizer_adjudication),
+            ("optimizer_loglik_tolerance", format(OPTIMIZER_LOG_LIK_TOLERANCE, ".17g")),
+            ("optimizer_min_successful_starts_per_branch", str(OPTIMIZER_MIN_SUCCESSFUL_STARTS_PER_BRANCH)),
 
         ),
     )
