@@ -76,3 +76,13 @@ The corrected test commit `0f4cc4a4b9c15ac7ba65095fc1a945655c94e9ca` was validat
 The two tests now establish (a) conservative unresolved classification for the realizable near-double-root fixture and (b) interval-path completion or typed F1 abstention. They do not claim successful separation of the two nearby roots. The prior two attempts that failed 120/121 are retained as negative validation history.
 
 The static workflow result is not a numerical-stress run, calibration, resource preflight, coverage adjudication, or scientific C10 execution. Those remain unauthorized/not performed.
+
+
+## Subsequent F1 static gate and F5 low-concentration fixture
+
+F1 conservative near-degenerate contract:
+- Static workflow run `44588197098`, exact commit `0f4cc4a4b9c15ac7ba65095fc1a945655c94e9ca`, conclusion SUCCESS.
+- 121/121 deterministic tests passed; both near-degenerate tests are explicitly present in the log.
+- This validates conservative unresolved classification and interval-path valid-or-typed-abstention behaviour, not successful separation of the nearby roots.
+
+A separate F5 deterministic test was added in commit `72f119b4be3b696fee95e5ad92c07376e5ba10c2` to verify convergence of the finite beta-binomial count log-likelihood to its `kappa -> 0` two-point mixing limit for endpoint-only counts. No workflow run has yet been observed for that commit, so this new F5 test is **NOT VERIFIED** and must not be counted as passing. It is a deterministic limit check only, not an empirical weak-identification or calibration result.
