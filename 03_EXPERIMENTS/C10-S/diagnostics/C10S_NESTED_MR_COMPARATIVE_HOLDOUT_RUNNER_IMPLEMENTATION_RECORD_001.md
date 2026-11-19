@@ -157,3 +157,25 @@ No coverage, interval success, method ranking or scientific C10 result was compu
 4. Execute the eight-cell independent C0/C1/C5 holdout only after explicit authorization.
 
 No changes to `main`; no C10 scientific execution.
+
+
+## 10. Resource-preflight authorization attempt — activation failure (2026-11-19)
+
+The user explicitly approved one resource-only preflight attempt. A one-use authorization was created on the dedicated branch
+`research/c10s-nested-mr-resource-preflight-auth-C10S-RES-PREFLIGHT-20261119-001`.
+
+- Approved code commit: `15e758f92ac6aca2777154c2e24b8af0fe09f46b`.
+- Authorization commit: `96950fb40ee09d1f9383de8f8d9b3369b5dbf979`.
+- Authorization ID: `C10S-RES-PREFLIGHT-20261119-001`.
+- Authorized scope: resource-only; two representative Tier A cells, K=1,000 each; C0 B=1,000 and F5 C5 B=1,000; no coverage adjudication, no comparative holdout, no Tier B, no C10 scientific execution.
+- Authorization window: 2026-11-19 16:19:06Z through 17:49:06Z.
+
+GitHub Actions created workflow-run records:
+- Resource-only workflow: run `44564734347`, conclusion `failure`.
+- Comparative holdout workflow: run `44564731876`, conclusion `failure`.
+
+Both records report zero jobs. No validator, dependency installation, runner or preflight step ran; no datasets were generated; no resource measurement or scientific/coverage result exists. The resource-only workflow activation therefore failed before execution. The simultaneous holdout workflow record is an unexpected trigger and must be corrected so a resource-only authorization cannot activate the holdout workflow.
+
+The one-use authorization is treated as consumed/closed after this failed activation attempt and must not be reused or replayed. No retry was made. A corrected trigger/registration and a new, separately approved one-use authorization are required before another attempt.
+
+This is an orchestration/activation failure, not a preflight resource failure, not a C0/C1/C5 coverage result, and not a scientific C10 result.
