@@ -95,3 +95,40 @@ The static workflow's three F1 numerical-stress workflows were `SKIPPED` by thei
 | Static workflow | `d47ac4cdde1f32c5c70cd9182a50d235cb630e5b` |
 
 Validated research commit: `cb65659c82bb79183e2b81d13487ebb56d89f862`. The frozen development/calibration specification v1.0 was not modified.
+
+
+## Implementation increment — numerical concentration profile and nuisance-profiled limits
+
+Research commit sequence:
+- profile and separately nuisance-profiled boundary diagnostics: `dfca143ffdd24bfffe6477ecbbf45afd1ea21b7b`
+- first deterministic profile/boundary tests: `24306d06f7b4428ebb9ad3ac49cf7c519fde5bfd`
+- endpoint-only, low-dispersion and permutation fixtures: `066ce9b989ba936f80127ff3391e6668251c350f`
+
+The new `beta_binomial_profile_log_concentration` traces the log-likelihood over a caller-supplied strictly increasing log-concentration grid. At each point it searches the nuisance mean-logit coordinate on a deterministic grid, refines the best interior bracket with bounded scalar optimization, and retains nuisance/concentration scores plus the Schur-complement local curvature where defined. Its status is deliberately `NUMERICAL_PROFILE_UNCERTIFIED`; a finite grid plus local scalar refinement is not a certificate of a global nuisance maximum and does not classify identification.
+
+The new `beta_binomial_profiled_boundary_likelihoods` separately maximizes the nuisance mean for:
+- the binomial `kappa -> infinity` boundary, using the pooled Bernoulli MLE;
+- the two-point `kappa -> 0` boundary, using the endpoint-mixture MLE when all observations are endpoints, and returning negative infinity when any interior count makes that limit impossible.
+
+Deterministic tests now cover:
+- profile curvature versus a finite difference of the nuisance-profiled log-likelihood on a local three-point grid;
+- rejection of unordered/duplicate concentration grids;
+- independent nuisance optimization at each extended boundary;
+- endpoint-only and low-dispersion limiting fixtures;
+- permutation invariance of the numerical profile under reordering independent world counts;
+- interior-count exclusion from the two-point boundary.
+
+Static workflow validation of commit `24306d06f7b4428ebb9ad3ac49cf7c519fde5bfd` completed successfully:
+- Run `44590757616`
+- dependency installation: PASS
+- compile: PASS
+- deterministic suite: PASS
+- no calibration, bootstrap, resource preflight, holdout, or scientific execution.
+
+The later fixture-test commit `066ce9b989ba936f80127ff3391e6668251c350f` is a new validation target; its result is not yet claimed.
+
+### Interpretation and remaining limitations
+
+The profile is a diagnostic trace, not a confidence set and not a proof of global nuisance maximization. The boundary likelihoods are model limits, not finite optimizer-bound substitutes. No weak-identification threshold, binary identification label, or C5 decision rule has been introduced. In particular, the endpoint-only and low-dispersion fixtures expose limiting behaviours but do not by themselves establish the sampling frequency or operating characteristics of any future diagnostic.
+
+The next deterministic increment should add an explicit profile audit record that keeps optimizer convergence, boundary likelihood preference, and concentration-profile shape as separate fields, with an explicit `INDETERMINATE` identification disposition until a scale-aware criterion is scientifically justified. The frozen development/calibration specification v1.0 remains unchanged.
