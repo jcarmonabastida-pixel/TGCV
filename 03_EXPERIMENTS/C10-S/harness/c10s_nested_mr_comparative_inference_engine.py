@@ -293,6 +293,17 @@ def _wilson(successes: int, trials: int) -> tuple[float, float]:
     return max(0.0, center - half), min(1.0, center + half)
 
 
+def _finite_json_value(value):
+    """Encode extended-real diagnostic values as explicit JSON strings."""
+    if isinstance(value, float) and not math.isfinite(value):
+        return "NaN" if math.isnan(value) else "Infinity" if value > 0 else "-Infinity"
+    if isinstance(value, dict):
+        return {key: _finite_json_value(item) for key, item in value.items()}
+    if isinstance(value, (tuple, list)):
+        return [_finite_json_value(item) for item in value]
+    return value
+
+
 def _unsigned_seed(value: int, name: str) -> None:
     if type(value) is not int or not 0 <= value < 2**64:
         raise ComparativeEngineError(f"{name}_MUST_BE_UNSIGNED_64_BIT_INTEGER")
@@ -464,8 +475,8 @@ def compare_dataset(
             ("failure_reason", fitted.failure_reason or "NONE"),
             ("likelihood_optimizer_audit_json", (
                 json.dumps(
-                    asdict(fitted.optimizer_audit), sort_keys=True,
-                    separators=(",", ":"), allow_nan=False,
+                    _finite_json_value(asdict(fitted.optimizer_audit)),
+                    sort_keys=True, separators=(",", ":"), allow_nan=False,
                 )
                 if fitted.optimizer_audit is not None else "null"
             )),
