@@ -32,6 +32,9 @@ class F1NuisanceOptimizerDiagnostic:
     absolute_loglik_difference: float | None
     stationary_points: int
     stationary_points_log_scale: tuple[float, ...]
+    stationary_point_types: tuple[str, ...]
+    tangential_score_roots: int
+    unresolved_tangential_candidates: int
     independent_boundary_sensitive: bool
     optimizer_error: str | None
 
@@ -206,6 +209,85 @@ def f1_profile_between_confidence_set(
     )
 
 
+def _scan_score_stationary_points(
+    score, score_derivative, *, lo: float, hi: float,
+    grid_points: int, score_tolerance: float = 1e-10,
+    near_tangent_tolerance: float = 1e-7,
+) -> tuple[tuple[float, ...], tuple[str, ...], int, int]:
+    """Find sign-changing score roots and candidate tangential score roots.
+
+    Roots of score are stationary points of the profiled log-likelihood.
+    Roots of score_derivative are inspected for even-multiplicity score roots,
+    which a sign-change-only scan cannot detect. Near-zero but unconfirmed
+    tangencies are counted separately so callers can abstain conservatively.
+    """
+    xs = [lo + (hi - lo) * i / (grid_points - 1) for i in range(grid_points)]
+    score_values = [score(x) for x in xs]
+    derivative_values = [score_derivative(x) for x in xs]
+    score_scale = max(1.0, *(abs(value) for value in score_values))
+    roots: list[tuple[float, str]] = []
+
+    for index, (left, right) in enumerate(zip(xs, xs[1:])):
+        fl, fr = score_values[index], score_values[index + 1]
+        if fl == 0.0:
+            roots.append((left, "CROSSING_CANDIDATE"))
+        if fl * fr < 0.0:
+            roots.append((
+                brentq(score, left, right, xtol=1e-12, rtol=1e-12),
+                "CROSSING_CANDIDATE",
+            ))
+    if score_values[-1] == 0.0:
+        roots.append((xs[-1], "CROSSING_CANDIDATE"))
+
+    tangential_count = 0
+    unresolved_count = 0
+    for index, (left, right) in enumerate(zip(xs, xs[1:])):
+        dl, dr = derivative_values[index], derivative_values[index + 1]
+        if dl == 0.0:
+            candidate = left
+        elif dl * dr < 0.0:
+            candidate = brentq(
+                score_derivative, left, right, xtol=1e-12, rtol=1e-12,
+            )
+        else:
+            continue
+        residual = abs(score(candidate))
+        if residual <= score_tolerance * score_scale:
+            roots.append((candidate, "TANGENTIAL_SCORE_ROOT"))
+            tangential_count += 1
+        elif residual <= near_tangent_tolerance * score_scale:
+            unresolved_count += 1
+
+    roots.sort(key=lambda item: item[0])
+    unique: list[tuple[float, str]] = []
+    for location, kind in roots:
+        if unique and abs(location - unique[-1][0]) <= 1e-8:
+            if kind == "TANGENTIAL_SCORE_ROOT":
+                unique[-1] = (location, kind)
+            continue
+        unique.append((location, kind))
+
+    delta = max(1e-7, (hi - lo) * 1e-7)
+    classified = []
+    for location, kind in unique:
+        left_value = score(max(lo, location - delta))
+        right_value = score(min(hi, location + delta))
+        if kind == "TANGENTIAL_SCORE_ROOT" or left_value * right_value > 0.0:
+            classified.append("TANGENTIAL_STATIONARY_NO_LOCAL_EXTREMUM")
+        elif left_value > 0.0 > right_value:
+            classified.append("LOCAL_MAXIMUM")
+        elif left_value < 0.0 < right_value:
+            classified.append("LOCAL_MINIMUM")
+        else:
+            classified.append("STATIONARY_TYPE_UNRESOLVED")
+    return (
+        tuple(location for location, _ in unique),
+        tuple(classified),
+        tangential_count,
+        unresolved_count,
+    )
+
+
 def f1_profile_nuisance_optimizer_diagnostic(
     rows: Sequence[Sequence[float]], *, between_variance: float,
     grid_points: int = 241, log_span: float = 36.0,
@@ -258,17 +340,22 @@ def f1_profile_nuisance_optimizer_diagnostic(
             +0.5 * df_b * s2_means * (s / r) / (q * q)
         )
 
-    xs = [lo + (hi - lo) * i / (grid_points - 1) for i in range(grid_points)]
-    roots = []
-    for left, right in zip(xs, xs[1:]):
-        fl, fr = score(left), score(right)
-        if fl == 0.0:
-            roots.append(left)
-        if fl * fr < 0.0:
-            roots.append(brentq(score, left, right, xtol=1e-12, rtol=1e-12))
-    if score(hi) == 0.0:
-        roots.append(hi)
-    roots = sorted({round(value, 12) for value in roots})
+    def score_derivative(log_s: float) -> float:
+        s = math.exp(log_s)
+        u = s / r
+        q = tau + u
+        return (
+            -0.5 * ssw / s
+            -0.5 * df_b * u * tau / (q * q)
+            +0.5 * df_b * s2_means * u * (tau - u) / (q * q * q)
+        )
+
+    roots, root_types, tangential_count, unresolved_tangencies = (
+        _scan_score_stationary_points(
+            score, score_derivative, lo=lo, hi=hi,
+            grid_points=grid_points,
+        )
+    )
     candidates = [(loglik(value), value) for value in roots]
     if not candidates:
         independent_value = None
@@ -289,7 +376,9 @@ def f1_profile_nuisance_optimizer_diagnostic(
         bounded_value = None
         optimizer_error = str(exc)
 
-    if bounded_value is None or independent_value is None:
+    if (bounded_value is None or independent_value is None
+            or unresolved_tangencies > 0
+            or "STATIONARY_TYPE_UNRESOLVED" in root_types):
         status = "OPTIMIZATION_INSUFFICIENT"
         difference = None
     else:
@@ -308,6 +397,9 @@ def f1_profile_nuisance_optimizer_diagnostic(
         absolute_loglik_difference=difference,
         stationary_points=len(roots),
         stationary_points_log_scale=tuple(roots),
+        stationary_point_types=root_types,
+        tangential_score_roots=tangential_count,
+        unresolved_tangential_candidates=unresolved_tangencies,
         independent_boundary_sensitive=independent_boundary,
         optimizer_error=optimizer_error,
     )
