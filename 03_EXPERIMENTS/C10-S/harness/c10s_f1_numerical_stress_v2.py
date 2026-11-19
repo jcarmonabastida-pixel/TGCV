@@ -204,6 +204,8 @@ def run_n3_covariant_lane() -> dict[str, Any]:
                 "sturm_status": "REPRESENTATION_UNRESOLVED",
                 "inverse_mapped_intervals": [],
                 "topology_comparison_status": "UNRESOLVED",
+                "base_equivariance_status": "UNRESOLVED",
+                "base_equivariance_reason": "BINARY64_COEFFICIENT_REPRESENTATION_LOST",
             })
         else:
             represented = tuple(Q.from_float(v) for v in binary64)
@@ -330,7 +332,7 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
                 "adjudication_status": adjudication.status,
                 "adjudication_reason": adjudication.reason,
             })
-        except (ArithmeticError, OverflowError, ValueError) as exc:
+        except (ArithmeticError, OverflowError, ValueError, IndexError) as exc:
             record.update({
                 "record_status": "FAIL_CLOSED_EXCEPTION",
                 "exception": type(exc).__name__ + ":" + str(exc),
@@ -389,13 +391,15 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
 
     def transition_brackets(field: str) -> list[dict[str, int]]:
         ordered = [
-            (int(item["exponent"]), item.get(field))
+            (
+                int(item["exponent"]),
+                item.get(field) if item["record_status"] == "RETURNED" else None,
+            )
             for item in records
-            if item["record_status"] == "RETURNED"
         ]
         brackets = []
         for (left_exp, left_status), (right_exp, right_status) in zip(ordered, ordered[1:]):
-            if left_status != right_status:
+            if left_status is not None and right_status is not None and left_status != right_status:
                 brackets.append({
                     "lower_tested_exponent": left_exp,
                     "upper_tested_exponent": right_exp,
@@ -409,6 +413,10 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
         "scale_exponents": list(N4_EXponents),
         "sturm_status_transition_brackets": transition_brackets("sturm_status"),
         "adjudication_status_transition_brackets": transition_brackets("adjudication_status"),
+        "unresolved_exponents": [
+            int(item["exponent"]) for item in records
+            if item["record_status"] != "RETURNED"
+        ],
         "record_count": len(records),
         "returned_count": sum(r["record_status"] == "RETURNED" for r in records),
         "equivariance_counts": {
