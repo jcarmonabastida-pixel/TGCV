@@ -155,6 +155,22 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         ):
             _normalize_scaled_polynomial((1e308, 1e-308), 1.0)
 
+    def test_polynomial_root_restore_rejects_underflow(self):
+        with self.assertRaisesRegex(
+            F1ProfileError, "ROOT_SCALE_UNREPRESENTABLE",
+        ):
+            _restore_polynomial_scale(
+                (1e-300,), 1e-100, label="ROOT_SCALE",
+            )
+
+    def test_polynomial_root_restore_rejects_overflow(self):
+        with self.assertRaisesRegex(
+            F1ProfileError, "ROOT_SCALE_UNREPRESENTABLE",
+        ):
+            _restore_polynomial_scale(
+                (1e100,), 1e300, label="ROOT_SCALE",
+            )
+
     def test_score_polynomial_rejects_nonfinite_raw_coefficients(self):
         with patch(
             "c10s_f1_between_profile_likelihood._sufficient_statistics",
