@@ -51,7 +51,7 @@ The frozen gate is applied separately to every cell × bank × target: condition
 | M10/R5 calibration | within | 97.74% | [97.29%, 98.12%] | 98.22% | FAIL |
 | M10/R5 calibration | raw-between | 98.33% | [97.93%, 98.65%] | 98.22% | FAIL |
 | M10/R5 validation | within | 98.02% | [97.59%, 98.38%] | 98.10% | FAIL |
-| M10/R5 validation | raw-between | 98.70% | [97.93%, 98.65%] | 98.10% | FAIL |
+| M10/R5 validation | raw-between | 98.70% | [98.34%, 98.98%] | 98.10% | FAIL |
 | M30/R20 calibration | within | 94.04% | [93.35%, 94.66%] | 100.00% | FAIL |
 | M30/R20 calibration | raw-between | 93.08% | [92.34%, 93.75%] | 100.00% | FAIL |
 | M30/R20 validation | within | 93.96% | [93.27%, 94.59%] | 100.00% | FAIL |
