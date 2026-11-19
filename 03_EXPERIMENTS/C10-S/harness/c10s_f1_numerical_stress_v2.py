@@ -323,9 +323,13 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
             )
             record["score_root_count_equal"] = root_count_equal
             record["score_root_max_relative_error"] = root_relative_error
+            record["profile_status_equal"] = (
+                record["profile_status"] == baseline["profile_status"]
+            )
             record["equivariance_status"] = (
                 "PASS" if (
-                    record["profile_loglik_abs_error"] <= 1e-7
+                    record["profile_status_equal"]
+                    and record["profile_loglik_abs_error"] <= 1e-7
                     and record["mle_abs_error"] <= 1e-10
                     and record["lr_lower_abs_error"] <= 1e-8
                     and record["lr_upper_abs_error"] <= 1e-8
@@ -341,11 +345,28 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
         for record in records:
             record["equivariance_status"] = "UNRESOLVED_BASELINE"
 
+    def transition_brackets(field: str) -> list[dict[str, int]]:
+        ordered = [
+            (int(item["exponent"]), item.get(field))
+            for item in records
+            if item["record_status"] == "RETURNED"
+        ]
+        brackets = []
+        for (left_exp, left_status), (right_exp, right_status) in zip(ordered, ordered[1:]):
+            if left_status != right_status:
+                brackets.append({
+                    "lower_tested_exponent": left_exp,
+                    "upper_tested_exponent": right_exp,
+                })
+        return brackets
+
     return {
         "generator_version": GENERATOR_VERSION,
         "execution_performed": True,
         "scientific_execution": False,
         "scale_exponents": list(N4_EXponents),
+        "sturm_status_transition_brackets": transition_brackets("sturm_status"),
+        "adjudication_status_transition_brackets": transition_brackets("adjudication_status"),
         "record_count": len(records),
         "returned_count": sum(r["record_status"] == "RETURNED" for r in records),
         "equivariance_counts": {
