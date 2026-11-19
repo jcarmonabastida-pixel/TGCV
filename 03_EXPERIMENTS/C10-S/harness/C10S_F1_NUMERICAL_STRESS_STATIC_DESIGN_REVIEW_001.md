@@ -83,7 +83,7 @@ A generic polynomial solver interface could be a separately justified future eng
 
 ## 7. Evidence schema and reproducibility boundary
 
-The current callable runners return deterministic in-memory Python records and do not write files. This is acceptable for static implementation, but not yet a complete governed evidence pipeline.
+The callable runners return deterministic in-memory Python records. A separate writer persists supplied records; it does not initiate or repeat execution. This is acceptable for static implementation, but not yet a complete governed evidence pipeline.
 
 Before authorization, the execution package must specify:
 - canonical JSON serialization (UTF-8, sorted keys, fixed separators, no NaN/Infinity);
@@ -93,7 +93,7 @@ Before authorization, the execution package must specify:
 - exact runtime and dependency versions;
 - stdout/stderr capture and a one-shot run identity.
 
-The current harness does not yet implement this persistence/audit layer. It must be added before an execution authorization is prepared; no result artifact may be inferred from an in-memory return value.
+The harness now includes an explicit `write_stress_evidence()` function that accepts already-produced result objects and writes canonical JSONL, summary JSON and a SHA-256 manifest containing source-file hashes and runtime versions. It does not invoke the runners. This writer has not been executed; its behavior remains statically reviewed only. Full stdout/stderr capture and workflow-level run identity remain responsibilities of the governed execution workflow.
 
 ## 8. Revised scope and counts
 
@@ -109,7 +109,7 @@ These are planned counts only. No runner was invoked.
 ## 9. Remaining pre-authorization gates
 
 1. Static review of the amended source and exact blob identities.
-2. Add deterministic JSONL/summary serialization and hash manifest.
+2. Statically verify the JSONL/summary writer, source hashes and output manifest contract.
 3. Define the runtime/workflow and resource/time limits.
 4. Freeze the complete source/protocol snapshot.
 5. Prepare a new one-shot authorization for only the numerical stress harness.
@@ -126,8 +126,8 @@ The prior authorization for the 73-test validation is consumed and cannot author
 | N4 equivariance metrics | IMPLEMENTED — not executed |
 | N5 root-magnitude/depth ladder | IMPLEMENTED — not executed |
 | F1 arbitrary-polynomial comparison | NOT AVAILABLE — explicitly excluded |
-| Persistent evidence serialization/audit | OPEN |
+| Persistent evidence serialization/audit | IMPLEMENTED — NOT EXECUTED; workflow stdout/stderr audit OPEN |
 | Numerical stress execution | NOT AUTHORIZED |
 | Monte Carlo / scientific C10-S execution | NOT AUTHORIZED |
 
-**Next operation:** implement the deterministic evidence writer (JSONL + summary JSON + SHA-256 manifest) without running the harness, then conduct a final static integrity review and freeze the exact execution snapshot.
+**Next operation:** conduct a final static integrity review of the amended generator, writer, contracts and blob identities; then freeze the exact execution snapshot. No runner or writer execution is authorized.
