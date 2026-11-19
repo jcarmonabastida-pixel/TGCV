@@ -58,10 +58,12 @@ there is no selected or calibrated cutoff.
 
 ## Tests defined, not executed
 
-The test module now includes cases for finite profile evaluation, retention of
-both branches, permutation invariance, maximum-target and zero-target
-boundaries, infeasible targets, invalid input, and profile LR inversion with
-component/hull consistency and invalid-cutoff rejection.
+The test module now includes finite profile evaluation, retention of both
+branches, permutation invariance, an independent asymmetric beta-binomial
+likelihood lower-bound check, maximum-target and zero-target boundaries,
+infeasible targets, invalid input, profile LR inversion with component/hull
+consistency, invalid-cutoff rejection, non-finite root refinement, and
+explicit grid-resolution reporting.
 
 No tests have been executed. These are test definitions only.
 
@@ -83,7 +85,8 @@ No tests have been executed. These are test definitions only.
    compare gradients/scores against numerical differentiation.
 2. Run grid-resolution convergence and adversarial multimodality tests for
    both concentration and MCSE scans.
-3. Robust root bracketing for non-finite profile regions and endpoint cases.
+3. Extend robust root-bracketing tests for non-finite profile regions and
+   endpoint cases.
 4. Wire interval emission into C5 only after the cutoff and abstention policy
    have been prospectively specified and authorized.
 5. Calibrate the cutoff on a calibration roster independent of the holdout
