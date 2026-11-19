@@ -45,3 +45,13 @@ Verified from the job log:
 - One 445-byte preflight artifact was uploaded; it contains no test output.
 
 This is a defect in the orchestration workflow, not a failure of F1 code or tests. The original one-shot authorization was used for this attempt and is not reused. A new authorization is required for any subsequent run.
+
+## Corrective protocol prepared
+
+- Corrected workflow commit: `1e0598ddecb27ce4044d30aa8099d7032fb8e726`
+- Corrected workflow blob: `d06ad1e7bc7dec12d9fddfce753597e3f7dd8703`
+- New authorization draft: `00_GOVERNANCE/authorizations/C10S_F1_INTEGRATED_NUMERICAL_VALIDATION_AUTHORIZATION_DRAFT_002.json`
+- The clean-checkout assertion now occurs before creating evidence or virtual-environment directories.
+- Runtime dependencies are proposed in a temporary runner-only virtual environment, pinned to NumPy 2.1.3 and SciPy 1.14.1; no packages are installed into the frozen checkout or system Python.
+- The corrected workflow is gated by the exact new authorization ID in the authorization-approval commit message. The draft and workflow changes do not execute the test suite.
+- Attempt 002 remains **NOT AUTHORIZED** until the user explicitly approves authorization 002.
