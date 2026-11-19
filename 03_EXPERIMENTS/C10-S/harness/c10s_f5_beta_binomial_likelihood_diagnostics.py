@@ -220,6 +220,9 @@ def audit_beta_binomial_count_fit(
     if any(isinstance(x, bool) or not isinstance(x, Integral) or x < 0 or x > r
            for x in values):
         raise F5LikelihoodDiagnosticError("COUNTS_MUST_BE_INTEGER_IN_[0,R]")
+    # Normalize NumPy integer scalars to built-in ints for the shared
+    # extended-boundary likelihood evaluator's strict input contract.
+    values = tuple(int(value) for value in values)
     starts_k = tuple(float(value) for value in concentration_starts)
     if (not starts_k or any(not math.isfinite(v) or v <= 0 for v in starts_k)
             or len(mean_logit_bounds) != 2 or len(log_concentration_bounds) != 2
