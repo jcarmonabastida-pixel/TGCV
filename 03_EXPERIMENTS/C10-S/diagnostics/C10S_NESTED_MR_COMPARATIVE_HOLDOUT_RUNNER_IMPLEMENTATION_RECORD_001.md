@@ -217,7 +217,7 @@ This is a workflow-registration/activation blocker, not a resource-profile resul
 
 The GitHub Actions run pages exposed the exact parser error: both workflows had invalid YAML at line 63. The unquoted plain scalar
 `run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock`
-contains the YAML-sensitive `: ` sequence in `--only-binary=:all:`. The command is now a folded scalar (`run: >-`) in both workflows.
+contains the YAML-sensitive `: ` sequence in `--only-binary=:all:`. The command is now a single-quoted YAML scalar in both workflows (`run: 'python -m pip install ...'`), avoiding the colon-space parse ambiguity.
 
 Additional fail-closed job conditions now require the exact resource-preflight authorization branch prefix and its dedicated commit-message marker. The holdout job independently requires its own distinct authorization branch prefix and holdout-specific commit-message marker. A resource-only authorization therefore cannot execute the holdout job, even if GitHub creates a holdout workflow record.
 
