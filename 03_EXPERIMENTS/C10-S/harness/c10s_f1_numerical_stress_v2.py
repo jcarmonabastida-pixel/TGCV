@@ -268,12 +268,29 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
             record["mle_abs_error"] = abs(record["mle_base_variance"] - baseline["mle_base_variance"])
             record["lr_lower_abs_error"] = abs(record["lr_lower_base_variance"] - baseline["lr_lower_base_variance"])
             record["lr_upper_abs_error"] = abs(record["lr_upper_base_variance"] - baseline["lr_upper_base_variance"])
+            baseline_roots = list(baseline["score_polynomial_roots_base_variance"])
+            current_roots = list(record["score_polynomial_roots_base_variance"])
+            root_count_equal = len(current_roots) == len(baseline_roots)
+            root_error = (
+                max(abs(a - b) for a, b in zip(current_roots, baseline_roots))
+                if root_count_equal and current_roots else
+                (0.0 if root_count_equal else None)
+            )
+            root_scale = max([1.0, *(abs(value) for value in baseline_roots)])
+            root_relative_error = (
+                root_error / root_scale if root_error is not None else None
+            )
+            record["score_root_count_equal"] = root_count_equal
+            record["score_root_max_relative_error"] = root_relative_error
             record["equivariance_status"] = (
                 "PASS" if (
                     record["profile_loglik_abs_error"] <= 1e-7
                     and record["mle_abs_error"] <= 1e-10
                     and record["lr_lower_abs_error"] <= 1e-8
                     and record["lr_upper_abs_error"] <= 1e-8
+                    and root_count_equal
+                    and root_relative_error is not None
+                    and root_relative_error <= 1e-7
                     and record["score_polynomial_status"] == baseline["score_polynomial_status"]
                     and record["sturm_status"] == baseline["sturm_status"]
                     and record["adjudication_status"] == baseline["adjudication_status"]
