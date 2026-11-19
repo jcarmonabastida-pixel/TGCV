@@ -32,6 +32,7 @@ class F1RootAdjudication:
     reason: str
     boundary_roots: tuple[tuple[str, str, int], ...] = ()
     root_domain: str = "(0,+infinity)"
+    removed_zero_factor_multiplicity: int = 0
 
 
 def _q(value: int | float | Fraction) -> Fraction:
@@ -119,6 +120,9 @@ def adjudicate_f1_roots(
     intervals = _serialize_roots(certified)
     boundary_intervals = _serialize_roots(boundary)
     candidates = tuple(sorted(float(root) for root in f1.positive_roots))
+    removed_zero_multiplicity = getattr(
+        f1, "removed_zero_factor_multiplicity", 0,
+    )
 
     if len(candidates) != len(certified):
         return F1RootAdjudication(
@@ -127,6 +131,7 @@ def adjudicate_f1_roots(
             any(root.multiplicity != 1 for root in certified),
             candidates, intervals, "ROOT_COUNT_MISMATCH",
             boundary_intervals,
+            removed_zero_factor_multiplicity=removed_zero_multiplicity,
         )
 
     abs_tol = _q(match_tolerance)
@@ -155,6 +160,7 @@ def adjudicate_f1_roots(
             candidates, intervals,
             "ROOT_MATCHING_NOT_UNIQUELY_IDENTIFIED_UNDER_MIXED_TOLERANCE",
             boundary_intervals,
+            removed_zero_factor_multiplicity=removed_zero_multiplicity,
         )
 
     matched = len(candidates)
@@ -170,4 +176,5 @@ def adjudicate_f1_roots(
         status, f1.status, independent.status,
         len(candidates), len(certified), matched, multiplicity_review,
         candidates, intervals, reason, boundary_intervals,
+        removed_zero_factor_multiplicity=removed_zero_multiplicity,
     )
