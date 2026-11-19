@@ -604,6 +604,7 @@ def run_f5_endpoint_sensitivity(
         for endpoint in ("lower", "upper")
     }
     width_deltas: dict[str, list[float]] = {"within": [], "between": []}
+    rank_widths: dict[str, list[float]] = {}
     for selection in selected:
         source = by_id[selection["dataset_id"]]
         replicate = source["replicate_index"]
@@ -652,6 +653,17 @@ def run_f5_endpoint_sensitivity(
             "B1000": outputs[str(b1000)],
             "B4000": outputs[str(b4000)],
         }
+        for bootstrap_b, key_prefix in (
+            (b1000, "B1000"), (b4000, "B4000"),
+        ):
+            for target, key in (
+                ("within", "within_endpoint_diagnostics"),
+                ("between", "between_raw_endpoint_diagnostics"),
+            ):
+                diagnostics = outputs[str(bootstrap_b)][key]
+                for endpoint in ("lower", "upper"):
+                    width = diagnostics[f"{endpoint}_rank_uncertainty"]["rank_uncertainty_width"]
+                    rank_widths.setdefault(f"{key_prefix}_{target}_{endpoint}", []).append(float(width))
         for target, key in (
             ("within", "within_endpoint_diagnostics"),
             ("between", "between_raw_endpoint_diagnostics"),
@@ -671,6 +683,9 @@ def run_f5_endpoint_sensitivity(
         "selected_datasets": len(records),
         "B1000": b1000,
         "B4000": b4000,
+        "endpoint_rank_uncertainty_widths": {
+            key: _finite_summary(values) for key, values in rank_widths.items()
+        },
         "endpoint_value_change_B4000_minus_B1000": {
             key: _finite_summary(values) for key, values in endpoint_deltas.items()
         },
