@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import math
+from numbers import Integral
 from typing import Sequence
 
 from scipy.special import betaln, digamma, gammaln, polygamma
@@ -49,7 +50,7 @@ def beta_binomial_loglik_score_hessian(
         raise F5LikelihoodDiagnosticError("R_MUST_BE_INTEGER_GE_2")
     if len(values) < 2:
         raise F5LikelihoodDiagnosticError("AT_LEAST_TWO_WORLD_COUNTS_REQUIRED")
-    if any(type(x) is not int or x < 0 or x > r for x in values):
+    if any(isinstance(x, bool) or not isinstance(x, Integral) or x < 0 or x > r for x in values):
         raise F5LikelihoodDiagnosticError("COUNTS_MUST_BE_INTEGER_IN_[0,R]")
     if (not math.isfinite(mean_logit) or not math.isfinite(log_concentration)
             or abs(mean_logit) > 700 or log_concentration > 700
