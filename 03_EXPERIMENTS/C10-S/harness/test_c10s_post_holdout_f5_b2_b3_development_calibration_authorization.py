@@ -111,7 +111,9 @@ class F5DevelopmentAuthorizationTests(unittest.TestCase):
                 raise AssertionError(args)
             with patch.object(validator, "git", side_effect=fake_git):
                 result = validator.validate(path, root, "a" * 40, branch)
+            self.assertEqual(result["validation_status"], "PASS")
             self.assertEqual(result["authorization_id"], auth["authorization_id"])
+            self.assertEqual(result["authorization_commit"], "a" * 40)
             self.assertEqual(result["approved_code_commit"], "b" * 40)
             self.assertTrue(result["f5_b2_b3_authorized"])
             self.assertFalse(result["c10_scientific_execution_authorized"])
