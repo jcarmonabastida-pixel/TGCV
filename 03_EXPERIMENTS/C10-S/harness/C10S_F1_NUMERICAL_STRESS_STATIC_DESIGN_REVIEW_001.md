@@ -93,7 +93,7 @@ Before authorization, the execution package must specify:
 - exact runtime and dependency versions;
 - stdout/stderr capture and a one-shot run identity.
 
-The harness now includes an explicit `write_stress_evidence()` function that accepts already-produced result objects and writes canonical JSONL, summary JSON and a SHA-256 manifest containing source-file hashes and runtime versions, including the observed-data interface module used transitively by F1. It does not invoke the runners. This writer has not been executed; its behavior remains statically reviewed only. Full stdout/stderr capture and workflow-level run identity remain responsibilities of the governed execution workflow.
+The harness now includes an explicit `write_stress_evidence()` function that accepts already-produced result objects and writes canonical JSONL, summary JSON and a SHA-256 manifest containing source-file hashes and runtime versions, including the observed-data interface module used transitively by F1. It does not invoke the runners. Missing k=0 baseline records and unresolved baselines are explicitly counted as UNRESOLVED_BASELINE; profile, polynomial, adjudication and Sturm statuses are retained separately. This writer has not been executed; its behavior remains statically reviewed only. Full stdout/stderr capture and workflow-level run identity are specified by the fail-closed Actions workflow.
 
 ## 8. Revised scope and counts
 
@@ -130,4 +130,4 @@ The prior authorization for the 73-test validation is consumed and cannot author
 | Numerical stress execution workflow | IMPLEMENTED — FAIL-CLOSED; authorization remains DRAFT |\n| Numerical stress execution | NOT AUTHORIZED |
 | Monte Carlo / scientific C10-S execution | NOT AUTHORIZED |
 
-**Next operation:** await explicit user approval of the exact one-shot authorization. Approval must be recorded in the authorization file and in a commit carrying the workflow's approval marker; that commit triggers one execution and consumes the authorization. No runner or writer execution is authorized before that approval.
+**Next operation:** final static integrity verification of the superseding freeze 003, authorization JSON and workflow. After that, await explicit user approval of the exact one-shot authorization. Approval must be recorded in the authorization file and in a commit carrying the workflow's approval marker; that commit triggers one execution and consumes the authorization. No runner or writer execution is authorized before that approval.
