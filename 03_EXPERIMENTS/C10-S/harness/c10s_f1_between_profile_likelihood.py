@@ -241,6 +241,41 @@ def _polyval_ascending(coefficients: Sequence[float], value: float) -> float:
     return result
 
 
+def _normalize_scaled_polynomial(
+    coefficients: Sequence[float], scale: float,
+) -> tuple[float, ...]:
+    """Apply x=s/scale without silently overflowing or erasing coefficients."""
+    if not math.isfinite(scale) or scale <= 0.0:
+        raise F1ProfileError("SCORE_POLYNOMIAL_SCALE_INVALID")
+    if not coefficients or any(not math.isfinite(value) for value in coefficients):
+        raise F1ProfileError("SCORE_POLYNOMIAL_COEFFICIENTS_NONFINITE")
+
+    scaled = []
+    scale_power = 1.0
+    for index, coefficient in enumerate(coefficients):
+        if index:
+            scale_power *= scale
+            if not math.isfinite(scale_power) or scale_power == 0.0:
+                raise F1ProfileError("SCORE_POLYNOMIAL_SCALE_POWER_UNREPRESENTABLE")
+        value = coefficient * scale_power
+        if not math.isfinite(value):
+            raise F1ProfileError("SCORE_POLYNOMIAL_SCALED_COEFFICIENT_OVERFLOW")
+        if coefficient != 0.0 and value == 0.0:
+            raise F1ProfileError("SCORE_POLYNOMIAL_SCALED_COEFFICIENT_UNDERFLOW")
+        scaled.append(value)
+
+    coefficient_scale = max(abs(value) for value in scaled)
+    if not math.isfinite(coefficient_scale) or coefficient_scale == 0.0:
+        raise F1ProfileError("SCORE_POLYNOMIAL_COEFFICIENT_SCALING_FAILED")
+    normalized = tuple(value / coefficient_scale for value in scaled)
+    if any(
+        original != 0.0 and normalized_value == 0.0
+        for original, normalized_value in zip(scaled, normalized)
+    ):
+        raise F1ProfileError("SCORE_POLYNOMIAL_NORMALIZATION_ERASED_COEFFICIENT")
+    return normalized
+
+
 def _positive_quadratic_roots_diagnostic(
     a: float, b: float, c: float,
 ) -> tuple[tuple[float, ...], str]:
@@ -315,6 +350,8 @@ def f1_score_polynomial_diagnostic(
         -2.0 * a * tau / r + W / (r * r) - b * tau / r + b * M / r,
         -(a + b) / (r * r),
     ]
+    if any(not math.isfinite(value) for value in coefficients):
+        raise F1ProfileError("SCORE_POLYNOMIAL_COEFFICIENTS_NONFINITE")
     # At tau=0 the score numerator contains an extraneous s^2 factor.
     while len(coefficients) > 1 and coefficients[0] == 0.0:
         coefficients.pop(0)
@@ -325,12 +362,20 @@ def f1_score_polynomial_diagnostic(
         raise F1ProfileError("SCORE_POLYNOMIAL_DEGENERATE")
 
     if degree == 3:
-        critical, critical_status = _positive_quadratic_roots_diagnostic(
+        derivative_coefficients = (
             3.0 * coefficients[3], 2.0 * coefficients[2], coefficients[1],
         )
-    elif degree == 2:
+        if any(not math.isfinite(value) for value in derivative_coefficients):
+            raise F1ProfileError("SCORE_POLYNOMIAL_DERIVATIVE_COEFFICIENTS_NONFINITE")
         critical, critical_status = _positive_quadratic_roots_diagnostic(
-            0.0, 2.0 * coefficients[2], coefficients[1],
+            *derivative_coefficients,
+        )
+    elif degree == 2:
+        derivative_coefficients = (0.0, 2.0 * coefficients[2], coefficients[1])
+        if any(not math.isfinite(value) for value in derivative_coefficients):
+            raise F1ProfileError("SCORE_POLYNOMIAL_DERIVATIVE_COEFFICIENTS_NONFINITE")
+        critical, critical_status = _positive_quadratic_roots_diagnostic(
+            *derivative_coefficients,
         )
     else:
         critical, critical_status = (), "RESOLVED"
@@ -338,14 +383,7 @@ def f1_score_polynomial_diagnostic(
         within, M, tau, 1e-12,
         *(abs(value) for value in critical),
     )
-    scaled_coefficients = tuple(
-        coefficient * (scale ** index)
-        for index, coefficient in enumerate(coefficients)
-    )
-    coefficient_scale = max(abs(value) for value in scaled_coefficients)
-    if not math.isfinite(coefficient_scale) or coefficient_scale == 0.0:
-        raise F1ProfileError("SCORE_POLYNOMIAL_COEFFICIENT_SCALING_FAILED")
-    normalized = tuple(value / coefficient_scale for value in scaled_coefficients)
+    normalized = _normalize_scaled_polynomial(coefficients, scale)
     # Evaluate the normalized polynomial in x=s/scale.
     def polynomial_x(x: float) -> float:
         return _polyval_ascending(normalized, x)
