@@ -1,4 +1,4 @@
-# C10-S — F1 Integrated Concordance Matrix (Draft 002)
+# C10-S — F1 Integrated Concordance Matrix (Draft 001)
 
 **Status:** DESIGN / STATIC SOURCE REVIEW — NOT EXECUTED  
 **Branch:** `research/c10s-nested-mr-calibration-design-20261119`  
