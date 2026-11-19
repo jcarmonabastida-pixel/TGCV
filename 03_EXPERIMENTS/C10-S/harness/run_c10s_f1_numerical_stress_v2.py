@@ -88,6 +88,8 @@ def main() -> int:
             "returned_count": result["f1_n4"]["returned_count"],
             "equivariance_counts": result["f1_n4"]["equivariance_counts"],
             "scale_exponents": result["f1_n4"]["scale_exponents"],
+            "sturm_status_transition_brackets": result["f1_n4"]["sturm_status_transition_brackets"],
+            "adjudication_status_transition_brackets": result["f1_n4"]["adjudication_status_transition_brackets"],
             "sturm_status_counts": counts(result["f1_n4"]["records"], "sturm_status"),
             "adjudication_status_counts": counts(result["f1_n4"]["records"], "adjudication_status"),
         },
