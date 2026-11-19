@@ -18,6 +18,7 @@ FIXTURES_PATH = "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py"
 PREFLIGHT_PATH = "03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_comparative_resource_preflight.py"
 LOCK_PATH = "03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock"
 WORKFLOW_PATH = ".github/workflows/c10-s-nested-mr-comparative-resource-preflight.yml"
+VALIDATOR_PATH = "03_EXPERIMENTS/C10-S/harness/validate_c10s_nested_mr_resource_preflight_authorization.py"
 AUTH_SCHEMA = "TGCV-C10S-COMPARATIVE-RESOURCE-PREFLIGHT-AUTH-001"
 EXPECTED_CELLS = ["F1_balanced_M30_R20", "F5_beta22_M30_R20"]
 
@@ -87,6 +88,7 @@ def validate(auth_path: Path, root: Path, workflow_commit: str, branch: str) -> 
         "preflight_sha256": PREFLIGHT_PATH,
         "dependency_lock_sha256": LOCK_PATH,
         "workflow_sha256": WORKFLOW_PATH,
+        "validator_sha256": VALIDATOR_PATH,
     }
     for key, relative in expected.items():
         if auth.get(key) != sha256(root / relative):
