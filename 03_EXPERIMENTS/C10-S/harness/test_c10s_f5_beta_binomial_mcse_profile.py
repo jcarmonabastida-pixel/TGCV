@@ -69,7 +69,7 @@ class F5BetaBinomialProfileTests(unittest.TestCase):
             all_zero, target_m=10, target_r=5, target_mcse=0.0,
         )
         self.assertEqual(result.profile_loglik, 0.0)
-        self.assertEqual(result.boundary_status, "MEAN_DEGENERATE")
+        self.assertEqual(result.boundary_status, "CONCENTRATION_BOUNDARY_LIMIT")
 
     def test_rejects_non_bernoulli_rows(self):
         with self.assertRaises(F5ProfileError):
