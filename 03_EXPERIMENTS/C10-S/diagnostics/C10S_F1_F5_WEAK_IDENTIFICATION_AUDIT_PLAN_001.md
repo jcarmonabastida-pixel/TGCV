@@ -431,3 +431,20 @@ The F5-only B2/B3 development runner and its one-use authorization path are now 
 - Dedicated workflow is dormant; only a DRAFT authorization template exists. No B2/B3 numerical execution has occurred.
 
 **Disposition:** F5 B1 implementation and B2/B3 execution package are complete. F5 numerical development calibration/validation and C5 component eligibility remain OPEN until explicit one-use authorization and execution. No confirmatory or causal conclusion is implied.
+
+
+## 14. F5 B2/B3 numerical development result — executed and audited
+
+The one-use F5-only B2/B3 execution completed in GitHub Actions run `44615173745` (SUCCESS), under authorization `F5-B2B3-20261119-2202`, approved code commit `cdd8617f13296556fd5eb463834fb60c0f051f7c`. The primary artifact and all output-file hashes were audited. Full record: `C10S_F5_B2_B3_DEVELOPMENT_CALIBRATION_RESULT_AUDIT_001.md`.
+
+- Both cells have 5,000 calibration and 5,000 disjoint development-validation datasets; B3 has 250 pre-outcome-selected datasets per cell.
+- Dataset IDs/seeds are unique and disjoint between calibration and validation; historical seed collision audit PASS; all 500 B3 rows match selected calibration IDs, dataset seeds and row hashes.
+- C5 complete frozen component gates: **0/8 pass**. M10/R5 overcovers both targets in both banks. M30/R20 point coverage lies within the broad band, but all four Wilson intervals lie below 95%, failing the nominal-coverage requirement.
+- C5 optimizer audit unresolved states are frequent: M10/R5 2,169/2,132 independent-optimizer unresolved in calibration/validation; M30/R20 3,270/3,259. Many independent optimizer runs terminate with precision-loss messages despite very small likelihood differences, which warrants targeted diagnosis but cannot be relabelled post hoc.
+- B3 shows modest endpoint changes as B increases from 1,000 to 4,000; it does not correct or explain the coverage pattern and is not used for coverage adjudication.
+- Matched C0 also fails the complete coverage/Wilson criteria; it does not provide an acceptance fallback.
+- F1 A2/A3, Tier B, comparative holdout, C10 causal execution and MCSE interval construction remained excluded.
+
+**B2/B3 disposition:** EXECUTED / PRIMARY ARTIFACT INTEGRITY AUDITED / C5 NOT VALIDATED / C0 NOT VALIDATED / NON-CONFIRMATORY DEVELOPMENT EVIDENCE ONLY. No frozen rule, estimator or threshold was changed. The one-use authorization is consumed; no further numerical execution is authorized by it.
+
+**Next operation:** static diagnosis of independent-optimizer precision-loss outcomes and the M10/R5 vs M30/R20 coverage divergence. Any new optimizer adjudication rule or revised candidate must be designed and independently tested before fresh development banks; current banks cannot become confirmatory data.
