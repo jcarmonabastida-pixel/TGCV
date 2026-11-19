@@ -667,6 +667,25 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
                 ROWS, family="F1", likelihood_ratio_cutoff=0.0,
             )
 
+    def test_near_zero_variance_scale_remains_equivariant_in_full_profile_path(self):
+        cutoff = 3.841458820694124
+        base = f1_profile_between_confidence_set(
+            ROWS, family="F1", likelihood_ratio_cutoff=cutoff,
+        )
+        factor = 1e-100
+        scaled = tuple(tuple(factor * value for value in row) for row in ROWS)
+        result = f1_profile_between_confidence_set(
+            scaled, family="F1", likelihood_ratio_cutoff=cutoff,
+        )
+        base_low, base_high = base.confidence_components[0]
+        low, high = result.confidence_components[0]
+        self.assertAlmostEqual(low / (factor * factor), base_low, delta=1e-8)
+        self.assertAlmostEqual(high / (factor * factor), base_high, delta=1e-8)
+        self.assertAlmostEqual(
+            result.mle_between_variance / (factor * factor),
+            base.mle_between_variance, delta=1e-10,
+        )
+
     def test_upper_endpoint_requires_a_bracket_and_abstains_when_expansion_budget_is_exhausted(self):
         with self.assertRaisesRegex(
             F1ProfileError, "UPPER_PROFILE_ENDPOINT_NOT_BRACKETED",
