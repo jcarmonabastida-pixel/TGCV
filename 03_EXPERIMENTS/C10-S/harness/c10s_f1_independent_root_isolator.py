@@ -233,6 +233,10 @@ def isolate_real_roots(
 
     p = _trim(tuple(rational(v) for v in coefficients_ascending))
     degree = len(p) - 1
+    if p == (Q(0),):
+        # The zero polynomial vanishes everywhere; it has no finite root
+        # list and must never be reported as an ordinary root-free constant.
+        return RootIsolationResult("IDENTICALLY_ZERO_POLYNOMIAL_UNRESOLVED", 0, ())
     if degree > 3:
         raise ValueError("POLYNOMIAL_DEGREE_EXCEEDS_THREE")
     if degree < 1:
