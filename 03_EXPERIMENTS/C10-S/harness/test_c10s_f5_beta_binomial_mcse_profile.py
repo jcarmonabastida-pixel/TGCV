@@ -10,6 +10,7 @@ from c10s_f5_beta_binomial_mcse_profile import (
     f5_beta_binomial_mcse_profile_loglik,
     f5_beta_binomial_mcse_profile_confidence_set,
     _bisect_profile_crossing,
+    f5_beta_binomial_mcse_profile_grid_convergence,
 )
 
 
@@ -183,6 +184,23 @@ class F5BetaBinomialProfileTests(unittest.TestCase):
                 ROWS, target_m=10, target_r=5,
                 likelihood_ratio_cutoff=0.0,
             )
+
+    def test_nested_grid_convergence_reports_resolution_differences(self):
+        result = f5_beta_binomial_mcse_profile_grid_convergence(
+            ROWS, target_m=10, target_r=5,
+            likelihood_ratio_cutoff=3.841458820694124,
+            coarse_scan_grid_points=21, fine_scan_grid_points=41,
+            coarse_concentration_grid_points=81,
+            fine_concentration_grid_points=161,
+            tolerance=0.1,
+        )
+        self.assertGreaterEqual(result.maximum_loglik_difference, 0.0)
+        self.assertTrue(
+            result.endpoint_maximum_difference is None
+            or result.endpoint_maximum_difference >= 0.0
+        )
+        self.assertIsInstance(result.component_count_stable, bool)
+        self.assertIsInstance(result.within_tolerance, bool)
 
     def test_profile_reports_both_numerical_grid_resolutions(self):
         result = f5_beta_binomial_mcse_profile_confidence_set(
