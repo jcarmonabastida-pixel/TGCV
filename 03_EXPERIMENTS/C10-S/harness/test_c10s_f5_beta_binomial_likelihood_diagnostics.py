@@ -108,6 +108,26 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
         self.assertIsNotNone(audit.selected_log_likelihood)
         self.assertIsNotNone(audit.selected_score_norm)
         self.assertEqual(len(audit.hessian_eigenvalues), 2)
+        self.assertEqual(len(audit.selected_score_components), 2)
+        self.assertEqual(len(audit.observed_hessian), 2)
+        self.assertEqual(len(audit.observed_hessian[0]), 2)
+        self.assertEqual(len(audit.hessian_eigenvectors), 2)
+        self.assertEqual(len(audit.hessian_eigenvectors[0]), 2)
+        self.assertTrue(all(
+            math.isfinite(value)
+            for row in audit.observed_hessian for value in row
+        ))
+        self.assertTrue(all(
+            math.isfinite(value)
+            for row in audit.hessian_eigenvectors for value in row
+        ))
+        self.assertIsNotNone(audit.profile_minus_binomial_limit)
+        self.assertAlmostEqual(
+            audit.profile_minus_binomial_limit,
+            audit.selected_log_likelihood - audit.binomial_limit_log_likelihood,
+            delta=1e-12,
+        )
+        self.assertIsNone(audit.profile_minus_two_point_limit)
         self.assertTrue(audit.independent_optimizer_message)
         self.assertIn(audit.status, (
             "OPTIMIZER_CONCORDANT",
