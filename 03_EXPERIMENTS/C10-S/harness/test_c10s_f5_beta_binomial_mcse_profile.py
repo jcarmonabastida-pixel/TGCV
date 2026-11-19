@@ -344,6 +344,33 @@ class F5BetaBinomialProfileTests(unittest.TestCase):
                 concentration_grid_points=40,
             )
 
+    def test_profile_rejects_noninteger_or_boolean_concentration_grid(self):
+        for invalid in (40.0, True, 80.5):
+            with self.subTest(invalid=invalid):
+                with self.assertRaisesRegex(F5ProfileError, "CONCENTRATION_GRID_POINTS"):
+                    f5_beta_binomial_mcse_profile_loglik(
+                        ROWS, target_m=10, target_r=5, target_mcse=0.05,
+                        concentration_grid_points=invalid,
+                    )
+
+    def test_convergence_rejects_noninteger_grid_contracts(self):
+        with self.assertRaisesRegex(F5ProfileError, "CONVERGENCE_GRID_POINTS_MUST_BE_INTEGERS"):
+            f5_beta_binomial_mcse_profile_grid_convergence(
+                ROWS, target_m=10, target_r=5,
+                likelihood_ratio_cutoff=3.841458820694124,
+                coarse_scan_grid_points=21, fine_scan_grid_points=41.5,
+                coarse_concentration_grid_points=81,
+                fine_concentration_grid_points=161,
+            )
+        with self.assertRaisesRegex(F5ProfileError, "CONCENTRATION_GRID_POINTS"):
+            f5_beta_binomial_mcse_profile_grid_convergence(
+                ROWS, target_m=10, target_r=5,
+                likelihood_ratio_cutoff=3.841458820694124,
+                coarse_scan_grid_points=21, fine_scan_grid_points=41,
+                coarse_concentration_grid_points=40,
+                fine_concentration_grid_points=161,
+            )
+
     def test_endpoint_refinement_handles_nonfinite_outside_support(self):
         root = _bisect_profile_crossing(
             lambda x: -math.inf if x < 0.25 else x - 0.25,
