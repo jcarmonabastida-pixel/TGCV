@@ -324,3 +324,22 @@ The oracle does not call the production nuisance score, coefficient constructor,
 Validated code branch head: `b7127b29db6e2a2a6f6c2bfdc8f998a5014f694e`. Canonical `main` remained `e22928eb79adb5bc74295967a45b9c440b78f849`.
 
 **Disposition:** the score-polynomial/likelihood derivative correspondence now has an independent deterministic finite-difference cross-check over ordinary and repeated-root fixtures. The F1 work remains OPEN for near-degenerate and boundary-contact interval-path cases and broader adversarial roster checks. F5 weak-identification/boundary classifications and shared schema/provenance checks also remain before the separately authorized resource preflight. Numerical development execution remains unauthorized.
+
+
+## 9. F5 concentration-profile and stability audit propagation — 2026-11-19
+
+The B1 concentration-profile audit is now integrated into the matched-dataset F5 comparison record through an explicit opt-in interface. A caller must provide the log-concentration grid; the engine does not infer a grid or range from the observed data.
+
+Each enabled F5 dataset record carries separate strict-JSON profile and numerical-stability audit objects. The former preserves optimizer status, finite-grid profile maximum, nuisance-profiled extended-boundary likelihood comparisons and local profile curvature. The latter preserves paired profile/mean-logit/curvature differences across reference, refined and expanded nuisance-search controls. Both retain `INDETERMINATE` identification semantics; the stability record is `NUMERICAL_STABILITY_NOT_ADJUDICATED`.
+
+The opt-in is deliberate: the three-trace stability comparison is materially more expensive than the existing C5 fit audit and must not be silently imposed on all 80,000 frozen development/calibration datasets. The caller can enable it for a governed diagnostic subset while leaving the frozen calibration path unchanged.
+
+The deterministic engine tests verify:
+- both audit objects cross the per-dataset comparison boundary and serialize as strict JSON;
+- an explicit concentration grid is required;
+- F5-only routing is enforced;
+- enabling the new diagnostics leaves C5 within, raw-between and MCSE interval outputs unchanged.
+
+Exact-commit validation: Run `44593339897`, commit `898906f2b5ee94c599a478991688cbe2e9333551`, hash-locked dependencies PASS, compilation PASS, **137 deterministic tests PASS**. Numerical-stress workflows v1/v2/v3 were skipped by their authorization guards. No DGP, calibration, bootstrap bank, resource preflight, holdout or scientific C10 execution occurred.
+
+This is implementation/static-validation evidence only. It does not establish concentration identification, repair the observed C5 coverage failures, select a replacement interval, or support a causal `Delta T_acc -> Value` claim. The frozen development/calibration specification v1.0 and all C5 interval/selection logic remain unchanged.
