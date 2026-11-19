@@ -20,6 +20,13 @@ from c10s_f1_between_profile_likelihood import (
 from c10s_f1_root_adjudication import adjudicate_f1_roots
 from c10s_gaussian_variance_oracles import gaussian_f1_reference
 from c10s_f5_beta_binomial_mcse_profile import F5ProfileError, f5_beta_binomial_mcse_profile_loglik
+from c10s_f5_beta_binomial_likelihood_diagnostics import (
+    F5LikelihoodDiagnosticError,
+    beta_binomial_profile_log_concentration,
+    beta_binomial_profiled_boundary_likelihoods,
+    beta_binomial_profile_numerical_stability,
+    build_beta_binomial_profile_audit_record,
+)
 from c10s_fitted_beta_binomial_bootstrap import (
     FittedBetaBinomialBootstrapResult,
     fitted_beta_binomial_parametric_bootstrap,
@@ -390,6 +397,61 @@ def _frozen_v002_baseline(
     )
 
 
+def _f5_concentration_profile_audit_diagnostics(
+    rows: Sequence[Sequence[float]],
+    optimizer_audit,
+    log_concentration_grid: Sequence[float],
+) -> tuple[tuple[str, str], ...]:
+    """Serialize B1 concentration-profile and numerical-stability audits.
+
+    This is opt-in and diagnostic-only. The supplied concentration grid is
+    explicit; no data-dependent range, threshold, or identification verdict
+    is inferred. These diagnostics never alter the fitted C5 candidate.
+    """
+    counts = tuple(sum(int(value) for value in row) for row in rows)
+    r = len(rows[0])
+    profile_record = None
+    profile_error = None
+    stability_record = None
+    stability_error = None
+    try:
+        if optimizer_audit is None:
+            raise F5LikelihoodDiagnosticError("OPTIMIZER_AUDIT_UNAVAILABLE")
+        profile = beta_binomial_profile_log_concentration(
+            counts, r, log_concentration_grid,
+        )
+        boundary = beta_binomial_profiled_boundary_likelihoods(counts, r)
+        profile_record = build_beta_binomial_profile_audit_record(
+            optimizer_audit, profile, boundary,
+        )
+    except (F5LikelihoodDiagnosticError, ArithmeticError, ValueError) as exc:
+        profile_error = f"{type(exc).__name__}:{exc}"
+    try:
+        stability_record = beta_binomial_profile_numerical_stability(
+            counts, r, log_concentration_grid,
+            mean_logit_bounds=(-18.0, 18.0),
+            expanded_mean_logit_bounds=(-24.0, 24.0),
+            mean_grid_size=65,
+            refined_mean_grid_size=257,
+        )
+    except (F5LikelihoodDiagnosticError, ArithmeticError, ValueError) as exc:
+        stability_error = f"{type(exc).__name__}:{exc}"
+    return (
+        ("concentration_profile_audit_json", (
+            json.dumps(_finite_json_value(asdict(profile_record)),
+                       sort_keys=True, separators=(",", ":"), allow_nan=False)
+            if profile_record is not None else "null"
+        )),
+        ("concentration_profile_audit_error", profile_error or "NONE"),
+        ("concentration_profile_stability_json", (
+            json.dumps(_finite_json_value(asdict(stability_record)),
+                       sort_keys=True, separators=(",", ":"), allow_nan=False)
+            if stability_record is not None else "null"
+        )),
+        ("concentration_profile_stability_error", stability_error or "NONE"),
+    )
+
+
 def compare_dataset(
     rows: Sequence[Sequence[float]], *,
     dataset_id: str,
@@ -402,12 +464,23 @@ def compare_dataset(
     bootstrap_replicates: int | None = None,
     bootstrap_seed: int | None = None,
     include_profile_diagnostics: bool = True,
+    include_f5_concentration_profile_audit: bool = False,
+    f5_profile_log_concentration_grid: Sequence[float] | None = None,
 ) -> DatasetComparison:
     """Run C0 plus the currently implemented family-specific candidate."""
     if family not in IMPLEMENTED_METHODS:
         raise ComparativeEngineError("SUPPORTED_FAMILIES_ARE_F1_AND_F5")
     if not isinstance(include_profile_diagnostics, bool):
         raise ComparativeEngineError("INCLUDE_PROFILE_DIAGNOSTICS_MUST_BE_BOOLEAN")
+    if not isinstance(include_f5_concentration_profile_audit, bool):
+        raise ComparativeEngineError("INCLUDE_F5_CONCENTRATION_PROFILE_AUDIT_MUST_BE_BOOLEAN")
+    if include_f5_concentration_profile_audit:
+        if family != "F5":
+            raise ComparativeEngineError("F5_CONCENTRATION_PROFILE_AUDIT_REQUIRES_F5_FAMILY")
+        if f5_profile_log_concentration_grid is None:
+            raise ComparativeEngineError("F5_CONCENTRATION_PROFILE_GRID_REQUIRED")
+    elif f5_profile_log_concentration_grid is not None:
+        raise ComparativeEngineError("F5_PROFILE_GRID_REQUIRES_AUDIT_ENABLED")
     if (isinstance(confidence_level, bool) or not isinstance(confidence_level, (int, float))
             or not math.isfinite(confidence_level) or abs(float(confidence_level) - 0.95) > 1e-12):
         raise ComparativeEngineError("COMPARISON_NOMINAL_LEVEL_MUST_MATCH_FROZEN_C0_V002_95_PERCENT")
@@ -486,6 +559,10 @@ def compare_dataset(
             diagnostics += _f5_profile_diagnostic(
                 rows, target_m=target_m, target_r=target_r,
                 point_mcse=fitted.comparison.mcse_estimate,
+            )
+        if include_f5_concentration_profile_audit:
+            diagnostics += _f5_concentration_profile_audit_diagnostics(
+                rows, fitted.optimizer_audit, f5_profile_log_concentration_grid,
             )
         outputs.append(CandidateOutput(
             method_id=fitted.comparison.method_id,
