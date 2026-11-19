@@ -45,3 +45,25 @@ A small Hessian eigenvalue alone must not be equated with weak identification wi
 ## Current disposition
 
 The low-concentration two-point-limit and high-concentration binomial-limit likelihood tests exist. The remaining implementation gap is not to duplicate those identities, but to expose and verify a nuisance-profiled local concentration-curvature diagnostic while preserving raw optimizer and boundary comparisons. This plan is a research-branch design record only.
+
+
+## Implementation increment — raw nuisance-profiled curvature
+
+A new optional field, `profile_log_concentration_curvature`, is now calculated from the observed Hessian at the selected interior fit using the nuisance-adjusted Schur complement:
+
+`H_xixi - H_etaxi^2 / H_etaeta`
+
+where `eta = mean_logit` and `xi = log_concentration`. The field is left null when the nuisance-coordinate curvature is exactly zero or the resulting quantity is non-finite. No arbitrary numerical threshold is introduced.
+
+This is a local, parameterization-specific observed profile-curvature diagnostic. It is not a normalized information measure, does not define weak identification, does not alter optimizer status, and does not affect C5 fit/interval selection. The existing dataclass-to-JSON serialization path carries the field into the per-dataset audit record.
+
+Deterministic tests were added to:
+- verify the field against the Hessian Schur-complement identity;
+- verify that the per-dataset strict-JSON audit retains a finite value.
+
+Implementation commits:
+- diagnostic: `9d8f96cfe0100d30f017456b77b0da9ab6fe4d10`
+- diagnostic unit test: `18f9293632348266a7dea872d587a2ff9c02a9bc`
+- per-dataset serialization assertion: `09af6710a8954450ec85dbfae02c1a156432a73d`
+
+Static workflow for the intermediate diagnostic and unit-test commits was triggered; the final serialization-test commit is the current validation target. **No passing result is claimed until its exact-commit run completes and logs are inspected.**
