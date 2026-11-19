@@ -1,0 +1,197 @@
+name: C10-S F1 deterministic numerical diagnostics v003
+
+on:
+  push:
+    branches:
+      - research/c10s-f1-integrated-correction-20261119
+
+permissions:
+  contents: write
+
+concurrency:
+  group: c10s-f1-numerical-stress-v3-one-shot
+  cancel-in-progress: false
+
+jobs:
+  numerical-diagnostics-v3:
+    if: ${{ github.ref == 'refs/heads/research/c10s-f1-integrated-correction-20261119' && contains(github.event.head_commit.message, 'AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-005') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      AUTH_PATH: 00_GOVERNANCE/authorizations/C10S_F1_NUMERICAL_STRESS_AUTHORIZATION_005.json
+      AUTH_ID: C10S-F1-NUMERICAL-STRESS-20261119-005
+      APPROVAL_MARKER: AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-005
+      SOURCE_COMMIT: e526acb04e1d2c2421fa2663a43e31b537985522
+      FREEZE_MANIFEST_PATH: 03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_FREEZE_MANIFEST_005.md
+      FREEZE_MANIFEST_BLOB: <MANIFEST_BLOB_SHA>
+      EXPECTED_N4_INPUT_BLOB: 413e96c5478381ac615f3d44dd8a30a41d88513f
+
+    steps:
+      - name: Checkout authorization and workflow snapshot
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          path: governance
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up exact Python runtime
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12.3'
+          check-latest: false
+
+      - name: Initialize runner-local paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "EVIDENCE_ROOT=$RUNNER_TEMP/c10s-f1-numerical-stress-v3-evidence" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/c10s-f1-numerical-stress-v3-evidence"
+
+      - name: Validate one-shot authorization, source and exact execution contract
+        working-directory: governance
+        shell: bash
+        env:
+          APPROVAL_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          auth = json.loads(Path(os.environ["AUTH_PATH"]).read_text(encoding="utf-8"))
+          workflow_path = ".github/workflows/c10s-f1-numerical-stress-v3.yml"
+          workflow_blob = subprocess.check_output(["git", "hash-object", workflow_path], text=True).strip()
+          manifest_blob = subprocess.check_output(["git", "hash-object", os.environ["FREEZE_MANIFEST_PATH"]], text=True).strip()
+          input_path = "03_EXPERIMENTS/C10-S/harness/C10S_F1_N4_V002_FROZEN_INPUTS_001.json"
+          input_blob = subprocess.check_output(["git", "hash-object", input_path], text=True).strip()
+          scope = auth.get("scope", {})
+          limits = auth.get("limits", {})
+          runtime = auth.get("runtime", {})
+          command = auth.get("command", {})
+          prohibitions = auth.get("prohibitions", {})
+          expected_outputs = {
+              "numerical_stress_v3_records.jsonl",
+              "numerical_stress_v3_summary.json",
+              "numerical_stress_v3_manifest.json",
+              "workflow-preflight.txt", "runner.stdout", "runner.stderr",
+              "runner-exit-code.txt",
+          }
+          checks = {
+              "authorization_id": auth.get("authorization_id") == os.environ["AUTH_ID"],
+              "approved": auth.get("status") == "APPROVED" and auth.get("execution_authorized") is True and auth.get("approved_by_user") is True,
+              "one_shot_unused": auth.get("one_shot") is True and auth.get("consumed") is False and auth.get("attempt_closed") is False,
+              "source_commit": auth.get("source_commit") == os.environ["SOURCE_COMMIT"],
+              "manifest_blob": manifest_blob == os.environ["FREEZE_MANIFEST_BLOB"] == auth.get("freeze_manifest_blob_sha"),
+              "workflow_blob": workflow_blob == auth.get("workflow_blob_sha"),
+              "frozen_input_blob": input_blob == os.environ["EXPECTED_N4_INPUT_BLOB"] == auth.get("frozen_input_blob_sha"),
+              "approval_marker": os.environ["APPROVAL_MARKER"] in os.environ["APPROVAL_COMMIT_MESSAGE"],
+              "scope": scope.get("n2_discriminant_ulp_records") == 64 and scope.get("n5_rounding_cell_records") == 1 and scope.get("n4_fujiwara_bound_records") == 14 and scope.get("total_records") == 79 and scope.get("n2_gap_exponents") == [28,32,36,40] and scope.get("ulp_steps") == [-2,-1,1,2] and scope.get("n4_exponents") == [-100,-50,-20,0,20,24,28,32,36,40,44,48,50,100],
+              "runtime": runtime.get("runner") == "ubuntu-24.04" and runtime.get("python") == "3.12.3" and runtime.get("external_dependencies") == [],
+              "command": command.get("working_directory") == "03_EXPERIMENTS/C10-S/harness" and command.get("argv") == ["python","run_c10s_f1_numerical_stress_v3.py","--source-commit",os.environ["SOURCE_COMMIT"],"--output-directory","$RUNNER_TEMP/c10s-f1-numerical-stress-v3-evidence"],
+              "outputs": set(auth.get("outputs", [])) == expected_outputs,
+              "limits": limits.get("primary_executions") == 1 and limits.get("automatic_retries") == 0 and limits.get("replay") is False and limits.get("job_timeout_minutes") == 15,
+              "prohibitions": all(prohibitions.get(k) is True for k in ("unit_tests","bytecode_compilation","monte_carlo_calibration","dgp_experiment","inferential_coverage_study","parameter_tuning","external_dataset","source_modification_during_run","scientific_c10_execution","replay","automatic_retry")),
+          }
+          for name, passed in checks.items():
+              print(f"{name}={'PASS' if passed else 'FAIL'}")
+          if not all(checks.values()):
+              sys.exit("AUTHORIZATION_PREFLIGHT_BLOCKED")
+          PY
+
+      - name: Checkout immutable v003 numerical source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: e526acb04e1d2c2421fa2663a43e31b537985522
+          path: source
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Verify frozen source and transitive blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C source rev-parse HEAD)" = "$SOURCE_COMMIT"
+          while IFS=' ' read -r expected relative_path; do
+            actual="$(git -C source hash-object "$relative_path")"
+            printf '%s %s %s\n' "$expected" "$actual" "$relative_path"
+            test "$actual" = "$expected"
+          done <<'EOF'
+          ee2c6a8e16c63a0cd636e34ab9d63ad7e4e968b3 03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_DESIGN_003.md
+          413e96c5478381ac615f3d44dd8a30a41d88513f 03_EXPERIMENTS/C10-S/harness/C10S_F1_N4_V002_FROZEN_INPUTS_001.json
+          fe43d0252f4a56d93b187091680fa16bca21a13d 03_EXPERIMENTS/C10-S/harness/c10s_f1_numerical_stress_v3.py
+          177838e6fc6baaacca004f0d2179fd50c1ddd7a1 03_EXPERIMENTS/C10-S/harness/run_c10s_f1_numerical_stress_v3.py
+          0b475553effcd4adcb3124bdf107e2db93a6ad86 03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_IMPLEMENTATION_003.md
+          cc047a3b112caf84533c94e77d1908c99a0c2bdf 03_EXPERIMENTS/C10-S/harness/c10s_f1_numerical_stress.py
+          a4f7a79bf36385cd6174567a4acf3e260d971ac7 03_EXPERIMENTS/C10-S/harness/c10s_f1_numerical_stress_v2.py
+          3ac9ce31eb82421022fd8d2a65a0daee049322be 03_EXPERIMENTS/C10-S/harness/c10s_f1_independent_root_isolator.py
+          EOF
+
+      - name: Prepare execution provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "authorization_id=$AUTH_ID"
+            echo "authorization_commit=$GITHUB_SHA"
+            echo "frozen_source_commit=$SOURCE_COMMIT"
+            echo "workflow_run_id=$GITHUB_RUN_ID"
+            echo "workflow_attempt=$GITHUB_RUN_ATTEMPT"
+            echo "python_version=$(python --version 2>&1)"
+            echo "platform=$(uname -a)"
+            echo "expected_record_count=79"
+            echo "execution_count=1"
+            echo "replay=false"
+          } > "$EVIDENCE_ROOT/workflow-preflight.txt"
+
+      - name: Consume one-shot authorization before primary execution
+        working-directory: governance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+          path = Path("00_GOVERNANCE/authorizations/C10S_F1_NUMERICAL_STRESS_AUTHORIZATION_005.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          if data.get("status") != "APPROVED" or data.get("consumed") is not False:
+              raise SystemExit("AUTHORIZATION_NOT_AVAILABLE_OR_ALREADY_CONSUMED")
+          data["status"] = "CONSUMED"
+          data["execution_authorized"] = False
+          data["consumed"] = True
+          data["consumed_by_run_id"] = "${{ github.run_id }}"
+          data["consumed_at_utc"] = datetime.now(timezone.utc).isoformat()
+          path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$AUTH_PATH"
+          git commit -m "Consume one-shot authorization C10S-F1-NUMERICAL-STRESS-20261119-005 [skip ci]"
+          git push origin "HEAD:$GITHUB_REF_NAME"
+
+      - name: Run deterministic numerical diagnostics v003 once
+        working-directory: source/03_EXPERIMENTS/C10-S/harness
+        shell: bash
+        run: |
+          set +e
+          python run_c10s_f1_numerical_stress_v3.py \
+            --source-commit "$SOURCE_COMMIT" \
+            --output-directory "$EVIDENCE_ROOT" \
+            > "$EVIDENCE_ROOT/runner.stdout" \
+            2> "$EVIDENCE_ROOT/runner.stderr"
+          code=$?
+          printf '%s\n' "$code" > "$EVIDENCE_ROOT/runner-exit-code.txt"
+          exit "$code"
+
+      - name: Upload execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: c10s-f1-numerical-stress-v3-${{ github.run_id }}
+          path: ${{ runner.temp }}/c10s-f1-numerical-stress-v3-evidence/
+          if-no-files-found: warn
+          retention-days: 90
