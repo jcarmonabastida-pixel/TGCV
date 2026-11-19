@@ -343,7 +343,7 @@ def f1_score_polynomial_diagnostic(
     right_bound = max(1.0, *(critical_x or ()), within / scale, M / scale, tau / scale)
     right_value = polynomial_x(right_bound)
     expansions = 0
-    while right_value == 0.0 or right_value * normalized[-1] > 0.0:
+    while right_value == 0.0 or right_value * normalized[-1] < 0.0:
         right_bound *= 2.0
         right_value = polynomial_x(right_bound)
         expansions += 1
