@@ -22,7 +22,7 @@ def file_sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def execute(authorization_path: Path, code_commit: str, output_dir: Path, root: Path) -> dict:
+def execute(authorization_path: Path, original_authorization_path: Path, code_commit: str, output_dir: Path, root: Path) -> dict:
     auth = json.loads(authorization_path.read_text(encoding="utf-8"))
     required = {
         "authorization_id", "approved_code_commit", "protocol_sha256",
@@ -49,7 +49,7 @@ def execute(authorization_path: Path, code_commit: str, output_dir: Path, root: 
     inventory = {name: file_sha256(root / name) for name in source_paths}
     if file_sha256(root / PROTOCOL_PATH) != auth["protocol_sha256"]:
         raise ValueError("protocol hash differs from validated authorization")
-    if file_sha256(authorization_path) != auth["authorization_sha256"]:
+    if file_sha256(original_authorization_path) != auth["authorization_sha256"]:
         raise ValueError("validated authorization payload hash mismatch")
     primary_dir = output_dir / "primary"
     replay_dir = output_dir / "replay"
@@ -85,11 +85,12 @@ def execute(authorization_path: Path, code_commit: str, output_dir: Path, root: 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--validated-authorization", type=Path, required=True)
+    parser.add_argument("--original-authorization", type=Path, required=True)
     parser.add_argument("--code-commit", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--root", type=Path, default=Path.cwd())
     args = parser.parse_args()
-    result = execute(args.validated_authorization, args.code_commit, args.output_dir, args.root)
+    result = execute(args.validated_authorization, args.original_authorization, args.code_commit, args.output_dir, args.root)
     print(json.dumps(result, sort_keys=True))
     return 0
 
