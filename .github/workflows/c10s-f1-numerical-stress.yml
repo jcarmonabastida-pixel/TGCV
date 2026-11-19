@@ -1,11 +1,9 @@
 name: C10-S F1 deterministic numerical stress
 
-'on':
+on:
   push:
     branches:
       - research/c10s-f1-integrated-correction-20261119
-    paths:
-      - 00_GOVERNANCE/authorizations/C10S_F1_NUMERICAL_STRESS_AUTHORIZATION_003.json
 
 permissions:
   contents: write
@@ -16,7 +14,7 @@ concurrency:
 
 jobs:
   numerical-stress:
-    if: github.ref == 'refs/heads/research/c10s-f1-integrated-correction-20261119' && contains(github.event.head_commit.message, 'AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-003')
+    if: ${{ github.ref == 'refs/heads/research/c10s-f1-integrated-correction-20261119' && contains(github.event.head_commit.message, 'AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-003') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
