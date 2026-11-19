@@ -233,6 +233,7 @@ class F1ScorePolynomialDiagnostic:
     unresolved_critical_candidates: tuple[float, ...]
     critical_point_solver_status: str
     positive_critical_points: tuple[float, ...]
+    removed_zero_factor_multiplicity: int = 0
 
 
 def _fraction_to_finite_float(value: Fraction, label: str) -> float:
@@ -396,8 +397,12 @@ def f1_score_polynomial_diagnostic(
         s2_means=s2_means, tau=tau,
     ))
     # At tau=0 the score numerator contains an extraneous s^2 factor.
+    # Preserve its exact algebraic multiplicity as a diagnostic while
+    # removing it before positive stationary-root reconstruction.
+    removed_zero_factor_multiplicity = 0
     while len(coefficients) > 1 and coefficients[0] == 0.0:
         coefficients.pop(0)
+        removed_zero_factor_multiplicity += 1
     while len(coefficients) > 1 and coefficients[-1] == 0.0:
         coefficients.pop()
     degree = len(coefficients) - 1
@@ -494,6 +499,7 @@ def f1_score_polynomial_diagnostic(
         unresolved_critical_candidates=unresolved,
         critical_point_solver_status=critical_status,
         positive_critical_points=tuple(value * scale for value in critical_x),
+        removed_zero_factor_multiplicity=removed_zero_factor_multiplicity,
     )
 
 
