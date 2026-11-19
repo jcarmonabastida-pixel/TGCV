@@ -337,6 +337,11 @@ def audit_beta_binomial_count_fit(
 
     def independent_gradient(log_shapes):
         la, lb = (float(value) for value in log_shapes)
+        # Match the independent objective's explicit representability guard.
+        # Outside it the objective is a flat finite penalty, so its declared
+        # diagnostic gradient is zero rather than allowing exp() to overflow.
+        if not all(math.isfinite(value) and abs(value) <= 700 for value in (la, lb)):
+            return np.zeros(2, dtype=float)
         a, b = math.exp(la), math.exp(lb)
         ga = gb = 0.0
         total = a + b
