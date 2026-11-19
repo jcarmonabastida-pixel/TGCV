@@ -61,21 +61,20 @@ It does not copy C0 bootstrap logic, implement C1/C5 estimators, or run profile/
 | Thin comparative runner | IMPLEMENTED |
 | Deterministic runner contract tests | IMPLEMENTED |
 | Static workflow wiring | IMPLEMENTED |
-| Static test execution | PENDING workflow result |
+| Static test execution | PASS — GitHub Actions Run `44560788541`, conclusion `success` |
 | Resource-only preflight | NOT RUN |
 | Numerical comparative holdout | NOT RUN |
 | Primary/replay numerical identity | NOT RUN |
 | Tier B | OUT OF SCOPE |
 | Scientific C10-S execution | NOT AUTHORIZED |
 
-A successful static workflow will establish only technical conformance of the runner contracts. It will not establish numerical coverage or authorize the holdout.
+The static workflow completed successfully on code commit `a7abb8936b57806d4f4f25df07a8c0ca16fb3251` (Run `44560788541`). Compile, dependency installation and the full configured comparator/runner unittest step all reported `success`. This establishes technical test conformance only; it does not establish numerical coverage or authorize the holdout.
 
 ## 5. Next operation
 
-1. Inspect the static workflow result for the exact commit containing these changes.
-2. Resolve any runner/test defects without changing the frozen protocol or inference methods.
-3. Perform a resource-only preflight without coverage adjudication.
-4. Freeze the resulting code/workflow identities and prepare the one-use numerical holdout authorization.
-5. Execute the eight-cell independent C0/C1/C5 holdout only after explicit authorization.
+1. Static workflow result inspected and passed for the runner/test code commit.
+2. Perform a resource-only preflight without coverage adjudication.
+3. Freeze the resulting code/workflow identities and prepare the one-use numerical holdout authorization.
+4. Execute the eight-cell independent C0/C1/C5 holdout only after explicit authorization.
 
 No changes to `main`; no C10 scientific execution.
