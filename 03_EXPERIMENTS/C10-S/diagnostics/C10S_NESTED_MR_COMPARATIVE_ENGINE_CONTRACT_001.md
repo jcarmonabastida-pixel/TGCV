@@ -1,7 +1,7 @@
 # C10-S — Unified Nested M/R Comparative Inference Engine
 
 **Record:** C10S-NESTED-MR-COMPARATIVE-ENGINE-CONTRACT-001  
-**Status:** RESEARCH BRANCH IMPLEMENTATION — CODE AND TESTS AUTHORED / TESTS NOT RUN / CI WORKFLOW INTEGRATION PENDING  
+**Status:** RESEARCH BRANCH IMPLEMENTATION — STATIC CI PASS (36/36) / NUMERICAL CALIBRATION NOT RUN  
 **Date:** 2026-11-19  
 **Scope:** Matched-data inference comparison within F1 and within F5  
 **Baseline preserved:** nested M/R protocol v002 and production Analyzer unchanged
@@ -65,7 +65,7 @@ test_c10s_nested_mr_comparative_inference_engine.py contains deterministic contr
 5. Abstention accounting, paired-data requirements and invalid truth rejection.
 6. Unsupported-family rejection.
 
-These tests have not been run. They are not coverage calibration or Monte Carlo evidence.
+The six new engine tests executed successfully as part of the 36-test static suite. They are not coverage calibration or Monte Carlo evidence.
 
 ## 6. Integration boundary and remaining gates
 
@@ -76,9 +76,9 @@ These tests have not been run. They are not coverage calibration or Monte Carlo 
 | F5 fitted candidate | IMPLEMENTED; prior deterministic tests passed |
 | Unified F1/F5 dispatch | IMPLEMENTED |
 | Common adjudication metrics | IMPLEMENTED |
-| New engine deterministic tests | AUTHORED; NOT RUN |
-| Static workflow path/command integration | PENDING |
-| New engine test execution | NOT AUTHORIZED / NOT RUN |
+| New engine deterministic tests | EXECUTED; 6/6 PASS within 36-test suite |
+| Static workflow path/command integration | IMPLEMENTED; run 15 PASS |
+| New engine test execution | AUTHORIZED BY USER; EXECUTED; PASS |
 | Coverage calibration and method selection | NOT AUTHORIZED |
 | Independent holdout | OPEN / NOT AUTHORIZED |
 | Tier B | NOT AUTHORIZED |
