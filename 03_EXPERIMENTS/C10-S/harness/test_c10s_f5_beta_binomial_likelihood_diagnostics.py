@@ -9,6 +9,8 @@ from c10s_f5_beta_binomial_likelihood_diagnostics import (
     beta_binomial_extended_boundary_likelihoods,
     beta_binomial_loglik_score_hessian,
     audit_beta_binomial_count_fit,
+    beta_binomial_profile_log_concentration,
+    beta_binomial_profiled_boundary_likelihoods,
 )
 
 
@@ -189,6 +191,60 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
             result.finite_log_likelihood,
             result.binomial_limit_log_likelihood,
             delta=0.02,
+        )
+
+
+    def test_profile_trace_records_nuisance_profile_and_local_curvature(self):
+        center = math.log(3.4)
+        h = 1e-2
+        points = beta_binomial_profile_log_concentration(
+            COUNTS, R, (center - h, center, center + h),
+        )
+        self.assertEqual(len(points), 3)
+        self.assertTrue(all(
+            point.status == "NUMERICAL_PROFILE_UNCERTIFIED"
+            and not point.mean_profile_at_bound
+            and math.isfinite(point.profiled_log_likelihood)
+            and abs(point.nuisance_score) < 2e-5
+            for point in points
+        ))
+        finite_difference_curvature = (
+            points[0].profiled_log_likelihood
+            - 2.0 * points[1].profiled_log_likelihood
+            + points[2].profiled_log_likelihood
+        ) / (h * h)
+        self.assertIsNotNone(points[1].profile_log_concentration_curvature)
+        self.assertAlmostEqual(
+            points[1].profile_log_concentration_curvature,
+            finite_difference_curvature,
+            delta=3e-2,
+        )
+
+    def test_profile_trace_rejects_unsorted_or_duplicate_concentrations(self):
+        with self.assertRaisesRegex(
+            F5LikelihoodDiagnosticError, "STRICTLY_INCREASING",
+        ):
+            beta_binomial_profile_log_concentration(
+                COUNTS, R, (0.0, 0.2, 0.2),
+            )
+
+    def test_profiled_boundary_models_optimize_their_own_mean(self):
+        result = beta_binomial_profiled_boundary_likelihoods(COUNTS, R)
+        expected_mean = sum(COUNTS) / (len(COUNTS) * R)
+        self.assertAlmostEqual(result.binomial_profile_mean, expected_mean)
+        self.assertTrue(math.isfinite(result.binomial_profile_log_likelihood))
+        self.assertEqual(result.interior_count_observations, 8)
+        self.assertEqual(result.two_point_profile_log_likelihood, -math.inf)
+        self.assertIsNone(result.two_point_profile_mean)
+
+    def test_two_point_profile_boundary_uses_endpoint_mixture_mle(self):
+        counts = (0, 5, 0, 5, 5, 0)
+        result = beta_binomial_profiled_boundary_likelihoods(counts, 5)
+        self.assertEqual(result.interior_count_observations, 0)
+        self.assertAlmostEqual(result.two_point_profile_mean, 0.5)
+        self.assertAlmostEqual(
+            result.two_point_profile_log_likelihood,
+            3 * math.log(0.5) + 3 * math.log(0.5),
         )
 
 
