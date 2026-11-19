@@ -67,3 +67,31 @@ Implementation commits:
 - per-dataset serialization assertion: `09af6710a8954450ec85dbfae02c1a156432a73d`
 
 Static workflow for the intermediate diagnostic and unit-test commits was triggered; the final serialization-test commit is the current validation target. **No passing result is claimed until its exact-commit run completes and logs are inspected.**
+
+
+## Static validation of the profiled-curvature increment
+
+The final static workflow validated the exact code commit:
+- Run: `44589734031`
+- Exact commit: `cb65659c82bb79183e2b81d13487ebb56d89f862`
+- Conclusion: `SUCCESS`
+- Hash-locked dependencies: PASS
+- Compile: PASS
+- Deterministic suite: **123 tests passed**
+- `test_profile_concentration_curvature_is_nuisance_adjusted_schur_complement`: PASS
+- Per-dataset JSON serialization assertion for `profile_log_concentration_curvature`: PASS.
+
+The raw curvature is emitted only when the selected mean-logit coordinate is strictly interior to its configured optimizer bounds, the nuisance Hessian diagonal is finite and nonzero, and the Schur-complement result is finite. Otherwise it remains null. This avoids treating a boundary-constrained mean estimate as an interior nuisance profile. No threshold was added.
+
+The static workflow's three F1 numerical-stress workflows were `SKIPPED` by their authorization conditions. No numerical stress, calibration, bootstrap bank, resource preflight, holdout, or scientific C10 execution occurred.
+
+## Exact source identities at the validated commit
+
+| Artifact | Git blob SHA |
+|---|---|
+| F5 likelihood/optimizer diagnostics | `e57ea294c71de8810d7feded6a85110cee588929` |
+| F5 diagnostic tests | `a7ef6b2da85b53a1d4ddf921aa8c28807a91565f` |
+| Comparative engine per-dataset JSON test | `16534c1943092be8f569b75cdfe682c89830e47f` |
+| Static workflow | `d47ac4cdde1f32c5c70cd9182a50d235cb630e5b` |
+
+Validated research commit: `cb65659c82bb79183e2b81d13487ebb56d89f862`. The frozen development/calibration specification v1.0 was not modified.
