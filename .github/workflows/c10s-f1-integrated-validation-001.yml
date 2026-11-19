@@ -3,10 +3,10 @@ name: C10-S F1 integrated numerical validation 001
 on:
   push:
     branches:
-      - research/c10s-f1-validation-freeze-20261119
+      - research/c10s-f1-integrated-correction-20261119
     paths:
       - .github/workflows/c10s-f1-integrated-validation-001.yml
-      - 00_GOVERNANCE/authorizations/C10S_F1_INTEGRATED_NUMERICAL_VALIDATION_AUTHORIZATION_DRAFT_002.json
+      - 00_GOVERNANCE/authorizations/C10S_F1_INTEGRATED_NUMERICAL_VALIDATION_AUTHORIZATION_DRAFT_003.json
 
 permissions:
   contents: read
@@ -14,15 +14,15 @@ permissions:
 jobs:
   validate-frozen-f1:
     if: >-
-      ${{ github.ref == 'refs/heads/research/c10s-f1-validation-freeze-20261119'
-          && contains(github.event.head_commit.message, 'C10S-F1-INTEGRATED-VALIDATION-20261119-02') }}
+      ${{ github.ref == 'refs/heads/research/c10s-f1-integrated-correction-20261119'
+          && contains(github.event.head_commit.message, 'C10S-F1-INTEGRATED-VALIDATION-20261119-03') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
       - name: Checkout exact frozen source (detached)
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: 0d430adae891b3914475c60334d93e977efc44cc
+          ref: 41d91bd19ba0dfd789d21b3d8398184daa100ff9
           fetch-depth: 1
           persist-credentials: false
 
@@ -36,13 +36,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "0d430adae891b3914475c60334d93e977efc44cc"
+          test "$(git rev-parse HEAD)" = "41d91bd19ba0dfd789d21b3d8398184daa100ff9"
           test "$(python -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')" = "3.12.3"
           test -z "$(git status --porcelain)"
           mkdir -p validation-evidence
           {
-            echo "authorization_id=C10S-F1-INTEGRATED-VALIDATION-20261119-02"
-            echo "expected_commit=0d430adae891b3914475c60334d93e977efc44cc"
+            echo "authorization_id=C10S-F1-INTEGRATED-VALIDATION-20261119-03"
+            echo "expected_commit=41d91bd19ba0dfd789d21b3d8398184daa100ff9"
             echo "actual_commit=$(git rev-parse HEAD)"
             echo "python_version=$(python --version 2>&1)"
             echo "platform=$(uname -a)"
@@ -50,15 +50,15 @@ jobs:
             echo "git_status_before_evidence_directory=CLEAN"
           } | tee validation-evidence/preflight.txt
           cat > validation-evidence/expected-blobs.tsv <<'EOF'
-          b03697432fbcc0bacfc88f500c5003ac529448fb 03_EXPERIMENTS/C10-S/harness/c10s_f1_between_profile_likelihood.py
+          ae2fc89c8da09bbeba88a9309b5ba37750bcd631 03_EXPERIMENTS/C10-S/harness/c10s_f1_between_profile_likelihood.py
           3ac9ce31eb82421022fd8d2a65a0daee049322be 03_EXPERIMENTS/C10-S/harness/c10s_f1_independent_root_isolator.py
           9fa1cb21cd47e32030db8a00420e7dacfdc77321 03_EXPERIMENTS/C10-S/harness/c10s_f1_root_adjudication.py
           d277db712f8d2fdc7efbb5da5213d3087a84358a 03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py
-          a012755a695eeefa03100ed8d4024de0c0bfb2f1 03_EXPERIMENTS/C10-S/harness/test_c10s_f1_between_profile_likelihood.py
+          e7684bd3f70687ed5eeccb515db1d9e161407223 03_EXPERIMENTS/C10-S/harness/test_c10s_f1_between_profile_likelihood.py
           bb5cd2b8d2819fdb8757ea293d7e8f8fb9a1b4ce 03_EXPERIMENTS/C10-S/harness/test_c10s_f1_independent_root_isolator.py
           2bcaed7423528fbbf9a6783c3f32e5edd30a10bc 03_EXPERIMENTS/C10-S/harness/test_c10s_f1_root_adjudication.py
           1061998ba93f363fbaaaed050c67acd6eb1c45b5 03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_inference_engine.py
-          2ee2b9dd20381c5f5ded18a57a3ac2b7f1e7fe92 03_EXPERIMENTS/C10-S/harness/C10S_F1_INTEGRATED_CONCORDANCE_MATRIX_DRAFT_001.md
+          f4f7f771d4027de33d2892441e2da512ce3f793b 03_EXPERIMENTS/C10-S/harness/C10S_F1_INTEGRATED_CONCORDANCE_MATRIX_DRAFT_001.md
           EOF
           while IFS=' ' read -r expected path; do
             actual="$(git hash-object "$path")"
