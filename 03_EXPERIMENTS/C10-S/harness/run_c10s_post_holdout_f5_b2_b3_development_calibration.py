@@ -656,6 +656,7 @@ def run_f5_development_calibration(
     b3_b4000: int = B3_B4000,
     code_commit: str,
     authorization: dict[str, Any],
+    workflow_run_id: str | None = None,
 ) -> dict[str, Any]:
     """Run the frozen F5 B2/B3 development banks after one-use authorization."""
     if authorization.get("validation_status") != "PASS":
@@ -744,6 +745,7 @@ def run_f5_development_calibration(
         "authorization_commit": authorization.get("authorization_commit"),
         "authorization_sha256": authorization.get("authorization_sha256"),
         "approved_code_commit": code_commit,
+        "workflow_run_id": workflow_run_id,
         "seed_schedule_id": SEED_SCHEDULE_ID,
         "seed_namespace": SEED_NAMESPACE,
         "cells": list(EXPECTED_CELLS),
@@ -773,6 +775,8 @@ def run_f5_development_calibration(
                 "03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py",
                 "03_EXPERIMENTS/C10-S/harness/c10s_variance_comparison_interface.py",
                 "03_EXPERIMENTS/C10-S/harness/c10s_beta_binomial_variance_oracles.py",
+                "03_EXPERIMENTS/C10-S/harness/validate_c10s_post_holdout_f5_b2_b3_development_calibration_authorization.py",
+                ".github/workflows/c10-s-post-holdout-f5-b2-b3-development-calibration.yml",
                 LOCK_PATH,
                 SPEC_PATH,
             )
@@ -807,6 +811,7 @@ def main() -> int:
     run_f5_development_calibration(
         args.output_dir, root=args.root, code_commit=args.code_commit,
         authorization=authorization,
+        workflow_run_id=os.environ.get("GITHUB_RUN_ID"),
     )
     return 0
 
