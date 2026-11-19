@@ -42,3 +42,12 @@ Commit `aaa82ba5246b7c8554a80c7364ab82ecfe3f91d7` updates the existing research-
 - executed by the deterministic unittest step.
 
 This closes the workflow-wiring omission found during follow-up inspection. It does **not** establish a passing run. The available commit-run lookup returned no PR-triggered runs for the fixture commit, and no successful workflow result has been observed for the updated workflow commit. Static validation remains **PENDING / NOT VERIFIED** until an actual run and its job result are inspected.
+
+
+## Observed CI result and fixture correction
+
+The push-triggered static workflow did run for commit `aaa82ba5246b7c8554a80c7364ab82ecfe3f91d7` (run `44587633010`) and **FAILED**. Dependency installation and compilation passed; 120 of 121 tests passed. The failing assertion was the near-double-root fixture expecting `POLYNOMIAL_ROOTS_ISOLATED`, while the production diagnostic conservatively returned `POLYNOMIAL_ROOTS_UNRESOLVED`.
+
+The initial perturbation factor `1 - 5e-8` placed the fixture inside the diagnostic's unresolved-tolerance region. This is a fixture calibration mismatch, not evidence that the solver should be weakened. The production tolerance and solver were left unchanged.
+
+A follow-up fixture-only change uses `1 - 5e-6` to move the realizable polynomial farther outside that unresolved region while retaining a near-degenerate target. Commit: `e1af628250837ccd3a2aeffd2a6215879ce69c33`. Its static workflow result had not yet appeared at the time of this record update. Status therefore remains **PENDING**; do not count the test as passing until the new run is inspected.
