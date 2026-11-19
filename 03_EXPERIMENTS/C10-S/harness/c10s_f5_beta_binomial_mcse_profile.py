@@ -200,24 +200,45 @@ def f5_beta_binomial_mcse_profile_loglik(
             _loglik(counts, r, mu_minus, k),
         )
 
+    # At the maximum attainable target, only the kappa->0 boundary is
+    # feasible. Treat it analytically rather than forcing a positive grid.
+    if abs(base - 0.25) <= 1e-14:
+        mu_boundary = 0.5
+        value = _limit_loglik(counts, r, mu_boundary, limit="KAPPA_TO_ZERO")
+        return F5ProfileResult(
+            g, value, "MU_BOTH", None, "KAPPA_TO_ZERO_LIMIT",
+            value, value, (("feasibility", "ONLY_KAPPA_ZERO_BOUNDARY"),),
+        )
+
     # The feasible concentration domain may be unbounded or have a finite cap.
     if h_infinity <= 0.25 + 1e-12:
         logk_low, logk_high = -24.0, 24.0
         upper_limit_feasible = True
+        finite_cap = None
     else:
-        # Solve base*(1+k)/(1+k/R*)=1/4 for k.
-        denominator = 0.25 - base / target_r
-        numerator = base - 0.25
-        if denominator <= 0.0:
-            k_cap = math.inf
-        else:
-            k_cap = numerator / denominator
-        if not math.isfinite(k_cap) or k_cap <= 0.0:
+        # Solve base*(1+k)/(1+k/R*)=1/4 for k:
+        # k = (1/4 - base) / (base - 1/(4 R*)).
+        denominator = base - 0.25 / target_r
+        numerator = 0.25 - base
+        if denominator <= 0.0 or numerator < 0.0:
             raise F5ProfileError("FAILED_TO_DERIVE_FEASIBLE_CONCENTRATION_BOUND")
-        logk_low, logk_high = -24.0, min(24.0, math.log(k_cap))
+        finite_cap = numerator / denominator
+        if not math.isfinite(finite_cap) or finite_cap <= 0.0:
+            raise F5ProfileError("FAILED_TO_DERIVE_FEASIBLE_CONCENTRATION_BOUND")
+        logk_low, logk_high = -24.0, min(24.0, math.log(finite_cap))
         upper_limit_feasible = False
 
     if logk_high <= logk_low:
+        # A cap below the numerical interior range is represented by its
+        # analytic h=1/4 endpoint, with both mean branches equal to 1/2.
+        if finite_cap is not None:
+            value = _loglik(counts, r, 0.5, finite_cap)
+            if not math.isfinite(value):
+                value = _limit_loglik(counts, r, 0.5, limit="KAPPA_TO_ZERO")
+            return F5ProfileResult(
+                g, value, "MU_BOTH", finite_cap, "FINITE_FEASIBILITY_BOUNDARY",
+                value, value, (("feasibility", "FINITE_CAP_BELOW_LOG_GRID"),),
+            )
         raise F5ProfileError("EMPTY_NUMERICAL_CONCENTRATION_DOMAIN")
 
     grid = np.linspace(logk_low, logk_high, 241)
