@@ -54,6 +54,9 @@ jobs:
               and .one_shot == true
               and .consumed == false
               and .source_commit == $commit
+              and .freeze_manifest == "03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_FREEZE_MANIFEST_002.md"
+              and .freeze_manifest_commit == "5463e5662f9095267369601789ccf541627893f6"
+              and .workflow == ".github/workflows/c10s-f1-numerical-stress-001.yml"
               and .runtime.runner == "ubuntu-24.04"
               and .runtime.python == "3.12.3"
               and .runtime.numpy == "2.1.3"
@@ -97,7 +100,7 @@ jobs:
           set -euo pipefail
           test "$(git -C source rev-parse HEAD)" = "$SOURCE_COMMIT"
           while IFS=' ' read -r expected relative_path; do
-            actual="$(git -C source hash-object "source/$relative_path")"
+            actual="$(git -C source hash-object "$relative_path")"
             printf '%s %s %s\n' "$expected" "$actual" "$relative_path"
             test "$actual" = "$expected"
           done <<'EOF'
