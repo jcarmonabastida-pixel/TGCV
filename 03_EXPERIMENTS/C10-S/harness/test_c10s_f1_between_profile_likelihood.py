@@ -34,6 +34,7 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
 
     def test_root_inversion_returns_ordered_finite_interval(self):
         result = f1_profile_between_confidence_set(
+            family="F1",
             ROWS, likelihood_ratio_cutoff=3.841458820694124,
         )
         low, high = result.confidence_components[0]
@@ -43,10 +44,13 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertGreaterEqual(result.mle_between_variance, low)
         self.assertLessEqual(result.mle_between_variance, high)
         self.assertEqual(result.status, "PROFILE_LR_INTERVAL_ROOT_SOLVED")
+        self.assertEqual(result.nuisance_certification_status, "OPTIMIZATION_CONCORDANT")
+        self.assertEqual(result.topology_status, "ANALYTIC_CONNECTEDNESS_ARGUMENT_APPLIED")
 
     def test_solved_endpoints_satisfy_lr_equation(self):
         cutoff = 3.841458820694124
         result = f1_profile_between_confidence_set(
+            family="F1",
             ROWS, likelihood_ratio_cutoff=cutoff,
         )
         maximum = result.max_profile_loglik
@@ -56,19 +60,30 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
 
     def test_nonincluded_zero_boundary_has_positive_lower_endpoint(self):
         result = f1_profile_between_confidence_set(
+            family="F1",
             ROWS, likelihood_ratio_cutoff=0.05,
         )
         self.assertFalse(result.lower_boundary_included)
         self.assertGreater(result.confidence_components[0][0], 0.0)
 
+    def test_profile_interval_rejects_non_f1_family(self):
+        with self.assertRaisesRegex(
+            F1ProfileError, "REQUIRES_EXPLICIT_F1_FAMILY",
+        ):
+            f1_profile_between_confidence_set(
+                ROWS, family="F5", likelihood_ratio_cutoff=2.0,
+            )
+
     def test_caller_supplied_cutoff_is_preserved(self):
         result = f1_profile_between_confidence_set(
+            family="F1",
             ROWS, likelihood_ratio_cutoff=2.0,
         )
         self.assertEqual(result.likelihood_ratio_cutoff, 2.0)
 
     def test_zero_boundary_can_be_included(self):
         result = f1_profile_between_confidence_set(
+            family="F1",
             ROWS, likelihood_ratio_cutoff=100.0,
         )
         self.assertTrue(result.lower_boundary_included)
@@ -89,12 +104,14 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
     def test_profile_interval_is_equivariant_to_observation_scale(self):
         cutoff = 3.841458820694124
         base = f1_profile_between_confidence_set(
+            family="F1",
             ROWS, likelihood_ratio_cutoff=cutoff,
         )
         base_low, base_high = base.confidence_components[0]
         for factor in (1e-4, 1e-2, 1e2, 1e4):
             scaled = tuple(tuple(factor * value for value in row) for row in ROWS)
             result = f1_profile_between_confidence_set(
+            family="F1",
                 scaled, likelihood_ratio_cutoff=cutoff,
             )
             low, high = result.confidence_components[0]
@@ -369,6 +386,7 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
     def test_rejects_invalid_cutoff(self):
         with self.assertRaises(F1ProfileError):
             f1_profile_between_confidence_set(
+            family="F1",
                 ROWS, likelihood_ratio_cutoff=0.0,
             )
 
