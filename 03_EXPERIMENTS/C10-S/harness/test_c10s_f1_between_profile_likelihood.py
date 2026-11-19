@@ -211,6 +211,8 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertEqual(len(result.unresolved_tangential_candidate_counts), 9)
         self.assertEqual(len(result.polynomial_degrees), 9)
         self.assertEqual(len(result.polynomial_root_counts), 9)
+        self.assertEqual(len(result.polynomial_statuses), 9)
+        self.assertEqual(len(result.critical_point_solver_statuses), 9)
         self.assertEqual(len(result.polynomial_scan_discordances), 9)
         self.assertIsNotNone(result.maximum_stationary_location_spread)
         self.assertIn(
