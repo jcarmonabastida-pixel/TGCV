@@ -416,3 +416,18 @@ The current source blobs are recorded in `C10S_F5_B1_IMPLEMENTATION_CLOSURE_001.
 The preflight's `F5_MCSE_JOINT_BOUNDARY_METHOD_NOT_IMPLEMENTED` is **not** an open B1 defect. Frozen specification §§6, 7, 10 and 11 explicitly exclude F5 MCSE interval construction and preserve its abstention. The C5 candidate's within/raw-between intervals are the Phase B target. The MCSE abstention must remain explicit; no MCSE method is to be added or promoted under this work package.
 
 **B1 disposition:** IMPLEMENTATION_AND_DETERMINISTIC_TESTS_COMPLETE. Statistical concentration identification and C5 component eligibility remain to be evaluated on the separately authorized B2/B3 calibration and disjoint validation banks. No coverage/calibration result is inferred from the static suite or resource preflight.
+
+
+## 13. F5 B2/B3 execution package — implementation complete, execution gated
+
+The F5-only B2/B3 development runner and its one-use authorization path are now implemented. Full specification mapping, seed schedules, per-dataset outputs, component gates, B3 rank/endpoint diagnostics, source hashes and static validation are recorded in `C10S_F5_B2_B3_DEVELOPMENT_RUNNER_IMPLEMENTATION_001.md`.
+
+- B2: 5,000 calibration + 5,000 disjoint development-validation datasets per F5 cell; C0/C5 B=1,000.
+- B3: 250 calibration-bank datasets per cell, selected by a pre-outcome SHA-256 rule; C5 B=1,000 and B=4,000 on independent streams.
+- Historical seed collision guard and exact dataset regeneration/hash check are hard preconditions.
+- Component gates are applied separately by cell, bank and target; no pooling. B3 is diagnostic only.
+- MCSE remains explicitly excluded/abstained.
+- Exact-commit static workflow `44608692364`: 168/168 PASS at `1ceca1550606407099df9bc1f2df45ddcd6e2ebb`.
+- Dedicated workflow is dormant; only a DRAFT authorization template exists. No B2/B3 numerical execution has occurred.
+
+**Disposition:** F5 B1 implementation and B2/B3 execution package are complete. F5 numerical development calibration/validation and C5 component eligibility remain OPEN until explicit one-use authorization and execution. No confirmatory or causal conclusion is implied.
