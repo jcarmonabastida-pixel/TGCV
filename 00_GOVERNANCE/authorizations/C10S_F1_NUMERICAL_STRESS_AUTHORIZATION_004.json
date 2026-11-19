@@ -1,9 +1,9 @@
 {
   "schema": "C10S-F1-NUMERICAL-STRESS-AUTHORIZATION-1",
   "authorization_id": "C10S-F1-NUMERICAL-STRESS-20261119-004",
-  "status": "DRAFT",
-  "execution_authorized": false,
-  "approved_by_user": false,
+  "status": "APPROVED",
+  "execution_authorized": true,
+  "approved_by_user": true,
   "one_shot": true,
   "source_commit": "a42351e374e3624a498b11199cea45cd0dc20c09",
   "freeze_manifest": "03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_FREEZE_MANIFEST_004.md",
@@ -103,5 +103,8 @@
   "approval_requirement": "Fresh explicit user approval required. Approval must change this exact authorization to APPROVED, set execution_authorized and approved_by_user true, and commit with exact marker AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-004. No approval from authorizations 001, 002 or 003 is reusable.",
   "consumed": false,
   "attempt_closed": false,
-  "retry_authorized": false
+  "retry_authorized": false,
+  "approved_at_utc": "2026-11-19T14:36:06.833Z",
+  "approval_marker": "AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-004",
+  "approval_scope_confirmation": "User explicitly approved authorization 004 in the conversation; approval applies only to the frozen v002 source, manifest, workflow, runtime, exact command and limits recorded here."
 }
