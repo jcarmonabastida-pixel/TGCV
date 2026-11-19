@@ -514,5 +514,43 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         json.dumps(stability, allow_nan=False)
 
 
+    def test_f5_compare_dataset_keeps_profile_boundary_when_c5_fit_abstains(self):
+        all_zero_rows = tuple((0, 0, 0, 0, 0) for _ in range(10))
+        with patch(
+            "c10s_fitted_beta_binomial_bootstrap.audit_beta_binomial_count_fit",
+            return_value=SimpleNamespace(status="BOUNDARY_FIXTURE_OPTIMIZER_AUDIT"),
+        ):
+            record = compare_dataset(
+                all_zero_rows, dataset_id="F5-ALL-ZERO-BOUNDARY",
+                family="F5", target_m=10, target_r=5,
+                baseline_bootstrap_replicates=100, baseline_bootstrap_seed=29,
+                bootstrap_replicates=60, bootstrap_seed=20261120,
+                include_profile_diagnostics=False,
+                include_f5_concentration_profile_audit=True,
+                f5_profile_log_concentration_grid=(-4.0, -2.0, 0.0, 2.0, 4.0),
+            )
+        diagnostic_map = dict(record.candidates[0].diagnostics)
+        self.assertEqual(diagnostic_map["fit_status"], "ABSTAINED")
+        self.assertEqual(
+            diagnostic_map["failure_reason"], "ALL_ZERO_OR_ALL_ONE_BOUNDARY",
+        )
+        profile = json.loads(diagnostic_map["concentration_profile_audit_json"])
+        self.assertEqual(profile["optimizer_convergence_status"], "BOUNDARY_FIXTURE_OPTIMIZER_AUDIT")
+        self.assertEqual(profile["profile_status"], "PROFILE_HAS_BOUNDARY_OR_UNRESOLVED_POINTS")
+        self.assertEqual(profile["two_point_boundary_status"], "FINITE_ENDPOINT_MIXTURE_PROFILE")
+        self.assertEqual(profile["two_point_boundary_profile_log_likelihood"], 0.0)
+        self.assertEqual(profile["identification_status"], "INDETERMINATE")
+        stability = json.loads(diagnostic_map["concentration_profile_stability_json"])
+        self.assertTrue(all(
+            point["reference_status"] == "MEAN_PROFILE_BOUNDARY"
+            and point["refined_grid_status"] == "MEAN_PROFILE_BOUNDARY"
+            and point["expanded_bounds_status"] == "MEAN_PROFILE_BOUNDARY"
+            for point in stability["points"]
+        ))
+        self.assertEqual(stability["status"], "NUMERICAL_STABILITY_NOT_ADJUDICATED")
+        json.dumps(profile, allow_nan=False)
+        json.dumps(stability, allow_nan=False)
+
+
 if __name__ == "__main__":
     unittest.main()
