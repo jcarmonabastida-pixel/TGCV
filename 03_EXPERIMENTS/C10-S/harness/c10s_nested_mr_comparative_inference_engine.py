@@ -101,11 +101,15 @@ def _f1_profile_diagnostic(
     except F1ProfileError as exc:
         return (
             ("between_profile_status", "ABSTAINED_DIAGNOSTIC"),
+            ("between_profile_inference_eligibility", "ABSTAIN_PROFILE_INFERENCE"),
+            ("between_profile_abstention_reason", str(exc)),
             ("between_profile_reason", str(exc)),
             ("between_profile_interval", "NOT_EMITTED_NO_LR_CUTOFF_SELECTED"),
         )
     return (
         ("between_profile_status", "LOG_LIKELIHOOD_DIAGNOSTIC_AVAILABLE"),
+        ("between_profile_inference_eligibility", "PROFILE_DIAGNOSTIC_ELIGIBLE_NOT_COVERAGE_CERTIFIED"),
+        ("between_profile_abstention_reason", "NONE"),
         ("between_profile_loglik_at_nonnegative_raw_estimate", format(value, ".17g")),
         ("between_profile_tau_evaluation", format(tau, ".17g")),
         ("between_profile_interval", "NOT_EMITTED_NO_LR_CUTOFF_SELECTED"),
@@ -515,8 +519,9 @@ def adjudicate_profile_diagnostics(
     if not records:
         raise ComparativeEngineError("PROFILE_DIAGNOSTIC_ROSTER_MUST_BE_NONEMPTY")
     families = {record.family for record in records}
-    if len(families) != 1 or next(iter(families)) != "F5":
-        raise ComparativeEngineError("PROFILE_DIAGNOSTICS_REQUIRE_ONE_F5_ROSTER")
+    if len(families) != 1 or next(iter(families)) not in {"F1", "F5"}:
+        raise ComparativeEngineError("PROFILE_DIAGNOSTICS_REQUIRE_ONE_FAMILY_F1_OR_F5")
+    family = next(iter(families))
     if any(record.engine_id != ENGINE_ID for record in records):
         raise ComparativeEngineError("UNKNOWN_ENGINE_RECORD")
     ids = [record.dataset_id for record in records]
@@ -533,29 +538,35 @@ def adjudicate_profile_diagnostics(
     reasons: dict[str, int] = {}
     eligible = abstained = not_evaluated = 0
     for record in records:
+        expected_method = (
+            "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"
+            if family == "F5" else "C1_F1_EXACT_PIVOTAL_1.0"
+        )
         candidate = next(
-            (item for item in record.candidates
-             if item.method_id == "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"),
+            (item for item in record.candidates if item.method_id == expected_method),
             None,
         )
         if candidate is None:
-            raise ComparativeEngineError("F5_PROFILE_CANDIDATE_MISSING")
+            raise ComparativeEngineError(f"{family}_PROFILE_CANDIDATE_MISSING")
         diagnostics = dict(candidate.diagnostics)
-        status = diagnostics.get("mcse_profile_inference_eligibility")
+        prefix = "mcse_profile" if family == "F5" else "between_profile"
+        status = diagnostics.get(f"{prefix}_inference_eligibility")
         if status == "PROFILE_DIAGNOSTIC_ELIGIBLE_NOT_COVERAGE_CERTIFIED":
             eligible += 1
         elif status == "ABSTAIN_PROFILE_INFERENCE":
             abstained += 1
-            reason = diagnostics.get("mcse_profile_abstention_reason", "ABSTENTION_REASON_MISSING")
+            reason = diagnostics.get(f"{prefix}_abstention_reason", "ABSTENTION_REASON_MISSING")
             reasons[reason] = reasons.get(reason, 0) + 1
         else:
             not_evaluated += 1
-            status = status or diagnostics.get("mcse_profile_status", "PROFILE_DIAGNOSTIC_MISSING")
+            status = status or diagnostics.get(f"{prefix}_status", "PROFILE_DIAGNOSTIC_MISSING")
         statuses[status] = statuses.get(status, 0) + 1
 
     n = len(records)
     return (ProfileDiagnosticMetrics(
-        family="F5", diagnostic="MCSE_PROFILE_OPTIMIZATION",
+        family=family,
+        diagnostic=("MCSE_PROFILE_OPTIMIZATION" if family == "F5"
+                    else "BETWEEN_VARIANCE_PROFILE_LOG_LIKELIHOOD"),
         n_datasets=n, eligible_count=eligible, abstained_count=abstained,
         not_evaluated_count=not_evaluated, eligible_rate=eligible / n,
         abstention_reasons=tuple(sorted(reasons.items())),
