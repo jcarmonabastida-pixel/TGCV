@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import math
 import unittest
+
+import numpy as np
 from unittest.mock import patch
 
 from c10s_f1_between_profile_likelihood import (
@@ -27,7 +29,58 @@ ROWS = (
 )
 
 
+def frozen_six_cell_rows():
+    """Fresh deterministic Gaussian fixtures for the six frozen F1 cells."""
+    regimes = (
+        ("balanced", 1.0, 1.0),
+        ("low_between", 1.0, 0.05),
+        ("high_between", 0.25, 2.0),
+    )
+    designs = ((10, 5), (30, 20))
+    fixtures = []
+    for regime_index, (regime, sigma_w2, sigma_b2) in enumerate(regimes):
+        for design_index, (m, r) in enumerate(designs):
+            seed = 2026111900 + 100 * regime_index + design_index
+            rng = np.random.Generator(np.random.PCG64(seed))
+            world = rng.normal(0.0, math.sqrt(sigma_b2), size=(m, 1))
+            noise = rng.normal(0.0, math.sqrt(sigma_w2), size=(m, r))
+            rows = tuple(
+                tuple(float(value) for value in row)
+                for row in world + noise
+            )
+            fixtures.append((regime, m, r, sigma_w2, sigma_b2, seed, rows))
+    return tuple(fixtures)
+
+
 class F1BetweenProfileLikelihoodTests(unittest.TestCase):
+    def test_profile_interval_path_covers_all_six_frozen_f1_cells(self):
+        fixtures = frozen_six_cell_rows()
+        self.assertEqual(len(fixtures), 6)
+        observed = []
+        for regime, m, r, sigma_w2, sigma_b2, seed, rows in fixtures:
+            with self.subTest(regime=regime, m=m, r=r, seed=seed):
+                self.assertEqual(len(rows), m)
+                self.assertTrue(all(len(row) == r for row in rows))
+                self.assertTrue(all(
+                    math.isfinite(value) for row in rows for value in row
+                ))
+                try:
+                    result = f1_profile_between_confidence_set(
+                        rows, family="F1",
+                        likelihood_ratio_cutoff=3.841458820694124,
+                    )
+                except F1ProfileError as exc:
+                    self.assertTrue(str(exc))
+                    observed.append((regime, m, r, "TYPED_ABSTENTION"))
+                else:
+                    low, high = result.confidence_components[0]
+                    self.assertGreaterEqual(low, 0.0)
+                    self.assertGreater(high, low)
+                    self.assertLessEqual(low, result.mle_between_variance)
+                    self.assertGreaterEqual(high, result.mle_between_variance)
+                    observed.append((regime, m, r, result.status))
+        self.assertEqual(len(observed), 6)
+
     def test_profile_loglik_is_finite_on_physical_parameter_space(self):
         value = f1_profile_loglik(ROWS, between_variance=0.25)
         self.assertTrue(math.isfinite(value))
