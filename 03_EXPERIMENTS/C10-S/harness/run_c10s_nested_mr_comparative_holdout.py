@@ -424,7 +424,7 @@ def run_holdout_checkpointed(
             "file": cell_file,
             "sha256": digest,
             "datasets_completed": k,
-            "record_count": len(cell_result["records"]),
+            "record_count": completed[spec.cell_id]["records_count"],
         }
         _atomic_json(index_path, prior_index)
     ordered_cells = [completed[cell_id] for cell_id in EXPECTED_CELLS]
