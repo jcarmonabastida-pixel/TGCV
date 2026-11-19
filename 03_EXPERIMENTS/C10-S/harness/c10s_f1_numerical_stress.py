@@ -183,10 +183,25 @@ def build_polynomial_fixtures() -> tuple[PolynomialFixture, ...]:
         fixtures.append(_scale_fixture(scale_base, exponent, variable=True))
 
     # N5: fixed polynomial under predeclared isolation widths/depths.
-    resolution_base = _fixture(
-        "N5_CLOSE_PAIR", "N5", (Q(1), Q(1) + Q(1, 10**8)),
-    )
-    fixtures.append(resolution_base)
+    fixtures.extend((
+        _fixture(
+            "N5_CLOSE_PAIR_UNIT_SCALE", "N5",
+            (Q(1), Q(1) + Q(1, 10**8)),
+        ),
+        _fixture(
+            "N5_CLOSE_PAIR_NEAR_ZERO", "N5",
+            (Q(1, 2**40), Q(1, 2**39)),
+        ),
+        _fixture(
+            "N5_CLOSE_PAIR_LARGE_MAGNITUDE", "N5",
+            (Q(2**120), Q(2**120) + Q(1)),
+        ),
+        _fixture(
+            "N5_EXACT_UPPER_ENDPOINT_PAIR", "N5",
+            (Q(1), Q(1) + Q(1, 10**8)),
+            domain=(Q(0), Q(1) + Q(1, 10**8)),
+        ),
+    ))
 
     # N6: zero and finite-domain endpoint roots, degree reduction and constants.
     fixtures.extend((
@@ -377,11 +392,13 @@ def run_f1_observation_scale_ladder() -> dict[str, object]:
                 "polynomial_status": diagnostic.status,
                 "polynomial_degree": diagnostic.degree,
                 "polynomial_roots_in_base_units": [
-                    value / factor for value in diagnostic.positive_roots
+                    value * inverse_variance_scale
+                    for value in diagnostic.positive_roots
                 ],
                 "adjudication_status": adjudication.status,
                 "adjudication_reason": adjudication.reason,
                 "sturm_status": adjudication.independent_status,
+                "max_profile_loglik": profile.max_profile_loglik,
             })
         except (ArithmeticError, OverflowError, ValueError) as exc:
             record.update({
@@ -392,15 +409,65 @@ def run_f1_observation_scale_ladder() -> dict[str, object]:
 
     returned = [r for r in records if r["status"] == "RETURNED"]
     baseline = next((r for r in returned if r["exponent"] == 0), None)
+    if baseline is not None:
+        df_total = len(rows) * (len(rows[0]) - 1) + len(rows) - 1
+        for record in returned:
+            factor = math.ldexp(1.0, int(record["exponent"]))
+            expected_loglik = (
+                float(baseline["max_profile_loglik"])
+                - df_total * math.log(factor * factor) / 2.0
+            )
+            loglik_error = abs(
+                float(record["max_profile_loglik"]) - expected_loglik
+            )
+            mle_error = abs(
+                float(record["mle_variance_in_base_units"])
+                - float(baseline["mle_variance_in_base_units"])
+            )
+            lower_error = abs(
+                float(record["lr_lower_in_base_units"])
+                - float(baseline["lr_lower_in_base_units"])
+            )
+            upper_error = abs(
+                float(record["lr_upper_in_base_units"])
+                - float(baseline["lr_upper_in_base_units"])
+            )
+            record["equivariance_errors"] = {
+                "profile_loglik_abs_error": loglik_error,
+                "mle_base_variance_abs_error": mle_error,
+                "lr_lower_base_variance_abs_error": lower_error,
+                "lr_upper_base_variance_abs_error": upper_error,
+            }
+            record["equivariance_checks"] = {
+                "profile_loglik": loglik_error <= 1e-7,
+                "mle": mle_error <= 1e-10,
+                "lr_lower": lower_error <= 1e-8,
+                "lr_upper": upper_error <= 1e-8,
+            }
+            record["equivariance_status"] = (
+                "PASS" if all(record["equivariance_checks"].values())
+                else "FAIL"
+            )
     return {
         "generator_version": GENERATOR_VERSION,
         "execution_performed": True,
         "scientific_execution": False,
         "scale_exponents": [-100, -50, -20, 0, 20, 50, 100],
+        "acceptance_tolerances": {
+            "profile_loglik_abs": 1e-7,
+            "mle_base_variance_abs": 1e-10,
+            "lr_endpoint_base_variance_abs": 1e-8,
+        },
         "record_count": len(records),
         "baseline_exponent_zero": baseline,
         "returned_count": len(returned),
         "fail_closed_count": len(records) - len(returned),
+        "equivariance_pass_count": sum(
+            r.get("equivariance_status") == "PASS" for r in returned
+        ),
+        "equivariance_fail_count": sum(
+            r.get("equivariance_status") == "FAIL" for r in returned
+        ),
         "records": records,
     }
 
