@@ -12,6 +12,8 @@ permissions:
 
 jobs:
   comparative-holdout:
+    # Defense in depth: resource-preflight authorization branches are categorically excluded.
+    if: startsWith(github.ref, 'refs/heads/research/c10s-nested-mr-comparative-auth-') && contains(github.event.head_commit.message, 'Approve one-use C10-S comparative C0/C1/C5 holdout')
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     steps:
