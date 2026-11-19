@@ -28,6 +28,9 @@ The evaluator includes:
 - a second, branch-specific Powell multi-start optimization in log(κ), seeded
   from nine deterministic grid locations, with success counts and absolute
   best-loglik discrepancies against the primary grid/local-refinement search;
+- an explicit provisional optimizer adjudication: insufficient successful
+  starts, boundary-sensitive winner, discordant best log likelihoods, or
+  concordance; thresholds are diagnostic controls, not inferential calibration;
 - typed failures and diagnostics for unsupported numerical cases.
 
 ## Numerical LR-set inversion added
@@ -75,8 +78,9 @@ for all-zero/all-one worlds, endpoint mixtures, asymmetric endpoint
 frequencies, interior-heavy counts and mixed extremes, and LR-set parameter
 space bounds. These are test definitions, not test outcomes.
 
-The test module additionally checks that branch-specific local-maximum and
-independent multi-start diagnostic fields are emitted. No tests have been
+The test module additionally checks that branch-specific local-maximum,
+independent multi-start, and optimizer-adjudication fields are emitted, and
+that the comparative engine propagates these diagnostics. No tests have been
 executed. These are test definitions only.
 
 ## Remaining limitations
@@ -93,6 +97,14 @@ executed. These are test definitions only.
   tests remain mandatory.
 - The profile and LR set are restricted to this beta-binomial model and target
   mapping; no generality beyond that model is claimed.
+- Optimizer adjudication uses provisional numerical thresholds
+  (log-likelihood discrepancy 1e-7 and at least five successful Powell starts
+  per branch). These values have not been empirically calibrated and do not
+  establish global optimality.
+- The comparative engine exposes these diagnostics only; it does not yet
+  suppress C5 point/interval outputs based on optimizer status. The MCSE
+  interval remains unissued because no LR cutoff or joint-inference policy
+  has been selected.
 - No LR cutoff is selected. No calibration or holdout has been run.
 - No simulation or scientific C10 execution has run.
 
