@@ -24,8 +24,6 @@ jobs:
       SOURCE_COMMIT: d5edc0010f7a8c6587677eb2004b545367fc4b35
       FREEZE_MANIFEST_PATH: 03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_FREEZE_MANIFEST_003.md
       FREEZE_MANIFEST_BLOB: d54aec3adaca0eef95d529a987dfb28a294119b3
-      EVIDENCE_ROOT: ${{ runner.temp }}/c10s-f1-numerical-stress-evidence
-      VENV: ${{ runner.temp }}/c10s-f1-numerical-stress-venv
 
     steps:
       - name: Checkout authorization and workflow snapshot
@@ -41,6 +39,14 @@ jobs:
         with:
           python-version: '3.12.3'
           check-latest: false
+
+      - name: Initialize runner-local paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "EVIDENCE_ROOT=$RUNNER_TEMP/c10s-f1-numerical-stress-evidence" >> "$GITHUB_ENV"
+          echo "VENV=$RUNNER_TEMP/c10s-f1-numerical-stress-venv" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/c10s-f1-numerical-stress-evidence"
 
       - name: Validate one-shot authorization and workflow identity
         working-directory: governance
