@@ -12,7 +12,7 @@ from types import SimpleNamespace
 from typing import Sequence
 
 from c10s_f1_exact_pivotal_candidate import f1_exact_pivotal_result
-from c10s_f1_between_profile_likelihood import f1_profile_loglik
+from c10s_f1_between_profile_likelihood import F1ProfileError, f1_profile_loglik
 from c10s_gaussian_variance_oracles import gaussian_f1_reference
 from c10s_fitted_beta_binomial_bootstrap import (
     FittedBetaBinomialBootstrapResult,
@@ -35,6 +35,26 @@ IMPLEMENTED_METHODS = {
 
 class ComparativeEngineError(ValueError):
     """Invalid family, comparison record or adjudication input."""
+
+
+def _f1_profile_diagnostic(
+    rows: Sequence[Sequence[float]], result: VarianceComparisonResult,
+) -> tuple[tuple[str, str], ...]:
+    tau = max(0.0, result.between_estimate_raw)
+    try:
+        value = f1_profile_loglik(rows, between_variance=tau)
+    except F1ProfileError as exc:
+        return (
+            ("between_profile_status", "ABSTAINED_DIAGNOSTIC"),
+            ("between_profile_reason", str(exc)),
+            ("between_profile_interval", "NOT_EMITTED_NO_LR_CUTOFF_SELECTED"),
+        )
+    return (
+        ("between_profile_status", "LOG_LIKELIHOOD_DIAGNOSTIC_AVAILABLE"),
+        ("between_profile_loglik_at_nonnegative_raw_estimate", format(value, ".17g")),
+        ("between_profile_tau_evaluation", format(tau, ".17g")),
+        ("between_profile_interval", "NOT_EMITTED_NO_LR_CUTOFF_SELECTED"),
+    )
 
 
 @dataclass(frozen=True)
@@ -247,16 +267,7 @@ def compare_dataset(
                 ("inference_scope", "balanced_gaussian_random_intercept_only"),
                 ("independent_oracle_reconciliation", "PASS_FORMULA_AGREEMENT"),
                 ("oracle_max_abs_delta_between_interval", format(oracle_delta, ".17g")),
-                ("between_profile_module", "AVAILABLE_DIAGNOSTIC_ONLY"),
-                ("between_profile_loglik_at_nonnegative_raw_estimate", format(
-                    f1_profile_loglik(
-                        rows, between_variance=max(0.0, result.between_estimate_raw),
-                    ), ".17g",
-                )),
-                ("between_profile_tau_evaluation", format(
-                    max(0.0, result.between_estimate_raw), ".17g",
-                )),
-                ("between_profile_interval", "NOT_EMITTED_NO_LR_CUTOFF_SELECTED"),
+                * _f1_profile_diagnostic(rows, result),
             ),
         ))
     else:
