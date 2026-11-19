@@ -379,6 +379,9 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
             record["profile_status_equal"] = (
                 record["profile_status"] == baseline["profile_status"]
             )
+            record["score_polynomial_degree_equal"] = (
+                record["score_polynomial_degree"] == baseline["score_polynomial_degree"]
+            )
             record["equivariance_status"] = (
                 "PASS" if (
                     record["profile_status_equal"]
@@ -390,6 +393,7 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
                     and root_relative_error is not None
                     and root_relative_error <= 1e-7
                     and record["score_polynomial_status"] == baseline["score_polynomial_status"]
+                    and record["score_polynomial_degree_equal"]
                     and record["sturm_status"] == baseline["sturm_status"]
                     and record["adjudication_status"] == baseline["adjudication_status"]
                 ) else "FAIL"
