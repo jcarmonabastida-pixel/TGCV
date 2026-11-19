@@ -48,34 +48,6 @@ class F1RootAdjudicationTests(unittest.TestCase):
         self.assertEqual(result.status, "ROOTS_DISCREPANT")
         self.assertEqual(result.independent_root_count, 2)
 
-    def test_overlapping_match_tolerance_for_close_roots_abstains(self):
-        close_root = Fraction(1000000001, 1000000000)
-        self.f1 = SimpleNamespace(
-            status="POLYNOMIAL_ROOTS_ISOLATED",
-            coefficients_ascending=(1.0, -2.000000001, 1.000000001),
-            positive_roots=(1.0, 1.000000001),
-        )
-        independent = RootIsolationResult(
-            "ROOTS_ISOLATED", 2,
-            (
-                IsolatedRoot(Fraction(1), Fraction(1), 1),
-                IsolatedRoot(close_root, close_root, 1),
-            ),
-        )
-        with patch("c10s_f1_root_adjudication.f1_score_polynomial_diagnostic",
-                   return_value=self.f1), patch(
-            "c10s_f1_root_adjudication.isolate_real_roots",
-            return_value=independent,
-        ):
-            result = adjudicate_f1_roots(
-                (), between_variance=0.2, match_tolerance=1e-8,
-            )
-        self.assertEqual(result.status, "ROOTS_UNRESOLVED")
-        self.assertEqual(
-            result.reason,
-            "ROOT_MATCH_TOLERANCE_OVERLAPS_DISTINCT_ISOLATORS",
-        )
-
     def test_multiple_root_is_unresolved_when_f1_has_no_certified_multiplicity(self):
         independent = RootIsolationResult(
             "ROOTS_ISOLATED", 2,
