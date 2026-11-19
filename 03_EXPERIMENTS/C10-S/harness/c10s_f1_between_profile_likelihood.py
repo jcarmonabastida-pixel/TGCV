@@ -776,36 +776,41 @@ def f1_profile_nuisance_optimizer_diagnostic(
 
     r, df_w, df_b, ssw, s2_means, within = _sufficient_statistics(rows)
     scale = max(within, s2_means, tau)
-    center = scale
-    lo, hi = math.log(center) - float(log_span), math.log(center) + float(log_span)
+    # Work in the dimensionless nuisance coordinate s/scale. Evaluating q^2
+    # and q^3 in raw variance units underflows for otherwise admissible data
+    # measured at very small scales, producing an untyped ZeroDivisionError.
+    tau_scaled = tau / scale
+    ssw_scaled = ssw / scale
+    s2_means_scaled = s2_means / scale
+    lo, hi = -float(log_span), float(log_span)
 
-    def loglik(log_s: float) -> float:
-        s = math.exp(log_s)
-        q = tau + s / r
+    def loglik(log_s_scaled: float) -> float:
+        s = math.exp(log_s_scaled)
+        q = tau_scaled + s / r
         return (
-            -0.5 * df_w * (_LOG2PI + log_s)
-            -0.5 * ssw / s
-            -0.5 * df_b * (_LOG2PI + math.log(q))
-            -0.5 * df_b * s2_means / q
+            -0.5 * df_w * (_LOG2PI + math.log(scale) + log_s_scaled)
+            -0.5 * ssw_scaled / s
+            -0.5 * df_b * (_LOG2PI + math.log(scale) + math.log(q))
+            -0.5 * df_b * s2_means_scaled / q
         )
 
-    def score(log_s: float) -> float:
-        s = math.exp(log_s)
-        q = tau + s / r
+    def score(log_s_scaled: float) -> float:
+        s = math.exp(log_s_scaled)
+        q = tau_scaled + s / r
         return (
-            -0.5 * df_w + 0.5 * ssw / s
+            -0.5 * df_w + 0.5 * ssw_scaled / s
             -0.5 * df_b * (s / r) / q
-            +0.5 * df_b * s2_means * (s / r) / (q * q)
+            +0.5 * df_b * s2_means_scaled * (s / r) / (q * q)
         )
 
-    def score_derivative(log_s: float) -> float:
-        s = math.exp(log_s)
+    def score_derivative(log_s_scaled: float) -> float:
+        s = math.exp(log_s_scaled)
         u = s / r
-        q = tau + u
+        q = tau_scaled + u
         return (
-            -0.5 * ssw / s
-            -0.5 * df_b * u * tau / (q * q)
-            +0.5 * df_b * s2_means * u * (tau - u) / (q * q * q)
+            -0.5 * ssw_scaled / s
+            -0.5 * df_b * u * tau_scaled / (q * q)
+            +0.5 * df_b * s2_means_scaled * u * (tau_scaled - u) / (q * q * q)
         )
 
     scanned_roots, scanned_types, scanned_tangencies, unresolved_tangencies = (
@@ -817,8 +822,11 @@ def f1_profile_nuisance_optimizer_diagnostic(
     polynomial = f1_score_polynomial_diagnostic(
         rows, between_variance=tau,
     )
-    roots = tuple(math.log(value) for value in polynomial.positive_roots)
-    tangential_logs = tuple(math.log(value) for value in polynomial.tangential_roots)
+    roots = tuple(math.log(value) - math.log(scale) for value in polynomial.positive_roots)
+    tangential_logs = tuple(
+        math.log(value) - math.log(scale)
+        for value in polynomial.tangential_roots
+    )
     root_types_list = []
     for root in roots:
         if any(abs(root - candidate) <= 1e-7 for candidate in tangential_logs):
