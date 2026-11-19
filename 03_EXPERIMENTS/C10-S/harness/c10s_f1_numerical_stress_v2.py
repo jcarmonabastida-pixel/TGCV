@@ -360,6 +360,14 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
                     [lower, upper, multiplicity]
                     for lower, upper, multiplicity in adjudication.independent_intervals
                 ],
+                "sturm_independent_intervals_base_variance": [
+                    [
+                        _qtext(Q(lower) * (Q(2) ** (-2 * exponent))),
+                        _qtext(Q(upper) * (Q(2) ** (-2 * exponent))),
+                        multiplicity,
+                    ]
+                    for lower, upper, multiplicity in adjudication.independent_intervals
+                ],
                 "sturm_boundary_roots": [
                     [lower, upper, multiplicity]
                     for lower, upper, multiplicity in adjudication.boundary_roots
@@ -412,6 +420,34 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
             record["score_polynomial_degree_equal"] = (
                 record["score_polynomial_degree"] == baseline["score_polynomial_degree"]
             )
+            record["adjudication_root_counts_equal"] = (
+                record["f1_root_count"] == baseline["f1_root_count"]
+                and record["sturm_root_count"] == baseline["sturm_root_count"]
+                and record["matched_root_count"] == baseline["matched_root_count"]
+            )
+            record["multiplicity_review_equal"] = (
+                record["multiplicity_review_required"]
+                == baseline["multiplicity_review_required"]
+            )
+            current_intervals = record["sturm_independent_intervals_base_variance"]
+            baseline_intervals = baseline["sturm_independent_intervals_base_variance"]
+            interval_count_equal = len(current_intervals) == len(baseline_intervals)
+            interval_multiplicity_equal = (
+                interval_count_equal
+                and tuple(item[2] for item in current_intervals)
+                == tuple(item[2] for item in baseline_intervals)
+            )
+            interval_overlap = (
+                interval_count_equal
+                and all(
+                    max(Q(left[0]), Q(right[0])) <= min(Q(left[1]), Q(right[1]))
+                    for left, right in zip(current_intervals, baseline_intervals)
+                )
+            )
+            record["sturm_interval_equivariance"] = (
+                "PASS" if interval_count_equal and interval_multiplicity_equal and interval_overlap
+                else "FAIL"
+            )
             record["equivariance_status"] = (
                 "PASS" if (
                     record["profile_status_equal"]
@@ -426,6 +462,9 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
                     and record["score_polynomial_degree_equal"]
                     and record["sturm_status"] == baseline["sturm_status"]
                     and record["adjudication_status"] == baseline["adjudication_status"]
+                    and record["adjudication_root_counts_equal"]
+                    and record["multiplicity_review_equal"]
+                    and record["sturm_interval_equivariance"] == "PASS"
                 ) else "FAIL"
             )
     else:
