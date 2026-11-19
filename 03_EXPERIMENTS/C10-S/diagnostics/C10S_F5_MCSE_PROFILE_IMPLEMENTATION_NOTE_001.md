@@ -36,8 +36,8 @@ It:
    maximum;
 3. forms the caller-specified LR acceptance set;
 4. retains each grid-detected connected component separately;
-5. refines each detected finite endpoint using Brent root finding;
-6. reports the interval hull, grid resolution, and a status distinguishing
+5. refines each detected finite endpoint using bracketed bisection;
+6. reports the interval hull, both MCSE and concentration grid resolutions, and a status distinguishing
    connected from disconnected detected sets.
 
 The cutoff is mandatory and caller-supplied. No default, Wilks approximation,
