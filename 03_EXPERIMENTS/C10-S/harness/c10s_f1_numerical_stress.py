@@ -40,6 +40,7 @@ class PolynomialFixture:
     perturbation: str = "NONE"
     domain_lower: Q | None = None
     domain_upper: Q | None = None
+    coefficient_override: tuple[Q, ...] | None = None
 
 
 def _trim(coefficients: Iterable[Q]) -> tuple[Q, ...]:
@@ -166,10 +167,11 @@ def build_polynomial_fixtures() -> tuple[PolynomialFixture, ...]:
             fixtures.append(PolynomialFixture(
                 fixture_id=f"N2_C{coefficient_index}_ULP{steps:+d}",
                 block="N2",
-                ideal_coefficients=exact_changed,
-                ideal_real_roots=(),
+                ideal_coefficients=ulp_base.ideal_coefficients,
+                ideal_real_roots=ulp_base.ideal_real_roots,
                 transformation="BINARY64_COEFFICIENT_PERTURBATION",
                 perturbation=f"COEFFICIENT_{coefficient_index}_ULP_{steps:+d}",
+                coefficient_override=exact_changed,
             ))
 
     # N3: exact amplitude and variable-coordinate transformations.
@@ -225,7 +227,12 @@ def evaluate_polynomial_fixture(
     max_width: Q = Q(1, 10**12), max_depth: int = 256,
 ) -> dict[str, object]:
     """Evaluate one fixture against Sturm; does not execute F1 or mutate inputs."""
-    binary64 = _float_vector(fixture.ideal_coefficients)
+    actual_coefficients = (
+        fixture.coefficient_override
+        if fixture.coefficient_override is not None
+        else fixture.ideal_coefficients
+    )
+    binary64 = _float_vector(actual_coefficients)
     base: dict[str, object] = {
         "generator_version": GENERATOR_VERSION,
         "fixture_id": fixture.fixture_id,
@@ -235,6 +242,9 @@ def evaluate_polynomial_fixture(
         "domain": [str(v) for v in _domain_for(fixture)],
         "ideal_coefficients": [
             f"{v.numerator}/{v.denominator}" for v in fixture.ideal_coefficients
+        ],
+        "actual_preconversion_coefficients": [
+            f"{v.numerator}/{v.denominator}" for v in actual_coefficients
         ],
         "ideal_real_roots": [
             f"{v.numerator}/{v.denominator}" for v in fixture.ideal_real_roots
