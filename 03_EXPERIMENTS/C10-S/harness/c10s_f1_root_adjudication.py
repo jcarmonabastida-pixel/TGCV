@@ -86,11 +86,15 @@ def adjudicate_f1_roots(
     f1 = f1_score_polynomial_diagnostic(
         rows, between_variance=between_variance,
     )
+    removed_zero_multiplicity = getattr(
+        f1, "removed_zero_factor_multiplicity", 0,
+    )
     if f1.status != "POLYNOMIAL_ROOTS_ISOLATED":
         return F1RootAdjudication(
             "ROOTS_UNRESOLVED", f1.status, "NOT_RUN",
             len(f1.positive_roots), 0, 0, False,
             tuple(f1.positive_roots), (), "F1_POLYNOMIAL_DIAGNOSTIC_UNRESOLVED",
+            removed_zero_factor_multiplicity=removed_zero_multiplicity,
         )
 
     independent = isolate_real_roots(
@@ -105,6 +109,7 @@ def adjudicate_f1_roots(
             len(f1.positive_roots), len(independent.roots), 0, False,
             tuple(f1.positive_roots), _serialize_roots(independent.roots),
             "STURM_REFERENCE_UNRESOLVED",
+            removed_zero_factor_multiplicity=removed_zero_multiplicity,
         )
 
     # Sturm's API uses a closed [0,+infinity) domain. Preserve exact zero
@@ -120,10 +125,6 @@ def adjudicate_f1_roots(
     intervals = _serialize_roots(certified)
     boundary_intervals = _serialize_roots(boundary)
     candidates = tuple(sorted(float(root) for root in f1.positive_roots))
-    removed_zero_multiplicity = getattr(
-        f1, "removed_zero_factor_multiplicity", 0,
-    )
-
     if len(candidates) != len(certified):
         return F1RootAdjudication(
             "ROOTS_DISCREPANT", f1.status, independent.status,
