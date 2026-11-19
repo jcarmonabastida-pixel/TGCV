@@ -9,6 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import math
 from typing import Sequence
+from fractions import Fraction
 
 from scipy.optimize import brentq, minimize_scalar
 
@@ -234,6 +235,38 @@ class F1ScorePolynomialDiagnostic:
     positive_critical_points: tuple[float, ...]
 
 
+def _fraction_to_finite_float(value: Fraction, label: str) -> float:
+    try:
+        result = float(value)
+    except OverflowError as exc:
+        raise F1ProfileError(f"{label}_OVERFLOW") from exc
+    if not math.isfinite(result):
+        raise F1ProfileError(f"{label}_NONFINITE")
+    if value != 0 and result == 0.0:
+        raise F1ProfileError(f"{label}_UNDERFLOW")
+    return result
+
+
+def _score_polynomial_coefficients_exact(
+    *, r: int, df_w: int, df_b: int,
+    ssw: float, s2_means: float, tau: float,
+) -> tuple[float, float, float, float]:
+    """Construct coefficients exactly from the binary values of the inputs."""
+    R = Fraction(r)
+    A, B = Fraction(df_w), Fraction(df_b)
+    W, M, T = Fraction(ssw), Fraction(s2_means), Fraction(tau)
+    exact = (
+        W * T * T,
+        -A * T * T + 2 * W * T / R,
+        -2 * A * T / R + W / (R * R) - B * T / R + B * M / R,
+        -(A + B) / (R * R),
+    )
+    return tuple(
+        _fraction_to_finite_float(value, f"SCORE_POLYNOMIAL_COEFFICIENT_{index}")
+        for index, value in enumerate(exact)
+    )
+
+
 def _polyval_ascending(coefficients: Sequence[float], value: float) -> float:
     result = 0.0
     for coefficient in reversed(coefficients):
@@ -356,14 +389,10 @@ def f1_score_polynomial_diagnostic(
     r, df_w, df_b, ssw, s2_means, within = _sufficient_statistics(rows)
     tau = float(between_variance)
     a, b, W, M = float(df_w), float(df_b), float(ssw), float(s2_means)
-    coefficients = [
-        W * tau * tau,
-        -a * tau * tau + 2.0 * W * tau / r,
-        -2.0 * a * tau / r + W / (r * r) - b * tau / r + b * M / r,
-        -(a + b) / (r * r),
-    ]
-    if any(not math.isfinite(value) for value in coefficients):
-        raise F1ProfileError("SCORE_POLYNOMIAL_COEFFICIENTS_NONFINITE")
+    coefficients = list(_score_polynomial_coefficients_exact(
+        r=r, df_w=df_w, df_b=df_b, ssw=ssw,
+        s2_means=s2_means, tau=tau,
+    ))
     # At tau=0 the score numerator contains an extraneous s^2 factor.
     while len(coefficients) > 1 and coefficients[0] == 0.0:
         coefficients.pop(0)
