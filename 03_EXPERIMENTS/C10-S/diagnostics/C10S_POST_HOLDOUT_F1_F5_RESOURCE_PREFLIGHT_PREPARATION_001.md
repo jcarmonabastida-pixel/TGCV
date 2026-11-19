@@ -2,7 +2,7 @@
 
 **Record:** C10S-POST-HOLDOUT-F1-F5-RESOURCE-PREFLIGHT-PREPARATION-001  
 **Date:** 2026-11-19  
-**Status:** IMPLEMENTED / STATIC VALIDATION PASS / RESOURCE PREFLIGHT EXECUTED — F5 INFERENTIAL READINESS BLOCKED  
+**Status:** IMPLEMENTED / STATIC VALIDATION PASS / RESOURCE PREFLIGHT EXECUTED — F5 B1 COMPLETE; B2-B3 PENDING  
 **Governing specification:** C10S-POST-HOLDOUT-F1-F5-DEVELOPMENT-CALIBRATION-SPEC-001 v1.0  
 **Frozen specification blob:** `d1c8bae882dc2e4cd0e1caae29609561b9ebac68`  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
@@ -121,7 +121,9 @@ Authorization template: `C10S_POST_HOLDOUT_F1_F5_RESOURCE_PREFLIGHT_AUTHORIZATIO
 | One-use authorization validator/workflow | IMPLEMENTED |
 | Static tests and exact-commit workflow | PASS — Run `44602425187`, 153/153 |
 | Resource preflight execution | PASS — Run `44603264310`; 200 datasets; artifact digest recorded in result report |
-| F5 C5 interval/inferential readiness | BLOCKED — `F5_MCSE_JOINT_BOUNDARY_METHOD_NOT_IMPLEMENTED` in 100/100 B=1,000 and 100/100 B=4,000 records |
+| F5 MCSE interval | EXPLICITLY ABSTAINED / OUT OF SCOPE under frozen spec v1.0; not a C5 within/raw-between blocker |
+| F5 B1 implementation and deterministic tests | COMPLETE — 153/153 static tests at exact code commit `b44489341e4ee99aa279b15d6cb635e744a1665e`; see `C10S_F5_B1_IMPLEMENTATION_CLOSURE_001.md` |
+| F5 C5 component eligibility | OPEN — requires B2/B3 calibration and disjoint validation; no coverage result inferred from preflight |
 | Full calibration/validation execution | NOT AUTHORIZED / NOT RUN |
 
 **No resource sample has been executed by this preparation.** The deterministic static workflow is complete. The resource workflow remains dormant until the user explicitly authorizes this exact one-use resource-only operation.
@@ -129,4 +131,4 @@ Authorization template: `C10S_POST_HOLDOUT_F1_F5_RESOURCE_PREFLIGHT_AUTHORIZATIO
 
 ## 9. Executed preflight result
 
-The one-use resource-only authorization was exercised successfully in run `44603264310` on 2026-11-19. The 200-dataset sample, provenance, measured timings, full-workload projection and gate adjudication are recorded in `C10S_POST_HOLDOUT_F1_F5_RESOURCE_PREFLIGHT_RESULT_001.md`. Overall result: `RESOURCE_PREFLIGHT_EXECUTION_PASS / F5_INFERENTIAL_READINESS_BLOCKED`. No calibration, validation, holdout or causal C10 execution occurred.
+The one-use resource-only authorization was exercised successfully in run `44603264310` on 2026-11-19. The 200-dataset sample, provenance, measured timings, full-workload projection and gate adjudication are recorded in `C10S_POST_HOLDOUT_F1_F5_RESOURCE_PREFLIGHT_RESULT_001.md`. Overall result: `RESOURCE_PREFLIGHT_EXECUTION_PASS / F5_B1_IMPLEMENTATION_AND_STATIC_TESTS_COMPLETE / B2-B3_NOT_RUN`. The MCSE abstention is explicitly out of scope and does not block the frozen C5 within/raw-between targets. No calibration, validation, holdout or causal C10 execution occurred.
