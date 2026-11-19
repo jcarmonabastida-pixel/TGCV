@@ -128,6 +128,24 @@ class F5BetaBinomialProfileTests(unittest.TestCase):
         self.assertAlmostEqual(score_mu, numeric_mu, delta=2e-5)
         self.assertAlmostEqual(score_kappa, numeric_kappa, delta=2e-5)
 
+    def test_profile_exposes_branch_local_maxima_diagnostics(self):
+        result = f5_beta_binomial_mcse_profile_loglik(
+            ROWS, target_m=10, target_r=5, target_mcse=0.05,
+            concentration_grid_points=161,
+        )
+        diagnostics = dict(result.optimizer_diagnostics)
+        for key in (
+            "mu_plus_grid_local_maxima_count",
+            "mu_minus_grid_local_maxima_count",
+            "mu_plus_grid_local_maxima_kappa",
+            "mu_minus_grid_local_maxima_kappa",
+            "mu_plus_top_two_local_maxima_loglik_gap",
+            "mu_minus_top_two_local_maxima_loglik_gap",
+        ):
+            self.assertIn(key, diagnostics)
+        self.assertGreaterEqual(int(diagnostics["mu_plus_grid_local_maxima_count"]), 0)
+        self.assertGreaterEqual(int(diagnostics["mu_minus_grid_local_maxima_count"]), 0)
+
     def test_adversarial_cluster_count_patterns_keep_both_mean_branches(self):
         # Boundary-heavy, strongly asymmetric, and interior-heavy empirical
         # cluster-count patterns. Every row is a world; columns are Bernoulli
