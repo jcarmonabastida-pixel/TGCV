@@ -1,0 +1,68 @@
+{
+  "schema": "C10S-F1-NUMERICAL-STRESS-AUTHORIZATION-1",
+  "authorization_id": "C10S-F1-NUMERICAL-STRESS-20261119-003",
+  "status": "DRAFT",
+  "execution_authorized": false,
+  "approved_by_user": false,
+  "one_shot": true,
+  "source_commit": "d5edc0010f7a8c6587677eb2004b545367fc4b35",
+  "freeze_manifest": "03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_FREEZE_MANIFEST_003.md",
+  "freeze_manifest_commit": "aa30ab98eae2f8d505d569149aa4b342d32718bd",
+  "freeze_manifest_blob_sha": "d54aec3adaca0eef95d529a987dfb28a294119b3",
+  "workflow": ".github/workflows/c10s-f1-numerical-stress.yml",
+  "workflow_blob_sha": "1570c248df7709c3c9f2efff049d91f81a88e582",
+  "runtime": {
+    "runner": "ubuntu-24.04",
+    "python": "3.12.3",
+    "numpy": "2.1.3",
+    "scipy": "1.14.1",
+    "virtual_environment": "isolated",
+    "dependency_install": "pip install --no-deps --only-binary=:all: numpy==2.1.3 scipy==1.14.1"
+  },
+  "command": {
+    "working_directory": "03_EXPERIMENTS/C10-S/harness",
+    "argv": [
+      "python",
+      "run_c10s_f1_numerical_stress.py",
+      "--source-commit",
+      "d5edc0010f7a8c6587677eb2004b545367fc4b35",
+      "--output-directory",
+      "$RUNNER_TEMP/c10s-f1-numerical-stress-evidence"
+    ]
+  },
+  "scope": {
+    "polynomial_sturm_records": 115,
+    "f1_observation_scale_records": 7,
+    "random_fixtures": false,
+    "adaptive_parameter_changes": false
+  },
+  "limits": {
+    "primary_executions": 1,
+    "automatic_retries": 0,
+    "replay": false,
+    "job_timeout_minutes": 15
+  },
+  "outputs": [
+    "numerical_stress_records.jsonl",
+    "numerical_stress_summary.json",
+    "numerical_stress_manifest.json",
+    "workflow-preflight.txt",
+    "runner.stdout",
+    "runner.stderr",
+    "runner-exit-code.txt"
+  ],
+  "prohibitions": {
+    "unit_tests": true,
+    "monte_carlo_calibration": true,
+    "dgp_experiment": true,
+    "inferential_coverage_study": true,
+    "parameter_tuning": true,
+    "external_dataset": true,
+    "scientific_c10_execution": true,
+    "source_modification_during_run": true
+  },
+  "approval_requirement": "Fresh explicit user approval is required. The approval must be recorded by changing this exact authorization to APPROVED, setting execution_authorized and approved_by_user true, and committing with the exact marker AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-003. No approval from authorizations 001 or 002 is reusable.",
+  "consumed": false,
+  "attempt_closed": false,
+  "retry_authorized": false
+}
