@@ -11,7 +11,9 @@ on:
       - '03_EXPERIMENTS/C10-S/harness/c10s_beta_binomial_variance_oracles.py'
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_beta_binomial_variance_oracles.py'
       - '03_EXPERIMENTS/C10-S/harness/c10s_variance_comparison_interface.py'
-      - '03_EXPERIMENTS/C10-S/harness/test_c10s_variance_comparison_interface.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_variance_comparison_interface test_c10s_fitted_beta_binomial_bootstrap.py'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_fitted_beta_binomial_bootstrap.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_fitted_beta_binomial_bootstrap.py'
       - '03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock'
 
 permissions:
@@ -38,7 +40,7 @@ jobs:
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PYTHONDONTWRITEBYTECODE: '1'
-        run: python -m py_compile c10s_gaussian_variance_oracles.py test_c10s_gaussian_variance_oracles.py c10s_beta_binomial_variance_oracles.py test_c10s_beta_binomial_variance_oracles.py c10s_variance_comparison_interface.py test_c10s_variance_comparison_interface.py
+        run: python -m py_compile c10s_gaussian_variance_oracles.py test_c10s_gaussian_variance_oracles.py c10s_beta_binomial_variance_oracles.py test_c10s_beta_binomial_variance_oracles.py c10s_variance_comparison_interface.py test_c10s_variance_comparison_interface.py c10s_fitted_beta_binomial_bootstrap.py test_c10s_fitted_beta_binomial_bootstrap.py
       - name: Run comparator oracle tests only
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
