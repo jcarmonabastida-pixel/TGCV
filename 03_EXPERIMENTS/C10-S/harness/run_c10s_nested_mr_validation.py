@@ -156,7 +156,9 @@ def _finite_record(record: dict[str, Any]) -> bool:
 
 
 def _component_cell_summary(records: list[dict[str, Any]], component: str) -> dict[str, Any]:
-    estimate_key = "estimate_" + component
+    # The Analyzer record preserves the between-component estimator as
+    # estimate_between_raw; do not silently clamp it for bias/coverage scoring.
+    estimate_key = "estimate_within" if component == "within" else "estimate_between_raw"
     truth_key = "true_" + component
     interval_key = "within_ms" if component == "within" else "between_raw"
     estimates = [float(row[estimate_key]) for row in records]
