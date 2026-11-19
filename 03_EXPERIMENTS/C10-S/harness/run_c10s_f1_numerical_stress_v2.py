@@ -81,6 +81,7 @@ def main() -> int:
             "record_count": len(result["n3_covariant"]["records"]),
             "sturm_status_counts": counts(result["n3_covariant"]["records"], "sturm_status"),
             "topology_comparison_counts": counts(result["n3_covariant"]["records"], "topology_comparison_status"),
+            "base_equivariance_counts": counts(result["n3_covariant"]["records"], "base_equivariance_status"),
         },
         "f1_n4_v2": {
             "record_count": len(result["f1_n4"]["records"]),
