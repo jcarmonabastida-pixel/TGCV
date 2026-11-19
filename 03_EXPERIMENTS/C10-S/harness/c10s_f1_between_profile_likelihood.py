@@ -51,6 +51,9 @@ class F1NuisanceStabilityDiagnostic:
     stationary_point_type_signatures: tuple[tuple[str, ...], ...]
     tangential_score_root_counts: tuple[int, ...]
     unresolved_tangential_candidate_counts: tuple[int, ...]
+    polynomial_degrees: tuple[int, ...]
+    polynomial_root_counts: tuple[int, ...]
+    polynomial_scan_discordances: tuple[bool, ...]
     maximum_loglik_spread: float | None
     maximum_stationary_location_spread: float | None
 
@@ -648,6 +651,9 @@ def f1_profile_nuisance_stability_diagnostic(
     type_signatures = tuple(item.stationary_point_types for item in results)
     tangential_counts = tuple(item.tangential_score_roots for item in results)
     unresolved_counts = tuple(item.unresolved_tangential_candidates for item in results)
+    polynomial_degrees = tuple(item.polynomial_degree for item in results)
+    polynomial_root_counts = tuple(item.polynomial_root_count for item in results)
+    polynomial_scan_discordances = tuple(item.polynomial_scan_discordant for item in results)
     values = tuple(
         item.independent_loglik for item in results
         if item.independent_loglik is not None
@@ -672,7 +678,9 @@ def f1_profile_nuisance_stability_diagnostic(
         status = "OPTIMIZATION_BOUNDARY_SENSITIVE"
     elif (len(set(counts)) != 1
           or len(set(type_signatures)) != 1
-          or len(set(tangential_counts)) != 1):
+          or len(set(tangential_counts)) != 1
+          or len(set(polynomial_root_counts)) != 1
+          or any(polynomial_scan_discordances)):
         status = "OPTIMIZATION_DISCORDANT"
     elif (spread is None or spread > float(loglik_tolerance)
           or location_spread is None or location_spread > 1e-5):
@@ -690,6 +698,9 @@ def f1_profile_nuisance_stability_diagnostic(
         stationary_point_type_signatures=type_signatures,
         tangential_score_root_counts=tangential_counts,
         unresolved_tangential_candidate_counts=unresolved_counts,
+        polynomial_degrees=polynomial_degrees,
+        polynomial_root_counts=polynomial_root_counts,
+        polynomial_scan_discordances=polynomial_scan_discordances,
         maximum_loglik_spread=spread,
         maximum_stationary_location_spread=location_spread,
     )
