@@ -97,6 +97,22 @@ class F5BetaBinomialProfileTests(unittest.TestCase):
                 likelihood_ratio_cutoff=0.0,
             )
 
+    def test_profile_reports_both_numerical_grid_resolutions(self):
+        result = f5_beta_binomial_mcse_profile_confidence_set(
+            ROWS, target_m=10, target_r=5,
+            likelihood_ratio_cutoff=3.841458820694124,
+            scan_grid_points=21, concentration_grid_points=81,
+        )
+        self.assertEqual(result.scan_grid_points, 21)
+        self.assertEqual(result.concentration_grid_points, 81)
+
+    def test_profile_rejects_underresolved_concentration_grid(self):
+        with self.assertRaises(F5ProfileError):
+            f5_beta_binomial_mcse_profile_loglik(
+                ROWS, target_m=10, target_r=5, target_mcse=0.05,
+                concentration_grid_points=40,
+            )
+
     def test_endpoint_refinement_handles_nonfinite_outside_support(self):
         root = _bisect_profile_crossing(
             lambda x: -math.inf if x < 0.25 else x - 0.25,
