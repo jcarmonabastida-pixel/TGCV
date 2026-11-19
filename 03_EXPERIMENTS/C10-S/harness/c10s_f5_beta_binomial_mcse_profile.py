@@ -207,6 +207,13 @@ def f5_beta_binomial_mcse_profile_loglik(
             branch_values[branch_index].append(pair[branch_index])
     for branch_index in (0, 1):
         vals = branch_values[branch_index]
+        # Retain every evaluated grid point, including finite feasible-domain
+        # endpoints. Local refinement augments rather than replaces them.
+        for z, value in zip(grid, vals):
+            if math.isfinite(value):
+                branch_candidates[branch_index].append(
+                    (float(value), math.exp(float(z)))
+                )
         for idx, value in enumerate(vals):
             left = vals[idx - 1] if idx else -math.inf
             right = vals[idx + 1] if idx + 1 < len(vals) else -math.inf
