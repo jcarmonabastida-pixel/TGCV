@@ -40,6 +40,40 @@ class F5BetaBinomialProfileTests(unittest.TestCase):
         self.assertNotEqual(result.branch_loglik_plus, -math.inf)
         self.assertNotEqual(result.branch_loglik_minus, -math.inf)
 
+    def test_asymmetric_beta_binomial_point_is_bounded_by_profile(self):
+        # Independent direct log-likelihood using math.lgamma, not the
+        # production betaln/gammaln implementation.
+        mu, concentration = 0.23, 3.7
+        target_m, target_r = 10, 5
+        mcse = math.sqrt(
+            mu * (1.0 - mu) * (1.0 + concentration / target_r)
+            / (target_m * (1.0 + concentration))
+        )
+        counts = [sum(row) for row in ROWS]
+        observed_r = len(ROWS[0])
+        alpha = mu * concentration
+        beta = (1.0 - mu) * concentration
+
+        def log_beta(a, b):
+            return math.lgamma(a) + math.lgamma(b) - math.lgamma(a + b)
+
+        direct = 0.0
+        for count in counts:
+            log_choose = (
+                math.lgamma(observed_r + 1)
+                - math.lgamma(count + 1)
+                - math.lgamma(observed_r - count + 1)
+            )
+            direct += log_choose + log_beta(
+                count + alpha, observed_r - count + beta,
+            ) - log_beta(alpha, beta)
+
+        profiled = f5_beta_binomial_mcse_profile_loglik(
+            ROWS, target_m=target_m, target_r=target_r,
+            target_mcse=mcse, concentration_grid_points=801,
+        )
+        self.assertGreaterEqual(profiled.profile_loglik, direct - 1e-7)
+
     def test_world_permutation_invariance(self):
         permuted = tuple(reversed(ROWS))
         a = f5_beta_binomial_mcse_profile_loglik(
