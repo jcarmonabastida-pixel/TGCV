@@ -160,6 +160,8 @@ class F5DevelopmentCalibrationTests(unittest.TestCase):
             self.assertEqual(len(result["metrics_within_and_raw_between_only"]), 4)
             record = result["records"][0]
             fit = record["fit_diagnostics"]
+            self.assertEqual(record["mcse_scope"], "EXPLICIT_ABSTENTION_OUT_OF_SCOPE_NOT_ADJUDICATED")
+            self.assertEqual(record["mcse_interval_status"], "EXPLICIT_ABSTENTION_NOT_ADJUDICATED")
             self.assertIn(fit["fit_status"], {"INTERIOR", "BOUNDARY", "ABSTAINED"})
             audit = fit["optimizer_audit"]
             self.assertIsInstance(audit, dict)
@@ -191,6 +193,7 @@ class F5DevelopmentCalibrationTests(unittest.TestCase):
             )
             self.assertEqual(record["B1000"]["bootstrap_replicates"], 100)
             self.assertEqual(record["B4000"]["bootstrap_replicates"], 120)
+            self.assertEqual(record["B1000"]["mcse_scope"], "EXPLICIT_ABSTENTION_OUT_OF_SCOPE_NOT_ADJUDICATED")
             self.assertIn("lower_rank_uncertainty", record["B1000"]["within_endpoint_diagnostics"])
             self.assertEqual(sensitivity["coverage_adjudication"], "NOT_USED_B3_IS_DIAGNOSTIC_ONLY")
             self.assertTrue((Path(tmp) / "b3.jsonl").is_file())
