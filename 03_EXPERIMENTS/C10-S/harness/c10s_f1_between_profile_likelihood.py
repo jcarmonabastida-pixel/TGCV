@@ -166,8 +166,9 @@ def f1_profile_between_confidence_set(
     """Invert the caller-supplied LR rule by bracketing and root finding.
 
     The callable is explicitly F1-scoped. At every evaluated tau, the
-    nuisance score-polynomial and independent score scan must agree, exactly
-    one local nuisance maximum must be present, and the bounded optimizer
+    nuisance score-polynomial and independently evaluated score signs must
+    agree at all isolated stationary roots, exactly one local nuisance
+    maximum must be present, and the bounded optimizer
     must agree with the maximum over isolated stationary roots; otherwise the
     operation abstains. For the balanced Gaussian likelihood, the envelope
     derivative is df_between/2 * (S2_mean - q*) / q*^2. An interior stationary
@@ -376,7 +377,7 @@ def f1_profile_between_confidence_set(
         lower_boundary_included=lower_included,
         upper_endpoint_bracket_expansions=expansions,
         status="PROFILE_LR_INTERVAL_ROOT_SOLVED",
-        nuisance_certification_status="OPTIMIZATION_CONCORDANT",
+        nuisance_certification_status="POLYNOMIAL_SCORE_BOUNDED_OPTIMIZER_CONCORDANT",
         topology_status="ANALYTIC_CONNECTEDNESS_ARGUMENT_APPLIED",
     )
 
