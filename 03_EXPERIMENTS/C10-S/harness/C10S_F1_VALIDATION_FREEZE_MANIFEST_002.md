@@ -16,8 +16,8 @@ The predecessor attempt 002 is retained unchanged as historical evidence. This i
 ## 2. Correction scope
 
 - F1 profile LR lower and upper endpoints are now solved in the dimensionless coordinate (x=\tau/s_{ref}), with (s_{ref}=\max(MSW,S^2_{means})>0).
-- The root tolerance `xtol=1e-12) applies to the dimensionless coordinate, not the physical variance units.
-- The fixed absolute (10^{-12}) variance floor was removed from the profile-likelihood reference-scale selection. The profile optimizer uses a positive data-derived reference scale.
+- The root tolerance `xtol=1e-12` applies to the dimensionless coordinate, not the physical variance units.
+- Fixed absolute `1e-12` variance floors were removed from profile-likelihood, polynomial-root normalization, and nuisance-optimizer reference-scale selection. These paths use positive data-derived reference scales.
 - Conversion from the dimensionless coordinate back to physical variance rejects overflow and positive underflow.
 - The F1 test module explicitly imports `_restore_polynomial_scale`; the existing underflow/overflow tests now target the helper.
 - The observation-scale regression keeps factors (10^{-4},10^{-2},10^2,10^4), compares both interval endpoints in baseline units at `delta=1e-8), and compares the MLE at `delta=1e-10). These bounds are tighter than the previous assertions; no tolerance was relaxed.
