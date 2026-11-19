@@ -112,8 +112,8 @@ def f5_beta_binomial_mcse_profile_loglik(
     """Evaluate the F5 profile log-likelihood at a proposed MCSE value.
 
     Both mu branches are maximized over finite concentration and their analytic
-    kappa->0 / kappa->infinity limits. This is a numerical profile evaluator,
-    not yet a confidence-set inversion or calibrated inferential method.
+    kappa->0 / kappa->infinity limits. This is a numerical profile evaluator;
+    the separate confidence-set inversion remains grid-dependent and uncalibrated.
     """
     if type(target_m) is not int or target_m < 2:
         raise F5ProfileError("TARGET_M_MUST_BE_INTEGER_GE_2")
