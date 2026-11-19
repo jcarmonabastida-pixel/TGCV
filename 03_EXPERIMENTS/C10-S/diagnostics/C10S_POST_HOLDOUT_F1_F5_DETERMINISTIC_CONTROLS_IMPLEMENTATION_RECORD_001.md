@@ -2,11 +2,11 @@
 
 **Record:** C10S-POST-HOLDOUT-F1-F5-DETERMINISTIC-CONTROLS-IMPLEMENTATION-001  
 **Date:** 2026-11-19  
-**Status:** PARTIAL IMPLEMENTATION / 119-TEST STATIC SUITE PASS / NUMERICAL DEVELOPMENT EXECUTION NOT AUTHORIZED  
+**Status:** A1/B1 DETERMINISTIC IMPLEMENTATION PASS / 147-TEST STATIC SUITE PASS / RESOURCE PREFLIGHT NOT RUN  
 **Frozen design:** `C10S_POST_HOLDOUT_F1_F5_DEVELOPMENT_CALIBRATION_SPEC_001.md` v1.0  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
 **Initial implementation commit:** `e7920543e8c6fb19582c62446381df7cb1d95e1a`  
-**Latest validated commit:** `b7127b29db6e2a2a6f6c2bfdc8f998a5014f694e`  
+**Latest validated commit:** `97479f9db7e7483a687bddbc8382790a2edbda7a`  
 **Execution authorization:** NONE
 
 ---
@@ -435,3 +435,60 @@ Exact-commit static validation:
 - Full local-information and boundary-contrast assertions: PASS.
 
 This is diagnostic-schema/software evidence only. It does not establish a scale-aware identification criterion or change C5 estimator/interval behaviour. No resource preflight, calibration, bootstrap bank, holdout or C10 scientific execution occurred.
+
+
+## 13. Integrated A1/B1 closure increment — 2026-11-19
+
+This increment closes the remaining deterministic implementation gaps identified by the specification reconciliation. Historical controls were reused; no duplicate general test battery was created.
+
+### 13.1 F1 — scale-safe nuisance scan and boundary contracts
+
+The independent nuisance score scan now uses the dimensionless coordinate z=log(s/scale), with scale=max(MSW,S2_mean,tau). Its score, score derivative and likelihood are evaluated using normalized variance quantities. This avoids an untyped ZeroDivisionError from raw q^2/q^3 underflow at very small observation scales.
+
+The internal coordinate is converted back to the established physical log(within variance) representation in stationary_points_log_scale; the diagnostic output contract is unchanged.
+
+Additional interval-path tests now cover:
+- nuisance-search boundary contact as a typed certification abstention;
+- exhaustion of the upper-endpoint bracket expansion budget as UPPER_PROFILE_ENDPOINT_NOT_BRACKETED;
+- extreme near-zero observation scale where exact score-polynomial coefficients fall below representable floating range, retained as the explicit typed abstention SCORE_POLYNOMIAL_COEFFICIENT_0_UNDERFLOW.
+
+The last case is deliberately not described as scale equivariance. The numerical representation has a finite limit; below it the method abstains rather than returning an unverified interval. Existing scale-equivariance tests, exact zero-within handling, six-cell fixtures, multiple/tangential roots and near-degenerate-root abstentions remain in place.
+
+### 13.2 F5 — independent log-shape Hessian and complete per-dataset record
+
+A separately parameterized analytic score/Hessian was added directly in (log alpha, log beta), independently of the existing (logit mu, log kappa) derivative implementation.
+
+The BFGS audit now retains:
+- terminal log_alpha and log_beta;
+- both independent score components and their norm;
+- the complete independent observed 2x2 Hessian.
+
+The deterministic tests compare the independent Hessian with central finite differences of its own independently parameterized score at an interior fixture and a boundary-adjacent low-shape fixture.
+
+The comparison-engine contract now verifies strict-JSON per-dataset serialization of these independent results and all three L-BFGS-B starts, including each start's terminal coordinates, gradient norm, convergence message and four distances to configured numerical bounds. The existing C5 fit selection, interval construction, bootstrap and abstention logic are unchanged. No weak-identification threshold or binary identification label was introduced; identification remains INDETERMINATE where the scale-aware criterion is not established.
+
+### 13.3 Exact static validation
+
+Final exact-commit static workflow:
+- Run: 44599711460
+- Commit: 97479f9db7e7483a687bddbc8382790a2edbda7a
+- Hash-locked dependency installation: PASS
+- Compilation: PASS
+- Deterministic suite: 147 tests PASS
+- The run executed only the declared deterministic comparator/oracle test modules.
+
+Intermediate failures were preserved as diagnostic history and corrected without relaxing scientific tolerances:
+- Run 44598848160: the first near-zero fixture rounded to exact zero in binary floating representation, so its expected error did not match the actual zero-within guard.
+- Run 44598899508: the first raw-scale diagnostic implementation exposed q^2 underflow as an untyped division error; this motivated the dimensionless nuisance scan.
+- Run 44599354853: the first normalized-coordinate revision leaked the internal normalized log coordinate into the public physical-log diagnostic field; the output contract was restored.
+- Run 44599505429: the extreme-scale fixture reached the existing exact-polynomial representability guard; the test now asserts the declared typed abstention rather than claiming unsupported equivariance.
+
+### 13.4 Final deterministic disposition and execution boundary
+
+A1 — F1 deterministic numerical certification: IMPLEMENTED / STATIC TESTS PASS. The tested interval path covers nuisance certification, root/tangency handling, typed unresolved states, lower-bound inclusion, upper-bracket failure, boundary contact, the six frozen F1 fixture cells and scale controls. The connectedness result remains the model-specific analytic argument encoded in the implementation; this is not an external mathematical review.
+
+B1 — F5 likelihood/optimizer audit: IMPLEMENTED / STATIC TESTS PASS. Independent derivatives, boundary likelihood contrasts, multi-start retention and per-dataset serialization are covered by deterministic tests. Statistical identification strength remains INDETERMINATE absent a justified scale-aware criterion; no such threshold is required or invented here.
+
+The frozen development/calibration specification v1.0 remains unchanged. The old C10S-NESTED-MR-COMPARATIVE-RESOURCE-PREFLIGHT-001 runner/result is not reused: it is a different, earlier holdout workload (1,000 datasets per cell, C1/C5 roster) and does not implement the new post-holdout F1-profile/F5 development preflight contract.
+
+No numerical stress workflow was authorized or executed; stress workflows remained skipped by their authorization guards. No resource preflight, calibration bank, validation bank, bootstrap bank, Tier A/B holdout or causal C10 scientific execution occurred. Execution authorization remains NONE.
