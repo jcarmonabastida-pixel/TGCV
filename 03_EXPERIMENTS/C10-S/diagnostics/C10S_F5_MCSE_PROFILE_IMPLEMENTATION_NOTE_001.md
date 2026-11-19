@@ -64,8 +64,11 @@ likelihood lower-bound check, analytic beta-binomial scores compared with
 finite differences of an independent math.lgamma likelihood, maximum-target
 and zero-target boundaries, infeasible targets, invalid input, profile LR
 inversion with component/hull consistency, invalid-cutoff rejection,
-non-finite root refinement, explicit grid-resolution reporting, and the
-nested-grid convergence diagnostic interface.
+non-finite root refinement, explicit grid-resolution reporting, the
+nested-grid convergence diagnostic interface, deterministic stress fixtures
+for all-zero/all-one worlds, endpoint mixtures, asymmetric endpoint
+frequencies, interior-heavy counts and mixed extremes, and LR-set parameter
+space bounds. These are test definitions, not test outcomes.
 
 No tests have been executed. These are test definitions only.
 
@@ -89,7 +92,9 @@ No tests have been executed. These are test definitions only.
    compare gradients/scores against numerical differentiation.
 2. Execute the nested-grid convergence diagnostic over a predeclared
    adversarial roster; supplement it with adversarial multimodality tests for
-   both concentration and MCSE scans.
+   both concentration and MCSE scans. The current deterministic fixtures
+   stress boundary and asymmetry cases but do not yet establish that all
+   multimodal topologies have been detected.
 3. Extend robust root-bracketing tests for non-finite profile regions and
    endpoint cases.
 4. Validate analytic score expressions against independent numerical
