@@ -44,7 +44,7 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertGreaterEqual(result.mle_between_variance, low)
         self.assertLessEqual(result.mle_between_variance, high)
         self.assertEqual(result.status, "PROFILE_LR_INTERVAL_ROOT_SOLVED")
-        self.assertEqual(result.nuisance_certification_status, "OPTIMIZATION_CONCORDANT")
+        self.assertEqual(result.nuisance_certification_status, "POLYNOMIAL_SCORE_BOUNDED_OPTIMIZER_CONCORDANT")
         self.assertEqual(result.topology_status, "ANALYTIC_CONNECTEDNESS_ARGUMENT_APPLIED")
 
     def test_solved_endpoints_satisfy_lr_equation(self):
