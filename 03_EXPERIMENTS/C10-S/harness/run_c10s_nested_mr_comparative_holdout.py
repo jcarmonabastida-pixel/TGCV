@@ -87,11 +87,11 @@ def _validate_spec(spec: FixtureSpec) -> None:
 
 
 def generate_holdout_dataset(
-    spec: FixtureSpec, replicate_index: int,
+    spec: FixtureSpec, replicate_index: int, *, seed_override: int | None = None,
 ) -> tuple[tuple[float, ...], ...]:
     """Generate one fresh dataset under the holdout-only seed namespace."""
     _validate_spec(spec)
-    seed = derive_holdout_seed("dataset", spec.cell_id, replicate_index)
+    seed = derive_holdout_seed("dataset", spec.cell_id, replicate_index) if seed_override is None else seed_override
     outer_seq, inner_seq = np.random.SeedSequence(seed).spawn(2)
     outer_rng = np.random.Generator(np.random.PCG64(outer_seq))
     inner_rngs = [
