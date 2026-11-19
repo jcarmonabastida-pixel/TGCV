@@ -213,11 +213,16 @@ def f1_profile_between_confidence_set(
         polynomial = f1_score_polynomial_diagnostic(
             rows, between_variance=tau,
         )
+        likelihood_difference = (
+            abs(diagnostic.bounded_optimizer_loglik - diagnostic.independent_loglik)
+            if diagnostic.bounded_optimizer_loglik is not None
+            and diagnostic.independent_loglik is not None else None
+        )
         failure = (
             diagnostic.independent_loglik is None
             or diagnostic.bounded_optimizer_loglik is None
-            or diagnostic.absolute_loglik_difference is None
-            or diagnostic.absolute_loglik_difference > 1e-7
+            or likelihood_difference is None
+            or likelihood_difference > 1e-7
             or polynomial.status != "POLYNOMIAL_ROOTS_ISOLATED"
             or diagnostic.unresolved_tangential_candidates > 0
             or diagnostic.independent_boundary_sensitive
@@ -314,7 +319,7 @@ def f1_profile_between_confidence_set(
                 + f"|optimizer_error={diagnostic.optimizer_error}"
                 + f"|bounded_ll={diagnostic.bounded_optimizer_loglik}"
                 + f"|independent_ll={diagnostic.independent_loglik}"
-                + f"|ll_difference={diagnostic.absolute_loglik_difference}"
+                + f"|ll_difference={likelihood_difference}"
             )
         return diagnostic.independent_loglik
 
