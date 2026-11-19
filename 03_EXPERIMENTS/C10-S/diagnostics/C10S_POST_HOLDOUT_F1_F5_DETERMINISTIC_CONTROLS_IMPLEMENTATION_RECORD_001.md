@@ -80,7 +80,7 @@ Other F1 numerical-stress workflows were triggered by branch pushes but their au
 | Artifact | Git blob SHA |
 |---|---|
 | Frozen design v1.0 | `d1c8bae882dc2e4cd0e1caae29609561b9ebac68` |
-| F1 profile source | `87de3f15468482327cc81034f96828f6ccd26ae81` |
+| F1 profile source | `87de3f15468482327fa1170b050fdd54dac13ade5` |
 | F1 profile tests | `81c42c6af743faca11df6aa4b8219e2ef6bb214a` |
 | F5 likelihood/optimizer diagnostics | `7df6d4e679c909d79f4aa184918b75117f28f3c0` |
 | F5 diagnostics tests | `3e54bc39cd36b4c24619354d031ef9e579f942a5` |
