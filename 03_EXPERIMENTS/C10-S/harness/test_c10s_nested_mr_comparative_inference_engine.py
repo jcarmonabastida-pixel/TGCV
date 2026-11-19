@@ -7,6 +7,8 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 
+from c10s_f5_beta_binomial_likelihood_diagnostics import BetaBinomialOptimizerAudit
+
 from c10s_nested_mr_comparative_inference_engine import (
     C0_METHOD_ID,
     ComparativeEngineError,
@@ -516,9 +518,26 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
 
     def test_f5_compare_dataset_keeps_profile_boundary_when_c5_fit_abstains(self):
         all_zero_rows = tuple((0, 0, 0, 0, 0) for _ in range(10))
+        optimizer_audit = BetaBinomialOptimizerAudit(
+            status="BOUNDARY_FIXTURE_OPTIMIZER_AUDIT",
+            selected_mean_logit=None,
+            selected_log_concentration=None,
+            selected_log_likelihood=None,
+            selected_score_norm=None,
+            hessian_eigenvalues=None,
+            profile_log_concentration_curvature=None,
+            independent_optimizer_success=False,
+            independent_optimizer_message="FIXTURE_BOUNDARY",
+            independent_log_likelihood=None,
+            absolute_log_likelihood_difference=None,
+            log_shape_parameter_distance=None,
+            binomial_limit_log_likelihood=None,
+            two_point_limit_log_likelihood=None,
+            starts=(),
+        )
         with patch(
             "c10s_fitted_beta_binomial_bootstrap.audit_beta_binomial_count_fit",
-            return_value=SimpleNamespace(status="BOUNDARY_FIXTURE_OPTIMIZER_AUDIT"),
+            return_value=optimizer_audit,
         ):
             record = compare_dataset(
                 all_zero_rows, dataset_id="F5-ALL-ZERO-BOUNDARY",
