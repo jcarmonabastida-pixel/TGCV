@@ -89,17 +89,18 @@ def _historical_seeds(cell_id: str, replicate: int) -> set[int]:
     return result
 
 def validate_seed_separation() -> dict:
+    # Compare against the complete historical Tier A/v1.0/old-preflight
+    # inventories, not only matching replicate indices or the two sample cells.
     historical_values: set[int] = set()
     historical_count = 0
-    preflight_values: dict[int, tuple[str, str, int]] = {}
-    for cell_id in REPRESENTATIVE_CELLS:
-        streams = ["dataset", "C0_bootstrap"]
-        if cell_id.startswith("F5_"):
-            streams += ["C5_bootstrap_B1000", "C5_bootstrap_B4000"]
-        for replicate in range(K_PER_CELL):
+    historical_cells = tuple(spec.cell_id for spec in tier_a_specs())
+    for cell_id in historical_cells:
+        for replicate in range(1000):
             for value in _historical_seeds(cell_id, replicate):
                 historical_count += 1
                 historical_values.add(value)
+
+    preflight_values: dict[int, tuple[str, str, int]] = {}
     for cell_id in REPRESENTATIVE_CELLS:
         streams = ["dataset", "C0_bootstrap"]
         if cell_id.startswith("F5_"):
@@ -121,6 +122,8 @@ def validate_seed_separation() -> dict:
         "status": "PASS",
         "preflight_seed_count": len(preflight_values),
         "historical_seed_values_checked": historical_count,
+        "historical_replicates_per_cell_checked": 1000,
+        "historical_cell_count": len(historical_cells),
         "historical_schedules": [
             "C10S_NESTED_MR_SEED_SCHEDULE_1.0",
             "C10S_NESTED_MR_COMPARATIVE_HOLDOUT_SEEDS_1.0",
