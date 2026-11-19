@@ -157,6 +157,11 @@ class F5DevelopmentCalibrationTests(unittest.TestCase):
                 output_path=Path(tmp) / "bank.jsonl",
             )
             self.assertEqual(result["datasets_completed"], 1)
+            self.assertEqual(result["cell"]["k_datasets"], 1)
+            self.assertEqual(result["cell"]["phase"], "B2")
+            self.assertEqual(result["cell"]["bank_role"], "DEVELOPMENT_CALIBRATION")
+            self.assertEqual(result["cell"]["fixture_template_k"], 1000)
+            self.assertNotIn("tier", result["cell"])
             self.assertEqual(len(result["metrics_within_and_raw_between_only"]), 4)
             record = result["records"][0]
             fit = record["fit_diagnostics"]
