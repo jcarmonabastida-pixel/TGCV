@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 import unittest
+from types import SimpleNamespace
 
 import numpy as np
 from unittest.mock import patch
@@ -80,6 +81,65 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
                     self.assertGreaterEqual(high, result.mle_between_variance)
                     observed.append((regime, m, r, result.status))
         self.assertEqual(len(observed), 6)
+
+    def test_interval_path_abstains_when_nuisance_scan_has_unresolved_tangency(self):
+        from c10s_f1_between_profile_likelihood import (
+            f1_profile_nuisance_optimizer_diagnostic as original_diagnostic,
+        )
+        actual = original_diagnostic(ROWS, between_variance=0.25)
+        unresolved = SimpleNamespace(
+            status="OPTIMIZATION_INSUFFICIENT",
+            bounded_optimizer_loglik=actual.bounded_optimizer_loglik,
+            independent_loglik=actual.independent_loglik,
+            absolute_loglik_difference=actual.absolute_loglik_difference,
+            stationary_points=actual.stationary_points,
+            stationary_points_log_scale=actual.stationary_points_log_scale,
+            stationary_point_types=actual.stationary_point_types,
+            tangential_score_roots=1,
+            unresolved_tangential_candidates=1,
+            polynomial_degree=actual.polynomial_degree,
+            polynomial_root_count=actual.polynomial_root_count,
+            polynomial_status=actual.polynomial_status,
+            critical_point_solver_status=actual.critical_point_solver_status,
+            polynomial_scan_discordant=False,
+            independent_boundary_sensitive=False,
+            optimizer_error=None,
+        )
+        with patch(
+            "c10s_f1_between_profile_likelihood.f1_profile_nuisance_optimizer_diagnostic",
+            return_value=unresolved,
+        ):
+            with self.assertRaisesRegex(
+                F1ProfileError, r"PROFILE_NUISANCE_CERTIFICATION_FAILED:.*unresolved=1",
+            ):
+                f1_profile_between_confidence_set(
+                    ROWS, family="F1",
+                    likelihood_ratio_cutoff=3.841458820694124,
+                )
+
+    def test_interval_path_abstains_when_polynomial_critical_points_are_unresolved(self):
+        from dataclasses import replace
+        from c10s_f1_between_profile_likelihood import (
+            f1_score_polynomial_diagnostic as original_polynomial_diagnostic,
+        )
+        actual = original_polynomial_diagnostic(ROWS, between_variance=0.25)
+        unresolved = replace(
+            actual,
+            status="POLYNOMIAL_CRITICAL_POINTS_UNRESOLVED",
+            critical_point_solver_status="DISCRIMINANT_UNRESOLVED",
+            unresolved_critical_candidates=(1.0,),
+        )
+        with patch(
+            "c10s_f1_between_profile_likelihood.f1_score_polynomial_diagnostic",
+            return_value=unresolved,
+        ):
+            with self.assertRaisesRegex(
+                F1ProfileError, "PROFILE_NUISANCE_CERTIFICATION_FAILED",
+            ):
+                f1_profile_between_confidence_set(
+                    ROWS, family="F1",
+                    likelihood_ratio_cutoff=3.841458820694124,
+                )
 
     def test_profile_loglik_is_finite_on_physical_parameter_space(self):
         value = f1_profile_loglik(ROWS, between_variance=0.25)
