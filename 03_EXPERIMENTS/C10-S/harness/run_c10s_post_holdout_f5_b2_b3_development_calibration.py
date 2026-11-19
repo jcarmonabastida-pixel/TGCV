@@ -654,6 +654,12 @@ def run_f5_development_calibration(
     authorization: dict[str, Any],
 ) -> dict[str, Any]:
     """Run the frozen F5 B2/B3 development banks after one-use authorization."""
+    if authorization.get("validation_status") != "PASS":
+        raise F5DevelopmentCalibrationError("AUTHORIZATION_VALIDATION_NOT_PASSED")
+    if authorization.get("approved_code_commit") != code_commit:
+        raise F5DevelopmentCalibrationError("APPROVED_CODE_COMMIT_MISMATCH")
+    if not authorization.get("authorization_id") or not authorization.get("authorization_sha256"):
+        raise F5DevelopmentCalibrationError("AUTHORIZATION_ID_OR_HASH_MISSING")
     expected = {
         "scope": "C10S_F5_B2_B3_DEVELOPMENT_CALIBRATION_ONLY",
         "f5_b2_b3_authorized": True,
@@ -721,6 +727,7 @@ def run_f5_development_calibration(
         "run_id": RUN_ID,
         "status": "COMPLETED_DEVELOPMENT_CALIBRATION_NOT_CONFIRMATORY",
         "authorization_id": authorization.get("authorization_id"),
+        "authorization_commit": authorization.get("authorization_commit"),
         "authorization_sha256": authorization.get("authorization_sha256"),
         "approved_code_commit": code_commit,
         "seed_schedule_id": SEED_SCHEDULE_ID,
