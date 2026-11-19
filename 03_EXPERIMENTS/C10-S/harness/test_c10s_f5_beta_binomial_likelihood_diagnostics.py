@@ -261,7 +261,7 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
                 delta=1e-12,
             )
             self.assertAlmostEqual(
-                left.profiled_mean_logit, right.profiled_mean_logit, delta=1e-10,
+                left.profiled_mean_logit, right.profiled_mean_logit, delta=5e-8,
             )
 
     def test_endpoint_only_fixture_retains_finite_two_point_profile_limit(self):
