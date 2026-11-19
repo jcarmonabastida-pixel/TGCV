@@ -45,6 +45,9 @@ class F1NuisanceStabilityDiagnostic:
     configurations: tuple[tuple[int, float], ...]
     stationary_point_counts: tuple[int, ...]
     optimizer_statuses: tuple[str, ...]
+    stationary_point_type_signatures: tuple[tuple[str, ...], ...]
+    tangential_score_root_counts: tuple[int, ...]
+    unresolved_tangential_candidate_counts: tuple[int, ...]
     maximum_loglik_spread: float | None
     maximum_stationary_location_spread: float | None
 
@@ -440,6 +443,9 @@ def f1_profile_nuisance_stability_diagnostic(
     )
     counts = tuple(item.stationary_points for item in results)
     statuses = tuple(item.status for item in results)
+    type_signatures = tuple(item.stationary_point_types for item in results)
+    tangential_counts = tuple(item.tangential_score_roots for item in results)
+    unresolved_counts = tuple(item.unresolved_tangential_candidates for item in results)
     values = tuple(
         item.independent_loglik for item in results
         if item.independent_loglik is not None
@@ -462,7 +468,9 @@ def f1_profile_nuisance_stability_diagnostic(
         status = "OPTIMIZATION_INSUFFICIENT"
     elif any(status == "OPTIMIZATION_BOUNDARY_SENSITIVE" for status in statuses):
         status = "OPTIMIZATION_BOUNDARY_SENSITIVE"
-    elif len(set(counts)) != 1:
+    elif (len(set(counts)) != 1
+          or len(set(type_signatures)) != 1
+          or len(set(tangential_counts)) != 1):
         status = "OPTIMIZATION_DISCORDANT"
     elif (spread is None or spread > float(loglik_tolerance)
           or location_spread is None or location_spread > 1e-5):
@@ -477,6 +485,9 @@ def f1_profile_nuisance_stability_diagnostic(
         configurations=configurations,
         stationary_point_counts=counts,
         optimizer_statuses=statuses,
+        stationary_point_type_signatures=type_signatures,
+        tangential_score_root_counts=tangential_counts,
+        unresolved_tangential_candidate_counts=unresolved_counts,
         maximum_loglik_spread=spread,
         maximum_stationary_location_spread=location_spread,
     )
