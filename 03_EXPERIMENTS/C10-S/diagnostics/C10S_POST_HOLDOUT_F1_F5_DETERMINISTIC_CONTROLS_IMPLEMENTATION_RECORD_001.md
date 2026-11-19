@@ -343,3 +343,24 @@ The deterministic engine tests verify:
 Exact-commit validation: Run `44593339897`, commit `898906f2b5ee94c599a478991688cbe2e9333551`, hash-locked dependencies PASS, compilation PASS, **137 deterministic tests PASS**. Numerical-stress workflows v1/v2/v3 were skipped by their authorization guards. No DGP, calibration, bootstrap bank, resource preflight, holdout or scientific C10 execution occurred.
 
 This is implementation/static-validation evidence only. It does not establish concentration identification, repair the observed C5 coverage failures, select a replacement interval, or support a causal `Delta T_acc -> Value` claim. The frozen development/calibration specification v1.0 and all C5 interval/selection logic remain unchanged.
+
+
+## 10. B1 adversarial per-dataset profile-audit propagation — 2026-11-19
+
+Added deterministic tests at the comparison-engine boundary for three adversarial conditions:
+
+- Missing optimizer audit: the concentration profile object is explicitly `null` with `F5LikelihoodDiagnosticError:OPTIMIZER_AUDIT_UNAVAILABLE`; the independent stability trace remains available and serializable.
+- Finite two-point boundary: endpoint-only world counts preserve `FINITE_ENDPOINT_MIXTURE_PROFILE` and a finite boundary log-likelihood in the profile audit record.
+- Unresolved nuisance optimizer: forced bounded scalar-optimizer failure is retained pointwise as `NUISANCE_PROFILE_OPTIMIZER_UNRESOLVED`; the combined profile record is marked `PROFILE_HAS_BOUNDARY_OR_UNRESOLVED_POINTS`, all affected curvature entries remain null, and the stability object retains unresolved statuses.
+
+The first attempt at the boundary assertion used a nuisance-mean field not exposed by the audit-record schema. The exact failure was inspected and the test was corrected to assert only the record's declared fields. No production implementation or scientific contract was altered to accommodate the test.
+
+Final exact-commit static validation:
+- Commit: `ee676c7f85181e87196cee32b1c955ba5172e3e2`
+- Run: `44594182486`
+- Hash-locked dependencies: PASS
+- Compile: PASS
+- Deterministic suite: **140 tests PASS**
+- Three new adversarial tests: PASS.
+
+The tests establish safe deterministic propagation and serialization for these fixtures. They do not establish optimizer reliability in general, global nuisance maximization, concentration identification, interval coverage or causal evidence. No numerical stress, calibration, bootstrap bank, resource preflight, holdout or scientific C10 execution occurred.
