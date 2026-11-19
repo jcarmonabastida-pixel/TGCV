@@ -2,10 +2,11 @@
 
 **Record:** C10S-POST-HOLDOUT-F1-F5-DETERMINISTIC-CONTROLS-IMPLEMENTATION-001  
 **Date:** 2026-11-19  
-**Status:** PARTIAL IMPLEMENTATION / STATIC SUITE PASS / NUMERICAL DEVELOPMENT EXECUTION NOT AUTHORIZED  
+**Status:** PARTIAL IMPLEMENTATION / 112-TEST STATIC SUITE PASS / NUMERICAL DEVELOPMENT EXECUTION NOT AUTHORIZED  
 **Frozen design:** `C10S_POST_HOLDOUT_F1_F5_DEVELOPMENT_CALIBRATION_SPEC_001.md` v1.0  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
-**Implementation commit:** `e7920543e8c6fb19582c62446381df7cb1d95e1a`  
+**Initial implementation commit:** `e7920543e8c6fb19582c62446381df7cb1d95e1a`  
+**Latest validated commit:** `469dbe52c9a7075e68506f2c58d754b7ea45dc58`  
 **Execution authorization:** NONE
 
 ---
@@ -114,3 +115,61 @@ The canonical branch head at validation was `e7920543e8c6fb19582c62446381df7cb1d
 No Tier A v1.0 protocol, raw result, replay, authorization or audit was changed. No C0/C1/C5 interval definition was changed. No calibration cutoff was selected. No new method was promoted. No data from the unblinded Tier A holdout were reused. No scientific C10 execution was performed. No write was made to `main`.
 
 **Final disposition:** A1/B1 deterministic implementation has advanced, with 110/110 static tests passing. The integrated development/calibration package remains OPEN and numerical execution remains unauthorized.
+
+
+## 8. F5 per-dataset optimizer-audit integration — 2026-11-19
+
+The next implementation increment closes the previously open per-dataset diagnostic propagation path.
+
+### 8.1 Candidate result integration
+
+`c10s_fitted_beta_binomial_bootstrap.py` now attaches the deterministic `BetaBinomialOptimizerAudit` to each `FittedBetaBinomialBootstrapResult`, including the fit-abstention and boundary-abstention returns.
+
+- The three diagnostic L-BFGS-B starts are retained independently of the existing C5 fit.
+- The independently parameterized BFGS result, likelihood difference, parameter distance, score norm, Hessian eigenvalues and extended-limit likelihoods remain available in the attached audit.
+- A diagnostic failure is recorded separately as `optimizer_audit_error`; it does not select a different C5 fit, change its interval, or replace its existing abstention.
+- The original C5 fitting/selection code and bootstrap calculation remain unchanged.
+
+### 8.2 Per-dataset comparison persistence
+
+`c10s_nested_mr_comparative_inference_engine.py` now serializes the complete audit into the F5 candidate's per-dataset diagnostics as `likelihood_optimizer_audit_json`. Extended-real likelihood limits are encoded as explicit strings (`"-Infinity"`, `"Infinity"`, or `"NaN"`) so the output is valid strict JSON and does not silently emit non-standard JSON numeric tokens.
+
+The engine test parses this record and verifies that all three starts and the optimizer status survive the per-dataset comparison boundary.
+
+### 8.3 Additional deterministic cross-checks
+
+- The finite-R beta-binomial count likelihood is checked against the existing independent exact PMF oracle for every count in the support (0,ldots,R), using the frozen beta22 parameterization.
+- Analytic score components are checked against central finite differences in low-concentration and near-binomial/high-concentration, mean-boundary-adjacent fixtures.
+- Existing tests verify audit retention on the ordinary interior path and on all-zero/all-one typed abstention paths.
+
+A static failure exposed that the audit received NumPy integer scalars while the reused extended-limit evaluator deliberately requires built-in integers. The audit now normalizes validated count scalars before invoking that evaluator. A second numerical guard ensures the independently parameterized optimizer gradient respects the objective's finite representability guard. Both issues were corrected before the passing validation below.
+
+### 8.4 Latest static validation
+
+Workflow:
+`.github/workflows/c10-s-nested-mr-calibration-comparator-static.yml`
+
+- Run ID: `44584027037`
+- Exact commit: `469dbe52c9a7075e68506f2c58d754b7ea45dc58`
+- Conclusion: `SUCCESS`
+- Compile: PASS
+- Hash-locked dependency installation: PASS
+- Test suite: **112 tests passed**
+- No DGP, calibration, validation-bank or bootstrap-bank execution was performed.
+
+### 8.5 Exact identities at latest validation
+
+| Artifact | Git blob SHA |
+|---|---|
+| Frozen development/calibration specification v1.0 | `d1c8bae882dc2e4cd0e1caae29609561b9ebac68` |
+| F5 likelihood diagnostics | `363f9be9ad8ea71b6dd09a9ecb0dddb4319b9967` |
+| F5 likelihood diagnostic tests | `fa1c21f96d843662643879af56803be4195b6e3f` |
+| F5 fitted bootstrap candidate | `1052ed986e4a551654b9d32928937e4e39df2c88` |
+| F5 fitted bootstrap tests | `4b7e70b59b99ddb6ed6fdd767d38e31096d0cdaa` |
+| Comparative inference engine | `5aa04ba4add1c7c6293e3d27bf0360b400e7eed4` |
+| Comparative inference engine tests | `20481d051e4d6986991398c260cbb14fa2ef9118` |
+| Static workflow | `624370a438000809c7cc6b660fda126b77ced5de` |
+
+The validated research branch head was `469dbe52c9a7075e68506f2c58d754b7ea45dc58`. The frozen specification remained byte-identical at the blob SHA above. `main` remained at `e22928eb79adb5bc74295967a45b9c440b78f849`.
+
+**F5 disposition update:** the per-dataset optimizer audit is now implemented and propagated through the in-memory result and comparison diagnostic record. It remains a diagnostic, not an interval-selection rule or empirical finding. The development/calibration package remains OPEN because the six-cell F1 adversarial interval-path matrix and remaining F5 weak-identification/boundary fixture work are not yet complete.
