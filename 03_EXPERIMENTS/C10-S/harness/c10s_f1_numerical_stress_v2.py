@@ -203,6 +203,7 @@ def run_n3_covariant_lane() -> dict[str, Any]:
             "fixture_id": fixture_id,
             "exponent": exponent,
             "ideal_coefficients": [_qtext(v) for v in fixture.ideal_coefficients],
+            "ideal_real_roots": [_qtext(v) for v in fixture.ideal_real_roots],
             "actual_preconversion_coefficients": [_qtext(v) for v in actual],
             "binary64_hex": [value.hex() for value in binary64] if binary64 is not None else None,
             "exact_binary64_coefficients": (
@@ -322,12 +323,16 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
         try:
             profile = f1_profile_between_confidence_set(
                 scaled_rows, likelihood_ratio_cutoff=3.841458820694124,
+                max_bracket_expansions=80,
             )
             diagnostic = f1_score_polynomial_diagnostic(
                 scaled_rows, between_variance=scaled_tau,
+                root_tolerance=1e-10, unresolved_tolerance=1e-7,
             )
             adjudication = adjudicate_f1_roots(
                 scaled_rows, between_variance=scaled_tau,
+                match_tolerance=1e-8, relative_tolerance=1e-8,
+                isolation_width=1e-12, max_depth=256,
             )
             low, high = profile.confidence_components[0]
             inverse = math.ldexp(1.0, -2 * exponent)
