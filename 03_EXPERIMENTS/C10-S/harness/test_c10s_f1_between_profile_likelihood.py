@@ -130,6 +130,87 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
                          "POLYNOMIAL_SCORE_BOUNDED_OPTIMIZER_CONCORDANT")
         self.assertEqual(len(result.confidence_components), 1)
 
+    def test_score_polynomial_matches_independent_finite_difference_of_nuisance_loglik(self):
+        # Independent oracle: differentiate the explicit Gaussian nuisance
+        # log-likelihood numerically in log(s), without calling production
+        # score helpers or reusing their coefficient construction.
+        fixtures = [
+            (ROWS, 0.25),
+            (*constructed_repeated_score_root_rows()[:2],),
+        ]
+        repeated_rows, repeated_tau = constructed_repeated_score_root_rows()[:2]
+        fixtures[1] = (repeated_rows, repeated_tau)
+        for rows, tau in fixtures:
+            m = len(rows)
+            r = len(rows[0])
+            means = [sum(row) / r for row in rows]
+            grand = sum(means) / m
+            ssw = sum(
+                (value - mean) ** 2
+                for row, mean in zip(rows, means) for value in row
+            )
+            s2_means = sum((mean - grand) ** 2 for mean in means) / (m - 1)
+            df_w = m * (r - 1)
+            df_b = m - 1
+
+            def independent_loglik(log_s):
+                s = math.exp(log_s)
+                q = tau + s / r
+                return (
+                    -0.5 * df_w * (math.log(2.0 * math.pi) + log_s)
+                    -0.5 * ssw / s
+                    -0.5 * df_b * (math.log(2.0 * math.pi) + math.log(q))
+                    -0.5 * df_b * s2_means / q
+                )
+
+            polynomial = f1_score_polynomial_diagnostic(
+                rows, between_variance=tau,
+            )
+            for s in (0.17, 0.43, 0.91, 1.37, 3.2, 8.1):
+                h = 2e-5
+                numeric_score = (
+                    independent_loglik(math.log(s) + h)
+                    - independent_loglik(math.log(s) - h)
+                ) / (2.0 * h)
+                q = tau + s / r
+                polynomial_score = (
+                    sum(coef * s ** index
+                        for index, coef in enumerate(polynomial.coefficients_ascending))
+                    / (2.0 * s * q * q)
+                )
+                self.assertAlmostEqual(
+                    numeric_score, polynomial_score, delta=2e-7,
+                )
+
+    def test_score_polynomial_repeated_root_has_zero_independent_likelihood_derivative(self):
+        rows, tau, repeated_root = constructed_repeated_score_root_rows()
+        m, r = len(rows), len(rows[0])
+        means = [sum(row) / r for row in rows]
+        grand = sum(means) / m
+        ssw = sum(
+            (value - mean) ** 2
+            for row, mean in zip(rows, means) for value in row
+        )
+        s2_means = sum((mean - grand) ** 2 for mean in means) / (m - 1)
+        df_w, df_b = m * (r - 1), m - 1
+
+        def independent_loglik(log_s):
+            s = math.exp(log_s)
+            q = tau + s / r
+            return (
+                -0.5 * df_w * (math.log(2.0 * math.pi) + log_s)
+                -0.5 * ssw / s
+                -0.5 * df_b * (math.log(2.0 * math.pi) + math.log(q))
+                -0.5 * df_b * s2_means / q
+            )
+
+        h = 1e-4
+        derivative = (
+            independent_loglik(math.log(repeated_root) + h)
+            - independent_loglik(math.log(repeated_root) - h)
+        ) / (2.0 * h)
+        self.assertAlmostEqual(derivative, 0.0, delta=1e-8)
+
     def test_profile_interval_path_covers_all_six_frozen_f1_cells(self):
         fixtures = frozen_six_cell_rows()
         self.assertEqual(len(fixtures), 6)
