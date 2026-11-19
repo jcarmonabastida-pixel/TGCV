@@ -9,10 +9,38 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 import run_c10s_nested_mr_comparative_resource_preflight as preflight
+import validate_c10s_nested_mr_resource_preflight_authorization as resource_auth
+import validate_c10s_nested_mr_comparative_holdout_authorization as holdout_auth
 from c10s_nested_mr_comparative_inference_engine import IMPLEMENTED_METHODS
 
 
 class ResourcePreflightTests(unittest.TestCase):
+    def test_resource_authorization_validator_rejects_draft(self):
+        with tempfile.TemporaryDirectory() as directory:
+            auth_path = Path(directory) / "authorization.json"
+            auth_path.write_text(json.dumps({
+                "schema": resource_auth.AUTH_SCHEMA,
+                "status": "DRAFT",
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "not APPROVED"):
+                resource_auth.validate(
+                    auth_path, Path(directory), "a" * 40,
+                    resource_auth.BRANCH_PREFIX + "draft-authorization-001",
+                )
+
+    def test_holdout_authorization_validator_rejects_draft(self):
+        with tempfile.TemporaryDirectory() as directory:
+            auth_path = Path(directory) / "authorization.json"
+            auth_path.write_text(json.dumps({
+                "schema": holdout_auth.AUTH_SCHEMA,
+                "status": "DRAFT",
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "not APPROVED"):
+                holdout_auth.validate(
+                    auth_path, Path(directory), "a" * 40,
+                    holdout_auth.BRANCH_PREFIX + "draft-authorization-001",
+                )
+
     def test_preflight_uses_separate_seed_namespace(self):
         self.assertNotEqual(
             preflight.seed("dataset", "F1_balanced_M30_R20", 0),
