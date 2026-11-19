@@ -94,7 +94,7 @@ A2. **Calibration bank:**
 - (K_{cal}=5,000) independent datasets per each of the six F1 cells.
 - Evaluate the profile LR statistic at the known true (sigma_b^2) using only the observed data and the F1 likelihood; the true value is used only to calculate the calibration statistic, never in candidate fitting or interval inversion.
 - Calibrate one cutoff for each input design (M10/R5 and M30/R20), taking the least-favourable upper tolerance limit across the three declared variance regimes for that design.
-- Use the nonparametric one-sided 95%-confidence upper tolerance order statistic for the 95th percentile: choose the smallest rank (k) for which (P\{\mathrm{Binomial}(K_{cal},0.95)\leq k-1\}\geq0.95). The cutoff is the maximum of the three regime-specific (k)-th order statistics. Record exact ranks and values.
+- Use a nonparametric upper tolerance order statistic for the 95th percentile with simultaneous one-sided confidence of at least 95% across the three regimes. Apply Bonferroni: for each regime choose the smallest rank `k` for which `P{Binomial(K_cal, 0.95) <= k-1} >= 1-0.05/3`. The cutoff is the maximum of the three regime-specific `k`-th order statistics. Record exact ranks and values. This controls the family-wise confidence error for the three-regime maximum on each M/R design.
 - This is explicitly a least-favourable calibration over the six declared F1 parameter/design cells only. It is not a continuous-parameter uniform-coverage theorem.
 
 A3. **Independent development-validation bank:**
@@ -117,7 +117,7 @@ B1. **Per-dataset likelihood/optimizer audit:**
 - Reconcile fitted likelihood and finite-R distribution against the independent beta-binomial count PMF/moment oracle; oracle parameters remain withheld from the fit.
 
 B2. **Matched C5/C0 development comparison:**
-- (K=5,000) fresh datasets in each of the two F5 beta22 cells.
+- `K_cal=5,000` calibration datasets and `K_val=5,000` disjoint development-validation datasets in each of the two F5 beta22 cells.
 - For C0 retain the frozen v002 bootstrap (B=1,000); for C5 retain the existing fitted parametric bootstrap (B=1,000). No B/K tuning on these banks.
 - Report all metrics listed in §5 A3, including fit-status frequencies, (hat\mu), (hat\kappa), (hat\alpha), (hat\beta), log-likelihood, score/curvature, boundary distance, typed abstention, conditional/unconditional coverage, emission, tails, width and point-estimate bias/RMSE.
 - Interpret M10/R5 and M30/R20 separately. The purpose is to identify whether the holdout pattern is associated with weak identification, optimizer selection, finite-B variability, or another measured mechanism. The design does not assume any one explanation.
