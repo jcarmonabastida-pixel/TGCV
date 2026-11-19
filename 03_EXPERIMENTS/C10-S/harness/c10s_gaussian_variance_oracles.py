@@ -41,9 +41,11 @@ def gaussian_f1_reference(
     alpha = 1.0 - confidence
     # Bonferroni: each two-sided marginal interval has error alpha/2.
     tail = alpha / 4.0
+    # The two marginal intervals must each have error alpha/2 for the
+    # joint Bonferroni coverage to be at least 1-alpha.
     within = (
-        df_w * msw / chi2.ppf(1.0 - alpha / 2.0, df_w),
-        df_w * msw / chi2.ppf(alpha / 2.0, df_w),
+        df_w * msw / chi2.ppf(1.0 - tail, df_w),
+        df_w * msw / chi2.ppf(tail, df_w),
     )
     tau = (
         df_b * world_mean_variance / chi2.ppf(1.0 - tail, df_b),
