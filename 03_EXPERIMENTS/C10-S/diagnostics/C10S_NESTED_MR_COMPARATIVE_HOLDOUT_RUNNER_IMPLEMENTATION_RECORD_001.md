@@ -70,10 +70,43 @@ It does not copy C0 bootstrap logic, implement C1/C5 estimators, or run profile/
 
 The static workflow completed successfully on code commit `a7abb8936b57806d4f4f25df07a8c0ca16fb3251` (Run `44560788541`). Compile, dependency installation and the full configured comparator/runner unittest step all reported `success`. This establishes technical test conformance only; it does not establish numerical coverage or authorize the holdout.
 
-## 5. Next operation
+
+## 6. Resource-only preflight (static assessment)
+
+**Disposition: RESOURCE_PREFLIGHT_CONDITIONAL — capacity is not yet demonstrated for the new runner. No numerical benchmark or coverage computation was run.**
+
+### Frozen workload arithmetic
+
+- 8 cells × 1,000 datasets = **8,000 datasets**.
+- C0: 1,000 bootstrap replicates for each of 8,000 datasets = **8,000,000 C0 bootstrap replicates**.
+- C5: 1,000 parametric bootstrap replicates for each of the 2,000 F5 datasets = **2,000,000 C5 bootstrap replicates**.
+- Across the eight cells, the sum of M×R per one-per-cell dataset is 2,600. At K=1,000 and B=1,000 this corresponds to approximately **2.6 billion C0 resampled observation positions**.
+- F5 C5 adds approximately **650 million simulated Bernoulli observation positions** (2,000,000 replicates × the F5 M×R total of 650).
+- Combined order of work: approximately **3.25 billion observation positions**, excluding fitting, array allocation, interval quantiles, serialization and Python orchestration.
+
+### Relevant observed execution reference
+
+Historical Tier A v002 Run `44449787220` completed successfully in approximately **141 seconds** (03:12:24–03:14:45 UTC) on GitHub-hosted Ubuntu. Its eight-cell K=1,000 / B=1,000 execution provides a useful empirical reference for the C0-like two-stage bootstrap workload, but it is not a benchmark of this new runner and contains no C5 parametric-bootstrap workload. It therefore cannot establish the new runner's end-to-end runtime.
+
+The static comparator workflow Run `44560788541` took approximately 34 seconds; this is only static-test duration and is not relevant evidence for numerical capacity.
+
+### Memory, checkpoint and workflow findings
+
+- The runner retains all 8,000 serialized comparison records in memory until the final result bundle is written. Raw M×R datasets are not retained; only their hashes are recorded. Peak memory has not been measured.
+- The runner currently writes the final result bundle only after all cells complete. It does **not** implement protocol-required verified per-cell checkpoints/resume. A late interruption could therefore waste completed work.
+- The existing six-hour numerical workflow is bound to the legacy v002 authorization schema and invokes `run_c10s_nested_mr_validation.py`; it cannot execute this comparative runner. The ten-minute static workflow is not an execution workflow.
+- No dedicated authorization-gated workflow exists yet for this frozen comparative protocol.
+
+### Decision
+
+The existing historical run suggests the C0 portion is operationally tractable, but it is not sufficient to claim that the combined C0/C1/C5 holdout fits the execution budget. Resource readiness remains **NOT DEMONSTRATED** until a bounded, non-adjudicating performance/memory preflight of the new runner is performed under a separately scoped technical authorization, or the runner gains safe per-cell checkpointing and the resource estimate is validated on the target GitHub runner.
+
+No coverage, interval success, method ranking or scientific C10 result was computed. No numerical holdout was launched.
+
+## 7. Next operation
 
 1. Static workflow result inspected and passed for the runner/test code commit.
-2. Perform a resource-only preflight without coverage adjudication.
+2. Resolve resource readiness: add verified per-cell checkpoint/resume and a dedicated authorization-gated workflow, then run a bounded resource-only performance/memory preflight (no coverage adjudication).
 3. Freeze the resulting code/workflow identities and prepare the one-use numerical holdout authorization.
 4. Execute the eight-cell independent C0/C1/C5 holdout only after explicit authorization.
 
