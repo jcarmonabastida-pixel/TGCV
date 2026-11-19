@@ -141,6 +141,18 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
                 self.assertAlmostEqual(result.score_mean_logit, score_eta, delta=2e-5)
                 self.assertAlmostEqual(result.score_log_concentration, score_xi, delta=2e-5)
 
+    def test_two_point_limit_is_the_low_concentration_limit(self):
+        counts = (0, 5, 0, 5, 5, 0)
+        result = beta_binomial_extended_boundary_likelihoods(
+            counts, 5, mean_probability=0.4, concentration=1e-7,
+        )
+        self.assertTrue(math.isfinite(result.finite_log_likelihood))
+        self.assertAlmostEqual(
+            result.finite_log_likelihood,
+            result.two_point_mixing_limit_log_likelihood,
+            delta=2e-5,
+        )
+
     def test_binomial_limit_is_the_high_concentration_limit(self):
         counts = (0, 1, 3, 5, 4, 2)
         result = beta_binomial_extended_boundary_likelihoods(
