@@ -309,3 +309,21 @@ Exact-commit static validation:
 - Full comparison-engine optimizer-audit fault-injection test: PASS.
 
 This confirms the optional audit failure remains diagnostic-only at the actual per-dataset engine boundary; it does not silently suppress C5 outputs or erase the independent stability record. No calibration, bootstrap bank, resource preflight, holdout or scientific execution was performed.
+
+
+### Full comparison-engine boundary-fit abstention fixture
+
+Added an end-to-end all-zero F5 dataset fixture. The existing C5 estimator correctly abstains with `ALL_ZERO_OR_ALL_ONE_BOUNDARY`; independently, the B1 profile audit records the optimizer status, the nuisance profile's boundary status, and the finite endpoint-mixture likelihood limit. The stability trace preserves `MEAN_PROFILE_BOUNDARY` at every concentration point. Identification remains `INDETERMINATE`.
+
+The first test attempt used a `SimpleNamespace` in place of the optimizer-audit dataclass and correctly failed the engine's strict dataclass serialization contract. The fixture was corrected to use a schema-conformant `BetaBinomialOptimizerAudit`; no production code or contract was weakened.
+
+Exact-commit static validation:
+- Final tested commit: `3c389e123da11e4c6a0bc567cf36786ce418ee40`.
+- Run: `44594961717`.
+- Hash-locked dependencies: PASS.
+- Compile: PASS.
+- Deterministic suite: **142 tests passed**.
+- All-zero C5 fit-abstention/profile-boundary propagation test: PASS.
+- Companion F1 numerical-stress workflows v1/v3 were skipped by authorization guards; v2 also skipped. No numerical stress was executed.
+
+This closes deterministic propagation coverage for a C5 fit boundary abstention in addition to optimizer-audit absence, finite endpoint mixture, and unresolved nuisance refinement. It remains software-level evidence only.
