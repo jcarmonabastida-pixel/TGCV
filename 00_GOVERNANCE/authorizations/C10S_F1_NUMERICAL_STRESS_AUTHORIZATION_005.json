@@ -12,7 +12,7 @@
   "frozen_input_path": "03_EXPERIMENTS/C10-S/harness/C10S_F1_N4_V002_FROZEN_INPUTS_001.json",
   "frozen_input_blob_sha": "413e96c5478381ac615f3d44dd8a30a41d88513f",
   "workflow": ".github/workflows/c10s-f1-numerical-stress-v3.yml",
-  "workflow_blob_sha": "7096a7ba972c114b300156da538545eb8ef72ac0",
+  "workflow_blob_sha": "85ffcb58d1859a3621dcd29a7b1c479c08a75b27",
   "runtime": {
     "runner": "ubuntu-24.04",
     "python": "3.12.3",
