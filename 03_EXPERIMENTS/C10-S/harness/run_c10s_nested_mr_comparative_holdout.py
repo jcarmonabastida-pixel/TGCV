@@ -250,6 +250,12 @@ def run_holdout(
 ) -> dict[str, Any]:
     """In-memory orchestration for all eight cells; no files/workflow launched."""
     selected = tuple(tier_a_specs() if specs is None else specs)
+    by_id = {spec.cell_id: spec for spec in selected}
+    if len(by_id) != len(selected):
+        raise HoldoutRunnerError("DUPLICATE_CELL_SPEC")
+    selected = tuple(by_id.get(cell_id) for cell_id in EXPECTED_CELLS)
+    if any(spec is None for spec in selected):
+        raise HoldoutRunnerError("HOLDOUT_REQUIRES_EXACT_ORDERED_EIGHT_CELL_ROSTER")
     ids = tuple(spec.cell_id for spec in selected)
     if ids != EXPECTED_CELLS:
         raise HoldoutRunnerError("HOLDOUT_REQUIRES_EXACT_ORDERED_EIGHT_CELL_ROSTER")
