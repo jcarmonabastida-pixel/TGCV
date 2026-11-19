@@ -58,7 +58,7 @@ jobs:
           bb5cd2b8d2819fdb8757ea293d7e8f8fb9a1b4ce 03_EXPERIMENTS/C10-S/harness/test_c10s_f1_independent_root_isolator.py
           2bcaed7423528fbbf9a6783c3f32e5edd30a10bc 03_EXPERIMENTS/C10-S/harness/test_c10s_f1_root_adjudication.py
           1061998ba93f363fbaaaed050c67acd6eb1c45b5 03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_inference_engine.py
-          f4f7f771d4027de33d2892441e2da512ce3f793b 03_EXPERIMENTS/C10-S/harness/C10S_F1_INTEGRATED_CONCORDANCE_MATRIX_DRAFT_001.md
+          f4f7f771d4027de33d2892441e2da512ce3f793b 03_EXPERIMENTS/C10-S/harness/C10S_F1_INTEGRATED_CONCORDANCE_MATRIX_DRAFT_002.md
           EOF
           while IFS=' ' read -r expected path; do
             actual="$(git hash-object "$path")"
