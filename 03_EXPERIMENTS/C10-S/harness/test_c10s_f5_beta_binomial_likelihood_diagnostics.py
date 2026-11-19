@@ -12,6 +12,7 @@ from c10s_f5_beta_binomial_likelihood_diagnostics import (
     F5LikelihoodDiagnosticError,
     beta_binomial_extended_boundary_likelihoods,
     beta_binomial_loglik_score_hessian,
+    beta_binomial_log_shape_score_hessian,
     audit_beta_binomial_count_fit,
     beta_binomial_profile_log_concentration,
     beta_binomial_profiled_boundary_likelihoods,
@@ -63,6 +64,33 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
         self.assertAlmostEqual(result.hessian_cross, h_ex, delta=2e-5)
         self.assertAlmostEqual(result.hessian_cross, h_xe, delta=2e-5)
         self.assertAlmostEqual(result.hessian_log_concentration, h_xx, delta=2e-5)
+
+    def test_independent_log_shape_hessian_matches_score_differences_interior_and_near_boundary(self):
+        h = 2e-5
+        for log_alpha, log_beta in (
+            (math.log(0.8), math.log(1.3)),
+            (math.log(0.025), math.log(0.04)),
+        ):
+            result = beta_binomial_log_shape_score_hessian(
+                COUNTS, R, log_alpha=log_alpha, log_beta=log_beta,
+            )
+
+            def score(a, b):
+                value = beta_binomial_log_shape_score_hessian(
+                    COUNTS, R, log_alpha=a, log_beta=b,
+                )
+                return value.score_log_alpha, value.score_log_beta
+
+            plus_a, minus_a = score(log_alpha + h, log_beta), score(log_alpha - h, log_beta)
+            plus_b, minus_b = score(log_alpha, log_beta + h), score(log_alpha, log_beta - h)
+            h_aa = (plus_a[0] - minus_a[0]) / (2 * h)
+            h_ba = (plus_a[1] - minus_a[1]) / (2 * h)
+            h_ab = (plus_b[0] - minus_b[0]) / (2 * h)
+            h_bb = (plus_b[1] - minus_b[1]) / (2 * h)
+            self.assertAlmostEqual(result.hessian_log_alpha, h_aa, delta=3e-5)
+            self.assertAlmostEqual(result.hessian_cross, h_ab, delta=3e-5)
+            self.assertAlmostEqual(result.hessian_cross, h_ba, delta=3e-5)
+            self.assertAlmostEqual(result.hessian_log_beta, h_bb, delta=3e-5)
 
     def test_hessian_is_symmetric_by_construction_and_finite(self):
         result = beta_binomial_loglik_score_hessian(
@@ -129,6 +157,16 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
         )
         self.assertIsNone(audit.profile_minus_two_point_limit)
         self.assertTrue(audit.independent_optimizer_message)
+        self.assertIsNotNone(audit.independent_terminal_log_alpha)
+        self.assertIsNotNone(audit.independent_terminal_log_beta)
+        self.assertIsNotNone(audit.independent_score_components)
+        self.assertIsNotNone(audit.independent_score_norm)
+        self.assertTrue(math.isfinite(audit.independent_score_norm))
+        self.assertEqual(len(audit.independent_observed_hessian), 2)
+        self.assertTrue(all(
+            math.isfinite(value)
+            for row in audit.independent_observed_hessian for value in row
+        ))
         self.assertIn(audit.status, (
             "OPTIMIZER_CONCORDANT",
             "OPTIMIZER_DISCORDANT",
