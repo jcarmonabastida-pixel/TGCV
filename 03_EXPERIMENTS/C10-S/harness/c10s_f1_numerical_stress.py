@@ -485,6 +485,9 @@ def run_f1_observation_scale_ladder() -> dict[str, object]:
                 "UNRESOLVED_BASELINE" if not baseline_resolved else
                 ("PASS" if all(record["equivariance_checks"].values()) else "FAIL")
             )
+    else:
+        for record in returned:
+            record["equivariance_status"] = "UNRESOLVED_BASELINE"
     return {
         "generator_version": GENERATOR_VERSION,
         "execution_performed": True,
@@ -623,6 +626,7 @@ def write_stress_evidence(
                 int(f1_result.get("record_count", 0))
                 - int(f1_result.get("returned_count", 0))
             ),
+            "profile_status_counts": count_status("profile_status"),
             "polynomial_status_counts": count_status("polynomial_status"),
             "adjudication_status_counts": count_status("adjudication_status"),
             "sturm_status_counts": count_status("sturm_status"),
