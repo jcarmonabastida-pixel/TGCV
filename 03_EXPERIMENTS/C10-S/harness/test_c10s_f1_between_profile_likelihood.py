@@ -120,6 +120,14 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertIsNotNone(result.absolute_loglik_difference)
         self.assertLessEqual(result.absolute_loglik_difference, 1e-7)
 
+    def test_tau_zero_records_removed_extraneous_factor_and_returns_reduced_polynomial(self):
+        diagnostic = f1_score_polynomial_diagnostic(
+            ROWS, between_variance=0.0,
+        )
+        self.assertEqual(diagnostic.removed_zero_factor_multiplicity, 2)
+        self.assertNotEqual(diagnostic.coefficients_ascending[0], 0.0)
+        self.assertTrue(all(root > 0.0 for root in diagnostic.positive_roots))
+
     def test_score_polynomial_diagnostic_is_cubic_and_matches_score_scan(self):
         polynomial = f1_score_polynomial_diagnostic(
             ROWS, between_variance=0.25,
