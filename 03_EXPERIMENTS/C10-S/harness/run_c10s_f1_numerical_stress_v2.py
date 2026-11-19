@@ -74,11 +74,27 @@ def main() -> int:
         "source_commit": args.source_commit,
         "polynomial_sturm_v2": {
             "record_count": len(result["polynomial"]["records"]),
+            "binary64_representable_count": sum(
+                item.get("binary64_representable") is True
+                for item in result["polynomial"]["records"]
+            ),
+            "ideal_resolved_count": sum(
+                item.get("ideal_sturm_status") == "ROOTS_ISOLATED"
+                for item in result["polynomial"]["records"]
+            ),
+            "represented_resolved_count": sum(
+                item.get("represented_sturm_status") == "ROOTS_ISOLATED"
+                for item in result["polynomial"]["records"]
+            ),
             "topology_comparison_counts": result["polynomial"]["topology_comparison_counts"],
             "sturm_status_counts": result["polynomial"]["sturm_status_counts"],
         },
         "n3_covariant_v2": {
             "record_count": len(result["n3_covariant"]["records"]),
+            "binary64_representable_count": sum(
+                item.get("binary64_representable") is True
+                for item in result["n3_covariant"]["records"]
+            ),
             "sturm_status_counts": counts(result["n3_covariant"]["records"], "sturm_status"),
             "topology_comparison_counts": counts(result["n3_covariant"]["records"], "topology_comparison_status"),
             "base_equivariance_counts": counts(result["n3_covariant"]["records"], "base_equivariance_status"),
