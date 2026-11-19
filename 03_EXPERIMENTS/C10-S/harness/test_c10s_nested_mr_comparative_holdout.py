@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import unittest
+import tempfile
+from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -120,6 +122,88 @@ class ComparativeHoldoutRunnerTests(unittest.TestCase):
         self.assertEqual(digest, runner.deterministic_result_digest(result))
         with self.assertRaisesRegex(runner.HoldoutRunnerError, "REPLAY_HASH_MISMATCH"):
             runner.verify_replay_identity(result, {"protocol": "v1", "records": []})
+
+    def test_checkpoint_resume_reuses_verified_completed_cells(self):
+        specs = tier_a_specs()
+        with tempfile.TemporaryDirectory() as directory:
+            calls = []
+            def fake_cell(spec, **kwargs):
+                calls.append(spec.cell_id)
+                return {
+                    "protocol_id": runner.PROTOCOL_ID,
+                    "protocol_version": runner.PROTOCOL_VERSION,
+                    "cell": {"cell_id": spec.cell_id},
+                    "datasets_completed": kwargs["k"],
+                    "records": [{"dataset_id": f"{spec.cell_id}:{i}"} for i in range(kwargs["k"])],
+                }
+            with patch.object(runner, "run_comparative_cell", side_effect=fake_cell):
+                first = runner.run_holdout_checkpointed(
+                    Path(directory), code_commit="a" * 40,
+                    protocol_sha256="b" * 64, source_inventory={"runner.py": "c" * 64},
+                    specs=specs, k=1, c0_b=100, c5_b=100,
+                )
+                self.assertEqual(len(calls), 8)
+                second = runner.run_holdout_checkpointed(
+                    Path(directory), code_commit="a" * 40,
+                    protocol_sha256="b" * 64, source_inventory={"runner.py": "c" * 64},
+                    specs=specs, k=1, c0_b=100, c5_b=100,
+                )
+            self.assertEqual(len(calls), 8)
+            self.assertEqual(first["total_datasets"], 8)
+            self.assertEqual(second["total_datasets"], 8)
+            self.assertEqual(first["checkpoint_index_sha256"], second["checkpoint_index_sha256"])
+
+    def test_checkpoint_rejects_code_or_protocol_mismatch(self):
+        specs = tier_a_specs()
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(
+                runner, "run_comparative_cell",
+                side_effect=lambda spec, **kwargs: {
+                    "protocol_id": runner.PROTOCOL_ID,
+                    "protocol_version": runner.PROTOCOL_VERSION,
+                    "cell": {"cell_id": spec.cell_id},
+                    "datasets_completed": kwargs["k"],
+                    "records": [{"dataset_id": f"{spec.cell_id}:0"}],
+                },
+            ):
+                runner.run_holdout_checkpointed(
+                    Path(directory), code_commit="a" * 40,
+                    protocol_sha256="b" * 64, source_inventory={"runner.py": "c" * 64},
+                    specs=specs, k=1, c0_b=100, c5_b=100,
+                )
+                with self.assertRaisesRegex(runner.HoldoutRunnerError, "CONFIGURATION_MISMATCH"):
+                    runner.run_holdout_checkpointed(
+                        Path(directory), code_commit="d" * 40,
+                        protocol_sha256="b" * 64, source_inventory={"runner.py": "c" * 64},
+                        specs=specs, k=1, c0_b=100, c5_b=100,
+                    )
+
+    def test_checkpoint_rejects_tampered_cell_file(self):
+        specs = tier_a_specs()
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(
+                runner, "run_comparative_cell",
+                side_effect=lambda spec, **kwargs: {
+                    "protocol_id": runner.PROTOCOL_ID,
+                    "protocol_version": runner.PROTOCOL_VERSION,
+                    "cell": {"cell_id": spec.cell_id},
+                    "datasets_completed": kwargs["k"],
+                    "records": [{"dataset_id": f"{spec.cell_id}:0"}],
+                },
+            ):
+                runner.run_holdout_checkpointed(
+                    Path(directory), code_commit="a" * 40,
+                    protocol_sha256="b" * 64, source_inventory={"runner.py": "c" * 64},
+                    specs=specs, k=1, c0_b=100, c5_b=100,
+                )
+            cell_path = Path(directory) / "F1_balanced_M10_R5.cell.json"
+            cell_path.write_text("{}\\n", encoding="utf-8")
+            with self.assertRaisesRegex(runner.HoldoutRunnerError, "CELL_HASH_MISMATCH"):
+                runner.run_holdout_checkpointed(
+                    Path(directory), code_commit="a" * 40,
+                    protocol_sha256="b" * 64, source_inventory={"runner.py": "c" * 64},
+                    specs=specs, k=1, c0_b=100, c5_b=100,
+                )
 
     def test_cli_fails_closed_without_authorization_wrapper(self):
         with patch("sys.argv", ["runner", "--output-dir", "/tmp/unused"]):
