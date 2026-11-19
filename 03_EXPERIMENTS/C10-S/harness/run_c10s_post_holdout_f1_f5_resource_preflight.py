@@ -82,32 +82,38 @@ def _historical_seeds(cell_id: str, replicate: int) -> set[int]:
     return result
 
 def validate_seed_separation() -> dict:
-    seen: dict[int, tuple[str, str, int]] = {}
-    checked_historical = 0
+    historical_values: set[int] = set()
+    historical_count = 0
+    preflight_values: dict[int, tuple[str, str, int]] = {}
     for cell_id in REPRESENTATIVE_CELLS:
+        streams = ["dataset", "C0_bootstrap"]
+        if cell_id.startswith("F5_"):
+            streams += ["C5_bootstrap_B1000", "C5_bootstrap_B4000"]
         for replicate in range(K_PER_CELL):
-            historical = _historical_seeds(cell_id, replicate)
-            streams = ["dataset", "C0_bootstrap"]
-            if cell_id.startswith("F5_"):
-                streams += ["C5_bootstrap_B1000", "C5_bootstrap_B4000"]
-            for value in historical:
-                checked_historical += 1
-                if value in seen:
-                    raise RuntimeError("HISTORICAL_SEED_INVENTORY_COLLISION")
+            for value in _historical_seeds(cell_id, replicate):
+                historical_count += 1
+                historical_values.add(value)
+    for cell_id in REPRESENTATIVE_CELLS:
+        streams = ["dataset", "C0_bootstrap"]
+        if cell_id.startswith("F5_"):
+            streams += ["C5_bootstrap_B1000", "C5_bootstrap_B4000"]
+        for replicate in range(K_PER_CELL):
             for stream in streams:
                 value = derive_seed(stream, cell_id, replicate)
-                if value in historical:
+                if value in historical_values:
                     raise RuntimeError(
-                        f"PREFLIGHT_SEED_COLLIDES_WITH_HISTORICAL_STREAM:{cell_id}:{replicate}:{stream}"
+                        f"PREFLIGHT_SEED_COLLIDES_WITH_HISTORICAL_SCHEDULE:{cell_id}:{replicate}:{stream}"
                     )
-                previous = seen.get(value)
+                previous = preflight_values.get(value)
                 if previous is not None:
-                    raise RuntimeError(f"PREFLIGHT_SEED_COLLISION:{previous}:{(cell_id, stream, replicate)}")
-                seen[value] = (cell_id, stream, replicate)
+                    raise RuntimeError(
+                        f"PREFLIGHT_SEED_COLLISION:{previous}:{(cell_id, stream, replicate)}"
+                    )
+                preflight_values[value] = (cell_id, stream, replicate)
     return {
         "status": "PASS",
-        "preflight_seed_count": len(seen),
-        "historical_seed_values_checked": checked_historical,
+        "preflight_seed_count": len(preflight_values),
+        "historical_seed_values_checked": historical_count,
         "historical_schedules": [
             "C10S_NESTED_MR_SEED_SCHEDULE_1.0",
             "C10S_NESTED_MR_COMPARATIVE_HOLDOUT_SEEDS_1.0",
