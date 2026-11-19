@@ -364,3 +364,18 @@ Final exact-commit static validation:
 - Three new adversarial tests: PASS.
 
 The tests establish safe deterministic propagation and serialization for these fixtures. They do not establish optimizer reliability in general, global nuisance maximization, concentration identification, interval coverage or causal evidence. No numerical stress, calibration, bootstrap bank, resource preflight, holdout or scientific C10 execution occurred.
+
+
+### End-to-end comparison-engine fault injection — optimizer-audit absence
+
+A further deterministic test injects failure in `audit_beta_binomial_count_fit` through `fitted_beta_binomial_parametric_bootstrap` and exercises the actual `compare_dataset()` path with B1 diagnostics enabled. The resulting per-dataset record retains the original optimizer-audit error, leaves the concentration profile audit explicitly null with `OPTIMIZER_AUDIT_UNAVAILABLE`, and still emits the independent stability trace. Existing C5 within/between intervals remain present.
+
+Exact-commit static validation:
+- Commit: `9be6339947db2fd1b4554d6c808fccbdd30a28ca`
+- Run: `44594508999`
+- Hash-locked dependencies: PASS
+- Compile: PASS
+- Deterministic suite: **141 tests PASS**
+- End-to-end optimizer-audit fault-injection test: PASS.
+
+This closes the full-engine propagation check for the optional optimizer-audit failure path. It remains a deterministic software test, not a statistical identification or coverage result. No calibration, bootstrap bank, resource preflight, holdout or scientific C10 execution was performed.
