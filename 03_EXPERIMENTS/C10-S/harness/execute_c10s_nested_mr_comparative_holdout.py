@@ -44,6 +44,8 @@ def execute(authorization_path: Path, original_authorization_path: Path, code_co
         "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py",
         "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py",
         "03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock",
+        "03_EXPERIMENTS/C10-S/harness/execute_c10s_nested_mr_comparative_holdout.py",
+        "03_EXPERIMENTS/C10-S/harness/validate_c10s_nested_mr_comparative_holdout_authorization.py",
         ".github/workflows/c10-s-nested-mr-comparative-holdout.yml",
     )
     inventory = {name: file_sha256(root / name) for name in source_paths}
