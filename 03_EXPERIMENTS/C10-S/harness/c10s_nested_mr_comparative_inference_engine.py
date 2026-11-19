@@ -54,8 +54,32 @@ def _f5_profile_diagnostic(
             ("mcse_profile_status", "ABSTAINED_DIAGNOSTIC"),
             ("mcse_profile_reason", str(exc)),
         )
+    optimizer_status = dict(result.optimizer_diagnostics).get(
+        "optimizer_adjudication", "OPTIMIZATION_DIAGNOSTIC_MISSING",
+    )
+    policy = {
+        "OPTIMIZATION_CONCORDANT": (
+            "PROFILE_DIAGNOSTIC_ELIGIBLE_NOT_COVERAGE_CERTIFIED",
+            "NONE",
+        ),
+        "OPTIMIZATION_DISCORDANT": (
+            "ABSTAIN_PROFILE_INFERENCE",
+            "OPTIMIZER_DISCORDANCE",
+        ),
+        "OPTIMIZATION_INSUFFICIENT": (
+            "ABSTAIN_PROFILE_INFERENCE",
+            "INSUFFICIENT_SUCCESSFUL_STARTS",
+        ),
+        "OPTIMIZATION_BOUNDARY_SENSITIVE": (
+            "ABSTAIN_PROFILE_INFERENCE",
+            "BOUNDARY_SENSITIVE_OPTIMUM",
+        ),
+    }.get(optimizer_status, ("ABSTAIN_PROFILE_INFERENCE", "OPTIMIZER_STATUS_UNRECOGNIZED"))
     return (
         ("mcse_profile_status", result.boundary_status),
+        ("mcse_profile_inference_eligibility", policy[0]),
+        ("mcse_profile_abstention_reason", policy[1]),
+        ("mcse_profile_optimizer_adjudication_status", optimizer_status),
         ("mcse_profile_loglik_at_observed_point", format(result.profile_loglik, ".17g")),
         ("mcse_profile_maximizing_branch", result.maximizing_branch),
         ("mcse_profile_maximizing_concentration", (
