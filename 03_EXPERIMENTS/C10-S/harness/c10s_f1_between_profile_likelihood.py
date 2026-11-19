@@ -303,8 +303,15 @@ def f1_score_polynomial_diagnostic(
         within, M, tau, 1e-12,
         *(abs(value) for value in critical),
     )
-    normalized = tuple(value / scale for value in coefficients)
-    # Evaluate a scale-normalized polynomial in x=s/scale to avoid overflow.
+    scaled_coefficients = tuple(
+        coefficient * (scale ** index)
+        for index, coefficient in enumerate(coefficients)
+    )
+    coefficient_scale = max(abs(value) for value in scaled_coefficients)
+    if not math.isfinite(coefficient_scale) or coefficient_scale == 0.0:
+        raise F1ProfileError("SCORE_POLYNOMIAL_COEFFICIENT_SCALING_FAILED")
+    normalized = tuple(value / coefficient_scale for value in scaled_coefficients)
+    # Evaluate the normalized polynomial in x=s/scale.
     def polynomial_x(x: float) -> float:
         return _polyval_ascending(normalized, x)
 
