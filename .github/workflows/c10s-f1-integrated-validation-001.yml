@@ -22,7 +22,7 @@ jobs:
       - name: Checkout exact frozen source (detached)
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: 41d91bd19ba0dfd789d21b3d8398184daa100ff9
+          ref: d65686beb2b242c0acb8ffbbcfe8ff55437f6c8b
           fetch-depth: 1
           persist-credentials: false
 
@@ -36,13 +36,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "41d91bd19ba0dfd789d21b3d8398184daa100ff9"
+          test "$(git rev-parse HEAD)" = "d65686beb2b242c0acb8ffbbcfe8ff55437f6c8b"
           test "$(python -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')" = "3.12.3"
           test -z "$(git status --porcelain)"
           mkdir -p validation-evidence
           {
             echo "authorization_id=C10S-F1-INTEGRATED-VALIDATION-20261119-03"
-            echo "expected_commit=41d91bd19ba0dfd789d21b3d8398184daa100ff9"
+            echo "expected_commit=d65686beb2b242c0acb8ffbbcfe8ff55437f6c8b"
             echo "actual_commit=$(git rev-parse HEAD)"
             echo "python_version=$(python --version 2>&1)"
             echo "platform=$(uname -a)"
@@ -50,7 +50,7 @@ jobs:
             echo "git_status_before_evidence_directory=CLEAN"
           } | tee validation-evidence/preflight.txt
           cat > validation-evidence/expected-blobs.tsv <<'EOF'
-          ae2fc89c8da09bbeba88a9309b5ba37750bcd631 03_EXPERIMENTS/C10-S/harness/c10s_f1_between_profile_likelihood.py
+          39f1732e1571f9d0705378d924b58b9475277e7a 03_EXPERIMENTS/C10-S/harness/c10s_f1_between_profile_likelihood.py
           3ac9ce31eb82421022fd8d2a65a0daee049322be 03_EXPERIMENTS/C10-S/harness/c10s_f1_independent_root_isolator.py
           9fa1cb21cd47e32030db8a00420e7dacfdc77321 03_EXPERIMENTS/C10-S/harness/c10s_f1_root_adjudication.py
           d277db712f8d2fdc7efbb5da5213d3087a84358a 03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py
@@ -58,7 +58,7 @@ jobs:
           bb5cd2b8d2819fdb8757ea293d7e8f8fb9a1b4ce 03_EXPERIMENTS/C10-S/harness/test_c10s_f1_independent_root_isolator.py
           2bcaed7423528fbbf9a6783c3f32e5edd30a10bc 03_EXPERIMENTS/C10-S/harness/test_c10s_f1_root_adjudication.py
           1061998ba93f363fbaaaed050c67acd6eb1c45b5 03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_inference_engine.py
-          f4f7f771d4027de33d2892441e2da512ce3f793b 03_EXPERIMENTS/C10-S/harness/C10S_F1_INTEGRATED_CONCORDANCE_MATRIX_DRAFT_002.md
+          63b0480c12d3accb06764f042a16b1c9aee2200e 03_EXPERIMENTS/C10-S/harness/C10S_F1_INTEGRATED_CONCORDANCE_MATRIX_DRAFT_002.md
           EOF
           while IFS=' ' read -r expected path; do
             actual="$(git hash-object "$path")"
