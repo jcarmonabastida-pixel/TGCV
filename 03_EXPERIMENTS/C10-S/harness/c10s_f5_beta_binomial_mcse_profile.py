@@ -154,6 +154,8 @@ def f5_beta_binomial_mcse_profile_loglik(
         raise F5ProfileError("TARGET_M_MUST_BE_INTEGER_GE_2")
     if type(target_r) is not int or target_r < 2:
         raise F5ProfileError("TARGET_R_MUST_BE_INTEGER_GE_2")
+    if type(concentration_grid_points) is not int or concentration_grid_points < 41:
+        raise F5ProfileError("CONCENTRATION_GRID_POINTS_MUST_BE_INTEGER_GE_41")
     if (isinstance(target_mcse, bool) or not isinstance(target_mcse, (int, float))
             or not math.isfinite(target_mcse) or target_mcse < 0.0):
         raise F5ProfileError("TARGET_MCSE_MUST_BE_FINITE_AND_NONNEGATIVE")
@@ -577,6 +579,16 @@ def f5_beta_binomial_mcse_profile_grid_convergence(
     if (not math.isfinite(tolerance) or tolerance <= 0.0
             or isinstance(tolerance, bool)):
         raise F5ProfileError("CONVERGENCE_TOLERANCE_MUST_BE_FINITE_AND_POSITIVE")
+    grid_values = (
+        coarse_scan_grid_points, fine_scan_grid_points,
+        coarse_concentration_grid_points, fine_concentration_grid_points,
+    )
+    if any(type(value) is not int for value in grid_values):
+        raise F5ProfileError("CONVERGENCE_GRID_POINTS_MUST_BE_INTEGERS")
+    if coarse_scan_grid_points < 21 or fine_scan_grid_points < 21:
+        raise F5ProfileError("SCAN_GRID_POINTS_MUST_BE_INTEGER_GE_21")
+    if coarse_concentration_grid_points < 41 or fine_concentration_grid_points < 41:
+        raise F5ProfileError("CONCENTRATION_GRID_POINTS_MUST_BE_INTEGER_GE_41")
     if (fine_scan_grid_points <= coarse_scan_grid_points
             or fine_concentration_grid_points <= coarse_concentration_grid_points):
         raise F5ProfileError("FINE_GRIDS_MUST_EXCEED_COARSE_GRIDS")
