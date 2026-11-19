@@ -10,6 +10,7 @@ import math
 from typing import Sequence
 
 from c10s_f1_exact_pivotal_candidate import f1_exact_pivotal_result
+from c10s_gaussian_variance_oracles import gaussian_f1_reference
 from c10s_fitted_beta_binomial_bootstrap import (
     FittedBetaBinomialBootstrapResult,
     fitted_beta_binomial_parametric_bootstrap,
@@ -107,9 +108,25 @@ def compare_dataset(
             rows, target_m=target_m, target_r=target_r,
             family="F1", confidence_level=confidence_level,
         )
+        oracle = gaussian_f1_reference(
+            m=m, r=r, msw=result.within_estimate,
+            world_mean_variance=result.observed_world_variance,
+            confidence=confidence_level,
+        )
+        oracle_delta = max(
+            abs(result.between_interval[0] - oracle.between_raw_conservative_interval[0]),
+            abs(result.between_interval[1] - oracle.between_raw_conservative_interval[1]),
+        )
+        tolerance = 1e-10 * max(1.0, *(abs(x) for x in oracle.between_raw_conservative_interval))
+        if oracle_delta > tolerance:
+            raise ComparativeEngineError("F1_C1_ORACLE_RECONCILIATION_FAILURE")
         outputs.append(CandidateOutput(
             method_id=result.method_id, comparison=result,
-            diagnostics=(("inference_scope", "balanced_gaussian_random_intercept_only"),),
+            diagnostics=(
+                ("inference_scope", "balanced_gaussian_random_intercept_only"),
+                ("independent_oracle_reconciliation", "PASS_FORMULA_AGREEMENT"),
+                ("oracle_max_abs_delta_between_interval", format(oracle_delta, ".17g")),
+            ),
         ))
     else:
         if bootstrap_replicates is None or bootstrap_seed is None:
