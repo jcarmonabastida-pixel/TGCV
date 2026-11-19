@@ -132,3 +132,30 @@ The later fixture-test commit `066ce9b989ba936f80127ff3391e6668251c350f` is a ne
 The profile is a diagnostic trace, not a confidence set and not a proof of global nuisance maximization. The boundary likelihoods are model limits, not finite optimizer-bound substitutes. No weak-identification threshold, binary identification label, or C5 decision rule has been introduced. In particular, the endpoint-only and low-dispersion fixtures expose limiting behaviours but do not by themselves establish the sampling frequency or operating characteristics of any future diagnostic.
 
 The next deterministic increment should add an explicit profile audit record that keeps optimizer convergence, boundary likelihood preference, and concentration-profile shape as separate fields, with an explicit `INDETERMINATE` identification disposition until a scale-aware criterion is scientifically justified. The frozen development/calibration specification v1.0 remains unchanged.
+
+
+## Implementation increment — separated profile audit record and permutation-test correction
+
+The first static validation of the expanded fixture set exposed one failure:
+- Run `44591073605`, exact commit `066ce9b989ba936f80127ff3391e6668251c350f`;
+- dependency installation and compilation passed;
+- 129 of 130 deterministic tests passed;
+- the permutation-invariance assertion on the profiled nuisance mean was too strict (`1e-10)); bounded scalar optimization produced a maximum observed difference of approximately `1.24e-8`, while the profile log-likelihood comparison itself remained within its tighter tolerance.
+
+This is treated as a test-tolerance defect, not as evidence of a statistical discrepancy. The mean-logit comparison tolerance was widened to `5e-8`, still below the scale at which the optimizer's output would materially affect this diagnostic. The implementation and likelihood tolerances were not relaxed. The correction is in commit `ada00f87c482b5f9baa09e9e1bff674d005603a1`; its exact-commit static validation is being checked separately.
+
+A new `BetaBinomialProfileAuditRecord` and builder now keep distinct:
+- optimizer convergence status (copied from the existing optimizer audit);
+- numerical profile status and point count;
+- maximum value on the supplied, uncertified profile grid;
+- raw log-likelihood differences against the separately nuisance-profiled binomial and two-point limits;
+- the vector and finite range of local profile-curvature values;
+- identification disposition, fixed at `INDETERMINATE`.
+
+The record deliberately does not translate profile-vs-boundary differences into a boundary-preference verdict or weak-identification label. The profile is not globally certified, and no scale-aware identification criterion has been justified. Empty, non-finite, or unordered profile inputs fail closed.
+
+Implementation commits:
+- separated audit record: `fc28018236b75b4c11ca9c7dfc7f7551d0b54ded`
+- audit-record tests: `23dd5dd24f210907d2c702307553b9caebc45ed0`
+
+Static validation for these exact commits is in progress. No PASS is claimed until the relevant run completes and logs are inspected. The frozen development/calibration specification v1.0 and all C5 candidate/interval logic remain unchanged.
