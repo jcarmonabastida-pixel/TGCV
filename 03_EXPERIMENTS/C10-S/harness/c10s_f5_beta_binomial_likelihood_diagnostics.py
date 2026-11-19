@@ -693,3 +693,139 @@ def build_beta_binomial_profile_audit_record(
             max(finite_curvatures) if finite_curvatures else None
         ),
     )
+
+
+@dataclass(frozen=True)
+class BetaBinomialProfileStabilityPoint:
+    """Raw paired sensitivity values at one fixed log-concentration."""
+    log_concentration: float
+    reference_status: str
+    refined_grid_status: str
+    expanded_bounds_status: str
+    refined_minus_reference_log_likelihood: float
+    expanded_minus_reference_log_likelihood: float
+    refined_minus_reference_mean_logit: float
+    expanded_minus_reference_mean_logit: float
+    refined_minus_reference_curvature: float | None
+    expanded_minus_reference_curvature: float | None
+
+
+@dataclass(frozen=True)
+class BetaBinomialProfileStabilityAudit:
+    """Numerical-control comparison; deliberately contains no pass threshold."""
+    status: str
+    identification_status: str
+    reference_mean_logit_bounds: tuple[float, float]
+    expanded_mean_logit_bounds: tuple[float, float]
+    reference_mean_grid_size: int
+    refined_mean_grid_size: int
+    profile_point_count: int
+    points: tuple[BetaBinomialProfileStabilityPoint, ...]
+    max_abs_refined_log_likelihood_delta: float
+    max_abs_expanded_log_likelihood_delta: float
+    max_abs_refined_mean_logit_delta: float
+    max_abs_expanded_mean_logit_delta: float
+
+
+def beta_binomial_profile_numerical_stability(
+    counts: Sequence[int],
+    r: int,
+    log_concentrations: Sequence[float],
+    *,
+    mean_logit_bounds: tuple[float, float] = (-18.0, 18.0),
+    expanded_mean_logit_bounds: tuple[float, float] = (-24.0, 24.0),
+    mean_grid_size: int = 65,
+    refined_mean_grid_size: int = 257,
+) -> BetaBinomialProfileStabilityAudit:
+    """Compare profile traces under nuisance-grid refinement and wider bounds.
+
+    Three deterministic traces are computed on the same log(kappa) points:
+    reference controls, refined eta grid at the reference bounds, and the
+    refined eta grid at expanded bounds. All paired differences are retained
+    as raw diagnostics. No tolerance, threshold, or identification decision is
+    applied; status remains NUMERICAL_STABILITY_NOT_ADJUDICATED.
+    """
+    if (type(mean_grid_size) is not int or type(refined_mean_grid_size) is not int
+            or mean_grid_size < 17 or refined_mean_grid_size <= mean_grid_size):
+        raise F5LikelihoodDiagnosticError("INVALID_STABILITY_GRID_SIZES")
+    if (len(mean_logit_bounds) != 2 or len(expanded_mean_logit_bounds) != 2
+            or not all(math.isfinite(float(v)) for v in
+                       (*mean_logit_bounds, *expanded_mean_logit_bounds))):
+        raise F5LikelihoodDiagnosticError("INVALID_STABILITY_MEAN_BOUNDS")
+    lo, hi = (float(v) for v in mean_logit_bounds)
+    wide_lo, wide_hi = (float(v) for v in expanded_mean_logit_bounds)
+    if not (lo < hi and wide_lo < lo and wide_hi > hi):
+        raise F5LikelihoodDiagnosticError("EXPANDED_BOUNDS_MUST_STRICTLY_CONTAIN_REFERENCE")
+    xis = tuple(float(value) for value in log_concentrations)
+    reference = beta_binomial_profile_log_concentration(
+        counts, r, xis, mean_logit_bounds=(lo, hi),
+        mean_grid_size=mean_grid_size,
+    )
+    refined = beta_binomial_profile_log_concentration(
+        counts, r, xis, mean_logit_bounds=(lo, hi),
+        mean_grid_size=refined_mean_grid_size,
+    )
+    expanded = beta_binomial_profile_log_concentration(
+        counts, r, xis, mean_logit_bounds=(wide_lo, wide_hi),
+        mean_grid_size=refined_mean_grid_size,
+    )
+
+    def curvature_delta(left: float | None, right: float | None) -> float | None:
+        if left is None or right is None:
+            return None
+        if not (math.isfinite(left) and math.isfinite(right)):
+            return None
+        return float(right - left)
+
+    rows = []
+    for base, fine, wide in zip(reference, refined, expanded):
+        rows.append(BetaBinomialProfileStabilityPoint(
+            log_concentration=base.log_concentration,
+            reference_status=base.status,
+            refined_grid_status=fine.status,
+            expanded_bounds_status=wide.status,
+            refined_minus_reference_log_likelihood=float(
+                fine.profiled_log_likelihood - base.profiled_log_likelihood
+            ),
+            expanded_minus_reference_log_likelihood=float(
+                wide.profiled_log_likelihood - base.profiled_log_likelihood
+            ),
+            refined_minus_reference_mean_logit=float(
+                fine.profiled_mean_logit - base.profiled_mean_logit
+            ),
+            expanded_minus_reference_mean_logit=float(
+                wide.profiled_mean_logit - base.profiled_mean_logit
+            ),
+            refined_minus_reference_curvature=curvature_delta(
+                base.profile_log_concentration_curvature,
+                fine.profile_log_concentration_curvature,
+            ),
+            expanded_minus_reference_curvature=curvature_delta(
+                base.profile_log_concentration_curvature,
+                wide.profile_log_concentration_curvature,
+            ),
+        ))
+    if not rows:
+        raise F5LikelihoodDiagnosticError("STABILITY_AUDIT_REQUIRES_PROFILE_POINTS")
+    return BetaBinomialProfileStabilityAudit(
+        status="NUMERICAL_STABILITY_NOT_ADJUDICATED",
+        identification_status="INDETERMINATE",
+        reference_mean_logit_bounds=(lo, hi),
+        expanded_mean_logit_bounds=(wide_lo, wide_hi),
+        reference_mean_grid_size=mean_grid_size,
+        refined_mean_grid_size=refined_mean_grid_size,
+        profile_point_count=len(rows),
+        points=tuple(rows),
+        max_abs_refined_log_likelihood_delta=max(
+            abs(row.refined_minus_reference_log_likelihood) for row in rows
+        ),
+        max_abs_expanded_log_likelihood_delta=max(
+            abs(row.expanded_minus_reference_log_likelihood) for row in rows
+        ),
+        max_abs_refined_mean_logit_delta=max(
+            abs(row.refined_minus_reference_mean_logit) for row in rows
+        ),
+        max_abs_expanded_mean_logit_delta=max(
+            abs(row.expanded_minus_reference_mean_logit) for row in rows
+        ),
+    )
