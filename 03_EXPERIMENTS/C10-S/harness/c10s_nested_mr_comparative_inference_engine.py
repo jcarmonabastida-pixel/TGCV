@@ -510,10 +510,12 @@ def adjudicate_matched_datasets(
 def adjudicate_profile_diagnostics(
     comparisons: Sequence[DatasetComparison],
 ) -> tuple[ProfileDiagnosticMetrics, ...]:
-    """Summarize profile eligibility/abstention without scoring interval coverage.
+    """Summarize F1/F5 profile diagnostics without scoring interval coverage.
 
-    F5 profile diagnostics are not C5 interval outputs. Missing, failed and
-    eligible diagnostics remain distinct; no truth values enter this function.
+    F1's current signal is a point evaluation of the nuisance-profiled
+    likelihood; F5's is an optimizer-adjudication diagnostic. Neither is a
+    confidence interval or coverage result. Missing, failed and eligible
+    diagnostics remain distinct; no truth values enter this function.
     """
     records = tuple(comparisons)
     if not records:
