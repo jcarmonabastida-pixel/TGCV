@@ -51,7 +51,7 @@ class F1ExactPivotalCandidateTests(unittest.TestCase):
         with self.assertRaises(F1PivotalError):
             f1_exact_pivotal_result(
                 ((0.0, 1.0), (1.0, 2.0)),
-                target_m=10, target_r=5,
+                target_m=10, target_r=5, family="F1",
             )
 
     def test_rejects_invalid_target_design(self):
