@@ -94,6 +94,7 @@ class F1RootAdjudicationTests(unittest.TestCase):
         self.assertEqual(result.independent_root_count, 1)
         self.assertEqual(result.boundary_roots, (("0/1", "0/1", 1),))
         self.assertEqual(result.root_domain, "(0,+infinity)")
+        self.assertEqual(result.removed_zero_factor_multiplicity, 2)
 
     def test_rational_interval_is_preserved_without_float_projection(self):
         lower = Fraction(10**300, 3)
