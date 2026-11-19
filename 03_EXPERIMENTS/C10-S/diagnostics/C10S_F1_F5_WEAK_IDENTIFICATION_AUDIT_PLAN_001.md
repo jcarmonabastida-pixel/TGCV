@@ -176,3 +176,15 @@ The profile-point record now distinguishes a genuine mean-logit grid boundary fr
 The static workflow validated deterministic tests only. Numerical-stress workflows were skipped by authorization guards. No calibration, bootstrap, resource preflight, holdout or scientific C10 execution occurred.
 
 The previous 132/132 result on commit `23dd5dd24f210907d2c702307553b9caebc45ed0` remains valid for that exact commit; the 133/133 result above supersedes it for the latest code/test increment.
+
+
+## Implementation increment — strict-JSON boundary representation
+
+The extended profile audit initially used negative infinity to represent a zero-probability two-point boundary when any count was interior. Although mathematically correct, non-finite JSON numbers are not valid under the project's strict JSON serialization contract. The diagnostic record now represents that case with:
+- `two_point_profile_log_likelihood: null`;
+- `two_point_boundary_status: ZERO_PROBABILITY_INTERIOR_COUNTS`;
+- no profile-minus-boundary difference (`null`), because the boundary likelihood is structurally zero rather than a finite comparator.
+
+Finite endpoint-only two-point limits retain their finite log-likelihood and endpoint-mixture MLE. Tests assert `json.dumps(..., allow_nan=False)` succeeds for the profile audit and boundary records.
+
+The first static run on commit `1cdb9ea9b173f81cc3bc7c96e1e665b2d2d46032` exposed a conversion bug while constructing the new null value (four affected tests; 133 tests discovered). The return path was corrected to preserve `None` rather than coercing it to float. The correction is commit `9a4b6798a621505919356f5fa657a3667bf27cdb`; exact-commit static validation is pending.
