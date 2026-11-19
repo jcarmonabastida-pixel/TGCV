@@ -420,3 +420,18 @@ Exact-commit static validation:
 - Integrated three-regime fixture-matrix test: PASS.
 
 No production estimation, C5 interval, selection or abstention rule was changed. The finite-grid profile remains `NUMERICAL_PROFILE_UNCERTIFIED`; the boundary differences do not certify a global likelihood maximum or statistical identification. No calibration, bootstrap bank, resource preflight, holdout or scientific C10 execution occurred.
+
+
+## 12. F5 full local-information and boundary-contrast record — 2026-11-19
+
+The per-fit optimizer audit now carries the full observed 2×2 Hessian, its eigenvectors as well as eigenvalues, the two score components, and raw fitted-log-likelihood contrasts against the finite binomial and two-point concentration limits. Where interior counts make the two-point limit structurally impossible, its likelihood and contrast remain null under strict JSON serialization.
+
+Exact-commit static validation:
+- Commit: `654be3b90668374de2572611926a2a3c080c411b`
+- Run: `44596631663`
+- Hash-locked dependencies: PASS
+- Compile: PASS
+- Deterministic suite: **143/143 PASS**
+- Full local-information and boundary-contrast assertions: PASS.
+
+This is diagnostic-schema/software evidence only. It does not establish a scale-aware identification criterion or change C5 estimator/interval behaviour. No resource preflight, calibration, bootstrap bank, holdout or C10 scientific execution occurred.
