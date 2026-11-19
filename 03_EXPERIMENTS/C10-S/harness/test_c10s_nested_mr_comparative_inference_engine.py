@@ -62,6 +62,7 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         self.assertIsNotNone(result.baseline.within_interval)
         self.assertIsNotNone(result.baseline.between_interval)
         self.assertIn(("protocol_version", "002"), result.baseline.provenance)
+        self.assertIn(("common_estimand_reconciliation", "PASS_V002_POINT_TARGETS"), result.baseline.provenance)
         self.assertIn(("bootstrap_law", "frozen_v002_two_stage_outer_cluster_then_inner_R"), result.baseline.provenance)
         self.assertEqual(len(result.candidates), 1)
         self.assertEqual(result.candidates[0].method_id, "C1_F1_EXACT_PIVOTAL_1.0")
