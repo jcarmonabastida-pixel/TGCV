@@ -1,0 +1,135 @@
+# C10-S — Addendum al plan de cierre, Gate 145: contrato lógico de EventHistory
+
+**Fecha:** 2026-11-16  
+**Registro:** `00_GOVERNANCE/SIP/C10_S_EVENT_HISTORY_LOGICAL_CONTRACT_GATE_145_DRAFT_001.md`  
+**Rama:** research/c10-s-consolidation-draft · PR #116 Draft  
+**Estado:** EVENTHISTORY_LOGIC_PARTIALLY_CLOSED / MATERIALIZATION_OPEN / NO_IMPLEMENTATION.
+
+Gate 145 reconstruye Gates 94–98, el contrato DGP temporal §§48–55, Gates 135–144, DEC-C10-100…104 y Gate 139.
+
+**Corrección de arquitectura:** PROCESS_EVENT (Gates 94–98) representa ocurrencias operativas observadas y revisiones de registro; EventHistory representa transiciones funcionales truth generadas por unidad y potencial. No se reutiliza PROCESS_EVENT como truth ni se crea un registro observacional duplicado.
+
+**Semántica ya aceptada:** estado inicial ENABLED/PROFILE post-Z en t0; persistencia por tramos; transiciones truth con estado anterior/posterior, familia, identidad/versión, event_time y provenance; simultaneidad atómica; suborden explícito para pasos intermedios; defectos de historia/harness separados de UNKNOWN funcional. DEC-C10-104 rige la futura adjudicación por intervalos.
+
+**Pendientes reales:** alcance de identidad única de transición; semántica de versión de transición frente a versión de mundo/historia DGP; regeneración/corrección y hashes; criterio verificable de completitud para unidad/potencial/soporte; mapping de event_time a fronteras comparables. La historia completa y determinada produce 1/0; falta de observación S3 no altera truth.
+
+No se crea schema ni ledger, no se altera DGP original ni Decision Log y no se fija §51, reloj, W_c, T*, ρ_follow, Δ, K ni calibración S3. Analyzer permanece sin acceso a EventHistory/TruthBundle. Evaluator accede a truth solo después de sellar la salida del Analyzer.
+
+Gate 145 no autoriza código, schemas, tests, validadores, workflows, generación, simulación, calibración ni ejecución científica.
+
+scientific_execution=false; execution_authorized=false.
+
+
+## Addendum Gate 146 — aceptación de identidad, versionado, regeneración y completitud (2026-11-16)
+
+Se acepta expresamente R146-A…R146-D como reglas semánticas y lógicas del DGP sintético. El registro completo de aceptación es `C10_S_GATE_146_EVENTHISTORY_IDENTITY_VERSION_COMPLETENESS_ACCEPTANCE_DRAFT_001.md`.
+
+- R146-A: identidad propia de transición truth, única dentro de EventHistory y separada de TID/EID/identificadores observacionales.
+- R146-B: versionado separado de DGP, EventHistory y reglas de adjudicación.
+- R146-C: regeneración/corrección inmutable; nueva versión de historia y conservación de la anterior.
+- R146-D: completitud de ámbito, generativa e integridad de representación; cero transiciones puede ser una historia completa.
+
+La aceptación no crea DEC-C10, no cambia el DGP original, no define schema ni IDs físicos, no resuelve matching ejecutable ni §51/reloj/soporte temporal. R144-B permanece abierta. No autoriza implementación, tests, generación, simulación, calibración ni ejecución científica.
+
+**Siguiente:** Gate 147 auditará la cobertura del universo de mecanismos y el catálogo B1 de §§49–50, especialmente la frontera entre transiciones ENABLED/PROFILE, condiciones runtime causales y antecedentes de proceso. Debe preservar truth/observación/evaluación y no convertir la detectabilidad S3 en verdad funcional.
+
+`scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
+
+
+## Addendum Gate 147 — aceptación R147-A (2026-11-16)
+
+Se acepta expresamente R147-A como regla semántica y lógica del DGP sintético. El registro completo está en `C10_S_GATE_147_DECLARATIVE_CONFIGURATION_AND_EFFECTIVE_OPERATIONAL_AVAILABILITY_ACCEPTANCE_DRAFT_001.md`.
+
+- Se separa la configuración declarativa ENABLED/PROFILE de la disponibilidad operativa efectiva (proceso/módulo, listener/socket/superficie de ingreso, dependencias y capacidad/recursos cuando afecten la admisión).
+- Ambos planos pueden evolucionar independientemente; los cambios funcionalmente relevantes deben quedar representados en truth, sin convertir automáticamente toda señal runtime en transición.
+- Se preserva la separación truth / observed_evidence / evaluation. La detectabilidad S3 no define la verdad funcional.
+- Los antecedentes de provisión, instalación, verificación, rollback y reinicio no son por sí mismos incumplimientos ni transiciones truth.
+
+Esta aceptación no cierra el inventario ni la clasificación exhaustiva de mecanismos §§49–50. No crea DEC-C10, no cambia el DGP original, no define schema ni resuelve §51/reloj/soporte temporal. No autoriza implementación, tests, generación, simulación, calibración ni ejecución científica.
+
+**Siguiente:** continuar Gate 147 con la auditoría de cobertura, solapamientos y clasificación de cada mecanismo B1, preservando las fronteras truth/observación/evaluación.
+
+`scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
+
+
+## Addendum Gate 147-B — aceptación de dimensiones funcionales y clasificación de mecanismos (2026-11-16)
+
+Se acepta expresamente R147-B1…R147-B4 y la separación conceptual de tres dimensiones: configuración declarativa (ENABLED/PROFILE), disponibilidad operativa efectiva y capacidad efectiva de admisión B1. El registro completo está en `C10_S_GATE_147B_FUNCTIONAL_DIMENSIONS_AND_MECHANISM_CLASSIFICATION_ACCEPTANCE_DRAFT_001.md`.
+
+- EventHistory representa verdad funcional, no un inventario indiscriminado de acontecimientos técnicos.
+- Los mecanismos runtime entran en truth cuando modifican efectivamente la disponibilidad operativa de B1.
+- Antecedentes múltiples de un mismo cambio funcional no producen transiciones truth duplicadas; se preservan simultaneidad y suborden conforme a R144-A.
+- El ciclo discreto de solicitudes permanece separado; ausencia de solicitud no es fallo y sus etapas no se colapsan.
+- Se aceptan tres dimensiones conceptuales distintas, pero su relación formal, condiciones necesarias/suficientes e interacciones siguen abiertas.
+
+Se preserva truth / observed_evidence / evaluation y que la detectabilidad S3 no define la verdad funcional. La aceptación no cierra cobertura de mecanismos §§49–50, no crea DEC-C10, no modifica el DGP original, no resuelve §51/reloj/soporte temporal y no autoriza schema, código, tests, generación, simulación, calibración ni ejecución científica.
+
+**Continuación:** completar matriz de cobertura de mecanismos B1 y formalizar la relación entre las tres dimensiones.
+
+`scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
+
+
+## Gate 148 — auditoría D/O/A (2026-11-16)
+
+Se incorpora la auditoría documental `C10_S_GATE_148_D_O_A_RELATION_FORMALIZATION_AUDIT_DRAFT_001.md` (commit `6a10d65878b265c22b0a345a17b84b10ed6a381b`). No registra aceptación de R148-A: deja una propuesta para decisión y localiza L148-01.
+
+Hallazgo: deben distinguirse D_valid (RUL declarativa), D_enabled, O (disponibilidad runtime) y A (capacidad efectiva de admisión). D_valid no equivale a O/A; ENABLED=true no demuestra disponibilidad/capacidad; ENABLED=false implica no admitir aunque el runtime esté disponible. Los mecanismos de recursos pueden afectar O/A sin duplicar transiciones truth.
+
+Permanece abierta la articulación exacta entre RUL-SVC-ENABLE-PROFILE-01 / DEC-C10-068, la función efectiva de admisión de §§49–50 y la definición Truth/V_cont de DEC-C10-102. No se modifica DEC-C10-102 ni se crean DEC nuevas. §51 y parámetros temporales siguen abiertos. No hay autorización de schema, código, tests, generación, simulación ni ejecución científica.
+
+
+## Addendum Gate 148 — aceptación R148-A y alcance efectivo de V_cont (2026-11-16)
+
+Se acepta expresamente R148-A y la orientación de que `V_cont` represente la continuidad de la función efectiva del servicio B1, incluyendo las interrupciones runtime que impidan realmente la admisión. Registro: `C10_S_GATE_148_R148A_ACCEPTANCE_EFFECTIVE_SERVICE_VCONT_SCOPE_DRAFT_001.md`.
+
+La dirección semántica queda aceptada: `D_valid`, `D_enabled`, `O` y `A` son distintos; la validez de RUL-SVC-ENABLE-PROFILE-01 conserva su implicación unidireccional; ENABLED=false implica no admitir aunque el runtime esté disponible; ENABLED=true no demuestra disponibilidad/capacidad; y los mecanismos runtime solo modifican truth cuando afectan efectivamente la función B1. La truth de A_B1/V_cont no se limita a validez declarativa.
+
+**DEC-C10-102 permanece vigente y sin modificación.** Su formulación de continuidad estricta se refiere expresamente al cumplimiento ENABLED/PROFILE. La inclusión de disponibilidad efectiva requiere reconciliación normativa explícita antes de materializar A_B1/V_cont. Gate 149 realizará el crosswalk DEC-C10-102/104 ↔ DEC-C10-068/099/100 ↔ Gates 127/134/147-B/148 y determinará si basta una interpretación compatible o si hace falta decisión complementaria/sucesora. No se reescribe el historial ni se presume una enmienda.
+
+No se crean DEC en Gate 148 ni se modifican DEC-C10-068/099…104. §51, reloj, rejilla, T*, Δ, K y calibración S3 permanecen abiertos. No hay autorización de schema, código, tests, fixtures, generación, simulación, estimación, calibración ni ejecución científica.
+
+`scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
+
+
+## Gate 149 — crosswalk normativo de V_cont y función efectiva B1 (2026-11-16)
+
+Se completó el crosswalk documental en `C10_S_GATE_149_VCONT_EFFECTIVE_FUNCTION_DECISION_CROSSWALK_AUDIT_DRAFT_001.md` (commit `c09e73e10d94b21e8e11a1c6eb13bac773624737`).
+
+Dictamen: el constructo V_cont de DEC-C10-099 es compatible con R148-A porque ya refiere a la continuidad de la capacidad efectiva del servicio, no al flag ENABLED aislado. Sin embargo, A_B1(i,k) necesita una aclaración complementaria: una lectura de DEC-C10-102 limitada a evaluar únicamente RUL-SVC-ENABLE-PROFILE-01 no capturaría fallos runtime con ENABLED/PROFILE intactos. Se preserva el operador temporal estricto de DEC-C10-102; no se reinterpreta la RUL como uptime ni se modifica ninguna DEC existente.
+
+La propuesta de complemento (candidata DEC-C10-105, ID provisional no asignado) delimitaría A_B1 como cumplimiento temporal de la función efectiva conforme al estado declarativo vigente, incorporando mecanismos runtime solo cuando impidan el comportamiento requerido. Importante: ENABLED=false implica no admitir; la no admisión esperada no se etiqueta automáticamente como fallo. El comportamiento adicional requerido en ese estado (incluida exposición PROFILE) y la constitutividad exacta de mecanismos siguen abiertos.
+
+No se ha creado DEC-C10-105 ni se ha solicitado todavía aceptación de su texto. Gate 150 debe completar el contrato lógico de A_B1 en ENABLED=true/false y preparar, si procede, el complemento para decisión expresa. DEC-C10-068/099…104 permanecen intactas; §51, parámetros temporales, schema, código, tests y ejecución siguen abiertos/no autorizados.
+
+`scientific_execution=false`; `execution_authorized=false`; `implementation_authorized=false`.
+
+
+## Gate 150 — contrato B1 en ENABLED=true/false y exposición de PROFILE (2026-11-16)
+
+Auditoría documental: `C10_S_GATE_150_B1_FUNCTIONAL_CONTRACT_ENABLED_STATES_AUDIT_DRAFT_001.md` (commit `475d8bb7f6d120711e9af8e88b659216030eafd1`).
+
+La reconstrucción de DEC-C10-068, el contrato lógico §2/§12 y §§49–50 del contrato DGP confirma que la función B1 exige: admitir cuando ENABLED=true; no admitir cuando ENABLED=false; y exponer PROFILE declarado en ambos estados. La RUL solo restringe PROFILE cuando ENABLED=true; ENABLED=false no implica PROFILE=DISABLED. STANDARD/READ_ONLY no reciben semántica adicional.
+
+Se propone R150-A: la función B1 comprende el comportamiento de admisión condicionado por ENABLED más la exposición del perfil declarado. La no-admisión con ENABLED=false es correcta; la admisión efectiva en ese estado es incumplimiento. La exposición se mantiene abstracta, sin definir endpoint/protocolo/payload.
+
+L150-01: aunque PROFILE exposure es obligación funcional explícita, §§49–50 catalogan mecanismos runtime principalmente por su efecto en capacidad de admisión. Sigue abierto si la pérdida independiente de exposición puede producirse por mecanismos ya catalogados y cómo representarla en EventHistory sin ampliar el DGP por inferencia. R150-A no se registra como aceptada hasta respuesta expresa. Gate 151 resolverá esta laguna.
+
+No se modifican DEC-C10-068/099…104. §51, reloj, T*, Δ, K y calibración S3 siguen abiertos. Sin schema, código, tests, generación ni ejecución.
+
+
+## Addendum Gate 150 — aceptación R150-A (2026-11-16)
+
+Se registra la aceptación expresa de R150-A en `C10_S_GATE_150_B1_FUNCTIONAL_CONTRACT_ENABLED_STATES_AUDIT_DRAFT_001.md` (commit `36eb3b3c201001e1b67814fa68d9bcb3092ee3cf`). La aceptación lógica establece las dos obligaciones de B1 —admisión condicionada por ENABLED y exposición del PROFILE declarado— en ambos estados, conserva la implicación unidireccional de RUL, y aclara que la no-admisión con ENABLED=false es correcta mientras que admitir efectivamente en ese estado incumple la función. El incumplimiento confirmado de cualquiera de las obligaciones aplicables hace A_B1=0 en los intervalos afectados, bajo continuidad estricta. La exposición permanece abstracta y no incorpora interfaz o mecanismo físico.
+
+L150-01 sigue abierto: carácter temporal de PROFILE exposure, mecanismos constitutivos ya catalogados que puedan impedirla y representación de su truth en EventHistory. No se amplían §§49–50 por inferencia. Gate 151 debe resolver esa laguna antes de preparar el complemento decisional. No se crea DEC ni se modifica schema, DGP numérico, reloj, código, tests, harness o autorización.
+
+
+## Gate 151 — alcance runtime de PROFILE exposure (2026-11-16)
+
+Auditoría: `C10_S_GATE_151_PROFILE_EXPOSURE_RUNTIME_SCOPE_AUDIT_DRAFT_001.md` (commit `85bc01f95adcb89d633dfeb688663a2859de19c6`).
+
+La reconstrucción de contrato lógico §§2–5/12 y DGP §§49–50 encuentra que PROFILE exposure es una obligación funcional abstracta de B1, pero no existe mecanismo causal/runtime ni familia de transición que permita perderla de forma independiente de admisión. El catálogo runtime vigente atribuye sus mecanismos a cambios de capacidad de admisión; no autoriza inferir que una caída de proceso/listener produzca automáticamente pérdida de exposición.
+
+Se propone R151-A: mantener la obligación de exposición en A_B1, sin crear estado dinámico autónomo ni transición de exposición en EventHistory. Las transiciones runtime existentes solo afectan exposición si el DGP estipula explícitamente indisponibilidad de la instancia lógica completa; esa atribución no se presume. Una futura variación independiente exigiría ampliación aprobada del DGP.
+
+R151-A está pendiente de aceptación expresa. Si se acepta, Gate 152 reconciliará el contrato compuesto A_B1 con EventHistory y preparará el complemento decisional candidato, sin crear DEC todavía. No se modifican DEC, schema, §51, reloj, código, tests, harness ni autorizaciones.

@@ -1,0 +1,261 @@
+name: C10-S integrated synthetic contract suite
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_synthetic_test_execution:
+        description: "Confirm the explicitly listed sixteen-module synthetic/integrated suite and clean replay only"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  integrated-synthetic-contract-tests:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/c10-s-consolidation-draft' && inputs.confirm_synthetic_test_execution == true
+    name: Explicitly authorized integrated synthetic contract suite
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact research-branch commit
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+
+      - name: Assert runner platform and capture runtime identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(uname -m)" = "x86_64"
+          mkdir -p "$RUNNER_TEMP/c10s-runtime"
+          python -c "import json,platform,sys; print(json.dumps({'implementation':platform.python_implementation(),'version':sys.version,'executable':sys.executable,'machine':platform.machine(),'platform':platform.platform(),'libc':platform.libc_ver()},sort_keys=True))" > "$RUNNER_TEMP/c10s-runtime/python-runtime.json"
+          python -m pip --version > "$RUNNER_TEMP/c10s-runtime/pip-version.txt"
+          cp /etc/os-release "$RUNNER_TEMP/c10s-runtime/os-release.txt"
+          printf '%s\n' "${ImageOS:-unknown}" > "$RUNNER_TEMP/c10s-runtime/runner-image-os.txt"
+          printf '%s\n' "${ImageVersion:-unknown}" > "$RUNNER_TEMP/c10s-runtime/runner-image-version.txt"
+          uname -a > "$RUNNER_TEMP/c10s-runtime/uname.txt"
+          ldd --version > "$RUNNER_TEMP/c10s-runtime/libc-version.txt" 2>&1 || true
+
+      - name: Install complete hash-locked EP-02 dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: "python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock"
+
+      - name: Materialize identical primary and replay source closures
+        shell: bash
+        run: |
+          set -euo pipefail
+          primary_root="$RUNNER_TEMP/c10s-primary-source"
+          replay_root="$RUNNER_TEMP/c10s-clean-replay"
+          mkdir -p "$primary_root" "$replay_root"
+          profile_paths=(
+            03_EXPERIMENTS/C10-S/harness/test_focal_harness.py
+            03_EXPERIMENTS/C10-S/harness/test_p178_analyzer_bridge.py
+            03_EXPERIMENTS/C10-S/harness/test_p178_analyzer_monte_carlo.py
+            03_EXPERIMENTS/C10-S/harness/test_vcont_integrated_harness.py
+            03_EXPERIMENTS/C10-S/harness/test_vcont_benchmark_protocol.py
+            03_EXPERIMENTS/C10-S/harness/test_vcont_capture_v2.py
+            03_EXPERIMENTS/C10-S/harness/test_vcont_package_v2_serialization.py
+            03_EXPERIMENTS/C10-S/harness/test_vcont_package_v2_verifier.py
+            03_EXPERIMENTS/C10-S/harness/test_c10s_synthetic_components.py
+            03_EXPERIMENTS/C10-S/harness/test_c10s_functional_history.py
+            03_EXPERIMENTS/C10-S/harness/test_theta_a_interval_observation.py
+            03_EXPERIMENTS/C10-S/harness/test_theta_a_observation_harness.py
+            03_EXPERIMENTS/C10-S/harness/test_theta_a_analyzer.py
+            03_EXPERIMENTS/C10-S/harness/test_theta_a_evaluator.py
+            03_EXPERIMENTS/C10-S/harness/test_c10s_world_pipeline_integration.py
+            03_EXPERIMENTS/C10-S/harness/test_theta_a_calibration_protocol.py
+            03_EXPERIMENTS/C10-S/harness/theta_a_observation_harness.py
+            03_EXPERIMENTS/C10-S/harness/theta_a_analyzer.py
+            03_EXPERIMENTS/C10-S/harness/theta_a_evaluator.py
+            03_EXPERIMENTS/C10-S/harness/theta_a_calibration_protocol.py
+            03_EXPERIMENTS/C10-S/harness/theta_a_calibration_dgp.py
+            03_EXPERIMENTS/C10-S/harness/c10s_world_pipeline.py
+            03_EXPERIMENTS/C10-S/harness/c10s_functional_history.py
+            03_EXPERIMENTS/C10-S/harness/theta_a_interval_observation.py
+            03_EXPERIMENTS/C10-S/harness/c10s_synthetic_components.py
+            03_EXPERIMENTS/C10-S/harness/focal_harness.py
+            03_EXPERIMENTS/C10-S/harness/run_p178_analyzer_monte_carlo.py
+            03_EXPERIMENTS/C10-S/harness/vcont_integrated_harness.py
+            03_EXPERIMENTS/C10-S/harness/vcont_benchmark_protocol.py
+            03_EXPERIMENTS/C10-S/harness/vcont_evidence_export.py
+            03_EXPERIMENTS/C10-S/harness/vcont_package_v2.py
+            03_EXPERIMENTS/C10-S/harness/vcont_package_v2_verify.py
+            03_EXPERIMENTS/C10-S/harness/d2_observed_assignment.py
+            03_EXPERIMENTS/C10-S/harness/d2_interval_observation.py
+            03_EXPERIMENTS/C10-S/harness/d2_ittz_analyzer.py
+            03_EXPERIMENTS/C10-S/harness/d2_ittz_evaluator.py
+            03_EXPERIMENTS/C10-S/harness/c10s_dual_cohort_pipeline.py
+            03_EXPERIMENTS/C10-S/harness/c10s_factorial_pipeline.py
+            03_EXPERIMENTS/C10-S/harness/theta_am_factorial.py
+            03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock
+            03_EXPERIMENTS/C10-S/calibration/p178_focal_monte_carlo.py
+            03_EXPERIMENTS/C10-S/calibration/p178_reference_N700.csv
+          )
+          git archive "$GITHUB_SHA" "${profile_paths[@]}" | tar -x -C "$primary_root"
+          git archive "$GITHUB_SHA" "${profile_paths[@]}" | tar -x -C "$replay_root"
+          diff -qr "$primary_root" "$replay_root"
+
+      - name: Compile exact integrated source and test allowlist in primary materialization
+        shell: bash
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/c10s-primary-source/03_EXPERIMENTS/C10-S/harness"
+          python -m py_compile theta_a_calibration_protocol.py test_theta_a_calibration_protocol.py focal_harness.py test_focal_harness.py test_p178_analyzer_bridge.py test_p178_analyzer_monte_carlo.py run_p178_analyzer_monte_carlo.py vcont_integrated_harness.py test_vcont_integrated_harness.py vcont_benchmark_protocol.py test_vcont_benchmark_protocol.py vcont_evidence_export.py test_vcont_capture_v2.py vcont_package_v2.py test_vcont_package_v2_serialization.py vcont_package_v2_verify.py test_vcont_package_v2_verifier.py c10s_synthetic_components.py test_c10s_synthetic_components.py c10s_functional_history.py test_c10s_functional_history.py theta_a_interval_observation.py test_theta_a_interval_observation.py theta_a_observation_harness.py theta_a_analyzer.py theta_a_evaluator.py theta_a_calibration_dgp.py test_theta_a_observation_harness.py test_theta_a_analyzer.py test_theta_a_evaluator.py test_c10s_world_pipeline_integration.py c10s_world_pipeline.py d2_observed_assignment.py d2_interval_observation.py d2_ittz_analyzer.py d2_ittz_evaluator.py c10s_dual_cohort_pipeline.py c10s_factorial_pipeline.py theta_am_factorial.py ../calibration/p178_focal_monte_carlo.py
+
+      - name: Remove generated bytecode and assert equivalent clean boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          for root in "$RUNNER_TEMP/c10s-primary-source" "$RUNNER_TEMP/c10s-clean-replay"; do
+            find "$root/03_EXPERIMENTS/C10-S" -type d -name __pycache__ -prune -exec rm -rf {} +
+            find "$root/03_EXPERIMENTS/C10-S" -type f -name '*.pyc' -delete
+            if find "$root/03_EXPERIMENTS/C10-S" \( -type d -name __pycache__ -o -type f -name '*.pyc' \) -print -quit | grep -q .; then
+              echo "Undeclared bytecode cache remains in $root" >&2; exit 1
+            fi
+          done
+          diff -qr "$RUNNER_TEMP/c10s-primary-source" "$RUNNER_TEMP/c10s-clean-replay"
+
+      - name: Run exact sixteen-module integrated suite
+        id: primary
+        shell: bash
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          set +e
+          cd "$RUNNER_TEMP/c10s-primary-source/03_EXPERIMENTS/C10-S/harness"
+          python -B -m unittest -v test_theta_a_calibration_protocol test_focal_harness test_p178_analyzer_bridge test_p178_analyzer_monte_carlo test_vcont_integrated_harness test_vcont_benchmark_protocol test_vcont_capture_v2 test_vcont_package_v2_serialization test_vcont_package_v2_verifier test_c10s_synthetic_components test_c10s_functional_history test_theta_a_interval_observation test_theta_a_observation_harness test_theta_a_analyzer test_theta_a_evaluator test_c10s_world_pipeline_integration > "$RUNNER_TEMP/c10s-primary-stdout.txt" 2> "$RUNNER_TEMP/c10s-primary-stderr.txt"
+          status=$?
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          cat "$RUNNER_TEMP/c10s-primary-stdout.txt"
+          cat "$RUNNER_TEMP/c10s-primary-stderr.txt" >&2
+          exit "$status"
+
+      - name: Replay exact sixteen-module suite from equivalent source materialization
+        if: steps.primary.outputs.exit_code == '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/c10s-clean-replay/03_EXPERIMENTS/C10-S/harness"
+          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_theta_a_calibration_protocol test_focal_harness test_p178_analyzer_bridge test_p178_analyzer_monte_carlo test_vcont_integrated_harness test_vcont_benchmark_protocol test_vcont_capture_v2 test_vcont_package_v2_serialization test_vcont_package_v2_verifier test_c10s_synthetic_components test_c10s_functional_history test_theta_a_interval_observation test_theta_a_observation_harness test_theta_a_analyzer test_theta_a_evaluator test_c10s_world_pipeline_integration > "$RUNNER_TEMP/c10s-replay-stdout.txt" 2> "$RUNNER_TEMP/c10s-replay-stderr.txt"
+          cat "$RUNNER_TEMP/c10s-replay-stdout.txt"
+          cat "$RUNNER_TEMP/c10s-replay-stderr.txt" >&2
+          for root in "$RUNNER_TEMP/c10s-primary-source" "$RUNNER_TEMP/c10s-clean-replay"; do
+            if find "$root/03_EXPERIMENTS/C10-S" \( -type d -name __pycache__ -o -type f -name "*.pyc" \) -print -quit | grep -q .; then exit 1; fi
+          done
+          diff -qr "$RUNNER_TEMP/c10s-primary-source" "$RUNNER_TEMP/c10s-clean-replay"
+
+      - name: Upload execution payload and capture artifact identity
+        id: payload
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-integrated-payload-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/c10s-primary-stdout.txt
+            ${{ runner.temp }}/c10s-primary-stderr.txt
+            ${{ runner.temp }}/c10s-replay-stdout.txt
+            ${{ runner.temp }}/c10s-replay-stderr.txt
+            ${{ runner.temp }}/c10s-runtime/**
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Record profile execution and materialization manifest
+        id: manifest
+        if: always()
+        shell: bash
+        env:
+          JOB_STATUS: ${{ job.status }}
+          CONFIRM_SYNTHETIC_TEST_EXECUTION: ${{ inputs.confirm_synthetic_test_execution }}
+          PAYLOAD_ARTIFACT_ID: ${{ steps.payload.outputs.artifact-id }}
+          PAYLOAD_ARTIFACT_DIGEST: ${{ steps.payload.outputs.artifact-digest }}
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, subprocess, platform
+          from pathlib import Path
+          root=Path(os.environ["GITHUB_WORKSPACE"]); temp=Path(os.environ["RUNNER_TEMP"])
+          paths=[
+            "03_EXPERIMENTS/C10-S/harness/test_focal_harness.py",
+            "03_EXPERIMENTS/C10-S/harness/test_p178_analyzer_bridge.py",
+            "03_EXPERIMENTS/C10-S/harness/test_p178_analyzer_monte_carlo.py",
+            "03_EXPERIMENTS/C10-S/harness/test_vcont_integrated_harness.py",
+            "03_EXPERIMENTS/C10-S/harness/test_vcont_benchmark_protocol.py",
+            "03_EXPERIMENTS/C10-S/harness/test_vcont_capture_v2.py",
+            "03_EXPERIMENTS/C10-S/harness/test_vcont_package_v2_serialization.py",
+            "03_EXPERIMENTS/C10-S/harness/test_vcont_package_v2_verifier.py",
+            "03_EXPERIMENTS/C10-S/harness/test_c10s_synthetic_components.py",
+            "03_EXPERIMENTS/C10-S/harness/test_c10s_functional_history.py",
+            "03_EXPERIMENTS/C10-S/harness/test_theta_a_interval_observation.py",
+            "03_EXPERIMENTS/C10-S/harness/test_theta_a_observation_harness.py",
+            "03_EXPERIMENTS/C10-S/harness/test_theta_a_analyzer.py",
+            "03_EXPERIMENTS/C10-S/harness/test_theta_a_evaluator.py",
+            "03_EXPERIMENTS/C10-S/harness/test_c10s_world_pipeline_integration.py",
+            "03_EXPERIMENTS/C10-S/harness/test_theta_a_calibration_protocol.py",
+            "03_EXPERIMENTS/C10-S/harness/theta_a_observation_harness.py",
+            "03_EXPERIMENTS/C10-S/harness/theta_a_analyzer.py",
+            "03_EXPERIMENTS/C10-S/harness/theta_a_evaluator.py",
+            "03_EXPERIMENTS/C10-S/harness/theta_a_calibration_protocol.py",
+            "03_EXPERIMENTS/C10-S/harness/theta_a_calibration_dgp.py",
+            "03_EXPERIMENTS/C10-S/harness/c10s_world_pipeline.py",
+            "03_EXPERIMENTS/C10-S/harness/c10s_functional_history.py",
+            "03_EXPERIMENTS/C10-S/harness/theta_a_interval_observation.py",
+            "03_EXPERIMENTS/C10-S/harness/c10s_synthetic_components.py",
+            "03_EXPERIMENTS/C10-S/harness/focal_harness.py",
+            "03_EXPERIMENTS/C10-S/harness/run_p178_analyzer_monte_carlo.py",
+            "03_EXPERIMENTS/C10-S/harness/vcont_integrated_harness.py",
+            "03_EXPERIMENTS/C10-S/harness/vcont_benchmark_protocol.py",
+            "03_EXPERIMENTS/C10-S/harness/vcont_evidence_export.py",
+            "03_EXPERIMENTS/C10-S/harness/vcont_package_v2.py",
+            "03_EXPERIMENTS/C10-S/harness/vcont_package_v2_verify.py",
+            "03_EXPERIMENTS/C10-S/harness/d2_observed_assignment.py",
+            "03_EXPERIMENTS/C10-S/harness/d2_interval_observation.py",
+            "03_EXPERIMENTS/C10-S/harness/d2_ittz_analyzer.py",
+            "03_EXPERIMENTS/C10-S/harness/d2_ittz_evaluator.py",
+            "03_EXPERIMENTS/C10-S/harness/c10s_dual_cohort_pipeline.py",
+            "03_EXPERIMENTS/C10-S/harness/c10s_factorial_pipeline.py",
+            "03_EXPERIMENTS/C10-S/harness/theta_am_factorial.py",
+            "03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock",
+            "03_EXPERIMENTS/C10-S/calibration/p178_focal_monte_carlo.py",
+            "03_EXPERIMENTS/C10-S/calibration/p178_reference_N700.csv"]
+          def sha(p):
+            h=hashlib.sha256()
+            with p.open("rb") as f:
+              for b in iter(lambda:f.read(1048576),b""): h.update(b)
+            return h.hexdigest()
+          m={
+            "schema":"TGCV-C10S-EXECUTION-MATERIALIZATION-1","profile":"EP-02-INTEGRATED-SYNTHETIC-CONTRACTS",
+            "workflow_path":".github/workflows/c10-s-focal-harness-tests.yml",
+            "workflow_blob_sha":subprocess.check_output(["git","hash-object",".github/workflows/c10-s-focal-harness-tests.yml"],text=True).strip(),
+            "repository":os.environ["GITHUB_REPOSITORY"],"commit":os.environ["GITHUB_SHA"],
+            "tree":subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip(),
+            "event":os.environ["GITHUB_EVENT_NAME"],"ref":os.environ["GITHUB_REF"],
+            "run_id":os.environ["GITHUB_RUN_ID"],"run_attempt":os.environ["GITHUB_RUN_ATTEMPT"],"job":os.environ.get("GITHUB_JOB"),"manifest_step_id":"manifest","job_status":os.environ.get("JOB_STATUS"),
+            "authorization":{"input":"confirm_synthetic_test_execution","value":os.environ["CONFIRM_SYNTHETIC_TEST_EXECUTION"],"scope":"exact sixteen-test-module suite and clean replay only"},
+            "actions":{"checkout":"de0fac2e4500dabe0009e67214ff5f5447ce83dd","setup-python":"83679a892e2d95755f2dac6acb0bfd1e9ac5d548","upload-artifact":"b7c566a772e6b6bfb58ed0dc250532a479d7789f"},
+            "runner":{"image_os":os.environ.get("ImageOS"),"image_version":os.environ.get("ImageVersion"),"os_release":Path("/etc/os-release").read_text(),"uname":subprocess.check_output(["uname","-a"],text=True).strip(),"architecture":platform.machine(),"libc":platform.libc_ver()},
+            "runtime":{"python":subprocess.check_output(["python","-c","import sys;print(sys.version)"],text=True).strip(),"pip":subprocess.check_output(["python","-m","pip","--version"],text=True).strip(),"installed":subprocess.check_output(["python","-m","pip","freeze"],text=True).splitlines()},
+            "dependencies":{"lock":"03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock","lock_blob_sha":subprocess.check_output(["git","hash-object","03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock"],text=True).strip(),"install_command":"python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock"},"python_patch_policy":"CPython 3.12.10; last 3.12 release with binary installers; later 3.12 security releases are source-only","selected_wheels":[{"filename":"numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl","platform_tags":["cp312-cp312-manylinux_2_27_x86_64","cp312-cp312-manylinux_2_28_x86_64"],"sha256":"0d8163f43acde9a73c2a33605353a4f1bc4798745a8b1d73183b28e5b435ae28"},{"filename":"scipy-1.17.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl","platform_tags":["cp312-cp312-manylinux_2_27_x86_64","cp312-cp312-manylinux_2_28_x86_64"],"sha256":"9eeb9b5f5997f75507814ed9d298ab23f62cf79f5a3ef90031b1ee2506abdb5b"},{"filename":"rfc8785-0.1.4-py3-none-any.whl","platform_tags":["py3-none-any"],"sha256":"520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48"}],
+            "tests":{"modules":["test_focal_harness","test_p178_analyzer_bridge","test_p178_analyzer_monte_carlo","test_vcont_integrated_harness","test_vcont_benchmark_protocol","test_vcont_capture_v2","test_vcont_package_v2_serialization","test_vcont_package_v2_verifier","test_c10s_synthetic_components","test_c10s_functional_history","test_theta_a_interval_observation","test_theta_a_observation_harness","test_theta_a_analyzer","test_theta_a_evaluator","test_c10s_world_pipeline_integration","test_theta_a_calibration_protocol"],"primary_and_replay_identical":True,"working_directory":"$RUNNER_TEMP/c10s-primary-source/03_EXPERIMENTS/C10-S/harness","bytecode_cache_policy":"compile, delete all __pycache__ and .pyc, assert absent, execute with -B"},
+            "inputs":[{"path":p,"sha256":sha(root/p),"size_bytes":(root/p).stat().st_size,"mode":oct((root/p).stat().st_mode & 0o777),"file_type":"regular_file","evidence_state":"materialized_input","consumption":"not_observed"} for p in paths],
+            "source_materialization":{"primary_root":"$RUNNER_TEMP/c10s-primary-source","replay_root":"$RUNNER_TEMP/c10s-clean-replay","primary_replay_file_tree_equal_asserted":True},
+            "artifact":{"payload_id":os.environ.get("PAYLOAD_ARTIFACT_ID"),"payload_digest":os.environ.get("PAYLOAD_ARTIFACT_DIGEST")},
+            "outputs":{n:(sha(temp/n) if (temp/n).exists() else None) for n in ["c10s-primary-stdout.txt","c10s-primary-stderr.txt","c10s-replay-stdout.txt","c10s-replay-stderr.txt"]}}
+          (temp/"c10s-integrated-execution-materialization-manifest.json").write_text(json.dumps(m,indent=2,sort_keys=True)+"\n")
+          PY
+
+      - name: Upload execution manifest
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-integrated-manifest-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/c10s-integrated-execution-materialization-manifest.json
+          if-no-files-found: warn
+          retention-days: 30

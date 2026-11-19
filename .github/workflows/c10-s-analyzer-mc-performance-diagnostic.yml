@@ -1,0 +1,147 @@
+name: C10-S P178 Analyzer replay performance diagnostic
+
+on:
+  push:
+    branches:
+      - research/c10-s-consolidation-draft
+    paths:
+      - '.github/workflows/c10-s-analyzer-mc-performance-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  performance-diagnostic:
+    name: Bounded timing and deterministic repeatability diagnostic
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the exact primary-execution source commit
+        uses: actions/checkout@v4
+        with:
+          ref: 689c8f0164e0625ca536a20b1805e555cd63d5fd
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pinned reference dependencies
+        run: python -m pip install numpy==2.3.5 scipy==1.17.0
+
+      - name: Compile and run existing software contract tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python -m py_compile focal_harness.py test_focal_harness.py test_p178_analyzer_bridge.py run_p178_analyzer_monte_carlo.py test_p178_analyzer_monte_carlo.py
+          python -B -m unittest -v
+
+      - name: Profile bounded repeated cells without running the full Monte Carlo
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/c10s-performance"
+          python - <<'PY'
+          import cProfile
+          import json
+          import os
+          import pstats
+          import platform
+          import sys
+          import time
+          from pathlib import Path
+
+          harness = Path("03_EXPERIMENTS/C10-S/harness").resolve()
+          sys.path.insert(0, str(harness))
+          from run_p178_analyzer_monte_carlo import read_reference, run_cell
+          import p178_focal_monte_carlo as p178
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "c10s-performance"
+          reference = read_reference()
+          cells = [
+              (2, 0.20, "null", 0),
+              (10, 0.50, "positive", 13),
+              (50, 0.50, "positive", 22),
+          ]
+          results = []
+          for pass_index in range(2):
+              for k_slots, pi0, scenario, cell_index in cells:
+                  seed = p178.BASE_SEED + 29 * cell_index
+                  wall_start = time.perf_counter()
+                  cpu_start = time.process_time()
+                  metrics = run_cell(
+                      pi0=pi0, k_slots=k_slots, scenario=scenario,
+                      replications=500, seed=seed,
+                      reference_row=reference[(k_slots, pi0, scenario)],
+                  )
+                  elapsed_wall = time.perf_counter() - wall_start
+                  elapsed_cpu = time.process_time() - cpu_start
+                  results.append({
+                      "pass": pass_index + 1, "K": k_slots, "pi0": pi0,
+                      "scenario": scenario, "seed": seed, "replications": 500,
+                      "wall_seconds": elapsed_wall, "cpu_seconds": elapsed_cpu,
+                      "replications_per_second": 500 / elapsed_wall,
+                      "metrics": metrics,
+                  })
+                  print(
+                      f"PASS={pass_index+1} K={k_slots} pi0={pi0} "
+                      f"scenario={scenario} wall_s={elapsed_wall:.3f} "
+                      f"cpu_s={elapsed_cpu:.3f} rate={500/elapsed_wall:.1f}/s",
+                      flush=True,
+                  )
+
+          comparisons = []
+          for k_slots, pi0, scenario, _ in cells:
+              a = next(x["metrics"] for x in results if x["pass"] == 1 and x["K"] == k_slots and x["pi0"] == pi0 and x["scenario"] == scenario)
+              b = next(x["metrics"] for x in results if x["pass"] == 2 and x["K"] == k_slots and x["pi0"] == pi0 and x["scenario"] == scenario)
+              comparisons.append({
+                  "K": k_slots, "pi0": pi0, "scenario": scenario,
+                  "identical_metrics": a == b,
+              })
+          if not all(x["identical_metrics"] for x in comparisons):
+              raise SystemExit("DETERMINISTIC_REPEATABILITY=FAIL")
+
+          profiler = cProfile.Profile()
+          profiler.enable()
+          run_cell(
+              pi0=0.50, k_slots=50, scenario="positive", replications=100,
+              seed=p178.BASE_SEED + 29 * 22,
+              reference_row=reference[(50, 0.50, "positive")],
+          )
+          profiler.disable()
+          stats_path = out / "cprofile_top_cumulative.txt"
+          with stats_path.open("w", encoding="utf-8") as stream:
+              pstats.Stats(profiler, stream=stream).strip_dirs().sort_stats("cumulative").print_stats(30)
+
+          manifest = {
+              "protocol": "TGCV-C10-S-P178-PERFORMANCE-DIAGNOSTIC-001",
+              "source_commit": "689c8f0164e0625ca536a20b1805e555cd63d5fd",
+              "python": platform.python_version(),
+              "platform": platform.platform(),
+              "processor": platform.processor(),
+              "cpu_count": os.cpu_count(),
+              "numpy": __import__("numpy").__version__,
+              "scipy": __import__("scipy").__version__,
+              "total_analyzer_invocations_timed": 3000,
+              "profiled_additional_invocations": 100,
+              "deterministic_repeatability": comparisons,
+              "results": results,
+              "interpretation_limit": "Bounded performance diagnostic only; not a full 27-cell replay, not a Monte Carlo validation, and not a substitute for the frozen exact replay gate.",
+          }
+          (out / "performance_diagnostic.json").write_text(
+              json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          print("DETERMINISTIC_REPEATABILITY=PASS", flush=True)
+          PY
+
+      - name: Upload performance diagnostic and profiler output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c10s-p178-performance-diagnostic-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/c10s-performance/**
+          if-no-files-found: warn
+          retention-days: 30

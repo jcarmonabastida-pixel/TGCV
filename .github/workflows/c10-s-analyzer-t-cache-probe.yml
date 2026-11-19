@@ -1,0 +1,112 @@
+name: C10-S P178 Student-t exact-cache probe
+
+on:
+  push:
+    branches:
+      - research/c10-s-consolidation-draft
+    paths:
+      - '.github/workflows/c10-s-analyzer-t-cache-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  exact-cache-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout frozen primary source
+        uses: actions/checkout@v4
+        with:
+          ref: 689c8f0164e0625ca536a20b1805e555cd63d5fd
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pinned dependencies
+        run: python -m pip install numpy==2.3.5 scipy==1.17.0
+
+      - name: Run baseline versus exact memoization on one frozen P178 cell
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/c10s-t-cache"
+          python - <<'PY'
+          import functools
+          import json
+          import os
+          import platform
+          import sys
+          import time
+          from pathlib import Path
+
+          harness = Path("03_EXPERIMENTS/C10-S/harness").resolve()
+          calibration = Path("03_EXPERIMENTS/C10-S/calibration").resolve()
+          sys.path.insert(0, str(harness))
+          sys.path.insert(0, str(calibration))
+          import focal_harness
+          from run_p178_analyzer_monte_carlo import read_reference, run_cell
+          import p178_focal_monte_carlo as p178
+
+          reference = read_reference()[(10, 0.50, "positive")]
+          args = dict(
+              pi0=0.50, k_slots=10, scenario="positive", replications=10000,
+              seed=20261495, reference_row=reference,
+          )
+          original = focal_harness._student_t_critical_975
+
+          def run(label, fn):
+              focal_harness._student_t_critical_975 = fn
+              start_wall, start_cpu = time.perf_counter(), time.process_time()
+              metrics = run_cell(**args)
+              return {
+                  "label": label,
+                  "wall_seconds": time.perf_counter() - start_wall,
+                  "cpu_seconds": time.process_time() - start_cpu,
+                  "metrics": metrics,
+              }
+
+          baseline = run("baseline_uncached", original)
+          cached_fn = functools.lru_cache(maxsize=8192)(original)
+          cached = run("exact_float_key_lru_cache", cached_fn)
+          info = cached_fn.cache_info()
+          equal = baseline["metrics"] == cached["metrics"]
+          if not equal:
+              raise SystemExit("METRICS_IDENTICAL=FAIL")
+          if info.misses + info.hits != 10000:
+              raise SystemExit("CACHE_CALL_COUNT=FAIL")
+
+          payload = {
+              "protocol": "TGCV-C10-S-P178-STUDENT-T-EXACT-CACHE-PROBE-001",
+              "source_commit": "689c8f0164e0625ca536a20b1805e555cd63d5fd",
+              "python": platform.python_version(),
+              "numpy": __import__("numpy").__version__,
+              "scipy": __import__("scipy").__version__,
+              "cell": {"K": 10, "pi0": 0.5, "scenario": "positive",
+                       "N": 700, "replications": 10000, "seed": 20261495},
+              "baseline": {k:v for k,v in baseline.items() if k != "metrics"},
+              "cached": {k:v for k,v in cached.items() if k != "metrics"},
+              "cache_info": {"hits": info.hits, "misses": info.misses,
+                             "maxsize": info.maxsize, "currsize": info.currsize},
+              "metrics_identical": equal,
+              "metrics": baseline["metrics"],
+              "interpretation_limit": "One-cell bounded optimization probe only; not a full 27-cell replay or scientific validation.",
+          }
+          out = Path(os.environ["RUNNER_TEMP"]) / "c10s-t-cache"
+          (out / "cache_probe.json").write_text(
+              json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+          print(json.dumps({k:v for k,v in payload.items() if k != "metrics"}, indent=2, sort_keys=True))
+          print("METRICS_IDENTICAL=PASS")
+          PY
+
+      - name: Upload exact-cache probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c10s-p178-t-cache-probe-${{ github.sha }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/c10s-t-cache/**
+          if-no-files-found: warn
+          retention-days: 30
