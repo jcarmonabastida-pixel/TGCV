@@ -389,10 +389,13 @@ def compare_dataset(
     confidence_level: float = 0.95,
     bootstrap_replicates: int | None = None,
     bootstrap_seed: int | None = None,
+    include_profile_diagnostics: bool = True,
 ) -> DatasetComparison:
     """Run C0 plus the currently implemented family-specific candidate."""
     if family not in IMPLEMENTED_METHODS:
         raise ComparativeEngineError("SUPPORTED_FAMILIES_ARE_F1_AND_F5")
+    if not isinstance(include_profile_diagnostics, bool):
+        raise ComparativeEngineError("INCLUDE_PROFILE_DIAGNOSTICS_MUST_BE_BOOLEAN")
     if (isinstance(confidence_level, bool) or not isinstance(confidence_level, (int, float))
             or not math.isfinite(confidence_level) or abs(float(confidence_level) - 0.95) > 1e-12):
         raise ComparativeEngineError("COMPARISON_NOMINAL_LEVEL_MUST_MATCH_FROZEN_C0_V002_95_PERCENT")
@@ -430,14 +433,15 @@ def compare_dataset(
         tolerance = 1e-10 * max(1.0, *(abs(x) for x in oracle.between_raw_conservative_interval))
         if oracle_delta > tolerance:
             raise ComparativeEngineError("F1_C1_ORACLE_RECONCILIATION_FAILURE")
+        diagnostics = (
+            ("inference_scope", "balanced_gaussian_random_intercept_only"),
+            ("independent_oracle_reconciliation", "PASS_FORMULA_AGREEMENT"),
+            ("oracle_max_abs_delta_between_interval", format(oracle_delta, ".17g")),
+        )
+        if include_profile_diagnostics:
+            diagnostics += _f1_profile_diagnostic(rows, result)
         outputs.append(CandidateOutput(
-            method_id=result.method_id, comparison=result,
-            diagnostics=(
-                ("inference_scope", "balanced_gaussian_random_intercept_only"),
-                ("independent_oracle_reconciliation", "PASS_FORMULA_AGREEMENT"),
-                ("oracle_max_abs_delta_between_interval", format(oracle_delta, ".17g")),
-                * _f1_profile_diagnostic(rows, result),
-            ),
+            method_id=result.method_id, comparison=result, diagnostics=diagnostics,
         ))
     else:
         if bootstrap_replicates is None or bootstrap_seed is None:
@@ -457,11 +461,12 @@ def compare_dataset(
             ("bootstrap_seed", str(fitted.bootstrap_seed)),
             ("mcse_interval_status", "NOT_IMPLEMENTED_BOUNDARY_AWARE_JOINT_INFERENCE"),
             ("failure_reason", fitted.failure_reason or "NONE"),
-            * _f5_profile_diagnostic(
+        )
+        if include_profile_diagnostics:
+            diagnostics += _f5_profile_diagnostic(
                 rows, target_m=target_m, target_r=target_r,
                 point_mcse=fitted.comparison.mcse_estimate,
-            ),
-        )
+            )
         outputs.append(CandidateOutput(
             method_id=fitted.comparison.method_id,
             comparison=fitted.comparison,
