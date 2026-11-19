@@ -1,6 +1,6 @@
 # C10-S F1 — Numerical Stress Execution Workflow Readiness 002
 
-**Status:** WORKFLOW IMPLEMENTED — AUTHORIZATION DRAFT — NO RUNNER EXECUTION AUTHORIZED  
+**Status:** WORKFLOW ATTEMPT 001 FAILED BEFORE JOB CREATION — AUTHORIZATION CLOSED — NO NUMERICAL EXECUTION  
 **Branch:** research/c10s-f1-integrated-correction-20261119  
 **Frozen source commit:** d5edc0010f7a8c6587677eb2004b545367fc4b35
 
@@ -35,11 +35,13 @@ Path: 00_GOVERNANCE/authorizations/C10S_F1_NUMERICAL_STRESS_AUTHORIZATION_001.js
 Current blob: 1d36028348a2e0e1417e02e71f2b129bfd1d259a  
 Authorization ID: C10S-F1-NUMERICAL-STRESS-20261119-001
 
-Current state:
-- status = DRAFT
+Current state after explicit approval and failed workflow attempt 001:
+- status = BLOCKED_PRE_EXECUTION
 - execution_authorized = false
-- approved_by_user = false
-- consumed = false
+- approved_by_user = true (approval recorded; attempt subsequently closed)
+- consumed = false (primary runner was never reached)
+- attempt_closed = true
+- retry_authorized = false
 
 The command arguments are bound to frozen source commit d5edc0010f7a8c6587677eb2004b545367fc4b35. The workflow and authorization agree on the source, freeze manifest and exact runner command.
 
