@@ -1,0 +1,23 @@
+{
+  "schema": "TGCV-C10S-NESTED-MR-EXECUTION-AUTH-001",
+  "status": "APPROVED",
+  "authorization_id": "C10S-NESTED-MR-TIER-A-20261119-001",
+  "approved_by": "jcarmonabastida-pixel (explicit user approval in ChatGPT conversation)",
+  "approved_at_utc": "2026-11-19T15:23:22Z",
+  "expires_utc": "2026-11-21T00:00:00Z",
+  "scope": "C10S_NESTED_MR_NUMERICAL_METHOD_VALIDATION_ONLY",
+  "numerical_method_validation_authorized": true,
+  "c10_scientific_execution_authorized": false,
+  "protocol_id": "C10S-NESTED-MR-BOOTSTRAP-VALIDATION-001",
+  "protocol_version": "002",
+  "protocol_sha256": "cf3fd80e474e58632f6a88d8afb092df8db31716ed962826f949f5750405bad1",
+  "method_id": "TGCV_NESTED_MR_BOOTSTRAP",
+  "method_version": "1.2",
+  "tier": "A",
+  "k_per_cell": 1000,
+  "b_per_dataset": 1000,
+  "seed_schedule_version": "C10S_NESTED_MR_SEED_SCHEDULE_1.0",
+  "approved_code_commit": "6bcb5a2827d810896315f66042083a5be7dda308",
+  "authorization_branch": "research/c10s-nested-mr-auth-C10S-NESTED-MR-TIER-A-20261119-001",
+  "resume_from_run_id": null
+}
