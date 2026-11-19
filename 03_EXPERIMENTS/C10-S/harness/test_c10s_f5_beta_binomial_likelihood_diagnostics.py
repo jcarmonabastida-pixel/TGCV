@@ -16,6 +16,7 @@ from c10s_f5_beta_binomial_likelihood_diagnostics import (
     beta_binomial_profile_log_concentration,
     beta_binomial_profiled_boundary_likelihoods,
     build_beta_binomial_profile_audit_record,
+    beta_binomial_profile_numerical_stability,
 )
 
 
@@ -352,6 +353,51 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
             and point.profile_log_concentration_curvature is None
             for point in points
         ))
+
+
+    def test_profile_numerical_stability_retains_grid_and_bound_sensitivities(self):
+        result = beta_binomial_profile_numerical_stability(
+            COUNTS, R, (-0.7, 0.0, 0.7),
+            mean_logit_bounds=(-8.0, 8.0),
+            expanded_mean_logit_bounds=(-12.0, 12.0),
+            mean_grid_size=33,
+            refined_mean_grid_size=65,
+        )
+        self.assertEqual(result.status, "NUMERICAL_STABILITY_NOT_ADJUDICATED")
+        self.assertEqual(result.identification_status, "INDETERMINATE")
+        self.assertEqual(result.profile_point_count, 3)
+        self.assertEqual(result.reference_mean_grid_size, 33)
+        self.assertEqual(result.refined_mean_grid_size, 65)
+        self.assertEqual(
+            tuple(point.log_concentration for point in result.points),
+            (-0.7, 0.0, 0.7),
+        )
+        self.assertTrue(all(
+            math.isfinite(point.refined_minus_reference_log_likelihood)
+            and math.isfinite(point.expanded_minus_reference_log_likelihood)
+            and math.isfinite(point.refined_minus_reference_mean_logit)
+            and math.isfinite(point.expanded_minus_reference_mean_logit)
+            for point in result.points
+        ))
+        json.dumps(asdict(result), allow_nan=False)
+
+    def test_profile_numerical_stability_rejects_invalid_control_relationships(self):
+        with self.assertRaisesRegex(
+            F5LikelihoodDiagnosticError, "INVALID_STABILITY_GRID_SIZES",
+        ):
+            beta_binomial_profile_numerical_stability(
+                COUNTS, R, (-0.7, 0.0, 0.7),
+                mean_grid_size=65, refined_mean_grid_size=65,
+            )
+        with self.assertRaisesRegex(
+            F5LikelihoodDiagnosticError, "EXPANDED_BOUNDS_MUST_STRICTLY_CONTAIN",
+        ):
+            beta_binomial_profile_numerical_stability(
+                COUNTS, R, (-0.7, 0.0, 0.7),
+                mean_logit_bounds=(-8.0, 8.0),
+                expanded_mean_logit_bounds=(-7.0, 9.0),
+                mean_grid_size=33, refined_mean_grid_size=65,
+            )
 
 
 if __name__ == "__main__":
