@@ -63,7 +63,7 @@ def _topology_comparison(ideal: Any, represented: Any) -> tuple[str, str]:
 
 
 def _annotate_topology(record: dict[str, Any], fixture: PolynomialFixture) -> dict[str, Any]:
-    width = Q(record["max_width"].split("/")[0], record["max_width"].split("/")[1])
+    width = Q(record["max_width"])
     depth = int(record["max_depth"])
     lower_text, upper_text = record["domain"]
     lower, upper = Q(lower_text), Q(upper_text)
