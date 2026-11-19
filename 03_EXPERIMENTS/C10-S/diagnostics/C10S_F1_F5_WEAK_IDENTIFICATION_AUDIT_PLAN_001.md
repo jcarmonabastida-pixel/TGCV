@@ -240,3 +240,32 @@ The exact code/test commit completed the research-branch static workflow success
 - No calibration, bootstrap, resource preflight, holdout or scientific execution.
 
 The audit remains descriptive. The 135/135 result establishes deterministic software behaviour for the fixtures; it does not establish that any particular profile is numerically stable over a scientifically relevant range, nor that concentration is identified.
+
+
+## Implementation increment — per-dataset F5 concentration-profile propagation
+
+The concentration profile and its numerical-control stability audit are now available through the actual matched-dataset comparison path, as opt-in F5 diagnostics.
+
+When `include_f5_concentration_profile_audit=True`, the caller must supply an explicit, finite, strictly increasing `f5_profile_log_concentration_grid`. No data-dependent grid or implicit concentration range is selected. The engine then stores two strict-JSON fields in that dataset's F5 candidate diagnostics:
+
+- `concentration_profile_audit_json`: optimizer convergence status, profile status/point count, maximum on the supplied numerical grid, separately nuisance-profiled binomial and two-point boundary likelihoods and raw differences, and the vector/range of local Schur-complement profile curvatures. Identification remains `INDETERMINATE`.
+- `concentration_profile_stability_json`: paired differences at the same concentration points under reference/refined/expanded nuisance searches (eta bounds -18..18 vs -24..24; grid sizes 65 and 257), preserving per-point statuses and raw maximum absolute deltas. Status remains `NUMERICAL_STABILITY_NOT_ADJUDICATED`.
+
+Errors are retained separately for profile construction and stability construction. The diagnostic is explicitly opt-in so the expensive three-trace sensitivity audit is not silently added to every dataset in the frozen development/calibration banks. The new tests prove that enabling it leaves C5 within/between/MCSE interval outputs unchanged, and that strict JSON serialization succeeds. No C5 estimator, bootstrap, selection or abstention rule was changed.
+
+Implementation:
+- comparison-engine integration commit: `1890f19040f627eaef2069b1188f33ebf71d2118`
+- per-dataset integration tests commit: `898906f2b5ee94c599a478991688cbe2e9333551`
+- final engine blob: `358794e1fcffe729546338ae7a7749bdaaa6aa2c`
+- final test blob: `d592e3feef1b621a3051098f453ca482abc04939`
+
+Exact-commit static validation:
+- Run: `44593339897`
+- Commit: `898906f2b5ee94c599a478991688cbe2e9333551`
+- Hash-locked dependencies: PASS
+- Compile: PASS
+- Deterministic suite: **137 tests passed**
+- New per-dataset audit, strict-JSON and interval-invariance tests: PASS
+- F1 numerical-stress workflows v1/v2/v3: SKIPPED by authorization guards.
+
+No DGP bank, calibration, bootstrap comparison bank, resource preflight, holdout, or scientific C10 execution was performed. This closes the static per-dataset propagation gap for B1 only; it does not validate the statistical identification of concentration or C5 coverage. The frozen development/calibration specification v1.0 remains unchanged.
