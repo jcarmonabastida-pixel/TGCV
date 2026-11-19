@@ -1,7 +1,7 @@
 {
   "schema": "TGCV-C10S-COMPARATIVE-HOLDOUT-AUTH-001",
   "authorization_id": "C10S-HOLDOUT-20261119-001",
-  "status": "DRAFT_BLOCKED_VALIDATOR_CLI_JSON_SERIALIZATION",
+  "status": "DRAFT_NOT_APPROVED_READY_FOR_EXPLICIT_HOLDOUT_AUTHORIZATION",
   "authorization_branch": "research/c10s-nested-mr-comparative-auth-C10S-HOLDOUT-20261119-001",
   "scope": "C10S_NESTED_MR_COMPARATIVE_HOLDOUT_ONLY",
   "comparative_holdout_authorized": false,
@@ -11,7 +11,7 @@
   "expires_utc": null,
   "protocol_id": "C10S-NESTED-MR-COMPARATIVE-HOLDOUT-PROTOCOL-001",
   "protocol_version": "1.0",
-  "approved_code_commit": "ec2754659d7237839a487fd855f26c4d4b551782",
+  "approved_code_commit": "e191f3589ba3061eb7dcb9f0fc30ea7f0b60c459",
   "protocol_sha256": "1916d8c1aa5100672bd201281b2fa3c4b4a4a0240ef03b42d8c6ec49d16e1e2a",
   "runner_sha256": "983d46e7874187747662da167e5d71704b586878efe31670786968d7d3f2608c",
   "engine_sha256": "3b13cea92eff966c60cd4782dcdea88e9d25254703cf37fbe70fd5430004c54e",
@@ -19,7 +19,7 @@
   "dependency_lock_sha256": "4bdd6993cd8add430dab560f2e6eabb73028b4693e7f73e73999ecda4b2a30a9",
   "workflow_sha256": "8e6532c6410bf247422a9212179da631754a69edc4d7ac5d983100af27670e6b",
   "executor_sha256": "d9d6756021a07e0368910e472ef74e14bcc777c08eecec7d767517bdfe9372c2",
-  "validator_sha256": "e5fa516786d3601496563aba9af205f2707ea5d0d93be8e945dedf13a1b4aaf3",
+  "validator_sha256": "2bdca5bf6a40673a69028b98db726aa8c4b857b5daed49a448aac55ac6038473",
   "cells": [
     "F1_balanced_M10_R5",
     "F1_balanced_M30_R20",
