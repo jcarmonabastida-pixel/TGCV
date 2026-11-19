@@ -1,0 +1,60 @@
+{
+  "cells": [
+    {
+      "C0_bootstrap_replicates_per_dataset": 1000,
+      "C5_bootstrap_replicates_per_dataset": null,
+      "adjudicate_matched_datasets_called": false,
+      "cell_id": "F1_balanced_M30_R20",
+      "coverage_adjudication": "NOT_RUN",
+      "datasets": 1000,
+      "elapsed_seconds": 18.282613779,
+      "family": "F1",
+      "m": 30,
+      "method_roster": [
+        "C0_FROZEN_V002_NESTED_PERCENTILE_1.2",
+        "C1_F1_EXACT_PIVOTAL_1.0"
+      ],
+      "peak_process_rss_bytes": 122372096,
+      "r": 20,
+      "records_retained_for_peak_memory_measurement": 1000,
+      "results_not_retained": true,
+      "seconds_per_dataset": 0.018282613779
+    },
+    {
+      "C0_bootstrap_replicates_per_dataset": 1000,
+      "C5_bootstrap_replicates_per_dataset": 1000,
+      "adjudicate_matched_datasets_called": false,
+      "cell_id": "F5_beta22_M30_R20",
+      "coverage_adjudication": "NOT_RUN",
+      "datasets": 1000,
+      "elapsed_seconds": 229.321219552,
+      "family": "F5",
+      "m": 30,
+      "method_roster": [
+        "C0_FROZEN_V002_NESTED_PERCENTILE_1.2",
+        "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"
+      ],
+      "peak_process_rss_bytes": 124776448,
+      "r": 20,
+      "records_retained_for_peak_memory_measurement": 1000,
+      "results_not_retained": true,
+      "seconds_per_dataset": 0.229321219552
+    }
+  ],
+  "coverage_adjudication": "NOT_RUN",
+  "environment": {
+    "dependency_lock_sha256": "4bdd6993cd8add430dab560f2e6eabb73028b4693e7f73e73999ecda4b2a30a9",
+    "numpy_version": "2.3.5",
+    "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+    "python_version": "3.12.10 (main, Apr  8 2025, 22:38:13) [GCC 13.3.0]",
+    "workflow_commit": "6bad48308ab4e3d9f725d9bd04a1294a16620fb6",
+    "workflow_run_attempt": "1",
+    "workflow_run_id": "44566299402"
+  },
+  "full_holdout_datasets": 8000,
+  "interpretation": "resource-only sample; extrapolation is advisory, not a coverage result",
+  "namespace": "C10S-COMPARATIVE-RESOURCE-PREFLIGHT-1.0",
+  "preflight_id": "C10S-NESTED-MR-COMPARATIVE-RESOURCE-PREFLIGHT-001",
+  "scientific_holdout_executed": false,
+  "total_datasets": 2000
+}
