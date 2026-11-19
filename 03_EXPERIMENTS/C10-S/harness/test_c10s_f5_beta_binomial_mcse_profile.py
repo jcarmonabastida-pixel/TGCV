@@ -6,6 +6,7 @@ import unittest
 from c10s_f5_beta_binomial_mcse_profile import (
     F5ProfileError,
     f5_beta_binomial_mcse_profile_loglik,
+    f5_beta_binomial_mcse_profile_confidence_set,
 )
 
 
@@ -70,6 +71,30 @@ class F5BetaBinomialProfileTests(unittest.TestCase):
         )
         self.assertEqual(result.profile_loglik, 0.0)
         self.assertEqual(result.boundary_status, "CONCENTRATION_BOUNDARY_LIMIT")
+
+    def test_profile_lr_inversion_retains_components_and_hull(self):
+        result = f5_beta_binomial_mcse_profile_confidence_set(
+            ROWS, target_m=10, target_r=5,
+            likelihood_ratio_cutoff=3.841458820694124,
+            scan_grid_points=21,
+        )
+        self.assertIsNotNone(result.confidence_hull)
+        self.assertGreaterEqual(len(result.confidence_components), 1)
+        for lower, upper in result.confidence_components:
+            self.assertGreaterEqual(lower, 0.0)
+            self.assertGreater(upper, lower)
+            self.assertLessEqual(upper, 1.0 / (2.0 * math.sqrt(10.0)))
+        self.assertEqual(
+            result.confidence_hull,
+            (result.confidence_components[0][0], result.confidence_components[-1][1]),
+        )
+
+    def test_profile_lr_inversion_rejects_unselected_or_invalid_cutoff(self):
+        with self.assertRaises(F5ProfileError):
+            f5_beta_binomial_mcse_profile_confidence_set(
+                ROWS, target_m=10, target_r=5,
+                likelihood_ratio_cutoff=0.0,
+            )
 
     def test_rejects_non_bernoulli_rows(self):
         with self.assertRaises(F5ProfileError):
