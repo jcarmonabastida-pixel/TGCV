@@ -4,7 +4,7 @@
   "approval_scope_confirmation": "User explicitly approved authorization 004 in the conversation; approval applies only to the frozen v002 source, manifest, workflow, runtime, exact command and limits recorded here.",
   "approved_at_utc": "2026-11-19T14:36:06.833Z",
   "approved_by_user": true,
-  "attempt_closed": false,
+  "attempt_closed": true,
   "authorization_id": "C10S-F1-NUMERICAL-STRESS-20261119-004",
   "command": {
     "argv": [
@@ -108,5 +108,15 @@
   "source_commit": "a42351e374e3624a498b11199cea45cd0dc20c09",
   "status": "CONSUMED",
   "workflow": ".github/workflows/c10s-f1-numerical-stress-v2.yml",
-  "workflow_blob_sha": "f5fd3ebe2570e371b97d139f64be10c333b62df5"
+  "workflow_blob_sha": "f5fd3ebe2570e371b97d139f64be10c333b62df5",
+  "primary_execution_result": "PASS",
+  "numerical_robustness_result": "MIXED_BOUNDED",
+  "final_execution_result_audit": "INDETERMINATE_REPLAY_NOT_AUTHORIZED",
+  "result_record": "03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_RESULT_002.md",
+  "result_record_commit": "2a13f91ef352cc6a2059a3e8811916d4d5f37215",
+  "artifact_id": 14541730681,
+  "artifact_sha256": "f8acbc8e5a18c148aaacc5589d831807c5c2b7eea7d5f45d5e0a57ab9a8cc648",
+  "records_sha256": "b350693e3e8f492ccb179631a703c45a6af45d661b21a033f280c0546fcc9a26",
+  "summary_sha256": "ac3837e0240a788fad3701543904dc699f5e40b5dee9d2e8b9b34355bac4faca",
+  "audit_disposition": "PRIMARY_INTEGRITY_PASS_NUMERICAL_OUTCOME_MIXED_FINAL_AUDIT_INDETERMINATE"
 }
