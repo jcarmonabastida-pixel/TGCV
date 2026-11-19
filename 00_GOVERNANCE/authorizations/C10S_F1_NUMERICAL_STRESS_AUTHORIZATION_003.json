@@ -22,7 +22,7 @@
   },
   "approval_requirement": "Fresh explicit user approval is required. The approval must be recorded by changing this exact authorization to APPROVED, setting execution_authorized and approved_by_user true, and committing with the exact marker AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-003. No approval from authorizations 001 or 002 is reusable.",
   "approved_by_user": true,
-  "attempt_closed": false,
+  "attempt_closed": true,
   "authorization_id": "C10S-F1-NUMERICAL-STRESS-20261119-003",
   "command": {
     "argv": [
@@ -87,5 +87,19 @@
   "source_commit": "d5edc0010f7a8c6587677eb2004b545367fc4b35",
   "status": "CONSUMED",
   "workflow": ".github/workflows/c10s-f1-numerical-stress.yml",
-  "workflow_blob_sha": "1570c248df7709c3c9f2efff049d91f81a88e582"
+  "workflow_blob_sha": "1570c248df7709c3c9f2efff049d91f81a88e582",
+  "execution_result": {
+    "workflow_run_id": 44541521548,
+    "workflow_run_url": "https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44541521548",
+    "run_attempt": 1,
+    "conclusion": "success",
+    "artifact_id": 14538327928,
+    "artifact_name": "c10s-f1-numerical-stress-44541521548",
+    "artifact_sha256": "6ebbda5f4cbb64d4f89439497c467ed64bbf04d0bcf56f541a9f00863355629f",
+    "record_count": 122,
+    "runner_exit_code": 0,
+    "primary_execution_completed": true,
+    "scientific_result": "MIXED; F1 SCALE EQUIVARIANCE 5 PASS / 2 FAIL; POLYNOMIAL STRESS 115 RECORDS WITH RESOLVED, UNRESOLVED AND REPRESENTATION-UNRESOLVED CASES",
+    "no_retry_or_replay": true
+  }
 }
