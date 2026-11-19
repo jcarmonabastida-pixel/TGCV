@@ -54,7 +54,7 @@ class IndependentRootIsolatorTests(unittest.TestCase):
 
     def test_degree_reduction_and_negative_root_exclusion(self):
         # Effective degree two; roots -1 and 2, retain only [0, 3].
-        result = isolate_real_roots((2, -1, -1, 0), lower=0, upper=3)
+        result = isolate_real_roots((-2, -1, 1, 0), lower=0, upper=3)
         self.assertEqual(result.status, "ROOTS_ISOLATED")
         self.assertEqual(len(result.roots), 1)
         self.assertTrue(result.roots[0].lower <= 2 <= result.roots[0].upper)
