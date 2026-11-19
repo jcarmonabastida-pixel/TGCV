@@ -24,8 +24,8 @@ jobs:
     env:
       AUTH_PATH: 00_GOVERNANCE/authorizations/C10S_F1_NUMERICAL_STRESS_AUTHORIZATION_001.json
       AUTH_ID: C10S-F1-NUMERICAL-STRESS-20261119-001
-      SOURCE_COMMIT: f19ae92bed172f502cceb89fd26e86b5e37c5227
-      FREEZE_MANIFEST_BLOB: 8c1fbd0681e784148646c97bbc07d5ca78bf0e22
+      SOURCE_COMMIT: d5edc0010f7a8c6587677eb2004b545367fc4b35
+      FREEZE_MANIFEST_BLOB: d54aec3adaca0eef95d529a987dfb28a294119b3
       EVIDENCE_ROOT: ${{ runner.temp }}/c10s-f1-numerical-stress-evidence
       VENV: ${{ runner.temp }}/c10s-f1-numerical-stress-venv
 
@@ -46,7 +46,7 @@ jobs:
         run: |
           set -euo pipefail
           test "${GITHUB_REF}" = "refs/heads/research/c10s-f1-integrated-correction-20261119"
-          test "$(git hash-object "03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_FREEZE_MANIFEST_002.md")" = "$FREEZE_MANIFEST_BLOB"
+          test "$(git hash-object "03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_FREEZE_MANIFEST_003.md")" = "$FREEZE_MANIFEST_BLOB"
           printf '%s' "$APPROVAL_COMMIT_MESSAGE" | grep -F "AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-001"
           jq -e             --arg id "$AUTH_ID"             --arg commit "$SOURCE_COMMIT"             '
               .authorization_id == $id
@@ -56,9 +56,9 @@ jobs:
               and .one_shot == true
               and .consumed == false
               and .source_commit == $commit
-              and .freeze_manifest == "03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_FREEZE_MANIFEST_002.md"
-              and .freeze_manifest_commit == "5463e5662f9095267369601789ccf541627893f6"
-              and .freeze_manifest_blob_sha == "8c1fbd0681e784148646c97bbc07d5ca78bf0e22"
+              and .freeze_manifest == "03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_FREEZE_MANIFEST_003.md"
+              and .freeze_manifest_commit == "aa30ab98eae2f8d505d569149aa4b342d32718bd"
+              and .freeze_manifest_blob_sha == "d54aec3adaca0eef95d529a987dfb28a294119b3"
               and .workflow == ".github/workflows/c10s-f1-numerical-stress-001.yml"
               and .runtime.runner == "ubuntu-24.04"
               and .runtime.python == "3.12.3"
@@ -92,7 +92,7 @@ jobs:
       - name: Checkout frozen source snapshot
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: f19ae92bed172f502cceb89fd26e86b5e37c5227
+          ref: d5edc0010f7a8c6587677eb2004b545367fc4b35
           path: source
           fetch-depth: 1
           persist-credentials: false
@@ -107,7 +107,7 @@ jobs:
             printf '%s %s %s\n' "$expected" "$actual" "$relative_path"
             test "$actual" = "$expected"
           done <<'EOF'
-          80ff414e076b06de14ea1190dd9e877b6045b88f 03_EXPERIMENTS/C10-S/harness/c10s_f1_numerical_stress.py
+          cc047a3b112caf84533c94e77d1908c99a0c2bdf 03_EXPERIMENTS/C10-S/harness/c10s_f1_numerical_stress.py
           b08ee28a1423b7a6c598db69c0ef15dff5f0ac22 03_EXPERIMENTS/C10-S/harness/run_c10s_f1_numerical_stress.py
           39f1732e1571f9d0705378d924b58b9475277e7a 03_EXPERIMENTS/C10-S/harness/c10s_f1_between_profile_likelihood.py
           3ac9ce31eb82421022fd8d2a65a0daee049322be 03_EXPERIMENTS/C10-S/harness/c10s_f1_independent_root_isolator.py
