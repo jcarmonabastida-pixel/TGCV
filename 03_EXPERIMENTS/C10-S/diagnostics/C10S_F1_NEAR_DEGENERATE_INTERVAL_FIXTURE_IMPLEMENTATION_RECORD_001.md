@@ -86,3 +86,16 @@ F1 conservative near-degenerate contract:
 - This validates conservative unresolved classification and interval-path valid-or-typed-abstention behaviour, not successful separation of the nearby roots.
 
 A separate F5 deterministic test was added in commit `72f119b4be3b696fee95e5ad92c07376e5ba10c2` to verify convergence of the finite beta-binomial count log-likelihood to its `kappa -> 0` two-point mixing limit for endpoint-only counts. No workflow run has yet been observed for that commit, so this new F5 test is **NOT VERIFIED** and must not be counted as passing. It is a deterministic limit check only, not an empirical weak-identification or calibration result.
+
+
+## F5 low-concentration limit test — static validation complete
+
+The test added in commit `72f119b4be3b696fee95e5ad92c07376e5ba10c2` was executed by static workflow run `44588467741`:
+- Exact commit checked out: `72f119b4be3b696fee95e5ad92c07376e5ba10c2`
+- Workflow conclusion: SUCCESS
+- Hash-locked dependencies: PASS
+- Compile: PASS
+- Deterministic suite: **122 tests passed**
+- Explicit test `test_two_point_limit_is_the_low_concentration_limit`: PASS.
+
+This is a deterministic likelihood-limit identity check. It does not establish estimator identification, optimizer reliability across weak-identification regimes, bootstrap validity, or coverage. No calibration, resource preflight, holdout, or scientific C10 execution was performed.
