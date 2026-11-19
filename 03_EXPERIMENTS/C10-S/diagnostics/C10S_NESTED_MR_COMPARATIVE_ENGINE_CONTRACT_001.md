@@ -1,20 +1,21 @@
 # C10-S — Unified Nested M/R Comparative Inference Engine
 
 **Record:** C10S-NESTED-MR-COMPARATIVE-ENGINE-CONTRACT-001  
-**Status:** RESEARCH BRANCH IMPLEMENTATION — STATIC CI PASS (36/36) / NUMERICAL CALIBRATION NOT RUN  
+**Status:** RESEARCH BRANCH IMPLEMENTATION v1.1 — STATIC CI PASS (39/39) / NUMERICAL CALIBRATION NOT RUN  
 **Date:** 2026-11-19  
 **Scope:** Matched-data inference comparison within F1 and within F5  
 **Baseline preserved:** nested M/R protocol v002 and production Analyzer unchanged
 
 ## 1. Purpose
 
-Connect the existing common observed-data interface to the first currently implemented family-specific inferential candidates and provide one adjudication contract. This is a research comparison harness. It does not select a method, calibrate coverage, authorize Tier B, or establish scientific validity for C10.
+Connect the frozen v002 C0 interval procedure, the F1 C1 pivotal candidate and the F5 C5 fitted candidate through one matched-data adjudicator. This is a research comparison harness. It does not select a method, calibrate coverage, authorize Tier B, or establish scientific validity for C10.
 
 ## 2. Reused components
 
 The engine reuses, without duplicating their mathematical responsibilities:
 
 - c10s_variance_comparison_interface.py: immutable input validation and common raw within, observed-world variance, untruncated raw-between and point MCSE targets.
+- theta_a_nested_mc_precision.py::analyze_nested_precision: exact frozen v002 C0 bootstrap implementation, called through a thin adapter; no duplicate bootstrap implementation.
 - c10s_f1_exact_pivotal_candidate.py: F1-only exact within and conservative joint-pivot raw-between intervals, plus joint confidence-set projection for target MCSE.
 - c10s_fitted_beta_binomial_bootstrap.py: fitted F5 beta-binomial parametric bootstrap and fit/boundary/failure diagnostics.
 - c10s_gaussian_variance_oracles.py: independent F1 finite-sample reference formulas and profile likelihood diagnostic.
@@ -31,7 +32,7 @@ c10s_nested_mr_comparative_inference_engine.py::compare_dataset requires an expl
 | F1 | C0 raw common result | C1 exact/pivotal | Balanced Gaussian random-intercept only |
 | F5 | C0 raw common result | C5 fitted beta-binomial parametric percentile bootstrap | Bernoulli nested beta-binomial only |
 
-F5 requires explicit bootstrap replicate count and seed. The candidate records fitted parameters, fit state, RNG, seed, replicate count and valid-MCSE-draw rate in provenance/diagnostics.
+F5 requires explicit candidate bootstrap replicate count and seed, separately from the C0 baseline bootstrap count and seed. The candidate records fitted parameters, fit state, RNG, seed, replicate count and projectable-MCSE-draw fraction in provenance/diagnostics. It emits within and raw-between percentile intervals, but no MCSE interval: the current positive-projection subset would be invalid for MCSE inference, so it returns the typed abstention `F5_MCSE_JOINT_BOUNDARY_METHOD_NOT_IMPLEMENTED`.
 
 C2, C3 and C4 are explicitly returned as unavailable. No placeholder result, fallback method, or inferred implementation is permitted. The F1 oracle/profile diagnostic and F5 moment oracle remain distinct from interval candidates.
 
@@ -65,20 +66,20 @@ test_c10s_nested_mr_comparative_inference_engine.py contains deterministic contr
 5. Abstention accounting, paired-data requirements and invalid truth rejection.
 6. Unsupported-family rejection.
 
-The six new engine tests executed successfully as part of the 36-test static suite. They are not coverage calibration or Monte Carlo evidence.
+The engine tests and updated C0/C5 contracts executed successfully as part of the 39-test static suite. They are not coverage calibration or Monte Carlo evidence.
 
 ## 6. Integration boundary and remaining gates
 
 | Gate | State |
 |---|---|
-| Common data contract | IMPLEMENTED; prior deterministic tests passed |
+| Common data contract | IMPLEMENTED; deterministic tests PASS |
 | F1 pivotal candidate | IMPLEMENTED; deterministic candidate tests PASS in static CI |
 | F5 fitted candidate | IMPLEMENTED; deterministic candidate tests PASS in static CI; MCSE interval method requires further boundary audit |
-| Unified F1/F5 dispatch | IMPLEMENTED |
-| Common adjudication metrics | IMPLEMENTED |
-| New engine deterministic tests | EXECUTED; 6/6 PASS within 36-test suite |
-| Static workflow path/command integration | IMPLEMENTED; run 15 PASS |
-| New engine test execution | AUTHORIZED BY USER; EXECUTED; PASS |
+| Unified F1/F5 dispatch | IMPLEMENTED v1.1 with frozen C0 v002 adapter |
+| Common adjudication metrics | IMPLEMENTED; K/B denominators and Wilson limits reported |
+| New engine deterministic tests | EXECUTED; 9 engine tests PASS within 39-test suite |
+| Static workflow path/command integration | IMPLEMENTED; run 24 PASS |
+| New engine test execution | AUTHORIZED BY USER; EXECUTED; 39/39 PASS |
 | Coverage calibration and method selection | NOT AUTHORIZED |
 | Independent holdout | OPEN / NOT AUTHORIZED |
 | Tier B | NOT AUTHORIZED |
@@ -89,7 +90,7 @@ The existing GitHub Actions workflow has an explicit path allowlist and test com
 
 ## 7. Scientific interpretation
 
-This engine creates a common comparison surface, not a validated general-purpose estimator. C1 exactness is conditional on F1's balanced Gaussian random-intercept model. C5 is a fitted-model exploratory percentile bootstrap and remains uncalibrated. A subsequent readiness audit found that C5's MCSE percentile currently conditions on bootstrap draws with a nonnegative plug-in projection, which violates the frozen no-positive-only-conditioning rule; until a boundary-aware F5 MCSE method exists, that target must be reported as not implemented/abstained. The engine also lacks C0's frozen v002 interval adapter, so it is not yet a complete interval-method comparison. F1 and F5 results must be interpreted within their own DGP families.
+This engine creates a common comparison surface, not a validated general-purpose estimator. C0 uses the frozen v002 callable; C1 is conditional on F1's balanced Gaussian random-intercept model; C5 is a fitted-model exploratory percentile bootstrap for within and raw-between F5. F5 MCSE remains explicitly unimplemented/abstained until a boundary-aware joint method is defined. The component intervals can now be compared against C0 on matched datasets, but no coverage calibration has been run. F1 and F5 results must be interpreted within their own DGP families.
 
 Coverage, interval width, point error, emission and abstention are all reported separately. A high conditional coverage with low emission cannot be called operationally successful. A narrow interval cannot compensate for undercoverage. The evaluator does not make that trade-off decision.
 
