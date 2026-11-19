@@ -179,6 +179,17 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         self.assertIn("between_profile_root_adjudication_f1_count", diagnostic_map)
         self.assertIn("between_profile_root_adjudication_sturm_count", diagnostic_map)
         self.assertIn("between_profile_root_adjudication_matched_count", diagnostic_map)
+        self.assertIn("between_profile_root_adjudication_domain", diagnostic_map)
+        self.assertEqual(
+            diagnostic_map["between_profile_root_adjudication_domain"],
+            "(0,+infinity)",
+        )
+        self.assertIn(
+            "between_profile_root_adjudication_removed_zero_factor_multiplicity",
+            diagnostic_map,
+        )
+        self.assertIn("between_profile_root_adjudication_boundary_roots", diagnostic_map)
+        self.assertIn("between_profile_root_adjudication_exact_intervals", diagnostic_map)
         if diagnostic_map["between_profile_root_adjudication_status"] != "ROOTS_AGREE":
             self.assertEqual(
                 diagnostic_map["between_profile_inference_eligibility"],
