@@ -248,5 +248,42 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
         )
 
 
+    def test_profile_likelihood_is_invariant_to_world_count_permutation(self):
+        grid = (math.log(0.2), math.log(0.7), math.log(2.0), math.log(20.0))
+        original = beta_binomial_profile_log_concentration(COUNTS, R, grid)
+        permuted = beta_binomial_profile_log_concentration(
+            tuple(reversed(COUNTS)), R, grid,
+        )
+        for left, right in zip(original, permuted):
+            self.assertAlmostEqual(
+                left.profiled_log_likelihood,
+                right.profiled_log_likelihood,
+                delta=1e-12,
+            )
+            self.assertAlmostEqual(
+                left.profiled_mean_logit, right.profiled_mean_logit, delta=1e-10,
+            )
+
+    def test_endpoint_only_fixture_retains_finite_two_point_profile_limit(self):
+        counts = (0, 5, 0, 5, 5, 0)
+        boundary = beta_binomial_profiled_boundary_likelihoods(counts, 5)
+        self.assertEqual(boundary.interior_count_observations, 0)
+        self.assertAlmostEqual(boundary.two_point_profile_mean, 0.5)
+        self.assertTrue(math.isfinite(boundary.two_point_profile_log_likelihood))
+        trace = beta_binomial_profile_log_concentration(
+            counts, 5, (math.log(0.2), 0.0, math.log(5.0)),
+        )
+        self.assertTrue(all(
+            point.status == "NUMERICAL_PROFILE_UNCERTIFIED" for point in trace
+        ))
+
+    def test_low_dispersion_fixture_retains_own_binomial_profile_mean(self):
+        counts = (2, 2, 2, 2, 2, 2, 2, 2)
+        boundary = beta_binomial_profiled_boundary_likelihoods(counts, 5)
+        self.assertAlmostEqual(boundary.binomial_profile_mean, 0.4)
+        self.assertTrue(math.isfinite(boundary.binomial_profile_log_likelihood))
+        self.assertEqual(boundary.two_point_profile_log_likelihood, -math.inf)
+
+
 if __name__ == "__main__":
     unittest.main()
