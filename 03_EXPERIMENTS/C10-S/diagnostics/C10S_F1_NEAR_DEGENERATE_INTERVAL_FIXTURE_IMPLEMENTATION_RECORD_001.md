@@ -32,3 +32,13 @@ A second test sends the same rows through the actual confidence-set entry point.
 ## Next gate
 
 Obtain an actual static workflow run for this commit and inspect its job logs. If the new fixture fails, correct the deterministic construction or its numerical contract before adding further F1/F5 work. Do not proceed to resource preflight until the complete frozen implementation gate and static validation pass.
+
+
+## Static workflow integration follow-up
+
+Commit `aaa82ba5246b7c8554a80c7364ab82ecfe3f91d7` updates the existing research-branch static workflow so the new module is:
+- included in the push path filter;
+- compiled by the pinned-Python compile step; and
+- executed by the deterministic unittest step.
+
+This closes the workflow-wiring omission found during follow-up inspection. It does **not** establish a passing run. The available commit-run lookup returned no PR-triggered runs for the fixture commit, and no successful workflow result has been observed for the updated workflow commit. Static validation remains **PENDING / NOT VERIFIED** until an actual run and its job result are inspected.
