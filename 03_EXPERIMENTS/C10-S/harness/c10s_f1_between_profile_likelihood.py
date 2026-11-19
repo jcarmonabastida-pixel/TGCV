@@ -102,7 +102,9 @@ def _profile_at_tau(
     # Optimize log(sigma_within^2), ensuring positivity over a scale-adaptive
     # interval. Endpoints are included as candidates to avoid trusting a
     # bounded optimizer's interior result without comparison.
-    center = max(scale, 1e-300)
+    if not math.isfinite(scale) or scale <= 0.0:
+        raise F1ProfileError("WITHIN_VARIANCE_PROFILE_SCALE_INVALID")
+    center = scale
     lo, hi = math.log(center) - 36.0, math.log(center) + 36.0
 
     def negative_loglik(log_s: float) -> float:
@@ -145,7 +147,9 @@ def f1_profile_loglik(
     if not math.isfinite(tau) or tau < 0.0:
         raise F1ProfileError("BETWEEN_VARIANCE_MUST_BE_FINITE_AND_NONNEGATIVE")
     r, df_w, df_b, ssw, s2_means, within = _sufficient_statistics(rows)
-    scale = max(within, s2_means, tau, 1e-12)
+    # The sufficient statistics are positive/finite, so this is a valid
+    # reference scale without an absolute floor that would break equivariance.
+    scale = max(within, s2_means, tau)
     return _profile_at_tau(
         tau, r=r, df_w=df_w, df_b=df_b, ssw=ssw,
         s2_means=s2_means, scale=scale,
@@ -174,44 +178,67 @@ def f1_profile_between_confidence_set(
 
     r, df_w, df_b, ssw, s2_means, within = _sufficient_statistics(rows)
     tau_hat = max(0.0, s2_means - within / r)
-    scale = max(within, s2_means, 1e-12)
+    # Use a data-derived positive reference scale. A fixed variance floor
+    # breaks the model's tau -> k^2*tau equivariance for small observations.
+    scale = max(within, s2_means)
 
     def profile(tau: float) -> float:
         return _profile_at_tau(
             tau, r=r, df_w=df_w, df_b=df_b, ssw=ssw,
-            s2_means=s2_means, scale=max(scale, tau, 1e-12),
+            s2_means=s2_means, scale=max(scale, tau),
         )
 
     maximum = profile(tau_hat)
     if not math.isfinite(maximum):
         raise F1ProfileError("PROFILE_MLE_NONFINITE")
 
-    def lr_excess(tau: float) -> float:
-        value = profile(tau)
+    # Solve the LR boundary in x=tau/scale. The root tolerance is now
+    # dimensionless and therefore invariant to rescaling the observations.
+    def tau_from_scaled_coordinate(x: float) -> float:
+        tau = scale * x
+        if not math.isfinite(tau) or (x > 0.0 and tau == 0.0):
+            raise F1ProfileError("PROFILE_ENDPOINT_SCALE_UNREPRESENTABLE")
+        return tau
+
+    def lr_excess_scaled(x: float) -> float:
+        value = profile(tau_from_scaled_coordinate(x))
         return 2.0 * (maximum - value) - float(likelihood_ratio_cutoff)
 
-    at_zero = lr_excess(0.0)
+    at_zero = lr_excess_scaled(0.0)
     lower_included = at_zero <= 0.0
     if lower_included:
         lower = 0.0
     else:
         if tau_hat <= 0.0:
             raise F1ProfileError("INCONSISTENT_PROFILE_MLE_AND_LOWER_ENDPOINT")
-        lower = brentq(lr_excess, 0.0, tau_hat, xtol=1e-12, rtol=1e-12)
+        tau_hat_scaled = tau_hat / scale
+        if tau_hat > 0.0 and tau_hat_scaled == 0.0:
+            raise F1ProfileError("PROFILE_MLE_SCALE_UNREPRESENTABLE")
+        lower_scaled = brentq(
+            lr_excess_scaled, 0.0, tau_hat_scaled,
+            xtol=1e-12, rtol=1e-12,
+        )
+        lower = tau_from_scaled_coordinate(lower_scaled)
 
-    step = max(scale, tau_hat, 1e-12)
-    upper = max(tau_hat + step, 2.0 * step)
+    tau_hat_scaled = tau_hat / scale
+    if tau_hat > 0.0 and tau_hat_scaled == 0.0:
+        raise F1ProfileError("PROFILE_MLE_SCALE_UNREPRESENTABLE")
+    upper_scaled = max(tau_hat_scaled + 1.0, 2.0)
     expansions = 0
-    upper_value = lr_excess(upper)
+    upper_value = lr_excess_scaled(upper_scaled)
     while upper_value <= 0.0 and expansions < max_bracket_expansions:
-        upper *= 2.0
+        upper_scaled *= 2.0
+        if not math.isfinite(upper_scaled):
+            raise F1ProfileError("UPPER_PROFILE_ENDPOINT_BRACKET_OVERFLOW")
         expansions += 1
-        upper_value = lr_excess(upper)
+        upper_value = lr_excess_scaled(upper_scaled)
     if upper_value <= 0.0:
         raise F1ProfileError("UPPER_PROFILE_ENDPOINT_NOT_BRACKETED")
-    upper_endpoint = brentq(
-        lr_excess, tau_hat, upper, xtol=1e-12, rtol=1e-12,
+    upper_scaled_root = brentq(
+        lr_excess_scaled, tau_hat_scaled, upper_scaled,
+        xtol=1e-12, rtol=1e-12,
     )
+    upper_endpoint = tau_from_scaled_coordinate(upper_scaled_root)
     return F1ProfileSet(
         likelihood_ratio_cutoff=float(likelihood_ratio_cutoff),
         mle_between_variance=tau_hat,
