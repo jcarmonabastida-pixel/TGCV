@@ -127,6 +127,8 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertGreaterEqual(polynomial.degree, 1)
         self.assertEqual(polynomial.status, "POLYNOMIAL_ROOTS_ISOLATED")
         self.assertEqual(len(polynomial.positive_roots), scan.stationary_points)
+        self.assertFalse(scan.polynomial_scan_discordant)
+        self.assertEqual(scan.polynomial_root_count, len(polynomial.positive_roots))
         for root, log_root in zip(
             polynomial.positive_roots, scan.stationary_points_log_scale,
         ):
