@@ -276,6 +276,18 @@ def _normalize_scaled_polynomial(
     return normalized
 
 
+def _restore_polynomial_scale(
+    values: Sequence[float], scale: float, *, label: str,
+) -> tuple[float, ...]:
+    restored = []
+    for value in values:
+        result = value * scale
+        if value > 0.0 and (result == 0.0 or not math.isfinite(result)):
+            raise F1ProfileError(f"{label}_UNREPRESENTABLE")
+        restored.append(result)
+    return tuple(restored)
+
+
 def _positive_quadratic_roots_diagnostic(
     a: float, b: float, c: float,
 ) -> tuple[tuple[float, ...], str]:
@@ -389,6 +401,10 @@ def f1_score_polynomial_diagnostic(
         return _polyval_ascending(normalized, x)
 
     critical_x = tuple(value / scale for value in critical)
+    if any(value > 0.0 and (
+        scaled == 0.0 or not math.isfinite(scaled)
+    ) for value, scaled in zip(critical, critical_x)):
+        raise F1ProfileError("SCORE_POLYNOMIAL_CRITICAL_POINT_SCALE_UNREPRESENTABLE")
     critical_x = tuple(sorted(value for value in critical_x if value > 0.0))
     root_x: list[float] = []
     tangent_x: list[float] = []
@@ -425,16 +441,16 @@ def f1_score_polynomial_diagnostic(
             root_x.append(brentq(
                 polynomial_x, left, right, xtol=1e-13, rtol=1e-13,
             ))
-    roots = tuple(sorted({
-        value * scale for value in root_x
-        if value > 0.0 and math.isfinite(value * scale)
-    }))
-    tangential = tuple(sorted({
-        value * scale for value in tangent_x
-    }))
-    unresolved = tuple(sorted({
-        value * scale for value in unresolved_x
-    }))
+    roots = tuple(sorted(_restore_polynomial_scale(
+        tuple(value for value in root_x if value > 0.0), scale,
+        label="SCORE_POLYNOMIAL_ROOT_SCALE",
+    )))
+    tangential = tuple(sorted(_restore_polynomial_scale(
+        tangent_x, scale, label="SCORE_POLYNOMIAL_TANGENCY_SCALE",
+    )))
+    unresolved = tuple(sorted(_restore_polynomial_scale(
+        unresolved_x, scale, label="SCORE_POLYNOMIAL_UNRESOLVED_SCALE",
+    )))
     status = "POLYNOMIAL_ROOTS_ISOLATED"
     if unresolved or critical_status != "RESOLVED":
         status = "POLYNOMIAL_ROOTS_UNRESOLVED"
