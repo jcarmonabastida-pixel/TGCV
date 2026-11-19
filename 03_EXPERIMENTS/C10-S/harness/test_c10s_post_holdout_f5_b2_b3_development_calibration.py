@@ -88,6 +88,8 @@ class F5DevelopmentCalibrationTests(unittest.TestCase):
 
     def test_optimizer_gate_accepts_only_complete_concordant_interior_audit(self):
         start = {
+            "success": True,
+            "negative_log_likelihood": 10.0,
             "final_mean_logit": 0.1,
             "final_log_concentration": 0.5,
             "gradient_norm": 1e-8,
@@ -111,6 +113,10 @@ class F5DevelopmentCalibrationTests(unittest.TestCase):
             "log_shape_parameter_distance": 1e-8,
             "starts": [dict(start) for _ in range(3)],
             "independent_observed_hessian": [[-2.0, 0.1], [0.1, -1.0]],
+            "observed_hessian": [[-2.1, 0.1], [0.1, -1.1]],
+            "hessian_eigenvalues": [-2.2, -1.0],
+            "selected_score_components": [1e-8, -1e-8],
+            "independent_score_components": [1e-8, -1e-8],
         }
         self.assertTrue(_optimizer_diagnostic_is_resolved({
             "fit_status": "INTERIOR",
@@ -126,6 +132,13 @@ class F5DevelopmentCalibrationTests(unittest.TestCase):
         self.assertFalse(_optimizer_diagnostic_is_resolved({
             "fit_status": "BOUNDARY", "optimizer_status": "OPTIMIZER_CONCORDANT",
             "optimizer_audit": {},
+        }))
+        failed_start_audit = dict(audit)
+        failed_start_audit["starts"] = [dict(start), dict(start), {**start, "success": False}]
+        self.assertFalse(_optimizer_diagnostic_is_resolved({
+            "fit_status": "INTERIOR",
+            "optimizer_status": "OPTIMIZER_CONCORDANT",
+            "optimizer_audit": failed_start_audit,
         }))
 
     def test_rank_uncertainty_reports_discrete_binomial_rank_diagnostic(self):
