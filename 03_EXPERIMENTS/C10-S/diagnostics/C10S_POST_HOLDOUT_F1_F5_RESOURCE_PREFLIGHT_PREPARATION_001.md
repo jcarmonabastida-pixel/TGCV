@@ -124,13 +124,18 @@ Authorization template: `C10S_POST_HOLDOUT_F1_F5_RESOURCE_PREFLIGHT_AUTHORIZATIO
 | F5 MCSE interval | EXPLICITLY ABSTAINED / OUT OF SCOPE under frozen spec v1.0; not a C5 within/raw-between blocker |
 | F5 B1 implementation and deterministic tests | COMPLETE — 153/153 static tests at exact code commit `b44489341e4ee99aa279b15d6cb635e744a1665e`; see `C10S_F5_B1_IMPLEMENTATION_CLOSURE_001.md` |
 | F5 B2/B3 runner and authorization package | COMPLETE — 168/168 static tests at exact commit `cdd8617f13296556fd5eb463834fb60c0f051f7c`; see `C10S_F5_B2_B3_DEVELOPMENT_RUNNER_IMPLEMENTATION_001.md` |
-| F5 C5 component eligibility | OPEN — requires B2/B3 calibration and disjoint validation; no coverage result inferred from preflight |
-| F5 B2/B3 numerical execution | NOT AUTHORIZED / NOT RUN — dedicated one-use authorization template remains DRAFT |
+| F5 C5 component eligibility | FAIL — B2/B3 executed; 0/8 C5 components pass frozen coverage/Wilson/optimizer gates; see `C10S_F5_B2_B3_DEVELOPMENT_CALIBRATION_RESULT_AUDIT_001.md` |
+| F5 B2/B3 numerical execution | EXECUTED — Run `44615173745`; primary artifact integrity audited; C5 NOT VALIDATED |
 | Full F1 A2/A3 and combined calibration/validation execution | NOT AUTHORIZED / NOT RUN |
 
-**No additional resource sample was executed while preparing the F5 B2/B3 package.** The separately authorized resource preflight is complete (run `44603264310`). The new F5 B2/B3 development-calibration workflow remains dormant until a separate explicit one-use authorization is approved.
+**No additional resource sample was executed while preparing the F5 B2/B3 package.** The separately authorized resource preflight is complete (run `44603264310`). The F5 B2/B3 development-calibration workflow was subsequently authorized once and executed in run `44615173745`; that one-use authorization is consumed.
 
 
 ## 9. Executed preflight result
 
 The one-use resource-only authorization was exercised successfully in run `44603264310` on 2026-11-19. The 200-dataset sample, provenance, measured timings, full-workload projection and gate adjudication are recorded in `C10S_POST_HOLDOUT_F1_F5_RESOURCE_PREFLIGHT_RESULT_001.md`. Overall result: `RESOURCE_PREFLIGHT_EXECUTION_PASS / F5_B1_IMPLEMENTATION_COMPLETE / F5_B2_B3_PACKAGE_STATIC_PASS / B2_B3_NUMERICAL_EXECUTION_NOT_AUTHORIZED`. The MCSE abstention is explicitly out of scope and does not block the frozen C5 within/raw-between targets. No calibration, validation, holdout or causal C10 execution occurred.
+
+
+## 10. F5 B2/B3 result and adjudication
+
+The authorized F5 B2/B3 run completed successfully and its primary artifact integrity was audited. The scientific outcome is not a pass: C5 fails all eight frozen cell × bank × target component gates (0/8); C0 also fails the coverage/Wilson requirements. Full statistics, optimizer diagnostics, B3 endpoint sensitivity and artifact provenance are in `C10S_F5_B2_B3_DEVELOPMENT_CALIBRATION_RESULT_AUDIT_001.md`. The banks are development evidence only, not confirmatory. No further numerical execution is authorized by the consumed one-use authorization.
