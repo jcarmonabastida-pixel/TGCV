@@ -1,0 +1,110 @@
+{
+  "schema": "TGCV-C10S-F1-INTEGRATED-VALIDATION-AUTH-002",
+  "status": "DRAFT_NOT_APPROVED",
+  "authorization_id": "C10S-F1-INTEGRATED-VALIDATION-20261119-02",
+  "supersedes": "C10S-F1-INTEGRATED-VALIDATION-20261119-01",
+  "scope": "F1_INTEGRATED_DETERMINISTIC_NUMERICAL_METHOD_TESTS_ONLY",
+  "approval": {
+    "approved": false,
+    "approved_by": null,
+    "approved_on": null,
+    "approved_at_utc": null,
+    "requires": "Explicit user approval of this revised one-shot authorization, the fixed frozen source commit, exact test command, and isolated dependency bootstrap",
+    "validity_hours_after_approval": 24
+  },
+  "source": {
+    "repository": "jcarmonabastida-pixel/TGCV",
+    "freeze_branch": "research/c10s-f1-validation-freeze-20261119",
+    "frozen_commit": "0d430adae891b3914475c60334d93e977efc44cc",
+    "manifest_path": "03_EXPERIMENTS/C10-S/harness/C10S_F1_VALIDATION_FREEZE_MANIFEST_001.md",
+    "manifest_commit": "a2f73cccd0154fccaa1b9674fbbfee13db8da582",
+    "execution_checkout": "Detached HEAD at frozen_commit; never execute from moving branch tip"
+  },
+  "protocol": {
+    "protocol_id": "C10S-F1-INTEGRATED-TEST-SUITE-001",
+    "protocol_version": "002",
+    "runner": "GitHub Actions ubuntu-24.04",
+    "python_baseline": "3.12.3",
+    "working_directory": "03_EXPERIMENTS/C10-S/harness",
+    "command": "$RUNNER_TEMP/c10s-f1-validation-venv/bin/python -m unittest -v test_c10s_f1_between_profile_likelihood test_c10s_f1_independent_root_isolator test_c10s_f1_root_adjudication test_c10s_nested_mr_comparative_inference_engine",
+    "execution_count": 1,
+    "retry_policy": "No automatic retries. Any failure or interruption stops the run; another attempt requires a new authorization.",
+    "workflow_path": ".github/workflows/c10s-f1-integrated-validation-001.yml",
+    "workflow_action_pins": {
+      "checkout": "actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "setup_python": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+      "upload_artifact": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+    }
+  },
+  "dependencies": {
+    "policy": "Only these two runtime dependencies may be installed, in an isolated venv under RUNNER_TEMP, never in the repository checkout or system Python.",
+    "packages": [
+      "numpy==2.1.3",
+      "scipy==1.14.1"
+    ],
+    "installation_command": "python -m pip install --no-deps --only-binary=:all: numpy==2.1.3 scipy==1.14.1",
+    "no_other_packages": true,
+    "record_pip_freeze": true,
+    "runtime_bootstrap": "actions/setup-python provisions CPython 3.12.3. Its runner-local pip bootstrap is permitted; test dependencies remain isolated in the temporary venv.",
+    "no_dependency_updates_during_tests": true
+  },
+  "included_test_modules": [
+    "test_c10s_f1_between_profile_likelihood.py",
+    "test_c10s_f1_independent_root_isolator.py",
+    "test_c10s_f1_root_adjudication.py",
+    "test_c10s_nested_mr_comparative_inference_engine.py"
+  ],
+  "authorized_if_and_only_if_approved": {
+    "deterministic_unit_and_integration_tests": true,
+    "fixed_test_fixtures": true,
+    "seeded_operations_explicitly_encoded_in_the_listed_tests": true,
+    "isolated_install_of_exactly_numpy_2_1_3_and_scipy_1_14_1": true,
+    "capture_stdout_stderr_exit_code_runtime_dependency_and_provenance": true
+  },
+  "explicitly_not_authorized": {
+    "c10_scientific_execution": true,
+    "dgp_experiment": true,
+    "outer_monte_carlo_calibration": true,
+    "parameter_calibration_or_tuning": true,
+    "broad_repository_test_suite": true,
+    "external_or_new_dataset_execution": true,
+    "changes_to_frozen_source_or_test_files": true,
+    "installation_of_any_unlisted_dependency": true,
+    "system_or_repository_dependency_modification": true,
+    "replay_or_retry_without_new_review": true,
+    "scientific_claim_or_c10_closure": true
+  },
+  "preflight_stop_conditions": [
+    "Frozen commit or any of the nine listed Git blob identities mismatch",
+    "Python version differs from 3.12.3",
+    "Wheel unavailable for either exact pinned dependency",
+    "Dependency version differs from the exact pin after isolated installation",
+    "Any test import fails",
+    "Checkout is not clean before evidence and venv directories are created",
+    "Command differs from the exact command recorded here",
+    "Any request to expand scope beyond the four listed test modules"
+  ],
+  "result_classification": [
+    "PASS",
+    "FAIL",
+    "INDETERMINATE"
+  ],
+  "evidence_outputs": [
+    "Complete stdout capture",
+    "Complete stderr capture",
+    "Exit code",
+    "Python version and platform",
+    "Frozen commit SHA and verified nine Git blob SHAs",
+    "Exact command and working directory",
+    "Exact installed dependency versions and pip freeze",
+    "Workflow run URL and run ID"
+  ],
+  "scientific_boundary": "A PASS establishes only that the four listed software test modules pass for this frozen source snapshot and recorded runtime/dependency environment. It does not establish exhaustive mathematical correctness, uncertainty-aware certification, inferential validity, causal contribution, or scientific closure.",
+  "previous_attempt": {
+    "authorization_id": "C10S-F1-INTEGRATED-VALIDATION-20261119-01",
+    "workflow_run": 44521579986,
+    "outcome": "FAIL_WORKFLOW_PREFLIGHT_DEFECT",
+    "tests_started": false,
+    "disposition": "Reviewed and corrected in protocol 002; new authorization required"
+  }
+}
