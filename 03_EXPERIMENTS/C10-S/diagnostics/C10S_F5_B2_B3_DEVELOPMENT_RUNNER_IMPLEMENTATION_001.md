@@ -3,7 +3,7 @@
 **Record:** C10S-F5-B2-B3-DEVELOPMENT-RUNNER-IMPLEMENTATION-001  
 **Date:** 2026-11-19  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
-**Code commit statically validated:** `1ceca1550606407099df9bc1f2df45ddcd6e2ebb`  
+**Code commit statically validated:** `cdd8617f13296556fd5eb463834fb60c0f051f7c`  
 **Status:** IMPLEMENTED / STATIC VALIDATION PASS / NUMERICAL EXECUTION NOT AUTHORIZED
 
 ## 1. Scope fixed by the frozen specification
@@ -78,8 +78,8 @@ The only committed authorization artefact is a DRAFT template. No approved autho
 
 ## 6. Static validation
 
-- Workflow: `44608692364`
-- Exact commit: `1ceca1550606407099df9bc1f2df45ddcd6e2ebb`
+- Workflow: `44609322947`
+- Exact commit: `cdd8617f13296556fd5eb463834fb60c0f051f7c`
 - Hash-locked dependencies: PASS
 - Compilation: PASS
 - Deterministic comparator/oracle suite: **168 tests PASS**
