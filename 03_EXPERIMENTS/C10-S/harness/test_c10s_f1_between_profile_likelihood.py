@@ -9,6 +9,7 @@ from c10s_f1_between_profile_likelihood import (
     f1_profile_loglik,
     f1_profile_nuisance_optimizer_diagnostic,
     f1_profile_nuisance_stability_diagnostic,
+    _scan_score_stationary_points,
 )
 
 
@@ -113,6 +114,29 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertGreaterEqual(result.stationary_points, 1)
         self.assertIsNotNone(result.absolute_loglik_difference)
         self.assertLessEqual(result.absolute_loglik_difference, 1e-7)
+
+    def test_score_scan_detects_tangential_root_without_sign_change(self):
+        roots, kinds, tangencies, unresolved = _scan_score_stationary_points(
+            lambda x: (x - 0.125) ** 2,
+            lambda x: 2.0 * (x - 0.125),
+            lo=-1.0, hi=1.0, grid_points=81,
+        )
+        self.assertEqual(len(roots), 1)
+        self.assertAlmostEqual(roots[0], 0.125, places=9)
+        self.assertEqual(kinds, ("TANGENTIAL_STATIONARY_NO_LOCAL_EXTREMUM",))
+        self.assertEqual(tangencies, 1)
+        self.assertEqual(unresolved, 0)
+
+    def test_score_scan_classifies_local_maximum_and_minimum(self):
+        roots, kinds, tangencies, unresolved = _scan_score_stationary_points(
+            lambda x: (x + 0.4) * (0.3 - x),
+            lambda x: -2.0 * x - 0.1,
+            lo=-1.0, hi=1.0, grid_points=101,
+        )
+        self.assertEqual(len(roots), 2)
+        self.assertEqual(kinds, ("LOCAL_MINIMUM", "LOCAL_MAXIMUM"))
+        self.assertEqual(tangencies, 0)
+        self.assertEqual(unresolved, 0)
 
     def test_multi_resolution_stability_records_full_grid_span_cross_product(self):
         result = f1_profile_nuisance_stability_diagnostic(
