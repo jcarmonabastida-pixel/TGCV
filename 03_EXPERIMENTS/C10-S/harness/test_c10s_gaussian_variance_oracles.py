@@ -76,6 +76,32 @@ class GaussianVarianceOracleTests(unittest.TestCase):
         self.assertTrue(math.isfinite(lr))
         self.assertGreaterEqual(lr, 0.0)
 
+
+    def test_profile_mcse_matches_independent_dense_feasible_grid(self):
+        m, r, msw, world_var = 10, 5, 1.0, 1.2
+        target_m, target_r, mcse = 10, 8, 0.35
+        profile = gaussian_profile_loglik_mcse(
+            m=m, r=r, msw=msw, world_mean_variance=world_var,
+            target_m=target_m, target_r=target_r, mcse=mcse,
+        )
+        df_w, df_b = m * (r - 1), m - 1
+        ss_w, ss_b = df_w * msw, df_b * world_var
+        target_variance = target_m * mcse * mcse
+        coefficient = (1.0 / target_r) - (1.0 / r)
+        upper = target_variance * target_r
+        grid_loglik = []
+        for index in range(1, 20001):
+            within = upper * index / 20000
+            tau = target_variance - within * coefficient
+            if within > 0.0 and tau >= within / r and tau > 0.0:
+                ll = (
+                    -0.5 * df_w * math.log(within) - ss_w / (2.0 * within)
+                    -0.5 * df_b * math.log(tau) - ss_b / (2.0 * tau)
+                )
+                grid_loglik.append(ll)
+        self.assertTrue(grid_loglik)
+        self.assertAlmostEqual(profile, max(grid_loglik), delta=2e-6)
+
     def test_profile_mcse_rejects_invalid_target_support(self):
         with self.assertRaises(GaussianOracleError):
             gaussian_profile_loglik_mcse(
