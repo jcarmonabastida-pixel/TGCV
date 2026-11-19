@@ -223,12 +223,20 @@ def f1_profile_between_confidence_set(
             or diagnostic.optimizer_error is not None
             or not polynomial.positive_roots
         )
-        root_logs = tuple(math.log(root) for root in polynomial.positive_roots)
+        scale = max(
+            within, s2_means, tau,
+            *(abs(value) for value in polynomial.positive_critical_points),
+        )
+        normalized = _normalize_scaled_polynomial(
+            polynomial.coefficients_ascending, scale,
+        )
+        critical_x = tuple(sorted(
+            value / scale for value in polynomial.positive_critical_points
+        ))
         local_maxima = 0
         unresolved_types = 0
 
-        def nuisance_score(log_s: float) -> float:
-            s = math.exp(log_s)
+        def nuisance_score_at_s(s: float) -> float:
             u = s / r
             q = tau + u
             return (
@@ -237,32 +245,56 @@ def f1_profile_between_confidence_set(
                 +0.5 * df_b * s2_means * u / (q * q)
             )
 
-        for index, root_log in enumerate(root_logs):
-            gaps = []
-            if index:
-                gaps.append(root_log - root_logs[index - 1])
-            if index + 1 < len(root_logs):
-                gaps.append(root_logs[index + 1] - root_log)
-            max_delta = min(gaps) / 4.0 if gaps else 1e-2
-            delta = min(1e-3, max_delta)
-            left_score = right_score = 0.0
-            resolved = False
-            for _ in range(12):
-                if delta <= 0.0:
-                    break
-                left_score = nuisance_score(root_log - delta)
-                right_score = nuisance_score(root_log + delta)
-                if (math.isfinite(left_score) and math.isfinite(right_score)
-                        and left_score != 0.0 and right_score != 0.0):
-                    resolved = True
-                    break
-                delta = min(delta * 2.0, max_delta)
-            if not resolved:
+        for root in polynomial.positive_roots:
+            root_x = root / scale
+            if any(abs(root_x - value) <= 1e-10 * max(1.0, root_x)
+                   for value in critical_x):
+                # A resolved repeated/tangential root does not change score
+                # sign and is not a local maximum or minimum.
+                if any(abs(root - value) <= 1e-8 * max(1.0, root)
+                       for value in polynomial.tangential_roots):
+                    continue
                 unresolved_types += 1
-            elif left_score > 0.0 > right_score:
+                continue
+            left_critical = max(
+                (value for value in critical_x if value < root_x),
+                default=0.0,
+            )
+            right_critical = min(
+                (value for value in critical_x if value > root_x),
+                default=None,
+            )
+            left_probe = (left_critical + root_x) / 2.0
+            right_probe = (
+                (root_x + right_critical) / 2.0
+                if right_critical is not None else root_x * 2.0
+            )
+            left_polynomial = _polyval_ascending(normalized, left_probe)
+            right_polynomial = _polyval_ascending(normalized, right_probe)
+            left_s, right_s = scale * left_probe, scale * right_probe
+            if (not all(math.isfinite(value) and value > 0.0
+                        for value in (left_s, right_s))
+                    or not math.isfinite(left_polynomial)
+                    or not math.isfinite(right_polynomial)
+                    or left_polynomial == 0.0 or right_polynomial == 0.0):
+                unresolved_types += 1
+                continue
+            left_score, right_score = (
+                nuisance_score_at_s(left_s), nuisance_score_at_s(right_s),
+            )
+            # The exact score numerator polynomial and the independently
+            # evaluated likelihood score must have the same sign.
+            if (not math.isfinite(left_score) or not math.isfinite(right_score)
+                    or (left_score > 0) != (left_polynomial > 0)
+                    or (right_score > 0) != (right_polynomial > 0)):
+                unresolved_types += 1
+                continue
+            if left_polynomial > 0.0 > right_polynomial:
                 local_maxima += 1
-            # A negative-to-positive crossing is a local minimum. Equal
-            # signs identify a resolved tangential stationary point.
+            elif left_polynomial < 0.0 < right_polynomial:
+                pass  # local minimum
+            else:
+                unresolved_types += 1
         if local_maxima != 1 or unresolved_types:
             failure = True
         if failure:
