@@ -201,6 +201,8 @@ class F5DevelopmentCalibrationTests(unittest.TestCase):
             self.assertEqual(record["B1000"]["mcse_scope"], "EXPLICIT_ABSTENTION_OUT_OF_SCOPE_NOT_ADJUDICATED")
             self.assertIn("lower_rank_uncertainty", record["B1000"]["within_endpoint_diagnostics"])
             self.assertEqual(sensitivity["coverage_adjudication"], "NOT_USED_B3_IS_DIAGNOSTIC_ONLY")
+            self.assertIn("B1000_within_lower", sensitivity["endpoint_rank_uncertainty_widths"])
+            self.assertIn("B4000_between_upper", sensitivity["endpoint_rank_uncertainty_widths"])
             self.assertTrue((Path(tmp) / "b3.jsonl").is_file())
 
     def test_runner_rejects_scope_before_any_bank_work(self):
