@@ -396,3 +396,27 @@ Exact-commit static validation:
 - End-to-end C5 boundary-abstention/profile propagation test: PASS.
 
 No numerical stress, calibration, bootstrap bank, resource preflight, holdout or scientific C10 execution occurred.
+
+
+## 11. Integrated B1 endpoint / low-dispersion / interior-count fixture matrix — 2026-11-19
+
+Historical reconstruction found that all three data-level fixtures already existed individually. Rather than duplicate them, an integrated test now runs each through the same numerical profile, separately profiled boundary likelihoods and audit-record builder.
+
+The shared assertions preserve:
+- finite binomial-limit nuisance profile for all three fixtures;
+- finite two-point endpoint-mixture boundary only for endpoint-only counts;
+- explicit `ZERO_PROBABILITY_INTERIOR_COUNTS` and null two-point likelihood for the low-dispersion and interior-count fixtures;
+- raw maximum over the supplied finite profile grid and descriptive differences to each available boundary;
+- profile curvature vector and profile-status propagation;
+- optimizer convergence status separately from the always-`INDETERMINATE` identification disposition;
+- strict JSON serialization.
+
+Exact-commit static validation:
+- Code/test commit: `62c5481f1a4cb5009ebdc9f32eaa928b28da7988`
+- Run: `44595785248`
+- Hash-locked dependencies: PASS
+- Compile: PASS
+- Deterministic suite: **143 tests PASS**
+- Integrated three-regime fixture-matrix test: PASS.
+
+No production estimation, C5 interval, selection or abstention rule was changed. The finite-grid profile remains `NUMERICAL_PROFILE_UNCERTIFIED`; the boundary differences do not certify a global likelihood maximum or statistical identification. No calibration, bootstrap bank, resource preflight, holdout or scientific C10 execution occurred.
