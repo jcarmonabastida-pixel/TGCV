@@ -667,19 +667,22 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
                 ROWS, family="F1", likelihood_ratio_cutoff=0.0,
             )
 
-    def test_near_zero_within_sum_fails_closed_before_unbounded_diagnostic_expansion(self):
-        means = (-1.0, -1.0, 1.0, 1.0)
-        deviations = (-1.5, -0.5, 0.5, 1.5)
-        rows = tuple(
-            tuple(mean + 1e-150 * value for value in deviations)
-            for mean in means
+    def test_near_zero_within_variance_scale_remains_equivariant(self):
+        factor = 1e-100
+        scaled = tuple(tuple(factor * value for value in row) for row in ROWS)
+        result = f1_profile_between_confidence_set(
+            scaled, family="F1", likelihood_ratio_cutoff=3.841458820694124,
         )
-        with self.assertRaisesRegex(
-            F1ProfileError, "PROFILE_NUISANCE_DIAGNOSTIC_RANGE_EXCEEDS_LIMIT",
-        ):
+        low, high = result.confidence_components[0]
+        self.assertGreater(high, low)
+        self.assertTrue(math.isfinite(high))
+        self.assertAlmostEqual(
+            low / (factor * factor),
             f1_profile_between_confidence_set(
-                rows, family="F1", likelihood_ratio_cutoff=3.841458820694124,
-            )
+                ROWS, family="F1", likelihood_ratio_cutoff=3.841458820694124,
+            ).confidence_components[0][0],
+            delta=1e-8,
+        )
 
     def test_upper_endpoint_requires_a_bracket_and_abstains_when_expansion_budget_is_exhausted(self):
         with self.assertRaisesRegex(
