@@ -25,6 +25,17 @@ class F1ProfileError(ValueError):
 
 
 @dataclass(frozen=True)
+class F1NuisanceOptimizerDiagnostic:
+    status: str
+    bounded_optimizer_loglik: float | None
+    independent_loglik: float | None
+    absolute_loglik_difference: float | None
+    stationary_points: int
+    independent_boundary_sensitive: bool
+    optimizer_error: str | None
+
+
+@dataclass(frozen=True)
 class F1ProfileSet:
     likelihood_ratio_cutoff: float
     mle_between_variance: float
@@ -181,4 +192,110 @@ def f1_profile_between_confidence_set(
         lower_boundary_included=lower_included,
         upper_endpoint_bracket_expansions=expansions,
         status="PROFILE_LR_INTERVAL_ROOT_SOLVED",
+    )
+
+
+def f1_profile_nuisance_optimizer_diagnostic(
+    rows: Sequence[Sequence[float]], *, between_variance: float,
+    grid_points: int = 241, log_span: float = 36.0,
+    loglik_tolerance: float = 1e-7,
+) -> F1NuisanceOptimizerDiagnostic:
+    """Compare the production bounded optimizer with an independent score-root scan.
+
+    The independent route scans the nuisance score over log(within variance),
+    brackets every detected sign change, solves each stationary point, and
+    compares their likelihoods with the bounded production optimizer. This is
+    a numerical diagnostic only: it does not select an LR cutoff or certify
+    interval coverage.
+    """
+    if isinstance(between_variance, bool) or not isinstance(between_variance, (int, float)):
+        raise F1ProfileError("BETWEEN_VARIANCE_MUST_BE_NUMERIC")
+    tau = float(between_variance)
+    if not math.isfinite(tau) or tau < 0.0:
+        raise F1ProfileError("BETWEEN_VARIANCE_MUST_BE_FINITE_AND_NONNEGATIVE")
+    if type(grid_points) is not int or grid_points < 41:
+        raise F1ProfileError("NUISANCE_GRID_POINTS_MUST_BE_INTEGER_GE_41")
+    if (isinstance(log_span, bool) or not isinstance(log_span, (int, float))
+            or not math.isfinite(log_span) or log_span <= 0.0):
+        raise F1ProfileError("NUISANCE_LOG_SPAN_MUST_BE_FINITE_AND_POSITIVE")
+    if (isinstance(loglik_tolerance, bool)
+            or not isinstance(loglik_tolerance, (int, float))
+            or not math.isfinite(loglik_tolerance) or loglik_tolerance <= 0.0):
+        raise F1ProfileError("NUISANCE_LOGLIK_TOLERANCE_MUST_BE_FINITE_AND_POSITIVE")
+
+    r, df_w, df_b, ssw, s2_means, within = _sufficient_statistics(rows)
+    scale = max(within, s2_means, tau, 1e-12)
+    center = max(scale, 1e-300)
+    lo, hi = math.log(center) - float(log_span), math.log(center) + float(log_span)
+
+    def loglik(log_s: float) -> float:
+        s = math.exp(log_s)
+        q = tau + s / r
+        return (
+            -0.5 * df_w * (_LOG2PI + log_s)
+            -0.5 * ssw / s
+            -0.5 * df_b * (_LOG2PI + math.log(q))
+            -0.5 * df_b * s2_means / q
+        )
+
+    def score(log_s: float) -> float:
+        s = math.exp(log_s)
+        q = tau + s / r
+        return (
+            -0.5 * df_w + 0.5 * ssw / s
+            -0.5 * df_b * (s / r) / q
+            +0.5 * df_b * s2_means * (s / r) / (q * q)
+        )
+
+    xs = [lo + (hi - lo) * i / (grid_points - 1) for i in range(grid_points)]
+    roots = []
+    for left, right in zip(xs, xs[1:]):
+        fl, fr = score(left), score(right)
+        if fl == 0.0:
+            roots.append(left)
+        if fl * fr < 0.0:
+            roots.append(brentq(score, left, right, xtol=1e-12, rtol=1e-12))
+    if score(hi) == 0.0:
+        roots.append(hi)
+    roots = sorted({round(value, 12) for value in roots})
+    candidates = [(loglik(value), value) for value in roots]
+    if not candidates:
+        independent_value = None
+        independent_boundary = True
+    else:
+        independent_value, independent_arg = max(candidates)
+        independent_boundary = (
+            independent_arg - lo <= 1e-7 or hi - independent_arg <= 1e-7
+        )
+
+    try:
+        bounded_value = _profile_at_tau(
+            tau, r=r, df_w=df_w, df_b=df_b, ssw=ssw,
+            s2_means=s2_means, scale=scale,
+        )
+        optimizer_error = None
+    except F1ProfileError as exc:
+        bounded_value = None
+        optimizer_error = str(exc)
+
+    if bounded_value is None or independent_value is None:
+        status = "OPTIMIZATION_INSUFFICIENT"
+        difference = None
+    else:
+        difference = abs(bounded_value - independent_value)
+        if independent_boundary:
+            status = "OPTIMIZATION_BOUNDARY_SENSITIVE"
+        elif difference > float(loglik_tolerance):
+            status = "OPTIMIZATION_DISCORDANT"
+        else:
+            status = "OPTIMIZATION_CONCORDANT"
+
+    return F1NuisanceOptimizerDiagnostic(
+        status=status,
+        bounded_optimizer_loglik=bounded_value,
+        independent_loglik=independent_value,
+        absolute_loglik_difference=difference,
+        stationary_points=len(roots),
+        independent_boundary_sensitive=independent_boundary,
+        optimizer_error=optimizer_error,
     )
