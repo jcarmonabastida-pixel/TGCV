@@ -1,7 +1,7 @@
 # C10-S — F1 exact/pivotal candidate specification
 
 **Record:** C10S-F1-EXACT-PIVOTAL-CANDIDATE-SPEC-001  
-**Status:** RESEARCH DESIGN — NON-CANONICAL / FORMULAS SPECIFIED / NOT IMPLEMENTED OR EXECUTED  
+**Status:** RESEARCH DESIGN — NON-CANONICAL / FORMULAS SPECIFIED / ADDITIVE CANDIDATE IMPLEMENTED / TESTS NOT RUN  
 **Date:** 2026-11-19  
 **Applies to:** F1 balanced Gaussian nested random-intercept fixture only  
 **Baseline preserved:** C10S-NESTED-MR-BOOTSTRAP-VALIDATION-001 v002; TGCV_NESTED_MR_BOOTSTRAP 1.2  
@@ -130,11 +130,11 @@ F1 exactness is conditional on the declared balanced Gaussian random-intercept D
 | Exact within interval | SPECIFIED |
 | Conservative raw-between interval | SPECIFIED |
 | Joint MCSE confidence-set projection | SPECIFIED |
-| Candidate implementation | NOT IMPLEMENTED |
-| Deterministic tests | NOT RUN |
+| Candidate implementation | IMPLEMENTED ADDITIVELY: `03_EXPERIMENTS/C10-S/harness/c10s_f1_exact_pivotal_candidate.py` |
+| Deterministic tests | AUTHORED: `03_EXPERIMENTS/C10-S/harness/test_c10s_f1_exact_pivotal_candidate.py`; NOT RUN |
 | Coverage calibration | NOT AUTHORIZED |
 | Independent holdout | NOT AUTHORIZED |
 | Tier B | NOT AUTHORIZED |
 | C10 scientific execution | NOT AUTHORIZED |
 
-**Next implementation operation:** locate and inspect the existing common-interface and oracle source files on this research branch, then implement C1 as an additive candidate using their actual paths and contracts. Do not create a duplicate adapter or infer paths from this document. Technical test execution and workflow dispatch remain unauthorized; static review only until the mission authorization explicitly changes.
+**Implementation note (2026-11-19):** C1 was added as `c10s_f1_exact_pivotal_candidate.py` using the existing `c10s_variance_comparison_interface.py`; no duplicate adapter was created. Deterministic tests were authored in `test_c10s_f1_exact_pivotal_candidate.py` but have not been run. The implementation uses the existing interface's pooled within estimate and observed variance of world means, preserves raw between endpoints, and obtains the target-MCSE interval by evaluating the vertices of the Bonferroni rectangle intersected with the physical parameter space. This is a candidate implementation, not yet reviewed by an independent execution or test run. The next operation is static mathematical/code review and integration-contract reconciliation. Technical test execution, workflow dispatch, coverage calibration and scientific execution remain unauthorized.
