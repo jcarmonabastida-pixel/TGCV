@@ -55,6 +55,31 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
             bootstrap_replicates=60, bootstrap_seed=20261119,
         )
 
+    def test_profile_diagnostics_can_be_disabled_without_changing_candidate_intervals(self):
+        f1 = compare_dataset(
+            f1_rows(), dataset_id="F1-NO-PROFILE", family="F1",
+            target_m=20, target_r=8,
+            baseline_bootstrap_replicates=100, baseline_bootstrap_seed=19,
+            include_profile_diagnostics=False,
+        )
+        f1_diagnostics = dict(f1.candidates[0].diagnostics)
+        self.assertNotIn("between_profile_status", f1_diagnostics)
+        self.assertIsNotNone(f1.candidates[0].comparison.within_interval)
+        self.assertIsNotNone(f1.candidates[0].comparison.between_interval)
+
+        f5 = compare_dataset(
+            f5_rows(), dataset_id="F5-NO-PROFILE", family="F5",
+            target_m=10, target_r=5,
+            baseline_bootstrap_replicates=100, baseline_bootstrap_seed=23,
+            bootstrap_replicates=60, bootstrap_seed=20261119,
+            include_profile_diagnostics=False,
+        )
+        f5_diagnostics = dict(f5.candidates[0].diagnostics)
+        self.assertNotIn("mcse_profile_status", f5_diagnostics)
+        self.assertIsNotNone(f5.candidates[0].comparison.within_interval)
+        self.assertIsNotNone(f5.candidates[0].comparison.between_interval)
+        self.assertIsNone(f5.candidates[0].comparison.mcse_interval)
+
     def test_f1_routes_to_c1_and_preserves_frozen_c0_interval_baseline(self):
         result = self._f1()
         self.assertEqual(result.family, "F1")
