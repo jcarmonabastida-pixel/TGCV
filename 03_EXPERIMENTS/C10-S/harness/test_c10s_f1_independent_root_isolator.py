@@ -67,6 +67,11 @@ class IndependentRootIsolatorTests(unittest.TestCase):
             "EXACT_RATIONALIZATION_OF_INPUT_VALUES",
         )
 
+    def test_lower_bound_beyond_cauchy_bound_certifies_empty_set(self):
+        result = isolate_real_roots((-1, 1), lower=5)
+        self.assertEqual(result.status, "ROOTS_ISOLATED")
+        self.assertEqual(result.roots, ())
+
     def test_constant_polynomial(self):
         result = isolate_real_roots((7,))
         self.assertEqual(result.status, "NO_ROOTS_CONSTANT_POLYNOMIAL")
