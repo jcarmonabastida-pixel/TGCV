@@ -2,11 +2,11 @@
 
 **Record:** C10S-POST-HOLDOUT-F1-F5-DETERMINISTIC-CONTROLS-IMPLEMENTATION-001  
 **Date:** 2026-11-19  
-**Status:** PARTIAL IMPLEMENTATION / 117-TEST STATIC SUITE PASS / NUMERICAL DEVELOPMENT EXECUTION NOT AUTHORIZED  
+**Status:** PARTIAL IMPLEMENTATION / 119-TEST STATIC SUITE PASS / NUMERICAL DEVELOPMENT EXECUTION NOT AUTHORIZED  
 **Frozen design:** `C10S_POST_HOLDOUT_F1_F5_DEVELOPMENT_CALIBRATION_SPEC_001.md` v1.0  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
 **Initial implementation commit:** `e7920543e8c6fb19582c62446381df7cb1d95e1a`  
-**Latest validated commit:** `c8d9706c0b3424a9ae59922593356c58694834bd`  
+**Latest validated commit:** `b7127b29db6e2a2a6f6c2bfdc8f998a5014f694e`  
 **Execution authorization:** NONE
 
 ---
@@ -291,3 +291,36 @@ This establishes deterministic numerical-path behaviour for one *constructed exa
 Validated research branch head: `c8d9706c0b3424a9ae59922593356c58694834bd`. Canonical `main` remained `e22928eb79adb5bc74295967a45b9c440b78f849`.
 
 **Disposition:** one actual repeated-root data construction now traverses the F1 polynomial diagnostic, nuisance classification and interval profile callback. A1 remains OPEN pending independent score/likelihood verification and the remaining frozen adversarial cases. B1/F5 weak-identification/boundary classification and shared schema/provenance checks also remain open. No resource preflight or numerical development execution is authorized.
+
+
+## 12. Independent finite-difference likelihood oracle for the F1 score polynomial — 2026-11-19
+
+Two further deterministic tests were added to close part of the independent-oracle requirement without invoking any simulation or calibration bank.
+
+1. **Independent likelihood derivative cross-check.** The test reconstructs the balanced-Gaussian sufficient statistics directly from the raw rows using a separate implementation in the test module. It then evaluates the explicit nuisance log-likelihood formula and obtains its derivative with a central finite difference in \\(\log s\\). That numerical derivative is compared with the score recovered from the production score-polynomial coefficients, \\(P(s)/(2s(\tau+s/R)^2)\\), at six positive within-variance values for both an ordinary fixture and the constructed repeated-root fixture.
+2. **Repeated-root derivative check.** At the constructed double score root, an independent central finite difference of the explicit likelihood verifies a zero derivative within the declared numerical tolerance.
+
+The oracle does not call the production nuisance score, coefficient constructor, or production likelihood function. It does share the statistical model formula, as it must, but uses a separately implemented raw-row statistic reconstruction and finite-difference derivative. This is a numerical cross-check, not a formal proof of the likelihood identity or an independent external review.
+
+### Static validation
+
+- Workflow: `.github/workflows/c10-s-nested-mr-calibration-comparator-static.yml`
+- Run ID: `44586276957`
+- Exact validated code commit: `b7127b29db6e2a2a6f6c2bfdc8f998a5014f694e`
+- Conclusion: `SUCCESS`
+- Hash-locked dependency installation: PASS
+- Compile: PASS
+- Test suite: **119 tests passed**
+- The separate F1 numerical-stress job for this push concluded `SKIPPED` under its authorization condition. No stress bank, DGP bank, Monte Carlo calibration, bootstrap simulation, resource preflight or scientific C10 execution was performed.
+
+### Exact identities
+
+| Artifact | Git blob SHA |
+|---|---|
+| F1 profile-likelihood implementation | `87de3f15468482327fa117b050fdd54dac13ade5` |
+| F1 profile-likelihood tests and independent oracle | `2c775e89130284b016f320875b60df4bb08d3f5a` |
+| Frozen development/calibration specification v1.0 | `d1c8bae882dc2e4cd0e1caae29609561b9ebac68` |
+
+Validated code branch head: `b7127b29db6e2a2a6f6c2bfdc8f998a5014f694e`. Canonical `main` remained `e22928eb79adb5bc74295967a45b9c440b78f849`.
+
+**Disposition:** the score-polynomial/likelihood derivative correspondence now has an independent deterministic finite-difference cross-check over ordinary and repeated-root fixtures. The F1 work remains OPEN for near-degenerate and boundary-contact interval-path cases and broader adversarial roster checks. F5 weak-identification/boundary classifications and shared schema/provenance checks also remain before the separately authorized resource preflight. Numerical development execution remains unauthorized.
