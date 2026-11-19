@@ -481,5 +481,38 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         json.dumps(stability, allow_nan=False)
 
 
+    def test_f5_compare_dataset_preserves_missing_optimizer_audit_as_per_dataset_error(self):
+        with patch(
+            "c10s_fitted_beta_binomial_bootstrap.audit_beta_binomial_count_fit",
+            side_effect=ValueError("FIXTURE_OPTIMIZER_AUDIT_FAILURE"),
+        ):
+            record = compare_dataset(
+                f5_rows(), dataset_id="F5-OPTIMIZER-AUDIT-FAILURE",
+                family="F5", target_m=10, target_r=5,
+                baseline_bootstrap_replicates=100, baseline_bootstrap_seed=23,
+                bootstrap_replicates=60, bootstrap_seed=20261119,
+                include_profile_diagnostics=False,
+                include_f5_concentration_profile_audit=True,
+                f5_profile_log_concentration_grid=(-4.0, -2.0, 0.0, 2.0, 4.0),
+            )
+        diagnostic_map = dict(record.candidates[0].diagnostics)
+        self.assertEqual(diagnostic_map["likelihood_optimizer_audit_json"], "null")
+        self.assertEqual(
+            diagnostic_map["likelihood_optimizer_audit_error"],
+            "ValueError:FIXTURE_OPTIMIZER_AUDIT_FAILURE",
+        )
+        self.assertEqual(diagnostic_map["concentration_profile_audit_json"], "null")
+        self.assertEqual(
+            diagnostic_map["concentration_profile_audit_error"],
+            "F5LikelihoodDiagnosticError:OPTIMIZER_AUDIT_UNAVAILABLE",
+        )
+        stability = json.loads(diagnostic_map["concentration_profile_stability_json"])
+        self.assertEqual(stability["status"], "NUMERICAL_STABILITY_NOT_ADJUDICATED")
+        self.assertEqual(diagnostic_map["concentration_profile_stability_error"], "NONE")
+        self.assertIsNotNone(record.candidates[0].comparison.within_interval)
+        self.assertIsNotNone(record.candidates[0].comparison.between_interval)
+        json.dumps(stability, allow_nan=False)
+
+
 if __name__ == "__main__":
     unittest.main()
