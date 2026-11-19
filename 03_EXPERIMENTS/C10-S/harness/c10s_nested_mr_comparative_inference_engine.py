@@ -63,6 +63,8 @@ def _f5_profile_diagnostic(
             else format(result.maximizing_concentration, ".17g")
         )),
         ("mcse_profile_interval", "NOT_EMITTED_NO_LR_CUTOFF_SELECTED"),
+        *tuple((f"mcse_profile_{key}", value)
+               for key, value in result.optimizer_diagnostics),
     )
 
 
