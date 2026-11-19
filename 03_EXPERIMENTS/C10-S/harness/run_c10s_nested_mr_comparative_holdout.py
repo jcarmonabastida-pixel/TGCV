@@ -290,6 +290,142 @@ def run_holdout(
     }
 
 
+
+def _atomic_json(path: Path, value: Any) -> str:
+    """Atomically persist canonical JSON and return its SHA-256."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\\n"
+    temporary = path.with_name(path.name + ".tmp")
+    temporary.write_text(payload, encoding="utf-8")
+    temporary.replace(path)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def run_holdout_checkpointed(
+    checkpoint_dir: Path, *,
+    code_commit: str,
+    protocol_sha256: str,
+    source_inventory: dict[str, str],
+    specs: Iterable[FixtureSpec] | None = None,
+    k: int = K_PER_CELL,
+    c0_b: int = C0_BOOTSTRAP_B,
+    c5_b: int = C5_BOOTSTRAP_B,
+) -> dict[str, Any]:
+    """Run/resume only whole verified cells; incompatible checkpoints fail closed.
+
+    A cell is committed atomically only after all K datasets and its adjudication
+    are complete. An interrupted cell is recomputed from replicate zero. No
+    partial cell records are ever merged into a later run.
+    """
+    if not isinstance(code_commit, str) or len(code_commit) != 40:
+        raise HoldoutRunnerError("FULL_CODE_COMMIT_REQUIRED")
+    if not isinstance(protocol_sha256, str) or len(protocol_sha256) != 64:
+        raise HoldoutRunnerError("PROTOCOL_SHA256_REQUIRED")
+    if not source_inventory or any(
+        not isinstance(name, str) or not isinstance(digest, str) or len(digest) != 64
+        for name, digest in source_inventory.items()
+    ):
+        raise HoldoutRunnerError("SOURCE_HASH_INVENTORY_REQUIRED")
+    selected = tuple(tier_a_specs() if specs is None else specs)
+    by_id = {spec.cell_id: spec for spec in selected}
+    if len(by_id) != len(selected):
+        raise HoldoutRunnerError("DUPLICATE_CELL_SPEC")
+    if set(by_id) != set(EXPECTED_CELLS):
+        raise HoldoutRunnerError("HOLDOUT_REQUIRES_EXACT_EIGHT_CELL_ROSTER")
+    selected = tuple(by_id[cell_id] for cell_id in EXPECTED_CELLS)
+    config = {
+        "schema": "TGCV-C10S-COMPARATIVE-HOLDOUT-CHECKPOINT-001",
+        "protocol_id": PROTOCOL_ID,
+        "protocol_version": PROTOCOL_VERSION,
+        "protocol_sha256": protocol_sha256,
+        "code_commit": code_commit,
+        "source_inventory": dict(sorted(source_inventory.items())),
+        "seed_schedule_id": SEED_SCHEDULE_ID,
+        "cells": [spec.manifest() for spec in selected],
+        "k_per_cell": k,
+        "c0_bootstrap_replicates": c0_b,
+        "c5_bootstrap_replicates": c5_b,
+    }
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+    index_path = checkpoint_dir / "checkpoint_index.json"
+    expected_config_hash = deterministic_result_digest(config)
+    completed: dict[str, dict[str, Any]] = {}
+    if index_path.exists():
+        try:
+            index = json.loads(index_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as exc:
+            raise HoldoutRunnerError("CHECKPOINT_INDEX_UNREADABLE") from exc
+        if index.get("config_sha256") != expected_config_hash or index.get("config") != config:
+            raise HoldoutRunnerError("CHECKPOINT_CONFIGURATION_MISMATCH")
+        for cell_id, entry in index.get("completed_cells", {}).items():
+            result_path = checkpoint_dir / entry["file"]
+            if not result_path.is_file() or _file_sha256(result_path) != entry.get("sha256"):
+                raise HoldoutRunnerError(f"CHECKPOINT_CELL_HASH_MISMATCH:{cell_id}")
+            try:
+                cell_result = json.loads(result_path.read_text(encoding="utf-8"))
+            except (OSError, ValueError) as exc:
+                raise HoldoutRunnerError(f"CHECKPOINT_CELL_UNREADABLE:{cell_id}") from exc
+            if (
+                cell_result.get("cell", {}).get("cell_id") != cell_id
+                or cell_result.get("datasets_completed") != k
+                or cell_result.get("protocol_id") != PROTOCOL_ID
+                or cell_result.get("protocol_version") != PROTOCOL_VERSION
+                or len(cell_result.get("records", [])) != k
+                or len({record.get("dataset_id") for record in cell_result.get("records", [])}) != k
+            ):
+                raise HoldoutRunnerError(f"CHECKPOINT_CELL_CONTRACT_MISMATCH:{cell_id}")
+            completed[cell_id] = cell_result
+    for spec in selected:
+        if spec.cell_id in completed:
+            continue
+        cell_result = run_comparative_cell(spec, k=k, c0_b=c0_b, c5_b=c5_b)
+        if cell_result["datasets_completed"] != k:
+            raise HoldoutRunnerError(f"INCOMPLETE_CELL:{spec.cell_id}")
+        cell_file = f"{spec.cell_id}.cell.json"
+        cell_path = checkpoint_dir / cell_file
+        digest = _atomic_json(cell_path, cell_result)
+        completed[spec.cell_id] = cell_result
+        prior_index = {
+            "schema": config["schema"],
+            "config": config,
+            "config_sha256": expected_config_hash,
+            "completed_cells": {},
+        }
+        if index_path.exists():
+            prior_index = json.loads(index_path.read_text(encoding="utf-8"))
+        prior_index["completed_cells"][spec.cell_id] = {
+            "file": cell_file,
+            "sha256": digest,
+            "datasets_completed": k,
+            "record_count": len(cell_result["records"]),
+        }
+        _atomic_json(index_path, prior_index)
+    ordered_cells = [completed[cell_id] for cell_id in EXPECTED_CELLS]
+    return {
+        "protocol_id": PROTOCOL_ID,
+        "protocol_version": PROTOCOL_VERSION,
+        "protocol_sha256": protocol_sha256,
+        "code_commit": code_commit,
+        "source_inventory": dict(sorted(source_inventory.items())),
+        "seed_schedule_id": SEED_SCHEDULE_ID,
+        "k_per_cell": k,
+        "c0_bootstrap_replicates": c0_b,
+        "c5_bootstrap_replicates": c5_b,
+        "cell_count": len(ordered_cells),
+        "total_datasets": sum(cell["datasets_completed"] for cell in ordered_cells),
+        "cells": ordered_cells,
+        "checkpoint_index_sha256": _file_sha256(index_path),
+        "status": "COMPUTED_NOT_AUTHORIZED_NOT_EXECUTED_AS_HOLDOUT",
+    }
+
 def deterministic_result_digest(result: dict[str, Any]) -> str:
     payload = json.dumps(result, sort_keys=True, separators=(",", ":"), allow_nan=False)
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
