@@ -67,6 +67,12 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
                 bootstrap_seed=19,
             )
 
+    def test_no_between_cluster_count_variation_is_not_misreported_as_finite_fit(self):
+        with self.assertRaisesRegex(
+            BetaBinomialFitError, "NO_BETWEEN_CLUSTER_COUNT_VARIATION_BOUNDARY",
+        ):
+            fit_beta_binomial_counts((2, 2, 2, 2, 2), 5)
+
     def test_invalid_count_support_fails_closed(self):
         for counts, r in (((0, 1), 1), ((0, 3), 2), ((0.5, 1), 2), ((0,), 2)):
             with self.subTest(counts=counts, r=r), self.assertRaises(BetaBinomialFitError):
