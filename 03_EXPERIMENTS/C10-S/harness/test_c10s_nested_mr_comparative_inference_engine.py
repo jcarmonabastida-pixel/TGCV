@@ -68,7 +68,7 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         self.assertIn(("independent_oracle_reconciliation", "PASS_FORMULA_AGREEMENT"), result.candidates[0].diagnostics)
 
     def test_f1_requires_explicit_c0_seed_and_replicates(self):
-        with self.assertRaises(ComparativeEngineError):
+        with self.assertRaises(TypeError):
             compare_dataset(
                 f1_rows(), dataset_id="F1-DATA-001", family="F1",
                 target_m=20, target_r=8,
