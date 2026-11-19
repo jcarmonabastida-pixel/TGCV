@@ -1,25 +1,18 @@
 name: C10-S F1 integrated numerical validation 001
 
 on:
-  workflow_dispatch:
-    inputs:
-      authorization_id:
-        description: Exact approved authorization ID
-        required: true
-        type: string
-      frozen_commit:
-        description: Exact frozen source commit
-        required: true
-        type: string
+  push:
+    branches:
+      - research/c10s-f1-validation-freeze-20261119
+    paths:
+      - .github/workflows/c10s-f1-integrated-validation-001.yml
 
 permissions:
   contents: read
 
 jobs:
   validate-frozen-f1:
-    if: >-
-      ${{ inputs.authorization_id == 'C10S-F1-INTEGRATED-VALIDATION-20261119-01'
-          && inputs.frozen_commit == '0d430adae891b3914475c60334d93e977efc44cc' }}
+    if: github.ref == 'refs/heads/research/c10s-f1-validation-freeze-20261119'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
