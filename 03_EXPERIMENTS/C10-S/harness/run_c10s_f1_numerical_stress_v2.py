@@ -57,6 +57,20 @@ def main() -> int:
     ):
         for record in payload["records"]:
             records.append({"lane": lane, "record": record})
+    expected_counts = {
+        "POLYNOMIAL_STURM_V2": 131,
+        "N3_COVARIANT_V2": 7,
+        "F1_N4_V2": 14,
+    }
+    observed_counts = {
+        lane: sum(item["lane"] == lane for item in records)
+        for lane in expected_counts
+    }
+    if observed_counts != expected_counts or len(records) != 152:
+        raise SystemExit(
+            "V002_RECORD_DENOMINATOR_MISMATCH:"
+            + json.dumps({"expected": expected_counts, "observed": observed_counts})
+        )
     records_bytes = b"".join(canonical_bytes(item) for item in records)
 
     def counts(records_for_lane, field):
