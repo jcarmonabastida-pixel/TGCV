@@ -601,3 +601,83 @@ def beta_binomial_profiled_boundary_likelihoods(
         ),
         interior_count_observations=interior,
     )
+
+
+@dataclass(frozen=True)
+class BetaBinomialProfileAuditRecord:
+    """Separated optimizer, boundary-comparison and profile-shape diagnostics."""
+    optimizer_convergence_status: str
+    identification_status: str
+    profile_status: str
+    profile_point_count: int
+    profile_max_log_likelihood: float | None
+    binomial_boundary_profile_log_likelihood: float
+    two_point_boundary_profile_log_likelihood: float
+    profile_minus_binomial_boundary: float | None
+    profile_minus_two_point_boundary: float | None
+    profile_curvature_values: tuple[float | None, ...]
+    profile_curvature_min: float | None
+    profile_curvature_max: float | None
+
+
+def build_beta_binomial_profile_audit_record(
+    optimizer_audit: BetaBinomialOptimizerAudit,
+    profile_points: Sequence[BetaBinomialProfilePoint],
+    boundary: BetaBinomialProfileBoundaryLikelihoods,
+) -> BetaBinomialProfileAuditRecord:
+    """Combine raw diagnostics without adjudicating statistical identification.
+
+    Profile-vs-boundary differences are descriptive only: the numerical profile
+    is not globally certified, and no scale-aware identification criterion has
+    been adopted. Consequently identification_status is always INDETERMINATE.
+    """
+    points = tuple(profile_points)
+    if not points:
+        raise F5LikelihoodDiagnosticError("PROFILE_AUDIT_REQUIRES_POINTS")
+    if any(not math.isfinite(point.profiled_log_likelihood) for point in points):
+        raise F5LikelihoodDiagnosticError("PROFILE_AUDIT_REQUIRES_FINITE_PROFILE_VALUES")
+    if any(
+        right.log_concentration <= left.log_concentration
+        for left, right in zip(points, points[1:])
+    ):
+        raise F5LikelihoodDiagnosticError("PROFILE_AUDIT_POINTS_MUST_BE_STRICTLY_INCREASING")
+    maximum = max(point.profiled_log_likelihood for point in points)
+    curvatures = tuple(
+        point.profile_log_concentration_curvature for point in points
+    )
+    finite_curvatures = tuple(
+        value for value in curvatures
+        if value is not None and math.isfinite(value)
+    )
+    return BetaBinomialProfileAuditRecord(
+        optimizer_convergence_status=optimizer_audit.status,
+        identification_status="INDETERMINATE",
+        profile_status=(
+            "NUMERICAL_PROFILE_UNCERTIFIED"
+            if all(point.status == "NUMERICAL_PROFILE_UNCERTIFIED" for point in points)
+            else "PROFILE_HAS_BOUNDARY_OR_UNRESOLVED_POINTS"
+        ),
+        profile_point_count=len(points),
+        profile_max_log_likelihood=float(maximum),
+        binomial_boundary_profile_log_likelihood=(
+            boundary.binomial_profile_log_likelihood
+        ),
+        two_point_boundary_profile_log_likelihood=(
+            boundary.two_point_profile_log_likelihood
+        ),
+        profile_minus_binomial_boundary=float(
+            maximum - boundary.binomial_profile_log_likelihood
+        ),
+        profile_minus_two_point_boundary=(
+            float(maximum - boundary.two_point_profile_log_likelihood)
+            if math.isfinite(boundary.two_point_profile_log_likelihood)
+            else math.inf
+        ),
+        profile_curvature_values=curvatures,
+        profile_curvature_min=(
+            min(finite_curvatures) if finite_curvatures else None
+        ),
+        profile_curvature_max=(
+            max(finite_curvatures) if finite_curvatures else None
+        ),
+    )
