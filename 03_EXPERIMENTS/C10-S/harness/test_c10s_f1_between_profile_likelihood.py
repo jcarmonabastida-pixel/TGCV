@@ -84,7 +84,7 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
     def test_zero_boundary_can_be_included(self):
         result = f1_profile_between_confidence_set(
             ROWS,
-            family="F1", likelihood_ratio_cutoff=100.0,
+            family="F1", likelihood_ratio_cutoff=9.0,
         )
         self.assertTrue(result.lower_boundary_included)
         self.assertEqual(result.confidence_components[0][0], 0.0)
