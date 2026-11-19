@@ -226,7 +226,10 @@ def run_comparative_cell(
             "truth": _jsonable(truths[-1]),
         })
 
-    metrics = adjudicate_matched_datasets(comparisons, truths)
+    metrics = [
+        metric for metric in adjudicate_matched_datasets(comparisons, truths)
+        if metric.target in {"within", "between"}
+    ]
     if len(records) != k or len({row["dataset_id"] for row in records}) != k:
         raise HoldoutRunnerError("INCOMPLETE_OR_DUPLICATE_DATASET_DENOMINATOR")
     return {
@@ -238,7 +241,7 @@ def run_comparative_cell(
         "method_roster": sorted(IMPLEMENTED_METHODS[family]),
         "records": records,
         "metrics": [_jsonable(metric) for metric in metrics],
-        "mcse_adjudication": "NON_CONFIRMATORY_DIAGNOSTIC_ONLY",
+        "mcse_adjudication": "NOT_SCORED; C5 MCSE ABSTENTION REMAINS IN RAW COMPARISON RECORDS",
         "status": "COMPUTED_NOT_AUTHORIZED_NOT_EXECUTED_AS_HOLDOUT",
     }
 
