@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import math
 import unittest
+from types import SimpleNamespace
+from unittest.mock import patch
 
 from c10s_beta_binomial_variance_oracles import beta_binomial_f5_reference
 from c10s_f5_beta_binomial_likelihood_diagnostics import (
@@ -322,6 +324,25 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
             build_beta_binomial_profile_audit_record(
                 optimizer, tuple(reversed(points)), boundary,
             )
+
+
+    def test_failed_nuisance_refinement_is_not_misreported_as_boundary(self):
+        with patch(
+            "c10s_f5_beta_binomial_likelihood_diagnostics.minimize_scalar",
+            return_value=SimpleNamespace(success=False, fun=1e9, x=0.0),
+        ):
+            points = beta_binomial_profile_log_concentration(
+                COUNTS, R, (math.log(0.5), 0.0, math.log(2.0)),
+            )
+        self.assertTrue(all(not point.mean_profile_at_bound for point in points))
+        self.assertTrue(all(
+            not point.nuisance_refinement_succeeded for point in points
+        ))
+        self.assertTrue(all(
+            point.status == "NUISANCE_PROFILE_OPTIMIZER_UNRESOLVED"
+            and point.profile_log_concentration_curvature is None
+            for point in points
+        ))
 
 
 if __name__ == "__main__":
