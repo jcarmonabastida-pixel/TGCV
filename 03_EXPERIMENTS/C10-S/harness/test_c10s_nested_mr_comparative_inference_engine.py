@@ -99,6 +99,14 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
             "F5_MCSE_JOINT_BOUNDARY_METHOD_NOT_IMPLEMENTED",
         )
         self.assertIn(("mcse_interval_status", "NOT_IMPLEMENTED_BOUNDARY_AWARE_JOINT_INFERENCE"), candidate.diagnostics)
+        self.assertTrue(any(
+            key == "mcse_profile_optimizer_adjudication"
+            for key, _ in candidate.diagnostics
+        ))
+        self.assertTrue(any(
+            key == "mcse_profile_optimizer_loglik_tolerance"
+            for key, _ in candidate.diagnostics
+        ))
 
     def test_adjudication_reports_all_denominators_and_wilson_limits(self):
         record = self._f1()
