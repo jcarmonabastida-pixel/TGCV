@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import replace
+import json
 import unittest
 
 from c10s_nested_mr_comparative_inference_engine import (
@@ -116,6 +117,16 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         self.assertEqual(result.baseline.method_id, C0_METHOD_ID)
         candidate = result.candidates[0]
         self.assertEqual(candidate.method_id, "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0")
+        diagnostic_map = dict(candidate.diagnostics)
+        audit = json.loads(diagnostic_map["likelihood_optimizer_audit_json"])
+        self.assertEqual(len(audit["starts"]), 3)
+        self.assertTrue(all(item["message"] for item in audit["starts"]))
+        self.assertIn(audit["status"], (
+            "OPTIMIZER_CONCORDANT", "OPTIMIZER_DISCORDANT",
+            "INDEPENDENT_OPTIMIZER_UNRESOLVED",
+            "LIKELIHOOD_CONCORDANT_PARAMETER_DISAGREEMENT",
+        ))
+        self.assertIn("two_point_limit_log_likelihood", audit)
         self.assertIn(("bootstrap_seed", "20261119"), candidate.comparison.provenance)
         self.assertIsNotNone(candidate.comparison.within_interval)
         self.assertIsNotNone(candidate.comparison.between_interval)
