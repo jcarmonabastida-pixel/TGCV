@@ -137,6 +137,10 @@ def _f1_profile_diagnostic(
         root_status = "ROOTS_UNRESOLVED"
         root_reason = f"ROOT_ADJUDICATION_ERROR:{exc}"
         root_counts = ("", "", "")
+        root_domain = "(0,+infinity)"
+        zero_factor_multiplicity = ""
+        boundary_root_text = ""
+        isolator_interval_text = ""
     else:
         root_status = root_adjudication.status
         root_reason = root_adjudication.reason
@@ -144,6 +148,18 @@ def _f1_profile_diagnostic(
             str(root_adjudication.f1_root_count),
             str(root_adjudication.independent_root_count),
             str(root_adjudication.matched_root_count),
+        )
+        root_domain = root_adjudication.root_domain
+        zero_factor_multiplicity = str(
+            root_adjudication.removed_zero_factor_multiplicity,
+        )
+        boundary_root_text = ";".join(
+            f"{lower}..{upper}*{multiplicity}"
+            for lower, upper, multiplicity in root_adjudication.boundary_roots
+        )
+        isolator_interval_text = ";".join(
+            f"{lower}..{upper}*{multiplicity}"
+            for lower, upper, multiplicity in root_adjudication.independent_intervals
         )
     if root_status != "ROOTS_AGREE":
         policy = (
@@ -160,6 +176,10 @@ def _f1_profile_diagnostic(
         ("between_profile_root_adjudication_f1_count", root_counts[0]),
         ("between_profile_root_adjudication_sturm_count", root_counts[1]),
         ("between_profile_root_adjudication_matched_count", root_counts[2]),
+        ("between_profile_root_adjudication_domain", root_domain),
+        ("between_profile_root_adjudication_removed_zero_factor_multiplicity", zero_factor_multiplicity),
+        ("between_profile_root_adjudication_boundary_roots", boundary_root_text),
+        ("between_profile_root_adjudication_exact_intervals", isolator_interval_text),
         ("between_profile_optimizer_stationary_point_counts",
          ",".join(str(value) for value in optimizer.stationary_point_counts)),
         ("between_profile_optimizer_stationary_point_types",
