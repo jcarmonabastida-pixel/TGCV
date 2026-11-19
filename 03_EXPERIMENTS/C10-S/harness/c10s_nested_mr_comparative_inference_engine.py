@@ -140,6 +140,9 @@ def _f1_profile_diagnostic(
         ("between_profile_optimizer_loglik_spread",
          "" if optimizer.maximum_loglik_spread is None
          else format(optimizer.maximum_loglik_spread, ".17g")),
+        ("between_profile_optimizer_stationary_location_spread",
+         "" if optimizer.maximum_stationary_location_spread is None
+         else format(optimizer.maximum_stationary_location_spread, ".17g")),
         ("between_profile_loglik_at_nonnegative_raw_estimate", format(value, ".17g")),
         ("between_profile_tau_evaluation", format(tau, ".17g")),
         ("between_profile_interval", "NOT_EMITTED_NO_LR_CUTOFF_SELECTED"),
