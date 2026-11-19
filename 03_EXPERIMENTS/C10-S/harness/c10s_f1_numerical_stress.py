@@ -462,6 +462,7 @@ def run_f1_observation_scale_ladder() -> dict[str, object]:
             adjudication_status_equal = (
                 record["adjudication_status"] == baseline["adjudication_status"]
             )
+            sturm_status_equal = record["sturm_status"] == baseline["sturm_status"]
             record["equivariance_errors"].update({
                 "polynomial_root_max_abs_error": root_error,
                 "polynomial_root_max_relative_error": root_relative_error,
@@ -478,6 +479,7 @@ def run_f1_observation_scale_ladder() -> dict[str, object]:
                 ),
                 "polynomial_status": polynomial_status_equal,
                 "adjudication_status": adjudication_status_equal,
+                "sturm_status": sturm_status_equal,
             }
             record["equivariance_status"] = (
                 "UNRESOLVED_BASELINE" if not baseline_resolved else
@@ -559,7 +561,10 @@ def write_stress_evidence(
         raise ValueError("POLYNOMIAL_RESULT_NOT_MARKED_EXECUTED")
     if f1_result.get("execution_performed") is not True:
         raise ValueError("F1_RESULT_NOT_MARKED_EXECUTED")
-    if not source_commit or len(source_commit) != 40:
+    if (
+        not isinstance(source_commit, str) or len(source_commit) != 40
+        or any(character not in "0123456789abcdef" for character in source_commit.lower())
+    ):
         raise ValueError("FULL_SOURCE_COMMIT_SHA_REQUIRED")
 
     def canonical_bytes(value: object) -> bytes:
