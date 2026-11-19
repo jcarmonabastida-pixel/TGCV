@@ -14,6 +14,11 @@ import numpy as np
 from scipy.optimize import minimize
 from scipy.special import betaln, gammaln
 
+from c10s_f5_beta_binomial_likelihood_diagnostics import (
+    BetaBinomialOptimizerAudit,
+    F5LikelihoodDiagnosticError,
+    audit_beta_binomial_count_fit,
+)
 from c10s_variance_comparison_interface import (
     ComparisonInputError,
     VarianceComparisonResult,
@@ -48,6 +53,8 @@ class FittedBetaBinomialBootstrapResult:
     confidence_level: float
     bootstrap_seed: int
     failure_reason: str | None
+    optimizer_audit: BetaBinomialOptimizerAudit | None = None
+    optimizer_audit_error: str | None = None
 
 
 def fit_beta_binomial_counts(counts: Sequence[int], r: int) -> BetaBinomialFit:
@@ -152,6 +159,15 @@ def fitted_beta_binomial_parametric_bootstrap(
         raise BetaBinomialFitError("F5_REQUIRES_BERNOULLI_0_1_INNER_CONTRIBUTIONS")
     counts = np.sum(matrix, axis=1).astype(int)
 
+    # Diagnostic-only parallel audit. It does not select or replace the C5
+    # fit below, and its failure never changes the candidate interval path.
+    optimizer_audit = None
+    optimizer_audit_error = None
+    try:
+        optimizer_audit = audit_beta_binomial_count_fit(counts, r)
+    except (F5LikelihoodDiagnosticError, ArithmeticError, ValueError) as exc:
+        optimizer_audit_error = f"{type(exc).__name__}:{exc}"
+
     try:
         fit = fit_beta_binomial_counts(counts, r)
     except BetaBinomialFitError as exc:
@@ -165,6 +181,8 @@ def fitted_beta_binomial_parametric_bootstrap(
             valid_mcse_replicates=0, valid_mcse_rate=0.0,
             confidence_level=confidence_level, bootstrap_seed=bootstrap_seed,
             failure_reason=str(exc),
+            optimizer_audit=optimizer_audit,
+            optimizer_audit_error=optimizer_audit_error,
         )
     if fit.boundary:
         reason = "BETA_BINOMIAL_MLE_BOUNDARY:" + ",".join(fit.boundary_reasons)
@@ -178,6 +196,8 @@ def fitted_beta_binomial_parametric_bootstrap(
             valid_mcse_replicates=0, valid_mcse_rate=0.0,
             confidence_level=confidence_level, bootstrap_seed=bootstrap_seed,
             failure_reason=reason,
+            optimizer_audit=optimizer_audit,
+            optimizer_audit_error=optimizer_audit_error,
         )
 
     rng = np.random.Generator(np.random.PCG64(bootstrap_seed))
@@ -220,6 +240,17 @@ def fitted_beta_binomial_parametric_bootstrap(
         ("fit_alpha", format(fit.alpha, ".17g")),
         ("fit_beta", format(fit.beta, ".17g")),
         ("fit_log_likelihood", format(fit.log_likelihood, ".17g")),
+        ("optimizer_audit_status", (
+            optimizer_audit.status if optimizer_audit is not None
+            else "DIAGNOSTIC_UNAVAILABLE"
+        )),
+        ("optimizer_audit_error", optimizer_audit_error or "NONE"),
+        ("optimizer_audit_ll_difference", (
+            format(optimizer_audit.absolute_log_likelihood_difference, ".17g")
+            if optimizer_audit is not None
+            and optimizer_audit.absolute_log_likelihood_difference is not None
+            else "UNAVAILABLE"
+        )),
         ("bootstrap_rng", "PCG64"),
         ("bootstrap_seed", str(bootstrap_seed)),
         ("bootstrap_replicates", str(bootstrap_replicates)),
@@ -242,4 +273,6 @@ def fitted_beta_binomial_parametric_bootstrap(
         valid_mcse_replicates=len(mcse_star), valid_mcse_rate=valid_rate,
         confidence_level=confidence_level, bootstrap_seed=bootstrap_seed,
         failure_reason=abstention,
+        optimizer_audit=optimizer_audit,
+        optimizer_audit_error=optimizer_audit_error,
     )
