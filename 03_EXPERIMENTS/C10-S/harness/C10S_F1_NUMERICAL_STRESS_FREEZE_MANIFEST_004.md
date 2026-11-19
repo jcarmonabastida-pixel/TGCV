@@ -40,14 +40,14 @@ python run_c10s_f1_numerical_stress_v2.py \
 | v002 deterministic runners and diagnostics | `03_EXPERIMENTS/C10-S/harness/c10s_f1_numerical_stress_v2.py` | `a4f7a79bf36385cd6174567a4acf3e260d971ac7` |
 | v002 CLI and evidence writer | `03_EXPERIMENTS/C10-S/harness/run_c10s_f1_numerical_stress_v2.py` | `c184861614437aeb07da6fa568ebac9a6fad71ac` |
 | v002 design | `03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_DESIGN_002.md` | `119467917d974471486e2d29f0b2e583948de889` |
-| v002 implementation/static-review record | `03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_IMPLEMENTATION_002.md` | `<IMPLEMENTATION_RECORD_BLOB>` |
+| v002 implementation/static-review record | `03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_IMPLEMENTATION_002.md` | `a5dbfb46ed1905564bdb5397b85ca321581c8df7` |
 | v001 fixture generator reused read-only | `03_EXPERIMENTS/C10-S/harness/c10s_f1_numerical_stress.py` | `cc047a3b112caf84533c94e77d1908c99a0c2bdf` |
 | F1 score/profile implementation | `03_EXPERIMENTS/C10-S/harness/c10s_f1_between_profile_likelihood.py` | `39f1732e1571f9d0705378d924b58b9475277e7a` |
 | exact-rational Sturm isolator | `03_EXPERIMENTS/C10-S/harness/c10s_f1_independent_root_isolator.py` | `3ac9ce31eb82421022fd8d2a65a0daee049322be` |
 | F1/Sturm adjudicator | `03_EXPERIMENTS/C10-S/harness/c10s_f1_root_adjudication.py` | `9fa1cb21cd47e32030db8a00420e7dacfdc77321` |
 | observed-data interface | `03_EXPERIMENTS/C10-S/harness/c10s_variance_comparison_interface.py` | `6d193798e792dd5129fbfb0c312286763791d463` |
 
-The implementation record blob is to be resolved before this manifest is accepted as complete. Workflow and authorization blobs are separate governance artifacts and are pinned by the authorization.
+The implementation record blob is pinned above. The workflow and authorization blobs are separate governance artifacts and are pinned by the authorization. Workflow and authorization blobs are separate governance artifacts and are pinned by the authorization.
 
 ## 4. Runtime
 
