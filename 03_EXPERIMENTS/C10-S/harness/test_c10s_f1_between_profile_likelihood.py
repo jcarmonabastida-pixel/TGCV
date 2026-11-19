@@ -106,24 +106,15 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         rows, tau, repeated_root = constructed_repeated_score_root_rows()
         from c10s_f1_between_profile_likelihood import brentq as original_brentq
 
-        def probe_tangency_then_solve(function, left, right, *args, **kwargs):
-            # Force the real profile callback to evaluate at the constructed
-            # repeated-root tau before continuing with the genuine endpoint solve.
-            function(tau / max(
-                f1_profile_loglik(rows, between_variance=0.0) * 0.0 + 1.0,
-                1.0,
-            ))
-            return original_brentq(function, left, right, *args, **kwargs)
-
-        # Probe the actual interval callback at tau=1 through its own bracketing
-        # path. The scale is data-derived inside the callable; use the expected
-        # sufficient-statistic scale to form the dimensionless coordinate.
+        # Probe only the interval's dimensionless LR callback. Polynomial
+        # root-isolation calls to brentq remain completely unmodified.
         from c10s_variance_comparison_interface import observed_nested_mr_result
         observed = observed_nested_mr_result(rows)
         within = observed.within_estimate
         scale = max(within, observed.observed_world_variance)
         def probe_then_solve(function, left, right, *args, **kwargs):
-            function(tau / scale)
+            if getattr(function, "__name__", "") == "lr_excess_scaled":
+                function(tau / scale)
             return original_brentq(function, left, right, *args, **kwargs)
 
         with patch(
