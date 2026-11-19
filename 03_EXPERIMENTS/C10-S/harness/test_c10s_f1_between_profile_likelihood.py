@@ -148,6 +148,27 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertEqual(len(roots), 1)
         self.assertAlmostEqual(roots[0], 1.0)
 
+    def test_quadratic_critical_solver_abstains_on_discriminant_overflow(self):
+        roots, status = _positive_quadratic_roots_diagnostic(
+            1e308, 1e308, 1e308,
+        )
+        self.assertEqual(roots, ())
+        self.assertEqual(status, "DISCRIMINANT_UNRESOLVED")
+
+    def test_linear_critical_solver_abstains_on_nonfinite_root(self):
+        roots, status = _positive_quadratic_roots_diagnostic(
+            0.0, 1e-308, -1e308,
+        )
+        self.assertEqual(roots, ())
+        self.assertEqual(status, "DISCRIMINANT_UNRESOLVED")
+
+    def test_quadratic_critical_solver_abstains_on_nonfinite_coefficients(self):
+        roots, status = _positive_quadratic_roots_diagnostic(
+            float("inf"), -2.0, 1.0,
+        )
+        self.assertEqual(roots, ())
+        self.assertEqual(status, "DISCRIMINANT_UNRESOLVED")
+
     def test_quadratic_critical_solver_abstains_near_discriminant_zero(self):
         roots, status = _positive_quadratic_roots_diagnostic(
             1.0, -2.0, 1.0 - 1e-15,
