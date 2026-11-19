@@ -114,7 +114,7 @@ def main() -> int:
     parser.add_argument("--output-json", type=Path, required=True)
     args = parser.parse_args()
     result = validate(args.authorization, args.root, args.workflow_commit, args.branch)
-    args.output_json.write_text(json.dumps(result, sort_keys=True) + "\\n", encoding="utf-8")
+    args.output_json.write_text(json.dumps(result, sort_keys=True) + "\n", encoding="utf-8")
     return 0
 
 
