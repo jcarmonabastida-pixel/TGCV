@@ -159,3 +159,20 @@ Implementation commits:
 - audit-record tests: `23dd5dd24f210907d2c702307553b9caebc45ed0`
 
 Static validation for these exact commits is in progress. No PASS is claimed until the relevant run completes and logs are inspected. The frozen development/calibration specification v1.0 and all C5 candidate/interval logic remain unchanged.
+
+
+### Static validation — separated nuisance-refinement failure
+
+The semantic correction and its explicit fault-injection test passed on the exact code/test commit:
+- Run: `44591616425`
+- Exact commit: `3f84f52d22a7e60dcf34dc99819f601b63a22599`
+- Dependency installation: PASS
+- Compile: PASS
+- Deterministic suite: **133 tests passed**
+- Fault-injection test `test_failed_nuisance_refinement_is_not_misreported_as_boundary`: PASS.
+
+The profile-point record now distinguishes a genuine mean-logit grid boundary from an unsuccessful scalar nuisance refinement. An unsuccessful refinement is reported as `NUISANCE_PROFILE_OPTIMIZER_UNRESOLVED`, its mean-boundary flag remains false, and its local profile curvature is null. This avoids falsely describing a numerical optimizer failure as a statistical boundary condition.
+
+The static workflow validated deterministic tests only. Numerical-stress workflows were skipped by authorization guards. No calibration, bootstrap, resource preflight, holdout or scientific C10 execution occurred.
+
+The previous 132/132 result on commit `23dd5dd24f210907d2c702307553b9caebc45ed0` remains valid for that exact commit; the 133/133 result above supersedes it for the latest code/test increment.
