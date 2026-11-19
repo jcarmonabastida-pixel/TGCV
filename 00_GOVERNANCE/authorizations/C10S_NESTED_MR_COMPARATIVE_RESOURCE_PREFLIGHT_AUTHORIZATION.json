@@ -1,0 +1,38 @@
+{
+  "schema": "TGCV-C10S-COMPARATIVE-RESOURCE-PREFLIGHT-AUTH-001",
+  "authorization_id": "C10S-RES-PREFLIGHT-20261119-002",
+  "status": "APPROVED",
+  "authorization_branch": "research/c10s-nested-mr-resource-preflight-auth-C10S-RES-PREFLIGHT-20261119-002",
+  "scope": "C10S_NESTED_MR_COMPARATIVE_RESOURCE_PREFLIGHT_ONLY",
+  "resource_preflight_authorized": true,
+  "comparative_holdout_authorized": false,
+  "c10_scientific_execution_authorized": false,
+  "approved_by": "USER_EXPLICIT_APPROVAL",
+  "approved_at_utc": "2026-11-19T16:22:59.856Z",
+  "expires_utc": "2026-11-19T17:52:59.856Z",
+  "protocol_id": "C10S-NESTED-MR-COMPARATIVE-HOLDOUT-PROTOCOL-001",
+  "protocol_version": "1.0",
+  "approved_code_commit": "b079e6e7f0ce035629fd82c0d9a9af6266ae1da7",
+  "representative_cells": [
+    "F1_balanced_M30_R20",
+    "F5_beta22_M30_R20"
+  ],
+  "k_per_cell": 1000,
+  "c0_bootstrap_replicates": 1000,
+  "c5_bootstrap_replicates": 1000,
+  "protocol_sha256": "639ea818e1e384a81f5168359a7477eeec188105917ed7a0f25aacab6bc9e888",
+  "runner_sha256": "3736d7a2b7b9d8556382e93fca067849e162137afc0a7b1f68a8bc5eceb03cf2",
+  "engine_sha256": "91f22c078805f675c3a1ed278bcddd6aab0bbcb75ccbe6e976d2caa5a2f5072a",
+  "fixtures_sha256": "c4895554d4f648ac1fbb79a98dec4abb9a8796d68d6a0a006b6607d99c2e1219",
+  "preflight_sha256": "ff2e564ec3e64a67cca9e28cefbd4a54b53b285e68f8a4d6ba0733d91dd91178",
+  "dependency_lock_sha256": "81bdbdbf04ac3c3621d0b8a3b19ad9c3633a6e7dd0a58c1b54b7ed9734374bd1",
+  "workflow_sha256": "2ccda732f7ee389bc957742df7a03a9d02ed44a2e913f0ec0ce2d6c74c09efaf",
+  "validator_sha256": "3db9304d9e623edfce2d8cc7e9f4c1373dd0da62bd1b03c4143dcf58dd6951e6",
+  "exclusions": [
+    "coverage_adjudication",
+    "comparative_holdout",
+    "Tier_B",
+    "C10_scientific_execution",
+    "profile_and_root_diagnostics"
+  ]
+}
