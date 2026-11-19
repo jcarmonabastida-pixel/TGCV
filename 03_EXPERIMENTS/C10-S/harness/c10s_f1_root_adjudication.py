@@ -82,6 +82,20 @@ def adjudicate_f1_roots(
 
     candidates = sorted(float(root) for root in f1.positive_roots)
     certified = list(independent.roots)
+
+    # A global absolute tolerance can make two distinct isolators eligible
+    # for the same floating-point candidate. In that case no greedy matching
+    # can certify a unique correspondence; abstain rather than risk a false
+    # agreement for nearly coincident roots.
+    for left, right in zip(certified, certified[1:]):
+        if float(right.lower - left.upper) <= 2.0 * match_tolerance:
+            return F1RootAdjudication(
+                "ROOTS_UNRESOLVED", f1.status, independent.status,
+                len(candidates), len(certified), 0, True,
+                tuple(candidates), intervals,
+                "ROOT_MATCH_TOLERANCE_OVERLAPS_DISTINCT_ISOLATORS",
+            )
+
     used: set[int] = set()
     matched = 0
     for interval in certified:
