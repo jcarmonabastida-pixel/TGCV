@@ -8,6 +8,7 @@ from c10s_nested_mr_comparative_inference_engine import (
     ComparativeEngineError,
     TruthTargets,
     adjudicate_matched_datasets,
+    adjudicate_profile_diagnostics,
     compare_dataset,
 )
 
@@ -124,6 +125,32 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         self.assertIsNotNone(candidate.comparison.within_interval)
         self.assertIsNotNone(candidate.comparison.between_interval)
         self.assertIsNone(candidate.comparison.mcse_interval)
+
+    def test_f5_profile_diagnostic_roster_is_separate_from_c5_coverage(self):
+        record = self._f5()
+        metrics, = adjudicate_profile_diagnostics((record,))
+        self.assertEqual(metrics.family, "F5")
+        self.assertEqual(metrics.diagnostic, "MCSE_PROFILE_OPTIMIZATION")
+        self.assertEqual(metrics.n_datasets, 1)
+        self.assertEqual(
+            metrics.eligible_count + metrics.abstained_count + metrics.not_evaluated_count,
+            metrics.n_datasets,
+        )
+        self.assertEqual(metrics.eligible_rate, metrics.eligible_count / metrics.n_datasets)
+        # Profile diagnostics have no truth or coverage field by design.
+        self.assertFalse(hasattr(metrics, "conditional_coverage"))
+        self.assertFalse(hasattr(metrics, "unconditional_cover_rate"))
+        # C5's MCSE interval remains independently unavailable.
+        self.assertIsNone(record.candidates[0].comparison.mcse_interval)
+
+    def test_profile_diagnostic_roster_rejects_non_f5_and_mixed_designs(self):
+        f1 = self._f1()
+        with self.assertRaisesRegex(ComparativeEngineError, "ONE_F5"):
+            adjudicate_profile_diagnostics((f1,))
+        f5 = self._f5()
+        other = replace(f5, dataset_id="F5-DATA-002", target_m=11)
+        with self.assertRaisesRegex(ComparativeEngineError, "STRATIFY"):
+            adjudicate_profile_diagnostics((f5, other))
 
     def test_adjudication_reports_all_denominators_and_wilson_limits(self):
         record = self._f1()
