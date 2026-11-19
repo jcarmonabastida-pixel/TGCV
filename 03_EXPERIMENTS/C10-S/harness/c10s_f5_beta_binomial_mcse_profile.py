@@ -285,6 +285,13 @@ def f5_beta_binomial_mcse_profile_loglik(
     else:
         value, branch, kappa = minus_value, "MU_MINUS", minus_k
 
+    local_maxima_gaps = []
+    for maxima in local_maxima_by_branch:
+        ordered = sorted((v for v, _ in maxima), reverse=True)
+        local_maxima_gaps.append(
+            "NA" if len(ordered) < 2 else format(ordered[0] - ordered[1], ".17g")
+        )
+
     if not math.isfinite(value):
         status = "PROFILE_NONFINITE_OR_UNSUPPORTED_BOUNDARY"
     elif kappa is None:
@@ -304,11 +311,9 @@ def f5_beta_binomial_mcse_profile_loglik(
             ("mu_minus_grid_local_maxima_count", str(len(local_maxima_by_branch[1]))),
             ("mu_plus_grid_local_maxima_kappa", repr(tuple(k for _, k in local_maxima_by_branch[0]))),
             ("mu_minus_grid_local_maxima_kappa", repr(tuple(k for _, k in local_maxima_by_branch[1]))),
-            ("mu_plus_top_two_local_maxima_loglik_gap", (
-                "NA" if len(local_maxima_by_branch[0]) < 2 else
-                format(sorted((v for v, _ in local_maxima_by_branch[0]), reverse=True)[0]
-                       - sorted((v for v, _ in local_maxima_by_branch[0], reverse=True)[1], ".17g")
-            )),
+            ("mu_plus_top_two_local_maxima_loglik_gap", local_maxima_gaps[0]),
+            ("mu_minus_top_two_local_maxima_loglik_gap", local_maxima_gaps[1]),
+
         ),
     )
 
