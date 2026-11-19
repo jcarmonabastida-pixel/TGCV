@@ -14,6 +14,7 @@ from c10s_f1_between_profile_likelihood import (
     f1_score_polynomial_diagnostic,
     _positive_quadratic_roots_diagnostic,
     _normalize_scaled_polynomial,
+    _restore_polynomial_scale,
     _score_polynomial_coefficients_exact,
 )
 
@@ -98,11 +99,19 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
             )
             low, high = result.confidence_components[0]
             scale2 = factor * factor
-            self.assertAlmostEqual(low / scale2, base_low, places=6)
-            self.assertAlmostEqual(high / scale2, base_high, places=6)
+            # Compare in the invariant variance coordinate. The solver
+            # now uses xtol in tau/reference_scale, so this bound is independent
+            # of the observation units and remains tighter than the former
+            # places=6 assertion that exposed the absolute-tolerance defect.
+            self.assertAlmostEqual(
+                low / scale2, base_low, delta=1e-8,
+            )
+            self.assertAlmostEqual(
+                high / scale2, base_high, delta=1e-8,
+            )
             self.assertAlmostEqual(
                 result.mle_between_variance / scale2,
-                base.mle_between_variance, places=7,
+                base.mle_between_variance, delta=1e-10,
             )
 
     def test_zero_tau_profile_is_finite_across_scales(self):
