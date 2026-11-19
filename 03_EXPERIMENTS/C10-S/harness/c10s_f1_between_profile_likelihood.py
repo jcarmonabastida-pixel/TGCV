@@ -166,9 +166,16 @@ def f1_profile_between_confidence_set(
     """Invert the caller-supplied LR rule by bracketing and root finding.
 
     The callable is explicitly F1-scoped. At every evaluated tau, the
-    nuisance score-polynomial and independent score scan must agree and the
-    bounded optimizer must agree with the maximum over isolated stationary
-    roots; otherwise the operation abstains. The profile MLE is
+    nuisance score-polynomial and independent score scan must agree, exactly
+    one local nuisance maximum must be present, and the bounded optimizer
+    must agree with the maximum over isolated stationary roots; otherwise the
+    operation abstains. For the balanced Gaussian likelihood, the envelope
+    derivative is df_between/2 * (S2_mean - q*) / q*^2. An interior stationary
+    point therefore requires q*=S2_mean; substituting this into the nuisance
+    score gives s*=SSW/df_within=MSW and tau*=S2_mean-MSW/R. Thus the profile
+    has at most one interior stationary point on tau>0. Together with a
+    unique certified nuisance maximum and the profile's decay at infinity,
+    the LR acceptance set is connected. The profile MLE is
     max(0, S2(world means)-MSW/R). The lower endpoint is
     zero when zero lies in the LR set; otherwise it is solved between zero and
     the MLE. The upper endpoint is solved after geometric bracket expansion.
@@ -199,6 +206,7 @@ def f1_profile_between_confidence_set(
                 or diagnostic.polynomial_status != "POLYNOMIAL_ROOTS_ISOLATED"
                 or diagnostic.polynomial_scan_discordant
                 or diagnostic.unresolved_tangential_candidates > 0
+                or diagnostic.stationary_point_types.count("LOCAL_MAXIMUM") != 1
                 or "STATIONARY_TYPE_UNRESOLVED" in diagnostic.stationary_point_types):
             raise F1ProfileError(
                 "PROFILE_NUISANCE_CERTIFICATION_FAILED:" + diagnostic.status
