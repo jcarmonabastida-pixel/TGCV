@@ -229,7 +229,7 @@ Additional fail-closed job conditions now require the exact resource-preflight a
 | `C10S-RES-PREFLIGHT-20261119-002` | `b079e6e7f0ce035629fd82c0d9a9af6266ae1da7` | Same line-63 YAML parser error | Closed; no code ran |
 | `C10S-RES-PREFLIGHT-20261119-003` | `2ace9f861fc6be0d69908094a744b24db9da9c6a` | Authorization validator rejected incorrect protocol digest | Closed; no benchmark ran |
 | `C10S-RES-PREFLIGHT-20261119-004` | `2ace9f861fc6be0d69908094a744b24db9da9c6a` | Hash validation passed; workflow-output JSON parse failed because validator wrote literal backslash-n | Closed; no benchmark ran |
-| `C10S-RES-PREFLIGHT-20261119-005` | `ec2754659d7237839a487fd855f26c4d4b551782` | Authorization validator PASS; exact code checkout PASS; hash-locked dependencies PASS; resource-only benchmark is running | In progress |
+| `C10S-RES-PREFLIGHT-20261119-005` | `ec2754659d7237839a487fd855f26c4d4b551782` | Authorization, exact checkout and dependencies PASS; 2,000-dataset resource sample completed; artifact uploaded | Completed SUCCESS; one-use authorization consumed |
 
 Attempt 003's digest values were incorrectly generated during orchestration and were rejected by the validator; they are not evidence of a repository defect. Attempt 004 exposed a real serialization defect in the validator, now corrected to write a newline character.
 
@@ -242,7 +242,46 @@ Attempt 003's digest values were incorrectly generated during orchestration and 
 - Approved code commit: `ec2754659d7237839a487fd855f26c4d4b551782`
 - Job ID: `135708842538`
 
-At last inspection, the workflow had passed authorization validation, exact approved-code checkout and hash-locked dependency installation. The resource-only sample step was still running. It processes only the two authorized representative Tier A cells, 1,000 datasets each, with C0 B=1,000 and F5 C5 B=1,000.
+Authorization validation, exact approved-code checkout and hash-locked dependency installation passed. The resource-only sample and artifact upload both completed successfully. It processed only the two authorized representative Tier A cells, 1,000 datasets each, with C0 B=1,000 and F5 C5 B=1,000.
 
-No coverage adjudication, comparative holdout, Tier B or C10 scientific execution is part of this workflow. No resource measurements are yet available until the runner and artifact upload complete. Authorization 005 is one-use and must be treated as consumed; do not rerun or reuse it.
+No coverage adjudication, comparative holdout, Tier B or C10 scientific execution was performed. Authorization 005 is one-use and consumed; do not rerun or reuse it.
+
+## 12. Completed resource-only preflight — measured result (2026-11-19)
+
+### 12.1 Execution identity and integrity
+
+- GitHub Actions run: `44566299402` — **SUCCESS**.
+- Run URL: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44566299402
+- Job: `135708842538` — `resource-preflight`, **SUCCESS**.
+- Authorization: `C10S-RES-PREFLIGHT-20261119-005`; authorization commit `6bad48308ab4e3d9f725d9bd04a1294a16620fb6`.
+- Exact approved code commit: `ec2754659d7237839a487fd855f26c4d4b551782`.
+- Environment: Python 3.12.10, NumPy 2.3.5, Ubuntu 24.04 runner; dependency-lock SHA-256 `4bdd6993cd8add430dab560f2e6eabb73028b4693e7f73e73999ecda4b2a30a9`.
+- Artifact ID: `14552421343`; name `c10s-comparative-resource-preflight-C10S-RES-PREFLIGHT-20261119-005-ec2754659d7237839a487fd855f26c4d4b551782`.
+- Artifact ZIP SHA-256: `86ba2d356a7da5ae4ac57c7e0e938cba12969dec1690051e610dccef9d55ca93`.
+- Extracted `resource_preflight.json` SHA-256: `ef4cd86f9b9a99e09f04c1d87bb810d0e0af5f9f18f16bf030f2f5b94e5c6ffd`.
+- Raw result persisted in this branch as `03_EXPERIMENTS/C10-S/diagnostics/C10S_NESTED_MR_COMPARATIVE_RESOURCE_PREFLIGHT_RESULT_001.json`.
+
+### 12.2 Measurements
+
+| Representative cell | Datasets | C0 B | Candidate B | Elapsed | Seconds/dataset | Peak RSS |
+|---|---:|---:|---:|---:|---:|---:|
+| F1 balanced, M=30/R=20 | 1,000 | 1,000 | C1 analytic | 18.283 s | 0.01828 s | 122,372,096 B (116.7 MiB) |
+| F5 beta(2,2), M=30/R=20 | 1,000 | 1,000 | C5 B=1,000 | 229.321 s | 0.22932 s | 124,776,448 B (119.0 MiB) |
+
+Total: **2,000 datasets**, 247.604 seconds of measured sample runtime. Both cells retained 1,000 comparison records during their memory sample. The observed peak process RSS was approximately 119 MiB.
+
+### 12.3 Scope and interpretation
+
+- `coverage_adjudication = NOT_RUN` in both cells and the aggregate.
+- `adjudicate_matched_datasets_called = false` in both cells.
+- `scientific_holdout_executed = false`.
+- No interval coverage, method ranking, calibration result or scientific C10 evidence was produced.
+
+For capacity planning only: the protocol has six F1 cells and two F5 cells. Applying the largest-M/R sample rate conservatively to all cells gives an indicative primary-pass runtime of about 9.5 minutes; a full clean-source replay of similar cost would put the two-pass runtime near 19 minutes, before workflow overhead. This is a rough planning estimate, not a measured full-holdout runtime. The measured memory sample is about 119 MiB; full-run memory must still be observed.
+
+### 12.4 Disposition
+
+**Resource readiness: PASS for proceeding to the separately authorized 8-cell Tier A comparative holdout.** The F5 cell dominates runtime; observed memory is modest. No reason emerged from this preflight to expand the numerical instrumentation or reopen F1/F5 method design.
+
+The next operation is to freeze the exact final holdout code/workflow identities and obtain a new, separate one-use authorization for the full 8,000-dataset C0/C1/C5 Tier A holdout and its clean-source replay. This preflight authorization does not authorize that execution.
 
