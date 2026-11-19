@@ -123,7 +123,7 @@ Authorization template: `C10S_POST_HOLDOUT_F1_F5_RESOURCE_PREFLIGHT_AUTHORIZATIO
 | Resource preflight execution | PASS — Run `44603264310`; 200 datasets; artifact digest recorded in result report |
 | F5 MCSE interval | EXPLICITLY ABSTAINED / OUT OF SCOPE under frozen spec v1.0; not a C5 within/raw-between blocker |
 | F5 B1 implementation and deterministic tests | COMPLETE — 153/153 static tests at exact code commit `b44489341e4ee99aa279b15d6cb635e744a1665e`; see `C10S_F5_B1_IMPLEMENTATION_CLOSURE_001.md` |
-| F5 B2/B3 runner and authorization package | COMPLETE — 168/168 static tests at exact commit `1ceca1550606407099df9bc1f2df45ddcd6e2ebb`; see `C10S_F5_B2_B3_DEVELOPMENT_RUNNER_IMPLEMENTATION_001.md` |
+| F5 B2/B3 runner and authorization package | COMPLETE — 168/168 static tests at exact commit `cdd8617f13296556fd5eb463834fb60c0f051f7c`; see `C10S_F5_B2_B3_DEVELOPMENT_RUNNER_IMPLEMENTATION_001.md` |
 | F5 C5 component eligibility | OPEN — requires B2/B3 calibration and disjoint validation; no coverage result inferred from preflight |
 | F5 B2/B3 numerical execution | NOT AUTHORIZED / NOT RUN — dedicated one-use authorization template remains DRAFT |
 | Full F1 A2/A3 and combined calibration/validation execution | NOT AUTHORIZED / NOT RUN |
