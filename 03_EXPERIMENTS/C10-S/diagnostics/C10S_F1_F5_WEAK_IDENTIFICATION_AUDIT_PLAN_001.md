@@ -354,3 +354,20 @@ Exact-commit static validation:
 - `test_profile_audit_fixture_matrix_keeps_three_likelihood_regimes_separate`: PASS.
 
 The numerical profile remains explicitly uncertified as a global nuisance maximum. Differences are descriptive comparisons over the supplied finite grid, not a likelihood-ratio test, confidence set, identification threshold or selection rule. No calibration, bootstrap bank, resource preflight, holdout or scientific C10 execution occurred.
+ 
+
+## B1 local-information record completeness — 2026-11-19
+
+The per-fit `BetaBinomialOptimizerAudit` now retains the complete observed Hessian matrix in declared `(mean_logit, log_concentration)` coordinates, its eigenvectors alongside the existing eigenvalues, the two selected score components, and raw fitted-log-likelihood differences against each finite extended concentration boundary. The two-point contrast remains null when interior counts make that limiting likelihood structurally zero; no non-finite JSON sentinel is introduced.
+
+This is an additive diagnostic record only. It does not alter C5 fit selection, interval construction, optimizer status, or identification disposition. The curvature remains local and parameterization-specific.
+
+Exact-commit static validation:
+- Code/test commit: `654be3b90668374de2572611926a2a3c080c411b`.
+- Run: `44596631663`.
+- Hash-locked dependencies: PASS.
+- Compile: PASS.
+- Deterministic suite: **143 tests passed**.
+- Full Hessian/eigenvector and boundary-contrast assertions: PASS.
+
+Still open within B1: independently coded Hessian cross-checks at boundary-adjacent fixtures, explicit retention of the independent optimizer's terminal coordinates/gradient/bound distances, and a final audit that all three-start outcomes remain complete in the comparison-engine record. A1 F1 deterministic certification is also still open. No resource preflight or numerical calibration was run.
