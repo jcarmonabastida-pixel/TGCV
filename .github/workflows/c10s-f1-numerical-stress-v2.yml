@@ -73,6 +73,15 @@ jobs:
           scope = auth.get("scope", {})
           limits = auth.get("limits", {})
           prohibitions = auth.get("prohibitions", {})
+          runtime = auth.get("runtime", {})
+          command = auth.get("command", {})
+          expected_outputs = {
+              "numerical_stress_v2_records.jsonl",
+              "numerical_stress_v2_summary.json",
+              "numerical_stress_v2_manifest.json",
+              "workflow-preflight.txt", "runner.stdout",
+              "runner.stderr", "runner-exit-code.txt",
+          }
           checks = {
               "authorization_id": auth.get("authorization_id") == os.environ["AUTH_ID"],
               "approved_status": auth.get("status") == "APPROVED",
@@ -92,17 +101,37 @@ jobs:
                   and scope.get("n3_covariant_records") == 7
                   and scope.get("f1_n4_records") == 14
                   and scope.get("total_records") == 152
+                  and scope.get("n4_scale_exponents") == [-100,-50,-20,0,20,24,28,32,36,40,44,48,50,100]
+                  and scope.get("n3_covariant_scale_exponents") == [-500,-200,-50,0,50,200,500]
+                  and scope.get("n2_near_double_ulp_steps") == [-2,-1,1,2]
               ),
+              "runtime": (
+                  runtime.get("runner") == "ubuntu-24.04"
+                  and runtime.get("python") == "3.12.3"
+                  and runtime.get("numpy") == "2.1.3"
+                  and runtime.get("scipy") == "1.14.1"
+              ),
+              "command": (
+                  command.get("working_directory") == "03_EXPERIMENTS/C10-S/harness"
+                  and command.get("argv") == [
+                      "python", "run_c10s_f1_numerical_stress_v2.py",
+                      "--source-commit", os.environ["SOURCE_COMMIT"],
+                      "--output-directory",
+                      "$RUNNER_TEMP/c10s-f1-numerical-stress-v2-evidence"
+                  ]
+              ),
+              "outputs": set(auth.get("outputs", [])) == expected_outputs,
               "one_primary_no_retry_no_replay": (
                   limits.get("primary_executions") == 1
                   and limits.get("automatic_retries") == 0
                   and limits.get("replay") is False
+                  and limits.get("job_timeout_minutes") == 15
               ),
               "prohibitions": all(prohibitions.get(key) is True for key in (
                   "unit_tests", "bytecode_compilation", "monte_carlo_calibration",
                   "dgp_experiment", "inferential_coverage_study", "parameter_tuning",
                   "external_dataset", "source_modification_during_run",
-                  "scientific_c10_execution"
+                  "scientific_c10_execution", "replay", "automatic_retry"
               )),
           }
           for name, passed in checks.items():
