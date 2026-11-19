@@ -209,3 +209,40 @@ No resource-preflight workflow run was created for this second authorization. No
 Important repository-state finding: both specialized workflow files are absent from `main` (404 when read from main) and exist only on the research branch. The GitHub Actions registration/activation behavior cannot be made reliable by research-branch job guards alone in the current state. Do not attempt further authorization pushes or reuse authorization 002. To activate these governed workflows reliably, their registration/trigger definitions must first be handled through the repository's canonical workflow governance (which may require an explicitly authorized main-branch promotion or another approved activation route). No main-branch change is made here.
 
 This is a workflow-registration/activation blocker, not a resource-profile result and not a scientific result.
+
+
+## 11. Workflow activation repair and current resource-preflight attempt (2026-11-19)
+
+### 11.1 Diagnosed workflow activation failure
+
+The GitHub Actions run pages exposed the exact parser error: both workflows had invalid YAML at line 63. The unquoted plain scalar
+`run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock`
+contains the YAML-sensitive `: ` sequence in `--only-binary=:all:`. The command is now a folded scalar (`run: >-`) in both workflows.
+
+Additional fail-closed job conditions now require the exact resource-preflight authorization branch prefix and its dedicated commit-message marker. The holdout job independently requires its own distinct authorization branch prefix and holdout-specific commit-message marker. A resource-only authorization therefore cannot execute the holdout job, even if GitHub creates a holdout workflow record.
+
+### 11.2 Authorization attempts and exact dispositions
+
+| Authorization | Approved code commit | Result | Disposition |
+|---|---|---|---|
+| `C10S-RES-PREFLIGHT-20261119-001` | `15e758f92ac6aca2777154c2e24b8af0fe09f46b` | Both workflow files rejected by YAML parser; zero jobs | Closed; no code ran |
+| `C10S-RES-PREFLIGHT-20261119-002` | `b079e6e7f0ce035629fd82c0d9a9af6266ae1da7` | Same line-63 YAML parser error | Closed; no code ran |
+| `C10S-RES-PREFLIGHT-20261119-003` | `2ace9f861fc6be0d69908094a744b24db9da9c6a` | Authorization validator rejected incorrect protocol digest | Closed; no benchmark ran |
+| `C10S-RES-PREFLIGHT-20261119-004` | `2ace9f861fc6be0d69908094a744b24db9da9c6a` | Hash validation passed; workflow-output JSON parse failed because validator wrote literal backslash-n | Closed; no benchmark ran |
+| `C10S-RES-PREFLIGHT-20261119-005` | `ec2754659d7237839a487fd855f26c4d4b551782` | Authorization validator PASS; exact code checkout PASS; hash-locked dependencies PASS; resource-only benchmark is running | In progress |
+
+Attempt 003's digest values were incorrectly generated during orchestration and were rejected by the validator; they are not evidence of a repository defect. Attempt 004 exposed a real serialization defect in the validator, now corrected to write a newline character.
+
+### 11.3 Current authorized run
+
+- Run: `44566299402`
+- URL: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44566299402
+- Authorization ID: `C10S-RES-PREFLIGHT-20261119-005`
+- Authorization commit: `6bad48308ab4e3d9f725d9bd04a1294a16620fb6`
+- Approved code commit: `ec2754659d7237839a487fd855f26c4d4b551782`
+- Job ID: `135708842538`
+
+At last inspection, the workflow had passed authorization validation, exact approved-code checkout and hash-locked dependency installation. The resource-only sample step was still running. It processes only the two authorized representative Tier A cells, 1,000 datasets each, with C0 B=1,000 and F5 C5 B=1,000.
+
+No coverage adjudication, comparative holdout, Tier B or C10 scientific execution is part of this workflow. No resource measurements are yet available until the runner and artifact upload complete. Authorization 005 is one-use and must be treated as consumed; do not rerun or reuse it.
+
