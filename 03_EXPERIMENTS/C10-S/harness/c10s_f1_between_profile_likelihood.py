@@ -37,6 +37,8 @@ class F1NuisanceOptimizerDiagnostic:
     unresolved_tangential_candidates: int
     polynomial_degree: int
     polynomial_root_count: int
+    polynomial_status: str
+    critical_point_solver_status: str
     polynomial_scan_discordant: bool
     independent_boundary_sensitive: bool
     optimizer_error: str | None
@@ -53,6 +55,8 @@ class F1NuisanceStabilityDiagnostic:
     unresolved_tangential_candidate_counts: tuple[int, ...]
     polynomial_degrees: tuple[int, ...]
     polynomial_root_counts: tuple[int, ...]
+    polynomial_statuses: tuple[str, ...]
+    critical_point_solver_statuses: tuple[str, ...]
     polynomial_scan_discordances: tuple[bool, ...]
     maximum_loglik_spread: float | None
     maximum_stationary_location_spread: float | None
@@ -625,6 +629,8 @@ def f1_profile_nuisance_optimizer_diagnostic(
         unresolved_tangential_candidates=unresolved_tangencies,
         polynomial_degree=polynomial.degree,
         polynomial_root_count=len(polynomial.positive_roots),
+        polynomial_status=polynomial.status,
+        critical_point_solver_status=polynomial.critical_point_solver_status,
         polynomial_scan_discordant=polynomial_scan_discordant,
         independent_boundary_sensitive=independent_boundary,
         optimizer_error=optimizer_error,
@@ -671,6 +677,8 @@ def f1_profile_nuisance_stability_diagnostic(
     unresolved_counts = tuple(item.unresolved_tangential_candidates for item in results)
     polynomial_degrees = tuple(item.polynomial_degree for item in results)
     polynomial_root_counts = tuple(item.polynomial_root_count for item in results)
+    polynomial_statuses = tuple(item.polynomial_status for item in results)
+    critical_statuses = tuple(item.critical_point_solver_status for item in results)
     polynomial_scan_discordances = tuple(item.polynomial_scan_discordant for item in results)
     values = tuple(
         item.independent_loglik for item in results
@@ -698,6 +706,9 @@ def f1_profile_nuisance_stability_diagnostic(
           or len(set(type_signatures)) != 1
           or len(set(tangential_counts)) != 1
           or len(set(polynomial_root_counts)) != 1
+          or len(set(polynomial_statuses)) != 1
+          or len(set(critical_statuses)) != 1
+          or any(value != "POLYNOMIAL_ROOTS_ISOLATED" for value in polynomial_statuses)
           or any(polynomial_scan_discordances)):
         status = "OPTIMIZATION_DISCORDANT"
     elif (spread is None or spread > float(loglik_tolerance)
@@ -718,6 +729,8 @@ def f1_profile_nuisance_stability_diagnostic(
         unresolved_tangential_candidate_counts=unresolved_counts,
         polynomial_degrees=polynomial_degrees,
         polynomial_root_counts=polynomial_root_counts,
+        polynomial_statuses=polynomial_statuses,
+        critical_point_solver_statuses=critical_statuses,
         polynomial_scan_discordances=polynomial_scan_discordances,
         maximum_loglik_spread=spread,
         maximum_stationary_location_spread=location_spread,
