@@ -147,6 +147,9 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertEqual(len(result.configurations), 9)
         self.assertEqual(len(result.stationary_point_counts), 9)
         self.assertEqual(len(result.optimizer_statuses), 9)
+        self.assertEqual(len(result.stationary_point_type_signatures), 9)
+        self.assertEqual(len(result.tangential_score_root_counts), 9)
+        self.assertEqual(len(result.unresolved_tangential_candidate_counts), 9)
         self.assertIsNotNone(result.maximum_stationary_location_spread)
         self.assertIn(
             result.status,
