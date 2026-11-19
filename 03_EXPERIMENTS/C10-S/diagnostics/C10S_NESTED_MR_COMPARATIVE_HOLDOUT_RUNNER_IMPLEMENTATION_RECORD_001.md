@@ -71,7 +71,53 @@ It does not copy C0 bootstrap logic, implement C1/C5 estimators, or run profile/
 The static workflow completed successfully on code commit `a7abb8936b57806d4f4f25df07a8c0ca16fb3251` (Run `44560788541`). Compile, dependency installation and the full configured comparator/runner unittest step all reported `success`. This establishes technical test conformance only; it does not establish numerical coverage or authorize the holdout.
 
 
-## 6. Resource-only preflight (static assessment)
+
+## 6. Checkpointing, resource preflight and execution gates
+
+### 6.1 Verified per-cell checkpoint/resume
+
+The comparative runner now supports whole-cell checkpointing:
+
+- Each completed cell is written atomically to its own JSON file.
+- The checkpoint index binds protocol ID/version/hash, exact code commit, source SHA-256 inventory, seed-schedule ID, full cell manifests and K/B.
+- A resumed run verifies the checkpoint configuration, every cell-file SHA-256, dataset count, dataset-ID uniqueness, protocol identity and cell identity before reuse.
+- Any configuration mismatch or altered/missing cell file fails closed.
+- An interrupted cell is recomputed from replicate zero; incomplete records are never merged.
+- The final aggregate retains only cell summaries and record-file references/hashes in memory. Full per-dataset records remain in the per-cell files, limiting aggregate memory growth.
+
+The deterministic tests cover exact resume reuse, configuration mismatch rejection, tamper rejection and disk-backed record retention.
+
+### 6.2 Resource-only preflight implementation
+
+Added `harness/run_c10s_nested_mr_comparative_resource_preflight.py` and its contract tests.
+
+The bounded resource sample is deliberately limited to the two largest M/R cells, one per family:
+
+- F1 Gaussian: M=30, R=20, K=1,000, C0 B=1,000.
+- F5 beta-binomial: M=30, R=20, K=1,000, C0 B=1,000, C5 B=1,000.
+
+It uses a separate deterministic seed namespace, retains candidate comparison objects only to reproduce the per-cell memory profile, records elapsed time and process peak RSS, and captures Python/NumPy/platform/workflow/dependency-lock provenance. It does not call `adjudicate_matched_datasets`, compute coverage, inspect interval success or emit method rankings. It is a resource sample, not the holdout and not scientific evidence.
+
+### 6.3 Dedicated authorization gates
+
+Two separate one-use workflows and validators are now present:
+
+- `c10-s-nested-mr-comparative-resource-preflight.yml`: resource-preflight-only authorization; explicitly prohibits comparative holdout and C10 scientific execution.
+- `c10-s-nested-mr-comparative-holdout.yml`: full eight-cell holdout authorization; exact protocol/code/workflow/source hashes, K/B, roster, profile exclusion, Tier B exclusion and primary/replay requirements are checked.
+
+Each validator requires an APPROVED authorization file on a dedicated authorization branch, whose sole commit must have the exact approved research-code commit as its only parent and may change only the authorization JSON. The full holdout validator also binds the executor and validator hashes. No APPROVED authorization file or authorization branch has been created in this work.
+
+## 7. Latest technical validation
+
+GitHub Actions Run `44563560279`, commit `be11c07eac8849bc307c99e9f0c819136d6cfa6b`, completed **SUCCESS**:
+
+- pinned Python 3.12.10 and hash-locked dependency installation: PASS;
+- compilation of runner, preflight, executor and validators: PASS;
+- comparator and runner/preflight/authorization contract suite: **60 tests, PASS**.
+
+This is static/contract validation only. It does not validate the actual resource profile or authorize numerical execution.
+
+## 8. Resource-only preflight (static assessment)
 
 **Disposition: RESOURCE_PREFLIGHT_CONDITIONAL — capacity is not yet demonstrated for the new runner. No numerical benchmark or coverage computation was run.**
 
@@ -103,7 +149,7 @@ The existing historical run suggests the C0 portion is operationally tractable, 
 
 No coverage, interval success, method ranking or scientific C10 result was computed. No numerical holdout was launched.
 
-## 7. Next operation
+## 9. Next operation
 
 1. Static workflow result inspected and passed for the runner/test code commit.
 2. Resolve resource readiness: add verified per-cell checkpoint/resume and a dedicated authorization-gated workflow, then run a bounded resource-only performance/memory preflight (no coverage adjudication).
