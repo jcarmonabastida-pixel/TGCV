@@ -51,3 +51,12 @@ The push-triggered static workflow did run for commit `aaa82ba5246b7c8554a80c736
 The initial perturbation factor `1 - 5e-8` placed the fixture inside the diagnostic's unresolved-tolerance region. This is a fixture calibration mismatch, not evidence that the solver should be weakened. The production tolerance and solver were left unchanged.
 
 A follow-up fixture-only change uses `1 - 5e-6` to move the realizable polynomial farther outside that unresolved region while retaining a near-degenerate target. Commit: `e1af628250837ccd3a2aeffd2a6215879ce69c33`. Its static workflow result had not yet appeared at the time of this record update. Status therefore remains **PENDING**; do not count the test as passing until the new run is inspected.
+
+
+## Second CI attempt and corrected scientific interpretation
+
+The static workflow for commit `e1af628250837ccd3a2aeffd2a6215879ce69c33` completed as **FAIL** (run `44587970982`): 120/121 tests passed. The near-degenerate fixture remained `POLYNOMIAL_ROOTS_UNRESOLVED` even after changing the perturbation from (5\times10^{-8}) to (5\times10^{-6}).
+
+This result shows that the prior expectation of two isolated positive roots was not supported. The correct conservative contract for this constructed near-double-root case is now explicit: the diagnostic must return `POLYNOMIAL_ROOTS_UNRESOLVED`, must expose an unresolved critical candidate or unresolved critical solver status, and must not relabel the case as a confirmed tangency. The interval-path companion continues to accept only a finite valid interval or typed F1 abstention.
+
+The test was corrected accordingly in commit `0f4cc4a4b9c15ac7ba65095fc1a945655c94e9ca`. No production tolerance or solver code was changed. The workflow result for this corrected commit is pending; no PASS is claimed.
