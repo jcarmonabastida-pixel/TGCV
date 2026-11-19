@@ -20,7 +20,7 @@ The engine reuses, without duplicating their mathematical responsibilities:
 - c10s_gaussian_variance_oracles.py: independent F1 finite-sample reference formulas and profile likelihood diagnostic.
 - c10s_beta_binomial_variance_oracles.py: independent F5 finite-R count law and finite-M estimator moments.
 
-The oracles are references; they are not silently substituted for fitted inference.
+The oracles are references; they are not silently substituted for fitted inference. The F1 dispatch also performs an independent formula reconciliation of C1's conservative raw-between interval against the Gaussian oracle and fails closed on disagreement.
 
 ## 3. Dispatch contract
 
