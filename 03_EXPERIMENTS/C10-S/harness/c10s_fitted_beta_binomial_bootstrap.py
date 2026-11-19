@@ -206,14 +206,14 @@ def fitted_beta_binomial_parametric_bootstrap(
         between_star, [alpha_tail, 1.0 - alpha_tail],
     ))
     valid_rate = len(mcse_star) / bootstrap_replicates
+
+    # F5 MCSE is a constrained joint functional. The current candidate has no
+    # boundary-aware confidence construction; quantiling only positive raw
+    # projections would condition on a selected subset and violate protocol
+    # v002's no-positive-only-conditioning rule. Keep the projectable-draw
+    # count as a diagnostic, but fail closed for this target.
     mcse_interval = None
-    abstention = observed.abstention_reason
-    if valid_rate >= minimum_valid_mcse_rate and mcse_star:
-        mcse_interval = tuple(float(v) for v in np.quantile(
-            mcse_star, [alpha_tail, 1.0 - alpha_tail],
-        ))
-    else:
-        abstention = "INSUFFICIENT_VALID_PARAMETRIC_MCSE_DRAWS"
+    abstention = "F5_MCSE_JOINT_BOUNDARY_METHOD_NOT_IMPLEMENTED"
 
     provenance = observed.provenance + (
         ("fit_model", "beta_binomial_world_probability"),
@@ -225,6 +225,7 @@ def fitted_beta_binomial_parametric_bootstrap(
         ("bootstrap_replicates", str(bootstrap_replicates)),
         ("mcse_valid_rate", format(valid_rate, ".17g")),
         ("interval_method", "parametric_percentile_exploratory"),
+        ("mcse_interval_status", "NOT_IMPLEMENTED_BOUNDARY_AWARE_JOINT_INFERENCE"),
     )
     comparison = replace(
         observed,
@@ -240,5 +241,5 @@ def fitted_beta_binomial_parametric_bootstrap(
         bootstrap_replicates=bootstrap_replicates,
         valid_mcse_replicates=len(mcse_star), valid_mcse_rate=valid_rate,
         confidence_level=confidence_level, bootstrap_seed=bootstrap_seed,
-        failure_reason=None if mcse_interval is not None else abstention,
+        failure_reason=abstention,
     )
