@@ -252,6 +252,8 @@ def _score_polynomial_coefficients_exact(
     ssw: float, s2_means: float, tau: float,
 ) -> tuple[float, float, float, float]:
     """Construct coefficients exactly from the binary values of the inputs."""
+    if not all(math.isfinite(value) for value in (ssw, s2_means, tau)):
+        raise F1ProfileError("SCORE_POLYNOMIAL_INPUTS_NONFINITE")
     R = Fraction(r)
     A, B = Fraction(df_w), Fraction(df_b)
     W, M, T = Fraction(ssw), Fraction(s2_means), Fraction(tau)
