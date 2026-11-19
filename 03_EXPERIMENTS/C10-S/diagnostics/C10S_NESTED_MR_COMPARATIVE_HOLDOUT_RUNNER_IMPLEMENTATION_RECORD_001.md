@@ -179,3 +179,33 @@ Both records report zero jobs. No validator, dependency installation, runner or 
 The one-use authorization is treated as consumed/closed after this failed activation attempt and must not be reused or replayed. No retry was made. A corrected trigger/registration and a new, separately approved one-use authorization are required before another attempt.
 
 This is an orchestration/activation failure, not a preflight resource failure, not a C0/C1/C5 coverage result, and not a scientific C10 result.
+
+
+## 11. Workflow isolation correction and second activation attempt (2026-11-19)
+
+After the first failed activation, both workflow jobs were given fail-closed job-level guards:
+- resource preflight requires the dedicated `research/c10s-nested-mr-resource-preflight-auth-*` ref and the resource-only authorization commit message;
+- comparative holdout requires the distinct `research/c10s-nested-mr-comparative-auth-*` ref and the holdout-specific authorization commit message.
+
+The corrected workflow sources were committed on the research branch:
+- resource workflow guard commit: `0e874b1f2a33344cac316919cc366b118aa4dc98`;
+- holdout workflow guard commit: `b079e6e7f0ce035629fd82c0d9a9af6266ae1da7`.
+
+A fresh one-use authorization was then created (the first authorization was not reused):
+- authorization ID: `C10S-RES-PREFLIGHT-20261119-002`;
+- authorization branch: `research/c10s-nested-mr-resource-preflight-auth-C10S-RES-PREFLIGHT-20261119-002`;
+- exact approved code commit: `b079e6e7f0ce035629fd82c0d9a9af6266ae1da7`;
+- authorization commit: `d6ebde52c2b365c74bb9b8b548804fb552fd1b13`;
+- scope remains resource-only, two Tier A cells, K=1,000 per cell, C0 B=1,000, C5 B=1,000; no coverage adjudication, holdout, Tier B or C10 scientific execution.
+
+GitHub again created a workflow run for the **comparative holdout** workflow on the resource-only authorization branch:
+- run `44565473766`;
+- branch `research/c10s-nested-mr-resource-preflight-auth-C10S-RES-PREFLIGHT-20261119-002`;
+- conclusion `failure`;
+- zero jobs; no runner steps executed.
+
+No resource-preflight workflow run was created for this second authorization. No datasets, timings, memory measurements or coverage outputs were generated. The resource preflight has therefore still not executed.
+
+Important repository-state finding: both specialized workflow files are absent from `main` (404 when read from main) and exist only on the research branch. The GitHub Actions registration/activation behavior cannot be made reliable by research-branch job guards alone in the current state. Do not attempt further authorization pushes or reuse authorization 002. To activate these governed workflows reliably, their registration/trigger definitions must first be handled through the repository's canonical workflow governance (which may require an explicitly authorized main-branch promotion or another approved activation route). No main-branch change is made here.
+
+This is a workflow-registration/activation blocker, not a resource-profile result and not a scientific result.
