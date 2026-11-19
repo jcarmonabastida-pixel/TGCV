@@ -356,6 +356,7 @@ def run_preflight(output: Path, *, execution_authorized: bool = False) -> dict:
         },
         "seed_collision_audit": seed_audit,
         "cells": results,
+        "resource_projection": projection,
         "records": all_records,
         "total_datasets": len(all_records),
         "coverage_adjudication": "NOT_RUN",
