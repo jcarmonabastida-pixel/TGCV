@@ -225,7 +225,8 @@ def f5_beta_binomial_mcse_profile_loglik(
         finite_cap = numerator / denominator
         if not math.isfinite(finite_cap) or finite_cap <= 0.0:
             raise F5ProfileError("FAILED_TO_DERIVE_FEASIBLE_CONCENTRATION_BOUND")
-        logk_low, logk_high = -24.0, min(24.0, math.log(finite_cap))
+        logk_high = math.log(finite_cap)
+        logk_low = min(-24.0, logk_high - 48.0)
         upper_limit_feasible = False
 
     if logk_high <= logk_low:
