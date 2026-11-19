@@ -246,6 +246,9 @@ def isolate_real_roots(
     if width <= 0:
         raise ValueError("MAX_WIDTH_MUST_BE_POSITIVE")
     hi = rational(upper) if upper is not None else _cauchy_bound(p)
+    if upper is None and hi <= lo:
+        # Cauchy's bound proves every real root is strictly below lo.
+        return RootIsolationResult("ROOTS_ISOLATED", degree, ())
     if hi <= lo:
         raise ValueError("UPPER_BOUND_MUST_EXCEED_LOWER_BOUND")
 
