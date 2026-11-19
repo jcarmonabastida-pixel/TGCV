@@ -12,7 +12,6 @@ from c10s_f5_beta_binomial_mcse_profile import (
     _bisect_profile_crossing,
     f5_beta_binomial_mcse_profile_grid_convergence,
     _optimizer_adjudication,
-    F5ProfileError,
 )
 
 
