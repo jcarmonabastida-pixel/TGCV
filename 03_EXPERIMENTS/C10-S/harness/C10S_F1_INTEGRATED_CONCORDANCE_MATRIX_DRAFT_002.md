@@ -123,3 +123,11 @@ The observation-scale equivariance test retains the scale factors (10^{-4},10^{-
 - The next execution requires a new frozen snapshot and a new one-shot authorization.
 
 **Current disposition:** `CORRECTION IMPLEMENTED / STATIC REVIEW PENDING COMPLETION / VALIDATION PENDING`. No claim of numerical validation, exhaustive root certification, inferential validity, or C10 scientific closure is made.
+
+### F1-AUD-07 — Residual absolute variance floors in related F1 diagnostics (corrected; validation pending)
+
+A cross-call-site review found the same (10^{-12}) absolute variance floor in the polynomial-root normalization scale and in the nuisance optimizer's log-scale scan. These floors could break scale equivariance for sufficiently small, but still representable, variance inputs even after the LR endpoint correction.
+
+**Integrated correction:** all reference-scale selections in the F1 profile-likelihood, polynomial-root, and nuisance-optimizer paths now use positive data-derived quantities (`within`, `s2_means`, `tau`, and positive critical-point magnitudes) without a fixed absolute variance floor. The within sum of squares is required to be strictly positive, so the scale remains positive. The log-scale optimizer and polynomial normalizer continue to fail closed on non-finite or unrepresentable values.
+
+This extends the same scale convention across the F1 paths; it does not alter the likelihood, score polynomial, root domain, LR cutoff, or scientific estimand.
