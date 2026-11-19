@@ -1,7 +1,7 @@
 # C10-S — Nested M/R calibration comparison design
 
 **Record:** C10S-NESTED-MR-CALIBRATION-COMPARISON-DESIGN-001  
-**Status:** RESEARCH DESIGN — NON-CANONICAL / NOT IMPLEMENTED / NOT EXECUTED  
+**Status:** RESEARCH DESIGN — NON-CANONICAL / F1 ORACLE IMPLEMENTED / STATIC TESTS PASS / NO COVERAGE EXECUTION  
 **Date:** 2026-11-19  
 **Predecessor diagnosis:** `C10S_NESTED_MR_TIER_A_CALIBRATION_INVESTIGATION_001`  
 **Frozen baseline:** protocol `C10S-NESTED-MR-BOOTSTRAP-VALIDATION-001` v002; method `TGCV_NESTED_MR_BOOTSTRAP` 1.2  
@@ -189,11 +189,11 @@ If no candidate meets all conditions, the correct outcome is no validated genera
 | Tier A artifact | EXECUTED; integrity checked; not a holdout |
 | F1 exact within pivot | EXPLORATORY BENCHMARK |
 | F1 conservative between pivot | EXPLORATORY BENCHMARK |
-| Gaussian profile/joint MCSE | DEFINED HERE; NOT IMPLEMENTED |
+| Gaussian profile/joint MCSE | CORE PROFILE-LIKELIHOOD FUNCTION IMPLEMENTED; CUTOFF/INVERSION NOT CALIBRATED |
 | Parametric / BCa / studentized comparison | DEFINED HERE; NOT IMPLEMENTED |
 | F5 fitted beta-binomial inference | OPEN |
 | New holdout protocol | OPEN |
 | Tier B | NOT AUTHORIZED |
 | C10 scientific execution | NOT AUTHORIZED |
 
-**Next operation:** implement the independent F1 oracle/profile-likelihood comparator and the common result interface, with adversarial tests. Keep all work on a research branch. Do not alter the production Analyzer, protocol v002, canonical main, RMA, Evidence→Claim Matrix or scientific authorization state.
+**Progress recorded (2026-11-19):** independent F1 oracle module `c10s_gaussian_variance_oracles.py` and seven adversarial tests were added on the research branch. GitHub Actions run `44451657996` completed SUCCESS; compile passed and all 7 tests passed. The tests cover exact/joint-pivot interval construction, preservation of a negative raw lower endpoint, constrained MLE at the zero-between boundary, interior MLE reconciliation, finite profile MCSE likelihood-ratio output and fail-closed invalid support. This is static/formula-contract evidence only; it is not coverage calibration, method validation, or a numerical Monte Carlo run. The profile-likelihood implementation currently returns a profile LR statistic; its cutoff calibration and interval inversion remain OPEN.\n\n**Next operation:** independently verify the profile likelihood over a parameter grid and add calibrated cutoff/interval inversion, then implement the common comparison interface. Only after that proceed to parametric/BCa/studentized candidates and a separately frozen holdout protocol. Keep all work on a research branch. Do not alter the production Analyzer, protocol v002, canonical main, RMA, Evidence→Claim Matrix or scientific authorization state.
