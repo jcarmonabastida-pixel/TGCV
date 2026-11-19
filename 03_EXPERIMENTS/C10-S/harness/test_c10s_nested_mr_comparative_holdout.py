@@ -45,6 +45,17 @@ class ComparativeHoldoutRunnerTests(unittest.TestCase):
         with self.assertRaisesRegex(runner.HoldoutRunnerError, "CELL_NOT_IN_FROZEN"):
             runner.generate_holdout_dataset(invalid, 0)
 
+    def test_generator_rejects_parameter_or_tier_drift(self):
+        f5 = next(item for item in tier_a_specs() if item.cell_id == "F5_beta22_M10_R5")
+        wrong_parameters = f5.__class__(**{
+            **f5.__dict__, "parameters": (("alpha", 3), ("beta", 2))
+        })
+        with self.assertRaisesRegex(runner.HoldoutRunnerError, "F5_DGP_PARAMETERS"):
+            runner.generate_holdout_dataset(wrong_parameters, 0)
+        wrong_tier = f5.__class__(**{**f5.__dict__, "tier": "B"})
+        with self.assertRaisesRegex(runner.HoldoutRunnerError, "TIER_A_K_B"):
+            runner.generate_holdout_dataset(wrong_tier, 0)
+
     def test_dataset_generated_once_and_exact_f1_roster_passed_to_engine(self):
         spec = spec_for("F1_balanced_M10_R5")
         comparison = SimpleNamespace(
