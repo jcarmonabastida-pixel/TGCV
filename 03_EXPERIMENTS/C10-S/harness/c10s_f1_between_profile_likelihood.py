@@ -217,7 +217,17 @@ def f1_profile_between_confidence_set(
                 or diagnostic.stationary_point_types.count("LOCAL_MAXIMUM") != 1
                 or "STATIONARY_TYPE_UNRESOLVED" in diagnostic.stationary_point_types):
             raise F1ProfileError(
-                "PROFILE_NUISANCE_CERTIFICATION_FAILED:" + diagnostic.status
+                "PROFILE_NUISANCE_CERTIFICATION_FAILED:"
+                + diagnostic.status
+                + f"|polynomial={diagnostic.polynomial_status}"
+                + f"|critical={diagnostic.critical_point_solver_status}"
+                + f"|scan_discordant={diagnostic.polynomial_scan_discordant}"
+                + f"|roots={diagnostic.stationary_points}"
+                + f"|types={diagnostic.stationary_point_types}"
+                + f"|tangencies={diagnostic.tangential_score_roots}"
+                + f"|unresolved={diagnostic.unresolved_tangential_candidates}"
+                + f"|boundary={diagnostic.independent_boundary_sensitive}"
+                + f"|optimizer_error={diagnostic.optimizer_error}"
             )
         return diagnostic.independent_loglik
 
