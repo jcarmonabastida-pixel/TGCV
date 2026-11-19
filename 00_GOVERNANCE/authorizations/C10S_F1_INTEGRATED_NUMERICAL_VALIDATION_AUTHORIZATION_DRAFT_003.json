@@ -17,7 +17,7 @@
     "branch": "research/c10s-f1-integrated-correction-20261119",
     "frozen_commit": "d65686beb2b242c0acb8ffbbcfe8ff55437f6c8b",
     "manifest_path": "03_EXPERIMENTS/C10-S/harness/C10S_F1_VALIDATION_FREEZE_MANIFEST_002.md",
-    "manifest_commit": "1378cd8b2aae6b17c7edb9c3fe78973b3734c07d",
+    "manifest_commit": "fef2b4c16de6e7380cb97495f080c0bfbe9542b6",
     "workflow_path": ".github/workflows/c10s-f1-integrated-validation-001.yml",
     "workflow_commit": "c4095607ac7ea359f1626d157547c4b2e6e12824",
     "workflow_blob_sha": "d10a1beb0ebf3afa057198f84b167c61efc7f050",
