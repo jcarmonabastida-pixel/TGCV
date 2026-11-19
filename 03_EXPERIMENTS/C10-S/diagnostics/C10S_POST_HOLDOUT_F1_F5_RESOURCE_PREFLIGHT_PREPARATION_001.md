@@ -128,7 +128,7 @@ Authorization template: `C10S_POST_HOLDOUT_F1_F5_RESOURCE_PREFLIGHT_AUTHORIZATIO
 | F5 B2/B3 numerical execution | NOT AUTHORIZED / NOT RUN — dedicated one-use authorization template remains DRAFT |
 | Full F1 A2/A3 and combined calibration/validation execution | NOT AUTHORIZED / NOT RUN |
 
-**No resource sample has been executed by this preparation.** The deterministic static workflow is complete. The resource workflow remains dormant until the user explicitly authorizes this exact one-use resource-only operation.
+**No additional resource sample was executed while preparing the F5 B2/B3 package.** The separately authorized resource preflight is complete (run `44603264310`). The new F5 B2/B3 development-calibration workflow remains dormant until a separate explicit one-use authorization is approved.
 
 
 ## 9. Executed preflight result
