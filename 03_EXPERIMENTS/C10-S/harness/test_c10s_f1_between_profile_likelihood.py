@@ -127,6 +127,17 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertEqual(tangencies, 1)
         self.assertEqual(unresolved, 0)
 
+    def test_score_scan_flags_near_tangency_without_confirming_a_root(self):
+        roots, kinds, tangencies, unresolved = _scan_score_stationary_points(
+            lambda x: (x - 0.125) ** 2 + 1e-9,
+            lambda x: 2.0 * (x - 0.125),
+            lo=-1.0, hi=1.0, grid_points=81,
+        )
+        self.assertEqual(roots, ())
+        self.assertEqual(kinds, ())
+        self.assertEqual(tangencies, 0)
+        self.assertEqual(unresolved, 1)
+
     def test_score_scan_classifies_local_maximum_and_minimum(self):
         roots, kinds, tangencies, unresolved = _scan_score_stationary_points(
             lambda x: (x + 0.4) * (0.3 - x),
