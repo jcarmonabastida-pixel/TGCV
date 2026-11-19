@@ -2,11 +2,11 @@
 
 **Record:** C10S-POST-HOLDOUT-F1-F5-DETERMINISTIC-CONTROLS-IMPLEMENTATION-001  
 **Date:** 2026-11-19  
-**Status:** PARTIAL IMPLEMENTATION / 112-TEST STATIC SUITE PASS / NUMERICAL DEVELOPMENT EXECUTION NOT AUTHORIZED  
+**Status:** PARTIAL IMPLEMENTATION / 113-TEST STATIC SUITE PASS / NUMERICAL DEVELOPMENT EXECUTION NOT AUTHORIZED  
 **Frozen design:** `C10S_POST_HOLDOUT_F1_F5_DEVELOPMENT_CALIBRATION_SPEC_001.md` v1.0  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
 **Initial implementation commit:** `e7920543e8c6fb19582c62446381df7cb1d95e1a`  
-**Latest validated commit:** `469dbe52c9a7075e68506f2c58d754b7ea45dc58`  
+**Latest validated commit:** `601610465e2374b700f58dd8d7acbcf7a7b0b837`  
 **Execution authorization:** NONE
 
 ---
@@ -173,3 +173,39 @@ Workflow:
 The validated research branch head was `469dbe52c9a7075e68506f2c58d754b7ea45dc58`. The frozen specification remained byte-identical at the blob SHA above. `main` remained at `e22928eb79adb5bc74295967a45b9c440b78f849`.
 
 **F5 disposition update:** the per-dataset optimizer audit is now implemented and propagated through the in-memory result and comparison diagnostic record. It remains a diagnostic, not an interval-selection rule or empirical finding. The development/calibration package remains OPEN because the six-cell F1 adversarial interval-path matrix and remaining F5 weak-identification/boundary fixture work are not yet complete.
+
+
+## 9. F1 frozen six-cell deterministic interval-path matrix — 2026-11-19
+
+A deterministic fixture matrix has now been added to `test_c10s_f1_between_profile_likelihood.py`.
+
+It generates fresh Gaussian random-intercept fixtures using PCG64 for each of the six frozen combinations:
+- balanced: ((\sigma_w^2,\sigma_b^2)=(1,1)), M10/R5 and M30/R20;
+- low-between: ((1,0.05)), M10/R5 and M30/R20;
+- high-between: ((0.25,2)), M10/R5 and M30/R20.
+
+Each fixture is sent through the actual F1 profile confidence-set path with the same explicit diagnostic LR cutoff. The contract checks data shape/finiteness and then requires either a valid ordered nonnegative interval containing the profile MLE or a typed `F1ProfileError` abstention. Unexpected exceptions or malformed intervals fail the suite.
+
+These are deterministic software fixtures only. They are not Monte Carlo replicates, calibration observations, coverage evidence, or a substitute for the six-cell A2/A3 banks. The matrix does not yet exhaust the separately frozen multiple/tangential-root, near-degenerate, extreme endpoint and independent-oracle cases at the interval-path boundary.
+
+### Latest static validation after the F1 matrix
+
+- Workflow run: `44584274490`
+- Exact commit: `601610465e2374b700f58dd8d7acbcf7a7b0b837`
+- Conclusion: `SUCCESS`
+- Compile: PASS
+- Hash-locked dependency installation: PASS
+- Test suite: **113 tests passed**
+
+The two numerical-stress workflows associated with this push were `SKIPPED` by their authorization conditions; no numerical-stress or scientific execution was performed.
+
+### Additional exact identity
+
+| Artifact | Git blob SHA |
+|---|---|
+| F1 six-cell interval-path fixture test module | `338e1fe193231260dd695f96c20077b87b58613b` |
+| F1 profile-likelihood implementation | `87de3f15468482327fa117b050fdd54dac13ade5` |
+
+The validated research branch head was `601610465e2374b700f58dd8d7acbcf7a7b0b837`; `main` remained at `e22928eb79adb5bc74295967a45b9c440b78f849`. The frozen specification remains unchanged at `d1c8bae882dc2e4cd0e1caae29609561b9ebac68`.
+
+**Current disposition:** F5 per-dataset optimizer diagnostics are now propagated into the dataset comparison record. The six frozen F1 cell designs are exercised by deterministic interval-path fixtures. The integrated A1/B1 work package is still OPEN: further F1 adversarial interval-path and independent-oracle verification, plus F5 weak-identification/boundary classification and diagnostic schema/provenance checks, remain before the resource preflight gate. No numerical development execution is authorized.
