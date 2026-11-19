@@ -5,6 +5,7 @@ import unittest
 from unittest.mock import patch
 
 from c10s_f1_root_adjudication import adjudicate_f1_roots
+from c10s_f1_between_profile_likelihood import F1ProfileError
 from c10s_f1_independent_root_isolator import IsolatedRoot, RootIsolationResult
 
 
@@ -74,10 +75,18 @@ class F1RootAdjudicationTests(unittest.TestCase):
         self.assertEqual(result.status, "ROOTS_UNRESOLVED")
         isolate.assert_not_called()
 
+    def test_rejects_nonfinite_isolation_width(self):
+        for value in (float("inf"), float("nan"), 0.0, -1.0):
+            with self.subTest(value=value):
+                with self.assertRaises(F1ProfileError):
+                    adjudicate_f1_roots(
+                        (), between_variance=0.2, isolation_width=value,
+                    )
+
     def test_rejects_nonfinite_tolerances(self):
         for value in (float("inf"), float("nan"), 0.0, -1.0):
             with self.subTest(value=value):
-                with self.assertRaises(Exception):
+                with self.assertRaises(F1ProfileError):
                     adjudicate_f1_roots(
                         (), between_variance=0.2, match_tolerance=value,
                     )
