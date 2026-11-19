@@ -63,6 +63,9 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         self.assertEqual(c1_within.interval_emission_rate, 1.0)
         self.assertIn(c1_within.conditional_coverage, (0.0, 1.0))
         self.assertEqual(c1_within.unconditional_cover_rate, c1_within.conditional_coverage)
+        self.assertIsNotNone(c1_within.coverage_mcse)
+        self.assertIsNotNone(c1_within.coverage_wilson_95)
+        self.assertLessEqual(c1_within.coverage_wilson_95[0], c1_within.coverage_wilson_95[1])
 
     def test_adjudication_counts_abstentions_and_rejects_unpaired_data(self):
         rows = (
@@ -79,6 +82,10 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         self.assertEqual(c1_mcse.interval_emission_rate, 1.0)
         with self.assertRaises(ComparativeEngineError):
             adjudicate_matched_datasets((record,), ())
+        with self.assertRaises(ComparativeEngineError):
+            adjudicate_matched_datasets(
+                (record,), (TruthTargets(within=-1.0, between=0.0, mcse=0.1),)
+            )
 
     def test_rejects_unsupported_family(self):
         with self.assertRaises(ComparativeEngineError):
