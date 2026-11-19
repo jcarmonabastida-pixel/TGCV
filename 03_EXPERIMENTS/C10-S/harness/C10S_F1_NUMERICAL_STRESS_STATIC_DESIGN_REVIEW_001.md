@@ -126,8 +126,8 @@ The prior authorization for the 73-test validation is consumed and cannot author
 | N4 equivariance metrics | IMPLEMENTED — not executed |
 | N5 root-magnitude/depth ladder | IMPLEMENTED — not executed |
 | F1 arbitrary-polynomial comparison | NOT AVAILABLE — explicitly excluded |
-| Persistent evidence serialization/audit | IMPLEMENTED — NOT EXECUTED; workflow stdout/stderr audit OPEN |
-| Numerical stress execution | NOT AUTHORIZED |
+| Persistent evidence serialization/audit | IMPLEMENTED — NOT EXECUTED; workflow stdout/stderr capture specified |
+| Numerical stress execution workflow | IMPLEMENTED — FAIL-CLOSED; authorization remains DRAFT |\n| Numerical stress execution | NOT AUTHORIZED |
 | Monte Carlo / scientific C10-S execution | NOT AUTHORIZED |
 
-**Next operation:** conduct a final static integrity review of the amended generator, writer, contracts and blob identities; then freeze the exact execution snapshot. No runner or writer execution is authorized.
+**Next operation:** await explicit user approval of the exact one-shot authorization. Approval must be recorded in the authorization file and in a commit carrying the workflow's approval marker; that commit triggers one execution and consumes the authorization. No runner or writer execution is authorized before that approval.
