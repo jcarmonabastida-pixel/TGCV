@@ -1,9 +1,9 @@
 {
   "approval_recorded_at_utc": "2026-11-19T15:01:25.972Z",
-  "approval_requirement": "Fresh explicit user approval required. Approval must change this exact authorization to APPROVED, set execution_authorized and approved_by_user true, and commit with exact marker AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-005. No approval from authorizations 001\u2013004 is reusable.",
+  "approval_requirement": "Fresh explicit user approval required. Approval must change this exact authorization to APPROVED, set execution_authorized and approved_by_user true, and commit with exact marker AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-005. No approval from authorizations 001–004 is reusable.",
   "approval_scope_confirmation": "User explicitly approved the single primary execution of the exact 79-record F1 v003 diagnostics on the pinned source, workflow, inputs, runtime and prohibitions.",
   "approved_by_user": true,
-  "attempt_closed": false,
+  "attempt_closed": true,
   "authorization_id": "C10S-F1-NUMERICAL-STRESS-20261119-005",
   "command": {
     "argv": [
@@ -101,5 +101,13 @@
   "source_commit": "e526acb04e1d2c2421fa2663a43e31b537985522",
   "status": "CONSUMED",
   "workflow": ".github/workflows/c10s-f1-numerical-stress-v3.yml",
-  "workflow_blob_sha": "85ffcb58d1859a3621dcd29a7b1c479c08a75b27"
+  "workflow_blob_sha": "85ffcb58d1859a3621dcd29a7b1c479c08a75b27",
+  "attempt_outcome": "COMPLETED_SUCCESSFULLY",
+  "workflow_run_id": 44550116151,
+  "workflow_run_attempt": 1,
+  "artifact_id": 14543050995,
+  "artifact_name": "c10s-f1-numerical-stress-v3-44550116151",
+  "artifact_sha256": "13a131429004433d6006dce234325529a604e5ed56f3e89a7aa59d42c2fa9d74",
+  "result_report": "03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_RESULT_003.md",
+  "result_report_commit": "33981f29a0e22bd9817ea694261710941e42bf69"
 }
