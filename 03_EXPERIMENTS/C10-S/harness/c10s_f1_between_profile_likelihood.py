@@ -73,6 +73,8 @@ class F1ProfileSet:
     upper_endpoint_bracket_expansions: int
     status: str
     method_id: str = METHOD_ID
+    nuisance_certification_status: str = "NOT_RECORDED"
+    topology_status: str = "ANALYTIC_CONNECTEDNESS_ARGUMENT_APPLIED"
 
 
 def _sufficient_statistics(rows: Sequence[Sequence[float]]):
@@ -157,17 +159,23 @@ def f1_profile_loglik(
 
 
 def f1_profile_between_confidence_set(
-    rows: Sequence[Sequence[float]], *,
+    rows: Sequence[Sequence[float]], *, family: str,
     likelihood_ratio_cutoff: float,
     max_bracket_expansions: int = 80,
 ) -> F1ProfileSet:
     """Invert the caller-supplied LR rule by bracketing and root finding.
 
-    The profile MLE is max(0, S2(world means)-MSW/R). The lower endpoint is
+    The callable is explicitly F1-scoped. At every evaluated tau, the
+    nuisance score-polynomial and independent score scan must agree and the
+    bounded optimizer must agree with the maximum over isolated stationary
+    roots; otherwise the operation abstains. The profile MLE is
+    max(0, S2(world means)-MSW/R). The lower endpoint is
     zero when zero lies in the LR set; otherwise it is solved between zero and
     the MLE. The upper endpoint is solved after geometric bracket expansion.
     No critical value is selected and no calibration is performed.
     """
+    if family != "F1":
+        raise F1ProfileError("PROFILE_LIKELIHOOD_REQUIRES_EXPLICIT_F1_FAMILY")
     if (isinstance(likelihood_ratio_cutoff, bool)
             or not isinstance(likelihood_ratio_cutoff, (int, float))
             or not math.isfinite(likelihood_ratio_cutoff)
@@ -183,10 +191,19 @@ def f1_profile_between_confidence_set(
     scale = max(within, s2_means)
 
     def profile(tau: float) -> float:
-        return _profile_at_tau(
-            tau, r=r, df_w=df_w, df_b=df_b, ssw=ssw,
-            s2_means=s2_means, scale=max(scale, tau),
+        diagnostic = f1_profile_nuisance_optimizer_diagnostic(
+            rows, between_variance=tau,
         )
+        if (diagnostic.status != "OPTIMIZATION_CONCORDANT"
+                or diagnostic.independent_loglik is None
+                or diagnostic.polynomial_status != "POLYNOMIAL_ROOTS_ISOLATED"
+                or diagnostic.polynomial_scan_discordant
+                or diagnostic.unresolved_tangential_candidates > 0
+                or "STATIONARY_TYPE_UNRESOLVED" in diagnostic.stationary_point_types):
+            raise F1ProfileError(
+                "PROFILE_NUISANCE_CERTIFICATION_FAILED:" + diagnostic.status
+            )
+        return diagnostic.independent_loglik
 
     maximum = profile(tau_hat)
     if not math.isfinite(maximum):
@@ -247,6 +264,8 @@ def f1_profile_between_confidence_set(
         lower_boundary_included=lower_included,
         upper_endpoint_bracket_expansions=expansions,
         status="PROFILE_LR_INTERVAL_ROOT_SOLVED",
+        nuisance_certification_status="OPTIMIZATION_CONCORDANT",
+        topology_status="ANALYTIC_CONNECTEDNESS_ARGUMENT_APPLIED",
     )
 
 
