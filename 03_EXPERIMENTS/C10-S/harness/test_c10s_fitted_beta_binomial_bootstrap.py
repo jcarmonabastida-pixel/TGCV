@@ -39,6 +39,14 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
         first = fitted_beta_binomial_parametric_bootstrap(rows, **kwargs)
         second = fitted_beta_binomial_parametric_bootstrap(rows, **kwargs)
         self.assertIsNotNone(first.fit)
+        self.assertIsNotNone(first.optimizer_audit)
+        self.assertEqual(len(first.optimizer_audit.starts), 3)
+        self.assertIn(dict(first.comparison.provenance)["optimizer_audit_status"], (
+            "OPTIMIZER_CONCORDANT", "OPTIMIZER_DISCORDANT",
+            "INDEPENDENT_OPTIMIZER_UNRESOLVED",
+            "LIKELIHOOD_CONCORDANT_PARAMETER_DISAGREEMENT",
+            "DIAGNOSTIC_UNAVAILABLE",
+        ))
         self.assertFalse(first.fit.boundary)
         self.assertEqual(first.comparison.within_interval, second.comparison.within_interval)
         self.assertEqual(first.comparison.between_interval, second.comparison.between_interval)
@@ -56,6 +64,8 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
                 bootstrap_seed=19,
             )
             self.assertIsNone(result.fit)
+            self.assertIsNotNone(result.optimizer_audit)
+            self.assertEqual(len(result.optimizer_audit.starts), 3)
             self.assertIn("ALL_ZERO_OR_ALL_ONE_BOUNDARY", result.failure_reason)
             self.assertEqual(result.comparison.abstention_reason, result.failure_reason)
 
