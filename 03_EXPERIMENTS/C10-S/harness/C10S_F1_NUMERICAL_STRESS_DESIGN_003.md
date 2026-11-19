@@ -229,4 +229,4 @@ A future v003 execution would be a new diagnostic numerical operation. It is not
 | Monte Carlo calibration | NOT AUTHORIZED |
 | Scientific C10-S execution | NOT AUTHORIZED |
 
-**Next operation:** complete source-level reconciliation, freeze a new immutable snapshot and prepare (but do not approve or execute) a separate one-shot authorization. Numerical execution remains unauthorized.
+**Next operation:** obtain fresh explicit approval for authorization 005 if and only if the user wants the single 79-record numerical diagnostic. Numerical execution remains unauthorized until that approval is applied to the exact draft.
