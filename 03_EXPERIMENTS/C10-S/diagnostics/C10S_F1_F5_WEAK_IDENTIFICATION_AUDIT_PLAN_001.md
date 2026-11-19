@@ -427,7 +427,7 @@ The F5-only B2/B3 development runner and its one-use authorization path are now 
 - Historical seed collision guard and exact dataset regeneration/hash check are hard preconditions.
 - Component gates are applied separately by cell, bank and target; no pooling. B3 is diagnostic only.
 - MCSE remains explicitly excluded/abstained.
-- Exact-commit static workflow `44608692364`: 168/168 PASS at `1ceca1550606407099df9bc1f2df45ddcd6e2ebb`.
+- Exact-commit static workflow `44609322947`: 168/168 PASS at `cdd8617f13296556fd5eb463834fb60c0f051f7c`.
 - Dedicated workflow is dormant; only a DRAFT authorization template exists. No B2/B3 numerical execution has occurred.
 
 **Disposition:** F5 B1 implementation and B2/B3 execution package are complete. F5 numerical development calibration/validation and C5 component eligibility remain OPEN until explicit one-use authorization and execution. No confirmatory or causal conclusion is implied.
