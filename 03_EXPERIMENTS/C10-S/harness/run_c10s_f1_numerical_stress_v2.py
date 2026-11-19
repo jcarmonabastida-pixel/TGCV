@@ -95,6 +95,22 @@ def main() -> int:
             "score_polynomial_status_counts": counts(result["f1_n4"]["records"], "score_polynomial_status"),
             "sturm_status_counts": counts(result["f1_n4"]["records"], "sturm_status"),
             "adjudication_status_counts": counts(result["f1_n4"]["records"], "adjudication_status"),
+            "f1_root_count_total": sum(
+                int(item.get("f1_root_count", 0))
+                for item in result["f1_n4"]["records"]
+            ),
+            "sturm_root_count_total": sum(
+                int(item.get("sturm_root_count", 0))
+                for item in result["f1_n4"]["records"]
+            ),
+            "matched_root_count_total": sum(
+                int(item.get("matched_root_count", 0))
+                for item in result["f1_n4"]["records"]
+            ),
+            "multiplicity_review_required_count": sum(
+                item.get("multiplicity_review_required") is True
+                for item in result["f1_n4"]["records"]
+            ),
         },
         "combined_record_count": len(records),
         "scientific_execution": False,
