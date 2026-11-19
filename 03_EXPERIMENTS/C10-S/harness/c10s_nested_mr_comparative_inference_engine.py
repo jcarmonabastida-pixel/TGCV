@@ -193,6 +193,9 @@ def compare_dataset(
     """Run C0 plus the currently implemented family-specific candidate."""
     if family not in IMPLEMENTED_METHODS:
         raise ComparativeEngineError("SUPPORTED_FAMILIES_ARE_F1_AND_F5")
+    if (isinstance(confidence_level, bool) or not isinstance(confidence_level, (int, float))
+            or not math.isfinite(confidence_level) or abs(float(confidence_level) - 0.95) > 1e-12):
+        raise ComparativeEngineError("COMPARISON_NOMINAL_LEVEL_MUST_MATCH_FROZEN_C0_V002_95_PERCENT")
     if not isinstance(dataset_id, str) or not dataset_id.strip():
         raise ComparativeEngineError("NONEMPTY_DATASET_ID_REQUIRED")
     if type(target_m) is not int or target_m < 2 or type(target_r) is not int or target_r < 2:
@@ -303,9 +306,13 @@ def adjudicate_matched_datasets(
         raise ComparativeEngineError("STRATIFY_DIFFERENT_INPUT_OR_TARGET_DESIGNS")
 
     family = next(iter(families))
+    if family not in IMPLEMENTED_METHODS:
+        raise ComparativeEngineError("UNSUPPORTED_ADJUDICATION_FAMILY")
     expected = set(IMPLEMENTED_METHODS[family])
     for record in records:
         candidate_ids = [candidate.method_id for candidate in record.candidates]
+        if any(candidate.method_id != candidate.comparison.method_id for candidate in record.candidates):
+            raise ComparativeEngineError("CANDIDATE_METHOD_ID_COMPARISON_MISMATCH")
         if len(candidate_ids) != len(set(candidate_ids)):
             raise ComparativeEngineError("DUPLICATE_CANDIDATE_METHOD_ID")
         roster = {record.baseline.method_id, *candidate_ids}
