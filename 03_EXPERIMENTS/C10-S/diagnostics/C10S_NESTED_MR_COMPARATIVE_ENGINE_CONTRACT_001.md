@@ -72,8 +72,8 @@ The six new engine tests executed successfully as part of the 36-test static sui
 | Gate | State |
 |---|---|
 | Common data contract | IMPLEMENTED; prior deterministic tests passed |
-| F1 pivotal candidate | IMPLEMENTED; candidate tests authored, not run |
-| F5 fitted candidate | IMPLEMENTED; prior deterministic tests passed |
+| F1 pivotal candidate | IMPLEMENTED; deterministic candidate tests PASS in static CI |
+| F5 fitted candidate | IMPLEMENTED; deterministic candidate tests PASS in static CI; MCSE interval method requires further boundary audit |
 | Unified F1/F5 dispatch | IMPLEMENTED |
 | Common adjudication metrics | IMPLEMENTED |
 | New engine deterministic tests | EXECUTED; 6/6 PASS within 36-test suite |
@@ -89,7 +89,7 @@ The existing GitHub Actions workflow has an explicit path allowlist and test com
 
 ## 7. Scientific interpretation
 
-This engine creates a common comparison surface, not a validated general-purpose estimator. C1 exactness is conditional on F1's balanced Gaussian random-intercept model. C5 is a fitted-model exploratory percentile bootstrap and remains uncalibrated. F1 and F5 results must be interpreted within their own DGP families.
+This engine creates a common comparison surface, not a validated general-purpose estimator. C1 exactness is conditional on F1's balanced Gaussian random-intercept model. C5 is a fitted-model exploratory percentile bootstrap and remains uncalibrated. A subsequent readiness audit found that C5's MCSE percentile currently conditions on bootstrap draws with a nonnegative plug-in projection, which violates the frozen no-positive-only-conditioning rule; until a boundary-aware F5 MCSE method exists, that target must be reported as not implemented/abstained. The engine also lacks C0's frozen v002 interval adapter, so it is not yet a complete interval-method comparison. F1 and F5 results must be interpreted within their own DGP families.
 
 Coverage, interval width, point error, emission and abstention are all reported separately. A high conditional coverage with low emission cannot be called operationally successful. A narrow interval cannot compensate for undercoverage. The evaluator does not make that trade-off decision.
 
