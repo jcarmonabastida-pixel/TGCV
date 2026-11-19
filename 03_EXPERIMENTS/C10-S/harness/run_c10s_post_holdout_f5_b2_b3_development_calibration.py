@@ -373,6 +373,12 @@ def run_f5_bank(
             raise F5DevelopmentCalibrationError("COMPARISON_DATASET_OR_DESIGN_MISMATCH")
         if {comparison.baseline.method_id, *(item.method_id for item in comparison.candidates)} != set(IMPLEMENTED_METHODS["F5"]):
             raise F5DevelopmentCalibrationError("F5_METHOD_ROSTER_MISMATCH")
+        c5_candidate = next(
+            item for item in comparison.candidates
+            if item.method_id == "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"
+        )
+        if c5_candidate.comparison.mcse_interval is not None:
+            raise F5DevelopmentCalibrationError("F5_MCSE_INTERVAL_OUTSIDE_FROZEN_SCOPE")
         truth = _truth(spec, identifier)
         comparisons.append(comparison)
         truths.append(truth)
@@ -397,6 +403,8 @@ def run_f5_bank(
             "C5_bootstrap_seed": c5_seed,
             "C5_bootstrap_B": c5_b,
             "b3_selected_before_outcome": identifier in (selected_b3_ids or set()) if bank == "calibration" else False,
+            "mcse_scope": MCSE_SCOPE,
+            "mcse_interval_status": "EXPLICIT_ABSTENTION_NOT_ADJUDICATED",
             "fit_diagnostics": fit,
             "comparison": _jsonable(comparison),
             "truth": _jsonable(truth),
@@ -598,6 +606,8 @@ def run_f5_endpoint_sensitivity(
                 bootstrap_replicates=bootstrap_b, bootstrap_seed=seed,
                 confidence_level=CONFIDENCE_LEVEL,
             )
+            if result.comparison.mcse_interval is not None:
+                raise F5DevelopmentCalibrationError("F5_MCSE_INTERVAL_OUTSIDE_FROZEN_SCOPE")
             outputs[str(bootstrap_b)] = {
                 "bootstrap_seed": seed,
                 "bootstrap_replicates": bootstrap_b,
@@ -606,8 +616,7 @@ def run_f5_endpoint_sensitivity(
                     else "BOUNDARY" if result.fit.boundary else "INTERIOR"
                 ),
                 "failure_reason": result.failure_reason,
-                "valid_mcse_replicates": result.valid_mcse_replicates,
-                "valid_mcse_rate": result.valid_mcse_rate,
+                "mcse_scope": MCSE_SCOPE,
                 "within_endpoint_diagnostics": _endpoint_record(result.comparison.within_interval, bootstrap_b),
                 "between_raw_endpoint_diagnostics": _endpoint_record(result.comparison.between_interval, bootstrap_b),
             }
@@ -722,6 +731,19 @@ def run_f5_development_calibration(
             spec, bank="validation", k=k_validation, c0_b=c0_b, c5_b=c5_b,
             output_path=output_dir / f"{spec.cell_id}.validation.jsonl",
         )
+        calibration_ids = {record["dataset_id"] for record in calibration["records"]}
+        validation_ids = {record["dataset_id"] for record in validation["records"]}
+        calibration_seeds = {record["dataset_seed"] for record in calibration["records"]}
+        validation_seeds = {record["dataset_seed"] for record in validation["records"]}
+        if calibration_ids & validation_ids or calibration_seeds & validation_seeds:
+            raise F5DevelopmentCalibrationError("CALIBRATION_VALIDATION_BANKS_NOT_DISJOINT")
+        disjointness = {
+            "dataset_id_intersection": 0,
+            "dataset_seed_intersection": 0,
+            "calibration_denominator": len(calibration_ids),
+            "validation_denominator": len(validation_ids),
+            "status": "PASS",
+        }
         sensitivity = run_f5_endpoint_sensitivity(
             spec, calibration_records=calibration["records"],
             n_selected=b3_selected_per_cell, b1000=b3_b1000, b4000=b3_b4000,
@@ -729,6 +751,7 @@ def run_f5_development_calibration(
         )
         results.append({
             "cell_id": spec.cell_id,
+            "calibration_validation_disjointness": disjointness,
             "calibration": {key: value for key, value in calibration.items() if key != "records"},
             "validation": {key: value for key, value in validation.items() if key != "records"},
             "B3_endpoint_sensitivity": {key: value for key, value in sensitivity.items() if key != "records"},
@@ -744,6 +767,11 @@ def run_f5_development_calibration(
         )
         else "NO_VALIDATED_F5_COMPONENT_INTERVAL_METHOD"
     )
+    output_file_sha256 = {
+        path.name: sha256_file(path)
+        for path in sorted(output_dir.iterdir())
+        if path.is_file() and path.name not in {"manifest.json", "summary.json"}
+    }
     manifest = {
         "schema": "TGCV-C10S-F5-B2-B3-DEVELOPMENT-CALIBRATION-1",
         "run_id": RUN_ID,
@@ -765,6 +793,7 @@ def run_f5_development_calibration(
         "B3_bootstrap_B": [b3_b1000, b3_b4000],
         "seed_collision_audit": seed_audit,
         "elapsed_seconds": elapsed,
+        "output_file_sha256": output_file_sha256,
         "peak_process_rss_bytes": int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * 1024),
         "environment": {
             "python": sys.version,
@@ -802,6 +831,7 @@ def run_f5_development_calibration(
         "status": manifest["status"],
         "overall_f5_disposition": overall_f5_disposition,
         "elapsed_seconds": elapsed,
+        "output_file_sha256": output_file_sha256,
         "results": results,
         "mcse_scope": MCSE_SCOPE,
     })
