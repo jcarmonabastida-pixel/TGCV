@@ -15,6 +15,7 @@ on:
       - '03_EXPERIMENTS/C10-S/harness/c10s_f1_exact_pivotal_candidate.py'
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_f1_exact_pivotal_candidate.py'
       - '03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_inference_engine.py'
       - '03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_comparative_holdout.py'
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_holdout.py'
       - '03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_comparative_resource_preflight.py'
