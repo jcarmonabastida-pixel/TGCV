@@ -142,6 +142,20 @@ class TruthTargets:
 
 
 @dataclass(frozen=True)
+class ProfileDiagnosticMetrics:
+    """Operational profile diagnostics; deliberately separate from interval coverage."""
+    family: str
+    diagnostic: str
+    n_datasets: int
+    eligible_count: int
+    abstained_count: int
+    not_evaluated_count: int
+    eligible_rate: float
+    abstention_reasons: tuple[tuple[str, int], ...]
+    statuses: tuple[tuple[str, int], ...]
+
+
+@dataclass(frozen=True)
 class MethodTargetMetrics:
     method_id: str
     target: str
@@ -487,3 +501,63 @@ def adjudicate_matched_datasets(
                 abstention_reasons=tuple(sorted(abstentions.items())),
             ))
     return tuple(output)
+
+
+def adjudicate_profile_diagnostics(
+    comparisons: Sequence[DatasetComparison],
+) -> tuple[ProfileDiagnosticMetrics, ...]:
+    """Summarize profile eligibility/abstention without scoring interval coverage.
+
+    F5 profile diagnostics are not C5 interval outputs. Missing, failed and
+    eligible diagnostics remain distinct; no truth values enter this function.
+    """
+    records = tuple(comparisons)
+    if not records:
+        raise ComparativeEngineError("PROFILE_DIAGNOSTIC_ROSTER_MUST_BE_NONEMPTY")
+    families = {record.family for record in records}
+    if len(families) != 1 or next(iter(families)) != "F5":
+        raise ComparativeEngineError("PROFILE_DIAGNOSTICS_REQUIRE_ONE_F5_ROSTER")
+    if any(record.engine_id != ENGINE_ID for record in records):
+        raise ComparativeEngineError("UNKNOWN_ENGINE_RECORD")
+    ids = [record.dataset_id for record in records]
+    if any(not isinstance(value, str) or not value.strip() for value in ids):
+        raise ComparativeEngineError("DATASET_IDS_REQUIRED")
+    if len(set(ids)) != len(ids):
+        raise ComparativeEngineError("DUPLICATE_DATASET_IDS")
+    designs = {(record.input_m, record.input_r, record.target_m, record.target_r)
+               for record in records}
+    if len(designs) != 1:
+        raise ComparativeEngineError("STRATIFY_PROFILE_DIAGNOSTICS_BY_DESIGN")
+
+    statuses: dict[str, int] = {}
+    reasons: dict[str, int] = {}
+    eligible = abstained = not_evaluated = 0
+    for record in records:
+        candidate = next(
+            (item for item in record.candidates
+             if item.method_id == "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"),
+            None,
+        )
+        if candidate is None:
+            raise ComparativeEngineError("F5_PROFILE_CANDIDATE_MISSING")
+        diagnostics = dict(candidate.diagnostics)
+        status = diagnostics.get("mcse_profile_inference_eligibility")
+        if status == "PROFILE_DIAGNOSTIC_ELIGIBLE_NOT_COVERAGE_CERTIFIED":
+            eligible += 1
+        elif status == "ABSTAIN_PROFILE_INFERENCE":
+            abstained += 1
+            reason = diagnostics.get("mcse_profile_abstention_reason", "ABSTENTION_REASON_MISSING")
+            reasons[reason] = reasons.get(reason, 0) + 1
+        else:
+            not_evaluated += 1
+            status = status or diagnostics.get("mcse_profile_status", "PROFILE_DIAGNOSTIC_MISSING")
+        statuses[status] = statuses.get(status, 0) + 1
+
+    n = len(records)
+    return (ProfileDiagnosticMetrics(
+        family="F5", diagnostic="MCSE_PROFILE_OPTIMIZATION",
+        n_datasets=n, eligible_count=eligible, abstained_count=abstained,
+        not_evaluated_count=not_evaluated, eligible_rate=eligible / n,
+        abstention_reasons=tuple(sorted(reasons.items())),
+        statuses=tuple(sorted(statuses.items())),
+    ),)
