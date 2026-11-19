@@ -133,7 +133,7 @@ Authorization template: `C10S_POST_HOLDOUT_F1_F5_RESOURCE_PREFLIGHT_AUTHORIZATIO
 
 ## 9. Executed preflight result
 
-The one-use resource-only authorization was exercised successfully in run `44603264310` on 2026-11-19. The 200-dataset sample, provenance, measured timings, full-workload projection and gate adjudication are recorded in `C10S_POST_HOLDOUT_F1_F5_RESOURCE_PREFLIGHT_RESULT_001.md`. Overall result: `RESOURCE_PREFLIGHT_EXECUTION_PASS / F5_B1_IMPLEMENTATION_COMPLETE / F5_B2_B3_PACKAGE_STATIC_PASS / B2_B3_NUMERICAL_EXECUTION_NOT_AUTHORIZED`. The MCSE abstention is explicitly out of scope and does not block the frozen C5 within/raw-between targets. No calibration, validation, holdout or causal C10 execution occurred.
+The one-use resource-only authorization was exercised successfully in run `44603264310` on 2026-11-19. The 200-dataset sample, provenance, measured timings, full-workload projection and gate adjudication are recorded in `C10S_POST_HOLDOUT_F1_F5_RESOURCE_PREFLIGHT_RESULT_001.md`. **At the time of that preflight record**, the disposition was `RESOURCE_PREFLIGHT_EXECUTION_PASS / F5_B1_IMPLEMENTATION_COMPLETE / F5_B2_B3_PACKAGE_STATIC_PASS / B2_B3_NUMERICAL_EXECUTION_NOT_AUTHORIZED`; no calibration, validation, holdout or causal C10 execution had yet occurred. The subsequent B2/B3 execution and its different scientific outcome are recorded in §10 and the dedicated result audit. The MCSE abstention remains explicitly out of scope.
 
 
 ## 10. F5 B2/B3 result and adjudication
