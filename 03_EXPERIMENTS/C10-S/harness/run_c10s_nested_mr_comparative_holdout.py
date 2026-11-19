@@ -67,6 +67,8 @@ def derive_holdout_seed(namespace: str, cell_id: str, replicate_index: int) -> i
 def _validate_spec(spec: FixtureSpec) -> None:
     if not spec.stochastic or spec.family not in {"F1", "F5"}:
         raise HoldoutRunnerError("HOLDOUT_ACCEPTS_ONLY_STOCHASTIC_F1_OR_F5_SPECS")
+    if spec.tier != "A" or spec.k != K_PER_CELL or spec.b != C0_BOOTSTRAP_B:
+        raise HoldoutRunnerError("FIXTURE_SPEC_DOES_NOT_MATCH_FROZEN_TIER_A_K_B")
     if spec.m < 2 or spec.r < 2:
         raise HoldoutRunnerError("INVALID_MR_DESIGN")
     if spec.cell_id not in EXPECTED_CELLS:
@@ -84,6 +86,20 @@ def _validate_spec(spec: FixtureSpec) -> None:
     actual = (spec.family, spec.m, spec.r, spec.true_within, spec.true_between)
     if actual != expected:
         raise HoldoutRunnerError("CELL_SPEC_DOES_NOT_MATCH_FROZEN_PROTOCOL")
+    params = dict(spec.parameters)
+    if spec.family == "F1":
+        expected_parameters = {
+            "sigma2_within": spec.true_within,
+            "sigma2_between": spec.true_between,
+        }
+        if spec.distribution != "gaussian_random_intercept" or params != expected_parameters:
+            raise HoldoutRunnerError("F1_DGP_PARAMETERS_DO_NOT_MATCH_FROZEN_PROTOCOL")
+    else:
+        if (
+            spec.distribution != "beta_binomial_world_probability"
+            or params != {"alpha": 2, "beta": 2}
+        ):
+            raise HoldoutRunnerError("F5_DGP_PARAMETERS_DO_NOT_MATCH_FROZEN_PROTOCOL")
 
 
 def generate_holdout_dataset(
