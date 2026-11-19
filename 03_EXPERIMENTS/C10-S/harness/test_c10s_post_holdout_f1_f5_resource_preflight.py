@@ -82,7 +82,7 @@ class PostHoldoutResourcePreflightTests(unittest.TestCase):
                      patch.object(preflight, "generate_holdout_dataset", return_value=((0.1, 0.2), (0.3, 0.4))), \
                      patch.object(preflight, "f1_profile_loglik", return_value=-1.0), \
                      patch.object(preflight, "f1_profile_between_confidence_set", side_effect=fake_profile), \
-                     patch("c10s_fitted_beta_binomial_bootstrap.fitted_beta_binomial_parametric_bootstrap"):
+                     patch(\n                         "c10s_fitted_beta_binomial_bootstrap.fitted_beta_binomial_parametric_bootstrap",\n                         return_value=SimpleNamespace(fit=None, failure_reason="MOCKED"),\n                     ):
                     result = preflight.run_preflight(Path(directory), execution_authorized=True)
                 self.assertEqual(compare.call_count, 2)
                 self.assertEqual(result["total_datasets"], 2)
