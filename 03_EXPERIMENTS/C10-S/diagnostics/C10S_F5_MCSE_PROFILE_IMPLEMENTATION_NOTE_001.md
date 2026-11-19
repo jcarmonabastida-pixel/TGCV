@@ -78,10 +78,11 @@ for all-zero/all-one worlds, endpoint mixtures, asymmetric endpoint
 frequencies, interior-heavy counts and mixed extremes, and LR-set parameter
 space bounds. These are test definitions, not test outcomes.
 
-The test module additionally checks that branch-specific local-maximum,
-independent multi-start, and optimizer-adjudication fields are emitted, and
-that the comparative engine propagates these diagnostics. No tests have been
-executed. These are test definitions only.
+The test module additionally checks branch-specific local-maximum and
+independent multi-start fields, all four optimizer-adjudication outcomes,
+malformed adjudication inputs, and propagation of the diagnostics through
+the comparative engine. No tests have been executed. These are test
+definitions only.
 
 ## Remaining limitations
 
