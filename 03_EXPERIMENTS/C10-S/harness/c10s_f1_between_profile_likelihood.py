@@ -35,6 +35,9 @@ class F1NuisanceOptimizerDiagnostic:
     stationary_point_types: tuple[str, ...]
     tangential_score_roots: int
     unresolved_tangential_candidates: int
+    polynomial_degree: int
+    polynomial_root_count: int
+    polynomial_scan_discordant: bool
     independent_boundary_sensitive: bool
     optimizer_error: str | None
 
@@ -517,12 +520,42 @@ def f1_profile_nuisance_optimizer_diagnostic(
             +0.5 * df_b * s2_means * u * (tau - u) / (q * q * q)
         )
 
-    roots, root_types, tangential_count, unresolved_tangencies = (
+    scanned_roots, scanned_types, scanned_tangencies, unresolved_tangencies = (
         _scan_score_stationary_points(
             score, score_derivative, lo=lo, hi=hi,
             grid_points=grid_points,
         )
     )
+    polynomial = f1_score_polynomial_diagnostic(
+        rows, between_variance=tau,
+    )
+    roots = tuple(math.log(value) for value in polynomial.positive_roots)
+    tangential_logs = tuple(math.log(value) for value in polynomial.tangential_roots)
+    root_types_list = []
+    for root in roots:
+        if any(abs(root - candidate) <= 1e-7 for candidate in tangential_logs):
+            root_types_list.append("TANGENTIAL_STATIONARY_NO_LOCAL_EXTREMUM")
+            continue
+        delta = max(1e-7, (hi - lo) * 1e-7)
+        left_score = score(max(lo, root - delta))
+        right_score = score(min(hi, root + delta))
+        if left_score > 0.0 > right_score:
+            root_types_list.append("LOCAL_MAXIMUM")
+        elif left_score < 0.0 < right_score:
+            root_types_list.append("LOCAL_MINIMUM")
+        else:
+            root_types_list.append("STATIONARY_TYPE_UNRESOLVED")
+    root_types = tuple(root_types_list)
+    tangential_count = len(polynomial.tangential_roots)
+    polynomial_scan_discordant = (
+        len(scanned_roots) != len(roots)
+        or any(
+            min((abs(value - root) for root in roots), default=math.inf) > 1e-5
+            for value in scanned_roots
+        )
+    )
+    if polynomial.status == "POLYNOMIAL_ROOTS_UNRESOLVED":
+        unresolved_tangencies += len(polynomial.unresolved_critical_candidates)
     candidates = [(loglik(value), value) for value in roots]
     if not candidates:
         independent_value = None
@@ -545,14 +578,16 @@ def f1_profile_nuisance_optimizer_diagnostic(
 
     if (bounded_value is None or independent_value is None
             or unresolved_tangencies > 0
-            or "STATIONARY_TYPE_UNRESOLVED" in root_types):
+            or "STATIONARY_TYPE_UNRESOLVED" in root_types
+            or polynomial.status == "POLYNOMIAL_ROOTS_UNRESOLVED"):
+
         status = "OPTIMIZATION_INSUFFICIENT"
         difference = None
     else:
         difference = abs(bounded_value - independent_value)
         if independent_boundary:
             status = "OPTIMIZATION_BOUNDARY_SENSITIVE"
-        elif difference > float(loglik_tolerance):
+        elif polynomial_scan_discordant or difference > float(loglik_tolerance):
             status = "OPTIMIZATION_DISCORDANT"
         else:
             status = "OPTIMIZATION_CONCORDANT"
@@ -567,6 +602,9 @@ def f1_profile_nuisance_optimizer_diagnostic(
         stationary_point_types=root_types,
         tangential_score_roots=tangential_count,
         unresolved_tangential_candidates=unresolved_tangencies,
+        polynomial_degree=polynomial.degree,
+        polynomial_root_count=len(polynomial.positive_roots),
+        polynomial_scan_discordant=polynomial_scan_discordant,
         independent_boundary_sensitive=independent_boundary,
         optimizer_error=optimizer_error,
     )
