@@ -1,0 +1,294 @@
+"""F5 beta-binomial profile likelihood for the scalar target MCSE.
+
+Research-only profile evaluator. Both mean branches and analytic concentration
+limits are represented. It does not select/calibrate an LR cutoff or claim
+uniform coverage. The finite-concentration maximization is diagnostic and
+must pass the separately specified adversarial numerical checks.
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass
+import math
+from typing import Sequence
+
+import numpy as np
+from scipy.optimize import minimize_scalar
+from scipy.special import betaln, gammaln
+
+
+METHOD_ID = "F5_BETA_BINOMIAL_MCSE_PROFILE_0.1"
+
+
+class F5ProfileError(ValueError):
+    """Invalid target, count data, or profile-likelihood computation."""
+
+
+@dataclass(frozen=True)
+class F5ProfileResult:
+    target_mcse: float
+    profile_loglik: float
+    maximizing_branch: str
+    maximizing_concentration: float | None
+    boundary_status: str
+    branch_loglik_plus: float
+    branch_loglik_minus: float
+    optimizer_diagnostics: tuple[tuple[str, str], ...]
+    method_id: str = METHOD_ID
+
+
+def _counts_and_validate(rows: Sequence[Sequence[float]]) -> tuple[tuple[int, ...], int]:
+    try:
+        matrix = tuple(tuple(row) for row in rows)
+    except TypeError as exc:
+        raise F5ProfileError("ROWS_MUST_BE_RECTANGULAR_SEQUENCE") from exc
+    if len(matrix) < 2 or not matrix[0] or len(matrix[0]) < 2:
+        raise F5ProfileError("F5_PROFILE_REQUIRES_M_GE_2_AND_R_GE_2")
+    r = len(matrix[0])
+    counts = []
+    for i, row in enumerate(matrix):
+        if len(row) != r:
+            raise F5ProfileError("RAGGED_ROWS")
+        for j, value in enumerate(row):
+            if isinstance(value, bool) or not isinstance(value, (int, float)):
+                raise F5ProfileError(f"NON_NUMERIC_COUNT_AT_{i}_{j}")
+            if not math.isfinite(value) or value not in (0, 1):
+                raise F5ProfileError("F5_PROFILE_REQUIRES_BERNOULLI_0_1_ROWS")
+        counts.append(int(math.fsum(row)))
+    return tuple(counts), r
+
+
+def _loglik(counts: tuple[int, ...], r: int, mu: float, kappa: float) -> float:
+    if not (0.0 < mu < 1.0 and kappa > 0.0):
+        return -math.inf
+    alpha, beta = mu * kappa, (1.0 - mu) * kappa
+    x = np.asarray(counts, dtype=float)
+    log_choose = gammaln(r + 1.0) - gammaln(x + 1.0) - gammaln(r - x + 1.0)
+    terms = log_choose + betaln(x + alpha, r - x + beta) - betaln(alpha, beta)
+    value = float(np.sum(terms))
+    return value if math.isfinite(value) else -math.inf
+
+
+def _limit_loglik(
+    counts: tuple[int, ...], r: int, mu: float, *, limit: str,
+) -> float:
+    if not 0.0 < mu < 1.0:
+        if mu == 0.0:
+            return 0.0 if all(x == 0 for x in counts) else -math.inf
+        if mu == 1.0:
+            return 0.0 if all(x == r for x in counts) else -math.inf
+        return -math.inf
+    if limit == "KAPPA_TO_ZERO":
+        if any(x not in (0, r) for x in counts):
+            return -math.inf
+        n_zero = sum(x == 0 for x in counts)
+        n_one = sum(x == r for x in counts)
+        return n_zero * math.log1p(-mu) + n_one * math.log(mu)
+    if limit == "KAPPA_TO_INFINITY":
+        x = np.asarray(counts, dtype=float)
+        log_choose = gammaln(r + 1.0) - gammaln(x + 1.0) - gammaln(r - x + 1.0)
+        value = float(np.sum(
+            log_choose + x * math.log(mu) + (r - x) * math.log1p(-mu)
+        ))
+        return value if math.isfinite(value) else -math.inf
+    raise F5ProfileError("UNKNOWN_CONCENTRATION_LIMIT")
+
+
+def _branch_profile(
+    counts: tuple[int, ...], r: int, h: float, sign: int,
+) -> tuple[float, float | None, str, str]:
+    if h < -1e-14 or h > 0.25 + 1e-12:
+        return -math.inf, None, "INFEASIBLE", "NONE"
+    h = min(0.25, max(0.0, h))
+    root = math.sqrt(max(0.0, 1.0 - 4.0 * h))
+    mu = (1.0 + sign * root) / 2.0
+
+    # At h=0 the mean branches are degenerate point masses for every finite
+    # concentration. At h=1/4 the branches coincide.
+    if h == 0.0:
+        value = _limit_loglik(counts, r, mu, limit="KAPPA_TO_ZERO")
+        return value, None, "MEAN_DEGENERATE", "MEAN_BOUNDARY"
+    if mu in (0.0, 1.0):
+        return _limit_loglik(counts, r, mu, limit="KAPPA_TO_ZERO"), None, "MEAN_BOUNDARY", "MEAN_BOUNDARY"
+
+    def h_for_logk(logk: float) -> float:
+        k = math.exp(logk)
+        return _loglik(counts, r, mu, k)
+
+    # A deterministic scan identifies candidate local maxima; each is refined
+    # independently. Analytic kappa limits are evaluated separately.
+    log_grid = np.linspace(-24.0, 24.0, 193)
+    values = [h_for_logk(float(z)) for z in log_grid]
+    candidates: list[tuple[float, float]] = []
+    for idx, value in enumerate(values):
+        if not math.isfinite(value):
+            continue
+        left = values[idx - 1] if idx else -math.inf
+        right = values[idx + 1] if idx + 1 < len(values) else -math.inf
+        if value >= left and value >= right:
+            lo = float(log_grid[max(0, idx - 1)])
+            hi = float(log_grid[min(len(log_grid) - 1, idx + 1)])
+            if hi > lo:
+                opt = minimize_scalar(
+                    lambda z: -h_for_logk(float(z)),
+                    bounds=(lo, hi), method="bounded",
+                    options={"xatol": 1e-10, "maxiter": 2000},
+                )
+                if opt.success and math.isfinite(float(opt.fun)):
+                    candidates.append((-float(opt.fun), math.exp(float(opt.x))))
+
+    limit_zero = _limit_loglik(counts, r, mu, limit="KAPPA_TO_ZERO")
+    limit_inf = _limit_loglik(counts, r, mu, limit="KAPPA_TO_INFINITY")
+    best_finite = max(candidates, default=(-math.inf, None), key=lambda item: item[0])
+    choices = [
+        (best_finite[0], best_finite[1], "FINITE_KAPPA"),
+        (limit_zero, None, "KAPPA_TO_ZERO_LIMIT"),
+        (limit_inf, None, "KAPPA_TO_INFINITY_LIMIT"),
+    ]
+    best_value, best_kappa, status = max(choices, key=lambda item: item[0])
+    return best_value, best_kappa, status, "INTERIOR_MEAN"
+
+
+def f5_beta_binomial_mcse_profile_loglik(
+    rows: Sequence[Sequence[float]], *, target_m: int, target_r: int,
+    target_mcse: float,
+) -> F5ProfileResult:
+    """Evaluate the F5 profile log-likelihood at a proposed MCSE value.
+
+    Both mu branches are maximized over finite concentration and their analytic
+    kappa->0 / kappa->infinity limits. This is a numerical profile evaluator,
+    not yet a confidence-set inversion or calibrated inferential method.
+    """
+    if type(target_m) is not int or target_m < 2:
+        raise F5ProfileError("TARGET_M_MUST_BE_INTEGER_GE_2")
+    if type(target_r) is not int or target_r < 2:
+        raise F5ProfileError("TARGET_R_MUST_BE_INTEGER_GE_2")
+    if (isinstance(target_mcse, bool) or not isinstance(target_mcse, (int, float))
+            or not math.isfinite(target_mcse) or target_mcse < 0.0):
+        raise F5ProfileError("TARGET_MCSE_MUST_BE_FINITE_AND_NONNEGATIVE")
+
+    counts, r = _counts_and_validate(rows)
+    g = float(target_mcse)
+    maximum_g = 1.0 / (2.0 * math.sqrt(target_m))
+    if g > maximum_g + 1e-12:
+        return F5ProfileResult(
+            g, -math.inf, "NONE", None, "TARGET_OUTSIDE_PARAMETER_SPACE",
+            -math.inf, -math.inf, (("feasibility", "HARD_UPPER_BOUND_EXCEEDED"),),
+        )
+
+    base = g * g * target_m
+    h_zero = base
+    h_infinity = base * target_r
+    # h(kappa) increases monotonically from h_zero to h_infinity for R*>1.
+    if h_zero > 0.25 + 1e-12:
+        return F5ProfileResult(
+            g, -math.inf, "NONE", None, "TARGET_INFEASIBLE",
+            -math.inf, -math.inf, (("feasibility", "NO_CONCENTRATION_SUPPORTS_TARGET"),),
+        )
+
+    # Optimize both roots at every finite kappa. For fixed g, h varies with
+    # kappa, so use a scalar concentration search on the full constrained
+    # interval. The two branches are evaluated jointly at each kappa.
+    def branch_pair(logk: float) -> tuple[float, float]:
+        k = math.exp(logk)
+        h = base * (1.0 + k) / (1.0 + k / target_r)
+        if h > 0.25 + 1e-12:
+            return -math.inf, -math.inf
+        root = math.sqrt(max(0.0, 1.0 - 4.0 * min(0.25, h)))
+        mu_plus, mu_minus = (1.0 + root) / 2.0, (1.0 - root) / 2.0
+        return (
+            _loglik(counts, r, mu_plus, k),
+            _loglik(counts, r, mu_minus, k),
+        )
+
+    # The feasible concentration domain may be unbounded or have a finite cap.
+    if h_infinity <= 0.25 + 1e-12:
+        logk_low, logk_high = -24.0, 24.0
+        upper_limit_feasible = True
+    else:
+        # Solve base*(1+k)/(1+k/R*)=1/4 for k.
+        denominator = 0.25 - base / target_r
+        numerator = base - 0.25
+        if denominator <= 0.0:
+            k_cap = math.inf
+        else:
+            k_cap = numerator / denominator
+        if not math.isfinite(k_cap) or k_cap <= 0.0:
+            raise F5ProfileError("FAILED_TO_DERIVE_FEASIBLE_CONCENTRATION_BOUND")
+        logk_low, logk_high = -24.0, min(24.0, math.log(k_cap))
+        upper_limit_feasible = False
+
+    if logk_high <= logk_low:
+        raise F5ProfileError("EMPTY_NUMERICAL_CONCENTRATION_DOMAIN")
+
+    grid = np.linspace(logk_low, logk_high, 241)
+    branch_values = [[], []]
+    branch_candidates = [[], []]
+    for z in grid:
+        pair = branch_pair(float(z))
+        for branch_index in (0, 1):
+            branch_values[branch_index].append(pair[branch_index])
+    for branch_index in (0, 1):
+        vals = branch_values[branch_index]
+        for idx, value in enumerate(vals):
+            left = vals[idx - 1] if idx else -math.inf
+            right = vals[idx + 1] if idx + 1 < len(vals) else -math.inf
+            if math.isfinite(value) and value >= left and value >= right:
+                lo = float(grid[max(0, idx - 1)])
+                hi = float(grid[min(len(grid) - 1, idx + 1)])
+                if hi > lo:
+                    opt = minimize_scalar(
+                        lambda z: -branch_pair(float(z))[branch_index],
+                        bounds=(lo, hi), method="bounded",
+                        options={"xatol": 1e-10, "maxiter": 2000},
+                    )
+                    if opt.success and math.isfinite(float(opt.fun)):
+                        branch_candidates[branch_index].append(
+                            (-float(opt.fun), math.exp(float(opt.x)))
+                        )
+
+    # Explicit analytic concentration limits.
+    limit_h0 = h_zero
+    if limit_h0 <= 0.25:
+        root0 = math.sqrt(max(0.0, 1.0 - 4.0 * limit_h0))
+        mu0 = ((1.0 + root0) / 2.0, (1.0 - root0) / 2.0)
+        for idx, mu in enumerate(mu0):
+            value = _limit_loglik(counts, r, mu, limit="KAPPA_TO_ZERO")
+            branch_candidates[idx].append((value, None))
+
+    if upper_limit_feasible:
+        root_inf = math.sqrt(max(0.0, 1.0 - 4.0 * min(0.25, h_infinity)))
+        mu_inf = ((1.0 + root_inf) / 2.0, (1.0 - root_inf) / 2.0)
+        for idx, mu in enumerate(mu_inf):
+            value = _limit_loglik(counts, r, mu, limit="KAPPA_TO_INFINITY")
+            branch_candidates[idx].append((value, None))
+
+    winners = []
+    for idx, candidates in enumerate(branch_candidates):
+        if candidates:
+            winners.append(max(candidates, key=lambda item: item[0]))
+        else:
+            winners.append((-math.inf, None))
+    plus_value, plus_k = winners[0]
+    minus_value, minus_k = winners[1]
+    if plus_value >= minus_value:
+        value, branch, kappa = plus_value, "MU_PLUS", plus_k
+    else:
+        value, branch, kappa = minus_value, "MU_MINUS", minus_k
+
+    if not math.isfinite(value):
+        status = "PROFILE_NONFINITE_OR_UNSUPPORTED_BOUNDARY"
+    elif kappa is None:
+        status = "CONCENTRATION_BOUNDARY_LIMIT"
+    else:
+        status = "FINITE_CONCENTRATION_OPTIMUM"
+    return F5ProfileResult(
+        target_mcse=g, profile_loglik=value, maximizing_branch=branch,
+        maximizing_concentration=kappa, boundary_status=status,
+        branch_loglik_plus=plus_value, branch_loglik_minus=minus_value,
+        optimizer_diagnostics=(
+            ("concentration_log_grid_points", str(len(grid))),
+            ("finite_optimizer_candidates_plus", str(sum(k is not None for _, k in branch_candidates[0]))),
+            ("finite_optimizer_candidates_minus", str(sum(k is not None for _, k in branch_candidates[1]))),
+            ("upper_concentration_limit_feasible", str(upper_limit_feasible)),
+        ),
+    )
