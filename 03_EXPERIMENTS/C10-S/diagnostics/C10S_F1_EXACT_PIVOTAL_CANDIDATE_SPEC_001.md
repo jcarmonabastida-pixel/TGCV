@@ -19,7 +19,7 @@ For a balanced design with M independent outer worlds and R observations per wor
 
 `q_{mr}=\mu+U_m+\epsilon_{mr}`
 
-where `U_m ~ N(0, sigma_b2)`, `epsilon_mr ~ N(0, sigma_w2)`, mutually independent, and `sigma_b2 >= 0`, `sigma_w2 > 0`.
+where `U_m ~ N(0, sigma_b2)`, `epsilon_mr ~ N(0, sigma_w2)`, mutually independent, and `sigma_b2 >= 0`, `sigma_w2 >= 0`. The chi-square pivots below are regular when their denominator variance is positive. At an exact zero-variance boundary, the corresponding sufficient statistic is degenerate at zero and must be handled by an explicit boundary branch (returning the point interval `[0,0]` for that component); do not evaluate a stochastic pivot with a zero denominator.
 
 Define:
 
@@ -47,7 +47,7 @@ For nominal error `alpha`, return:
 
 `Uw = nu_w * MSW / chi2_quantile(alpha/2, nu_w)`.
 
-The interval is exact under the stated F1 model. The implementation must expose its model scope and degrees of freedom in provenance. Invalid degrees of freedom or non-finite/negative sufficient statistics produce typed failure, not a fallback.
+The interval is exact under the stated F1 model when `sigma_w2>0`; at `sigma_w2=0`, `MSW=0` almost surely and the explicit degenerate-boundary interval is `[0,0]`. The implementation must expose its model scope, boundary branch and degrees of freedom in provenance. Invalid degrees of freedom or non-finite/negative sufficient statistics produce typed failure, not a fallback.
 
 ## 4. C1b — conservative joint-pivot confidence set for between variance
 
@@ -57,7 +57,7 @@ Construct two-sided intervals for both `tau2` and `sigma_w2` at marginal confide
 
 `[LwJ, UwJ] = [nu_w*MSW/chi2_quantile(1-alpha/4,nu_w), nu_w*MSW/chi2_quantile(alpha/4,nu_w)]`.
 
-Their intersection has coverage at least `1-alpha` by Bonferroni (and the pivots are independent under F1). Project the rectangle through `sigma_b2 = tau2 - sigma_w2/R`:
+Their intersection has coverage at least `1-alpha` by Bonferroni (and the pivots are independent under F1) when both denominator variances are positive. If `tau2=0`, then `S2bar=0` almost surely and the tau interval is handled as the degenerate point `[0,0]`; if `sigma_w2=0`, then `MSW=0` almost surely and its interval is `[0,0]`. The implementation must branch explicitly rather than divide by a zero variance. Project the rectangle through `sigma_b2 = tau2 - sigma_w2/R`:
 
 `Lb_raw = Lt - UwJ/R`;
 
@@ -96,7 +96,7 @@ The future deterministic suite must cover:
 1. Exact chi-square quantiles and interval ordering for several valid M/R values.
 2. Agreement of `nu_w*MSW/sigma_w2` and `nu_b*S2bar/tau2` formulas with hand calculations.
 3. Negative `Lb_raw` is preserved exactly.
-4. Zero estimated between component does not trigger clipping or an automatic failure.
+4. Zero raw between estimate does not trigger clipping or an automatic failure; exact zero `sigma_w2` and exact zero `tau2` use their declared degenerate-boundary branches.
 5. Joint-set feasibility with an interior point and with an active `sigma_b2=0` boundary.
 6. MCSE projection for `Rstar=R`, `Rstar>R`, and `Rstar<R`; the objective must be evaluated from the original variance-component expression.
 7. Empty feasible set and numerical non-convergence produce distinct typed abstentions.
