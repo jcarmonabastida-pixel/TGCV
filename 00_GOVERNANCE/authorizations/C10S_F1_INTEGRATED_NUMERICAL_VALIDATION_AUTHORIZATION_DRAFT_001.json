@@ -1,14 +1,16 @@
 {
   "schema": "TGCV-C10S-F1-INTEGRATED-VALIDATION-AUTH-001",
-  "status": "DRAFT_NOT_APPROVED",
+  "status": "APPROVED",
   "authorization_id": "C10S-F1-INTEGRATED-VALIDATION-20261119-01",
   "scope": "F1_INTEGRATED_DETERMINISTIC_NUMERICAL_METHOD_TESTS_ONLY",
   "approval": {
-    "approved": false,
-    "approved_by": null,
+    "approved": true,
+    "approved_by": "User — explicit approval in ChatGPT conversation",
     "approved_at_utc": null,
-    "requires": "Explicit user approval after reviewing this exact frozen commit, command, and scope",
-    "validity_hours_after_approval": 24
+    "requires": null,
+    "validity_hours_after_approval": 24,
+    "approved_on": "2026-11-19",
+    "timestamp_note": "Approval date recorded; exact UTC time was not captured by the approval interface."
   },
   "source": {
     "repository": "jcarmonabastida-pixel/TGCV",
