@@ -7,6 +7,7 @@ from c10s_f5_beta_binomial_likelihood_diagnostics import (
     F5LikelihoodDiagnosticError,
     beta_binomial_extended_boundary_likelihoods,
     beta_binomial_loglik_score_hessian,
+    audit_beta_binomial_count_fit,
 )
 
 
@@ -88,6 +89,23 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
         )
         expected = 2 * math.log(0.6) + 2 * math.log(0.4)
         self.assertAlmostEqual(result.two_point_mixing_limit_log_likelihood, expected)
+
+    def test_optimizer_audit_retains_all_starts_and_independent_fit(self):
+        audit = audit_beta_binomial_count_fit(
+            (0, 0, 1, 4, 5, 5, 2, 3, 0, 5), 5,
+        )
+        self.assertEqual(len(audit.starts), 3)
+        self.assertTrue(all(item.message for item in audit.starts))
+        self.assertIsNotNone(audit.selected_log_likelihood)
+        self.assertIsNotNone(audit.selected_score_norm)
+        self.assertEqual(len(audit.hessian_eigenvalues), 2)
+        self.assertTrue(audit.independent_optimizer_message)
+        self.assertIn(audit.status, (
+            "OPTIMIZER_CONCORDANT",
+            "OPTIMIZER_DISCORDANT",
+            "INDEPENDENT_OPTIMIZER_UNRESOLVED",
+            "LIKELIHOOD_CONCORDANT_PARAMETER_DISAGREEMENT",
+        ))
 
     def test_binomial_limit_is_the_high_concentration_limit(self):
         counts = (0, 1, 3, 5, 4, 2)
