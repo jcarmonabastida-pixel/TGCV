@@ -13,7 +13,7 @@ reference and its fail-closed boundary. N4 is the F1 end-to-end lane.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from fractions import Fraction
 import math
 from typing import Iterable, Sequence
@@ -38,6 +38,8 @@ class PolynomialFixture:
     ideal_real_roots: tuple[Q, ...]
     transformation: str = "IDENTITY"
     perturbation: str = "NONE"
+    domain_lower: Q | None = None
+    domain_upper: Q | None = None
 
 
 def _trim(coefficients: Iterable[Q]) -> tuple[Q, ...]:
@@ -87,6 +89,7 @@ def _step_ulp(value: float, steps: int) -> float:
 def _fixture(
     fixture_id: str, block: str, roots: Sequence[Q], *,
     transformation: str = "IDENTITY", perturbation: str = "NONE",
+    domain: tuple[Q, Q] | None = None,
 ) -> PolynomialFixture:
     root_tuple = tuple(Q(root) for root in roots)
     return PolynomialFixture(
@@ -96,6 +99,8 @@ def _fixture(
         ideal_real_roots=tuple(sorted(root_tuple)),
         transformation=transformation,
         perturbation=perturbation,
+        domain_lower=domain[0] if domain else None,
+        domain_upper=domain[1] if domain else None,
     )
 
 
@@ -183,8 +188,8 @@ def build_polynomial_fixtures() -> tuple[PolynomialFixture, ...]:
 
     # N6: zero and finite-domain endpoint roots, degree reduction and constants.
     fixtures.extend((
-        _fixture("N6_ZERO_AND_POSITIVE", "N6", (Q(0), Q(1))),
-        _fixture("N6_NEGATIVE_AND_UPPER_EDGE", "N6", (Q(-1), Q(2))),
+        _fixture("N6_ZERO_AND_POSITIVE", "N6", (Q(0), Q(1)), domain=(Q(0), Q(1))),
+        _fixture("N6_NEGATIVE_AND_UPPER_EDGE", "N6", (Q(-1), Q(2)), domain=(Q(-1), Q(2))),
         PolynomialFixture("N6_NONZERO_CONSTANT", "N6", (Q(7),), ()),
         PolynomialFixture("N6_IDENTICALLY_ZERO", "N6", (Q(0),), ()),
         PolynomialFixture("N6_LINEAR", "N6", (Q(-2), Q(1)), (Q(2),)),
@@ -193,6 +198,8 @@ def build_polynomial_fixtures() -> tuple[PolynomialFixture, ...]:
 
 
 def _domain_for(fixture: PolynomialFixture) -> tuple[Q, Q]:
+    if fixture.domain_lower is not None and fixture.domain_upper is not None:
+        return fixture.domain_lower, fixture.domain_upper
     if fixture.ideal_real_roots:
         low = min(fixture.ideal_real_roots)
         high = max(fixture.ideal_real_roots)
@@ -225,6 +232,7 @@ def evaluate_polynomial_fixture(
         "block": fixture.block,
         "transformation": fixture.transformation,
         "perturbation": fixture.perturbation,
+        "domain": [str(v) for v in _domain_for(fixture)],
         "ideal_coefficients": [
             f"{v.numerator}/{v.denominator}" for v in fixture.ideal_coefficients
         ],
