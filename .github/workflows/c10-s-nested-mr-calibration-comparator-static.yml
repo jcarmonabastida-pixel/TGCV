@@ -1,0 +1,42 @@
+name: C10-S nested M/R calibration comparator — static tests
+
+on:
+  push:
+    branches:
+      - research/c10s-nested-mr-calibration-design-20261119
+    paths:
+      - '.github/workflows/c10-s-nested-mr-calibration-comparator-static.yml'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_gaussian_variance_oracles.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_gaussian_variance_oracles.py'
+      - '03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock'
+
+permissions:
+  contents: read
+
+jobs:
+  gaussian-oracle-static-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+      - name: Compile comparator and tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python -m py_compile c10s_gaussian_variance_oracles.py test_c10s_gaussian_variance_oracles.py
+      - name: Run comparator oracle tests only
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python -B -m unittest -v test_c10s_gaussian_variance_oracles
