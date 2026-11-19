@@ -442,6 +442,7 @@ class BetaBinomialProfilePoint:
     concentration_score: float
     profile_log_concentration_curvature: float | None
     mean_profile_at_bound: bool
+    nuisance_refinement_succeeded: bool
     status: str
 
 
@@ -499,6 +500,7 @@ def beta_binomial_profile_log_concentration(
         best_eta = float(eta_grid[best_index])
         best_ll = float(grid_ll[best_index])
         at_bound = best_index in (0, mean_grid_size - 1)
+        refinement_succeeded = at_bound
         if not at_bound:
             result = minimize_scalar(
                 lambda eta: -beta_binomial_loglik_score_hessian(
@@ -510,17 +512,18 @@ def beta_binomial_profile_log_concentration(
                 options={"xatol": 1e-12, "maxiter": 2000},
             )
             if bool(result.success) and math.isfinite(float(result.fun)):
+                refinement_succeeded = True
                 refined_eta = float(result.x)
                 refined_ll = -float(result.fun)
                 if refined_ll >= best_ll:
                     best_eta, best_ll = refined_eta, refined_ll
             else:
-                at_bound = True
+                refinement_succeeded = False
         derivatives = beta_binomial_loglik_score_hessian(
             values, r, mean_logit=best_eta, log_concentration=xi,
         )
         curvature = None
-        if (not at_bound and math.isfinite(derivatives.hessian_mean_logit)
+        if (not at_bound and refinement_succeeded and math.isfinite(derivatives.hessian_mean_logit)
                 and derivatives.hessian_mean_logit != 0.0):
             candidate = (
                 derivatives.hessian_log_concentration
@@ -537,7 +540,9 @@ def beta_binomial_profile_log_concentration(
             concentration_score=derivatives.score_log_concentration,
             profile_log_concentration_curvature=curvature,
             mean_profile_at_bound=at_bound,
-            status=("MEAN_PROFILE_BOUNDARY" if at_bound
+            nuisance_refinement_succeeded=refinement_succeeded,
+            status=("MEAN_PROFILE_BOUNDARY" if at_bound else
+                    "NUISANCE_PROFILE_OPTIMIZER_UNRESOLVED" if not refinement_succeeded
                     else "NUMERICAL_PROFILE_UNCERTIFIED"),
         ))
     return tuple(output)
