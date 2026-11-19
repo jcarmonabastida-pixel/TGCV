@@ -371,3 +371,48 @@ Exact-commit static validation:
 - Full Hessian/eigenvector and boundary-contrast assertions: PASS.
 
 Still open within B1: independently coded Hessian cross-checks at boundary-adjacent fixtures, explicit retention of the independent optimizer's terminal coordinates/gradient/bound distances, and a final audit that all three-start outcomes remain complete in the comparison-engine record. A1 F1 deterministic certification is also still open. No resource preflight or numerical calibration was run.
+
+
+## 12. Final B1 implementation reconciliation — 2026-11-19
+
+This section supersedes the provisional open-item list in §11. The listed implementation gaps are now present in the current research-branch code and covered by the exact-commit static workflow recorded below.
+
+### 12.1 Three items previously listed as open — now closed
+
+1. **Independent Hessian cross-check at a boundary-adjacent fixture — CLOSED.** The independent `(log(alpha), log(beta))` score/Hessian implementation is checked against central finite differences of both score components in an interior fixture and a low-shape boundary-adjacent fixture (`alpha=0.025, beta=0.04`). The test checks both diagonal entries and both cross-derivative directions: `test_independent_log_shape_hessian_matches_score_differences_interior_and_near_boundary`.
+2. **Independent optimizer terminal state — CLOSED.** `BetaBinomialOptimizerAudit` retains independent terminal `log(alpha)`/`log(beta)`, both independent score components and norm, and the independent observed Hessian. The per-dataset serialization test asserts these fields are present and finite.
+3. **All three primary starts through the comparison-engine record — CLOSED.** The per-dataset `likelihood_optimizer_audit_json` retains all three starts, their messages, final mean-logit/log-concentration coordinates, gradient norms and four distances to the configured numerical bounds. The engine-level test parses and asserts the full three-start record.
+
+### 12.2 B1 requirements reconciled against the frozen specification
+
+| Frozen §7 B1 requirement | Current evidence | Disposition |
+|---|---|---|
+| Three-start L-BFGS-B outcomes retained | `BetaBinomialStartOutcome`, `BetaBinomialOptimizerAudit`; comparison-engine JSON test | PASS |
+| Independent mean-logit/log-concentration score and Hessian behaviour | Analytic score/Hessian plus central finite-difference tests | PASS |
+| Independent Hessian/observed-information cross-check near a parameter boundary | Independent log-shape Hessian finite-difference fixture at small positive alpha/beta | PASS — bounded numerical fixture, not boundary-limit inference |
+| Separately parameterized optimizer and disagreement diagnostics | Independent BFGS in log-shape coordinates; objective difference, parameter distance, scores, terminal coordinates and Hessian retained | PASS |
+| Explicit kappa→infinity and kappa→0 likelihood limits | Binomial and two-point mixture limits, separately profiled nuisance means; endpoint-only and interior-count tests | PASS |
+| Finite-R likelihood against independent count oracle | Every count in support reconciled to exact beta-binomial PMF; finite-sample moment oracle tests retained | PASS |
+| Typed boundary/non-identification and unresolved numerical states | Fit-boundary abstentions, optimizer/profile status separation, unresolved nuisance failures preserved | PASS as fail-closed diagnostics; no binary weak-identification threshold claimed |
+
+### 12.3 Identification interpretation retained
+
+The diagnostic does **not** invent a binary weak-identification threshold. The profile audit's `identification_status=INDETERMINATE` is intentional where no scale-aware criterion with justified operating characteristics exists. It must not be rewritten as “identified” merely because an optimizer converged, the fit is interior, or independent likelihood values agree. Raw curvature, boundary likelihood contrasts, score norms, optimizer status and profile stability remain separate observations. The later B2 calibration/validation gate must inspect these diagnostics and apply the frozen §8 acceptance/stop rules; this B1 closure is not a C5 coverage pass.
+
+### 12.4 Exact static validation
+
+- Workflow run: `44602425187`
+- Exact code commit: `b44489341e4ee99aa279b15d6cb635e744a1665e`
+- Hash-locked dependencies: PASS
+- Compilation: PASS
+- Deterministic comparator/oracle suite: **153 tests PASS**
+- The executed suite explicitly includes `test_c10s_f5_beta_binomial_likelihood_diagnostics`, `test_c10s_fitted_beta_binomial_bootstrap`, `test_c10s_nested_mr_comparative_inference_engine`, and `test_c10s_beta_binomial_variance_oracles`.
+- The exact log includes passing checks for independent log-shape Hessian finite differences, boundary-adjacent score behaviour, optimizer audit retaining all starts and independent fit, finite-R PMF reconciliation, and the engine's three-start JSON persistence.
+
+The current source blobs are recorded in `C10S_F5_B1_IMPLEMENTATION_CLOSURE_001.md`. The frozen development/calibration specification v1.0 remains unchanged.
+
+### 12.5 MCSE scope correction
+
+The preflight's `F5_MCSE_JOINT_BOUNDARY_METHOD_NOT_IMPLEMENTED` is **not** an open B1 defect. Frozen specification §§6, 7, 10 and 11 explicitly exclude F5 MCSE interval construction and preserve its abstention. The C5 candidate's within/raw-between intervals are the Phase B target. The MCSE abstention must remain explicit; no MCSE method is to be added or promoted under this work package.
+
+**B1 disposition:** IMPLEMENTATION_AND_DETERMINISTIC_TESTS_COMPLETE. Statistical concentration identification and C5 component eligibility remain to be evaluated on the separately authorized B2/B3 calibration and disjoint validation banks. No coverage/calibration result is inferred from the static suite or resource preflight.
