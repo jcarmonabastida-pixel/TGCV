@@ -1,8 +1,8 @@
 {
   "schema": "C10S-F1-NUMERICAL-STRESS-AUTHORIZATION-1",
   "authorization_id": "C10S-F1-NUMERICAL-STRESS-20261119-002",
-  "status": "APPROVED",
-  "execution_authorized": true,
+  "status": "BLOCKED_PRE_EXECUTION",
+  "execution_authorized": false,
   "approved_by_user": true,
   "one_shot": true,
   "source_commit": "d5edc0010f7a8c6587677eb2004b545367fc4b35",
@@ -77,6 +77,21 @@
       "scientific_c10_execution"
     ]
   },
-  "attempt_closed": false,
-  "workflow_blob_sha": "5117a33e56db24062ec51d69d08486ba91d9eda2"
+  "attempt_closed": true,
+  "workflow_blob_sha": "5117a33e56db24062ec51d69d08486ba91d9eda2",
+  "retry_authorized": false,
+  "workflow_attempt": {
+    "run_id": 44531064922,
+    "run_url": "https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44531064922",
+    "head_commit": "85b0ae622d004fe4961abc08961dc211bebdb9e5",
+    "selected_workflow": ".github/workflows/c10s-f1-numerical-stress-001.yml",
+    "intended_workflow": ".github/workflows/c10s-f1-numerical-stress-002.yml",
+    "conclusion": "failure",
+    "jobs_observed": 0,
+    "artifacts_observed": 0,
+    "primary_runner_invoked": false,
+    "authorization_consumed": false,
+    "failure_classification": "LEGACY_WORKFLOW_001_SELECTED; NEW_WORKFLOW_002_NOT_OBSERVED; ROOT_CAUSE_OF_WORKFLOW_DISCOVERY_NOT_ESTABLISHED",
+    "retry_authorized": false
+  }
 }
