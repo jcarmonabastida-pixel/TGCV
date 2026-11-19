@@ -18,7 +18,7 @@ class F1ExactPivotalCandidateTests(unittest.TestCase):
             (3.0, 4.0, 5.0, 4.0),
         )
         result = f1_exact_pivotal_result(
-            rows, target_m=20, target_r=8,
+            rows, target_m=20, target_r=8, family="F1",
         )
         self.assertEqual(result.method_id, "C1_F1_EXACT_PIVOTAL_1.0")
         self.assertIsNotNone(result.within_interval)
@@ -36,7 +36,7 @@ class F1ExactPivotalCandidateTests(unittest.TestCase):
             (0.0, 1.0, 0.0, 1.0),
             (0.0, 1.0, 0.0, 1.0),
         )
-        result = f1_exact_pivotal_result(rows, target_m=10, target_r=5)
+        result = f1_exact_pivotal_result(rows, target_m=10, target_r=5, family="F1")
         self.assertLess(result.between_interval[0], 0.0)
         self.assertTrue(math.isfinite(result.between_interval[0]))
 
@@ -58,7 +58,7 @@ class F1ExactPivotalCandidateTests(unittest.TestCase):
         with self.assertRaises(F1PivotalError):
             f1_exact_pivotal_result(
                 ((0.0, 1.0), (1.0, 2.0), (2.0, 3.0)),
-                target_m=1, target_r=5,
+                target_m=1, target_r=5, family="F1",
             )
 
 
