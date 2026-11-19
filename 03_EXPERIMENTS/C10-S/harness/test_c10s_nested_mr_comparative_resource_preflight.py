@@ -31,23 +31,24 @@ class ResourcePreflightTests(unittest.TestCase):
                 baseline=SimpleNamespace(method_id=IMPLEMENTED_METHODS[family][0]),
                 candidates=(SimpleNamespace(method_id=IMPLEMENTED_METHODS[family][1]),),
             )
-        with tempfile.TemporaryDirectory() as directory, (
-            patch.object(preflight, "compare_dataset", side_effect=fake_compare) as compare,
-            patch.object(preflight, "generate_holdout_dataset", return_value=((0.0, 1.0), (1.0, 0.0))),
-        ):
-            result = preflight.run_preflight(Path(directory))
-            self.assertEqual(compare.call_count, 2)
-            self.assertEqual(result["total_datasets"], 2)
-            self.assertEqual(result["coverage_adjudication"], "NOT_RUN")
-            self.assertFalse(result["scientific_holdout_executed"])
-            self.assertTrue(all(
-                cell["adjudicate_matched_datasets_called"] is False
-                and cell["coverage_adjudication"] == "NOT_RUN"
-                for cell in result["cells"]
-            ))
-            persisted = json.loads((Path(directory) / "resource_preflight.json").read_text())
-            self.assertEqual(persisted["total_datasets"], 2)
-            self.assertNotIn("coverage", json.dumps(persisted).lower())
+        with tempfile.TemporaryDirectory() as directory:
+            with (
+                patch.object(preflight, "compare_dataset", side_effect=fake_compare) as compare,
+                patch.object(preflight, "generate_holdout_dataset", return_value=((0.0, 1.0), (1.0, 0.0))),
+            ):
+                result = preflight.run_preflight(Path(directory))
+                self.assertEqual(compare.call_count, 2)
+                self.assertEqual(result["total_datasets"], 2)
+                self.assertEqual(result["coverage_adjudication"], "NOT_RUN")
+                self.assertFalse(result["scientific_holdout_executed"])
+                self.assertTrue(all(
+                    cell["adjudicate_matched_datasets_called"] is False
+                    and cell["coverage_adjudication"] == "NOT_RUN"
+                    for cell in result["cells"]
+                ))
+                persisted = json.loads((Path(directory) / "resource_preflight.json").read_text())
+                self.assertEqual(persisted["total_datasets"], 2)
+                self.assertNotIn("coverage", json.dumps(persisted).lower())
 
 
 if __name__ == "__main__":
