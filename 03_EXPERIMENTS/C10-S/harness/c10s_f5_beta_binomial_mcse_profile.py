@@ -31,6 +31,7 @@ class F5ProfileConfidenceSet:
     confidence_hull: tuple[float, float] | None
     scan_grid_points: int
     status: str
+    concentration_grid_points: int = 241
     method_id: str = METHOD_ID
 
 
@@ -356,6 +357,7 @@ def f5_beta_binomial_mcse_profile_confidence_set(
         return F5ProfileConfidenceSet(
             float(likelihood_ratio_cutoff), -math.inf, (), None,
             scan_grid_points, "ABSTAINED_NO_FINITE_PROFILE_VALUES",
+            concentration_grid_points=concentration_grid_points,
         )
 
     # Refine every grid-detected local maximum, including both domain edges.
@@ -424,4 +426,5 @@ def f5_beta_binomial_mcse_profile_confidence_set(
         confidence_hull=hull,
         scan_grid_points=scan_grid_points,
         status=status,
+        concentration_grid_points=concentration_grid_points,
     )
