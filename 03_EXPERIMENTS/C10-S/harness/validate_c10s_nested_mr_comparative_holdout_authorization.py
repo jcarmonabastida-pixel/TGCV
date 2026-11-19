@@ -17,6 +17,8 @@ ENGINE_PATH = "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference
 FIXTURES_PATH = "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py"
 LOCK_PATH = "03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock"
 WORKFLOW_PATH = ".github/workflows/c10-s-nested-mr-comparative-holdout.yml"
+EXECUTOR_PATH = "03_EXPERIMENTS/C10-S/harness/execute_c10s_nested_mr_comparative_holdout.py"
+VALIDATOR_PATH = "03_EXPERIMENTS/C10-S/harness/validate_c10s_nested_mr_comparative_holdout_authorization.py"
 PROTOCOL_ID = "C10S-NESTED-MR-COMPARATIVE-HOLDOUT-PROTOCOL-001"
 PROTOCOL_VERSION = "1.0"
 AUTH_SCHEMA = "TGCV-C10S-COMPARATIVE-HOLDOUT-AUTH-001"
@@ -98,6 +100,8 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
         "fixtures_sha256": FIXTURES_PATH,
         "dependency_lock_sha256": LOCK_PATH,
         "workflow_sha256": WORKFLOW_PATH,
+        "executor_sha256": EXECUTOR_PATH,
+        "validator_sha256": VALIDATOR_PATH,
     }
     for key, relative in expected.items():
         if auth.get(key) != sha256(root / relative):
