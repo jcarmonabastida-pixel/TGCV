@@ -346,5 +346,68 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
             )
 
 
+    def test_f5_concentration_profile_and_stability_audits_are_per_dataset_diagnostics(self):
+        kwargs = dict(
+            rows=f5_rows(), dataset_id="F5-PROFILE-AUDIT", family="F5",
+            target_m=10, target_r=5,
+            baseline_bootstrap_replicates=100, baseline_bootstrap_seed=23,
+            bootstrap_replicates=60, bootstrap_seed=20261119,
+            include_profile_diagnostics=False,
+        )
+        grid = (-4.0, -2.0, 0.0, 2.0, 4.0)
+        without_audit = compare_dataset(**kwargs)
+        with_audit = compare_dataset(
+            **kwargs,
+            include_f5_concentration_profile_audit=True,
+            f5_profile_log_concentration_grid=grid,
+        )
+        diagnostic_map = dict(with_audit.candidates[0].diagnostics)
+        profile = json.loads(diagnostic_map["concentration_profile_audit_json"])
+        stability = json.loads(diagnostic_map["concentration_profile_stability_json"])
+        self.assertEqual(profile["identification_status"], "INDETERMINATE")
+        self.assertEqual(profile["profile_point_count"], len(grid))
+        self.assertEqual(profile["two_point_boundary_status"], "ZERO_PROBABILITY_INTERIOR_COUNTS")
+        self.assertEqual(stability["status"], "NUMERICAL_STABILITY_NOT_ADJUDICATED")
+        self.assertEqual(stability["identification_status"], "INDETERMINATE")
+        self.assertEqual(stability["profile_point_count"], len(grid))
+        self.assertEqual(diagnostic_map["concentration_profile_audit_error"], "NONE")
+        self.assertEqual(diagnostic_map["concentration_profile_stability_error"], "NONE")
+        json.dumps(profile, allow_nan=False)
+        json.dumps(stability, allow_nan=False)
+        # The additional diagnostic must not change the fitted C5 interval path.
+        self.assertEqual(
+            without_audit.candidates[0].comparison.within_interval,
+            with_audit.candidates[0].comparison.within_interval,
+        )
+        self.assertEqual(
+            without_audit.candidates[0].comparison.between_interval,
+            with_audit.candidates[0].comparison.between_interval,
+        )
+        self.assertEqual(
+            without_audit.candidates[0].comparison.mcse_interval,
+            with_audit.candidates[0].comparison.mcse_interval,
+        )
+
+    def test_f5_concentration_profile_audit_requires_explicit_grid_and_f5_family(self):
+        base = dict(
+            rows=f5_rows(), dataset_id="F5-PROFILE-INVALID", family="F5",
+            target_m=10, target_r=5,
+            baseline_bootstrap_replicates=100, baseline_bootstrap_seed=23,
+            bootstrap_replicates=60, bootstrap_seed=20261119,
+        )
+        with self.assertRaisesRegex(
+            ComparativeEngineError, "F5_CONCENTRATION_PROFILE_GRID_REQUIRED",
+        ):
+            compare_dataset(**base, include_f5_concentration_profile_audit=True)
+        with self.assertRaisesRegex(
+            ComparativeEngineError, "REQUIRES_F5_FAMILY",
+        ):
+            compare_dataset(
+                **{**base, "rows": f1_rows(), "family": "F1"},
+                include_f5_concentration_profile_audit=True,
+                f5_profile_log_concentration_grid=(-4.0, 0.0, 4.0),
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
