@@ -124,6 +124,7 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
             ROWS, between_variance=0.25,
         )
         self.assertLessEqual(polynomial.degree, 3)
+        self.assertGreaterEqual(polynomial.degree, 1)
         self.assertEqual(polynomial.status, "POLYNOMIAL_ROOTS_ISOLATED")
         self.assertEqual(len(polynomial.positive_roots), scan.stationary_points)
         for root, log_root in zip(
@@ -185,6 +186,9 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertEqual(len(result.stationary_point_type_signatures), 9)
         self.assertEqual(len(result.tangential_score_root_counts), 9)
         self.assertEqual(len(result.unresolved_tangential_candidate_counts), 9)
+        self.assertEqual(len(result.polynomial_degrees), 9)
+        self.assertEqual(len(result.polynomial_root_counts), 9)
+        self.assertEqual(len(result.polynomial_scan_discordances), 9)
         self.assertIsNotNone(result.maximum_stationary_location_spread)
         self.assertIn(
             result.status,
