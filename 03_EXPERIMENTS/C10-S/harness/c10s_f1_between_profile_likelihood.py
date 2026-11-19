@@ -455,7 +455,7 @@ def f1_score_polynomial_diagnostic(
     else:
         critical, critical_status = (), "RESOLVED"
     scale = max(
-        within, M, tau, 1e-12,
+        within, M, tau,
         *(abs(value) for value in critical),
     )
     normalized = _normalize_scaled_polynomial(coefficients, scale)
@@ -638,8 +638,8 @@ def f1_profile_nuisance_optimizer_diagnostic(
         raise F1ProfileError("NUISANCE_LOGLIK_TOLERANCE_MUST_BE_FINITE_AND_POSITIVE")
 
     r, df_w, df_b, ssw, s2_means, within = _sufficient_statistics(rows)
-    scale = max(within, s2_means, tau, 1e-12)
-    center = max(scale, 1e-300)
+    scale = max(within, s2_means, tau)
+    center = scale
     lo, hi = math.log(center) - float(log_span), math.log(center) + float(log_span)
 
     def loglik(log_s: float) -> float:
