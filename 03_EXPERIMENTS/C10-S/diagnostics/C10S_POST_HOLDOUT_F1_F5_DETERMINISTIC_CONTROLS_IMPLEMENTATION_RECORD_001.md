@@ -2,11 +2,11 @@
 
 **Record:** C10S-POST-HOLDOUT-F1-F5-DETERMINISTIC-CONTROLS-IMPLEMENTATION-001  
 **Date:** 2026-11-19  
-**Status:** PARTIAL IMPLEMENTATION / 115-TEST STATIC SUITE PASS / NUMERICAL DEVELOPMENT EXECUTION NOT AUTHORIZED  
+**Status:** PARTIAL IMPLEMENTATION / 117-TEST STATIC SUITE PASS / NUMERICAL DEVELOPMENT EXECUTION NOT AUTHORIZED  
 **Frozen design:** `C10S_POST_HOLDOUT_F1_F5_DEVELOPMENT_CALIBRATION_SPEC_001.md` v1.0  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
 **Initial implementation commit:** `e7920543e8c6fb19582c62446381df7cb1d95e1a`  
-**Latest validated commit:** `1fa0a5831a8a4f89602d544ac6b4c69a5738106f`  
+**Latest validated commit:** `c8d9706c0b3424a9ae59922593356c58694834bd`  
 **Execution authorization:** NONE
 
 ---
@@ -242,3 +242,52 @@ These are deliberately *fault-injection integration tests*: they verify that the
 Validated research branch head: `1fa0a5831a8a4f89602d544ac6b4c69a5738106f`. Canonical `main` remained `e22928eb79adb5bc74295967a45b9c440b78f849`.
 
 **Disposition:** the interval-path fail-closed propagation for unresolved tangency and unresolved polynomial critical-point isolation is now covered. The package remains OPEN: actual constructed repeated-root/near-degenerate interval fixtures, independent score/likelihood oracle cross-checks, remaining F5 weak-identification/boundary classifications, and shared diagnostic schema/provenance tests remain before resource preflight. Numerical development execution remains unauthorized.
+
+
+## 11. F1 constructed repeated-root data fixture and interval-path integration — 2026-11-19
+
+The previous unresolved item was not merely whether a synthetic polynomial could be made to have a repeated root; it was whether such a root could be realized by valid balanced-Gaussian nested data and observed by the existing F1 diagnostic path.
+
+A deterministic (M=4,R=4) nested dataset has now been constructed by solving the score-polynomial double-root conditions (P(s_0)=0) and (P'(s_0)=0) for the within sum of squares and world-mean sample variance. The fixture uses:
+- target between variance (	au=1);
+- repeated positive nuisance-score root (s_0=1);
+- (SSW=4.425);
+- sample variance of world means (S^2_{\bar Y}=17.03125);
+- four world means ((-a,-a,a,a)), with (a=\sqrt{3S^2_{\bar Y}/4});
+- balanced within-world deviations proportional to ((-1.5,-0.5,0.5,1.5)), scaled to reproduce the specified (SSW).
+
+For these sufficient statistics the cubic score numerator is, up to floating-point representation,
+[
+P(s)=-0.9375(s-1)^2(s-4.72).
+]
+This produces one genuine positive double/tangential root and one distinct simple positive root in the actual data-derived polynomial, rather than injecting a mocked diagnostic state.
+
+Two tests were added:
+
+1. The constructed rows pass through `f1_score_polynomial_diagnostic` and the independent nuisance diagnostic. The test requires the repeated root to be isolated and classified as `TANGENTIAL_STATIONARY_NO_LOCAL_EXTREMUM`, with zero unresolved tangential candidates.
+2. The same rows are passed through `f1_profile_between_confidence_set`. The endpoint bracketing callback is instrumented to evaluate the actual profile callback at the constructed `tau=1` point before continuing with the genuine Brent endpoint solve. Polynomial root-isolation calls themselves are left untouched. The test requires the interval path to complete with its single connected component and the declared nuisance-certification status.
+
+This establishes deterministic numerical-path behaviour for one *constructed exact-statistic repeated-root fixture*. It does not establish Monte Carlo frequency, coverage, robustness across the full frozen six-cell roster, or the independent score/likelihood oracle requirement. The separate near-degenerate, boundary-contact and multiple-scale interval fixtures remain OPEN.
+
+### Static validation
+
+- Workflow: `.github/workflows/c10-s-nested-mr-calibration-comparator-static.yml`
+- Run ID: `44585584703`
+- Exact commit: `c8d9706c0b3424a9ae59922593356c58694834bd`
+- Conclusion: `SUCCESS`
+- Hash-locked dependency installation: PASS
+- Compile: PASS
+- Test suite: **117 tests passed**
+- F1 numerical-stress workflows v1/v2/v3: `SKIPPED` by authorization conditions; no numerical stress, DGP bank, calibration, validation or bootstrap simulation was run.
+
+### Exact identities
+
+| Artifact | Git blob SHA |
+|---|---|
+| F1 profile-likelihood implementation | `87de3f15468482327fa117b050fdd54dac13ade5` |
+| F1 profile-likelihood tests and constructed fixture | `4c76a1dea0a898c568eb57c9adea51c53891fed3` |
+| Frozen development/calibration specification v1.0 | `d1c8bae882dc2e4cd0e1caae29609561b9ebac68` |
+
+Validated research branch head: `c8d9706c0b3424a9ae59922593356c58694834bd`. Canonical `main` remained `e22928eb79adb5bc74295967a45b9c440b78f849`.
+
+**Disposition:** one actual repeated-root data construction now traverses the F1 polynomial diagnostic, nuisance classification and interval profile callback. A1 remains OPEN pending independent score/likelihood verification and the remaining frozen adversarial cases. B1/F5 weak-identification/boundary classification and shared schema/provenance checks also remain open. No resource preflight or numerical development execution is authorized.
