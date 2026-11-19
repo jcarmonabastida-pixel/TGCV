@@ -5,6 +5,8 @@ from __future__ import annotations
 import math
 import unittest
 
+from scipy.stats import chi2
+
 from c10s_gaussian_variance_oracles import (
     GaussianOracleError,
     gaussian_constrained_mle,
@@ -27,6 +29,22 @@ class GaussianVarianceOracleTests(unittest.TestCase):
             result.between_raw_conservative_interval[0],
             result.between_raw_conservative_interval[1],
         )
+
+
+    def test_bonferroni_components_use_alpha_over_two_marginal_error(self):
+        m, r, msw, s2, confidence = 10, 5, 1.0, 1.2, 0.95
+        result = gaussian_f1_reference(
+            m=m, r=r, msw=msw, world_mean_variance=s2,
+            confidence=confidence,
+        )
+        df_w = m * (r - 1)
+        tail = (1.0 - confidence) / 4.0
+        expected = (
+            df_w * msw / chi2.ppf(1.0 - tail, df_w),
+            df_w * msw / chi2.ppf(tail, df_w),
+        )
+        self.assertAlmostEqual(result.within_interval[0], expected[0], places=12)
+        self.assertAlmostEqual(result.within_interval[1], expected[1], places=12)
 
     def test_between_interval_is_not_silently_truncated(self):
         result = gaussian_f1_reference(
