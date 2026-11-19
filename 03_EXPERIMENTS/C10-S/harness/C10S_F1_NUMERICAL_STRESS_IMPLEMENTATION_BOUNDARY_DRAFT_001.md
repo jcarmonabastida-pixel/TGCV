@@ -80,7 +80,7 @@ This is a static compatibility review only. It does not establish syntax/runtime
 - DGP execution or inferential coverage study;
 - scientific C10-S execution.
 
-The two runner functions return in-memory records only; they do not write evidence files or initiate workflows.
+The two runner functions return in-memory records only; they do not initiate workflows. A separate explicit `write_stress_evidence()` function now serializes already-supplied results into canonical JSONL, summary JSON and a SHA-256 source/runtime manifest. It does not invoke either runner. The writer has not been executed.
 
 ## 7. Next operation
 
@@ -88,6 +88,6 @@ Before authorization, perform a second static design review focused on:
 1. whether the chosen exponent/ULP/depth ladders are bounded and scientifically adequate;
 2. whether the F1 scale ladder's predeclared invariance tolerances and acceptance states are adequate;
 3. whether N1–N3/N5–N6 should remain a Sturm-only numerical reference lane or whether a separate pure-polynomial F1 solver API is justified;
-4. whether the evidence schema should be JSONL plus summary JSON with deterministic canonicalization and hashes.
+4. whether the implemented JSONL/summary/hash-manifest schema is sufficient for the governed execution audit.
 
 Then freeze the harness source and exact blob identities. A new one-shot authorization must identify the exact commit, runtime, commands, fixture counts and outputs. No prior authorization is reusable.
