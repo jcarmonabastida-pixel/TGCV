@@ -10,6 +10,7 @@ from c10s_f1_between_profile_likelihood import (
     f1_profile_nuisance_optimizer_diagnostic,
     f1_profile_nuisance_stability_diagnostic,
     _scan_score_stationary_points,
+    f1_score_polynomial_diagnostic,
 )
 
 
@@ -114,6 +115,29 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertGreaterEqual(result.stationary_points, 1)
         self.assertIsNotNone(result.absolute_loglik_difference)
         self.assertLessEqual(result.absolute_loglik_difference, 1e-7)
+
+    def test_score_polynomial_diagnostic_is_cubic_and_matches_score_scan(self):
+        polynomial = f1_score_polynomial_diagnostic(
+            ROWS, between_variance=0.25,
+        )
+        scan = f1_profile_nuisance_optimizer_diagnostic(
+            ROWS, between_variance=0.25,
+        )
+        self.assertLessEqual(polynomial.degree, 3)
+        self.assertEqual(polynomial.status, "POLYNOMIAL_ROOTS_ISOLATED")
+        self.assertEqual(len(polynomial.positive_roots), scan.stationary_points)
+        for root, log_root in zip(
+            polynomial.positive_roots, scan.stationary_points_log_scale,
+        ):
+            self.assertAlmostEqual(math.log(root), log_root, places=6)
+
+    def test_score_polynomial_diagnostic_handles_zero_between_boundary(self):
+        result = f1_score_polynomial_diagnostic(
+            ROWS, between_variance=0.0,
+        )
+        self.assertLessEqual(result.degree, 3)
+        self.assertEqual(result.status, "POLYNOMIAL_ROOTS_ISOLATED")
+        self.assertTrue(all(root > 0.0 for root in result.positive_roots))
 
     def test_score_scan_detects_tangential_root_without_sign_change(self):
         roots, kinds, tangencies, unresolved = _scan_score_stationary_points(
