@@ -202,3 +202,27 @@ The corrected exact-commit static workflow completed successfully:
 - Null representation for the structurally zero two-point boundary with interior counts: PASS.
 
 The failure on predecessor commit `1cdb9ea9b173f81cc3bc7c96e1e665b2d2d46032` is retained as a historical failed validation, not overwritten. The corrected commit is the validated source identity for this increment.
+
+
+## Implementation increment — F5 profile numerical-control stability
+
+The next deterministic diagnostic compares the same fixed log-concentration grid under three nuisance-search configurations:
+1. reference eta bounds and reference eta-grid resolution;
+2. identical bounds with a denser eta grid;
+3. expanded eta bounds with the denser grid.
+
+For every concentration point it retains the raw differences in profiled log-likelihood, profiled mean-logit and (when both are available) Schur-complement profile curvature. It also retains each profile point's optimizer/boundary status and maximum absolute deltas by metric. No numerical tolerance, pass/fail threshold, confidence-set rule or identification classification is introduced: the audit is explicitly `NUMERICAL_STABILITY_NOT_ADJUDICATED` and `INDETERMINATE`.
+
+Implementation:
+- diagnostic: `4f93ae4524a8cc51aec66c38640349c533bdb9e0`
+- deterministic tests: `36f931cbc19c91318d2969ec9fc80e187be5550e`
+
+The tests exercise all three paired traces, verify finite raw differences and strict-JSON serialization, and reject invalid grid-size relationships or expanded bounds that do not strictly contain the reference bounds.
+
+Exact-commit static workflow:
+- Run: `44592485904`
+- Commit: `36f931cbc19c91318d2969ec9fc80e187be5550e`
+- Status at record creation: dependency installation in progress; compile and deterministic suite not yet run.
+- The companion F1 numerical-stress-v3 workflow is skipped by its authorization guard (`44592485986`); no numerical stress, calibration, bootstrap, resource preflight, holdout or scientific execution is authorized or performed by this increment.
+
+The frozen development/calibration specification v1.0 remains unchanged. This stability comparison is a deterministic method diagnostic only; it is not a simulation bank or empirical identification result.
