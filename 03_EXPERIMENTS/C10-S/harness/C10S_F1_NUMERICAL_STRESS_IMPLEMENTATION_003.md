@@ -68,7 +68,7 @@ Only the recorded exponent, exact binary64 coefficient hex vector, F1 root estim
 
 ## 4. Static-review findings and limitations
 
-**Static disposition: CONDITIONAL — READY FOR INDEPENDENT SOURCE REVIEW, NOT VALIDATED.**
+**Static disposition: CONDITIONAL — SOURCE REVIEW RECORDED, NOT VALIDATED.**
 
 1. The implementation imports private helpers from frozen v001/v002 modules. Their exact blob identities must be pinned in the future freeze manifest; any upstream change invalidates that freeze.
 2. The N5 interval enclosure is conservative and may return UNCERTAIN when the exact rounding-cell set has a narrower topology range. This is a safe loss of power, not a false certification.
