@@ -1,0 +1,111 @@
+name: C10-S F1 integrated numerical validation 001
+
+on:
+  workflow_dispatch:
+    inputs:
+      authorization_id:
+        description: Exact approved authorization ID
+        required: true
+        type: string
+      frozen_commit:
+        description: Exact frozen source commit
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  validate-frozen-f1:
+    if: >-
+      ${{ inputs.authorization_id == 'C10S-F1-INTEGRATED-VALIDATION-20261119-01'
+          && inputs.frozen_commit == '0d430adae891b3914475c60334d93e977efc44cc' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact frozen source (detached)
+        uses: actions/checkout@v4
+        with:
+          ref: 0d430adae891b3914475c60334d93e977efc44cc
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Set up exact Python baseline
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.3'
+          check-latest: false
+
+      - name: Verify frozen commit, nine blob identities, and clean checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p validation-evidence
+          {
+            echo "authorization_id=C10S-F1-INTEGRATED-VALIDATION-20261119-01"
+            echo "expected_commit=0d430adae891b3914475c60334d93e977efc44cc"
+            echo "actual_commit=$(git rev-parse HEAD)"
+            echo "python_version=$(python --version 2>&1)"
+            echo "platform=$(uname -a)"
+            echo "working_directory=$PWD"
+            echo "git_status_begin"
+            git status --short
+            echo "git_status_end"
+          } | tee validation-evidence/preflight.txt
+          test "$(git rev-parse HEAD)" = "0d430adae891b3914475c60334d93e977efc44cc"
+          test "$(python -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')" = "3.12.3"
+          test -z "$(git status --porcelain)"
+          cat > validation-evidence/expected-blobs.tsv <<'EOF'
+          b03697432fbcc0bacfc88f500c5003ac529448fb 03_EXPERIMENTS/C10-S/harness/c10s_f1_between_profile_likelihood.py
+          3ac9ce31eb82421022fd8d2a65a0daee049322be 03_EXPERIMENTS/C10-S/harness/c10s_f1_independent_root_isolator.py
+          9fa1cb21cd47e32030db8a00420e7dacfdc77321 03_EXPERIMENTS/C10-S/harness/c10s_f1_root_adjudication.py
+          d277db712f8d2fdc7efbb5da5213d3087a84358a 03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py
+          a012755a695eeefa03100ed8d4024de0c0bfb2f1 03_EXPERIMENTS/C10-S/harness/test_c10s_f1_between_profile_likelihood.py
+          bb5cd2b8d2819fdb8757ea293d7e8f8fb9a1b4ce 03_EXPERIMENTS/C10-S/harness/test_c10s_f1_independent_root_isolator.py
+          2bcaed7423528fbbf9a6783c3f32e5edd30a10bc 03_EXPERIMENTS/C10-S/harness/test_c10s_f1_root_adjudication.py
+          1061998ba93f363fbaaaed050c67acd6eb1c45b5 03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_inference_engine.py
+          2ee2b9dd20381c5f5ded18a57a3ac2b7f1e7fe92 03_EXPERIMENTS/C10-S/harness/C10S_F1_INTEGRATED_CONCORDANCE_MATRIX_DRAFT_001.md
+          EOF
+          while IFS=' ' read -r expected path; do
+            actual="$(git hash-object "$path")"
+            printf '%s %s %s\n' "$expected" "$actual" "$path" | tee -a validation-evidence/blob-verification.txt
+            test "$actual" = "$expected"
+          done < validation-evidence/expected-blobs.tsv
+
+      - name: Verify dependencies without installing or modifying them
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' | tee "$GITHUB_WORKSPACE/validation-evidence/dependencies.txt"
+          import importlib.metadata as md
+          import scipy
+          print("scipy", md.version("scipy"))
+          print("scipy_import", scipy.__version__)
+          PY
+          python - <<'PY' | tee "$GITHUB_WORKSPACE/validation-evidence/import-preflight.txt"
+          import test_c10s_f1_between_profile_likelihood
+          import test_c10s_f1_independent_root_isolator
+          import test_c10s_f1_root_adjudication
+          import test_c10s_nested_mr_comparative_inference_engine
+          print("ALL_FOUR_TEST_MODULE_IMPORTS_OK")
+          PY
+
+      - name: Run the one authorized deterministic test command
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        shell: bash
+        run: |
+          set +e
+          python -m unittest -v test_c10s_f1_between_profile_likelihood test_c10s_f1_independent_root_isolator test_c10s_f1_root_adjudication test_c10s_nested_mr_comparative_inference_engine > "$GITHUB_WORKSPACE/validation-evidence/test.stdout" 2> "$GITHUB_WORKSPACE/validation-evidence/test.stderr"
+          code=$?
+          printf '%s\n' "$code" | tee "$GITHUB_WORKSPACE/validation-evidence/exit-code.txt"
+          exit "$code"
+
+      - name: Upload immutable run evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c10s-f1-integrated-validation-001
+          path: validation-evidence/
+          if-no-files-found: warn
+          retention-days: 90
