@@ -12,7 +12,7 @@ import math
 from typing import Sequence
 
 import numpy as np
-from scipy.optimize import minimize_scalar
+from scipy.optimize import brentq, minimize_scalar
 from scipy.special import betaln, gammaln
 
 
@@ -21,6 +21,17 @@ METHOD_ID = "F5_BETA_BINOMIAL_MCSE_PROFILE_0.1"
 
 class F5ProfileError(ValueError):
     """Invalid target, count data, or profile-likelihood computation."""
+
+
+@dataclass(frozen=True)
+class F5ProfileConfidenceSet:
+    likelihood_ratio_cutoff: float
+    unrestricted_profile_loglik: float
+    confidence_components: tuple[tuple[float, float], ...]
+    confidence_hull: tuple[float, float] | None
+    scan_grid_points: int
+    status: str
+    method_id: str = METHOD_ID
 
 
 @dataclass(frozen=True)
@@ -258,4 +269,122 @@ def f5_beta_binomial_mcse_profile_loglik(
             ("finite_optimizer_candidates_minus", str(sum(k is not None for _, k in branch_candidates[1]))),
             ("upper_concentration_limit_feasible", str(upper_limit_feasible)),
         ),
+    )
+
+
+def f5_beta_binomial_mcse_profile_confidence_set(
+    rows: Sequence[Sequence[float]], *, target_m: int, target_r: int,
+    likelihood_ratio_cutoff: float, scan_grid_points: int = 81,
+) -> F5ProfileConfidenceSet:
+    """Invert the profile LR rule over the admissible scalar MCSE domain.
+
+    The profile is evaluated on a deterministic grid; every detected crossing
+    is refined with Brent's method. Multiple connected components are retained.
+    This is a numerical inversion candidate, not a certified global topology
+    algorithm: the grid resolution is reported and must be stress-tested.
+    """
+    if (isinstance(likelihood_ratio_cutoff, bool)
+            or not isinstance(likelihood_ratio_cutoff, (int, float))
+            or not math.isfinite(likelihood_ratio_cutoff)
+            or likelihood_ratio_cutoff <= 0.0):
+        raise F5ProfileError("LR_CUTOFF_MUST_BE_FINITE_AND_POSITIVE")
+    if type(scan_grid_points) is not int or scan_grid_points < 21:
+        raise F5ProfileError("SCAN_GRID_POINTS_MUST_BE_INTEGER_GE_21")
+    if type(target_m) is not int or target_m < 2:
+        raise F5ProfileError("TARGET_M_MUST_BE_INTEGER_GE_2")
+    if type(target_r) is not int or target_r < 2:
+        raise F5ProfileError("TARGET_R_MUST_BE_INTEGER_GE_2")
+
+    counts, _ = _counts_and_validate(rows)
+    del counts
+    g_max = 1.0 / (2.0 * math.sqrt(target_m))
+    cache: dict[float, float] = {}
+
+    def profile(g: float) -> float:
+        key = float(g)
+        if key not in cache:
+            result = f5_beta_binomial_mcse_profile_loglik(
+                rows, target_m=target_m, target_r=target_r,
+                target_mcse=key,
+            )
+            cache[key] = result.profile_loglik
+        return cache[key]
+
+    grid = np.linspace(0.0, g_max, scan_grid_points)
+    values = [profile(float(g)) for g in grid]
+    finite_values = [v for v in values if math.isfinite(v)]
+    if not finite_values:
+        return F5ProfileConfidenceSet(
+            float(likelihood_ratio_cutoff), -math.inf, (), None,
+            scan_grid_points, "ABSTAINED_NO_FINITE_PROFILE_VALUES",
+        )
+
+    # Refine every grid-detected local maximum, including both domain edges.
+    maxima = [(float(g), float(v)) for g, v in zip(grid, values) if math.isfinite(v)]
+    for i in range(1, len(grid) - 1):
+        if (math.isfinite(values[i]) and values[i] >= values[i - 1]
+                and values[i] >= values[i + 1]):
+            opt = minimize_scalar(
+                lambda z: -profile(float(z)),
+                bounds=(float(grid[i - 1]), float(grid[i + 1])),
+                method="bounded", options={"xatol": 1e-12, "maxiter": 500},
+            )
+            if opt.success and math.isfinite(float(opt.fun)):
+                maxima.append((float(opt.x), -float(opt.fun)))
+    max_g, max_ll = max(maxima, key=lambda item: item[1])
+    del max_g
+
+    cutoff = float(likelihood_ratio_cutoff)
+
+    def accepted_margin(g: float) -> float:
+        ll = profile(g)
+        if not math.isfinite(ll):
+            return -math.inf
+        return 2.0 * (ll - max_ll) + cutoff
+
+    margins = [accepted_margin(float(g)) for g in grid]
+    accepted = [v >= 0.0 for v in margins]
+    components: list[tuple[float, float]] = []
+    i = 0
+    while i < len(grid):
+        if not accepted[i]:
+            i += 1
+            continue
+        start = i
+        while i + 1 < len(grid) and accepted[i + 1]:
+            i += 1
+        end = i
+        if start == 0:
+            lower = 0.0
+        else:
+            lower = brentq(
+                accepted_margin, float(grid[start - 1]), float(grid[start]),
+                xtol=1e-12, rtol=1e-12,
+            )
+        if end == len(grid) - 1:
+            upper = g_max
+        else:
+            upper = brentq(
+                accepted_margin, float(grid[end]), float(grid[end + 1]),
+                xtol=1e-12, rtol=1e-12,
+            )
+        components.append((lower, upper))
+        i += 1
+
+    if not components:
+        status = "EMPTY_LR_SET_ON_NUMERICAL_SCAN"
+        hull = None
+    else:
+        status = "GRID_DETECTED_COMPONENTS_ROOT_REFINED"
+        hull = (components[0][0], components[-1][1])
+        if len(components) > 1:
+            status = "GRID_DETECTED_DISCONNECTED_COMPONENTS_ROOT_REFINED"
+
+    return F5ProfileConfidenceSet(
+        likelihood_ratio_cutoff=cutoff,
+        unrestricted_profile_loglik=max_ll,
+        confidence_components=tuple(components),
+        confidence_hull=hull,
+        scan_grid_points=scan_grid_points,
+        status=status,
     )
