@@ -444,12 +444,14 @@ def run_f1_observation_scale_ladder() -> dict[str, object]:
             root_error = (
                 max(abs(a - b) for a, b in zip(current_roots, baseline_roots))
                 if root_count_equal and current_roots else
-                (0.0 if root_count_equal else math.inf)
+                (0.0 if root_count_equal else None)
             )
             root_scale = max(
                 [1.0, *(abs(value) for value in baseline_roots)]
             )
-            root_relative_error = root_error / root_scale
+            root_relative_error = (
+                root_error / root_scale if root_error is not None else None
+            )
             polynomial_status_equal = (
                 record["polynomial_status"] == baseline["polynomial_status"]
             )
@@ -466,7 +468,10 @@ def run_f1_observation_scale_ladder() -> dict[str, object]:
                 "lr_lower": lower_error <= 1e-8,
                 "lr_upper": upper_error <= 1e-8,
                 "polynomial_root_count": root_count_equal,
-                "polynomial_root_locations": root_relative_error <= 1e-7,
+                "polynomial_root_locations": (
+                    root_relative_error is not None
+                    and root_relative_error <= 1e-7
+                ),
                 "polynomial_status": polynomial_status_equal,
                 "adjudication_status": adjudication_status_equal,
             }
@@ -517,3 +522,151 @@ def stress_design_manifest() -> dict[str, object]:
         "randomness": "NONE",
         "automatic_execution_on_import": False,
     }
+
+def write_stress_evidence(
+    output_directory: str,
+    *,
+    polynomial_result: dict[str, object],
+    f1_result: dict[str, object],
+    source_commit: str,
+) -> dict[str, object]:
+    """Persist supplied runner results as canonical JSONL, summary and hash manifest.
+
+    This function does not invoke either runner. It only serializes result
+    objects supplied by the caller. A governed run must separately authorize
+    the runner commands and this evidence-writing step.
+    """
+    import hashlib
+    import importlib.metadata
+    import json
+    import platform
+    import sys
+    from pathlib import Path
+
+    if polynomial_result.get("generator_version") != GENERATOR_VERSION:
+        raise ValueError("POLYNOMIAL_RESULT_GENERATOR_VERSION_MISMATCH")
+    if f1_result.get("generator_version") != GENERATOR_VERSION:
+        raise ValueError("F1_RESULT_GENERATOR_VERSION_MISMATCH")
+    if polynomial_result.get("execution_performed") is not True:
+        raise ValueError("POLYNOMIAL_RESULT_NOT_MARKED_EXECUTED")
+    if f1_result.get("execution_performed") is not True:
+        raise ValueError("F1_RESULT_NOT_MARKED_EXECUTED")
+    if not source_commit or len(source_commit) != 40:
+        raise ValueError("FULL_SOURCE_COMMIT_SHA_REQUIRED")
+
+    def canonical_bytes(value: object) -> bytes:
+        return (
+            json.dumps(
+                value, sort_keys=True, separators=(",", ":"),
+                ensure_ascii=False, allow_nan=False,
+            ) + "\\n"
+        ).encode("utf-8")
+
+    records: list[dict[str, object]] = []
+    for record in polynomial_result.get("records", []):
+        records.append({"lane": "POLYNOMIAL_STURM", "record": record})
+    for record in f1_result.get("records", []):
+        records.append({"lane": "F1_END_TO_END", "record": record})
+
+    jsonl_bytes = b"".join(canonical_bytes(record) for record in records)
+    polynomial_status_counts = dict(
+        polynomial_result.get("sturm_status_counts", {})
+    )
+    f1_equivariance_pass = int(f1_result.get("equivariance_pass_count", 0))
+    f1_equivariance_fail = int(f1_result.get("equivariance_fail_count", 0))
+    summary = {
+        "schema": "C10S-F1-NUMERICAL-STRESS-SUMMARY-001",
+        "generator_version": GENERATOR_VERSION,
+        "source_commit": source_commit,
+        "polynomial_sturm": {
+            "planned_record_count": polynomial_result.get("fixture_count"),
+            "generated_record_count": len(polynomial_result.get("records", [])),
+            "binary64_representable_count": polynomial_result.get(
+                "binary64_representable_count"
+            ),
+            "status_counts": polynomial_status_counts,
+            "f1_arbitrary_polynomial_comparison_performed": False,
+        },
+        "f1_end_to_end": {
+            "planned_record_count": f1_result.get("record_count"),
+            "returned_count": f1_result.get("returned_count"),
+            "fail_closed_count": f1_result.get("fail_closed_count"),
+            "equivariance_pass_count": f1_equivariance_pass,
+            "equivariance_fail_count": f1_equivariance_fail,
+            "equivariance_unavailable_count": (
+                int(f1_result.get("record_count", 0))
+                - int(f1_result.get("returned_count", 0))
+            ),
+        },
+        "combined_record_count": len(records),
+        "scientific_execution": False,
+        "monte_carlo_calibration": False,
+        "dgp_execution": False,
+    }
+    summary_bytes = canonical_bytes(summary)
+
+    module_dir = Path(__file__).resolve().parent
+    source_files = (
+        "c10s_f1_numerical_stress.py",
+        "c10s_f1_between_profile_likelihood.py",
+        "c10s_f1_independent_root_isolator.py",
+        "c10s_f1_root_adjudication.py",
+    )
+    source_hashes = {}
+    for filename in source_files:
+        source_path = module_dir / filename
+        if not source_path.is_file():
+            raise FileNotFoundError("REQUIRED_SOURCE_FILE_MISSING:" + filename)
+        source_hashes[filename] = hashlib.sha256(
+            source_path.read_bytes()
+        ).hexdigest()
+
+    def package_version(name: str) -> str:
+        try:
+            return importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:
+            return "NOT_INSTALLED"
+
+    manifest = {
+        "schema": "C10S-F1-NUMERICAL-STRESS-MANIFEST-001",
+        "generator_version": GENERATOR_VERSION,
+        "source_commit": source_commit,
+        "source_sha256": source_hashes,
+        "runtime": {
+            "python": sys.version,
+            "implementation": platform.python_implementation(),
+            "platform": platform.platform(),
+            "numpy": package_version("numpy"),
+            "scipy": package_version("scipy"),
+        },
+        "records_file": "numerical_stress_records.jsonl",
+        "records_sha256": hashlib.sha256(jsonl_bytes).hexdigest(),
+        "summary_file": "numerical_stress_summary.json",
+        "summary_sha256": hashlib.sha256(summary_bytes).hexdigest(),
+        "record_encoding": "UTF-8 canonical JSON, sorted keys, compact separators, LF",
+        "nan_and_infinity": "REJECTED",
+    }
+    manifest_bytes = canonical_bytes(manifest)
+
+    output = Path(output_directory)
+    output.mkdir(parents=True, exist_ok=True)
+    files = {
+        "numerical_stress_records.jsonl": jsonl_bytes,
+        "numerical_stress_summary.json": summary_bytes,
+        "numerical_stress_manifest.json": manifest_bytes,
+    }
+    for filename, payload in files.items():
+        temporary = output / (filename + ".tmp")
+        temporary.write_bytes(payload)
+        temporary.replace(output / filename)
+
+    return {
+        "output_directory": str(output),
+        "files": {
+            filename: hashlib.sha256(payload).hexdigest()
+            for filename, payload in files.items()
+        },
+        "record_count": len(records),
+        "source_commit": source_commit,
+    }
+
