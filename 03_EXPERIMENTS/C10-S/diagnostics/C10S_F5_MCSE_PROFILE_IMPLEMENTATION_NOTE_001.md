@@ -60,10 +60,12 @@ there is no selected or calibrated cutoff.
 
 The test module now includes finite profile evaluation, retention of both
 branches, permutation invariance, an independent asymmetric beta-binomial
-likelihood lower-bound check, maximum-target and zero-target boundaries,
-infeasible targets, invalid input, profile LR inversion with component/hull
-consistency, invalid-cutoff rejection, non-finite root refinement, and
-explicit grid-resolution reporting.
+likelihood lower-bound check, analytic beta-binomial scores compared with
+finite differences of an independent math.lgamma likelihood, maximum-target
+and zero-target boundaries, infeasible targets, invalid input, profile LR
+inversion with component/hull consistency, invalid-cutoff rejection,
+non-finite root refinement, explicit grid-resolution reporting, and the
+nested-grid convergence diagnostic interface.
 
 No tests have been executed. These are test definitions only.
 
@@ -71,9 +73,11 @@ No tests have been executed. These are test definitions only.
 
 - Finite-κ maximization uses a deterministic log-concentration scan followed
   by local bounded optimization; it is not a certified global optimizer.
-- Both MCSE and concentration grid resolutions are now configurable and
-  reported. The LR-set scan remains grid-based and may miss narrow/disconnected
-  components. Increase-grid convergence and adversarial tests are mandatory.
+- Both MCSE and concentration grid resolutions are configurable and reported.
+  A nested-grid convergence diagnostic now compares component counts, profile
+  maxima, and LR-set endpoints. Stability across two grids is not proof that
+  both grids did not miss the same narrow/disconnected component. Adversarial
+  tests remain mandatory.
 - The profile and LR set are restricted to this beta-binomial model and target
   mapping; no generality beyond that model is claimed.
 - No LR cutoff is selected. No calibration or holdout has been run.
@@ -83,10 +87,13 @@ No tests have been executed. These are test definitions only.
 
 1. Expand independent score/likelihood checks to all boundary classes and
    compare gradients/scores against numerical differentiation.
-2. Run grid-resolution convergence and adversarial multimodality tests for
+2. Execute the nested-grid convergence diagnostic over a predeclared
+   adversarial roster; supplement it with adversarial multimodality tests for
    both concentration and MCSE scans.
 3. Extend robust root-bracketing tests for non-finite profile regions and
    endpoint cases.
+4. Validate analytic score expressions against independent numerical
+   derivatives over a wider asymmetric parameter roster.
 4. Wire interval emission into C5 only after the cutoff and abstention policy
    have been prospectively specified and authorized.
 5. Calibrate the cutoff on a calibration roster independent of the holdout
