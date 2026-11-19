@@ -14,6 +14,7 @@ from typing import Sequence
 from c10s_f1_exact_pivotal_candidate import f1_exact_pivotal_result
 from c10s_f1_between_profile_likelihood import F1ProfileError, f1_profile_loglik
 from c10s_gaussian_variance_oracles import gaussian_f1_reference
+from c10s_f5_beta_binomial_mcse_profile import F5ProfileError, f5_beta_binomial_mcse_profile_loglik
 from c10s_fitted_beta_binomial_bootstrap import (
     FittedBetaBinomialBootstrapResult,
     fitted_beta_binomial_parametric_bootstrap,
@@ -35,6 +36,34 @@ IMPLEMENTED_METHODS = {
 
 class ComparativeEngineError(ValueError):
     """Invalid family, comparison record or adjudication input."""
+
+
+def _f5_profile_diagnostic(
+    rows: Sequence[Sequence[float]], *, target_m: int, target_r: int,
+    point_mcse: float | None,
+) -> tuple[tuple[str, str], ...]:
+    if point_mcse is None:
+        return (("mcse_profile_status", "NOT_EVALUATED_POINT_MCSE_UNAVAILABLE"),)
+    try:
+        result = f5_beta_binomial_mcse_profile_loglik(
+            rows, target_m=target_m, target_r=target_r,
+            target_mcse=point_mcse,
+        )
+    except F5ProfileError as exc:
+        return (
+            ("mcse_profile_status", "ABSTAINED_DIAGNOSTIC"),
+            ("mcse_profile_reason", str(exc)),
+        )
+    return (
+        ("mcse_profile_status", result.boundary_status),
+        ("mcse_profile_loglik_at_observed_point", format(result.profile_loglik, ".17g")),
+        ("mcse_profile_maximizing_branch", result.maximizing_branch),
+        ("mcse_profile_maximizing_concentration", (
+            "BOUNDARY_LIMIT" if result.maximizing_concentration is None
+            else format(result.maximizing_concentration, ".17g")
+        )),
+        ("mcse_profile_interval", "NOT_EMITTED_NO_LR_CUTOFF_SELECTED"),
+    )
 
 
 def _f1_profile_diagnostic(
@@ -288,6 +317,10 @@ def compare_dataset(
             ("bootstrap_seed", str(fitted.bootstrap_seed)),
             ("mcse_interval_status", "NOT_IMPLEMENTED_BOUNDARY_AWARE_JOINT_INFERENCE"),
             ("failure_reason", fitted.failure_reason or "NONE"),
+            * _f5_profile_diagnostic(
+                rows, target_m=target_m, target_r=target_r,
+                point_mcse=fitted.comparison.mcse_estimate,
+            ),
         )
         outputs.append(CandidateOutput(
             method_id=fitted.comparison.method_id,
