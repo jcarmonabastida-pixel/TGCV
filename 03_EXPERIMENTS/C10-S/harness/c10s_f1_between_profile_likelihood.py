@@ -359,14 +359,14 @@ def f1_score_polynomial_diagnostic(
                 polynomial_x, left, right, xtol=1e-13, rtol=1e-13,
             ))
     roots = tuple(sorted({
-        round(value * scale, 13) for value in root_x
+        value * scale for value in root_x
         if value > 0.0 and math.isfinite(value * scale)
     }))
     tangential = tuple(sorted({
-        round(value * scale, 13) for value in tangent_x
+        value * scale for value in tangent_x
     }))
     unresolved = tuple(sorted({
-        round(value * scale, 13) for value in unresolved_x
+        value * scale for value in unresolved_x
     }))
     status = "POLYNOMIAL_ROOTS_ISOLATED"
     if unresolved:
