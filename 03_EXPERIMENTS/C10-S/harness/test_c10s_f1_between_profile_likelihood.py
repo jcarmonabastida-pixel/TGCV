@@ -30,6 +30,28 @@ ROWS = (
 )
 
 
+def constructed_repeated_score_root_rows():
+    """Exact-statistic construction with a double positive F1 score-polynomial root.
+
+    For M=R=4, tau=1 and desired repeated root s=1, solve P(s)=P'(s)=0
+    for SSW and the sample variance of world means. The resulting cubic is
+    -0.9375*(s-1)^2*(s-4.72), up to floating representation.
+    """
+    tau = 1.0
+    repeated_root = 1.0
+    ssw = 4.425
+    world_mean_variance = 17.03125
+    world_offset = math.sqrt(3.0 * world_mean_variance / 4.0)
+    within_pattern = (-1.5, -0.5, 0.5, 1.5)
+    within_scale = math.sqrt(ssw / (4.0 * sum(x * x for x in within_pattern)))
+    means = (-world_offset, -world_offset, world_offset, world_offset)
+    rows = tuple(
+        tuple(float(mean + within_scale * deviation) for deviation in within_pattern)
+        for mean in means
+    )
+    return rows, tau, repeated_root
+
+
 def frozen_six_cell_rows():
     """Fresh deterministic Gaussian fixtures for the six frozen F1 cells."""
     regimes = (
@@ -54,6 +76,69 @@ def frozen_six_cell_rows():
 
 
 class F1BetweenProfileLikelihoodTests(unittest.TestCase):
+    def test_constructed_real_data_fixture_resolves_a_double_score_root(self):
+        rows, tau, repeated_root = constructed_repeated_score_root_rows()
+        polynomial = f1_score_polynomial_diagnostic(
+            rows, between_variance=tau,
+        )
+        self.assertEqual(polynomial.status, "POLYNOMIAL_ROOTS_ISOLATED")
+        self.assertEqual(polynomial.critical_point_solver_status, "RESOLVED")
+        self.assertEqual(len(polynomial.tangential_roots), 1)
+        self.assertAlmostEqual(
+            polynomial.tangential_roots[0], repeated_root, delta=1e-7,
+        )
+        self.assertEqual(len(polynomial.positive_roots), 2)
+        self.assertTrue(any(
+            abs(root - repeated_root) <= 1e-7
+            for root in polynomial.positive_roots
+        ))
+        nuisance = f1_profile_nuisance_optimizer_diagnostic(
+            rows, between_variance=tau,
+        )
+        self.assertEqual(nuisance.tangential_score_roots, 1)
+        self.assertEqual(nuisance.unresolved_tangential_candidates, 0)
+        self.assertIn(
+            "TANGENTIAL_STATIONARY_NO_LOCAL_EXTREMUM",
+            nuisance.stationary_point_types,
+        )
+
+    def test_actual_interval_profile_accepts_resolved_tangency_without_misclassifying_it(self):
+        rows, tau, repeated_root = constructed_repeated_score_root_rows()
+        from c10s_f1_between_profile_likelihood import brentq as original_brentq
+
+        def probe_tangency_then_solve(function, left, right, *args, **kwargs):
+            # Force the real profile callback to evaluate at the constructed
+            # repeated-root tau before continuing with the genuine endpoint solve.
+            function(tau / max(
+                f1_profile_loglik(rows, between_variance=0.0) * 0.0 + 1.0,
+                1.0,
+            ))
+            return original_brentq(function, left, right, *args, **kwargs)
+
+        # Probe the actual interval callback at tau=1 through its own bracketing
+        # path. The scale is data-derived inside the callable; use the expected
+        # sufficient-statistic scale to form the dimensionless coordinate.
+        from c10s_variance_comparison_interface import observed_nested_mr_result
+        observed = observed_nested_mr_result(rows)
+        within = observed.within_estimate
+        scale = max(within, observed.observed_world_variance)
+        def probe_then_solve(function, left, right, *args, **kwargs):
+            function(tau / scale)
+            return original_brentq(function, left, right, *args, **kwargs)
+
+        with patch(
+            "c10s_f1_between_profile_likelihood.brentq",
+            side_effect=probe_then_solve,
+        ):
+            result = f1_profile_between_confidence_set(
+                rows, family="F1",
+                likelihood_ratio_cutoff=3.841458820694124,
+            )
+        self.assertEqual(result.status, "PROFILE_LR_INTERVAL_ROOT_SOLVED")
+        self.assertEqual(result.nuisance_certification_status,
+                         "POLYNOMIAL_SCORE_BOUNDED_OPTIMIZER_CONCORDANT")
+        self.assertEqual(len(result.confidence_components), 1)
+
     def test_profile_interval_path_covers_all_six_frozen_f1_cells(self):
         fixtures = frozen_six_cell_rows()
         self.assertEqual(len(fixtures), 6)
