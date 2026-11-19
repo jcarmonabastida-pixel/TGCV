@@ -15,17 +15,17 @@
   "source": {
     "repository": "jcarmonabastida-pixel/TGCV",
     "branch": "research/c10s-f1-integrated-correction-20261119",
-    "frozen_commit": "41d91bd19ba0dfd789d21b3d8398184daa100ff9",
+    "frozen_commit": "d65686beb2b242c0acb8ffbbcfe8ff55437f6c8b",
     "manifest_path": "03_EXPERIMENTS/C10-S/harness/C10S_F1_VALIDATION_FREEZE_MANIFEST_002.md",
-    "manifest_commit": "a73e989d67c0be25950073e353e1cc086902e86e",
+    "manifest_commit": "1378cd8b2aae6b17c7edb9c3fe78973b3734c07d",
     "workflow_path": ".github/workflows/c10s-f1-integrated-validation-001.yml",
-    "workflow_commit": "178a5d594f75ea78e8745a89f79e54f0cb3ff6de",
-    "workflow_blob_sha": "9a50c4fc3e09ca73786c14b036c3199baabcfea8",
-    "execution_checkout": "Detached HEAD at frozen_commit; no execution from branch tip"
+    "workflow_commit": "c4095607ac7ea359f1626d157547c4b2e6e12824",
+    "workflow_blob_sha": "d10a1beb0ebf3afa057198f84b167c61efc7f050",
+    "execution_checkout": "Detached HEAD at frozen_commit d65686beb2b242c0acb8ffbbcfe8ff55437f6c8b; no execution from branch tip"
   },
   "protocol": {
     "protocol_id": "C10S-F1-INTEGRATED-TEST-SUITE-001",
-    "protocol_version": "003",
+    "protocol_version": "003-final",
     "runner": "GitHub Actions ubuntu-24.04",
     "python_baseline": "3.12.3",
     "working_directory": "03_EXPERIMENTS/C10-S/harness",
