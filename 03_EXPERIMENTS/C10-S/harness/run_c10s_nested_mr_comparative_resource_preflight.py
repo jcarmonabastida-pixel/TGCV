@@ -4,7 +4,12 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
+import platform
 import resource
+import sys
+
+import numpy as np
 import time
 from pathlib import Path
 
@@ -99,6 +104,17 @@ def run_preflight(output: Path) -> dict:
     payload = {
         "preflight_id": PREFLIGHT_ID,
         "namespace": PREFLIGHT_NAMESPACE,
+        "environment": {
+            "python_version": sys.version,
+            "numpy_version": np.__version__,
+            "platform": platform.platform(),
+            "workflow_run_id": os.environ.get("GITHUB_RUN_ID"),
+            "workflow_run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
+            "workflow_commit": os.environ.get("GITHUB_SHA"),
+            "dependency_lock_sha256": hashlib.sha256(
+                Path(__file__).with_name("requirements-vcont-integrated.lock").read_bytes()
+            ).hexdigest(),
+        },
         "cells": results,
         "total_datasets": total_sampled,
         "full_holdout_datasets": 8000,
