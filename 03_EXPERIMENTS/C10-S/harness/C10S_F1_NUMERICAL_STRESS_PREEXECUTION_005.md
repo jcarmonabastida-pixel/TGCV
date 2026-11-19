@@ -25,9 +25,9 @@ The exact transitive v001/v002/isolator blobs are recorded in Freeze Manifest 00
 ## 2. Dedicated workflow
 
 - Workflow: `.github/workflows/c10s-f1-numerical-stress-v3.yml`
-- Workflow blob: `7096a7ba972c114b300156da538545eb8ef72ac0`
+- Workflow blob: `85ffcb58d1859a3621dcd29a7b1c479c08a75b27`
 - Source checkout is pinned to the immutable v003 source commit.
-- Preflight verifies the authorization, manifest blob, workflow blob, frozen-input blob, exact source blobs, 79-record scope, runtime, command, output contract, one-shot limit and prohibitions.
+- Preflight verifies the authorization, manifest blob, workflow blob, frozen-input blob, exact source blobs, 79-record scope including the N4 isolation width (1/10^12) and max depth (256), runtime, command, output contract, one-shot limit, unused retry state and prohibitions. A static review found these two N4 scope fields and retry_authorized=false were not explicitly checked in the first workflow draft; the preflight was tightened before any approval or numerical execution.
 - Authorization consumption occurs only after source/blob preflight and immediately before the single primary diagnostic invocation.
 - No external Python dependencies are installed.
 
