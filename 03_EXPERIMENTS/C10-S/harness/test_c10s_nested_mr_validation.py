@@ -21,6 +21,7 @@ from run_c10s_nested_mr_validation import (
     _run_deterministic_guards,
     analyze_fixture,
     coverage_summary,
+    _component_cell_summary,
 )
 
 
@@ -87,6 +88,35 @@ class NestedMRFixtureContractTests(unittest.TestCase):
             by_family["F6"]["analysis"]["projected_mcse_status"],
             "RMSE_DELTA_NONREGULAR",
         )
+
+    def test_component_summary_uses_raw_between_estimate_field(self):
+        records = [
+            {
+                "estimate_within": 1.1,
+                "true_within": 1.0,
+                "estimate_between_raw": 0.9,
+                "true_between": 1.0,
+                "intervals_95": {
+                    "within_ms": [0.8, 1.2],
+                    "between_raw": [0.7, 1.1],
+                },
+            },
+            {
+                "estimate_within": 0.9,
+                "true_within": 1.0,
+                "estimate_between_raw": 1.1,
+                "true_between": 1.0,
+                "intervals_95": {
+                    "within_ms": [0.8, 1.2],
+                    "between_raw": [0.7, 1.1],
+                },
+            },
+        ]
+        summary = _component_cell_summary(records, "between")
+        self.assertAlmostEqual(summary["mean_estimate"], 1.0)
+        self.assertAlmostEqual(summary["analytical_truth"], 1.0)
+        self.assertEqual(summary["successes"], 2)
+        self.assertEqual(summary["trials"], 2)
 
     def test_coverage_rule_requires_both_tolerance_and_wilson_containment(self):
         passing = coverage_summary(950, 1000)
