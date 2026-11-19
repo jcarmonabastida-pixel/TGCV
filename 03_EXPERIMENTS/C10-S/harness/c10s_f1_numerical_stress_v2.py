@@ -131,6 +131,13 @@ def run_n3_covariant_lane() -> dict[str, Any]:
     base_lower, base_upper = _domain_for(base)
     base_width = Q(1, 10**12)
     base_depth = 256
+    base_binary64 = _float_vector(base.ideal_coefficients)
+    if base_binary64 is None:
+        raise ArithmeticError("N3_BASE_REPRESENTATION_UNRESOLVED")
+    base_represented = tuple(Q.from_float(value) for value in base_binary64)
+    base_reference = _isolate(
+        base_represented, base_lower, base_upper, base_width, base_depth,
+    )
     records: list[dict[str, Any]] = []
     for exponent in SCALE_EXPONENTS:
         fixture_id = f"N3_BASE_VARIABLE_SCALE_2^{exponent}"
@@ -178,6 +185,40 @@ def run_n3_covariant_lane() -> dict[str, Any]:
                     for root in represented_result.roots
                 ],
             })
+            if (
+                base_reference.status != "ROOTS_ISOLATED"
+                or represented_result.status != "ROOTS_ISOLATED"
+            ):
+                record["base_equivariance_status"] = "UNRESOLVED"
+                record["base_equivariance_reason"] = "BASE_OR_TRANSFORMED_ISOLATION_INCOMPLETE"
+            else:
+                mapped = [
+                    (root.lower * inverse, root.upper * inverse, root.multiplicity)
+                    for root in represented_result.roots
+                ]
+                base_roots = [
+                    (root.lower, root.upper, root.multiplicity)
+                    for root in base_reference.roots
+                ]
+                same_count = len(mapped) == len(base_roots)
+                same_multiplicity = (
+                    same_count
+                    and tuple(item[2] for item in mapped)
+                    == tuple(item[2] for item in base_roots)
+                )
+                intervals_overlap = (
+                    same_count
+                    and all(
+                        max(left[0], right[0]) <= min(left[1], right[1])
+                        for left, right in zip(mapped, base_roots)
+                    )
+                )
+                passed = same_count and same_multiplicity and intervals_overlap
+                record["base_equivariance_status"] = "PASS" if passed else "FAIL"
+                record["base_equivariance_reason"] = (
+                    "INVERSE_MAPPED_INTERVALS_MATCH_BASE"
+                    if passed else "ROOT_COUNT_MULTIPLICITY_OR_INTERVAL_MATCH_FAILED"
+                )
         records.append(record)
     return {
         "generator_version": GENERATOR_VERSION,
