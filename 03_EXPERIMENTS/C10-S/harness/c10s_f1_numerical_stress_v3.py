@@ -346,6 +346,17 @@ def run_stress_v3(frozen_inputs_path: str | Path | None = None) -> dict[str, Any
     total = len(n2) + 1 + len(n4)
     if (len(n2), len(n4), total) != (64, 14, 79):
         raise ArithmeticError("V003_PREDECLARED_DENOMINATOR_MISMATCH")
+    def counts(rows: Sequence[dict[str, Any]], field: str) -> dict[str, int]:
+        result: dict[str, int] = {}
+        for row in rows:
+            key = str(row.get(field, "MISSING"))
+            result[key] = result.get(key, 0) + 1
+        return dict(sorted(result.items()))
+
+    n2_sign_changes = sum(
+        row["ideal_discriminant_sign"] != row["represented_discriminant_sign"]
+        for row in n2
+    )
     return {
         "schema": "C10S-F1-NUMERICAL-STRESS-SUMMARY-003",
         "generator_version": GENERATOR_VERSION,
@@ -356,6 +367,15 @@ def run_stress_v3(frozen_inputs_path: str | Path | None = None) -> dict[str, Any
             "N2_DISCRIMINANT_ULP_V3": len(n2),
             "N5_ROUNDING_CELL_V3": 1,
             "N4_FUJIWARA_BOUND_V3": len(n4),
+        },
+        "diagnostic_counts": {
+            "n2_topology_comparison": counts(n2, "topology_comparison_status"),
+            "n2_ideal_vs_represented_discriminant_sign_changes": n2_sign_changes,
+            "n5_rounding_cell_topology": n5["rounding_cell_topology_status"],
+            "n5_ideal_sturm": n5["ideal_sturm_status"],
+            "n5_represented_sturm": n5["represented_sturm_status"],
+            "n4_fujiwara_sturm": counts(n4, "fujiwara_sturm_status"),
+            "n4_comparison_to_v002": counts(n4, "fujiwara_vs_v002"),
         },
         "combined_record_count": total,
         "records": n2 + [n5] + n4,
