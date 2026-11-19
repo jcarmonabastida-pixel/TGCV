@@ -321,6 +321,26 @@ def _write_json(path: Path, value: dict[str, Any]) -> None:
     path.write_text(json.dumps(value, sort_keys=True, indent=2, allow_nan=False) + "\n", encoding="utf-8")
 
 
+def _bank_cell_manifest(spec, *, bank: str, k: int, c0_b: int, c5_b: int) -> dict[str, Any]:
+    manifest = dict(spec.manifest())
+    fixture_k = manifest.pop("k", None)
+    fixture_b = manifest.pop("b", None)
+    manifest.pop("tier", None)
+    manifest.update({
+        "fixture_source_tier": "A",
+        "fixture_template_k": fixture_k,
+        "fixture_template_b": fixture_b,
+        "phase": "B2",
+        "bank_role": "DEVELOPMENT_CALIBRATION" if bank == "calibration" else "DISJOINT_DEVELOPMENT_VALIDATION",
+        "bank": bank,
+        "k_datasets": k,
+        "c0_bootstrap_B": c0_b,
+        "c5_bootstrap_B": c5_b,
+        "confirmatory_holdout": False,
+    })
+    return manifest
+
+
 def run_f5_bank(
     spec, *, bank: str, k: int, c0_b: int, c5_b: int,
     selected_b3_ids: set[str] | None = None, output_path: Path | None = None,
@@ -428,7 +448,7 @@ def run_f5_bank(
     }
     return {
         "bank": bank,
-        "cell": spec.manifest(),
+        "cell": _bank_cell_manifest(spec, bank=bank, k=k, c0_b=c0_b, c5_b=c5_b),
         "datasets_completed": len(records),
         "method_roster": sorted(IMPLEMENTED_METHODS["F5"]),
         "metrics_within_and_raw_between_only": metrics,
