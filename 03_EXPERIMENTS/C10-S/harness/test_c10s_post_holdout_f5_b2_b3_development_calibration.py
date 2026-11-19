@@ -123,6 +123,13 @@ class F5DevelopmentCalibrationTests(unittest.TestCase):
             "optimizer_status": "OPTIMIZER_CONCORDANT",
             "optimizer_audit": audit,
         }))
+        failed_start_audit = dict(audit)
+        failed_start_audit["starts"] = [dict(start), dict(start), {**start, "success": False}]
+        self.assertFalse(_optimizer_diagnostic_is_resolved({
+            "fit_status": "INTERIOR",
+            "optimizer_status": "OPTIMIZER_CONCORDANT",
+            "optimizer_audit": failed_start_audit,
+        }))
 
     def test_optimizer_gate_fails_closed_on_missing_or_discordant_audit(self):
         self.assertFalse(_optimizer_diagnostic_is_resolved({
@@ -133,14 +140,6 @@ class F5DevelopmentCalibrationTests(unittest.TestCase):
             "fit_status": "BOUNDARY", "optimizer_status": "OPTIMIZER_CONCORDANT",
             "optimizer_audit": {},
         }))
-        failed_start_audit = dict(audit)
-        failed_start_audit["starts"] = [dict(start), dict(start), {**start, "success": False}]
-        self.assertFalse(_optimizer_diagnostic_is_resolved({
-            "fit_status": "INTERIOR",
-            "optimizer_status": "OPTIMIZER_CONCORDANT",
-            "optimizer_audit": failed_start_audit,
-        }))
-
     def test_rank_uncertainty_reports_discrete_binomial_rank_diagnostic(self):
         result = _rank_uncertainty(1000, 0.025)
         self.assertEqual(result["bootstrap_replicates"], 1000)
