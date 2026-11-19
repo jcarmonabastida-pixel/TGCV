@@ -243,6 +243,19 @@ def f5_beta_binomial_mcse_profile_loglik(
                             (-float(opt.fun), math.exp(float(opt.x)))
                         )
 
+    # Preserve the grid-detected interior maxima by branch. These are
+    # diagnostics only: a finite grid cannot certify global topology.
+    local_maxima_by_branch = [[], []]
+    for branch_index in (0, 1):
+        vals = branch_values[branch_index]
+        for idx in range(1, len(vals) - 1):
+            value = vals[idx]
+            if (math.isfinite(value) and value >= vals[idx - 1]
+                    and value >= vals[idx + 1]):
+                local_maxima_by_branch[branch_index].append(
+                    (float(value), math.exp(float(grid[idx])))
+                )
+
     # Explicit analytic concentration limits.
     limit_h0 = h_zero
     if limit_h0 <= 0.25:
@@ -287,6 +300,15 @@ def f5_beta_binomial_mcse_profile_loglik(
             ("finite_optimizer_candidates_plus", str(sum(k is not None for _, k in branch_candidates[0]))),
             ("finite_optimizer_candidates_minus", str(sum(k is not None for _, k in branch_candidates[1]))),
             ("upper_concentration_limit_feasible", str(upper_limit_feasible)),
+            ("mu_plus_grid_local_maxima_count", str(len(local_maxima_by_branch[0]))),
+            ("mu_minus_grid_local_maxima_count", str(len(local_maxima_by_branch[1]))),
+            ("mu_plus_grid_local_maxima_kappa", repr(tuple(k for _, k in local_maxima_by_branch[0]))),
+            ("mu_minus_grid_local_maxima_kappa", repr(tuple(k for _, k in local_maxima_by_branch[1]))),
+            ("mu_plus_top_two_local_maxima_loglik_gap", (
+                "NA" if len(local_maxima_by_branch[0]) < 2 else
+                format(sorted((v for v, _ in local_maxima_by_branch[0]), reverse=True)[0]
+                       - sorted((v for v, _ in local_maxima_by_branch[0], reverse=True)[1], ".17g")
+            )),
         ),
     )
 
