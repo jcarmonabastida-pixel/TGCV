@@ -128,6 +128,80 @@ class F5BetaBinomialProfileTests(unittest.TestCase):
         self.assertAlmostEqual(score_mu, numeric_mu, delta=2e-5)
         self.assertAlmostEqual(score_kappa, numeric_kappa, delta=2e-5)
 
+    def test_adversarial_cluster_count_patterns_keep_both_mean_branches(self):
+        # Boundary-heavy, strongly asymmetric, and interior-heavy empirical
+        # cluster-count patterns. Every row is a world; columns are Bernoulli
+        # inner replicates. This is a deterministic shape stress test, not a
+        # Monte Carlo coverage experiment.
+        fixtures = {
+            "all_zero": tuple((0, 0, 0, 0, 0) for _ in range(8)),
+            "all_one": tuple((1, 1, 1, 1, 1) for _ in range(8)),
+            "endpoint_mixture": (
+                *((0, 0, 0, 0, 0) for _ in range(5)),
+                *((1, 1, 1, 1, 1) for _ in range(3)),
+            ),
+            "asymmetric_endpoints": (
+                *((0, 0, 0, 0, 0) for _ in range(7)),
+                *((1, 1, 1, 1, 1) for _ in range(1)),
+            ),
+            "interior_heavy": (
+                *((1, 1, 0, 0, 0) for _ in range(5)),
+                *((1, 1, 1, 0, 0) for _ in range(3)),
+            ),
+            "mixed_extremes_and_interior": (
+                (0, 0, 0, 0, 0), (1, 1, 1, 1, 1),
+                (1, 1, 0, 0, 0), (1, 0, 1, 0, 1),
+                (0, 1, 0, 1, 0), (1, 1, 1, 0, 0),
+            ),
+        }
+        target_m, target_r = 12, 5
+        g_max = 1.0 / (2.0 * math.sqrt(target_m))
+        for fixture_name, rows in fixtures.items():
+            for fraction in (0.1, 0.35, 0.7, 0.95):
+                result = f5_beta_binomial_mcse_profile_loglik(
+                    rows, target_m=target_m, target_r=target_r,
+                    target_mcse=fraction * g_max,
+                    concentration_grid_points=161,
+                )
+                self.assertTrue(
+                    math.isfinite(result.profile_loglik),
+                    msg=f"{fixture_name} at fraction={fraction}: {result}",
+                )
+                self.assertIn(result.maximizing_branch, {"MU_PLUS", "MU_MINUS"})
+                self.assertTrue(
+                    math.isfinite(result.branch_loglik_plus)
+                    or result.branch_loglik_plus == -math.inf
+                )
+                self.assertTrue(
+                    math.isfinite(result.branch_loglik_minus)
+                    or result.branch_loglik_minus == -math.inf
+                )
+
+    def test_adversarial_lr_sets_never_escape_parameter_space(self):
+        fixtures = (
+            tuple((0, 0, 0, 0, 0) for _ in range(6))
+            + tuple((1, 1, 1, 1, 1) for _ in range(2)),
+            tuple((1, 1, 0, 0, 0) for _ in range(5))
+            + tuple((1, 1, 1, 0, 0) for _ in range(3)),
+        )
+        upper = 1.0 / (2.0 * math.sqrt(12))
+        for rows in fixtures:
+            result = f5_beta_binomial_mcse_profile_confidence_set(
+                rows, target_m=12, target_r=5,
+                likelihood_ratio_cutoff=3.841458820694124,
+                scan_grid_points=31, concentration_grid_points=81,
+            )
+            for lower, high in result.confidence_components:
+                self.assertGreaterEqual(lower, 0.0)
+                self.assertGreater(high, lower)
+                self.assertLessEqual(high, upper + 1e-12)
+            if result.confidence_components:
+                self.assertEqual(
+                    result.confidence_hull,
+                    (result.confidence_components[0][0],
+                     result.confidence_components[-1][1]),
+                )
+
     def test_world_permutation_invariance(self):
         permuted = tuple(reversed(ROWS))
         a = f5_beta_binomial_mcse_profile_loglik(
