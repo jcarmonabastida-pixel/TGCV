@@ -63,6 +63,8 @@ def fit_beta_binomial_counts(counts: Sequence[int], r: int) -> BetaBinomialFit:
         raise BetaBinomialFitError("world-cluster counts must be integers")
     if np.all(x == 0) or np.all(x == r):
         raise BetaBinomialFitError("ALL_ZERO_OR_ALL_ONE_BOUNDARY")
+    if np.all(x == x[0]):
+        raise BetaBinomialFitError("NO_BETWEEN_CLUSTER_COUNT_VARIATION_BOUNDARY")
 
     m = int(x.size)
     empirical_mean = float(np.mean(x) / r)
@@ -95,9 +97,11 @@ def fit_beta_binomial_counts(counts: Sequence[int], r: int) -> BetaBinomialFit:
                  options={"maxiter": 4000, "ftol": 1e-12, "gtol": 1e-8})
         for start in starts
     ]
-    best = min(fits, key=lambda result: float(result.fun))
-    if not bool(best.success) or not math.isfinite(float(best.fun)):
-        raise BetaBinomialFitError(f"MLE_NONCONVERGENCE: {best.message}")
+    admissible = [result for result in fits if bool(result.success) and math.isfinite(float(result.fun))]
+    if not admissible:
+        messages = "; ".join(str(result.message) for result in fits)
+        raise BetaBinomialFitError(f"MLE_NONCONVERGENCE: {messages}")
+    best = min(admissible, key=lambda result: float(result.fun))
 
     logit_mean, log_concentration = (float(v) for v in best.x)
     mean = 1.0 / (1.0 + math.exp(-logit_mean))
