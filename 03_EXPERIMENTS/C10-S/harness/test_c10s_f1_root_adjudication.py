@@ -180,12 +180,13 @@ class F1RootAdjudicationTests(unittest.TestCase):
                     )
 
     def test_rejects_nonfinite_tolerances(self):
-        for value in (float("inf"), float("nan"), 0.0, -1.0):
-            with self.subTest(value=value):
-                with self.assertRaises(F1ProfileError):
-                    adjudicate_f1_roots(
-                        (), between_variance=0.2, match_tolerance=value,
-                    )
+        for parameter in ("match_tolerance", "relative_tolerance"):
+            for value in (float("inf"), float("nan"), 0.0, -1.0):
+                with self.subTest(parameter=parameter, value=value):
+                    with self.assertRaises(F1ProfileError):
+                        adjudicate_f1_roots(
+                            (), between_variance=0.2, **{parameter: value},
+                        )
 
 
 if __name__ == "__main__":
