@@ -108,6 +108,33 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
             "LIKELIHOOD_CONCORDANT_PARAMETER_DISAGREEMENT",
         ))
 
+    def test_profile_concentration_curvature_is_nuisance_adjusted_schur_complement(self):
+        audit = audit_beta_binomial_count_fit(COUNTS, R)
+        self.assertIsNotNone(audit.selected_mean_logit)
+        self.assertIsNotNone(audit.selected_log_concentration)
+        self.assertIsNotNone(audit.profile_log_concentration_curvature)
+        selected = beta_binomial_loglik_score_hessian(
+            COUNTS, R,
+            mean_logit=audit.selected_mean_logit,
+            log_concentration=audit.selected_log_concentration,
+        )
+        self.assertNotEqual(selected.hessian_mean_logit, 0.0)
+        expected = (
+            selected.hessian_log_concentration
+            - selected.hessian_cross ** 2 / selected.hessian_mean_logit
+        )
+        self.assertAlmostEqual(
+            audit.profile_log_concentration_curvature, expected, delta=1e-12,
+        )
+        # This raw local curvature is not folded into optimizer-concordance
+        # status and does not introduce an identification/selection threshold.
+        self.assertIn(audit.status, (
+            "OPTIMIZER_CONCORDANT",
+            "OPTIMIZER_DISCORDANT",
+            "INDEPENDENT_OPTIMIZER_UNRESOLVED",
+            "LIKELIHOOD_CONCORDANT_PARAMETER_DISAGREEMENT",
+        ))
+
     def test_finite_r_count_likelihood_matches_independent_exact_pmf_oracle(self):
         alpha, beta, r = 2.0, 2.0, 5
         reference = beta_binomial_f5_reference(
