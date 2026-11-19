@@ -451,8 +451,9 @@ class BetaBinomialProfileBoundaryLikelihoods:
     """Boundary models with their own nuisance mean maximized."""
     binomial_profile_log_likelihood: float
     binomial_profile_mean: float
-    two_point_profile_log_likelihood: float
+    two_point_profile_log_likelihood: float | None
     two_point_profile_mean: float | None
+    two_point_boundary_status: str
     interior_count_observations: int
 
 
@@ -584,12 +585,14 @@ def beta_binomial_profiled_boundary_likelihoods(
 
     interior = sum(1 for x in values if 0 < x < r)
     if interior:
-        two_point_ll = -math.inf
+        two_point_ll = None
         two_point_mean = None
+        two_point_status = "ZERO_PROBABILITY_INTERIOR_COUNTS"
     else:
         n_zero = sum(1 for x in values if x == 0)
         n_full = sum(1 for x in values if x == r)
         two_point_mean = n_full / n
+        two_point_status = "FINITE_ENDPOINT_MIXTURE_PROFILE"
         if n_full == 0 or n_zero == 0:
             two_point_ll = 0.0
         else:
@@ -604,6 +607,7 @@ def beta_binomial_profiled_boundary_likelihoods(
         two_point_profile_mean=(
             float(two_point_mean) if two_point_mean is not None else None
         ),
+        two_point_boundary_status=two_point_status,
         interior_count_observations=interior,
     )
 
@@ -617,7 +621,8 @@ class BetaBinomialProfileAuditRecord:
     profile_point_count: int
     profile_max_log_likelihood: float | None
     binomial_boundary_profile_log_likelihood: float
-    two_point_boundary_profile_log_likelihood: float
+    two_point_boundary_profile_log_likelihood: float | None
+    two_point_boundary_status: str
     profile_minus_binomial_boundary: float | None
     profile_minus_two_point_boundary: float | None
     profile_curvature_values: tuple[float | None, ...]
@@ -670,13 +675,13 @@ def build_beta_binomial_profile_audit_record(
         two_point_boundary_profile_log_likelihood=(
             boundary.two_point_profile_log_likelihood
         ),
+        two_point_boundary_status=boundary.two_point_boundary_status,
         profile_minus_binomial_boundary=float(
             maximum - boundary.binomial_profile_log_likelihood
         ),
         profile_minus_two_point_boundary=(
             float(maximum - boundary.two_point_profile_log_likelihood)
-            if math.isfinite(boundary.two_point_profile_log_likelihood)
-            else math.inf
+            if boundary.two_point_profile_log_likelihood is not None else None
         ),
         profile_curvature_values=curvatures,
         profile_curvature_min=(
