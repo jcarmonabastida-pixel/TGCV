@@ -170,6 +170,79 @@ def beta_binomial_extended_boundary_likelihoods(
 
 
 @dataclass(frozen=True)
+class BetaBinomialLogShapeDerivatives:
+    """Independent likelihood derivatives in (log(alpha), log(beta))."""
+
+    log_likelihood: float
+    score_log_alpha: float
+    score_log_beta: float
+    hessian_log_alpha: float
+    hessian_cross: float
+    hessian_log_beta: float
+
+
+def beta_binomial_log_shape_score_hessian(
+    counts: Sequence[int], r: int, *, log_alpha: float, log_beta: float,
+) -> BetaBinomialLogShapeDerivatives:
+    """Independently parameterized analytic likelihood derivatives.
+
+    This route works directly with alpha and beta, rather than transforming
+    the mean-logit/log-concentration Hessian. It is an audit cross-check only.
+    """
+    values = tuple(counts)
+    if type(r) is not int or r < 2 or len(values) < 2:
+        raise F5LikelihoodDiagnosticError("INVALID_R_OR_SAMPLE_SIZE")
+    if any(isinstance(x, bool) or not isinstance(x, Integral) or x < 0 or x > r
+           for x in values):
+        raise F5LikelihoodDiagnosticError("COUNTS_MUST_BE_INTEGER_IN_[0,R]")
+    if (not math.isfinite(log_alpha) or not math.isfinite(log_beta)
+            or abs(log_alpha) > 700 or abs(log_beta) > 700):
+        raise F5LikelihoodDiagnosticError("LOG_SHAPES_NONFINITE_OR_UNREPRESENTABLE")
+    alpha, beta = math.exp(log_alpha), math.exp(log_beta)
+    total = alpha + beta
+    if not all(math.isfinite(v) and v > 0.0 for v in (alpha, beta, total)):
+        raise F5LikelihoodDiagnosticError("SHAPE_PARAMETERS_UNREPRESENTABLE")
+
+    ll = score_a = score_b = 0.0
+    h_aa = h_ab = h_bb = 0.0
+    psi_total = float(digamma(total))
+    tri_total = float(polygamma(1, total))
+    for x in values:
+        ll += (
+            float(gammaln(r + 1) - gammaln(x + 1) - gammaln(r - x + 1))
+            + float(betaln(x + alpha, r - x + beta))
+            - float(betaln(alpha, beta))
+        )
+        ga = float(
+            digamma(x + alpha) - digamma(r + total)
+            - digamma(alpha) + psi_total
+        )
+        gb = float(
+            digamma(r - x + beta) - digamma(r + total)
+            - digamma(beta) + psi_total
+        )
+        gaa = float(
+            polygamma(1, x + alpha) - polygamma(1, r + total)
+            - polygamma(1, alpha) + tri_total
+        )
+        gbb = float(
+            polygamma(1, r - x + beta) - polygamma(1, r + total)
+            - polygamma(1, beta) + tri_total
+        )
+        gab = float(-polygamma(1, r + total) + tri_total)
+        score_a += alpha * ga
+        score_b += beta * gb
+        h_aa += alpha * ga + alpha * alpha * gaa
+        h_ab += alpha * beta * gab
+        h_bb += beta * gb + beta * beta * gbb
+
+    values_out = (ll, score_a, score_b, h_aa, h_ab, h_bb)
+    if not all(math.isfinite(value) for value in values_out):
+        raise F5LikelihoodDiagnosticError("LOG_SHAPE_DERIVATIVES_NONFINITE")
+    return BetaBinomialLogShapeDerivatives(*values_out)
+
+
+@dataclass(frozen=True)
 class BetaBinomialStartOutcome:
     initial_mean_logit: float
     initial_log_concentration: float
@@ -207,6 +280,11 @@ class BetaBinomialOptimizerAudit:
     hessian_eigenvectors: tuple[tuple[float, float], tuple[float, float]] | None = None
     profile_minus_binomial_limit: float | None = None
     profile_minus_two_point_limit: float | None = None
+    independent_terminal_log_alpha: float | None = None
+    independent_terminal_log_beta: float | None = None
+    independent_score_components: tuple[float, float] | None = None
+    independent_score_norm: float | None = None
+    independent_observed_hessian: tuple[tuple[float, float], tuple[float, float]] | None = None
 
 
 def audit_beta_binomial_count_fit(
@@ -373,6 +451,21 @@ def audit_beta_binomial_count_fit(
     )
     independent_success = bool(independent.success) and math.isfinite(float(independent.fun))
     independent_ll = -float(independent.fun) if math.isfinite(float(independent.fun)) else None
+    independent_log_alpha = (
+        float(independent.x[0]) if np.all(np.isfinite(independent.x)) else None
+    )
+    independent_log_beta = (
+        float(independent.x[1]) if np.all(np.isfinite(independent.x)) else None
+    )
+    independent_derivatives = None
+    if independent_log_alpha is not None and independent_log_beta is not None:
+        try:
+            independent_derivatives = beta_binomial_log_shape_score_hessian(
+                values, r, log_alpha=independent_log_alpha,
+                log_beta=independent_log_beta,
+            )
+        except F5LikelihoodDiagnosticError:
+            independent_derivatives = None
     difference = (
         abs(selected.log_likelihood - independent_ll)
         if independent_ll is not None else None
@@ -453,6 +546,27 @@ def audit_beta_binomial_count_fit(
         profile_minus_two_point_limit=(
             float(selected.log_likelihood - boundary.two_point_mixing_limit_log_likelihood)
             if math.isfinite(boundary.two_point_mixing_limit_log_likelihood) else None
+        ),
+        independent_terminal_log_alpha=independent_log_alpha,
+        independent_terminal_log_beta=independent_log_beta,
+        independent_score_components=(
+            (independent_derivatives.score_log_alpha,
+             independent_derivatives.score_log_beta)
+            if independent_derivatives is not None else None
+        ),
+        independent_score_norm=(
+            float(math.hypot(
+                independent_derivatives.score_log_alpha,
+                independent_derivatives.score_log_beta,
+            )) if independent_derivatives is not None else None
+        ),
+        independent_observed_hessian=(
+            (
+                (independent_derivatives.hessian_log_alpha,
+                 independent_derivatives.hessian_cross),
+                (independent_derivatives.hessian_cross,
+                 independent_derivatives.hessian_log_beta),
+            ) if independent_derivatives is not None else None
         ),
     )
 
