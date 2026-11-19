@@ -61,6 +61,5 @@
   },
   "approval_requirement": "A separate explicit user approval is required. Only then may status be changed to APPROVED, execution_authorized and approved_by_user set true, and the exact authorization record committed. Merely dispatching the workflow does not constitute approval.",
   "consumed": false,
-  "freeze_manifest_blob_sha": "8c1fbd0681e784148646c97bbc07d5ca78bf0e22",
-  "workflow_blob_sha": "9d577a0b567fb3d685df82e59995fb07f71114ec"
+  "freeze_manifest_blob_sha": "8c1fbd0681e784148646c97bbc07d5ca78bf0e22"
 }
