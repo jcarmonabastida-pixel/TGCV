@@ -69,7 +69,7 @@ Use exactly the eight regular Tier A cell definitions, but with new independent 
 | F1 balanced | (sigma_w^2=1, sigma_b^2=1) | M10/R5; M30/R20 |
 | F1 low-between | (sigma_w^2=1, sigma_b^2=0.05) | M10/R5; M30/R20 |
 | F1 high-between | (sigma_w^2=0.25, sigma_b^2=2) | M10/R5; M30/R20 |
-| F5 beta22 | (alpha=2, eta=2) | M10/R5; M30/R20 |
+| F5 beta22 | (alpha=2, beta=2) | M10/R5; M30/R20 |
 
 For F5 beta22 the independent oracle truth is (sigma_w^2=0.20), (sigma_b^2=0.05), and observed world-mean variance (0.20/R+0.05), as already defined by the oracle. No new stress family, Tier B cell, sparse Bernoulli family or misspecified mixing family is added to this bounded package. Such extensions require a later design decision.
 
