@@ -106,7 +106,7 @@ def _limit_loglik(
 
 def f5_beta_binomial_mcse_profile_loglik(
     rows: Sequence[Sequence[float]], *, target_m: int, target_r: int,
-    target_mcse: float,
+    target_mcse: float, concentration_grid_points: int = 241,
 ) -> F5ProfileResult:
     """Evaluate the F5 profile log-likelihood at a proposed MCSE value.
 
@@ -198,7 +198,7 @@ def f5_beta_binomial_mcse_profile_loglik(
             )
         raise F5ProfileError("EMPTY_NUMERICAL_CONCENTRATION_DOMAIN")
 
-    grid = np.linspace(logk_low, logk_high, 241)
+    grid = np.linspace(logk_low, logk_high, concentration_grid_points)
     branch_values = [[], []]
     branch_candidates = [[], []]
     for z in grid:
@@ -309,11 +309,13 @@ def _bisect_profile_crossing(
 def f5_beta_binomial_mcse_profile_confidence_set(
     rows: Sequence[Sequence[float]], *, target_m: int, target_r: int,
     likelihood_ratio_cutoff: float, scan_grid_points: int = 81,
+    concentration_grid_points: int = 241,
 ) -> F5ProfileConfidenceSet:
     """Invert the profile LR rule over the admissible scalar MCSE domain.
 
-    The profile is evaluated on a deterministic grid; every detected crossing
-    is refined with Brent's method. Multiple connected components are retained.
+    The profile is evaluated on deterministic MCSE and concentration grids;
+    every detected crossing is refined by bracketed bisection. Multiple
+    connected components are retained.
     This is a numerical inversion candidate, not a certified global topology
     algorithm: the grid resolution is reported and must be stress-tested.
     """
@@ -328,6 +330,8 @@ def f5_beta_binomial_mcse_profile_confidence_set(
         raise F5ProfileError("TARGET_M_MUST_BE_INTEGER_GE_2")
     if type(target_r) is not int or target_r < 2:
         raise F5ProfileError("TARGET_R_MUST_BE_INTEGER_GE_2")
+    if type(concentration_grid_points) is not int or concentration_grid_points < 41:
+        raise F5ProfileError("CONCENTRATION_GRID_POINTS_MUST_BE_INTEGER_GE_41")
 
     counts, _ = _counts_and_validate(rows)
     del counts
@@ -340,6 +344,7 @@ def f5_beta_binomial_mcse_profile_confidence_set(
             result = f5_beta_binomial_mcse_profile_loglik(
                 rows, target_m=target_m, target_r=target_r,
                 target_mcse=key,
+                concentration_grid_points=concentration_grid_points,
             )
             cache[key] = result.profile_loglik
         return cache[key]
