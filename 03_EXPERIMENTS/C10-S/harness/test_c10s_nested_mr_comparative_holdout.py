@@ -134,6 +134,7 @@ class ComparativeHoldoutRunnerTests(unittest.TestCase):
                     "protocol_version": runner.PROTOCOL_VERSION,
                     "cell": {"cell_id": spec.cell_id},
                     "datasets_completed": kwargs["k"],
+                    "method_roster": [], "metrics": [], "mcse_adjudication": "NOT_SCORED",
                     "records": [{"dataset_id": f"{spec.cell_id}:{i}"} for i in range(kwargs["k"])],
                 }
             with patch.object(runner, "run_comparative_cell", side_effect=fake_cell):
@@ -163,6 +164,7 @@ class ComparativeHoldoutRunnerTests(unittest.TestCase):
                     "protocol_version": runner.PROTOCOL_VERSION,
                     "cell": {"cell_id": spec.cell_id},
                     "datasets_completed": kwargs["k"],
+                    "method_roster": [], "metrics": [], "mcse_adjudication": "NOT_SCORED",
                     "records": [{"dataset_id": f"{spec.cell_id}:0"}],
                 },
             ):
@@ -188,6 +190,7 @@ class ComparativeHoldoutRunnerTests(unittest.TestCase):
                     "protocol_version": runner.PROTOCOL_VERSION,
                     "cell": {"cell_id": spec.cell_id},
                     "datasets_completed": kwargs["k"],
+                    "method_roster": [], "metrics": [], "mcse_adjudication": "NOT_SCORED",
                     "records": [{"dataset_id": f"{spec.cell_id}:0"}],
                 },
             ):
