@@ -290,3 +290,22 @@ Exact-commit static validation:
 - F1 numerical-stress workflows remain outside this operation and were skipped by authorization guards.
 
 This closes the identified deterministic propagation cases for optimizer-audit absence, finite two-point boundary handling and unresolved nuisance-profile refinement. It does not certify global nuisance maxima, profile topology, concentration identification, C5 coverage or any causal TGCV claim. No Monte Carlo, bootstrap bank, calibration, resource preflight, holdout or scientific execution occurred.
+
+
+### Full comparison-engine fault injection — optimizer-audit absence
+
+A further adversarial test now injects failure in the optional F5 optimizer audit through the real `compare_dataset()` path, rather than calling only the diagnostic serializer helper. The fitted C5 comparison still completes; the per-dataset record preserves:
+- `likelihood_optimizer_audit_json = null` and the original optimizer-audit error;
+- `concentration_profile_audit_json = null` with `OPTIMIZER_AUDIT_UNAVAILABLE`;
+- the independently computed numerical-stability trace;
+- the existing C5 within/between intervals.
+
+Exact-commit static validation:
+- Commit: `9be6339947db2fd1b4554d6c808fccbdd30a28ca`
+- Run: `44594508999`
+- Hash-locked dependencies: PASS
+- Compile: PASS
+- Deterministic suite: **141 tests passed**
+- Full comparison-engine optimizer-audit fault-injection test: PASS.
+
+This confirms the optional audit failure remains diagnostic-only at the actual per-dataset engine boundary; it does not silently suppress C5 outputs or erase the independent stability record. No calibration, bootstrap bank, resource preflight, holdout or scientific execution was performed.
