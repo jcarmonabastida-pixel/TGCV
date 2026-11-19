@@ -169,12 +169,12 @@ class F5BetaBinomialProfileTests(unittest.TestCase):
                 )
                 self.assertIn(result.maximizing_branch, {"MU_PLUS", "MU_MINUS"})
                 self.assertTrue(
-                    math.isfinite(result.branch_loglik_plus)
-                    or result.branch_loglik_plus == -math.inf
+                    math.isfinite(result.branch_loglik_plus),
+                    msg=f"{fixture_name}: μ+ branch was not finite",
                 )
                 self.assertTrue(
-                    math.isfinite(result.branch_loglik_minus)
-                    or result.branch_loglik_minus == -math.inf
+                    math.isfinite(result.branch_loglik_minus),
+                    msg=f"{fixture_name}: μ- branch was not finite",
                 )
 
     def test_adversarial_lr_sets_never_escape_parameter_space(self):
