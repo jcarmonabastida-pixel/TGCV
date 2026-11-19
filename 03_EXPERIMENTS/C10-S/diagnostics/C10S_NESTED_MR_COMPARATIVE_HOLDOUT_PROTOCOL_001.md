@@ -207,3 +207,39 @@ Before numerical execution:
 This protocol grants no authorization. Tier B and scientific C10 execution remain separately unauthorized.
 
 **Frozen decision:** execute the eight-cell independent comparative holdout only after the above gates; compare C0/C1 within F1 and C0/C5 within F5; score within and raw-between components; preserve explicit F5 MCSE abstention; never reuse v002 Tier A as holdout.
+
+---
+
+## 11. Operational readiness reconciliation — 2026-11-19
+
+**This section supersedes only the operational-readiness statements in §§9–10. It does not amend the frozen scientific design in §§1–8, the cell roster, K/B, estimands, methods, seed schedule, metrics, acceptance criteria, exclusions or replay requirements.** The earlier readiness statements are retained as historical snapshots and must not be read as current status.
+
+### 11.1 Current implementation and static validation
+
+- Comparative runner: **IMPLEMENTED** at `03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_comparative_holdout.py`.
+- Checkpointed cell execution and integrity validation: **IMPLEMENTED**.
+- Authorization executor and fail-closed validator: **IMPLEMENTED**.
+- Static/contract suite: **61/61 PASS**, GitHub Actions Run `44569992586`, tested code commit `e191f3589ba3061eb7dcb9f0fc30ea7f0b60c459`.
+- The subsequent branch commits through `46bf4143c8631c57ac0a07933193c73a936b7b65` changed only the authorization draft and readiness-reconciliation record; the GitHub compare endpoint reports no executable changes in those two commits.
+
+### 11.2 Resource readiness
+
+Resource-only preflight: **PASS**.
+
+- Run `44566299402`, job `135708842538`, authorization `C10S-RES-PREFLIGHT-20261119-005`.
+- Approved executable commit: `ec2754659d7237839a487fd855f26c4d4b551782`.
+- Two representative cells, K=1,000 each; C0 B=1,000; F5 C5 B=1,000.
+- F1 balanced M=30/R=20: 18.283 s; peak RSS 116.7 MiB.
+- F5 beta(2,2) M=30/R=20: 229.321 s; peak RSS 119.0 MiB.
+- Coverage adjudication was not run; no holdout result was generated.
+- The runner, executor and comparative workflow sources were unchanged between the preflight executable commit and the static-validation code commit; the intervening changes were limited to the static workflow, authorization validator/test and records. The measured preflight is therefore relevant to the current runner workload, while remaining a bounded resource sample rather than a full-run measurement.
+
+### 11.3 Current gate
+
+The v1.0 comparative holdout is **OPERATIONALLY READY FOR ONE-USE AUTHORIZATION**, subject to the exact code/protocol/workflow hashes recorded in the authorization manifest.
+
+The next operation is the one-use, authorization-gated eight-cell Tier A holdout and required clean-source replay. The approved scope remains exactly 8,000 datasets, C0/C1 in F1 and C0/C5 in F5, K=1,000 per cell, C0 B=1,000, C5 B=1,000, within and untruncated raw-between targets only.
+
+The following remain expressly excluded: Tier B, F5 MCSE coverage, profile/root diagnostics, post-hoc cells or K/B changes, reuse of v002 Tier A data, and all C10 causal Generator/Analyzer/Evaluator or scientific execution.
+
+**Authorization status:** NOT YET APPROVED / NOT EXECUTED. This addendum records readiness only and grants no execution authority.
