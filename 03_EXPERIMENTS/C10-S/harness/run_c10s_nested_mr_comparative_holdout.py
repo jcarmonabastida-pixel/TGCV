@@ -259,6 +259,16 @@ def run_holdout(
     ids = tuple(spec.cell_id for spec in selected)
     if ids != EXPECTED_CELLS:
         raise HoldoutRunnerError("HOLDOUT_REQUIRES_EXACT_ORDERED_EIGHT_CELL_ROSTER")
+    # Check namespace-wide uniqueness before generating any dataset.
+    for namespace in ("dataset", "C0_bootstrap", "C5_bootstrap"):
+        seeds = [
+            derive_holdout_seed(namespace, spec.cell_id, replicate)
+            for spec in selected
+            for replicate in range(k)
+            if namespace != "C5_bootstrap" or spec.family == "F5"
+        ]
+        if len(seeds) != len(set(seeds)):
+            raise HoldoutRunnerError(f"DUPLICATE_SEED_IN_NAMESPACE:{namespace}")
     cells = [
         run_comparative_cell(spec, k=k, c0_b=c0_b, c5_b=c5_b)
         for spec in selected
@@ -275,6 +285,18 @@ def run_holdout(
         "cells": cells,
         "status": "COMPUTED_NOT_AUTHORIZED_NOT_EXECUTED_AS_HOLDOUT",
     }
+
+
+def deterministic_result_digest(result: dict[str, Any]) -> str:
+    payload = json.dumps(result, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def verify_replay_identity(primary: dict[str, Any], replay: dict[str, Any]) -> str:
+    """Require byte-equivalent deterministic result structures for replay."""
+    if deterministic_result_digest(primary) != deterministic_result_digest(replay):
+        raise HoldoutRunnerError("PRIMARY_REPLAY_HASH_MISMATCH")
+    return deterministic_result_digest(primary)
 
 
 def write_result_bundle(result: dict[str, Any], output_dir: Path) -> dict[str, str]:
