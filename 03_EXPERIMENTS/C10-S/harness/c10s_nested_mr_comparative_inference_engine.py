@@ -12,7 +12,10 @@ from types import SimpleNamespace
 from typing import Sequence
 
 from c10s_f1_exact_pivotal_candidate import f1_exact_pivotal_result
-from c10s_f1_between_profile_likelihood import F1ProfileError, f1_profile_loglik
+from c10s_f1_between_profile_likelihood import (
+    F1ProfileError, f1_profile_loglik,
+    f1_profile_nuisance_optimizer_diagnostic,
+)
 from c10s_gaussian_variance_oracles import gaussian_f1_reference
 from c10s_f5_beta_binomial_mcse_profile import F5ProfileError, f5_beta_binomial_mcse_profile_loglik
 from c10s_fitted_beta_binomial_bootstrap import (
@@ -97,6 +100,9 @@ def _f1_profile_diagnostic(
 ) -> tuple[tuple[str, str], ...]:
     tau = max(0.0, result.between_estimate_raw)
     try:
+        optimizer = f1_profile_nuisance_optimizer_diagnostic(
+            rows, between_variance=tau,
+        )
         value = f1_profile_loglik(rows, between_variance=tau)
     except F1ProfileError as exc:
         return (
@@ -106,10 +112,31 @@ def _f1_profile_diagnostic(
             ("between_profile_reason", str(exc)),
             ("between_profile_interval", "NOT_EMITTED_NO_LR_CUTOFF_SELECTED"),
         )
+    policy = {
+        "OPTIMIZATION_CONCORDANT": (
+            "PROFILE_DIAGNOSTIC_ELIGIBLE_NOT_COVERAGE_CERTIFIED", "NONE",
+        ),
+        "OPTIMIZATION_DISCORDANT": (
+            "ABSTAIN_PROFILE_INFERENCE", "NUISANCE_OPTIMIZER_DISCORDANCE",
+        ),
+        "OPTIMIZATION_INSUFFICIENT": (
+            "ABSTAIN_PROFILE_INFERENCE", "NUISANCE_OPTIMIZER_INSUFFICIENT",
+        ),
+        "OPTIMIZATION_BOUNDARY_SENSITIVE": (
+            "ABSTAIN_PROFILE_INFERENCE", "NUISANCE_OPTIMUM_BOUNDARY_SENSITIVE",
+        ),
+    }.get(optimizer.status, (
+        "ABSTAIN_PROFILE_INFERENCE", "NUISANCE_OPTIMIZER_STATUS_UNRECOGNIZED",
+    ))
     return (
         ("between_profile_status", "LOG_LIKELIHOOD_DIAGNOSTIC_AVAILABLE"),
-        ("between_profile_inference_eligibility", "PROFILE_DIAGNOSTIC_ELIGIBLE_NOT_COVERAGE_CERTIFIED"),
-        ("between_profile_abstention_reason", "NONE"),
+        ("between_profile_inference_eligibility", policy[0]),
+        ("between_profile_abstention_reason", policy[1]),
+        ("between_profile_optimizer_adjudication_status", optimizer.status),
+        ("between_profile_optimizer_stationary_points", str(optimizer.stationary_points)),
+        ("between_profile_optimizer_loglik_difference",
+         "" if optimizer.absolute_loglik_difference is None
+         else format(optimizer.absolute_loglik_difference, ".17g")),
         ("between_profile_loglik_at_nonnegative_raw_estimate", format(value, ".17g")),
         ("between_profile_tau_evaluation", format(tau, ".17g")),
         ("between_profile_interval", "NOT_EMITTED_NO_LR_CUTOFF_SELECTED"),
