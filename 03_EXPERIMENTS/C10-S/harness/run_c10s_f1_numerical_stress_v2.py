@@ -91,6 +91,8 @@ def main() -> int:
             "sturm_status_transition_brackets": result["f1_n4"]["sturm_status_transition_brackets"],
             "adjudication_status_transition_brackets": result["f1_n4"]["adjudication_status_transition_brackets"],
             "unresolved_exponents": result["f1_n4"]["unresolved_exponents"],
+            "profile_status_counts": counts(result["f1_n4"]["records"], "profile_status"),
+            "score_polynomial_status_counts": counts(result["f1_n4"]["records"], "score_polynomial_status"),
             "sturm_status_counts": counts(result["f1_n4"]["records"], "sturm_status"),
             "adjudication_status_counts": counts(result["f1_n4"]["records"], "adjudication_status"),
         },
