@@ -32,9 +32,8 @@ class ResourcePreflightTests(unittest.TestCase):
                 candidates=(SimpleNamespace(method_id=IMPLEMENTED_METHODS[family][1]),),
             )
         with tempfile.TemporaryDirectory() as directory:
-            with (
-                patch.object(preflight, "compare_dataset", side_effect=fake_compare) as compare,
-                patch.object(preflight, "generate_holdout_dataset", return_value=((0.0, 1.0), (1.0, 0.0))),
+            with patch.object(preflight, "compare_dataset", side_effect=fake_compare) as compare, patch.object(
+                preflight, "generate_holdout_dataset", return_value=((0.0, 1.0), (1.0, 0.0))
             ):
                 result = preflight.run_preflight(Path(directory))
                 self.assertEqual(compare.call_count, 2)
