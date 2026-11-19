@@ -47,7 +47,7 @@ jobs:
           from pathlib import Path
           p = Path(os.environ["RUNNER_TEMP"]) / "validated-authorization.json"
           d = json.loads(p.read_text(encoding="utf-8"))
-          for key in ("authorization_id", "approved_code_commit"):
+          for key in ("authorization_id", "approved_code_commit", "authorization_sha256"):
               print(f"{key}={d[key]}")
           PY
 
@@ -69,6 +69,7 @@ jobs:
           C10S_APPROVED_CODE_COMMIT: ${{ steps.authorization.outputs.approved_code_commit }}
           C10S_AUTHORIZATION_COMMIT: ${{ github.sha }}
           C10S_AUTHORIZATION_ID: ${{ steps.authorization.outputs.authorization_id }}
+          C10S_AUTHORIZATION_SHA256: ${{ steps.authorization.outputs.authorization_sha256 }}
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
