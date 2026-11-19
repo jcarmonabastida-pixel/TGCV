@@ -1,0 +1,221 @@
+{
+  "schema": "C10S-F1-N4-V002-FROZEN-INPUTS-1",
+  "source_commit": "a42351e374e3624a498b11199cea45cd0dc20c09",
+  "workflow_run_id": 44545538187,
+  "artifact_id": 14541730681,
+  "records_source": "numerical_stress_v2_records.jsonl",
+  "records_source_sha256": "b350693e3e8f492ccb179631a703c45a6af45d661b21a033f280c0546fcc9a26",
+  "record_count": 14,
+  "records": [
+    {
+      "exponent": -100,
+      "score_polynomial_coefficients_binary64_hex": [
+        "0x1.0000000000000p-601",
+        "0x1.0000000000000p-402",
+        "0x1.0000000000004p-204",
+        "-0x1.e000000000000p-1"
+      ],
+      "score_polynomial_roots_base_variance": [
+        0.9454195318043779
+      ],
+      "v002_sturm_status": "ROOTS_ISOLATED",
+      "v002_adjudication_status": "ROOTS_AGREE",
+      "v002_sturm_root_count": 1
+    },
+    {
+      "exponent": -50,
+      "score_polynomial_coefficients_binary64_hex": [
+        "0x1.0000000000000p-301",
+        "0x1.0000000000000p-202",
+        "0x1.0000000000004p-104",
+        "-0x1.e000000000000p-1"
+      ],
+      "score_polynomial_roots_base_variance": [
+        0.9454195318043779
+      ],
+      "v002_sturm_status": "ROOTS_ISOLATED",
+      "v002_adjudication_status": "ROOTS_AGREE",
+      "v002_sturm_root_count": 1
+    },
+    {
+      "exponent": -20,
+      "score_polynomial_coefficients_binary64_hex": [
+        "0x1.0000000000000p-121",
+        "0x1.0000000000000p-82",
+        "0x1.0000000000004p-44",
+        "-0x1.e000000000000p-1"
+      ],
+      "score_polynomial_roots_base_variance": [
+        0.9454195318043779
+      ],
+      "v002_sturm_status": "ROOTS_ISOLATED",
+      "v002_adjudication_status": "ROOTS_AGREE",
+      "v002_sturm_root_count": 1
+    },
+    {
+      "exponent": 0,
+      "score_polynomial_coefficients_binary64_hex": [
+        "0x1.0000000000000p-1",
+        "0x1.0000000000000p-2",
+        "0x1.0000000000004p-4",
+        "-0x1.e000000000000p-1"
+      ],
+      "score_polynomial_roots_base_variance": [
+        0.9454195318043779
+      ],
+      "v002_sturm_status": "ROOTS_ISOLATED",
+      "v002_adjudication_status": "ROOTS_AGREE",
+      "v002_sturm_root_count": 1
+    },
+    {
+      "exponent": 20,
+      "score_polynomial_coefficients_binary64_hex": [
+        "0x1.0000000000000p+119",
+        "0x1.0000000000000p+78",
+        "0x1.0000000000004p+36",
+        "-0x1.e000000000000p-1"
+      ],
+      "score_polynomial_roots_base_variance": [
+        0.9454195318043779
+      ],
+      "v002_sturm_status": "ROOTS_ISOLATED",
+      "v002_adjudication_status": "ROOTS_AGREE",
+      "v002_sturm_root_count": 1
+    },
+    {
+      "exponent": 24,
+      "score_polynomial_coefficients_binary64_hex": [
+        "0x1.0000000000000p+143",
+        "0x1.0000000000000p+94",
+        "0x1.0000000000004p+44",
+        "-0x1.e000000000000p-1"
+      ],
+      "score_polynomial_roots_base_variance": [
+        0.9454195318043779
+      ],
+      "v002_sturm_status": "ROOTS_ISOLATED",
+      "v002_adjudication_status": "ROOTS_AGREE",
+      "v002_sturm_root_count": 1
+    },
+    {
+      "exponent": 28,
+      "score_polynomial_coefficients_binary64_hex": [
+        "0x1.0000000000000p+167",
+        "0x1.0000000000000p+110",
+        "0x1.0000000000004p+52",
+        "-0x1.e000000000000p-1"
+      ],
+      "score_polynomial_roots_base_variance": [
+        0.9454195318043779
+      ],
+      "v002_sturm_status": "ROOTS_ISOLATED",
+      "v002_adjudication_status": "ROOTS_AGREE",
+      "v002_sturm_root_count": 1
+    },
+    {
+      "exponent": 32,
+      "score_polynomial_coefficients_binary64_hex": [
+        "0x1.0000000000000p+191",
+        "0x1.0000000000000p+126",
+        "0x1.0000000000004p+60",
+        "-0x1.e000000000000p-1"
+      ],
+      "score_polynomial_roots_base_variance": [
+        0.9454195318043779
+      ],
+      "v002_sturm_status": "ROOTS_ISOLATED",
+      "v002_adjudication_status": "ROOTS_AGREE",
+      "v002_sturm_root_count": 1
+    },
+    {
+      "exponent": 36,
+      "score_polynomial_coefficients_binary64_hex": [
+        "0x1.0000000000000p+215",
+        "0x1.0000000000000p+142",
+        "0x1.0000000000004p+68",
+        "-0x1.e000000000000p-1"
+      ],
+      "score_polynomial_roots_base_variance": [
+        0.9454195318043779
+      ],
+      "v002_sturm_status": "ROOTS_ISOLATED",
+      "v002_adjudication_status": "ROOTS_AGREE",
+      "v002_sturm_root_count": 1
+    },
+    {
+      "exponent": 40,
+      "score_polynomial_coefficients_binary64_hex": [
+        "0x1.0000000000000p+239",
+        "0x1.0000000000000p+158",
+        "0x1.0000000000004p+76",
+        "-0x1.e000000000000p-1"
+      ],
+      "score_polynomial_roots_base_variance": [
+        0.9454195318043779
+      ],
+      "v002_sturm_status": "ROOTS_UNRESOLVED",
+      "v002_adjudication_status": "ROOTS_UNRESOLVED",
+      "v002_sturm_root_count": 0
+    },
+    {
+      "exponent": 44,
+      "score_polynomial_coefficients_binary64_hex": [
+        "0x1.0000000000000p+263",
+        "0x1.0000000000000p+174",
+        "0x1.0000000000004p+84",
+        "-0x1.e000000000000p-1"
+      ],
+      "score_polynomial_roots_base_variance": [
+        0.9454195318043779
+      ],
+      "v002_sturm_status": "ROOTS_UNRESOLVED",
+      "v002_adjudication_status": "ROOTS_UNRESOLVED",
+      "v002_sturm_root_count": 0
+    },
+    {
+      "exponent": 48,
+      "score_polynomial_coefficients_binary64_hex": [
+        "0x1.0000000000000p+287",
+        "0x1.0000000000000p+190",
+        "0x1.0000000000004p+92",
+        "-0x1.e000000000000p-1"
+      ],
+      "score_polynomial_roots_base_variance": [
+        0.9454195318043779
+      ],
+      "v002_sturm_status": "ROOTS_UNRESOLVED",
+      "v002_adjudication_status": "ROOTS_UNRESOLVED",
+      "v002_sturm_root_count": 0
+    },
+    {
+      "exponent": 50,
+      "score_polynomial_coefficients_binary64_hex": [
+        "0x1.0000000000000p+299",
+        "0x1.0000000000000p+198",
+        "0x1.0000000000004p+96",
+        "-0x1.e000000000000p-1"
+      ],
+      "score_polynomial_roots_base_variance": [
+        0.9454195318043779
+      ],
+      "v002_sturm_status": "ROOTS_UNRESOLVED",
+      "v002_adjudication_status": "ROOTS_UNRESOLVED",
+      "v002_sturm_root_count": 0
+    },
+    {
+      "exponent": 100,
+      "score_polynomial_coefficients_binary64_hex": [
+        "0x1.0000000000000p+599",
+        "0x1.0000000000000p+398",
+        "0x1.0000000000004p+196",
+        "-0x1.e000000000000p-1"
+      ],
+      "score_polynomial_roots_base_variance": [
+        0.9454195318043779
+      ],
+      "v002_sturm_status": "ROOTS_UNRESOLVED",
+      "v002_adjudication_status": "ROOTS_UNRESOLVED",
+      "v002_sturm_root_count": 0
+    }
+  ]
+}
