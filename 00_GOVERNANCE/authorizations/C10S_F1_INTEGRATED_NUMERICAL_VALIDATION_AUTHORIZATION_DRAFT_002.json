@@ -1,6 +1,6 @@
 {
   "schema": "TGCV-C10S-F1-INTEGRATED-VALIDATION-AUTH-002",
-  "status": "APPROVED",
+  "status": "CONSUMED_TESTS_FAILED",
   "authorization_id": "C10S-F1-INTEGRATED-VALIDATION-20261119-02",
   "supersedes": "C10S-F1-INTEGRATED-VALIDATION-20261119-01",
   "scope": "F1_INTEGRATED_DETERMINISTIC_NUMERICAL_METHOD_TESTS_ONLY",
@@ -110,5 +110,20 @@
     "outcome": "FAIL_WORKFLOW_PREFLIGHT_DEFECT",
     "tests_started": false,
     "disposition": "Reviewed and corrected in protocol 002; new authorization required"
+  },
+  "execution_disposition": {
+    "workflow_run": 44522352509,
+    "workflow_head_commit": "ce6ee286470bde0098ffa2a1e89bd921b5673656",
+    "job_id": 135553916921,
+    "frozen_source_commit": "0d430adae891b3914475c60334d93e977efc44cc",
+    "outcome": "FAIL",
+    "test_command_exit_code": 1,
+    "tests_run": 73,
+    "failures": 1,
+    "errors": 2,
+    "retry_under_this_authorization": false,
+    "artifact_id": 14528261759,
+    "artifact_sha256": "929b08b509478da643edcf2d0d2696f410b996c3a9152e2ab248b68ac1e75608",
+    "summary": "Preflight passed; all nine blob identities matched; Python 3.12.3 and pinned NumPy/SciPy versions verified; all four test modules imported. Test suite completed with 1 assertion failure and 2 NameError errors."
   }
 }
