@@ -126,7 +126,9 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
         if auth.get(key) != sha256(root / relative):
             raise ValueError(f"{key} mismatch for {relative}")
     return {
+        "validation_status": "PASS",
         "authorization_id": authorization_id,
+        "authorization_commit": workflow_commit,
         "approved_code_commit": code_commit,
         "authorization_sha256": sha256(path),
         "scope": auth["scope"],
