@@ -11,12 +11,10 @@ import math
 from typing import Any
 
 from c10s_f1_numerical_stress import (
-    GENERATOR_VERSION as V1_GENERATOR_VERSION,
     SCALE_EXPONENTS,
-    ISOLATION_WIDTHS,
-    ISOLATION_DEPTHS,
     PolynomialFixture,
     build_polynomial_fixtures,
+    evaluate_polynomial_fixture,
     run_polynomial_stress_grid,
     _domain_for,
     _float_vector,
@@ -98,8 +96,51 @@ def _fixture_map() -> dict[str, PolynomialFixture]:
     return {fixture.fixture_id: fixture for fixture in build_polynomial_fixtures()}
 
 
+def _multiply_roots(roots: tuple[Q, ...]) -> tuple[Q, ...]:
+    coefficients = [Q(1)]
+    for root in roots:
+        updated = [Q(0)] * (len(coefficients) + 1)
+        for index, value in enumerate(coefficients):
+            updated[index] -= root * value
+            updated[index + 1] += value
+        coefficients = updated
+    return tuple(coefficients)
+
+
+def _near_double_ulp_records() -> list[dict[str, Any]]:
+    """Add a predeclared near-double cubic ULP family, separate from v001."""
+    roots = (Q(1), Q(1) + Q(1, 2**24), Q(-2))
+    ideal = _multiply_roots(roots)
+    base_float = _float_vector(ideal)
+    if base_float is None:
+        raise ArithmeticError("N2_NEAR_DOUBLE_BASE_NOT_BINARY64_REPRESENTABLE")
+    records: list[dict[str, Any]] = []
+    for coefficient_index, value in enumerate(base_float):
+        if value == 0.0:
+            continue
+        for steps in (-2, -1, 1, 2):
+            changed = list(base_float)
+            direction = math.inf if steps > 0 else -math.inf
+            for _ in range(abs(steps)):
+                changed[coefficient_index] = math.nextafter(
+                    changed[coefficient_index], direction,
+                )
+            fixture = PolynomialFixture(
+                fixture_id=f"N2_NEAR_DOUBLE_C{coefficient_index}_ULP{steps:+d}",
+                block="N2_NEAR_DOUBLE",
+                ideal_coefficients=ideal,
+                ideal_real_roots=tuple(sorted(roots)),
+                transformation="BINARY64_COEFFICIENT_PERTURBATION_NEAR_DOUBLE",
+                perturbation=f"COEFFICIENT_{coefficient_index}_ULP_{steps:+d}",
+                coefficient_override=tuple(Q.from_float(item) for item in changed),
+            )
+            record = evaluate_polynomial_fixture(fixture)
+            records.append(_annotate_topology(record, fixture))
+    return records
+
+
 def run_polynomial_stress_v2() -> dict[str, Any]:
-    """Run the historical 115-record grid with explicit topology comparison."""
+    """Reuse v001's 115 records and append a separate near-double ULP family."""
     v1 = run_polynomial_stress_grid()
     fixtures = _fixture_map()
     records: list[dict[str, Any]] = []
@@ -108,6 +149,7 @@ def run_polynomial_stress_v2() -> dict[str, Any]:
         fixture_id = str(record["fixture_id"])
         fixture = fixtures[fixture_id]
         records.append(_annotate_topology(record, fixture))
+    records.extend(_near_double_ulp_records())
     status_counts: dict[str, int] = {}
     for record in records:
         key = str(record["topology_comparison_status"])
