@@ -11,6 +11,8 @@ from c10s_f5_beta_binomial_mcse_profile import (
     f5_beta_binomial_mcse_profile_confidence_set,
     _bisect_profile_crossing,
     f5_beta_binomial_mcse_profile_grid_convergence,
+    _optimizer_adjudication,
+    F5ProfileError,
 )
 
 
@@ -127,6 +129,32 @@ class F5BetaBinomialProfileTests(unittest.TestCase):
 
         self.assertAlmostEqual(score_mu, numeric_mu, delta=2e-5)
         self.assertAlmostEqual(score_kappa, numeric_kappa, delta=2e-5)
+
+    def test_optimizer_adjudication_all_four_states(self):
+        self.assertEqual(
+            _optimizer_adjudication((9, 8), (1e-9, 1e-8), boundary_sensitive=False),
+            "OPTIMIZATION_CONCORDANT",
+        )
+        self.assertEqual(
+            _optimizer_adjudication((9, 8), (1e-9, 1e-4), boundary_sensitive=False),
+            "OPTIMIZATION_DISCORDANT",
+        )
+        self.assertEqual(
+            _optimizer_adjudication((9, 2), (1e-9, 1e-8), boundary_sensitive=False),
+            "OPTIMIZATION_INSUFFICIENT",
+        )
+        self.assertEqual(
+            _optimizer_adjudication((9, 8), (1e-9, 1e-8), boundary_sensitive=True),
+            "OPTIMIZATION_BOUNDARY_SENSITIVE",
+        )
+
+    def test_optimizer_adjudication_rejects_malformed_diagnostics(self):
+        with self.assertRaisesRegex(F5ProfileError, "TWO_BRANCHES"):
+            _optimizer_adjudication((9,), (1e-9,), boundary_sensitive=False)
+        with self.assertRaisesRegex(F5ProfileError, "NONNEGATIVE"):
+            _optimizer_adjudication((9, -1), (1e-9, 1e-8), boundary_sensitive=False)
+        with self.assertRaisesRegex(F5ProfileError, "GAPS"):
+            _optimizer_adjudication((9, 8), (float("nan"), 1e-8), boundary_sensitive=False)
 
     def test_profile_exposes_branch_local_maxima_diagnostics(self):
         result = f5_beta_binomial_mcse_profile_loglik(
