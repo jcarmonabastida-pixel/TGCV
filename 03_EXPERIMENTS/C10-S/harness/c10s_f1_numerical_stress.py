@@ -640,6 +640,7 @@ def write_stress_evidence(
         "c10s_f1_between_profile_likelihood.py",
         "c10s_f1_independent_root_isolator.py",
         "c10s_f1_root_adjudication.py",
+        "c10s_variance_comparison_interface.py",
     )
     source_hashes = {}
     for filename in source_files:
