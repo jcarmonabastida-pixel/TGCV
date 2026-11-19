@@ -25,6 +25,7 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         self.assertEqual(len(result.candidates), 1)
         self.assertEqual(result.candidates[0].method_id, "C1_F1_EXACT_PIVOTAL_1.0")
         self.assertIn("C2", result.unavailable_methods)
+        self.assertIn(("independent_oracle_reconciliation", "PASS_FORMULA_AGREEMENT"), result.candidates[0].diagnostics)
 
     def test_f5_requires_explicit_replicate_count_and_seed(self):
         rows = ((0, 0, 0, 0, 0), (0, 0, 0, 0, 1), (0, 1, 0, 1, 0),
