@@ -411,6 +411,10 @@ def run_f1_observation_scale_ladder() -> dict[str, object]:
     baseline = next((r for r in returned if r["exponent"] == 0), None)
     if baseline is not None:
         df_total = len(rows) * (len(rows[0]) - 1) + len(rows) - 1
+        baseline_resolved = (
+            baseline["polynomial_status"] == "POLYNOMIAL_ROOTS_ISOLATED"
+            and baseline["adjudication_status"] == "ROOTS_AGREE"
+        )
         for record in returned:
             factor = math.ldexp(1.0, int(record["exponent"]))
             expected_loglik = (
@@ -476,8 +480,8 @@ def run_f1_observation_scale_ladder() -> dict[str, object]:
                 "adjudication_status": adjudication_status_equal,
             }
             record["equivariance_status"] = (
-                "PASS" if all(record["equivariance_checks"].values())
-                else "FAIL"
+                "UNRESOLVED_BASELINE" if not baseline_resolved else
+                ("PASS" if all(record["equivariance_checks"].values()) else "FAIL")
             )
     return {
         "generator_version": GENERATOR_VERSION,
@@ -499,6 +503,10 @@ def run_f1_observation_scale_ladder() -> dict[str, object]:
         ),
         "equivariance_fail_count": sum(
             r.get("equivariance_status") == "FAIL" for r in returned
+        ),
+        "equivariance_unresolved_baseline_count": sum(
+            r.get("equivariance_status") == "UNRESOLVED_BASELINE"
+            for r in returned
         ),
         "records": records,
     }
@@ -559,7 +567,7 @@ def write_stress_evidence(
             json.dumps(
                 value, sort_keys=True, separators=(",", ":"),
                 ensure_ascii=False, allow_nan=False,
-            ) + "\\n"
+            ) + "\n"
         ).encode("utf-8")
 
     records: list[dict[str, object]] = []
@@ -574,6 +582,18 @@ def write_stress_evidence(
     )
     f1_equivariance_pass = int(f1_result.get("equivariance_pass_count", 0))
     f1_equivariance_fail = int(f1_result.get("equivariance_fail_count", 0))
+    f1_equivariance_unresolved = int(
+        f1_result.get("equivariance_unresolved_baseline_count", 0)
+    )
+    f1_records = list(f1_result.get("records", []))
+    def count_status(field: str) -> dict[str, int]:
+        counts: dict[str, int] = {}
+        for item in f1_records:
+            status = item.get(field)
+            if status is not None:
+                key = str(status)
+                counts[key] = counts.get(key, 0) + 1
+        return counts
     summary = {
         "schema": "C10S-F1-NUMERICAL-STRESS-SUMMARY-001",
         "generator_version": GENERATOR_VERSION,
@@ -593,10 +613,14 @@ def write_stress_evidence(
             "fail_closed_count": f1_result.get("fail_closed_count"),
             "equivariance_pass_count": f1_equivariance_pass,
             "equivariance_fail_count": f1_equivariance_fail,
+            "equivariance_unresolved_baseline_count": f1_equivariance_unresolved,
             "equivariance_unavailable_count": (
                 int(f1_result.get("record_count", 0))
                 - int(f1_result.get("returned_count", 0))
             ),
+            "polynomial_status_counts": count_status("polynomial_status"),
+            "adjudication_status_counts": count_status("adjudication_status"),
+            "sturm_status_counts": count_status("sturm_status"),
         },
         "combined_record_count": len(records),
         "scientific_execution": False,
