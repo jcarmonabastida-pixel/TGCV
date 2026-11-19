@@ -272,10 +272,24 @@ def _ceil_log2_ratio(numerator: Q, denominator: Q) -> int:
 def _n4_fujiwara_bound_lane(frozen_inputs: dict[str, Any]) -> list[dict[str, Any]]:
     if frozen_inputs.get("schema") != "C10S-F1-N4-V002-FROZEN-INPUTS-1":
         raise ValueError("UNEXPECTED_N4_FROZEN_INPUT_SCHEMA")
-    if frozen_inputs.get("record_count") != 14 or len(frozen_inputs.get("records", [])) != 14:
+    if frozen_inputs.get("source_commit") != "a42351e374e3624a498b11199cea45cd0dc20c09":
+        raise ValueError("N4_FROZEN_SOURCE_COMMIT_MISMATCH")
+    if frozen_inputs.get("workflow_run_id") != 44545538187:
+        raise ValueError("N4_FROZEN_WORKFLOW_RUN_MISMATCH")
+    if frozen_inputs.get("artifact_id") != 14541730681:
+        raise ValueError("N4_FROZEN_ARTIFACT_ID_MISMATCH")
+    if frozen_inputs.get("records_source_sha256") != (
+        "b350693e3e8f492ccb179631a703c45a6af45d661b21a033f280c0546fcc9a26"
+    ):
+        raise ValueError("N4_FROZEN_SOURCE_JSONL_HASH_MISMATCH")
+    expected_exponents = (-100, -50, -20, 0, 20, 24, 28, 32, 36, 40, 44, 48, 50, 100)
+    frozen_records = frozen_inputs.get("records", [])
+    if frozen_inputs.get("record_count") != 14 or len(frozen_records) != 14:
         raise ValueError("N4_FROZEN_INPUT_DENOMINATOR_MISMATCH")
+    if tuple(int(item["exponent"]) for item in frozen_records) != expected_exponents:
+        raise ValueError("N4_FROZEN_INPUT_EXPONENT_ROSTER_MISMATCH")
     records: list[dict[str, Any]] = []
-    for item in frozen_inputs["records"]:
+    for item in frozen_records:
         exponent = int(item["exponent"])
         coefficients = tuple(
             Q.from_float(float.fromhex(value))
