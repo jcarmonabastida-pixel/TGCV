@@ -10,7 +10,7 @@ import math
 from numbers import Integral
 from typing import Sequence
 
-from scipy.optimize import minimize
+from scipy.optimize import minimize, minimize_scalar
 from scipy.special import betaln, digamma, gammaln, polygamma
 import numpy as np
 
@@ -429,4 +429,175 @@ def audit_beta_binomial_count_fit(
         binomial_limit_log_likelihood=boundary.binomial_limit_log_likelihood,
         two_point_limit_log_likelihood=boundary.two_point_mixing_limit_log_likelihood,
         starts=tuple(start_records),
+    )
+
+
+@dataclass(frozen=True)
+class BetaBinomialProfilePoint:
+    """Numerical nuisance-profile point; deliberately not a global certificate."""
+    log_concentration: float
+    profiled_mean_logit: float
+    profiled_log_likelihood: float
+    nuisance_score: float
+    concentration_score: float
+    profile_log_concentration_curvature: float | None
+    mean_profile_at_bound: bool
+    status: str
+
+
+@dataclass(frozen=True)
+class BetaBinomialProfileBoundaryLikelihoods:
+    """Boundary models with their own nuisance mean maximized."""
+    binomial_profile_log_likelihood: float
+    binomial_profile_mean: float
+    two_point_profile_log_likelihood: float
+    two_point_profile_mean: float | None
+    interior_count_observations: int
+
+
+def beta_binomial_profile_log_concentration(
+    counts: Sequence[int],
+    r: int,
+    log_concentrations: Sequence[float],
+    *,
+    mean_logit_bounds: tuple[float, float] = (-18.0, 18.0),
+    mean_grid_size: int = 257,
+) -> tuple[BetaBinomialProfilePoint, ...]:
+    """Trace the numerical profile over supplied log(kappa) values.
+
+    For each fixed log(kappa), a deterministic eta grid locates a candidate
+    bracket and bounded scalar optimization refines it. The output is explicitly
+    NUMERICAL_PROFILE_UNCERTIFIED: it is a diagnostic trace, not proof of a
+    global nuisance maximum and not an identification classification.
+    """
+    values = tuple(counts)
+    if type(r) is not int or r < 2 or len(values) < 2:
+        raise F5LikelihoodDiagnosticError("INVALID_R_OR_SAMPLE_SIZE")
+    if any(isinstance(x, bool) or not isinstance(x, Integral) or x < 0 or x > r
+           for x in values):
+        raise F5LikelihoodDiagnosticError("COUNTS_MUST_BE_INTEGER_IN_[0,R]")
+    if (len(mean_logit_bounds) != 2
+            or not all(math.isfinite(float(v)) for v in mean_logit_bounds)
+            or not mean_logit_bounds[0] < mean_logit_bounds[1]
+            or type(mean_grid_size) is not int or mean_grid_size < 17):
+        raise F5LikelihoodDiagnosticError("INVALID_PROFILE_SEARCH_CONTROLS")
+    xis = tuple(float(value) for value in log_concentrations)
+    if (len(xis) < 3 or any(not math.isfinite(value) for value in xis)
+            or any(right <= left for left, right in zip(xis, xis[1:]))):
+        raise F5LikelihoodDiagnosticError("LOG_CONCENTRATIONS_MUST_BE_FINITE_STRICTLY_INCREASING")
+
+    eta_lo, eta_hi = (float(v) for v in mean_logit_bounds)
+    eta_grid = np.linspace(eta_lo, eta_hi, mean_grid_size)
+    output = []
+    for xi in xis:
+        grid_ll = []
+        for eta in eta_grid:
+            grid_ll.append(beta_binomial_loglik_score_hessian(
+                values, r, mean_logit=float(eta), log_concentration=xi,
+            ).log_likelihood)
+        best_index = int(np.argmax(np.asarray(grid_ll)))
+        best_eta = float(eta_grid[best_index])
+        best_ll = float(grid_ll[best_index])
+        at_bound = best_index in (0, mean_grid_size - 1)
+        if not at_bound:
+            result = minimize_scalar(
+                lambda eta: -beta_binomial_loglik_score_hessian(
+                    values, r, mean_logit=float(eta), log_concentration=xi,
+                ).log_likelihood,
+                bounds=(float(eta_grid[best_index - 1]),
+                        float(eta_grid[best_index + 1])),
+                method="bounded",
+                options={"xatol": 1e-12, "maxiter": 2000},
+            )
+            if bool(result.success) and math.isfinite(float(result.fun)):
+                refined_eta = float(result.x)
+                refined_ll = -float(result.fun)
+                if refined_ll >= best_ll:
+                    best_eta, best_ll = refined_eta, refined_ll
+            else:
+                at_bound = True
+        derivatives = beta_binomial_loglik_score_hessian(
+            values, r, mean_logit=best_eta, log_concentration=xi,
+        )
+        curvature = None
+        if (not at_bound and math.isfinite(derivatives.hessian_mean_logit)
+                and derivatives.hessian_mean_logit != 0.0):
+            candidate = (
+                derivatives.hessian_log_concentration
+                - derivatives.hessian_cross ** 2
+                / derivatives.hessian_mean_logit
+            )
+            if math.isfinite(candidate):
+                curvature = float(candidate)
+        output.append(BetaBinomialProfilePoint(
+            log_concentration=xi,
+            profiled_mean_logit=best_eta,
+            profiled_log_likelihood=best_ll,
+            nuisance_score=derivatives.score_mean_logit,
+            concentration_score=derivatives.score_log_concentration,
+            profile_log_concentration_curvature=curvature,
+            mean_profile_at_bound=at_bound,
+            status=("MEAN_PROFILE_BOUNDARY" if at_bound
+                    else "NUMERICAL_PROFILE_UNCERTIFIED"),
+        ))
+    return tuple(output)
+
+
+def beta_binomial_profiled_boundary_likelihoods(
+    counts: Sequence[int], r: int,
+) -> BetaBinomialProfileBoundaryLikelihoods:
+    """Profile each extended concentration boundary over its own mean.
+
+    The binomial limit uses its pooled Bernoulli MLE. The two-point limit is
+    finite only when every world count is 0 or R; its endpoint-mixture MLE is
+    then the observed fraction of R-valued counts. These are separate nuisance
+    optimizations, unlike fixed-mean boundary comparisons.
+    """
+    values = tuple(counts)
+    if type(r) is not int or r < 2 or len(values) < 2:
+        raise F5LikelihoodDiagnosticError("INVALID_R_OR_SAMPLE_SIZE")
+    if any(isinstance(x, bool) or not isinstance(x, Integral) or x < 0 or x > r
+           for x in values):
+        raise F5LikelihoodDiagnosticError("COUNTS_MUST_BE_INTEGER_IN_[0,R]")
+    values = tuple(int(x) for x in values)
+    n = len(values)
+    total = sum(values)
+    total_trials = n * r
+    binomial_mean = total / total_trials
+    binomial_ll = 0.0
+    for x in values:
+        binomial_ll += float(
+            gammaln(r + 1) - gammaln(x + 1) - gammaln(r - x + 1)
+        )
+    if total == 0 or total == total_trials:
+        binomial_ll = float(binomial_ll)
+    else:
+        binomial_ll += (
+            total * math.log(binomial_mean)
+            + (total_trials - total) * math.log1p(-binomial_mean)
+        )
+
+    interior = sum(1 for x in values if 0 < x < r)
+    if interior:
+        two_point_ll = -math.inf
+        two_point_mean = None
+    else:
+        n_zero = sum(1 for x in values if x == 0)
+        n_full = sum(1 for x in values if x == r)
+        two_point_mean = n_full / n
+        if n_full == 0 or n_zero == 0:
+            two_point_ll = 0.0
+        else:
+            two_point_ll = (
+                n_full * math.log(two_point_mean)
+                + n_zero * math.log1p(-two_point_mean)
+            )
+    return BetaBinomialProfileBoundaryLikelihoods(
+        binomial_profile_log_likelihood=float(binomial_ll),
+        binomial_profile_mean=float(binomial_mean),
+        two_point_profile_log_likelihood=float(two_point_ll),
+        two_point_profile_mean=(
+            float(two_point_mean) if two_point_mean is not None else None
+        ),
+        interior_count_observations=interior,
     )
