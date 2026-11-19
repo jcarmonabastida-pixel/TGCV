@@ -36,6 +36,17 @@ class F5ProfileConfidenceSet:
 
 
 @dataclass(frozen=True)
+class F5ProfileGridConvergence:
+    coarse: F5ProfileConfidenceSet
+    fine: F5ProfileConfidenceSet
+    component_count_stable: bool
+    maximum_loglik_difference: float
+    endpoint_maximum_difference: float | None
+    within_tolerance: bool
+    tolerance: float
+
+
+@dataclass(frozen=True)
 class F5ProfileResult:
     target_mcse: float
     profile_loglik: float
@@ -427,4 +438,76 @@ def f5_beta_binomial_mcse_profile_confidence_set(
         scan_grid_points=scan_grid_points,
         status=status,
         concentration_grid_points=concentration_grid_points,
+    )
+
+
+
+def f5_beta_binomial_mcse_profile_grid_convergence(
+    rows: Sequence[Sequence[float]], *, target_m: int, target_r: int,
+    likelihood_ratio_cutoff: float,
+    coarse_scan_grid_points: int = 81,
+    fine_scan_grid_points: int = 161,
+    coarse_concentration_grid_points: int = 241,
+    fine_concentration_grid_points: int = 481,
+    tolerance: float = 1e-3,
+) -> F5ProfileGridConvergence:
+    """Compare nested numerical resolutions; this is a diagnostic, not proof.
+
+    The caller supplies the LR cutoff. Stability requires equal detected
+    component counts, finite profile maxima, and maximum absolute differences
+    in the unrestricted profile log likelihood and component endpoints no
+    larger than tolerance. It cannot detect a component missed by both grids.
+    """
+    if (not math.isfinite(tolerance) or tolerance <= 0.0
+            or isinstance(tolerance, bool)):
+        raise F5ProfileError("CONVERGENCE_TOLERANCE_MUST_BE_FINITE_AND_POSITIVE")
+    if (fine_scan_grid_points <= coarse_scan_grid_points
+            or fine_concentration_grid_points <= coarse_concentration_grid_points):
+        raise F5ProfileError("FINE_GRIDS_MUST_EXCEED_COARSE_GRIDS")
+
+    coarse = f5_beta_binomial_mcse_profile_confidence_set(
+        rows, target_m=target_m, target_r=target_r,
+        likelihood_ratio_cutoff=likelihood_ratio_cutoff,
+        scan_grid_points=coarse_scan_grid_points,
+        concentration_grid_points=coarse_concentration_grid_points,
+    )
+    fine = f5_beta_binomial_mcse_profile_confidence_set(
+        rows, target_m=target_m, target_r=target_r,
+        likelihood_ratio_cutoff=likelihood_ratio_cutoff,
+        scan_grid_points=fine_scan_grid_points,
+        concentration_grid_points=fine_concentration_grid_points,
+    )
+    component_stable = (
+        len(coarse.confidence_components) == len(fine.confidence_components)
+        and coarse.status != "ABSTAINED_NO_FINITE_PROFILE_VALUES"
+        and fine.status != "ABSTAINED_NO_FINITE_PROFILE_VALUES"
+    )
+    if not (math.isfinite(coarse.unrestricted_profile_loglik)
+            and math.isfinite(fine.unrestricted_profile_loglik)):
+        maxll_diff = math.inf
+    else:
+        maxll_diff = abs(
+            coarse.unrestricted_profile_loglik - fine.unrestricted_profile_loglik
+        )
+    endpoint_diff = None
+    if component_stable and coarse.confidence_components:
+        endpoint_diff = max(
+            abs(a - b)
+            for pair_coarse, pair_fine in zip(
+                coarse.confidence_components, fine.confidence_components,
+            )
+            for a, b in zip(pair_coarse, pair_fine)
+        )
+    within = (
+        component_stable
+        and endpoint_diff is not None
+        and maxll_diff <= tolerance
+        and endpoint_diff <= tolerance
+    )
+    return F5ProfileGridConvergence(
+        coarse=coarse, fine=fine,
+        component_count_stable=component_stable,
+        maximum_loglik_difference=maxll_diff,
+        endpoint_maximum_difference=endpoint_diff,
+        within_tolerance=within, tolerance=tolerance,
     )
