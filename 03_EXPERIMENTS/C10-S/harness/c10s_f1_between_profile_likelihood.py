@@ -209,22 +209,73 @@ def f1_profile_between_confidence_set(
             rows, between_variance=tau,
             grid_points=grid_points, log_span=log_span,
         )
-        if (diagnostic.status != "OPTIMIZATION_CONCORDANT"
-                or diagnostic.independent_loglik is None
-                or diagnostic.polynomial_status != "POLYNOMIAL_ROOTS_ISOLATED"
-                or diagnostic.polynomial_scan_discordant
-                or diagnostic.unresolved_tangential_candidates > 0
-                or diagnostic.stationary_point_types.count("LOCAL_MAXIMUM") != 1
-                or "STATIONARY_TYPE_UNRESOLVED" in diagnostic.stationary_point_types):
+        polynomial = f1_score_polynomial_diagnostic(
+            rows, between_variance=tau,
+        )
+        failure = (
+            diagnostic.independent_loglik is None
+            or diagnostic.bounded_optimizer_loglik is None
+            or diagnostic.absolute_loglik_difference is None
+            or diagnostic.absolute_loglik_difference > 1e-7
+            or polynomial.status != "POLYNOMIAL_ROOTS_ISOLATED"
+            or diagnostic.unresolved_tangential_candidates > 0
+            or diagnostic.independent_boundary_sensitive
+            or diagnostic.optimizer_error is not None
+            or not polynomial.positive_roots
+        )
+        root_logs = tuple(math.log(root) for root in polynomial.positive_roots)
+        local_maxima = 0
+        unresolved_types = 0
+
+        def nuisance_score(log_s: float) -> float:
+            s = math.exp(log_s)
+            u = s / r
+            q = tau + u
+            return (
+                -0.5 * df_w + 0.5 * ssw / s
+                -0.5 * df_b * u / q
+                +0.5 * df_b * s2_means * u / (q * q)
+            )
+
+        for index, root_log in enumerate(root_logs):
+            gaps = []
+            if index:
+                gaps.append(root_log - root_logs[index - 1])
+            if index + 1 < len(root_logs):
+                gaps.append(root_logs[index + 1] - root_log)
+            max_delta = min(gaps) / 4.0 if gaps else 1e-2
+            delta = min(1e-3, max_delta)
+            left_score = right_score = 0.0
+            resolved = False
+            for _ in range(12):
+                if delta <= 0.0:
+                    break
+                left_score = nuisance_score(root_log - delta)
+                right_score = nuisance_score(root_log + delta)
+                if (math.isfinite(left_score) and math.isfinite(right_score)
+                        and left_score != 0.0 and right_score != 0.0):
+                    resolved = True
+                    break
+                delta = min(delta * 2.0, max_delta)
+            if not resolved:
+                unresolved_types += 1
+            elif left_score > 0.0 > right_score:
+                local_maxima += 1
+            # A negative-to-positive crossing is a local minimum. Equal
+            # signs identify a resolved tangential stationary point.
+        if local_maxima != 1 or unresolved_types:
+            failure = True
+        if failure:
             raise F1ProfileError(
                 "PROFILE_NUISANCE_CERTIFICATION_FAILED:"
                 + diagnostic.status
-                + f"|polynomial={diagnostic.polynomial_status}"
-                + f"|critical={diagnostic.critical_point_solver_status}"
+                + f"|polynomial={polynomial.status}"
+                + f"|critical={polynomial.critical_point_solver_status}"
                 + f"|scan_discordant={diagnostic.polynomial_scan_discordant}"
-                + f"|roots={diagnostic.stationary_points}"
-                + f"|types={diagnostic.stationary_point_types}"
-                + f"|tangencies={diagnostic.tangential_score_roots}"
+                + f"|roots={len(polynomial.positive_roots)}"
+                + f"|local_maxima={local_maxima}"
+                + f"|unresolved_types={unresolved_types}"
+                + f"|tangencies={len(polynomial.tangential_roots)}"
                 + f"|unresolved={diagnostic.unresolved_tangential_candidates}"
                 + f"|boundary={diagnostic.independent_boundary_sensitive}"
                 + f"|optimizer_error={diagnostic.optimizer_error}"
