@@ -11,7 +11,7 @@ The current research branch contains:
 - `c10s_f1_between_profile_likelihood.py` — F1 profile and score-polynomial construction.
 - `c10s_f1_independent_root_isolator.py` — exact-rational Sturm reference, degree at most three.
 - `c10s_f1_root_adjudication.py` — comparison of F1 positive roots with Sturm intervals.
-- `c10s_nested_mr_comparative_inference_engine.py` — F1 diagnostic propagation into the comparative engine.
+- `c10s_nested_mr_comparative_inference_engine.py` — F1 diagnostic propagation into the comparative engine, including adjudication domain, removed-zero-factor multiplicity, boundary roots and exact rational isolator intervals.
 - Unit tests for the F1 solver, Sturm isolator, and adjudicator.
 
 The rational coefficient builder computes exact rational expressions from the exact binary values of the inputs, then rounds each coefficient to binary64. Sturm therefore certifies the polynomial defined by those rounded coefficient values, not the pre-rounded rational coefficient vector and not an uncertainty set for the statistical inputs.
@@ -78,7 +78,7 @@ The integrated record must preserve, at minimum:
 - coefficient-uncertainty status (separate from central-polynomial Sturm result);
 - optimizer stability status;
 - F1/F5 comparative status;
-- explicit abstention reason.
+- explicit abstention reason;\n- root-domain and exact interval provenance propagated into the comparative engine.
 
 Adjudication states remain:
 - `AGREEMENT` — bounded agreement under the same declared domain and representation contract;
