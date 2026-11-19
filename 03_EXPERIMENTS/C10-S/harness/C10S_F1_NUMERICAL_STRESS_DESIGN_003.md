@@ -1,6 +1,6 @@
 # C10-S F1 — Numerical Stress Diagnostic Design v003
 
-**Status:** DESIGN DEFINED — IMPLEMENTATION NOT STARTED — EXECUTION NOT AUTHORIZED  
+**Status:** DESIGN DEFINED — IMPLEMENTED IN SEPARATE V003 FILES — STATIC REVIEW CONDITIONAL — EXECUTION NOT AUTHORIZED  
 **Predecessor:** v002 primary execution, result 002  
 **Research branch:** `research/c10s-f1-integrated-correction-20261119`  
 **Purpose:** discriminate coefficient-rounding uncertainty from root-isolation domain inefficiency and characterize the next ULP-to-discriminant boundary without repeating v002.
@@ -224,9 +224,9 @@ A future v003 execution would be a new diagnostic numerical operation. It is not
 | N5 rounding-cell diagnostic | DEFINED — NOT IMPLEMENTED |
 | N2 closer discriminant-boundary grid | DEFINED — NOT IMPLEMENTED |
 | N4 alternative-bound comparison | DEFINED — NOT IMPLEMENTED |
-| v003 implementation | NOT STARTED |
+| v003 implementation | IMPLEMENTED — STATIC REVIEW CONDITIONAL |
 | v003 execution | NOT AUTHORIZED |
 | Monte Carlo calibration | NOT AUTHORIZED |
 | Scientific C10-S execution | NOT AUTHORIZED |
 
-**Next operation:** implement the three v003 diagnostic lanes in new files, perform source-level review only, freeze a new immutable snapshot and prepare (but do not approve or execute) a separate one-shot authorization.
+**Next operation:** complete source-level reconciliation, freeze a new immutable snapshot and prepare (but do not approve or execute) a separate one-shot authorization. Numerical execution remains unauthorized.
