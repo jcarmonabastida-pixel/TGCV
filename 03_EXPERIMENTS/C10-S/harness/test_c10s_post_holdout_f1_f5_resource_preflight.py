@@ -9,9 +9,23 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 import run_c10s_post_holdout_f1_f5_resource_preflight as preflight
+import validate_c10s_post_holdout_resource_preflight_authorization as authorization
 
 
 class PostHoldoutResourcePreflightTests(unittest.TestCase):
+    def test_authorization_validator_rejects_draft(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "authorization.json"
+            path.write_text(json.dumps({
+                "schema": authorization.AUTH_SCHEMA,
+                "status": "DRAFT",
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "not APPROVED"):
+                authorization.validate(
+                    path, Path(directory), "a" * 40,
+                    authorization.BRANCH_PREFIX + "draft-authorization-001",
+                )
+
     def test_execution_requires_explicit_validated_authorization(self):
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(RuntimeError, "ONE_USE_AUTHORIZATION"):
