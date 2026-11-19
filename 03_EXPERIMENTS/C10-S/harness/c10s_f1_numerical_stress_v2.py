@@ -338,6 +338,18 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
                     value * inverse for value in diagnostic.positive_roots
                 ],
                 "sturm_status": adjudication.independent_status,
+                "sturm_independent_intervals": [
+                    [lower, upper, multiplicity]
+                    for lower, upper, multiplicity in adjudication.independent_intervals
+                ],
+                "sturm_boundary_roots": [
+                    [lower, upper, multiplicity]
+                    for lower, upper, multiplicity in adjudication.boundary_roots
+                ],
+                "f1_root_count": adjudication.f1_root_count,
+                "sturm_root_count": adjudication.independent_root_count,
+                "matched_root_count": adjudication.matched_root_count,
+                "multiplicity_review_required": adjudication.multiplicity_review_required,
                 "adjudication_status": adjudication.status,
                 "adjudication_reason": adjudication.reason,
             })
