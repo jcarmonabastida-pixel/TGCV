@@ -72,6 +72,11 @@ class IndependentRootIsolatorTests(unittest.TestCase):
         self.assertEqual(result.status, "NO_ROOTS_CONSTANT_POLYNOMIAL")
         self.assertEqual(result.roots, ())
 
+    def test_identically_zero_polynomial_is_not_root_free(self):
+        result = isolate_real_roots((0, 0, 0))
+        self.assertEqual(result.status, "IDENTICALLY_ZERO_POLYNOMIAL_UNRESOLVED")
+        self.assertEqual(result.roots, ())
+
     def test_rejects_degree_above_three(self):
         with self.assertRaisesRegex(ValueError, "DEGREE_EXCEEDS_THREE"):
             isolate_real_roots((1, 0, 0, 0, 1))
