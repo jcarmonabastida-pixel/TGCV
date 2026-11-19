@@ -32,7 +32,7 @@ It consumes the authorization in a branch commit immediately before the primary 
 ## 3. Authorization record
 
 Path: 00_GOVERNANCE/authorizations/C10S_F1_NUMERICAL_STRESS_AUTHORIZATION_001.json  
-Current blob: 1d36028348a2e0e1417e02e71f2b129bfd1d259a  
+Current blob: 877d8b9f46226344b385c48a30a5a9e6b155c74b  
 Authorization ID: C10S-F1-NUMERICAL-STRESS-20261119-001
 
 Current state after explicit approval and failed workflow attempt 001:
@@ -45,8 +45,12 @@ Current state after explicit approval and failed workflow attempt 001:
 
 The command arguments are bound to frozen source commit d5edc0010f7a8c6587677eb2004b545367fc4b35. The workflow and authorization agree on the source, freeze manifest and exact runner command.
 
-## 4. Execution state
+## 4. Workflow attempt 001 outcome
 
-No tests, compilation, smoke tests, stress runners, evidence writer, Monte Carlo calibration, DGP experiment or scientific C10-S execution has been performed during workflow preparation.
+The user explicitly approved the bounded one-shot execution. Approval was recorded in commit 965c80a47ec53788c4712e7f63a34b922b38fd56 and triggered GitHub Actions run 44530141078.
 
-**No execution is authorized.** Explicit user approval is required before changing the authorization to APPROVED and committing it with the exact approval marker. That commit triggers the one-shot workflow; the workflow then consumes the authorization before executing.
+The run concluded FAILURE before job creation. GitHub returned zero jobs and zero artifacts; no job logs were available. The authorization remained consumed=false because the runner was never reached. The CLI, stress runners and evidence writer were not invoked. No numerical stress records, tests, Monte Carlo calibration, DGP experiment or scientific C10-S execution were produced.
+
+Detailed record: C10S_F1_NUMERICAL_STRESS_WORKFLOW_ATTEMPT_001.md. Root cause is NOT ESTABLISHED.
+
+The authorization has been closed as BLOCKED_PRE_EXECUTION, with execution_authorized=false, attempt_closed=true and retry_authorized=false. The approval is not reusable. No retry, replay or alternate execution route is authorized. Only static diagnosis and workflow correction may proceed. Any later primary runner invocation requires a new one-shot authorization and fresh explicit user approval.
