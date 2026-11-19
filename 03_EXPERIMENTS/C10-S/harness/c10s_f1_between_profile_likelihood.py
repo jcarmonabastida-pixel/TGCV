@@ -36,6 +36,15 @@ class F1NuisanceOptimizerDiagnostic:
 
 
 @dataclass(frozen=True)
+class F1NuisanceStabilityDiagnostic:
+    status: str
+    configurations: tuple[tuple[int, float], ...]
+    stationary_point_counts: tuple[int, ...]
+    optimizer_statuses: tuple[str, ...]
+    maximum_loglik_spread: float | None
+
+
+@dataclass(frozen=True)
 class F1ProfileSet:
     likelihood_ratio_cutoff: float
     mle_between_variance: float
@@ -298,4 +307,67 @@ def f1_profile_nuisance_optimizer_diagnostic(
         stationary_points=len(roots),
         independent_boundary_sensitive=independent_boundary,
         optimizer_error=optimizer_error,
+    )
+
+
+def f1_profile_nuisance_stability_diagnostic(
+    rows: Sequence[Sequence[float]], *, between_variance: float,
+    grid_resolutions: Sequence[int] = (241, 481, 961),
+    log_spans: Sequence[float] = (30.0, 36.0, 42.0),
+    loglik_tolerance: float = 1e-7,
+) -> F1NuisanceStabilityDiagnostic:
+    """Cross-check nuisance score-root diagnostics across grids and log spans.
+
+    Concordance means only that this finite family of scans found the same
+    number of sign-changing stationary roots, no boundary/insufficient status,
+    and a sufficiently small spread in the best stationary log-likelihood.
+    It cannot detect every even-multiplicity score root or prove globality.
+    """
+    grids = tuple(grid_resolutions)
+    spans = tuple(float(value) for value in log_spans)
+    if not grids or any(type(value) is not int or value < 41 for value in grids):
+        raise F1ProfileError("NUISANCE_GRID_RESOLUTIONS_MUST_BE_INTEGER_GE_41")
+    if not spans or any(not math.isfinite(value) or value <= 0.0 for value in spans):
+        raise F1ProfileError("NUISANCE_LOG_SPANS_MUST_BE_FINITE_AND_POSITIVE")
+    if (isinstance(loglik_tolerance, bool)
+            or not isinstance(loglik_tolerance, (int, float))
+            or not math.isfinite(loglik_tolerance) or loglik_tolerance <= 0.0):
+        raise F1ProfileError("NUISANCE_LOGLIK_TOLERANCE_MUST_BE_FINITE_AND_POSITIVE")
+
+    configurations = tuple((grid, span) for span in spans for grid in grids)
+    results = tuple(
+        f1_profile_nuisance_optimizer_diagnostic(
+            rows, between_variance=between_variance,
+            grid_points=grid, log_span=span,
+            loglik_tolerance=float(loglik_tolerance),
+        )
+        for grid, span in configurations
+    )
+    counts = tuple(item.stationary_points for item in results)
+    statuses = tuple(item.status for item in results)
+    values = tuple(
+        item.independent_loglik for item in results
+        if item.independent_loglik is not None
+    )
+    spread = max(values) - min(values) if len(values) == len(results) and values else None
+
+    if any(status == "OPTIMIZATION_INSUFFICIENT" for status in statuses):
+        status = "OPTIMIZATION_INSUFFICIENT"
+    elif any(status == "OPTIMIZATION_BOUNDARY_SENSITIVE" for status in statuses):
+        status = "OPTIMIZATION_BOUNDARY_SENSITIVE"
+    elif len(set(counts)) != 1:
+        status = "OPTIMIZATION_DISCORDANT"
+    elif spread is None or spread > float(loglik_tolerance):
+        status = "OPTIMIZATION_DISCORDANT"
+    elif any(status == "OPTIMIZATION_DISCORDANT" for status in statuses):
+        status = "OPTIMIZATION_DISCORDANT"
+    else:
+        status = "OPTIMIZATION_CONCORDANT"
+
+    return F1NuisanceStabilityDiagnostic(
+        status=status,
+        configurations=configurations,
+        stationary_point_counts=counts,
+        optimizer_statuses=statuses,
+        maximum_loglik_spread=spread,
     )
