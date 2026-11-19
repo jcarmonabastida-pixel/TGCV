@@ -291,6 +291,11 @@ def adjudicate_matched_datasets(
         raise ComparativeEngineError("DATASET_TRUTH_ID_MISMATCH")
     truth_by_id = {truth.dataset_id: truth for truth in truth_rows}
     ordered_truths = tuple(truth_by_id[record.dataset_id] for record in records)
+    for truth in ordered_truths:
+        for name, value in (("within", truth.within), ("between", truth.between), ("mcse", truth.mcse)):
+            if (isinstance(value, bool) or not isinstance(value, (int, float))
+                    or not math.isfinite(value) or value < 0.0):
+                raise ComparativeEngineError(f"TRUTH_{name.upper()}_MUST_BE_FINITE_AND_NONNEGATIVE")
 
     target_designs = {(record.target_m, record.target_r) for record in records}
     input_designs = {(record.input_m, record.input_r) for record in records}
