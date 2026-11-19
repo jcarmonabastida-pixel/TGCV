@@ -1,13 +1,13 @@
-"""Adjudicate F1's floating-point roots against the exact-rational Sturm reference.
+"""Adjudicate F1 roots against the exact-rational Sturm reference.
 
-This adapter is diagnostic only. It does not alter the optimizer or infer
-coefficient uncertainty. ROOTS_AGREE is deliberately withheld when the
-independent method finds a multiple root because the legacy F1 diagnostic
-does not expose a certified multiplicity for its floating-point candidates.
+The comparison is restricted to strictly positive roots. Exact zero roots are
+retained separately as boundary diagnostics. Rational Sturm intervals remain
+authoritative; no float projection is used for interval comparison or storage.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
+from fractions import Fraction
 import math
 from typing import Sequence
 
@@ -28,8 +28,31 @@ class F1RootAdjudication:
     matched_root_count: int
     multiplicity_review_required: bool
     f1_roots: tuple[float, ...]
-    independent_intervals: tuple[tuple[float, float, int], ...]
+    independent_intervals: tuple[tuple[str, str, int], ...]
     reason: str
+    boundary_roots: tuple[tuple[str, str, int], ...] = ()
+    root_domain: str = "(0,+infinity)"
+
+
+def _q(value: int | float | Fraction) -> Fraction:
+    if isinstance(value, bool) or not isinstance(value, (int, float, Fraction)):
+        raise F1ProfileError("ROOT_MATCH_VALUES_MUST_BE_REAL")
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise F1ProfileError("ROOT_MATCH_VALUES_MUST_BE_FINITE")
+        return Fraction.from_float(value)
+    return Fraction(value)
+
+
+def _rational_text(value: Fraction) -> str:
+    return f"{value.numerator}/{value.denominator}"
+
+
+def _serialize_roots(roots) -> tuple[tuple[str, str, int], ...]:
+    return tuple(
+        (_rational_text(root.lower), _rational_text(root.upper), root.multiplicity)
+        for root in roots
+    )
 
 
 def adjudicate_f1_roots(
@@ -37,21 +60,27 @@ def adjudicate_f1_roots(
     *,
     between_variance: float,
     match_tolerance: float = 1e-8,
+    relative_tolerance: float = 1e-8,
     isolation_width: float = 1e-12,
     max_depth: int = 256,
 ) -> F1RootAdjudication:
-    """Compare the existing F1 reconstruction with independent Sturm isolation.
+    """Compare F1's binary64 roots with exact rational Sturm enclosures.
 
-    The exact-rational method certifies roots of the exact binary-rational
-    coefficient values emitted by F1. It does not cover uncertainty in the
-    underlying statistical quantities.
+    Matching uses exact rational arithmetic and a declared mixed tolerance:
+    max(absolute_tolerance, relative_tolerance * max(|candidate|, |interval|)).
+    A candidate must map uniquely to one isolator and vice versa. The Sturm
+    result certifies only the exact binary-rational polynomial supplied by F1.
     """
-    if (isinstance(match_tolerance, bool) or not isinstance(match_tolerance, (int, float))
-            or not math.isfinite(match_tolerance) or not (match_tolerance > 0.0)):
-        raise F1ProfileError("ROOT_MATCH_TOLERANCE_MUST_BE_POSITIVE")
-    if (isinstance(isolation_width, bool) or not isinstance(isolation_width, (int, float))
-            or not math.isfinite(isolation_width) or not (isolation_width > 0.0)):
-        raise F1ProfileError("ROOT_ISOLATION_WIDTH_MUST_BE_POSITIVE")
+    for name, value in (
+        ("ROOT_MATCH_TOLERANCE", match_tolerance),
+        ("ROOT_MATCH_RELATIVE_TOLERANCE", relative_tolerance),
+        ("ROOT_ISOLATION_WIDTH", isolation_width),
+    ):
+        if (isinstance(value, bool) or not isinstance(value, (int, float))
+                or not math.isfinite(value) or value <= 0.0):
+            raise F1ProfileError(f"{name}_MUST_BE_FINITE_AND_POSITIVE")
+    if type(max_depth) is not int or max_depth < 1:
+        raise F1ProfileError("ROOT_ISOLATION_MAX_DEPTH_MUST_BE_POSITIVE_INTEGER")
 
     f1 = f1_score_polynomial_diagnostic(
         rows, between_variance=between_variance,
@@ -69,61 +98,76 @@ def adjudicate_f1_roots(
         max_depth=max_depth,
         max_width=isolation_width,
     )
-    intervals = tuple(
-        (float(root.lower), float(root.upper), root.multiplicity)
-        for root in independent.roots
-    )
     if independent.status != "ROOTS_ISOLATED":
         return F1RootAdjudication(
             "ROOTS_UNRESOLVED", f1.status, independent.status,
             len(f1.positive_roots), len(independent.roots), 0, False,
-            tuple(f1.positive_roots), intervals, "STURM_REFERENCE_UNRESOLVED",
+            tuple(f1.positive_roots), _serialize_roots(independent.roots),
+            "STURM_REFERENCE_UNRESOLVED",
         )
 
-    candidates = sorted(float(root) for root in f1.positive_roots)
-    certified = list(independent.roots)
+    # Sturm's API uses a closed [0,+infinity) domain. Preserve exact zero
+    # roots separately, then compare only the strictly-positive subset.
+    boundary = tuple(
+        root for root in independent.roots
+        if root.lower == 0 and root.upper == 0
+    )
+    certified = tuple(
+        root for root in independent.roots
+        if not (root.lower == 0 and root.upper == 0)
+    )
+    intervals = _serialize_roots(certified)
+    boundary_intervals = _serialize_roots(boundary)
+    candidates = tuple(sorted(float(root) for root in f1.positive_roots))
 
-    # A global absolute tolerance can make two distinct isolators eligible
-    # for the same floating-point candidate. In that case no greedy matching
-    # can certify a unique correspondence; abstain rather than risk a false
-    # agreement for nearly coincident roots.
-    for left, right in zip(certified, certified[1:]):
-        if float(right.lower - left.upper) <= 2.0 * match_tolerance:
-            return F1RootAdjudication(
-                "ROOTS_UNRESOLVED", f1.status, independent.status,
-                len(candidates), len(certified), 0, True,
-                tuple(candidates), intervals,
-                "ROOT_MATCH_TOLERANCE_OVERLAPS_DISTINCT_ISOLATORS",
-            )
+    if len(candidates) != len(certified):
+        return F1RootAdjudication(
+            "ROOTS_DISCREPANT", f1.status, independent.status,
+            len(candidates), len(certified), 0,
+            any(root.multiplicity != 1 for root in certified),
+            candidates, intervals, "ROOT_COUNT_MISMATCH",
+            boundary_intervals,
+        )
 
-    used: set[int] = set()
-    matched = 0
-    for interval in certified:
-        midpoint = (float(interval.lower) + float(interval.upper)) / 2.0
-        eligible = [
-            (abs(value - midpoint), index)
-            for index, value in enumerate(candidates)
-            if index not in used
-            and interval.lower - match_tolerance <= value <= interval.upper + match_tolerance
-        ]
-        if eligible:
-            _, index = min(eligible)
-            used.add(index)
-            matched += 1
+    abs_tol = _q(match_tolerance)
+    rel_tol = _q(relative_tolerance)
+    eligible_by_candidate: list[list[int]] = []
+    eligible_by_interval: list[list[int]] = [[] for _ in certified]
+    for candidate_index, candidate in enumerate(candidates):
+        candidate_q = _q(candidate)
+        eligible: list[int] = []
+        for interval_index, root in enumerate(certified):
+            scale = max(abs(candidate_q), abs(root.lower), abs(root.upper))
+            tolerance = max(abs_tol, rel_tol * scale)
+            if root.lower - tolerance <= candidate_q <= root.upper + tolerance:
+                eligible.append(interval_index)
+                eligible_by_interval[interval_index].append(candidate_index)
+        eligible_by_candidate.append(eligible)
 
+    # Only a one-to-one singleton correspondence is certifiable. Ambiguous
+    # or missing matches are unresolved rather than resolved greedily.
+    if (any(len(matches) != 1 for matches in eligible_by_candidate)
+            or any(len(matches) != 1 for matches in eligible_by_interval)):
+        return F1RootAdjudication(
+            "ROOTS_UNRESOLVED", f1.status, independent.status,
+            len(candidates), len(certified), 0,
+            any(root.multiplicity != 1 for root in certified),
+            candidates, intervals,
+            "ROOT_MATCHING_NOT_UNIQUELY_IDENTIFIED_UNDER_MIXED_TOLERANCE",
+            boundary_intervals,
+        )
+
+    matched = len(candidates)
     multiplicity_review = any(root.multiplicity != 1 for root in certified)
-    if len(candidates) != len(certified) or matched != len(certified):
-        status = "ROOTS_DISCREPANT"
-        reason = "ROOT_COUNT_OR_LOCATION_MISMATCH"
-    elif multiplicity_review:
+    if multiplicity_review:
         status = "ROOTS_UNRESOLVED"
         reason = "F1_REFERENCE_DOES_NOT_CERTIFY_MULTIPLE_ROOT_MULTIPLICITY"
     else:
         status = "ROOTS_AGREE"
-        reason = "ALL_POSITIVE_ROOTS_MATCH_SIMPLE_STURM_ISOLATORS"
+        reason = "ALL_STRICTLY_POSITIVE_ROOTS_MATCH_SIMPLE_STURM_ISOLATORS"
 
     return F1RootAdjudication(
         status, f1.status, independent.status,
         len(candidates), len(certified), matched, multiplicity_review,
-        tuple(candidates), intervals, reason,
+        candidates, intervals, reason, boundary_intervals,
     )
