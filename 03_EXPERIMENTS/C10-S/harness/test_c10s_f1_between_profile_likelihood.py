@@ -35,6 +35,23 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertLessEqual(result.mle_between_variance, high)
         self.assertEqual(result.status, "PROFILE_LR_INTERVAL_ROOT_SOLVED")
 
+    def test_solved_endpoints_satisfy_lr_equation(self):
+        cutoff = 3.841458820694124
+        result = f1_profile_between_confidence_set(
+            ROWS, likelihood_ratio_cutoff=cutoff,
+        )
+        maximum = result.max_profile_loglik
+        for endpoint in result.confidence_components[0]:
+            value = f1_profile_loglik(ROWS, between_variance=endpoint)
+            self.assertAlmostEqual(2.0 * (maximum - value), cutoff, places=7)
+
+    def test_nonincluded_zero_boundary_has_positive_lower_endpoint(self):
+        result = f1_profile_between_confidence_set(
+            ROWS, likelihood_ratio_cutoff=0.05,
+        )
+        self.assertFalse(result.lower_boundary_included)
+        self.assertGreater(result.confidence_components[0][0], 0.0)
+
     def test_caller_supplied_cutoff_is_preserved(self):
         result = f1_profile_between_confidence_set(
             ROWS, likelihood_ratio_cutoff=2.0,
