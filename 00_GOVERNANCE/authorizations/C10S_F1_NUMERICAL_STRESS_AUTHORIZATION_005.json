@@ -1,9 +1,9 @@
 {
   "schema": "C10S-F1-NUMERICAL-STRESS-AUTHORIZATION-1",
   "authorization_id": "C10S-F1-NUMERICAL-STRESS-20261119-005",
-  "status": "DRAFT",
-  "execution_authorized": false,
-  "approved_by_user": false,
+  "status": "APPROVED",
+  "execution_authorized": true,
+  "approved_by_user": true,
   "one_shot": true,
   "source_commit": "e526acb04e1d2c2421fa2663a43e31b537985522",
   "freeze_manifest": "03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_FREEZE_MANIFEST_005.md",
@@ -97,5 +97,7 @@
   "approval_requirement": "Fresh explicit user approval required. Approval must change this exact authorization to APPROVED, set execution_authorized and approved_by_user true, and commit with exact marker AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-005. No approval from authorizations 001–004 is reusable.",
   "consumed": false,
   "attempt_closed": false,
-  "retry_authorized": false
+  "retry_authorized": false,
+  "approval_recorded_at_utc": "2026-11-19T15:01:25.972Z",
+  "approval_scope_confirmation": "User explicitly approved the single primary execution of the exact 79-record F1 v003 diagnostics on the pinned source, workflow, inputs, runtime and prohibitions."
 }
