@@ -12,7 +12,7 @@ import math
 from typing import Sequence
 
 import numpy as np
-from scipy.optimize import brentq, minimize_scalar
+from scipy.optimize import minimize_scalar
 from scipy.special import betaln, gammaln
 
 
@@ -272,6 +272,33 @@ def f5_beta_binomial_mcse_profile_loglik(
     )
 
 
+def _bisect_profile_crossing(
+    function, lower: float, upper: float, *, tolerance: float = 1e-12,
+    max_iterations: int = 160,
+) -> float:
+    """Bisection for signed profile margins, allowing -inf outside support."""
+    f_lower = float(function(lower))
+    f_upper = float(function(upper))
+    if f_lower == 0.0:
+        return lower
+    if f_upper == 0.0:
+        return upper
+    if (f_lower > 0.0) == (f_upper > 0.0):
+        raise F5ProfileError("PROFILE_ROOT_NOT_BRACKETED")
+    for _ in range(max_iterations):
+        midpoint = lower + (upper - lower) / 2.0
+        f_mid = float(function(midpoint))
+        if f_mid == 0.0 or upper - lower <= tolerance:
+            return midpoint
+        if (f_mid > 0.0) == (f_lower > 0.0):
+            lower, f_lower = midpoint, f_mid
+        else:
+            upper, f_upper = midpoint, f_mid
+    if upper - lower > tolerance * 2.0:
+        raise F5ProfileError("PROFILE_ROOT_BISECTION_DID_NOT_CONVERGE")
+    return lower + (upper - lower) / 2.0
+
+
 def f5_beta_binomial_mcse_profile_confidence_set(
     rows: Sequence[Sequence[float]], *, target_m: int, target_r: int,
     likelihood_ratio_cutoff: float, scan_grid_points: int = 81,
@@ -357,16 +384,14 @@ def f5_beta_binomial_mcse_profile_confidence_set(
         if start == 0:
             lower = 0.0
         else:
-            lower = brentq(
+            lower = _bisect_profile_crossing(
                 accepted_margin, float(grid[start - 1]), float(grid[start]),
-                xtol=1e-12, rtol=1e-12,
             )
         if end == len(grid) - 1:
             upper = g_max
         else:
-            upper = brentq(
+            upper = _bisect_profile_crossing(
                 accepted_margin, float(grid[end]), float(grid[end + 1]),
-                xtol=1e-12, rtol=1e-12,
             )
         components.append((lower, upper))
         i += 1
