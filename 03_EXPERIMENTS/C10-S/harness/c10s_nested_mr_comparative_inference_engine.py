@@ -16,6 +16,7 @@ from c10s_f1_between_profile_likelihood import (
     F1ProfileError, f1_profile_loglik,
     f1_profile_nuisance_stability_diagnostic,
 )
+from c10s_f1_root_adjudication import adjudicate_f1_roots
 from c10s_gaussian_variance_oracles import gaussian_f1_reference
 from c10s_f5_beta_binomial_mcse_profile import F5ProfileError, f5_beta_binomial_mcse_profile_loglik
 from c10s_fitted_beta_binomial_bootstrap import (
@@ -128,11 +129,37 @@ def _f1_profile_diagnostic(
     }.get(optimizer.status, (
         "ABSTAIN_PROFILE_INFERENCE", "NUISANCE_OPTIMIZER_STATUS_UNRECOGNIZED",
     ))
+    try:
+        root_adjudication = adjudicate_f1_roots(
+            rows, between_variance=tau,
+        )
+    except (F1ProfileError, ValueError, ArithmeticError) as exc:
+        root_status = "ROOTS_UNRESOLVED"
+        root_reason = f"ROOT_ADJUDICATION_ERROR:{exc}"
+        root_counts = ("", "", "")
+    else:
+        root_status = root_adjudication.status
+        root_reason = root_adjudication.reason
+        root_counts = (
+            str(root_adjudication.f1_root_count),
+            str(root_adjudication.independent_root_count),
+            str(root_adjudication.matched_root_count),
+        )
+    if root_status != "ROOTS_AGREE":
+        policy = (
+            "ABSTAIN_PROFILE_INFERENCE",
+            "INDEPENDENT_ROOT_ADJUDICATION_" + root_status,
+        )
     return (
         ("between_profile_status", "LOG_LIKELIHOOD_DIAGNOSTIC_AVAILABLE"),
         ("between_profile_inference_eligibility", policy[0]),
         ("between_profile_abstention_reason", policy[1]),
         ("between_profile_optimizer_adjudication_status", optimizer.status),
+        ("between_profile_root_adjudication_status", root_status),
+        ("between_profile_root_adjudication_reason", root_reason),
+        ("between_profile_root_adjudication_f1_count", root_counts[0]),
+        ("between_profile_root_adjudication_sturm_count", root_counts[1]),
+        ("between_profile_root_adjudication_matched_count", root_counts[2]),
         ("between_profile_optimizer_stationary_point_counts",
          ",".join(str(value) for value in optimizer.stationary_point_counts)),
         ("between_profile_optimizer_stationary_point_types",
