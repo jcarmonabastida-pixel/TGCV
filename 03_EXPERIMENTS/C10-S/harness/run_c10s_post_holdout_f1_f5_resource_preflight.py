@@ -350,6 +350,7 @@ def run_preflight(output: Path, *, execution_authorized: bool = False) -> dict:
             "workflow_commit": commit,
             "authorization_commit": os.environ.get("C10S_AUTHORIZATION_COMMIT"),
             "authorization_id": os.environ.get("C10S_AUTHORIZATION_ID"),
+            "authorization_sha256": os.environ.get("C10S_AUTHORIZATION_SHA256"),
             "approved_code_commit": os.environ.get("C10S_APPROVED_CODE_COMMIT") or commit,
             "dependency_lock_sha256": sha256_file(root / LOCK_PATH),
             "source_sha256": {path: sha256_file(root / path) for path in HASH_PATHS},
