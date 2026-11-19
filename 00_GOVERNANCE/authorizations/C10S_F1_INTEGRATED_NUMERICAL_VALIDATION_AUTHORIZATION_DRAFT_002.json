@@ -18,7 +18,10 @@
     "frozen_commit": "0d430adae891b3914475c60334d93e977efc44cc",
     "manifest_path": "03_EXPERIMENTS/C10-S/harness/C10S_F1_VALIDATION_FREEZE_MANIFEST_001.md",
     "manifest_commit": "a2f73cccd0154fccaa1b9674fbbfee13db8da582",
-    "execution_checkout": "Detached HEAD at frozen_commit; never execute from moving branch tip"
+    "execution_checkout": "Detached HEAD at frozen_commit; never execute from moving branch tip",
+    "workflow_commit": "1e0598ddecb27ce4044d30aa8099d7032fb8e726",
+    "workflow_blob_sha": "d06ad1e7bc7dec12d9fddfce753597e3f7dd8703",
+    "execution_gate": "A push that updates the authorization file with a commit message containing the exact authorization_id triggers this workflow once; all other pushes are skipped."
   },
   "protocol": {
     "protocol_id": "C10S-F1-INTEGRATED-TEST-SUITE-001",
