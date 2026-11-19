@@ -11,6 +11,7 @@ from c10s_f1_between_profile_likelihood import (
     f1_profile_nuisance_stability_diagnostic,
     _scan_score_stationary_points,
     f1_score_polynomial_diagnostic,
+    _positive_quadratic_roots_diagnostic,
 )
 
 
@@ -133,6 +134,26 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
             polynomial.positive_roots, scan.stationary_points_log_scale,
         ):
             self.assertAlmostEqual(math.log(root), log_root, places=6)
+
+    def test_quadratic_critical_solver_finds_two_distinct_positive_roots(self):
+        roots, status = _positive_quadratic_roots_diagnostic(1.0, -3.0, 2.0)
+        self.assertEqual(status, "RESOLVED")
+        self.assertEqual(len(roots), 2)
+        self.assertAlmostEqual(roots[0], 1.0)
+        self.assertAlmostEqual(roots[1], 2.0)
+
+    def test_quadratic_critical_solver_resolves_exact_double_root(self):
+        roots, status = _positive_quadratic_roots_diagnostic(1.0, -2.0, 1.0)
+        self.assertEqual(status, "RESOLVED")
+        self.assertEqual(len(roots), 1)
+        self.assertAlmostEqual(roots[0], 1.0)
+
+    def test_quadratic_critical_solver_abstains_near_discriminant_zero(self):
+        roots, status = _positive_quadratic_roots_diagnostic(
+            1.0, -2.0, 1.0 - 1e-15,
+        )
+        self.assertEqual(roots, ())
+        self.assertEqual(status, "DISCRIMINANT_UNRESOLVED")
 
     def test_score_polynomial_diagnostic_handles_zero_between_boundary(self):
         result = f1_score_polynomial_diagnostic(
