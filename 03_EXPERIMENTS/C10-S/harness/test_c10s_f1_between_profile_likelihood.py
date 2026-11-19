@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 import unittest
+from unittest.mock import patch
 
 from c10s_f1_between_profile_likelihood import (
     F1ProfileError,
@@ -12,6 +13,7 @@ from c10s_f1_between_profile_likelihood import (
     _scan_score_stationary_points,
     f1_score_polynomial_diagnostic,
     _positive_quadratic_roots_diagnostic,
+    _normalize_scaled_polynomial,
 )
 
 
@@ -134,6 +136,36 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
             polynomial.positive_roots, scan.stationary_points_log_scale,
         ):
             self.assertAlmostEqual(math.log(root), log_root, places=6)
+
+    def test_polynomial_scale_rejects_power_overflow(self):
+        with self.assertRaisesRegex(
+            F1ProfileError, "SCALE_POWER_UNREPRESENTABLE",
+        ):
+            _normalize_scaled_polynomial((1.0, 1.0, 1.0), 1e200)
+
+    def test_polynomial_scale_rejects_power_underflow(self):
+        with self.assertRaisesRegex(
+            F1ProfileError, "SCALE_POWER_UNREPRESENTABLE",
+        ):
+            _normalize_scaled_polynomial((1.0, 1.0, 1.0), 1e-200)
+
+    def test_polynomial_normalization_rejects_erased_small_coefficient(self):
+        with self.assertRaisesRegex(
+            F1ProfileError, "NORMALIZATION_ERASED_COEFFICIENT",
+        ):
+            _normalize_scaled_polynomial((1e308, 1e-308), 1.0)
+
+    def test_score_polynomial_rejects_nonfinite_raw_coefficients(self):
+        with patch(
+            "c10s_f1_between_profile_likelihood._sufficient_statistics",
+            return_value=(2, 4, 2, 1e308, 1.0, 1e308),
+        ):
+            with self.assertRaisesRegex(
+                F1ProfileError, "COEFFICIENTS_NONFINITE",
+            ):
+                f1_score_polynomial_diagnostic(
+                    ROWS, between_variance=1e308,
+                )
 
     def test_quadratic_critical_solver_finds_two_distinct_positive_roots(self):
         roots, status = _positive_quadratic_roots_diagnostic(1.0, -3.0, 2.0)
