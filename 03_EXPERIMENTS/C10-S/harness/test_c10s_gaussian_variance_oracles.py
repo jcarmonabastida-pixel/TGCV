@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+# Independent comparator contract tests; no Monte Carlo coverage run.
+
 import math
 import unittest
 
