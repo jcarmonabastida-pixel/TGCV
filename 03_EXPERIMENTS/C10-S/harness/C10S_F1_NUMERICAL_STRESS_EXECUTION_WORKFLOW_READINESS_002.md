@@ -54,3 +54,10 @@ The run concluded FAILURE before job creation. GitHub returned zero jobs and zer
 Detailed record: C10S_F1_NUMERICAL_STRESS_WORKFLOW_ATTEMPT_001.md. Root cause is NOT ESTABLISHED.
 
 The authorization has been closed as BLOCKED_PRE_EXECUTION, with execution_authorized=false, attempt_closed=true and retry_authorized=false. The approval is not reusable. No retry, replay or alternate execution route is authorized. Only static diagnosis and workflow correction may proceed. Any later primary runner invocation requires a new one-shot authorization and fresh explicit user approval.
+
+
+## Workflow attempt 002 (retry request)
+
+The user requested a retry. A new one-shot authorization 002 and branch-local workflow 002 were created against the unchanged frozen numerical source. GitHub Actions run [44531064922](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44531064922) was nevertheless associated with legacy workflow 001; it completed FAILURE with zero jobs and zero artifacts. No run for workflow 002 was observed for the authorization commit. The immediate routing mismatch is established; why workflow 002 was not selected is NOT ESTABLISHED.
+
+Authorization 002 is now BLOCKED_PRE_EXECUTION, execution_authorized=false, consumed=false, attempt_closed=true, retry_authorized=false. No numerical runner or evidence writer was invoked. The new approval is closed and cannot be reused. Only static workflow-discovery diagnosis and governance-safe correction remain; another runner attempt requires a new one-shot authorization and explicit approval.
