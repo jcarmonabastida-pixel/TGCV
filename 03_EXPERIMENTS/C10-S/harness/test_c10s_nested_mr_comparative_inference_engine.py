@@ -170,6 +170,20 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
                 "OPTIMIZATION_INSUFFICIENT", "OPTIMIZATION_BOUNDARY_SENSITIVE",
             },
         )
+        self.assertIn("between_profile_root_adjudication_status", diagnostic_map)
+        self.assertIn(
+            diagnostic_map["between_profile_root_adjudication_status"],
+            {"ROOTS_AGREE", "ROOTS_DISCREPANT", "ROOTS_UNRESOLVED"},
+        )
+        self.assertIn("between_profile_root_adjudication_reason", diagnostic_map)
+        self.assertIn("between_profile_root_adjudication_f1_count", diagnostic_map)
+        self.assertIn("between_profile_root_adjudication_sturm_count", diagnostic_map)
+        self.assertIn("between_profile_root_adjudication_matched_count", diagnostic_map)
+        if diagnostic_map["between_profile_root_adjudication_status"] != "ROOTS_AGREE":
+            self.assertEqual(
+                diagnostic_map["between_profile_inference_eligibility"],
+                "ABSTAIN_PROFILE_INFERENCE",
+            )
         self.assertIn("between_profile_optimizer_stationary_point_counts", diagnostic_map)
         self.assertIn("between_profile_optimizer_stationary_point_types", diagnostic_map)
         self.assertIn("between_profile_optimizer_tangential_score_root_counts", diagnostic_map)
