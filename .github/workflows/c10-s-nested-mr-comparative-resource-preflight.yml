@@ -12,6 +12,8 @@ permissions:
 
 jobs:
   resource-preflight:
+    # Defense in depth: a resource authorization must never activate the holdout job.
+    if: startsWith(github.ref, 'refs/heads/research/c10s-nested-mr-resource-preflight-auth-') && contains(github.event.head_commit.message, 'Approve one-use C10-S comparative resource-only preflight')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
