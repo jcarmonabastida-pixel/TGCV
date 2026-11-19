@@ -1,9 +1,9 @@
 {
   "schema": "C10S-F1-NUMERICAL-STRESS-AUTHORIZATION-1",
   "authorization_id": "C10S-F1-NUMERICAL-STRESS-20261119-001",
-  "status": "DRAFT",
-  "execution_authorized": false,
-  "approved_by_user": false,
+  "status": "APPROVED",
+  "execution_authorized": true,
+  "approved_by_user": true,
   "one_shot": true,
   "source_commit": "d5edc0010f7a8c6587677eb2004b545367fc4b35",
   "freeze_manifest": "03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_FREEZE_MANIFEST_003.md",
@@ -61,5 +61,19 @@
   },
   "approval_requirement": "A separate explicit user approval is required. Only then may status be changed to APPROVED, execution_authorized and approved_by_user set true, and the exact authorization record committed. Merely dispatching the workflow does not constitute approval.",
   "consumed": false,
-  "freeze_manifest_blob_sha": "d54aec3adaca0eef95d529a987dfb28a294119b3"
+  "freeze_manifest_blob_sha": "d54aec3adaca0eef95d529a987dfb28a294119b3",
+  "approval": {
+    "decision": "EXPLICIT_USER_APPROVAL",
+    "recorded_on": "2026-11-19",
+    "scope": "One primary deterministic numerical stress execution only: 115 polynomial/Sturm records and 7 F1 observation-scale records; no retries or replay.",
+    "exclusions": [
+      "unit_tests",
+      "monte_carlo_calibration",
+      "dgp_experiment",
+      "inferential_coverage_study",
+      "parameter_tuning",
+      "external_dataset",
+      "scientific_c10_execution"
+    ]
+  }
 }
