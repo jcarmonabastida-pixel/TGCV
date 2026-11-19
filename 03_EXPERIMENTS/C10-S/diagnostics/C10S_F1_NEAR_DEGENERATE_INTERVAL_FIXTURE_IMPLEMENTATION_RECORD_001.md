@@ -60,3 +60,19 @@ The static workflow for commit `e1af628250837ccd3a2aeffd2a6215879ce69c33` comple
 This result shows that the prior expectation of two isolated positive roots was not supported. The correct conservative contract for this constructed near-double-root case is now explicit: the diagnostic must return `POLYNOMIAL_ROOTS_UNRESOLVED`, must expose an unresolved critical candidate or unresolved critical solver status, and must not relabel the case as a confirmed tangency. The interval-path companion continues to accept only a finite valid interval or typed F1 abstention.
 
 The test was corrected accordingly in commit `0f4cc4a4b9c15ac7ba65095fc1a945655c94e9ca`. No production tolerance or solver code was changed. The workflow result for this corrected commit is pending; no PASS is claimed.
+
+
+## Corrected conservative-contract static validation
+
+The corrected test commit `0f4cc4a4b9c15ac7ba65095fc1a945655c94e9ca` was validated by the push-triggered workflow:
+- Run: `44588197098`
+- Conclusion: `SUCCESS`
+- Exact commit checked out: `0f4cc4a4b9c15ac7ba65095fc1a945655c94e9ca`
+- Hash-locked dependencies: PASS
+- Compile: PASS
+- Deterministic suite: **121 tests passed**
+- New near-degenerate tests: both PASS.
+
+The two tests now establish (a) conservative unresolved classification for the realizable near-double-root fixture and (b) interval-path completion or typed F1 abstention. They do not claim successful separation of the two nearby roots. The prior two attempts that failed 120/121 are retained as negative validation history.
+
+The static workflow result is not a numerical-stress run, calibration, resource preflight, coverage adjudication, or scientific C10 execution. Those remain unauthorized/not performed.
