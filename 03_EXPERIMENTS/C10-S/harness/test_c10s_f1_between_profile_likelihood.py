@@ -14,6 +14,7 @@ from c10s_f1_between_profile_likelihood import (
     f1_score_polynomial_diagnostic,
     _positive_quadratic_roots_diagnostic,
     _normalize_scaled_polynomial,
+    _score_polynomial_coefficients_exact,
 )
 
 
@@ -137,6 +138,34 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         ):
             self.assertAlmostEqual(math.log(root), log_root, places=6)
 
+    def test_exact_score_coefficient_construction_detects_underflow(self):
+        with self.assertRaisesRegex(
+            F1ProfileError, "COEFFICIENT_0_UNDERFLOW",
+        ):
+            _score_polynomial_coefficients_exact(
+                r=2, df_w=2, df_b=2, ssw=1.0,
+                s2_means=1.0, tau=1e-200,
+            )
+
+    def test_exact_score_coefficient_construction_detects_overflow(self):
+        with self.assertRaisesRegex(
+            F1ProfileError, "COEFFICIENT_0_OVERFLOW",
+        ):
+            _score_polynomial_coefficients_exact(
+                r=2, df_w=2, df_b=2, ssw=1e308,
+                s2_means=1.0, tau=1e308,
+            )
+
+    def test_exact_score_coefficients_match_exact_binary_input_formula(self):
+        from fractions import Fraction
+        tau = 1.0 + 2.0 ** -27
+        observed = _score_polynomial_coefficients_exact(
+            r=2, df_w=2, df_b=2, ssw=1.0,
+            s2_means=1.0, tau=tau,
+        )
+        exact_c1 = -Fraction(2) * Fraction(tau) ** 2 + Fraction(tau)
+        self.assertEqual(observed[1], float(exact_c1))
+
     def test_polynomial_scale_rejects_power_overflow(self):
         with self.assertRaisesRegex(
             F1ProfileError, "SCALE_POWER_UNREPRESENTABLE",
@@ -177,7 +206,7 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
             return_value=(2, 4, 2, 1e308, 1.0, 1e308),
         ):
             with self.assertRaisesRegex(
-                F1ProfileError, "COEFFICIENTS_NONFINITE",
+                F1ProfileError, "COEFFICIENT_0_OVERFLOW",
             ):
                 f1_score_polynomial_diagnostic(
                     ROWS, between_variance=1e308,
