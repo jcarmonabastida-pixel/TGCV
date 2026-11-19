@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 import math
 import unittest
+from dataclasses import asdict
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -312,6 +314,8 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
         self.assertEqual(
             len(record.profile_curvature_values), len(profile),
         )
+        json.dumps(asdict(record), allow_nan=False)
+        json.dumps(asdict(boundary), allow_nan=False)
 
     def test_profile_audit_rejects_empty_or_unordered_profile(self):
         optimizer = audit_beta_binomial_count_fit(COUNTS, R)
