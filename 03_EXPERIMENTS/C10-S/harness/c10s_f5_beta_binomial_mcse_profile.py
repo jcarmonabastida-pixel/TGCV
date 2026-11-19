@@ -261,6 +261,10 @@ def f5_beta_binomial_mcse_profile_loglik(
     # cross-check, not a certificate of global optimality.
     independent_candidates = [[], []]
     independent_successes = [0, 0]
+    primary_best_values = [
+        max((v for v, _ in candidates if math.isfinite(v)), default=-math.inf)
+        for candidates in branch_candidates
+    ]
     seed_indices = sorted(set(
         int(round(i * (len(grid) - 1) / 8.0)) for i in range(9)
     ))
@@ -293,10 +297,7 @@ def f5_beta_binomial_mcse_profile_loglik(
         )
         independent_gaps.append(
             "NA" if not candidates else format(
-                candidates[0] - max(
-                    (v for v, _ in branch_candidates[branch_index]
-                     if math.isfinite(v)), default=candidates[0]
-                ), ".17g"
+                abs(candidates[0] - primary_best_values[branch_index]), ".17g"
             )
         )
 
