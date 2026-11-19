@@ -23,6 +23,8 @@ The evaluator includes:
 - admissible target-space upper bound (g\leq1/(2\sqrt{M^*}));
 - finite feasible concentration cap when the target constraint ceases to be
   feasible at large κ;
+- branch-specific grid-detected interior local-maximum counts and κ locations,
+  plus the log-likelihood gap between the two highest detected local maxima;
 - typed failures and diagnostics for unsupported numerical cases.
 
 ## Numerical LR-set inversion added
@@ -70,12 +72,16 @@ for all-zero/all-one worlds, endpoint mixtures, asymmetric endpoint
 frequencies, interior-heavy counts and mixed extremes, and LR-set parameter
 space bounds. These are test definitions, not test outcomes.
 
-No tests have been executed. These are test definitions only.
+The test module additionally checks that branch-specific local-maximum
+diagnostic fields are emitted. No tests have been executed. These are test
+definitions only.
 
 ## Remaining limitations
 
 - Finite-κ maximization uses a deterministic log-concentration scan followed
-  by local bounded optimization; it is not a certified global optimizer.
+  by local bounded optimization; it is not a certified global optimizer. The
+  new local-maximum counts and locations expose grid-detected competitors but
+  do not prove that narrow peaks between grid points are absent.
 - Both MCSE and concentration grid resolutions are configurable and reported.
   A nested-grid convergence diagnostic now compares component counts, profile
   maxima, and LR-set endpoints. Stability across two grids is not proof that
