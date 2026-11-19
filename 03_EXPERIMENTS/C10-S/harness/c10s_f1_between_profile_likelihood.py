@@ -245,15 +245,23 @@ def _positive_quadratic_roots_diagnostic(
     a: float, b: float, c: float,
 ) -> tuple[tuple[float, ...], str]:
     """Stable positive-root solver with an explicit near-zero discriminant state."""
+    if not all(math.isfinite(value) for value in (a, b, c)):
+        return (), "DISCRIMINANT_UNRESOLVED"
     if a == 0.0:
         if b == 0.0:
             return (), "DEGREE_BELOW_ONE"
         root = -c / b
-        return ((root,) if root > 0.0 and math.isfinite(root) else ()), "RESOLVED"
+        if not math.isfinite(root):
+            return (), "DISCRIMINANT_UNRESOLVED"
+        return ((root,) if root > 0.0 else ()), "RESOLVED"
     b_squared = b * b
     four_ac = 4.0 * a * c
+    if not math.isfinite(b_squared) or not math.isfinite(four_ac):
+        return (), "DISCRIMINANT_UNRESOLVED"
     discriminant = math.fsum((b_squared, -four_ac))
     error_bound = 16.0 * math.ulp(1.0) * (abs(b_squared) + abs(four_ac))
+    if not math.isfinite(discriminant) or not math.isfinite(error_bound):
+        return (), "DISCRIMINANT_UNRESOLVED"
     if discriminant < -error_bound:
         return (), "RESOLVED"
     if discriminant != 0.0 and abs(discriminant) <= error_bound:
