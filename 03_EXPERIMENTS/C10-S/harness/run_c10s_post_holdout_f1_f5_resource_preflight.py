@@ -297,7 +297,7 @@ def run_preflight(output: Path, *, execution_authorized: bool = False) -> dict:
     f5 = by_family["F5"]
     f1_cal_per_dataset = f1["F1_profile_calibration_seconds"] / K_PER_CELL
     f1_validation_per_dataset = (
-        f1["comparison_seconds"] + f1["F1_profile_validation_seconds"]
+        f1["elapsed_seconds"] - f1["F1_profile_calibration_seconds"]
     ) / K_PER_CELL
     f5_base_per_dataset = (
         f5["elapsed_seconds"] - f5["C5_B4000_incremental_seconds"]
@@ -373,6 +373,7 @@ def run_preflight(output: Path, *, execution_authorized: bool = False) -> dict:
         "preflight_id": PREFLIGHT_ID,
         "total_datasets": payload["total_datasets"],
         "cells": results,
+        "resource_projection": projection,
         "coverage_adjudication": "NOT_RUN",
         "scientific_c10_execution": False,
     }
