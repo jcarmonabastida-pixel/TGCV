@@ -172,7 +172,13 @@ def run_polynomial_stress_v2() -> dict[str, Any]:
 def run_n3_covariant_lane() -> dict[str, Any]:
     """Run a separate variable-scale lane with covariant domain and width."""
     fixtures = _fixture_map()
-    base = fixtures["N3_BASE"]
+    base_roots = (Q(1, 2), Q(3, 2), Q(5, 2))
+    base = PolynomialFixture(
+        fixture_id="N3_BASE",
+        block="N3",
+        ideal_coefficients=_multiply_roots(base_roots),
+        ideal_real_roots=base_roots,
+    )
     base_lower, base_upper = _domain_for(base)
     base_width = Q(1, 10**12)
     base_depth = 256
