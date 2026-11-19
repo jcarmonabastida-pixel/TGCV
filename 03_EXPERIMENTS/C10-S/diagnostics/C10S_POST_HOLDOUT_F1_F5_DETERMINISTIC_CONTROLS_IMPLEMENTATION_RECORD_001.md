@@ -2,11 +2,11 @@
 
 **Record:** C10S-POST-HOLDOUT-F1-F5-DETERMINISTIC-CONTROLS-IMPLEMENTATION-001  
 **Date:** 2026-11-19  
-**Status:** PARTIAL IMPLEMENTATION / 113-TEST STATIC SUITE PASS / NUMERICAL DEVELOPMENT EXECUTION NOT AUTHORIZED  
+**Status:** PARTIAL IMPLEMENTATION / 115-TEST STATIC SUITE PASS / NUMERICAL DEVELOPMENT EXECUTION NOT AUTHORIZED  
 **Frozen design:** `C10S_POST_HOLDOUT_F1_F5_DEVELOPMENT_CALIBRATION_SPEC_001.md` v1.0  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
 **Initial implementation commit:** `e7920543e8c6fb19582c62446381df7cb1d95e1a`  
-**Latest validated commit:** `601610465e2374b700f58dd8d7acbcf7a7b0b837`  
+**Latest validated commit:** `1fa0a5831a8a4f89602d544ac6b4c69a5738106f`  
 **Execution authorization:** NONE
 
 ---
@@ -209,3 +209,36 @@ The two numerical-stress workflows associated with this push were `SKIPPED` by t
 The validated research branch head was `601610465e2374b700f58dd8d7acbcf7a7b0b837`; `main` remained at `e22928eb79adb5bc74295967a45b9c440b78f849`. The frozen specification remains unchanged at `d1c8bae882dc2e4cd0e1caae29609561b9ebac68`.
 
 **Current disposition:** F5 per-dataset optimizer diagnostics are now propagated into the dataset comparison record. The six frozen F1 cell designs are exercised by deterministic interval-path fixtures. The integrated A1/B1 work package is still OPEN: further F1 adversarial interval-path and independent-oracle verification, plus F5 weak-identification/boundary classification and diagnostic schema/provenance checks, remain before the resource preflight gate. No numerical development execution is authorized.
+
+
+## 10. F1 interval-path fail-closed propagation for unresolved roots — 2026-11-19
+
+Two deterministic integration contracts were added to the actual F1 profile confidence-set entry point.
+
+1. **Unresolved tangential nuisance-score candidate:** the test retains a real data fixture and its actual polynomial diagnostic, injects an optimizer/score-scan diagnostic carrying one unresolved tangential candidate, then calls `f1_profile_between_confidence_set`. The interval path must raise `F1ProfileError` with `PROFILE_NUISANCE_CERTIFICATION_FAILED` and preserve the unresolved count in the reason.
+2. **Unresolved polynomial critical-point isolation:** the test retains the actual polynomial coefficients/roots from the fixture but changes the critical-point solver status to an unresolved state. The interval path must again abstain with `PROFILE_NUISANCE_CERTIFICATION_FAILED`, rather than returning a confidence interval.
+
+These are deliberately *fault-injection integration tests*: they verify that the interval inversion boundary propagates adverse diagnostic states fail-closed. They do not claim that the fixture itself naturally generates a multiple/tangential root, nor do they establish coverage or empirical frequency of such cases. The separate algebraic root-isolation tests remain the evidence for the diagnostic primitive; construction of actual adversarial data whose score polynomial has a prescribed repeated root, and independent confirmation of that construction, remain OPEN.
+
+### Static validation
+
+- Workflow: `.github/workflows/c10-s-nested-mr-calibration-comparator-static.yml`
+- Run ID: `44584915718`
+- Exact commit: `1fa0a5831a8a4f89602d544ac6b4c69a5738106f`
+- Conclusion: `SUCCESS`
+- Hash-locked dependency installation: PASS
+- Compile: PASS
+- Test suite: **115 tests passed**
+- F1 numerical-stress workflows on the same push: `SKIPPED` by authorization conditions; no numerical stress or simulation was run.
+
+### Exact identities
+
+| Artifact | Git blob SHA |
+|---|---|
+| F1 profile-likelihood implementation | `87de3f15468482327fa117b050fdd54dac13ade5` |
+| F1 profile-likelihood tests | `288c80c540ab98d3569b1ea4f4db01e59f0d21f6` |
+| Frozen development/calibration specification v1.0 | `d1c8bae882dc2e4cd0e1caae29609561b9ebac68` |
+
+Validated research branch head: `1fa0a5831a8a4f89602d544ac6b4c69a5738106f`. Canonical `main` remained `e22928eb79adb5bc74295967a45b9c440b78f849`.
+
+**Disposition:** the interval-path fail-closed propagation for unresolved tangency and unresolved polynomial critical-point isolation is now covered. The package remains OPEN: actual constructed repeated-root/near-degenerate interval fixtures, independent score/likelihood oracle cross-checks, remaining F5 weak-identification/boundary classifications, and shared diagnostic schema/provenance tests remain before resource preflight. Numerical development execution remains unauthorized.
