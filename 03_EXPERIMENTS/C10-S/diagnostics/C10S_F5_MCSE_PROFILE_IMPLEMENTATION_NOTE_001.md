@@ -69,7 +69,8 @@ No tests have been executed. These are test definitions only.
 
 - Finite-κ maximization uses a deterministic log-concentration scan followed
   by local bounded optimization; it is not a certified global optimizer.
-- The MCSE LR-set scan is also grid-based and may miss narrow/disconnected
+- Both MCSE and concentration grid resolutions are now configurable and
+  reported. The LR-set scan remains grid-based and may miss narrow/disconnected
   components. Increase-grid convergence and adversarial tests are mandatory.
 - The profile and LR set are restricted to this beta-binomial model and target
   mapping; no generality beyond that model is claimed.
@@ -78,10 +79,10 @@ No tests have been executed. These are test definitions only.
 
 ## Next required work
 
-1. Independent score/likelihood checks, including asymmetric beta parameters
-   and all boundary classes.
-2. Grid-resolution convergence and adversarial multimodality tests for both
-   concentration and MCSE scans.
+1. Expand independent score/likelihood checks to all boundary classes and
+   compare gradients/scores against numerical differentiation.
+2. Run grid-resolution convergence and adversarial multimodality tests for
+   both concentration and MCSE scans.
 3. Robust root bracketing for non-finite profile regions and endpoint cases.
 4. Wire interval emission into C5 only after the cutoff and abstention policy
    have been prospectively specified and authorized.
