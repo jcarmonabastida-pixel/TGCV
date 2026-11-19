@@ -145,6 +145,9 @@ class F5BetaBinomialProfileTests(unittest.TestCase):
             "mu_minus_independent_multistart_successes",
             "mu_plus_independent_optimizer_gap",
             "mu_minus_independent_optimizer_gap",
+            "optimizer_adjudication",
+            "optimizer_loglik_tolerance",
+            "optimizer_min_successful_starts_per_branch",
         ):
             self.assertIn(key, diagnostics)
         self.assertGreaterEqual(int(diagnostics["mu_plus_grid_local_maxima_count"]), 0)
