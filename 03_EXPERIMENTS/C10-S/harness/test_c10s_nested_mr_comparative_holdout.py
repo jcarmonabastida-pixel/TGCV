@@ -152,6 +152,9 @@ class ComparativeHoldoutRunnerTests(unittest.TestCase):
             self.assertEqual(len(calls), 8)
             self.assertEqual(first["total_datasets"], 8)
             self.assertEqual(second["total_datasets"], 8)
+            self.assertNotIn("records", first["cells"][0])
+            self.assertEqual(first["cells"][0]["records_count"], 1)
+            self.assertTrue((Path(directory) / first["cells"][0]["records_file"]).is_file())
             self.assertEqual(first["checkpoint_index_sha256"], second["checkpoint_index_sha256"])
 
     def test_checkpoint_rejects_code_or_protocol_mismatch(self):
