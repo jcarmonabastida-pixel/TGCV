@@ -2,7 +2,7 @@
 
 **Record:** C10S-POST-HOLDOUT-F1-F5-RESOURCE-PREFLIGHT-PREPARATION-001  
 **Date:** 2026-11-19  
-**Status:** IMPLEMENTED / STATIC VALIDATION PENDING / RESOURCE EXECUTION NOT AUTHORIZED  
+**Status:** IMPLEMENTED / STATIC VALIDATION PASS / RESOURCE EXECUTION NOT AUTHORIZED  
 **Governing specification:** C10S-POST-HOLDOUT-F1-F5-DEVELOPMENT-CALIBRATION-SPEC-001 v1.0  
 **Frozen specification blob:** `d1c8bae882dc2e4cd0e1caae29609561b9ebac68`  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
@@ -94,7 +94,21 @@ The output contains runtime, peak RSS, typed abstentions, optimizer fit statuses
 
 It deliberately does not call `adjudicate_matched_datasets`, emit coverage/width/bias metrics, select a cutoff, generate calibration or validation banks, or retain raw preflight datasets. All records are marked resource-only and excluded from calibration and validation.
 
-## 7. Current gate status
+## 7. Static validation and current gate status
+
+Exact-commit research-branch workflow:
+- Run: `44602425187`
+- Code commit: `b44489341e4ee99aa279b15d6cb635e744a1665e`
+- Hash-locked dependency installation: PASS
+- Compilation: PASS
+- Deterministic comparator/oracle suite: **153 tests PASS**
+- The resource-only runner was not invoked by this static workflow.
+
+Intermediate static failures during assembly were inspected and corrected (runner syntax, test syntax, and projection persistence). They were static implementation defects only; none executed or generated a preflight sample.
+
+Authorization template: `C10S_POST_HOLDOUT_F1_F5_RESOURCE_PREFLIGHT_AUTHORIZATION_TEMPLATE_001.json`, status `DRAFT`. No approved authorization file, dedicated authorization branch, or one-use authorization commit exists.
+
+## 8. Current gate status
 
 | Gate | Status |
 |---|---|
@@ -105,8 +119,8 @@ It deliberately does not call `adjudicate_matched_datasets`, emit coverage/width
 | C0/C5 B=1,000 and C5 B=4,000 workload instrumentation | IMPLEMENTED |
 | F1 A2/A3 workload instrumentation | IMPLEMENTED |
 | One-use authorization validator/workflow | IMPLEMENTED |
-| Static tests and exact-commit workflow | PENDING |
+| Static tests and exact-commit workflow | PASS — Run `44602425187`, 153/153 |
 | Resource preflight execution | NOT AUTHORIZED / NOT RUN |
 | Full calibration/validation execution | NOT AUTHORIZED / NOT RUN |
 
-**No resource sample has been executed by this preparation.** The only permitted next technical validation is the deterministic static workflow. The resource workflow remains dormant until the user explicitly authorizes this exact one-use resource-only operation.
+**No resource sample has been executed by this preparation.** The deterministic static workflow is complete. The resource workflow remains dormant until the user explicitly authorizes this exact one-use resource-only operation.
