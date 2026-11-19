@@ -39,7 +39,23 @@ The actual comparison engine persists `likelihood_optimizer_audit_json` for each
 
 The concentration-profile/stability audit is separately opt-in and requires an explicit caller-supplied concentration grid. It does not alter the C5 fit, within/raw-between intervals, selection, or abstention. It preserves `identification_status=INDETERMINATE` and does not claim global profile certification.
 
-## 4. Exact-commit static validation
+## 4. Exact source identities at the tested code commit
+
+All blobs below were fetched directly at code commit `b44489341e4ee99aa279b15d6cb635e744a1665e`; they are the exact source identities consumed by run `44602425187`.
+
+| Artifact | Git blob SHA |
+|---|---|
+| Frozen specification v1.0 | `d1c8bae882dc2e4cd0e1caae29609561b9ebac68` |
+| F5 likelihood diagnostics | `d11d5b8d914d0b27cfed98163ca5da7ed45d3aea` |
+| F5 likelihood diagnostic tests | `f1c820882e2d6c1c815a8c505d2dc45c90b3c692` |
+| F5 fitted bootstrap candidate | `1052ed986e4a551654b9d32928937e4e39df2c88` |
+| F5 fitted bootstrap tests | `4b7e70b59b99ddb6ed6fdd767d38e31096d0cdaa` |
+| Comparative inference engine | `358794e1fcffe729546338ae7a7749bdaaa6aa2c` |
+| Comparative inference engine tests | `faea099809b306b1e6891dc972dd68df28614b45` |
+| Beta-binomial oracle | `2b4412311abd7c6fb19a9174b39e7eab8b317bc4` |
+| Beta-binomial oracle tests | `68071f633b8750084071274a1740abc4bb85d5dc` |
+
+## 5. Exact-commit static validation
 
 Workflow run: `44602425187`  
 Exact code commit: `b44489341e4ee99aa279b15d6cb635e744a1665e`  
@@ -57,7 +73,7 @@ The inspected log explicitly shows passing F5 tests for:
 
 This is implementation/static evidence only. It is not calibration, validation, coverage evidence, or scientific execution.
 
-## 5. Resource preflight evidence and limitation
+## 6. Resource preflight evidence and limitation
 
 Run: `44603264310` — SUCCESS.  
 Artifact SHA-256: `79d1fce857aeee9fde993dd2ba690d6a623feaacee486cc835f8e15a8dbab56a`.
@@ -75,7 +91,7 @@ The raw artifact was downloaded and inspected:
 
 The MCSE reason is present for 100/100 primary records and 100/100 B=4,000 sensitivity records because the candidate explicitly abstains on MCSE. It is not evidence that C5 within/raw-between intervals failed.
 
-## 6. Remaining gates — not part of B1 closure
+## 7. Remaining gates — not part of B1 closure
 
 1. Execute B2 calibration and disjoint development validation only under a separate one-use authorization, preserving the frozen K/B and seed schedules.
 2. Execute B3 endpoint sensitivity on the preselected 250 datasets per F5 cell at B=1,000 and B=4,000, without using B=4,000 for coverage adjudication.
