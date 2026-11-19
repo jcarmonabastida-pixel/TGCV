@@ -65,6 +65,44 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertTrue(result.lower_boundary_included)
         self.assertEqual(result.confidence_components[0][0], 0.0)
 
+    def test_profile_loglik_is_equivariant_to_observation_scale(self):
+        tau = 0.25
+        base = f1_profile_loglik(ROWS, between_variance=tau)
+        df_total = len(ROWS) * (len(ROWS[0]) - 1) + len(ROWS) - 1
+        for factor in (1e-6, 1e-3, 1e3, 1e6):
+            scaled = tuple(tuple(factor * value for value in row) for row in ROWS)
+            scaled_value = f1_profile_loglik(
+                scaled, between_variance=tau * factor * factor,
+            )
+            expected = base - df_total * math.log(factor * factor) / 2.0
+            self.assertAlmostEqual(scaled_value, expected, places=7)
+
+    def test_profile_interval_is_equivariant_to_observation_scale(self):
+        cutoff = 3.841458820694124
+        base = f1_profile_between_confidence_set(
+            ROWS, likelihood_ratio_cutoff=cutoff,
+        )
+        base_low, base_high = base.confidence_components[0]
+        for factor in (1e-4, 1e-2, 1e2, 1e4):
+            scaled = tuple(tuple(factor * value for value in row) for row in ROWS)
+            result = f1_profile_between_confidence_set(
+                scaled, likelihood_ratio_cutoff=cutoff,
+            )
+            low, high = result.confidence_components[0]
+            scale2 = factor * factor
+            self.assertAlmostEqual(low / scale2, base_low, places=6)
+            self.assertAlmostEqual(high / scale2, base_high, places=6)
+            self.assertAlmostEqual(
+                result.mle_between_variance / scale2,
+                base.mle_between_variance, places=7,
+            )
+
+    def test_zero_tau_profile_is_finite_across_scales(self):
+        for factor in (1e-6, 1.0, 1e6):
+            scaled = tuple(tuple(factor * value for value in row) for row in ROWS)
+            value = f1_profile_loglik(scaled, between_variance=0.0)
+            self.assertTrue(math.isfinite(value))
+
     def test_rejects_negative_tau(self):
         with self.assertRaises(F1ProfileError):
             f1_profile_loglik(ROWS, between_variance=-0.1)
