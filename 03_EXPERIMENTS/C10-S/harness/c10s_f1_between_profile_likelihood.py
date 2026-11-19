@@ -212,6 +212,163 @@ def f1_profile_between_confidence_set(
     )
 
 
+@dataclass(frozen=True)
+class F1ScorePolynomialDiagnostic:
+    status: str
+    degree: int
+    coefficients_ascending: tuple[float, ...]
+    positive_roots: tuple[float, ...]
+    tangential_roots: tuple[float, ...]
+    unresolved_critical_candidates: tuple[float, ...]
+    positive_critical_points: tuple[float, ...]
+
+
+def _polyval_ascending(coefficients: Sequence[float], value: float) -> float:
+    result = 0.0
+    for coefficient in reversed(coefficients):
+        result = result * value + coefficient
+    return result
+
+
+def _positive_quadratic_roots(a: float, b: float, c: float) -> tuple[float, ...]:
+    if a == 0.0:
+        if b == 0.0:
+            return ()
+        root = -c / b
+        return (root,) if root > 0.0 and math.isfinite(root) else ()
+    discriminant = b * b - 4.0 * a * c
+    if discriminant < 0.0:
+        return ()
+    square_root = math.sqrt(discriminant)
+    q = -0.5 * (b + math.copysign(square_root, b))
+    candidates = (q / a, c / q) if q != 0.0 else (-b / (2.0 * a),)
+    return tuple(sorted({
+        value for value in candidates
+        if value > 0.0 and math.isfinite(value)
+    }))
+
+
+def f1_score_polynomial_diagnostic(
+    rows: Sequence[Sequence[float]], *, between_variance: float,
+    root_tolerance: float = 1e-10,
+    unresolved_tolerance: float = 1e-7,
+) -> F1ScorePolynomialDiagnostic:
+    """Isolate all positive roots of the cubic numerator of the F1 nuisance score.
+
+    For s=within variance, tau=between variance, r=replicates,
+    a=df_within, b=df_between, W=SSW and M=variance of world means:
+        P(s) = 2*s*(tau+s/r)^2*score(log(s)).
+    P is at most cubic. Its positive derivative roots partition the positive
+    axis into monotone intervals; each interval contains at most one simple
+    root. A zero at a derivative root is a repeated/tangential root.
+    """
+    if (isinstance(between_variance, bool)
+            or not isinstance(between_variance, (int, float))
+            or not math.isfinite(between_variance) or between_variance < 0.0):
+        raise F1ProfileError("BETWEEN_VARIANCE_MUST_BE_FINITE_AND_NONNEGATIVE")
+    if (not math.isfinite(root_tolerance) or root_tolerance <= 0.0
+            or not math.isfinite(unresolved_tolerance)
+            or unresolved_tolerance < root_tolerance):
+        raise F1ProfileError("POLYNOMIAL_ROOT_TOLERANCES_INVALID")
+
+    r, df_w, df_b, ssw, s2_means, within = _sufficient_statistics(rows)
+    tau = float(between_variance)
+    a, b, W, M = float(df_w), float(df_b), float(ssw), float(s2_means)
+    coefficients = [
+        W * tau * tau,
+        -a * tau * tau + 2.0 * W * tau / r,
+        -2.0 * a * tau / r + W / (r * r) - b * tau / r + b * M / r,
+        -(a + b) / (r * r),
+    ]
+    # At tau=0 the score numerator contains an extraneous s^2 factor.
+    while len(coefficients) > 1 and coefficients[0] == 0.0:
+        coefficients.pop(0)
+    while len(coefficients) > 1 and coefficients[-1] == 0.0:
+        coefficients.pop()
+    degree = len(coefficients) - 1
+    if degree < 1:
+        raise F1ProfileError("SCORE_POLYNOMIAL_DEGENERATE")
+
+    if degree == 3:
+        critical = _positive_quadratic_roots(
+            3.0 * coefficients[3], 2.0 * coefficients[2], coefficients[1],
+        )
+    elif degree == 2:
+        critical = _positive_quadratic_roots(
+            0.0, 2.0 * coefficients[2], coefficients[1],
+        )
+    else:
+        critical = ()
+    scale = max(
+        within, M, tau, 1e-12,
+        *(abs(value) for value in critical),
+    )
+    normalized = tuple(value / scale for value in coefficients)
+    # Evaluate a scale-normalized polynomial in x=s/scale to avoid overflow.
+    def polynomial_x(x: float) -> float:
+        return _polyval_ascending(normalized, x)
+
+    critical_x = tuple(value / scale for value in critical)
+    critical_x = tuple(sorted(value for value in critical_x if value > 0.0))
+    root_x: list[float] = []
+    tangent_x: list[float] = []
+    unresolved_x: list[float] = []
+    for point in critical_x:
+        residual = abs(polynomial_x(point))
+        magnitude = max(
+            1.0,
+            sum(abs(coef) * max(1.0, point ** index)
+                for index, coef in enumerate(normalized)),
+        )
+        if residual <= root_tolerance * magnitude:
+            tangent_x.append(point)
+            root_x.append(point)
+        elif residual <= unresolved_tolerance * magnitude:
+            unresolved_x.append(point)
+
+    left_points = (0.0,) + critical_x
+    right_bound = max(1.0, *(critical_x or ()), within / scale, M / scale, tau / scale)
+    right_value = polynomial_x(right_bound)
+    expansions = 0
+    while right_value == 0.0 or right_value * normalized[-1] > 0.0:
+        right_bound *= 2.0
+        right_value = polynomial_x(right_bound)
+        expansions += 1
+        if expansions > 256 or not math.isfinite(right_bound):
+            raise F1ProfileError("SCORE_POLYNOMIAL_POSITIVE_ROOT_BOUND_FAILED")
+    right_points = critical_x + (right_bound,)
+    for left, right in zip(left_points, right_points):
+        fl, fr = polynomial_x(left), polynomial_x(right)
+        if fl == 0.0:
+            continue
+        if fl * fr < 0.0:
+            root_x.append(brentq(
+                polynomial_x, left, right, xtol=1e-13, rtol=1e-13,
+            ))
+    roots = tuple(sorted({
+        round(value * scale, 13) for value in root_x
+        if value > 0.0 and math.isfinite(value * scale)
+    }))
+    tangential = tuple(sorted({
+        round(value * scale, 13) for value in tangent_x
+    }))
+    unresolved = tuple(sorted({
+        round(value * scale, 13) for value in unresolved_x
+    }))
+    status = "POLYNOMIAL_ROOTS_ISOLATED"
+    if unresolved:
+        status = "POLYNOMIAL_ROOTS_UNRESOLVED"
+    return F1ScorePolynomialDiagnostic(
+        status=status,
+        degree=degree,
+        coefficients_ascending=tuple(coefficients),
+        positive_roots=roots,
+        tangential_roots=tangential,
+        unresolved_critical_candidates=unresolved,
+        positive_critical_points=tuple(value * scale for value in critical_x),
+    )
+
+
 def _scan_score_stationary_points(
     score, score_derivative, *, lo: float, hi: float,
     grid_points: int, score_tolerance: float = 1e-10,
