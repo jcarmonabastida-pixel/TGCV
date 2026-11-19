@@ -1,26 +1,12 @@
 {
-  "schema": "C10S-F1-NUMERICAL-STRESS-AUTHORIZATION-1",
-  "authorization_id": "C10S-F1-NUMERICAL-STRESS-20261119-004",
-  "status": "APPROVED",
-  "execution_authorized": true,
+  "approval_marker": "AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-004",
+  "approval_requirement": "Fresh explicit user approval required. Approval must change this exact authorization to APPROVED, set execution_authorized and approved_by_user true, and commit with exact marker AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-004. No approval from authorizations 001, 002 or 003 is reusable.",
+  "approval_scope_confirmation": "User explicitly approved authorization 004 in the conversation; approval applies only to the frozen v002 source, manifest, workflow, runtime, exact command and limits recorded here.",
+  "approved_at_utc": "2026-11-19T14:36:06.833Z",
   "approved_by_user": true,
-  "one_shot": true,
-  "source_commit": "a42351e374e3624a498b11199cea45cd0dc20c09",
-  "freeze_manifest": "03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_FREEZE_MANIFEST_004.md",
-  "freeze_manifest_commit": "7a73dc22cf6f4226cb6e7c0c8fe2dea28b767f6d",
-  "freeze_manifest_blob_sha": "a25828d42732ea345dd36c623fd384c6218d54d8",
-  "workflow": ".github/workflows/c10s-f1-numerical-stress-v2.yml",
-  "workflow_blob_sha": "f5fd3ebe2570e371b97d139f64be10c333b62df5",
-  "runtime": {
-    "runner": "ubuntu-24.04",
-    "python": "3.12.3",
-    "numpy": "2.1.3",
-    "scipy": "1.14.1",
-    "virtual_environment": "isolated",
-    "dependency_install": "pip install --no-deps --only-binary=:all: numpy==2.1.3 scipy==1.14.1"
-  },
+  "attempt_closed": false,
+  "authorization_id": "C10S-F1-NUMERICAL-STRESS-20261119-004",
   "command": {
-    "working_directory": "03_EXPERIMENTS/C10-S/harness",
     "argv": [
       "python",
       "run_c10s_f1_numerical_stress_v2.py",
@@ -28,13 +14,78 @@
       "a42351e374e3624a498b11199cea45cd0dc20c09",
       "--output-directory",
       "$RUNNER_TEMP/c10s-f1-numerical-stress-v2-evidence"
-    ]
+    ],
+    "working_directory": "03_EXPERIMENTS/C10-S/harness"
   },
+  "consumed": true,
+  "consumed_at_utc": "2026-11-19T14:36:42.657497+00:00",
+  "consumed_by_run_id": "44545538187",
+  "execution_authorized": false,
+  "freeze_manifest": "03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_FREEZE_MANIFEST_004.md",
+  "freeze_manifest_blob_sha": "a25828d42732ea345dd36c623fd384c6218d54d8",
+  "freeze_manifest_commit": "7a73dc22cf6f4226cb6e7c0c8fe2dea28b767f6d",
+  "limits": {
+    "automatic_retries": 0,
+    "job_timeout_minutes": 15,
+    "primary_executions": 1,
+    "replay": false
+  },
+  "one_shot": true,
+  "outputs": [
+    "numerical_stress_v2_records.jsonl",
+    "numerical_stress_v2_summary.json",
+    "numerical_stress_v2_manifest.json",
+    "workflow-preflight.txt",
+    "runner.stdout",
+    "runner.stderr",
+    "runner-exit-code.txt"
+  ],
+  "prohibitions": {
+    "automatic_retry": true,
+    "bytecode_compilation": true,
+    "dgp_experiment": true,
+    "external_dataset": true,
+    "inferential_coverage_study": true,
+    "monte_carlo_calibration": true,
+    "parameter_tuning": true,
+    "replay": true,
+    "scientific_c10_execution": true,
+    "source_modification_during_run": true,
+    "unit_tests": true
+  },
+  "retry_authorized": false,
+  "runtime": {
+    "dependency_install": "pip install --no-deps --only-binary=:all: numpy==2.1.3 scipy==1.14.1",
+    "numpy": "2.1.3",
+    "python": "3.12.3",
+    "runner": "ubuntu-24.04",
+    "scipy": "1.14.1",
+    "virtual_environment": "isolated"
+  },
+  "schema": "C10S-F1-NUMERICAL-STRESS-AUTHORIZATION-1",
   "scope": {
-    "polynomial_sturm_records": 131,
-    "n3_covariant_records": 7,
     "f1_n4_records": 14,
-    "total_records": 152,
+    "n2_near_double_roots": [
+      "1",
+      "1+1/2^24",
+      "-2"
+    ],
+    "n2_near_double_ulp_steps": [
+      -2,
+      -1,
+      1,
+      2
+    ],
+    "n3_covariant_records": 7,
+    "n3_covariant_scale_exponents": [
+      -500,
+      -200,
+      -50,
+      0,
+      50,
+      200,
+      500
+    ],
     "n4_scale_exponents": [
       -100,
       -50,
@@ -51,60 +102,11 @@
       50,
       100
     ],
-    "n3_covariant_scale_exponents": [
-      -500,
-      -200,
-      -50,
-      0,
-      50,
-      200,
-      500
-    ],
-    "n2_near_double_roots": [
-      "1",
-      "1+1/2^24",
-      "-2"
-    ],
-    "n2_near_double_ulp_steps": [
-      -2,
-      -1,
-      1,
-      2
-    ]
+    "polynomial_sturm_records": 131,
+    "total_records": 152
   },
-  "limits": {
-    "primary_executions": 1,
-    "automatic_retries": 0,
-    "replay": false,
-    "job_timeout_minutes": 15
-  },
-  "outputs": [
-    "numerical_stress_v2_records.jsonl",
-    "numerical_stress_v2_summary.json",
-    "numerical_stress_v2_manifest.json",
-    "workflow-preflight.txt",
-    "runner.stdout",
-    "runner.stderr",
-    "runner-exit-code.txt"
-  ],
-  "prohibitions": {
-    "unit_tests": true,
-    "bytecode_compilation": true,
-    "monte_carlo_calibration": true,
-    "dgp_experiment": true,
-    "inferential_coverage_study": true,
-    "parameter_tuning": true,
-    "external_dataset": true,
-    "source_modification_during_run": true,
-    "scientific_c10_execution": true,
-    "replay": true,
-    "automatic_retry": true
-  },
-  "approval_requirement": "Fresh explicit user approval required. Approval must change this exact authorization to APPROVED, set execution_authorized and approved_by_user true, and commit with exact marker AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-004. No approval from authorizations 001, 002 or 003 is reusable.",
-  "consumed": false,
-  "attempt_closed": false,
-  "retry_authorized": false,
-  "approved_at_utc": "2026-11-19T14:36:06.833Z",
-  "approval_marker": "AUTHORIZE-C10S-F1-NUMERICAL-STRESS-20261119-004",
-  "approval_scope_confirmation": "User explicitly approved authorization 004 in the conversation; approval applies only to the frozen v002 source, manifest, workflow, runtime, exact command and limits recorded here."
+  "source_commit": "a42351e374e3624a498b11199cea45cd0dc20c09",
+  "status": "CONSUMED",
+  "workflow": ".github/workflows/c10s-f1-numerical-stress-v2.yml",
+  "workflow_blob_sha": "f5fd3ebe2570e371b97d139f64be10c333b62df5"
 }
