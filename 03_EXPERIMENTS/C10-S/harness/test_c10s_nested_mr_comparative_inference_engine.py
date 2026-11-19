@@ -156,10 +156,26 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         self.assertEqual(metrics.eligible_rate, metrics.eligible_count / metrics.n_datasets)
         candidate = record.candidates[0]
         diagnostic_map = dict(candidate.diagnostics)
-        self.assertEqual(
+        self.assertIn(
             diagnostic_map["between_profile_inference_eligibility"],
-            "PROFILE_DIAGNOSTIC_ELIGIBLE_NOT_COVERAGE_CERTIFIED",
+            {
+                "PROFILE_DIAGNOSTIC_ELIGIBLE_NOT_COVERAGE_CERTIFIED",
+                "ABSTAIN_PROFILE_INFERENCE",
+            },
         )
+        self.assertIn(
+            diagnostic_map["between_profile_optimizer_adjudication_status"],
+            {
+                "OPTIMIZATION_CONCORDANT", "OPTIMIZATION_DISCORDANT",
+                "OPTIMIZATION_INSUFFICIENT", "OPTIMIZATION_BOUNDARY_SENSITIVE",
+            },
+        )
+        self.assertIn("between_profile_optimizer_stationary_points", diagnostic_map)
+        self.assertIn("between_profile_optimizer_loglik_difference", diagnostic_map)
+        if diagnostic_map["between_profile_inference_eligibility"] == "ABSTAIN_PROFILE_INFERENCE":
+            self.assertNotEqual(diagnostic_map["between_profile_abstention_reason"], "NONE")
+        else:
+            self.assertEqual(diagnostic_map["between_profile_abstention_reason"], "NONE")
         self.assertEqual(
             diagnostic_map["between_profile_interval"],
             "NOT_EMITTED_NO_LR_CUTOFF_SELECTED",
