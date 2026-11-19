@@ -141,6 +141,10 @@ class F5BetaBinomialProfileTests(unittest.TestCase):
             "mu_minus_grid_local_maxima_kappa",
             "mu_plus_top_two_local_maxima_loglik_gap",
             "mu_minus_top_two_local_maxima_loglik_gap",
+            "mu_plus_independent_multistart_successes",
+            "mu_minus_independent_multistart_successes",
+            "mu_plus_independent_optimizer_gap",
+            "mu_minus_independent_optimizer_gap",
         ):
             self.assertIn(key, diagnostics)
         self.assertGreaterEqual(int(diagnostics["mu_plus_grid_local_maxima_count"]), 0)
