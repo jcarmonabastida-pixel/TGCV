@@ -226,6 +226,7 @@ class F1ScorePolynomialDiagnostic:
     positive_roots: tuple[float, ...]
     tangential_roots: tuple[float, ...]
     unresolved_critical_candidates: tuple[float, ...]
+    critical_point_solver_status: str
     positive_critical_points: tuple[float, ...]
 
 
@@ -236,22 +237,38 @@ def _polyval_ascending(coefficients: Sequence[float], value: float) -> float:
     return result
 
 
-def _positive_quadratic_roots(a: float, b: float, c: float) -> tuple[float, ...]:
+def _positive_quadratic_roots_diagnostic(
+    a: float, b: float, c: float,
+) -> tuple[tuple[float, ...], str]:
+    """Stable positive-root solver with an explicit near-zero discriminant state."""
     if a == 0.0:
         if b == 0.0:
-            return ()
+            return (), "DEGREE_BELOW_ONE"
         root = -c / b
-        return (root,) if root > 0.0 and math.isfinite(root) else ()
-    discriminant = b * b - 4.0 * a * c
-    if discriminant < 0.0:
-        return ()
+        return ((root,) if root > 0.0 and math.isfinite(root) else ()), "RESOLVED"
+    b_squared = b * b
+    four_ac = 4.0 * a * c
+    discriminant = math.fsum((b_squared, -four_ac))
+    error_bound = 16.0 * math.ulp(1.0) * (abs(b_squared) + abs(four_ac))
+    if discriminant < -error_bound:
+        return (), "RESOLVED"
+    if discriminant != 0.0 and abs(discriminant) <= error_bound:
+        return (), "DISCRIMINANT_UNRESOLVED"
+    if discriminant == 0.0:
+        root = -b / (2.0 * a)
+        return ((root,) if root > 0.0 and math.isfinite(root) else ()), "RESOLVED"
     square_root = math.sqrt(discriminant)
     q = -0.5 * (b + math.copysign(square_root, b))
     candidates = (q / a, c / q) if q != 0.0 else (-b / (2.0 * a),)
     return tuple(sorted({
         value for value in candidates
         if value > 0.0 and math.isfinite(value)
-    }))
+    })), "RESOLVED"
+
+
+def _positive_quadratic_roots(a: float, b: float, c: float) -> tuple[float, ...]:
+    roots, _ = _positive_quadratic_roots_diagnostic(a, b, c)
+    return roots
 
 
 def f1_score_polynomial_diagnostic(
@@ -296,15 +313,15 @@ def f1_score_polynomial_diagnostic(
         raise F1ProfileError("SCORE_POLYNOMIAL_DEGENERATE")
 
     if degree == 3:
-        critical = _positive_quadratic_roots(
+        critical, critical_status = _positive_quadratic_roots_diagnostic(
             3.0 * coefficients[3], 2.0 * coefficients[2], coefficients[1],
         )
     elif degree == 2:
-        critical = _positive_quadratic_roots(
+        critical, critical_status = _positive_quadratic_roots_diagnostic(
             0.0, 2.0 * coefficients[2], coefficients[1],
         )
     else:
-        critical = ()
+        critical, critical_status = (), "RESOLVED"
     scale = max(
         within, M, tau, 1e-12,
         *(abs(value) for value in critical),
@@ -369,7 +386,7 @@ def f1_score_polynomial_diagnostic(
         value * scale for value in unresolved_x
     }))
     status = "POLYNOMIAL_ROOTS_ISOLATED"
-    if unresolved:
+    if unresolved or critical_status != "RESOLVED":
         status = "POLYNOMIAL_ROOTS_UNRESOLVED"
     return F1ScorePolynomialDiagnostic(
         status=status,
@@ -378,6 +395,7 @@ def f1_score_polynomial_diagnostic(
         positive_roots=roots,
         tangential_roots=tangential,
         unresolved_critical_candidates=unresolved,
+        critical_point_solver_status=critical_status,
         positive_critical_points=tuple(value * scale for value in critical_x),
     )
 
