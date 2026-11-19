@@ -5,7 +5,8 @@ C1 is F1-specific and C5 is F5-specific. No calibration is run here.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import asdict, dataclass, replace
+import json
 import math
 from statistics import mean
 from types import SimpleNamespace
@@ -461,6 +462,14 @@ def compare_dataset(
             ("bootstrap_seed", str(fitted.bootstrap_seed)),
             ("mcse_interval_status", "NOT_IMPLEMENTED_BOUNDARY_AWARE_JOINT_INFERENCE"),
             ("failure_reason", fitted.failure_reason or "NONE"),
+            ("likelihood_optimizer_audit_json", (
+                json.dumps(
+                    asdict(fitted.optimizer_audit), sort_keys=True,
+                    separators=(",", ":"), allow_nan=False,
+                )
+                if fitted.optimizer_audit is not None else "null"
+            )),
+            ("likelihood_optimizer_audit_error", fitted.optimizer_audit_error or "NONE"),
         )
         if include_profile_diagnostics:
             diagnostics += _f5_profile_diagnostic(
