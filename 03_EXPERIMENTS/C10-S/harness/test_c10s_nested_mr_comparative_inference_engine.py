@@ -170,8 +170,17 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
                 "OPTIMIZATION_INSUFFICIENT", "OPTIMIZATION_BOUNDARY_SENSITIVE",
             },
         )
-        self.assertIn("between_profile_optimizer_stationary_points", diagnostic_map)
-        self.assertIn("between_profile_optimizer_loglik_difference", diagnostic_map)
+        self.assertIn("between_profile_optimizer_stationary_point_counts", diagnostic_map)
+        self.assertIn("between_profile_optimizer_grid_span_configurations", diagnostic_map)
+        self.assertIn("between_profile_optimizer_loglik_spread", diagnostic_map)
+        self.assertEqual(
+            len(diagnostic_map["between_profile_optimizer_stationary_point_counts"].split(",")),
+            9,
+        )
+        self.assertEqual(
+            len(diagnostic_map["between_profile_optimizer_grid_span_configurations"].split(";")),
+            9,
+        )
         if diagnostic_map["between_profile_inference_eligibility"] == "ABSTAIN_PROFILE_INFERENCE":
             self.assertNotEqual(diagnostic_map["between_profile_abstention_reason"], "NONE")
         else:
