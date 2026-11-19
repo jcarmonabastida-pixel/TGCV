@@ -144,7 +144,17 @@ def _new_seed_roster(
                            "f5_c0_bootstrap_validation", cell_id, replicate))
             roster.append((derive_seed("f5_c5_bootstrap", cell_id, k_calibration + replicate),
                            "f5_c5_bootstrap_validation", cell_id, replicate))
-        for replicate in range(b3_selected_per_cell):
+        calibration_ids = [
+            dataset_id("calibration", cell_id, replicate)
+            for replicate in range(k_calibration)
+        ]
+        selected = select_b3_calibration_datasets(
+            cell_id, calibration_ids, n=b3_selected_per_cell,
+        )
+        selected_replicates = [
+            int(item["dataset_id"].rsplit(":", 1)[1]) for item in selected
+        ]
+        for replicate in selected_replicates:
             roster.append((derive_seed("f5_endpoint_sensitivity_b1000", cell_id, replicate),
                            "f5_endpoint_sensitivity_b1000", cell_id, replicate))
             roster.append((derive_seed("f5_endpoint_sensitivity_b4000", cell_id, replicate),
@@ -402,11 +412,12 @@ def run_f5_bank(
     ]
     if len(records) != k or len({record["dataset_id"] for record in records}) != k:
         raise F5DevelopmentCalibrationError("INCOMPLETE_OR_DUPLICATE_BANK_DENOMINATOR")
-    diagnostic_gate = all(
-        record["fit_diagnostics"]["fit_status"] == "INTERIOR"
-        and record["fit_diagnostics"]["optimizer_status"] == "OPTIMIZER_CONCORDANT"
-        for record in records
-    )
+    diagnostic_gate = all(_optimizer_diagnostic_is_resolved(record["fit_diagnostics"]) for record in records)
+    c5_metrics = [metric for metric in metrics if metric["method_id"] == "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"]
+    component_gates = {
+        target: _component_gate(next((m for m in c5_metrics if m["target"] == target), None))
+        for target in ("within", "between")
+    }
     return {
         "bank": bank,
         "cell": spec.manifest(),
@@ -422,10 +433,86 @@ def run_f5_bank(
             "PASS_NO_UNRESOLVED_NUMERICAL_STATE" if diagnostic_gate
             else "UNRESOLVED_NUMERICAL_STATE_PRESENT"
         ),
+        "c5_component_gates": component_gates,
+        "c5_bank_disposition": (
+            "PASS_DEVELOPMENT_COMPONENT_GATES"
+            if diagnostic_gate and all(item["status"] == "PASS" for item in component_gates.values())
+            else "NO_VALIDATED_F5_COMPONENT_INTERVAL_METHOD"
+        ),
+        "identification_interpretation": "NO_BINARY_WEAK_IDENTIFICATION_THRESHOLD; raw curvature/limits/optimizer diagnostics retained",
         "mcse_scope": MCSE_SCOPE,
         "records": records,
     }
 
+
+
+def _optimizer_diagnostic_is_resolved(fit: dict[str, Any]) -> bool:
+    audit = fit.get("optimizer_audit")
+    if not isinstance(audit, dict):
+        return False
+    if fit.get("fit_status") != "INTERIOR" or fit.get("optimizer_status") != "OPTIMIZER_CONCORDANT":
+        return False
+    if audit.get("independent_optimizer_success") is not True:
+        return False
+    required_scalars = (
+        "selected_mean_logit", "selected_log_concentration", "selected_log_likelihood",
+        "selected_score_norm", "profile_log_concentration_curvature",
+        "independent_terminal_log_alpha", "independent_terminal_log_beta",
+        "independent_score_norm", "absolute_log_likelihood_difference",
+        "log_shape_parameter_distance",
+    )
+    for key in required_scalars:
+        value = audit.get(key)
+        if not isinstance(value, (int, float)) or not math.isfinite(value):
+            return False
+    starts = audit.get("starts")
+    if not isinstance(starts, list) or len(starts) != 3:
+        return False
+    required_start_values = (
+        "final_mean_logit", "final_log_concentration", "gradient_norm",
+        "lower_mean_bound_distance", "upper_mean_bound_distance",
+        "lower_concentration_bound_distance", "upper_concentration_bound_distance",
+    )
+    for start in starts:
+        if not isinstance(start, dict) or any(
+            not isinstance(start.get(key), (int, float)) or not math.isfinite(start[key])
+            for key in required_start_values
+        ):
+            return False
+    hessian = audit.get("independent_observed_hessian") or audit.get("observed_hessian")
+    if not isinstance(hessian, list) or not hessian or any(
+        not isinstance(row, list) or any(not isinstance(value, (int, float)) or not math.isfinite(value) for value in row)
+        for row in hessian
+    ):
+        return False
+    return True
+
+
+def _component_gate(metric: dict[str, Any] | None) -> dict[str, Any]:
+    if metric is None:
+        return {"status": "FAIL_MISSING_METRIC"}
+    coverage = metric.get("conditional_coverage")
+    emission = metric.get("interval_emission_rate")
+    wilson = metric.get("coverage_wilson_95")
+    coverage_ok = isinstance(coverage, (int, float)) and 0.93 <= coverage <= 0.97
+    emission_ok = isinstance(emission, (int, float)) and emission >= 0.95
+    wilson_ok = (
+        isinstance(wilson, list) and len(wilson) == 2
+        and isinstance(wilson[0], (int, float)) and isinstance(wilson[1], (int, float))
+        and wilson[0] <= 0.95 <= wilson[1]
+    )
+    passed = coverage_ok and emission_ok and wilson_ok
+    return {
+        "status": "PASS" if passed else "FAIL_FROZEN_COMPONENT_GATE",
+        "conditional_coverage": coverage,
+        "conditional_coverage_gate": "[0.93,0.97]",
+        "coverage_wilson_95": wilson,
+        "wilson_contains_0_95": wilson_ok,
+        "interval_emission_rate": emission,
+        "emission_gate": ">=0.95",
+        "abstention_count": metric.get("abstention_count"),
+        "abstention_reasons": metric.get("abstention_reasons"),
+    }
 
 def _rank_uncertainty(bootstrap_b: int, probability: float) -> dict[str, Any]:
     alpha = 1.0 - CONFIDENCE_LEVEL
