@@ -3,6 +3,7 @@ from __future__ import annotations
 import math
 import unittest
 
+from c10s_beta_binomial_variance_oracles import beta_binomial_f5_reference
 from c10s_f5_beta_binomial_likelihood_diagnostics import (
     F5LikelihoodDiagnosticError,
     beta_binomial_extended_boundary_likelihoods,
@@ -106,6 +107,39 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
             "INDEPENDENT_OPTIMIZER_UNRESOLVED",
             "LIKELIHOOD_CONCORDANT_PARAMETER_DISAGREEMENT",
         ))
+
+    def test_finite_r_count_likelihood_matches_independent_exact_pmf_oracle(self):
+        alpha, beta, r = 2.0, 2.0, 5
+        reference = beta_binomial_f5_reference(
+            alpha=alpha, beta=beta, m=10, r=r,
+        )
+        for count, expected in enumerate(reference.pmf_cluster_count):
+            result = beta_binomial_loglik_score_hessian(
+                (count, count), r,
+                mean_logit=math.log(alpha / beta),
+                log_concentration=math.log(alpha + beta),
+            )
+            observed = math.exp(result.log_likelihood / 2.0)
+            self.assertAlmostEqual(observed, expected, delta=2e-14)
+        self.assertAlmostEqual(sum(reference.pmf_cluster_count), 1.0, places=14)
+
+    def test_boundary_adjacent_score_remains_finite_and_matches_differences(self):
+        for eta, xi in ((-4.0, math.log(0.2)), (4.0, math.log(1e3))):
+            with self.subTest(eta=eta, xi=xi):
+                h = 1e-5
+                def ll(a, b):
+                    return beta_binomial_loglik_score_hessian(
+                        COUNTS, R, mean_logit=a, log_concentration=b,
+                    ).log_likelihood
+                result = beta_binomial_loglik_score_hessian(
+                    COUNTS, R, mean_logit=eta, log_concentration=xi,
+                )
+                score_eta = (ll(eta + h, xi) - ll(eta - h, xi)) / (2 * h)
+                score_xi = (ll(eta, xi + h) - ll(eta, xi - h)) / (2 * h)
+                self.assertTrue(math.isfinite(result.score_mean_logit))
+                self.assertTrue(math.isfinite(result.score_log_concentration))
+                self.assertAlmostEqual(result.score_mean_logit, score_eta, delta=2e-5)
+                self.assertAlmostEqual(result.score_log_concentration, score_xi, delta=2e-5)
 
     def test_binomial_limit_is_the_high_concentration_limit(self):
         counts = (0, 1, 3, 5, 4, 2)
