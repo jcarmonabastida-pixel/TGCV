@@ -93,61 +93,6 @@ def _limit_loglik(
     raise F5ProfileError("UNKNOWN_CONCENTRATION_LIMIT")
 
 
-def _branch_profile(
-    counts: tuple[int, ...], r: int, h: float, sign: int,
-) -> tuple[float, float | None, str, str]:
-    if h < -1e-14 or h > 0.25 + 1e-12:
-        return -math.inf, None, "INFEASIBLE", "NONE"
-    h = min(0.25, max(0.0, h))
-    root = math.sqrt(max(0.0, 1.0 - 4.0 * h))
-    mu = (1.0 + sign * root) / 2.0
-
-    # At h=0 the mean branches are degenerate point masses for every finite
-    # concentration. At h=1/4 the branches coincide.
-    if h == 0.0:
-        value = _limit_loglik(counts, r, mu, limit="KAPPA_TO_ZERO")
-        return value, None, "MEAN_DEGENERATE", "MEAN_BOUNDARY"
-    if mu in (0.0, 1.0):
-        return _limit_loglik(counts, r, mu, limit="KAPPA_TO_ZERO"), None, "MEAN_BOUNDARY", "MEAN_BOUNDARY"
-
-    def h_for_logk(logk: float) -> float:
-        k = math.exp(logk)
-        return _loglik(counts, r, mu, k)
-
-    # A deterministic scan identifies candidate local maxima; each is refined
-    # independently. Analytic kappa limits are evaluated separately.
-    log_grid = np.linspace(-24.0, 24.0, 193)
-    values = [h_for_logk(float(z)) for z in log_grid]
-    candidates: list[tuple[float, float]] = []
-    for idx, value in enumerate(values):
-        if not math.isfinite(value):
-            continue
-        left = values[idx - 1] if idx else -math.inf
-        right = values[idx + 1] if idx + 1 < len(values) else -math.inf
-        if value >= left and value >= right:
-            lo = float(log_grid[max(0, idx - 1)])
-            hi = float(log_grid[min(len(log_grid) - 1, idx + 1)])
-            if hi > lo:
-                opt = minimize_scalar(
-                    lambda z: -h_for_logk(float(z)),
-                    bounds=(lo, hi), method="bounded",
-                    options={"xatol": 1e-10, "maxiter": 2000},
-                )
-                if opt.success and math.isfinite(float(opt.fun)):
-                    candidates.append((-float(opt.fun), math.exp(float(opt.x))))
-
-    limit_zero = _limit_loglik(counts, r, mu, limit="KAPPA_TO_ZERO")
-    limit_inf = _limit_loglik(counts, r, mu, limit="KAPPA_TO_INFINITY")
-    best_finite = max(candidates, default=(-math.inf, None), key=lambda item: item[0])
-    choices = [
-        (best_finite[0], best_finite[1], "FINITE_KAPPA"),
-        (limit_zero, None, "KAPPA_TO_ZERO_LIMIT"),
-        (limit_inf, None, "KAPPA_TO_INFINITY_LIMIT"),
-    ]
-    best_value, best_kappa, status = max(choices, key=lambda item: item[0])
-    return best_value, best_kappa, status, "INTERIOR_MEAN"
-
-
 def f5_beta_binomial_mcse_profile_loglik(
     rows: Sequence[Sequence[float]], *, target_m: int, target_r: int,
     target_mcse: float,
