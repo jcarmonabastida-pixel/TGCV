@@ -76,7 +76,7 @@ class F1RootAdjudicationTests(unittest.TestCase):
             "ROOT_MATCHING_NOT_UNIQUELY_IDENTIFIED_UNDER_MIXED_TOLERANCE",
         )
 
-    def test_zero_boundary_root_is_recorded_but_not_compared_as_positive(self):
+    def test_removed_zero_factor_is_recorded_outside_positive_root_comparison(self):
         self.f1 = SimpleNamespace(
             status="POLYNOMIAL_ROOTS_ISOLATED",
             coefficients_ascending=(-1.0, 1.0),
@@ -84,11 +84,8 @@ class F1RootAdjudicationTests(unittest.TestCase):
             removed_zero_factor_multiplicity=2,
         )
         independent = RootIsolationResult(
-            "ROOTS_ISOLATED", 2,
-            (
-                IsolatedRoot(Fraction(0), Fraction(0), 1),
-                IsolatedRoot(Fraction(1), Fraction(1), 1),
-            ),
+            "ROOTS_ISOLATED", 1,
+            (IsolatedRoot(Fraction(1), Fraction(1), 1),),
         )
         with patch("c10s_f1_root_adjudication.f1_score_polynomial_diagnostic",
                    return_value=self.f1), patch(
@@ -98,7 +95,7 @@ class F1RootAdjudicationTests(unittest.TestCase):
             result = adjudicate_f1_roots((), between_variance=0.0)
         self.assertEqual(result.status, "ROOTS_AGREE")
         self.assertEqual(result.independent_root_count, 1)
-        self.assertEqual(result.boundary_roots, (("0/1", "0/1", 1),))
+        self.assertEqual(result.boundary_roots, ())
         self.assertEqual(result.root_domain, "(0,+infinity)")
         self.assertEqual(result.removed_zero_factor_multiplicity, 2)
 
