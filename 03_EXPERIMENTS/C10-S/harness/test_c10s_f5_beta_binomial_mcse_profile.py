@@ -3,6 +3,8 @@ from __future__ import annotations
 import math
 import unittest
 
+from scipy.special import digamma
+
 from c10s_f5_beta_binomial_mcse_profile import (
     F5ProfileError,
     f5_beta_binomial_mcse_profile_loglik,
@@ -73,6 +75,57 @@ class F5BetaBinomialProfileTests(unittest.TestCase):
             target_mcse=mcse, concentration_grid_points=801,
         )
         self.assertGreaterEqual(profiled.profile_loglik, direct - 1e-7)
+
+    def test_beta_binomial_analytic_scores_match_independent_finite_differences(self):
+        mu, concentration = 0.23, 3.7
+        r = len(ROWS[0])
+        counts = [sum(row) for row in ROWS]
+        alpha, beta = mu * concentration, (1.0 - mu) * concentration
+
+        score_mu = sum(
+            concentration * (
+                digamma(x + alpha) - digamma(r - x + beta)
+                - digamma(alpha) + digamma(beta)
+            )
+            for x in counts
+        )
+        score_kappa = sum(
+            mu * digamma(x + alpha)
+            + (1.0 - mu) * digamma(r - x + beta)
+            - digamma(r + concentration)
+            - mu * digamma(alpha)
+            - (1.0 - mu) * digamma(beta)
+            + digamma(concentration)
+            for x in counts
+        )
+
+        def independent_loglik(m, k):
+            a, b = m * k, (1.0 - m) * k
+
+            def lb(u, v):
+                return math.lgamma(u) + math.lgamma(v) - math.lgamma(u + v)
+
+            total = 0.0
+            for x in counts:
+                choose = (
+                    math.lgamma(r + 1) - math.lgamma(x + 1)
+                    - math.lgamma(r - x + 1)
+                )
+                total += choose + lb(x + a, r - x + b) - lb(a, b)
+            return total
+
+        eps = 1e-6
+        numeric_mu = (
+            independent_loglik(mu + eps, concentration)
+            - independent_loglik(mu - eps, concentration)
+        ) / (2.0 * eps)
+        numeric_kappa = (
+            independent_loglik(mu, concentration + eps)
+            - independent_loglik(mu, concentration - eps)
+        ) / (2.0 * eps)
+
+        self.assertAlmostEqual(score_mu, numeric_mu, delta=2e-5)
+        self.assertAlmostEqual(score_kappa, numeric_kappa, delta=2e-5)
 
     def test_world_permutation_invariance(self):
         permuted = tuple(reversed(ROWS))
