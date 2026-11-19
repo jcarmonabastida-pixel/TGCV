@@ -237,7 +237,8 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
         self.assertAlmostEqual(result.binomial_profile_mean, expected_mean)
         self.assertTrue(math.isfinite(result.binomial_profile_log_likelihood))
         self.assertEqual(result.interior_count_observations, 8)
-        self.assertEqual(result.two_point_profile_log_likelihood, -math.inf)
+        self.assertIsNone(result.two_point_profile_log_likelihood)
+        self.assertEqual(result.two_point_boundary_status, "ZERO_PROBABILITY_INTERIOR_COUNTS")
         self.assertIsNone(result.two_point_profile_mean)
 
     def test_two_point_profile_boundary_uses_endpoint_mixture_mle(self):
@@ -285,7 +286,8 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
         boundary = beta_binomial_profiled_boundary_likelihoods(counts, 5)
         self.assertAlmostEqual(boundary.binomial_profile_mean, 0.4)
         self.assertTrue(math.isfinite(boundary.binomial_profile_log_likelihood))
-        self.assertEqual(boundary.two_point_profile_log_likelihood, -math.inf)
+        self.assertIsNone(boundary.two_point_profile_log_likelihood)
+        self.assertEqual(boundary.two_point_boundary_status, "ZERO_PROBABILITY_INTERIOR_COUNTS")
 
 
     def test_profile_audit_keeps_optimizer_boundary_and_identification_separate(self):
@@ -303,7 +305,10 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
         self.assertEqual(record.profile_status, "NUMERICAL_PROFILE_UNCERTIFIED")
         self.assertEqual(record.profile_point_count, len(grid))
         self.assertTrue(math.isfinite(record.profile_minus_binomial_boundary))
-        self.assertEqual(record.profile_minus_two_point_boundary, math.inf)
+        self.assertIsNone(record.profile_minus_two_point_boundary)
+        self.assertEqual(
+            record.two_point_boundary_status, "ZERO_PROBABILITY_INTERIOR_COUNTS",
+        )
         self.assertEqual(
             len(record.profile_curvature_values), len(profile),
         )
