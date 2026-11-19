@@ -77,6 +77,12 @@ class F1RootAdjudicationTests(unittest.TestCase):
         )
 
     def test_zero_boundary_root_is_recorded_but_not_compared_as_positive(self):
+        self.f1 = SimpleNamespace(
+            status="POLYNOMIAL_ROOTS_ISOLATED",
+            coefficients_ascending=(-1.0, 1.0),
+            positive_roots=(1.0,),
+            removed_zero_factor_multiplicity=2,
+        )
         independent = RootIsolationResult(
             "ROOTS_ISOLATED", 2,
             (
