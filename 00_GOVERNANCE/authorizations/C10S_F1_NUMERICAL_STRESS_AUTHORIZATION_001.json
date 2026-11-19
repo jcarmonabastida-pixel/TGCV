@@ -1,8 +1,8 @@
 {
   "schema": "C10S-F1-NUMERICAL-STRESS-AUTHORIZATION-1",
   "authorization_id": "C10S-F1-NUMERICAL-STRESS-20261119-001",
-  "status": "APPROVED",
-  "execution_authorized": true,
+  "status": "BLOCKED_PRE_EXECUTION",
+  "execution_authorized": false,
   "approved_by_user": true,
   "one_shot": true,
   "source_commit": "d5edc0010f7a8c6587677eb2004b545367fc4b35",
@@ -75,5 +75,17 @@
       "external_dataset",
       "scientific_c10_execution"
     ]
+  },
+  "attempt_closed": true,
+  "workflow_attempt": {
+    "run_id": 44530141078,
+    "run_url": "https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44530141078",
+    "head_commit": "965c80a47ec53788c4712e7f63a34b922b38fd56",
+    "conclusion": "failure",
+    "jobs_observed": 0,
+    "artifacts_observed": 0,
+    "primary_runner_invoked": false,
+    "failure_classification": "WORKFLOW_FAILED_BEFORE_JOB_CREATION; ROOT_CAUSE_NOT_YET_ESTABLISHED",
+    "retry_authorized": false
   }
 }
