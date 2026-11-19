@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import replace
 import json
+import math
 import unittest
 
 from c10s_nested_mr_comparative_inference_engine import (
@@ -127,6 +128,9 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
             "LIKELIHOOD_CONCORDANT_PARAMETER_DISAGREEMENT",
         ))
         self.assertIn("two_point_limit_log_likelihood", audit)
+        self.assertIn("profile_log_concentration_curvature", audit)
+        self.assertIsNotNone(audit["profile_log_concentration_curvature"])
+        self.assertTrue(math.isfinite(audit["profile_log_concentration_curvature"]))
         self.assertIn(("bootstrap_seed", "20261119"), candidate.comparison.provenance)
         self.assertIsNotNone(candidate.comparison.within_interval)
         self.assertIsNotNone(candidate.comparison.between_interval)
