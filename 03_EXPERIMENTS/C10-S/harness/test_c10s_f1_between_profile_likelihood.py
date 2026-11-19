@@ -89,6 +89,14 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertTrue(result.lower_boundary_included)
         self.assertEqual(result.confidence_components[0][0], 0.0)
 
+    def test_extreme_lr_cutoff_abstains_when_nuisance_certification_is_unresolved(self):
+        with self.assertRaisesRegex(
+            F1ProfileError, "PROFILE_NUISANCE_CERTIFICATION_FAILED",
+        ):
+            f1_profile_between_confidence_set(
+                ROWS, family="F1", likelihood_ratio_cutoff=100.0,
+            )
+
     def test_profile_loglik_is_equivariant_to_observation_scale(self):
         tau = 0.25
         base = f1_profile_loglik(ROWS, between_variance=tau)
