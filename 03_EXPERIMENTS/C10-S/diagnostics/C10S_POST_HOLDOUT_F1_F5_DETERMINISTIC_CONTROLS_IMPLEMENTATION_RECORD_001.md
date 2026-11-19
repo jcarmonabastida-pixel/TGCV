@@ -379,3 +379,20 @@ Exact-commit static validation:
 - End-to-end optimizer-audit fault-injection test: PASS.
 
 This closes the full-engine propagation check for the optional optimizer-audit failure path. It remains a deterministic software test, not a statistical identification or coverage result. No calibration, bootstrap bank, resource preflight, holdout or scientific C10 execution was performed.
+
+
+### End-to-end C5 boundary-abstention propagation
+
+An all-zero F5 dataset now exercises the actual comparison engine with B1 profile diagnostics enabled. C5 retains its existing `ALL_ZERO_OR_ALL_ONE_BOUNDARY` abstention, while the independent B1 record preserves the optimizer audit, `MEAN_PROFILE_BOUNDARY` profile statuses and finite endpoint-mixture boundary likelihood. The concentration identification disposition remains `INDETERMINATE`.
+
+An initial fixture used a non-dataclass stand-in and failed the existing strict dataclass serialization contract. The fixture was corrected to use the declared `BetaBinomialOptimizerAudit` record; production code and serialization requirements were left unchanged.
+
+Exact-commit static validation:
+- Commit: `3c389e123da11e4c6a0bc567cf36786ce418ee40`
+- Run: `44594961717`
+- Hash-locked dependencies: PASS
+- Compile: PASS
+- Deterministic suite: **142 tests PASS**
+- End-to-end C5 boundary-abstention/profile propagation test: PASS.
+
+No numerical stress, calibration, bootstrap bank, resource preflight, holdout or scientific C10 execution occurred.
