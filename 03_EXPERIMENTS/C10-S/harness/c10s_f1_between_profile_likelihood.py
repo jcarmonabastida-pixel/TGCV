@@ -894,7 +894,9 @@ def f1_profile_nuisance_optimizer_diagnostic(
         independent_loglik=independent_value,
         absolute_loglik_difference=difference,
         stationary_points=len(roots),
-        stationary_points_log_scale=tuple(roots),
+        stationary_points_log_scale=tuple(
+            math.log(value) for value in polynomial.positive_roots
+        ),
         stationary_point_types=root_types,
         tangential_score_roots=tangential_count,
         unresolved_tangential_candidates=unresolved_tangencies,
