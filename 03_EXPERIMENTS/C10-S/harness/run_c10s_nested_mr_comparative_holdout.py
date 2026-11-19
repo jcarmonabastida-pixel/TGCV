@@ -382,7 +382,16 @@ def run_holdout_checkpointed(
                 or len({record.get("dataset_id") for record in cell_result.get("records", [])}) != k
             ):
                 raise HoldoutRunnerError(f"CHECKPOINT_CELL_CONTRACT_MISMATCH:{cell_id}")
-            completed[cell_id] = cell_result
+            completed[cell_id] = {
+                "cell": cell_result["cell"],
+                "datasets_completed": cell_result["datasets_completed"],
+                "method_roster": cell_result["method_roster"],
+                "metrics": cell_result["metrics"],
+                "mcse_adjudication": cell_result["mcse_adjudication"],
+                "records_file": entry["file"],
+                "records_sha256": entry["sha256"],
+                "records_count": len(cell_result["records"]),
+            }
     for spec in selected:
         if spec.cell_id in completed:
             continue
@@ -392,7 +401,17 @@ def run_holdout_checkpointed(
         cell_file = f"{spec.cell_id}.cell.json"
         cell_path = checkpoint_dir / cell_file
         digest = _atomic_json(cell_path, cell_result)
-        completed[spec.cell_id] = cell_result
+        completed[spec.cell_id] = {
+            "cell": cell_result["cell"],
+            "datasets_completed": cell_result["datasets_completed"],
+            "method_roster": cell_result["method_roster"],
+            "metrics": cell_result["metrics"],
+            "mcse_adjudication": cell_result["mcse_adjudication"],
+            "records_file": cell_file,
+            "records_sha256": digest,
+            "records_count": len(cell_result["records"]),
+        }
+        del cell_result
         prior_index = {
             "schema": config["schema"],
             "config": config,
