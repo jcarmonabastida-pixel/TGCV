@@ -203,6 +203,12 @@ def run_n3_covariant_lane() -> dict[str, Any]:
             "fixture_id": fixture_id,
             "exponent": exponent,
             "ideal_coefficients": [_qtext(v) for v in fixture.ideal_coefficients],
+            "actual_preconversion_coefficients": [_qtext(v) for v in actual],
+            "binary64_hex": [value.hex() for value in binary64] if binary64 is not None else None,
+            "exact_binary64_coefficients": (
+                [_qtext(Q.from_float(value)) for value in binary64]
+                if binary64 is not None else None
+            ),
             "domain_transformed": [_qtext(lower), _qtext(upper)],
             "max_width_transformed": _qtext(width),
             "max_depth": base_depth,
@@ -334,6 +340,13 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
                 "lr_upper_base_variance": high * inverse,
                 "score_polynomial_status": diagnostic.status,
                 "score_polynomial_degree": diagnostic.degree,
+                "score_polynomial_coefficients_binary64_hex": [
+                    float(value).hex() for value in diagnostic.coefficients_ascending
+                ],
+                "score_polynomial_coefficients_exact_rational": [
+                    _qtext(Q.from_float(float(value)))
+                    for value in diagnostic.coefficients_ascending
+                ],
                 "score_polynomial_roots_base_variance": [
                     value * inverse for value in diagnostic.positive_roots
                 ],
