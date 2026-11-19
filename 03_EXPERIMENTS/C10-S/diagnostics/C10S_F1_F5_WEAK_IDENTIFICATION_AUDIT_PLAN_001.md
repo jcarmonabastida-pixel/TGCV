@@ -269,3 +269,24 @@ Exact-commit static validation:
 - F1 numerical-stress workflows v1/v2/v3: SKIPPED by authorization guards.
 
 No DGP bank, calibration, bootstrap comparison bank, resource preflight, holdout, or scientific C10 execution was performed. This closes the static per-dataset propagation gap for B1 only; it does not validate the statistical identification of concentration or C5 coverage. The frozen development/calibration specification v1.0 remains unchanged.
+
+
+## Adversarial B1 propagation controls — 2026-11-19
+
+The per-dataset B1 propagation now has deterministic adversarial coverage for three distinct conditions:
+
+1. **Optimizer audit unavailable:** the profile audit is recorded as JSON `null` with the explicit `OPTIMIZER_AUDIT_UNAVAILABLE` error, while the independent numerical-stability trace is still retained. One diagnostic failure does not erase the other.
+2. **Finite two-point boundary:** an endpoint-only count fixture retains the separately profiled finite two-point mixture boundary and its status; identification remains `INDETERMINATE`.
+3. **Unresolved nuisance refinement:** forced scalar-optimizer failure is propagated as `NUISANCE_PROFILE_OPTIMIZER_UNRESOLVED` at every point; profile status becomes `PROFILE_HAS_BOUNDARY_OR_UNRESOLVED_POINTS`, curvature remains null, and the stability trace preserves unresolved statuses without claiming numerical stability or identification.
+
+Exact-commit static validation:
+- An intermediate test commit `f7e2450bfe39a20372a21c88549df1dcd0f6bd49` failed one assertion because the test expected a nuisance-mean field not exposed by the audit record. The failure was inspected; no production-code change was needed. The test was corrected to assert only fields actually included in the record.
+- Final tested commit: `ee676c7f85181e87196cee32b1c955ba5172e3e2`.
+- Run: `44594182486`.
+- Hash-locked dependency installation: PASS.
+- Compile: PASS.
+- Deterministic suite: **140 tests passed**.
+- All three new adversarial propagation tests: PASS.
+- F1 numerical-stress workflows remain outside this operation and were skipped by authorization guards.
+
+This closes the identified deterministic propagation cases for optimizer-audit absence, finite two-point boundary handling and unresolved nuisance-profile refinement. It does not certify global nuisance maxima, profile topology, concentration identification, C5 coverage or any causal TGCV claim. No Monte Carlo, bootstrap bank, calibration, resource preflight, holdout or scientific execution occurred.
