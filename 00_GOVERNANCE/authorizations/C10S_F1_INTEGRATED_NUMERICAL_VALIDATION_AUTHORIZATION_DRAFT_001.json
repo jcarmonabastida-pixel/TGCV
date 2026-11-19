@@ -1,0 +1,82 @@
+{
+  "schema": "TGCV-C10S-F1-INTEGRATED-VALIDATION-AUTH-001",
+  "status": "DRAFT_NOT_APPROVED",
+  "authorization_id": "C10S-F1-INTEGRATED-VALIDATION-20261119-01",
+  "scope": "F1_INTEGRATED_DETERMINISTIC_NUMERICAL_METHOD_TESTS_ONLY",
+  "approval": {
+    "approved": false,
+    "approved_by": null,
+    "approved_at_utc": null,
+    "requires": "Explicit user approval after reviewing this exact frozen commit, command, and scope",
+    "validity_hours_after_approval": 24
+  },
+  "source": {
+    "repository": "jcarmonabastida-pixel/TGCV",
+    "freeze_branch": "research/c10s-f1-validation-freeze-20261119",
+    "frozen_commit": "0d430adae891b3914475c60334d93e977efc44cc",
+    "manifest_path": "03_EXPERIMENTS/C10-S/harness/C10S_F1_VALIDATION_FREEZE_MANIFEST_001.md",
+    "manifest_commit": null,
+    "execution_checkout": "Detached HEAD at frozen_commit; never execute from a moving branch tip"
+  },
+  "protocol": {
+    "protocol_id": "C10S-F1-INTEGRATED-TEST-SUITE-001",
+    "protocol_version": "001",
+    "working_directory": "03_EXPERIMENTS/C10-S/harness",
+    "python_baseline": "3.12.3",
+    "command": "python -m unittest -v test_c10s_f1_between_profile_likelihood test_c10s_f1_independent_root_isolator test_c10s_f1_root_adjudication test_c10s_nested_mr_comparative_inference_engine",
+    "execution_count": 1,
+    "retry_policy": "No automatic retries. Any failure or interruption stops the run and requires review before a new authorization."
+  },
+  "included_test_modules": [
+    "test_c10s_f1_between_profile_likelihood.py",
+    "test_c10s_f1_independent_root_isolator.py",
+    "test_c10s_f1_root_adjudication.py",
+    "test_c10s_nested_mr_comparative_inference_engine.py"
+  ],
+  "authorized_if_and_only_if_approved": {
+    "deterministic_unit_and_integration_tests": true,
+    "fixed_test_fixtures": true,
+    "seeded_operations_explicitly_encoded_in_the_listed_tests": true,
+    "capture_stdout_stderr_exit_code_runtime_and_provenance": true
+  },
+  "explicitly_not_authorized": {
+    "c10_scientific_execution": true,
+    "dgp_experiment": true,
+    "outer_monte_carlo_calibration": true,
+    "parameter_calibration_or_tuning": true,
+    "broad_repository_test_suite": true,
+    "external_or_new_dataset_execution": true,
+    "code_or_dependency_modification_during_run": true,
+    "replay_or_retry_without_new_review": true,
+    "scientific_claim_or_c10_closure": true
+  },
+  "preflight_stop_conditions": [
+    "Frozen commit or any listed Git blob SHA mismatch",
+    "Interpreter version differs from baseline and has not been reconciled",
+    "Missing dependency or import failure",
+    "Working tree is not clean at the frozen checkout",
+    "Command differs from the exact command recorded here",
+    "Any request to expand scope beyond the four listed test modules"
+  ],
+  "result_classification": [
+    "PASS",
+    "FAIL",
+    "INDETERMINATE"
+  ],
+  "evidence_outputs": [
+    "Complete stdout capture",
+    "Complete stderr capture",
+    "Exit code",
+    "Python version and platform",
+    "Frozen commit SHA and verified file blob SHAs",
+    "Executed command and working directory",
+    "Environment/dependency inventory without modifications"
+  ],
+  "scientific_boundary": "A PASS establishes only that the listed software tests pass for this frozen source snapshot and recorded environment. It does not establish exhaustive numerical correctness, uncertainty-aware certification, inferential validity, causal contribution, or scientific closure.",
+  "prior_authorization_noninheritance": {
+    "authorization_id": "TIER-A-RETRY-20261119-01",
+    "approved_code_commit": "6bcb5a2827d810896315f66042083a5be7dda308",
+    "protocol_id": "C10S-NESTED-MR-BOOTSTRAP-VALIDATION-001",
+    "applies_to_this_scope": false
+  }
+}
