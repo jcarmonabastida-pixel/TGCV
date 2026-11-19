@@ -47,7 +47,9 @@ class ResourcePreflightTests(unittest.TestCase):
                 ))
                 persisted = json.loads((Path(directory) / "resource_preflight.json").read_text())
                 self.assertEqual(persisted["total_datasets"], 2)
-                self.assertNotIn("coverage", json.dumps(persisted).lower())
+                self.assertNotIn("metrics", persisted)
+                self.assertNotIn("coverage_results", persisted)
+                self.assertNotIn("coverage_rate", json.dumps(persisted).lower())
 
 
 if __name__ == "__main__":
