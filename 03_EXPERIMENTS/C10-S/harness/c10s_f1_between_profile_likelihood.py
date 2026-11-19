@@ -31,6 +31,7 @@ class F1NuisanceOptimizerDiagnostic:
     independent_loglik: float | None
     absolute_loglik_difference: float | None
     stationary_points: int
+    stationary_points_log_scale: tuple[float, ...]
     independent_boundary_sensitive: bool
     optimizer_error: str | None
 
@@ -42,6 +43,7 @@ class F1NuisanceStabilityDiagnostic:
     stationary_point_counts: tuple[int, ...]
     optimizer_statuses: tuple[str, ...]
     maximum_loglik_spread: float | None
+    maximum_stationary_location_spread: float | None
 
 
 @dataclass(frozen=True)
@@ -305,6 +307,7 @@ def f1_profile_nuisance_optimizer_diagnostic(
         independent_loglik=independent_value,
         absolute_loglik_difference=difference,
         stationary_points=len(roots),
+        stationary_points_log_scale=tuple(roots),
         independent_boundary_sensitive=independent_boundary,
         optimizer_error=optimizer_error,
     )
@@ -350,6 +353,18 @@ def f1_profile_nuisance_stability_diagnostic(
         if item.independent_loglik is not None
     )
     spread = max(values) - min(values) if len(values) == len(results) and values else None
+    if len(set(counts)) == 1 and counts and counts[0] > 0:
+        root_locations = tuple(
+            tuple(item.stationary_points_log_scale[index] for item in results)
+            for index in range(counts[0])
+        )
+        location_spread = max(
+            max(locations) - min(locations) for locations in root_locations
+        )
+    elif counts and all(value == 0 for value in counts):
+        location_spread = 0.0
+    else:
+        location_spread = None
 
     if any(status == "OPTIMIZATION_INSUFFICIENT" for status in statuses):
         status = "OPTIMIZATION_INSUFFICIENT"
@@ -357,7 +372,8 @@ def f1_profile_nuisance_stability_diagnostic(
         status = "OPTIMIZATION_BOUNDARY_SENSITIVE"
     elif len(set(counts)) != 1:
         status = "OPTIMIZATION_DISCORDANT"
-    elif spread is None or spread > float(loglik_tolerance):
+    elif (spread is None or spread > float(loglik_tolerance)
+          or location_spread is None or location_spread > 1e-5):
         status = "OPTIMIZATION_DISCORDANT"
     elif any(status == "OPTIMIZATION_DISCORDANT" for status in statuses):
         status = "OPTIMIZATION_DISCORDANT"
@@ -370,4 +386,5 @@ def f1_profile_nuisance_stability_diagnostic(
         stationary_point_counts=counts,
         optimizer_statuses=statuses,
         maximum_loglik_spread=spread,
+        maximum_stationary_location_spread=location_spread,
     )
