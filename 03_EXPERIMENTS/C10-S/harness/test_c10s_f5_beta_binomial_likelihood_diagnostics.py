@@ -11,6 +11,7 @@ from c10s_f5_beta_binomial_likelihood_diagnostics import (
     audit_beta_binomial_count_fit,
     beta_binomial_profile_log_concentration,
     beta_binomial_profiled_boundary_likelihoods,
+    build_beta_binomial_profile_audit_record,
 )
 
 
@@ -283,6 +284,44 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
         self.assertAlmostEqual(boundary.binomial_profile_mean, 0.4)
         self.assertTrue(math.isfinite(boundary.binomial_profile_log_likelihood))
         self.assertEqual(boundary.two_point_profile_log_likelihood, -math.inf)
+
+
+    def test_profile_audit_keeps_optimizer_boundary_and_identification_separate(self):
+        optimizer = audit_beta_binomial_count_fit(COUNTS, R)
+        grid = (math.log(0.2), math.log(0.7), math.log(2.0), math.log(20.0))
+        profile = beta_binomial_profile_log_concentration(COUNTS, R, grid)
+        boundary = beta_binomial_profiled_boundary_likelihoods(COUNTS, R)
+        record = build_beta_binomial_profile_audit_record(
+            optimizer, profile, boundary,
+        )
+        self.assertEqual(
+            record.optimizer_convergence_status, optimizer.status,
+        )
+        self.assertEqual(record.identification_status, "INDETERMINATE")
+        self.assertEqual(record.profile_status, "NUMERICAL_PROFILE_UNCERTIFIED")
+        self.assertEqual(record.profile_point_count, len(grid))
+        self.assertTrue(math.isfinite(record.profile_minus_binomial_boundary))
+        self.assertEqual(record.profile_minus_two_point_boundary, math.inf)
+        self.assertEqual(
+            len(record.profile_curvature_values), len(profile),
+        )
+
+    def test_profile_audit_rejects_empty_or_unordered_profile(self):
+        optimizer = audit_beta_binomial_count_fit(COUNTS, R)
+        boundary = beta_binomial_profiled_boundary_likelihoods(COUNTS, R)
+        with self.assertRaisesRegex(
+            F5LikelihoodDiagnosticError, "REQUIRES_POINTS",
+        ):
+            build_beta_binomial_profile_audit_record(optimizer, (), boundary)
+        points = beta_binomial_profile_log_concentration(
+            COUNTS, R, (0.0, 0.2, 0.4),
+        )
+        with self.assertRaisesRegex(
+            F5LikelihoodDiagnosticError, "STRICTLY_INCREASING",
+        ):
+            build_beta_binomial_profile_audit_record(
+                optimizer, tuple(reversed(points)), boundary,
+            )
 
 
 if __name__ == "__main__":
