@@ -134,6 +134,26 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         ))
         self.assertIn("two_point_limit_log_likelihood", audit)
         self.assertIn("profile_log_concentration_curvature", audit)
+        self.assertIsNotNone(audit["independent_terminal_log_alpha"])
+        self.assertIsNotNone(audit["independent_terminal_log_beta"])
+        self.assertEqual(len(audit["independent_score_components"]), 2)
+        self.assertTrue(math.isfinite(audit["independent_score_norm"]))
+        self.assertEqual(len(audit["independent_observed_hessian"]), 2)
+        self.assertTrue(all(
+            math.isfinite(value)
+            for row in audit["independent_observed_hessian"] for value in row
+        ))
+        self.assertEqual(len(audit["starts"]), 3)
+        self.assertTrue(all(
+            item["final_mean_logit"] is not None
+            and item["final_log_concentration"] is not None
+            and item["gradient_norm"] is not None
+            and item["lower_mean_bound_distance"] is not None
+            and item["upper_mean_bound_distance"] is not None
+            and item["lower_concentration_bound_distance"] is not None
+            and item["upper_concentration_bound_distance"] is not None
+            for item in audit["starts"]
+        ))
         self.assertIsNotNone(audit["profile_log_concentration_curvature"])
         self.assertTrue(math.isfinite(audit["profile_log_concentration_curvature"]))
         self.assertIn(("bootstrap_seed", "20261119"), candidate.comparison.provenance)
