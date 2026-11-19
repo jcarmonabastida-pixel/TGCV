@@ -171,6 +171,9 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
             },
         )
         self.assertIn("between_profile_optimizer_stationary_point_counts", diagnostic_map)
+        self.assertIn("between_profile_optimizer_stationary_point_types", diagnostic_map)
+        self.assertIn("between_profile_optimizer_tangential_score_root_counts", diagnostic_map)
+        self.assertIn("between_profile_optimizer_unresolved_tangential_candidate_counts", diagnostic_map)
         self.assertIn("between_profile_optimizer_grid_span_configurations", diagnostic_map)
         self.assertIn("between_profile_optimizer_loglik_spread", diagnostic_map)
         self.assertIn("between_profile_optimizer_stationary_location_spread", diagnostic_map)
