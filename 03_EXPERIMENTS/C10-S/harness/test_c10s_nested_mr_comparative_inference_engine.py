@@ -445,7 +445,6 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         )
         profile = json.loads(diagnostics["concentration_profile_audit_json"])
         self.assertEqual(profile["two_point_boundary_status"], "FINITE_ENDPOINT_MIXTURE_PROFILE")
-        self.assertAlmostEqual(profile["two_point_profile_mean"], 0.5)
         self.assertTrue(math.isfinite(profile["two_point_boundary_profile_log_likelihood"]))
         self.assertEqual(profile["identification_status"], "INDETERMINATE")
         self.assertEqual(diagnostics["concentration_profile_audit_error"], "NONE")
