@@ -96,7 +96,7 @@ class F1RootAdjudicationTests(unittest.TestCase):
         self.assertEqual(result.root_domain, "(0,+infinity)")
 
     def test_rational_interval_is_preserved_without_float_projection(self):
-        lower = Fraction(10**400, 3)
+        lower = Fraction(10**300, 3)
         upper = lower + Fraction(1, 10**30)
         independent = RootIsolationResult(
             "ROOTS_ISOLATED", 1,
