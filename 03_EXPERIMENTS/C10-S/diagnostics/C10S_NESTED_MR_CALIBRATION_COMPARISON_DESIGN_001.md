@@ -226,3 +226,68 @@ This candidate is a fitted-model exploratory percentile bootstrap, not calibrate
 **F5 MCSE next-method design (2026-11-19):** `C10S_F5_MCSE_PROFILE_LIKELIHOOD_DESIGN_001.md` specifies a candidate beta-binomial profile-likelihood interval for the scalar MCSE functional. The parameterization `(mu,kappa)` yields a one-dimensional profile reduction with both mean branches, explicit `kappa→0` and `kappa→infinity` limits, and finite-sample least-favourable LR cutoff calibration. The method is FORMULA-SPECIFIED only: no code, cutoff calibration, Monte Carlo or execution has occurred. A finite nuisance grid alone will not be described as uniform continuous-parameter coverage.
 
 **Current disposition:** matched component comparator IMPLEMENTED / STATIC CI PASS 39/39. F1 MCSE can be compared C0-v002 vs C1. F5 within and raw-between can be compared C0-v002 vs C5. F5 MCSE remains NOT_IMPLEMENTED until the profile candidate is implemented, adversarially tested and calibrated. The original v002 Tier A result remains NOT_VALIDATED and is not a holdout. No numerical calibration, holdout, Tier B or scientific C10 execution is authorized by the static-test approval.
+
+
+## 10. Comparative Tier A holdout protocol v1.0
+
+**Status:** HOLDOUT DESIGN FROZEN FOR IMPLEMENTATION / NOT EXECUTED / NOT AUTHORIZED.  
+**Purpose:** evaluate the corrected C1/C5 candidates against the unchanged C0-v002 baseline on fresh independent datasets. This is the successor evaluation to the failed original Tier A, not a rerun of protocol v002.
+
+### 10.1 Frozen scope
+
+The confirmatory comparison is restricted to the eight regular Tier A cells already defined in protocol v002:
+
+- F1 Gaussian random-intercept: balanced `(sigma2_within,sigma2_between)=(1,1)`, low-between `(1,0.05)`, and high-between `(0.25,2)`, each at input designs `(M,R)=(10,5)` and `(30,20)`.
+- F5 beta-binomial: `alpha=2, beta=2`, at the same two input designs.
+
+No Tier B cells, added stress cells, C2-C4 methods, cross-family pooling, or C10 Generator/Analyzer/Evaluator execution are included.
+
+The target design is `(M*,R*)=(M,R)` for each cell. Adjudication is performed separately for every cell; no pooling across cells, families, targets or methods is allowed.
+
+### 10.2 Fixed method roster
+
+- **C0:** exact frozen protocol-v002 two-stage percentile bootstrap, unchanged, with `B=1,000`.
+- **C1 (F1 only):** exact Gaussian within pivot and conservative joint-pivot raw-between interval; its MCSE projection is retained as a model-specific F1 result. No Gaussian method is applied to F5.
+- **C5 (F5 only):** fitted beta-binomial parametric bootstrap for within and raw-between components, with `B=1,000`. The fitted model is estimated from each observed dataset; oracle parameters are used only for independent truth, never for fitting.
+- **F5 MCSE:** C5 emits the existing typed abstention `F5_MCSE_JOINT_BOUNDARY_METHOD_NOT_IMPLEMENTED`. This target is excluded from candidate acceptance and is not repaired by conditioning on positive projected draws. C0 F5 MCSE is reported descriptively with its emission/abstention rate only.
+- **Profile-likelihood diagnostics:** F1/F5 profile evaluators and root/optimizer diagnostics are not candidate interval methods in this holdout. They are not run for every holdout dataset and do not enter coverage adjudication. Their implementation can remain available for separate, explicitly scoped diagnostics; no LR cutoff is selected here.
+
+### 10.3 Replication and seed separation
+
+- Independent datasets: `K=1,000` per cell.
+- C0 bootstrap: `B=1,000` per dataset, exactly as frozen in v002.
+- C5 parametric bootstrap: `B=1,000` per F5 dataset.
+- Confidence level: 95%.
+- Holdout seed namespace: cell IDs are prefixed `COMPARATIVE_HOLDOUT_V1__`; this changes the deterministic SHA-256 seed inputs and makes every dataset independent of the original Tier A development bank. Bootstrap streams are separately derived with method-specific cell suffixes `__C0` and `__C5`.
+- The existing PCG64 generator and seed derivation are reused; no source Tier A dataset, seed, or bootstrap stream is reused. The exact seed schedule, code commit and all generated seeds are recorded in the run manifest.
+
+**K rationale:** at nominal coverage 0.95 and K=1,000, the binomial Monte Carlo standard error is approximately 0.0069 (0.69 percentage points); the 95% Wilson half-width is approximately 1.35 percentage points. This is adequate to adjudicate the pre-existing 93%-97% coverage band without treating small deviations as exact.
+
+**B rationale:** C0 retains B=1,000 because changing B would no longer reproduce the frozen v002 baseline. C5 also uses B=1,000 to keep its bootstrap Monte Carlo budget aligned with C0. For every percentile endpoint, the report additionally records the exact binomial order-statistic rank band for the 2.5% and 97.5% quantiles and the corresponding observed endpoint-value band. This endpoint Monte Carlo uncertainty is reported separately from sampling coverage; B is not increased or tuned after inspecting holdout outcomes.
+
+### 10.4 Truth and adjudication
+
+Truth is generated independently of the interval candidates:
+
+- F1: `sigma2_within` and `sigma2_between` are the declared Gaussian DGP parameters.
+- F5: for `Beta(2,2)`, `sigma2_within=0.20` and `sigma2_between=0.05`, from the independent beta-binomial oracle.
+- For each cell, `MCSE(M*,R*)=sqrt(sigma2_between/M* + sigma2_within/(M*R*))`.
+
+For every method × cell × target, retain point bias/RMSE, interval-emission rate, conditional coverage, unconditional usable-and-covering rate, lower/upper miss rates, interval width, Wilson 95% intervals, coverage MCSE, fit/convergence failures, typed abstentions, endpoint Monte Carlo uncertainty, runtime and complete provenance.
+
+### 10.5 Prospective acceptance
+
+- C0, C5, and C1-F1 within: empirical coverage must be in `[0.93,0.97]`, its 95% Wilson interval must contain 0.95, and interval emission must be at least 0.95 of K. Otherwise the cell is `NOT_VALIDATED`; conditional coverage cannot rescue low availability.
+- C1-F1 raw-between and its MCSE projection are deliberately conservative joint-pivot results. They are adjudicated as **at-least-nominal conservative procedures**: the 95% Wilson lower bound must be at least 0.93, interval emission must be at least 0.95, and width/overcoverage are reported explicitly. They are not required to fall below 97%, and no efficiency claim is made.
+- F5-C5 MCSE remains `NOT_IMPLEMENTED / ABSTAINED`; it receives no coverage pass or fail and cannot be represented as a calibrated MCSE interval.
+- Each cell and target is adjudicated independently. A failed cell is not rescued by averaging, and no method is selected by a pooled score.
+
+### 10.6 Interpretation and stopping rule
+
+The original Tier A v002 run remains immutable development evidence and remains `NOT_VALIDATED`; it is not part of the holdout denominator. This holdout tests the new candidates on fresh data and does not rewrite protocol v002.
+
+No tuning, candidate replacement, cutoff selection, K/B change, seed change, or tolerance adjustment is permitted after holdout outcomes are inspected. If no candidate meets its declared criteria, the result is `NO_VALIDATED_METHOD_FOR_THAT_SCOPE`; any subsequent method change requires a new prospective protocol and a new independent seed namespace.
+
+This holdout is numerical-method calibration only. It does not execute C10-S Generator/Analyzer/Evaluator, does not validate the actual C10-S M/R sampling assumptions, and does not establish the causal contribution of `Delta T_acc` to Value. Tier B and scientific C10 execution remain separately unauthorized.
+
+**Next operation:** implement the bounded holdout runner and its fail-closed authorization/workflow by reusing the existing fixture generator, comparison engine and adjudicator. Do not rerun Tier A v002. Do not execute this holdout until its exact code/protocol hashes are frozen and a separate one-shot authorization is explicitly granted.
