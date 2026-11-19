@@ -42,18 +42,13 @@ All 100 F1 datasets completed the profile inversion with:
 
 There were no F1 typed abstentions or untyped execution failures in this sample. The LR cutoff was a computational benchmark only and was not used for coverage or calibration. These observations establish successful execution of this representative computational path; they do not establish coverage or calibration.
 
-## 4. F5 critical limitation
+## 4. F5 MCSE abstention — frozen scope, not a C5 blocker
 
-All 100 F5 primary comparison records reported an interior fit (`INTERIOR`), but all 100 also carried:
-`F5_MCSE_JOINT_BOUNDARY_METHOD_NOT_IMPLEMENTED`.
+All 100 F5 primary records and all 100 B=4,000 sensitivity records retain `F5_MCSE_JOINT_BOUNDARY_METHOD_NOT_IMPLEMENTED`. This is the candidate's explicit MCSE abstention. It is **not** a failure of the Phase B C5 within/raw-between components: frozen specification v1.0 §§6, 7, 10 and 11 explicitly exclude F5 MCSE interval construction, and Phase B targets within and raw-between only.
 
-The same reason appears in all 100 B=4,000 sensitivity records. In the estimator implementation, the MCSE interval is deliberately left unset and the failure reason is emitted because the boundary-aware joint inference method is not implemented. Thus:
-- optimizer fitting and bootstrap workload were executed and timed;
-- a valid C5 MCSE interval was **not** produced;
-- the B=4,000 measurement is a runtime benchmark, not evidence of inferential readiness;
-- this preflight does not clear F5 for calibration/validation.
+All 100 F5 fits report `INTERIOR`; there were no untyped execution failures. The preflight artifact does not persist complete per-dataset optimizer-audit JSON or interval-emission flags, so it must not be used to claim per-dataset diagnostic or coverage success. Those records are required in B2/B3 calibration outputs and are covered at the implementation boundary by deterministic comparison-engine tests.
 
-This is a fail-closed methodological limitation, not an execution crash. Do not reinterpret `INTERIOR` fit status as an emitted or valid interval.
+The B=4,000 measurement is a runtime/endpoint-sensitivity workload benchmark only. It is not a coverage result and does not alter the frozen B=1,000 primary comparison.
 
 ## 5. Full-workload projection
 
@@ -83,6 +78,6 @@ The projection is advisory and assumes linear scaling. It is not a runtime guara
 | Coverage/calibration/validation | NOT RUN |
 | Tier B / causal C10 execution | NOT AUTHORIZED and NOT RUN |
 
-**Overall:** RESOURCE_PREFLIGHT_EXECUTION_PASS / F5_INFERENTIAL_READINESS_BLOCKED.
+**Overall:** RESOURCE_PREFLIGHT_EXECUTION_PASS / F5_B1_IMPLEMENTATION_AND_STATIC_TESTS_COMPLETE / B2-B3_NOT_RUN. F5 MCSE remains explicitly out of scope and abstained; C5 within/raw-between eligibility is still unadjudicated pending B2/B3.
 
 No frozen specification value, dataset denominator, acceptance criterion or historical result was changed. The next scientific-development task is to close the F5 joint MCSE boundary-inference method and its tests before any F5 calibration or validation execution is proposed. The 3.21-hour projection must not be used to imply that the full F1/F5 calibration programme is ready to run.
