@@ -202,6 +202,11 @@ class BetaBinomialOptimizerAudit:
     binomial_limit_log_likelihood: float | None
     two_point_limit_log_likelihood: float | None
     starts: tuple[BetaBinomialStartOutcome, ...]
+    selected_score_components: tuple[float, float] | None = None
+    observed_hessian: tuple[tuple[float, float], tuple[float, float]] | None = None
+    hessian_eigenvectors: tuple[tuple[float, float], tuple[float, float]] | None = None
+    profile_minus_binomial_limit: float | None = None
+    profile_minus_two_point_limit: float | None = None
 
 
 def audit_beta_binomial_count_fit(
@@ -429,6 +434,26 @@ def audit_beta_binomial_count_fit(
         binomial_limit_log_likelihood=boundary.binomial_limit_log_likelihood,
         two_point_limit_log_likelihood=boundary.two_point_mixing_limit_log_likelihood,
         starts=tuple(start_records),
+        selected_score_components=(
+            float(selected.score_mean_logit),
+            float(selected.score_log_concentration),
+        ),
+        observed_hessian=(
+            (float(selected.hessian_mean_logit), float(selected.hessian_cross)),
+            (float(selected.hessian_cross), float(selected.hessian_log_concentration)),
+        ),
+        hessian_eigenvectors=tuple(
+            tuple(float(value) for value in row)
+            for row in np.linalg.eigh(hessian)[1].T
+        ),
+        profile_minus_binomial_limit=(
+            float(selected.log_likelihood - boundary.binomial_limit_log_likelihood)
+            if math.isfinite(boundary.binomial_limit_log_likelihood) else None
+        ),
+        profile_minus_two_point_limit=(
+            float(selected.log_likelihood - boundary.two_point_mixing_limit_log_likelihood)
+            if math.isfinite(boundary.two_point_mixing_limit_log_likelihood) else None
+        ),
     )
 
 
