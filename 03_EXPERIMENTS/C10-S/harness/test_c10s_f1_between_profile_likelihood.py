@@ -23,24 +23,30 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         value = f1_profile_loglik(ROWS, between_variance=0.25)
         self.assertTrue(math.isfinite(value))
 
-    def test_grid_inversion_returns_diagnostic_components(self):
+    def test_root_inversion_returns_ordered_finite_interval(self):
         result = f1_profile_between_confidence_set(
             ROWS, likelihood_ratio_cutoff=3.841458820694124,
-            grid_points=101,
         )
-        self.assertEqual(result.grid_points, 101)
-        self.assertTrue(math.isfinite(result.max_profile_loglik))
-        self.assertGreaterEqual(result.mle_tau_grid, 0.0)
-        self.assertTrue(result.accepted_components)
-        self.assertIn(result.status, {
-            "GRID_SET_APPROXIMATION", "GRID_SET_UPPER_TRUNCATED",
-        })
+        low, high = result.confidence_components[0]
+        self.assertGreaterEqual(low, 0.0)
+        self.assertGreater(high, low)
+        self.assertTrue(math.isfinite(high))
+        self.assertGreaterEqual(result.mle_between_variance, low)
+        self.assertLessEqual(result.mle_between_variance, high)
+        self.assertEqual(result.status, "PROFILE_LR_INTERVAL_ROOT_SOLVED")
 
     def test_caller_supplied_cutoff_is_preserved(self):
         result = f1_profile_between_confidence_set(
-            ROWS, likelihood_ratio_cutoff=2.0, grid_points=51,
+            ROWS, likelihood_ratio_cutoff=2.0,
         )
         self.assertEqual(result.likelihood_ratio_cutoff, 2.0)
+
+    def test_zero_boundary_can_be_included(self):
+        result = f1_profile_between_confidence_set(
+            ROWS, likelihood_ratio_cutoff=100.0,
+        )
+        self.assertTrue(result.lower_boundary_included)
+        self.assertEqual(result.confidence_components[0][0], 0.0)
 
     def test_rejects_negative_tau(self):
         with self.assertRaises(F1ProfileError):
