@@ -80,7 +80,9 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
             (record,), (TruthTargets(within=0.25, between=0.0, mcse=0.1),)
         )
         c1_mcse = next(x for x in metrics if x.method_id.startswith("C1_") and x.target == "mcse")
-        self.assertEqual(c1_mcse.interval_emission_rate, 1.0)
+        self.assertEqual(c1_mcse.interval_emission_rate, 0.0)
+        self.assertEqual(c1_mcse.abstention_count, 1)
+        self.assertIn(("EMPTY_FEASIBLE_JOINT_CONFIDENCE_SET", 1), c1_mcse.abstention_reasons)
         with self.assertRaises(ComparativeEngineError):
             adjudicate_matched_datasets((record,), ())
         with self.assertRaises(ComparativeEngineError):
