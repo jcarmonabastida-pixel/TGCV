@@ -386,8 +386,7 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
     def test_rejects_invalid_cutoff(self):
         with self.assertRaises(F1ProfileError):
             f1_profile_between_confidence_set(
-            family="F1",
-                ROWS, likelihood_ratio_cutoff=0.0,
+                ROWS, family="F1", likelihood_ratio_cutoff=0.0,
             )
 
     def test_zero_within_sum_of_squares_is_explicitly_unresolved(self):
