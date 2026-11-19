@@ -389,7 +389,11 @@ def audit_beta_binomial_count_fit(
     # complement. This is a raw, parameterization-specific diagnostic; it is
     # not a weak-identification threshold or a C5 selection rule.
     profile_curvature = None
-    if math.isfinite(selected.hessian_mean_logit) and selected.hessian_mean_logit != 0.0:
+    if (
+        mean_logit_bounds[0] < eta < mean_logit_bounds[1]
+        and math.isfinite(selected.hessian_mean_logit)
+        and selected.hessian_mean_logit != 0.0
+    ):
         candidate_curvature = (
             selected.hessian_log_concentration
             - selected.hessian_cross * selected.hessian_cross
