@@ -25,6 +25,28 @@ class F5ProfileError(ValueError):
     """Invalid target, count data, or profile-likelihood computation."""
 
 
+def _optimizer_adjudication(
+    successful_starts: Sequence[int],
+    loglik_gaps: Sequence[float | None],
+    *,
+    boundary_sensitive: bool,
+) -> str:
+    """Classify numerical optimizer diagnostics; never certify global optimality."""
+    if len(successful_starts) != 2 or len(loglik_gaps) != 2:
+        raise F5ProfileError("OPTIMIZER_ADJUDICATION_REQUIRES_TWO_BRANCHES")
+    if any(type(n) is not int or n < 0 for n in successful_starts):
+        raise F5ProfileError("OPTIMIZER_SUCCESS_COUNTS_MUST_BE_NONNEGATIVE_INTEGERS")
+    if any(g is not None and (not math.isfinite(g) or g < 0.0) for g in loglik_gaps):
+        raise F5ProfileError("OPTIMIZER_LOG_LIKELIHOOD_GAPS_MUST_BE_FINITE_NONNEGATIVE")
+    if any(n < OPTIMIZER_MIN_SUCCESSFUL_STARTS_PER_BRANCH for n in successful_starts):
+        return "OPTIMIZATION_INSUFFICIENT"
+    if boundary_sensitive:
+        return "OPTIMIZATION_BOUNDARY_SENSITIVE"
+    if any(g is None or g > OPTIMIZER_LOG_LIK_TOLERANCE for g in loglik_gaps):
+        return "OPTIMIZATION_DISCORDANT"
+    return "OPTIMIZATION_CONCORDANT"
+
+
 @dataclass(frozen=True)
 class F5ProfileConfidenceSet:
     likelihood_ratio_cutoff: float
@@ -347,15 +369,10 @@ def f5_beta_binomial_mcse_profile_loglik(
         or math.log(kappa) - logk_low <= 1e-6
         or logk_high - math.log(kappa) <= 1e-6
     )
-    if any(n < OPTIMIZER_MIN_SUCCESSFUL_STARTS_PER_BRANCH for n in independent_successes):
-        optimizer_adjudication = "OPTIMIZATION_INSUFFICIENT"
-    elif winner_is_boundary:
-        optimizer_adjudication = "OPTIMIZATION_BOUNDARY_SENSITIVE"
-    elif any(gap is None or gap > OPTIMIZER_LOG_LIK_TOLERANCE
-             for gap in optimizer_gap_values):
-        optimizer_adjudication = "OPTIMIZATION_DISCORDANT"
-    else:
-        optimizer_adjudication = "OPTIMIZATION_CONCORDANT"
+    optimizer_adjudication = _optimizer_adjudication(
+        independent_successes, optimizer_gap_values,
+        boundary_sensitive=winner_is_boundary,
+    )
 
     if not math.isfinite(value):
         status = "PROFILE_NONFINITE_OR_UNSUPPORTED_BOUNDARY"
