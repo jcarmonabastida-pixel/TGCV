@@ -3,7 +3,7 @@ name: C10-S nested M/R calibration comparator — static tests
 on:
   push:
     branches:
-      - research/c10s-nested-mr-calibration-design-20261119
+      - research/c10s-f1-integrated-correction-20261119
     paths:
       - '.github/workflows/c10-s-nested-mr-calibration-comparator-static.yml'
       - '03_EXPERIMENTS/C10-S/harness/c10s_gaussian_variance_oracles.py'
@@ -15,7 +15,9 @@ on:
       - '03_EXPERIMENTS/C10-S/harness/c10s_f1_exact_pivotal_candidate.py'
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_f1_exact_pivotal_candidate.py'
       - '03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py'
-      - '03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_inference_engine.py'
+      - '03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_comparative_holdout.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_holdout.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_inference_engine test_c10s_nested_mr_comparative_holdout.py'
       - '03_EXPERIMENTS/C10-S/harness/c10s_fitted_beta_binomial_bootstrap.py'
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_fitted_beta_binomial_bootstrap.py'
       - '03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock'
@@ -44,7 +46,7 @@ jobs:
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PYTHONDONTWRITEBYTECODE: '1'
-        run: python -m py_compile c10s_gaussian_variance_oracles.py test_c10s_gaussian_variance_oracles.py c10s_beta_binomial_variance_oracles.py test_c10s_beta_binomial_variance_oracles.py c10s_variance_comparison_interface.py test_c10s_variance_comparison_interface.py c10s_f1_exact_pivotal_candidate.py test_c10s_f1_exact_pivotal_candidate.py c10s_fitted_beta_binomial_bootstrap.py test_c10s_fitted_beta_binomial_bootstrap.py c10s_nested_mr_comparative_inference_engine.py test_c10s_nested_mr_comparative_inference_engine.py
+        run: python -m py_compile c10s_gaussian_variance_oracles.py test_c10s_gaussian_variance_oracles.py c10s_beta_binomial_variance_oracles.py test_c10s_beta_binomial_variance_oracles.py c10s_variance_comparison_interface.py test_c10s_variance_comparison_interface.py c10s_f1_exact_pivotal_candidate.py test_c10s_f1_exact_pivotal_candidate.py c10s_fitted_beta_binomial_bootstrap.py test_c10s_fitted_beta_binomial_bootstrap.py c10s_nested_mr_comparative_inference_engine.py test_c10s_nested_mr_comparative_inference_engine.py run_c10s_nested_mr_comparative_holdout.py test_c10s_nested_mr_comparative_holdout.py
       - name: Run comparator oracle tests only
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
