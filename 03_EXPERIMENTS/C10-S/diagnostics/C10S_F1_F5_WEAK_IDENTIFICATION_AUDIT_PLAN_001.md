@@ -226,3 +226,17 @@ Exact-commit static workflow:
 - The companion F1 numerical-stress-v3 workflow is skipped by its authorization guard (`44592485986`); no numerical stress, calibration, bootstrap, resource preflight, holdout or scientific execution is authorized or performed by this increment.
 
 The frozen development/calibration specification v1.0 remains unchanged. This stability comparison is a deterministic method diagnostic only; it is not a simulation bank or empirical identification result.
+
+
+### Static validation — F5 profile numerical-control stability
+
+The exact code/test commit completed the research-branch static workflow successfully:
+- Run: `44592485904`
+- Exact tested commit: `36f931cbc19c91318d2969ec9fc80e187be5550e`
+- Hash-locked dependency installation: PASS
+- Compile: PASS
+- Deterministic suite: **135 tests passed**
+- Both new numerical-stability tests: PASS
+- No calibration, bootstrap, resource preflight, holdout or scientific execution.
+
+The audit remains descriptive. The 135/135 result establishes deterministic software behaviour for the fixtures; it does not establish that any particular profile is numerically stable over a scientifically relevant range, nor that concentration is identified.
