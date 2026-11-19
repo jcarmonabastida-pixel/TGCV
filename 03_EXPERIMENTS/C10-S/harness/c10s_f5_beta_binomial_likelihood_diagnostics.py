@@ -193,6 +193,7 @@ class BetaBinomialOptimizerAudit:
     selected_log_likelihood: float | None
     selected_score_norm: float | None
     hessian_eigenvalues: tuple[float, float] | None
+    profile_log_concentration_curvature: float | None
     independent_optimizer_success: bool
     independent_optimizer_message: str
     independent_log_likelihood: float | None
@@ -304,7 +305,8 @@ def audit_beta_binomial_count_fit(
             status="NO_ADMISSIBLE_PRIMARY_FIT",
             selected_mean_logit=None, selected_log_concentration=None,
             selected_log_likelihood=None, selected_score_norm=None,
-            hessian_eigenvalues=None, independent_optimizer_success=False,
+            hessian_eigenvalues=None, profile_log_concentration_curvature=None,
+            independent_optimizer_success=False,
             independent_optimizer_message="NOT_RUN_NO_ADMISSIBLE_PRIMARY_FIT",
             independent_log_likelihood=None,
             absolute_log_likelihood_difference=None,
@@ -382,6 +384,19 @@ def audit_beta_binomial_count_fit(
         [selected.hessian_cross, selected.hessian_log_concentration],
     ], dtype=float)
     eigenvalues = tuple(float(value) for value in np.linalg.eigvalsh(hessian))
+    # Local observed curvature of the profile log-likelihood in log(kappa),
+    # eliminating mean_logit as a nuisance coordinate via the Hessian Schur
+    # complement. This is a raw, parameterization-specific diagnostic; it is
+    # not a weak-identification threshold or a C5 selection rule.
+    profile_curvature = None
+    if math.isfinite(selected.hessian_mean_logit) and selected.hessian_mean_logit != 0.0:
+        candidate_curvature = (
+            selected.hessian_log_concentration
+            - selected.hessian_cross * selected.hessian_cross
+            / selected.hessian_mean_logit
+        )
+        if math.isfinite(candidate_curvature):
+            profile_curvature = float(candidate_curvature)
     boundary = beta_binomial_extended_boundary_likelihoods(
         values, r, mean_probability=mu, concentration=kappa,
     )
@@ -401,6 +416,7 @@ def audit_beta_binomial_count_fit(
         selected_log_likelihood=selected.log_likelihood,
         selected_score_norm=float(np.linalg.norm(gradient(best.x))),
         hessian_eigenvalues=eigenvalues,
+        profile_log_concentration_curvature=profile_curvature,
         independent_optimizer_success=independent_success,
         independent_optimizer_message=str(independent.message),
         independent_log_likelihood=independent_ll,
