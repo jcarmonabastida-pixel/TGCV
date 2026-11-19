@@ -107,6 +107,23 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
             key == "mcse_profile_optimizer_loglik_tolerance"
             for key, _ in candidate.diagnostics
         ))
+        diagnostic_map = dict(candidate.diagnostics)
+        self.assertIn(
+            diagnostic_map["mcse_profile_inference_eligibility"],
+            {
+                "PROFILE_DIAGNOSTIC_ELIGIBLE_NOT_COVERAGE_CERTIFIED",
+                "ABSTAIN_PROFILE_INFERENCE",
+            },
+        )
+        if diagnostic_map["mcse_profile_inference_eligibility"] == "ABSTAIN_PROFILE_INFERENCE":
+            self.assertNotEqual(diagnostic_map["mcse_profile_abstention_reason"], "NONE")
+        else:
+            self.assertEqual(diagnostic_map["mcse_profile_abstention_reason"], "NONE")
+        # This policy governs only the experimental F5 profile diagnostic;
+        # it must not suppress or rewrite the independent C5 bootstrap outputs.
+        self.assertIsNotNone(candidate.comparison.within_interval)
+        self.assertIsNotNone(candidate.comparison.between_interval)
+        self.assertIsNone(candidate.comparison.mcse_interval)
 
     def test_adjudication_reports_all_denominators_and_wilson_limits(self):
         record = self._f1()
