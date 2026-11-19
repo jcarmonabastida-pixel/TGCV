@@ -1,0 +1,85 @@
+name: C10-S post-holdout F1/F5 — resource-only preflight
+
+on:
+  push:
+    branches:
+      - 'research/c10s-post-holdout-resource-preflight-auth-*'
+    paths:
+      - '00_GOVERNANCE/authorizations/C10S_POST_HOLDOUT_F1_F5_RESOURCE_PREFLIGHT_AUTHORIZATION.json'
+
+permissions:
+  contents: read
+
+jobs:
+  post-holdout-resource-preflight:
+    # One-use resource authorization only. It cannot activate calibration,
+    # validation, Tier A/B holdout, or causal C10 execution.
+    if: startsWith(github.ref, 'refs/heads/research/c10s-post-holdout-resource-preflight-auth-') && contains(github.event.head_commit.message, 'Approve one-use C10-S post-holdout F1/F5 resource-only preflight')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Checkout one-use authorization commit
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          persist-credentials: false
+
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+
+      - name: Validate one-use authorization and exact code parent
+        id: authorization
+        env:
+          WORKFLOW_COMMIT: ${{ github.sha }}
+          WORKFLOW_BRANCH: ${{ github.ref_name }}
+        run: |
+          python 03_EXPERIMENTS/C10-S/harness/validate_c10s_post_holdout_resource_preflight_authorization.py \
+            --authorization 00_GOVERNANCE/authorizations/C10S_POST_HOLDOUT_F1_F5_RESOURCE_PREFLIGHT_AUTHORIZATION.json \
+            --root . \
+            --workflow-commit "$WORKFLOW_COMMIT" \
+            --branch "$WORKFLOW_BRANCH" \
+            --output-json "$RUNNER_TEMP/validated-authorization.json"
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ["RUNNER_TEMP"]) / "validated-authorization.json"
+          d = json.loads(p.read_text(encoding="utf-8"))
+          for key in ("authorization_id", "approved_code_commit"):
+              print(f"{key}={d[key]}")
+          PY
+
+      - name: Checkout exact approved research code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ steps.authorization.outputs.approved_code_commit }}
+          path: source
+          persist-credentials: false
+
+      - name: Install hash-locked dependencies
+        working-directory: source/03_EXPERIMENTS/C10-S/harness
+        run: 'python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock'
+
+      - name: Execute bounded resource-only sample
+        working-directory: source
+        env:
+          C10S_POST_HOLDOUT_RESOURCE_PREFLIGHT_AUTHORIZED: '1'
+          C10S_APPROVED_CODE_COMMIT: ${{ steps.authorization.outputs.approved_code_commit }}
+          C10S_AUTHORIZATION_COMMIT: ${{ github.sha }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/c10s-post-holdout-resource-preflight"
+          python 03_EXPERIMENTS/C10-S/harness/run_c10s_post_holdout_f1_f5_resource_preflight.py \
+            --output-dir "$RUNNER_TEMP/c10s-post-holdout-resource-preflight"
+
+      - name: Upload resource measurements and provenance
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-post-holdout-resource-preflight-${{ steps.authorization.outputs.authorization_id }}-${{ steps.authorization.outputs.approved_code_commit }}
+          path: ${{ runner.temp }}/c10s-post-holdout-resource-preflight/
+          if-no-files-found: warn
+          retention-days: 90
