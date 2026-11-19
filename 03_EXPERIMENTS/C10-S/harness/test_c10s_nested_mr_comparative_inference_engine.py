@@ -4,6 +4,8 @@ from dataclasses import replace
 import json
 import math
 import unittest
+from types import SimpleNamespace
+from unittest.mock import patch
 
 from c10s_nested_mr_comparative_inference_engine import (
     C0_METHOD_ID,
@@ -12,6 +14,7 @@ from c10s_nested_mr_comparative_inference_engine import (
     adjudicate_matched_datasets,
     adjudicate_profile_diagnostics,
     compare_dataset,
+    _f5_concentration_profile_audit_diagnostics,
 )
 
 
@@ -407,6 +410,76 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
                 include_f5_concentration_profile_audit=True,
                 f5_profile_log_concentration_grid=(-4.0, 0.0, 4.0),
             )
+
+
+    def test_f5_profile_audit_preserves_optimizer_failure_without_losing_stability_trace(self):
+        diagnostics = dict(
+            _f5_concentration_profile_audit_diagnostics(
+                f5_rows(), None, (-4.0, -2.0, 0.0, 2.0, 4.0),
+            )
+        )
+        self.assertEqual(diagnostics["concentration_profile_audit_json"], "null")
+        self.assertEqual(
+            diagnostics["concentration_profile_audit_error"],
+            "F5LikelihoodDiagnosticError:OPTIMIZER_AUDIT_UNAVAILABLE",
+        )
+        stability = json.loads(diagnostics["concentration_profile_stability_json"])
+        self.assertEqual(stability["status"], "NUMERICAL_STABILITY_NOT_ADJUDICATED")
+        self.assertEqual(diagnostics["concentration_profile_stability_error"], "NONE")
+        json.dumps(stability, allow_nan=False)
+
+    def test_f5_profile_audit_keeps_finite_two_point_boundary_separate(self):
+        endpoint_rows = (
+            (0, 0, 0, 0, 0),
+            (1, 1, 1, 1, 1),
+            (0, 0, 0, 0, 0),
+            (1, 1, 1, 1, 1),
+            (0, 0, 0, 0, 0),
+            (1, 1, 1, 1, 1),
+        )
+        diagnostics = dict(
+            _f5_concentration_profile_audit_diagnostics(
+                endpoint_rows, SimpleNamespace(status="FIXTURE_OPTIMIZER_STATUS"),
+                (-4.0, -2.0, 0.0, 2.0, 4.0),
+            )
+        )
+        profile = json.loads(diagnostics["concentration_profile_audit_json"])
+        self.assertEqual(profile["two_point_boundary_status"], "FINITE_ENDPOINT_MIXTURE_PROFILE")
+        self.assertAlmostEqual(profile["two_point_boundary_profile_mean"], 0.5)
+        self.assertTrue(math.isfinite(profile["two_point_boundary_profile_log_likelihood"]))
+        self.assertEqual(profile["identification_status"], "INDETERMINATE")
+        self.assertEqual(diagnostics["concentration_profile_audit_error"], "NONE")
+        json.dumps(profile, allow_nan=False)
+
+    def test_f5_profile_audit_serializes_unresolved_nuisance_points_without_adjudicating(self):
+        with patch(
+            "c10s_f5_beta_binomial_likelihood_diagnostics.minimize_scalar",
+            return_value=SimpleNamespace(success=False, fun=1e9, x=0.0),
+        ):
+            diagnostics = dict(
+                _f5_concentration_profile_audit_diagnostics(
+                    f5_rows(), SimpleNamespace(status="FIXTURE_OPTIMIZER_STATUS"),
+                    (-4.0, -2.0, 0.0, 2.0, 4.0),
+                )
+            )
+        profile = json.loads(diagnostics["concentration_profile_audit_json"])
+        self.assertEqual(
+            profile["profile_status"], "PROFILE_HAS_BOUNDARY_OR_UNRESOLVED_POINTS",
+        )
+        self.assertEqual(profile["identification_status"], "INDETERMINATE")
+        self.assertEqual(len(profile["profile_curvature_values"]), 5)
+        self.assertTrue(all(value is None for value in profile["profile_curvature_values"]))
+        self.assertEqual(diagnostics["concentration_profile_audit_error"], "NONE")
+        stability = json.loads(diagnostics["concentration_profile_stability_json"])
+        self.assertTrue(all(
+            point["reference_status"] == "NUISANCE_PROFILE_OPTIMIZER_UNRESOLVED"
+            and point["refined_grid_status"] == "NUISANCE_PROFILE_OPTIMIZER_UNRESOLVED"
+            and point["expanded_bounds_status"] == "NUISANCE_PROFILE_OPTIMIZER_UNRESOLVED"
+            for point in stability["points"]
+        ))
+        self.assertEqual(stability["status"], "NUMERICAL_STABILITY_NOT_ADJUDICATED")
+        json.dumps(profile, allow_nan=False)
+        json.dumps(stability, allow_nan=False)
 
 
 if __name__ == "__main__":
