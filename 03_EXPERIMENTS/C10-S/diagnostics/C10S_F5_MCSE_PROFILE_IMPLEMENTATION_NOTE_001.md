@@ -25,6 +25,9 @@ The evaluator includes:
   feasible at large κ;
 - branch-specific grid-detected interior local-maximum counts and κ locations,
   plus the log-likelihood gap between the two highest detected local maxima;
+- a second, branch-specific Powell multi-start optimization in log(κ), seeded
+  from nine deterministic grid locations, with success counts and absolute
+  best-loglik discrepancies against the primary grid/local-refinement search;
 - typed failures and diagnostics for unsupported numerical cases.
 
 ## Numerical LR-set inversion added
@@ -72,16 +75,17 @@ for all-zero/all-one worlds, endpoint mixtures, asymmetric endpoint
 frequencies, interior-heavy counts and mixed extremes, and LR-set parameter
 space bounds. These are test definitions, not test outcomes.
 
-The test module additionally checks that branch-specific local-maximum
-diagnostic fields are emitted. No tests have been executed. These are test
-definitions only.
+The test module additionally checks that branch-specific local-maximum and
+independent multi-start diagnostic fields are emitted. No tests have been
+executed. These are test definitions only.
 
 ## Remaining limitations
 
 - Finite-κ maximization uses a deterministic log-concentration scan followed
-  by local bounded optimization; it is not a certified global optimizer. The
-  new local-maximum counts and locations expose grid-detected competitors but
-  do not prove that narrow peaks between grid points are absent.
+  by local bounded optimization and a second Powell multi-start route. Neither
+  is a certified global optimizer. Agreement between them is diagnostic only;
+  narrow peaks between seeds or shared objective/parameterization errors can
+  remain undetected.
 - Both MCSE and concentration grid resolutions are configurable and reported.
   A nested-grid convergence diagnostic now compares component counts, profile
   maxima, and LR-set endpoints. Stability across two grids is not proof that
