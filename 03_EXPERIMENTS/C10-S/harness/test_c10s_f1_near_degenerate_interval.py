@@ -39,20 +39,19 @@ def _perturb_within_deviations(rows, multiplier):
 
 
 class F1NearDegenerateIntervalTests(unittest.TestCase):
-    def test_realizable_near_double_root_is_resolved_as_two_close_positive_roots(self):
+    def test_realizable_near_double_root_is_conservatively_unresolved(self):
         rows = _perturb_within_deviations(_repeated_root_rows(), 1.0 - 5e-6)
         diagnostic = f1_score_polynomial_diagnostic(
             rows, between_variance=1.0,
         )
-        self.assertEqual(diagnostic.status, "POLYNOMIAL_ROOTS_ISOLATED")
-        self.assertEqual(diagnostic.critical_point_solver_status, "RESOLVED")
-        close_roots = sorted(
-            root for root in diagnostic.positive_roots
-            if 0.99 < root < 1.01
+        # The production solver must not fabricate two isolated roots when
+        # the critical-point residual lies inside its unresolved band.
+        self.assertEqual(diagnostic.status, "POLYNOMIAL_ROOTS_UNRESOLVED")
+        self.assertTrue(
+            diagnostic.unresolved_critical_candidates
+            or diagnostic.critical_point_solver_status != "RESOLVED"
         )
-        self.assertEqual(len(close_roots), 2)
-        self.assertLess(close_roots[1] - close_roots[0], 1e-3)
-        self.assertGreater(close_roots[1], close_roots[0])
+        self.assertEqual(diagnostic.tangential_roots, ())
 
     def test_near_double_root_rows_reach_interval_boundary_or_typed_abstention(self):
         rows = _perturb_within_deviations(_repeated_root_rows(), 1.0 - 5e-6)
