@@ -1,6 +1,6 @@
 {
   "schema": "TGCV-C10S-F1-INTEGRATED-VALIDATION-AUTH-001",
-  "status": "APPROVED",
+  "status": "CONSUMED_PREFLIGHT_FAILED",
   "authorization_id": "C10S-F1-INTEGRATED-VALIDATION-20261119-01",
   "scope": "F1_INTEGRATED_DETERMINISTIC_NUMERICAL_METHOD_TESTS_ONLY",
   "approval": {
@@ -80,5 +80,14 @@
     "approved_code_commit": "6bcb5a2827d810896315f66042083a5be7dda308",
     "protocol_id": "C10S-NESTED-MR-BOOTSTRAP-VALIDATION-001",
     "applies_to_this_scope": false
+  },
+  "execution_disposition": {
+    "consumed_by_workflow_run": 44521579986,
+    "workflow_commit": "77f8fdda9d8868e6f7a5496681512372735bc6fb",
+    "job_id": 135551262041,
+    "tests_started": false,
+    "outcome": "FAIL_WORKFLOW_PREFLIGHT_DEFECT",
+    "reason": "Validation evidence directory was created before clean-checkout assertion; no source hash checks or test command were reached.",
+    "retry_under_this_authorization": false
   }
 }
