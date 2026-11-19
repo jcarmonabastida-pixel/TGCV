@@ -2,9 +2,9 @@
 
 **Status:** FROZEN SOURCE SNAPSHOT — NEW VALIDATION AUTHORIZATION REQUIRED  
 **Freeze branch:** `research/c10s-f1-integrated-correction-20261119`  
-**Frozen source commit:** `41d91bd19ba0dfd789d21b3d8398184daa100ff9`  
+**Frozen source commit:** `d65686beb2b242c0acb8ffbbcfe8ff55437f6c8b`  
 **Predecessor validated snapshot:** `0d430adae891b3914475c60334d93e977efc44cc`  
-**Parent correction commit:** `7ef3420b59d13d0db2c2a72827fd5b58b6993380`  
+**Parent correction commit:** `1383f829fde7fc5a2e24a6ec0063fa3c5ce07713`  
 **Scope:** corrected F1 profile-LR endpoint inversion, root-restoration tests, exact-rational Sturm isolation, F1/Sturm adjudication, F1/F5 comparative-engine integration tests, and integrated concordance matrix v002.
 
 ## 1. Freeze rule
@@ -28,7 +28,7 @@ Git blob SHAs (not SHA-256):
 
 | Role | Path | Git blob SHA |
 |---|---|---|
-| F1 solver | `03_EXPERIMENTS/C10-S/harness/c10s_f1_between_profile_likelihood.py` | `ae2fc89c8da09bbeba88a9309b5ba37750bcd631` |
+| F1 solver | `03_EXPERIMENTS/C10-S/harness/c10s_f1_between_profile_likelihood.py` | `39f1732e1571f9d0705378d924b58b9475277e7a` |
 | Independent exact-rational Sturm isolator | `03_EXPERIMENTS/C10-S/harness/c10s_f1_independent_root_isolator.py` | `3ac9ce31eb82421022fd8d2a65a0daee049322be` |
 | F1/Sturm adjudicator | `03_EXPERIMENTS/C10-S/harness/c10s_f1_root_adjudication.py` | `9fa1cb21cd47e32030db8a00420e7dacfdc77321` |
 | F1/F5 comparative engine | `03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py` | `d277db712f8d2fdc7efbb5da5213d3087a84358a` |
@@ -36,7 +36,7 @@ Git blob SHAs (not SHA-256):
 | Sturm isolator tests | `03_EXPERIMENTS/C10-S/harness/test_c10s_f1_independent_root_isolator.py` | `bb5cd2b8d2819fdb8757ea293d7e8f8fb9a1b4ce` |
 | F1/Sturm adjudication tests | `03_EXPERIMENTS/C10-S/harness/test_c10s_f1_root_adjudication.py` | `2bcaed7423528fbbf9a6783c3f32e5edd30a10bc` |
 | F1/F5 comparative-engine tests | `03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_inference_engine.py` | `1061998ba93f363fbaaaed050c67acd6eb1c45b5` |
-| Integrated concordance matrix v002 | `03_EXPERIMENTS/C10-S/harness/C10S_F1_INTEGRATED_CONCORDANCE_MATRIX_DRAFT_002.md` | `f4f7f771d4027de33d2892441e2da512ce3f793b` |
+| Integrated concordance matrix v002 | `03_EXPERIMENTS/C10-S/harness/C10S_F1_INTEGRATED_CONCORDANCE_MATRIX_DRAFT_002.md` | `63b0480c12d3accb06764f042a16b1c9aee2200e` |
 
 ## 4. Runtime and preflight contract
 
