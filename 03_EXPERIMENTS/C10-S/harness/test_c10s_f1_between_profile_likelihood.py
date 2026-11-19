@@ -667,6 +667,46 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
                 ROWS, family="F1", likelihood_ratio_cutoff=0.0,
             )
 
+    def test_near_zero_within_sum_fails_closed_before_unbounded_diagnostic_expansion(self):
+        means = (-1.0, -1.0, 1.0, 1.0)
+        deviations = (-1.5, -0.5, 0.5, 1.5)
+        rows = tuple(
+            tuple(mean + 1e-150 * value for value in deviations)
+            for mean in means
+        )
+        with self.assertRaisesRegex(
+            F1ProfileError, "PROFILE_NUISANCE_DIAGNOSTIC_RANGE_EXCEEDS_LIMIT",
+        ):
+            f1_profile_between_confidence_set(
+                rows, family="F1", likelihood_ratio_cutoff=3.841458820694124,
+            )
+
+    def test_upper_endpoint_requires_a_bracket_and_abstains_when_expansion_budget_is_exhausted(self):
+        with self.assertRaisesRegex(
+            F1ProfileError, "UPPER_PROFILE_ENDPOINT_NOT_BRACKETED",
+        ):
+            f1_profile_between_confidence_set(
+                ROWS, family="F1", likelihood_ratio_cutoff=1e100,
+                max_bracket_expansions=1,
+            )
+
+    def test_nuisance_search_boundary_contact_is_a_typed_abstention(self):
+        actual = f1_profile_nuisance_optimizer_diagnostic(
+            ROWS, between_variance=1.0,
+        )
+        forced = dict(actual.__dict__)
+        forced["independent_boundary_sensitive"] = True
+        with patch(
+            "c10s_f1_between_profile_likelihood.f1_profile_nuisance_optimizer_diagnostic",
+            return_value=SimpleNamespace(**forced),
+        ):
+            with self.assertRaisesRegex(
+                F1ProfileError, "PROFILE_NUISANCE_CERTIFICATION_FAILED",
+            ):
+                f1_profile_between_confidence_set(
+                    ROWS, family="F1", likelihood_ratio_cutoff=3.841458820694124,
+                )
+
     def test_zero_within_sum_of_squares_is_explicitly_unresolved(self):
         degenerate = ((1.0, 1.0), (2.0, 2.0), (3.0, 3.0))
         with self.assertRaisesRegex(F1ProfileError, "ZERO_WITHIN_SUM"):
