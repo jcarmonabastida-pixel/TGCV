@@ -60,7 +60,8 @@ jobs:
 
       - name: Install hash-locked dependencies
         working-directory: source/03_EXPERIMENTS/C10-S/harness
-        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+        run: >-
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
 
       - name: Execute primary holdout and clean-source replay
         working-directory: source
