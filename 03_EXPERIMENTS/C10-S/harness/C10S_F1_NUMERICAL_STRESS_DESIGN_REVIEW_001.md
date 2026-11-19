@@ -1,6 +1,6 @@
 # C10-S F1 — Numerical stress design review 001
 
-**Status:** STATIC REVIEW COMPLETE — DESIGN AMENDMENT REQUIRED — NO EXECUTION  
+**Status:** STATIC REVIEW COMPLETE — V002 IMPLEMENTED — STATIC AUDIT PENDING — NO EXECUTION  
 **Research branch:** `research/c10s-f1-integrated-correction-20261119`  
 **Reviewed result:** `C10S_F1_NUMERICAL_STRESS_RESULT_001.md`  
 **Reviewed protocol:** `C10S_F1_NUMERICAL_STRESS_DESIGN_DRAFT_001.md`  
@@ -131,12 +131,27 @@ Summary denominators must include planned, generated, representable, ideal-resol
 
 ## 6. Implementation and governance sequence
 
-1. Approve this design review as the successor requirements baseline.
-2. Implement a new generator/harness version on the research branch. Keep the v001 generator and frozen source unchanged.
-3. Perform static review of the diff, fixture roster, denominators, domain/width transformations, status semantics and evidence schema.
-4. Create a new freeze manifest with exact source/blob identities and runtime pins.
-5. Prepare a new one-shot authorization. It must bind the new source snapshot, exact workflow identity, 14-scale N4 ladder, N3 lane definitions, record counts, command, runtime, timeout, outputs and prohibitions.
-6. Obtain fresh explicit approval before any new numerical execution.
+The successor implementation has now been added without modifying v001:
+
+- `c10s_f1_numerical_stress_v2.py` — v002 orchestration, ideal-vs-represented exact-rational topology audit, a separate 16-record near-double ULP family, the N3 covariant lane and the 14-scale N4 ladder.
+- `run_c10s_f1_numerical_stress_v2.py` — explicit CLI, canonical JSONL/summary/manifest writer and source SHA-256 inventory.
+- v001 generator, CLI, isolator, result record and authorization 003 remain unchanged.
+
+Planned v002 evidence denominator:
+- 131 polynomial/Sturm records: historical 115 plus 16 near-double ULP records;
+- 7 N3 covariant records, in addition to the historical N3 fixed lane retained in the 131;
+- 14 F1 N4 scale records;
+- **152 combined records**.
+
+This is a design count, not an observed or executed count. The new source has not been run or tested. The implementation is not yet frozen or authorized.
+
+Next governance sequence:
+1. Complete static audit of the v002 implementation, fixture roster, denominators, exact domain/width transformations, status semantics and evidence schema.
+2. Correct any static defects and re-review the complete diff.
+3. Create a new freeze manifest with exact source/blob identities and runtime pins.
+4. Update or add a branch-specific workflow that validates the new manifest and one-shot authorization identity. Do not reuse authorization 003.
+5. Prepare a new one-shot authorization binding the 152-record scope, 14-scale N4 ladder, N3 lanes, command, runtime, timeout, outputs and prohibitions.
+6. Obtain fresh explicit approval before any numerical execution.
 
 No tests, numerical runners, calibration or scientific experiment are authorized by this review. Authorization 003 remains consumed and closed.
 
@@ -148,11 +163,12 @@ No tests, numerical runners, calibration or scientific experiment are authorized
 | Deterministic stress run v001 | EXECUTED — 122 records |
 | v001 execution integrity | PASS |
 | v001 numerical robustness | MIXED / NOT ESTABLISHED |
-| Ideal-vs-represented topology audit | OPEN |
-| N3 fixed/covariant separation | OPEN |
-| N4 transition localization | OPEN |
-| Successor implementation | NOT STARTED |
+| Ideal-vs-represented topology audit | IMPLEMENTED — NOT EXECUTED |
+| N2 near-double ULP family | IMPLEMENTED — NOT EXECUTED |
+| N3 fixed/covariant separation | IMPLEMENTED — NOT EXECUTED |
+| N4 14-scale transition ladder | IMPLEMENTED — NOT EXECUTED |
+| Successor implementation | IMPLEMENTED — STATIC AUDIT PENDING |
 | New freeze and authorization | NOT PREPARED |
 | Further numerical execution | NOT AUTHORIZED |
 
-**Next operation:** implement the successor generator/harness from these requirements, preserving the v001 source, records and results unchanged.
+**Next operation:** complete the static audit of v002, preserving the v001 source, records and results unchanged. Do not execute the v002 CLI without a new freeze and explicit one-shot authorization.
