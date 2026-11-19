@@ -415,7 +415,7 @@ def run_f5_bank(
     diagnostic_gate = all(_optimizer_diagnostic_is_resolved(record["fit_diagnostics"]) for record in records)
     c5_metrics = [metric for metric in metrics if metric["method_id"] == "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"]
     component_gates = {
-        target: _component_gate(next((m for m in c5_metrics if m["target"] == target), None))
+        target: _component_gate(next((m for m in c5_metrics if m["target"] == target), None), expected_n=k)
         for target in ("within", "between")
     }
     return {
@@ -488,7 +488,7 @@ def _optimizer_diagnostic_is_resolved(fit: dict[str, Any]) -> bool:
     return True
 
 
-def _component_gate(metric: dict[str, Any] | None) -> dict[str, Any]:
+def _component_gate(metric: dict[str, Any] | None, *, expected_n: int | None = None) -> dict[str, Any]:
     if metric is None:
         return {"status": "FAIL_MISSING_METRIC"}
     coverage = metric.get("conditional_coverage")
@@ -501,9 +501,13 @@ def _component_gate(metric: dict[str, Any] | None) -> dict[str, Any]:
         and isinstance(wilson[0], (int, float)) and isinstance(wilson[1], (int, float))
         and wilson[0] <= 0.95 <= wilson[1]
     )
-    passed = coverage_ok and emission_ok and wilson_ok
+    denominator_ok = expected_n is None or metric.get("n_datasets") == expected_n
+    passed = coverage_ok and emission_ok and wilson_ok and denominator_ok
     return {
         "status": "PASS" if passed else "FAIL_FROZEN_COMPONENT_GATE",
+        "denominator_ok": denominator_ok,
+        "n_datasets": metric.get("n_datasets"),
+        "expected_n": expected_n,
         "conditional_coverage": coverage,
         "conditional_coverage_gate": "[0.93,0.97]",
         "coverage_wilson_95": wilson,
@@ -722,10 +726,20 @@ def run_f5_development_calibration(
         })
 
     elapsed = time.perf_counter() - started
+    overall_f5_disposition = (
+        "ELIGIBLE_FOR_LATER_CONFIRMATORY_PROTOCOL_NOT_CONFIRMATORY"
+        if all(
+            item["calibration"]["c5_bank_disposition"] == "PASS_DEVELOPMENT_COMPONENT_GATES"
+            and item["validation"]["c5_bank_disposition"] == "PASS_DEVELOPMENT_COMPONENT_GATES"
+            for item in results
+        )
+        else "NO_VALIDATED_F5_COMPONENT_INTERVAL_METHOD"
+    )
     manifest = {
         "schema": "TGCV-C10S-F5-B2-B3-DEVELOPMENT-CALIBRATION-1",
         "run_id": RUN_ID,
         "status": "COMPLETED_DEVELOPMENT_CALIBRATION_NOT_CONFIRMATORY",
+        "overall_f5_disposition": overall_f5_disposition,
         "authorization_id": authorization.get("authorization_id"),
         "authorization_commit": authorization.get("authorization_commit"),
         "authorization_sha256": authorization.get("authorization_sha256"),
@@ -774,6 +788,7 @@ def run_f5_development_calibration(
     _write_json(output_dir / "summary.json", {
         "run_id": RUN_ID,
         "status": manifest["status"],
+        "overall_f5_disposition": overall_f5_disposition,
         "elapsed_seconds": elapsed,
         "results": results,
         "mcse_scope": MCSE_SCOPE,
