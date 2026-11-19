@@ -474,17 +474,25 @@ def _optimizer_diagnostic_is_resolved(fit: dict[str, Any]) -> bool:
         "lower_concentration_bound_distance", "upper_concentration_bound_distance",
     )
     for start in starts:
-        if not isinstance(start, dict) or any(
+        if not isinstance(start, dict) or start.get("success") is not True or any(
             not isinstance(start.get(key), (int, float)) or not math.isfinite(start[key])
-            for key in required_start_values
+            for key in required_start_values + ("negative_log_likelihood",)
         ):
             return False
-    hessian = audit.get("independent_observed_hessian") or audit.get("observed_hessian")
-    if not isinstance(hessian, list) or not hessian or any(
-        not isinstance(row, list) or any(not isinstance(value, (int, float)) or not math.isfinite(value) for value in row)
-        for row in hessian
-    ):
-        return False
+    for matrix_key in ("observed_hessian", "independent_observed_hessian"):
+        hessian = audit.get(matrix_key)
+        if not isinstance(hessian, list) or len(hessian) != 2 or any(
+            not isinstance(row, list) or len(row) != 2
+            or any(not isinstance(value, (int, float)) or not math.isfinite(value) for value in row)
+            for row in hessian
+        ):
+            return False
+    for vector_key in ("hessian_eigenvalues", "selected_score_components", "independent_score_components"):
+        vector = audit.get(vector_key)
+        if not isinstance(vector, list) or len(vector) != 2 or any(
+            not isinstance(value, (int, float)) or not math.isfinite(value) for value in vector
+        ):
+            return False
     return True
 
 
