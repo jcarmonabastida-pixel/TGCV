@@ -20,6 +20,7 @@ from c10s_f1_between_profile_likelihood import (
     f1_profile_loglik,
 )
 from c10s_nested_mr_comparative_inference_engine import compare_dataset
+from c10s_variance_comparison_interface import observed_nested_mr_result
 from c10s_nested_mr_fixtures import tier_a_specs
 from run_c10s_nested_mr_comparative_holdout import generate_holdout_dataset
 
@@ -144,7 +145,9 @@ def run_preflight(output: Path, *, execution_authorized: bool = False) -> dict:
     all_records = []
     for spec in _specs():
         cell_started = time.perf_counter()
-        profile_seconds = 0.0
+        profile_calibration_seconds = 0.0
+        profile_validation_seconds = 0.0
+        comparison_seconds = 0.0
         c5_sensitivity_seconds = 0.0
         typed_abstentions: dict[str, int] = {}
         untyped_failures = 0
@@ -173,6 +176,20 @@ def run_preflight(output: Path, *, execution_authorized: bool = False) -> dict:
                 "F5_fit_reason": None,
             }
             try:
+                if spec.family == "F1":
+                    # A2 calibration statistic: profile log-likelihood at the
+                    # known truth and at the data-derived constrained MLE.
+                    t0 = time.perf_counter()
+                    observed = observed_nested_mr_result(rows)
+                    tau_hat = max(
+                        0.0,
+                        observed.observed_world_variance - observed.within_estimate / spec.r,
+                    )
+                    f1_profile_loglik(rows, between_variance=spec.true_between)
+                    f1_profile_loglik(rows, between_variance=tau_hat)
+                    profile_calibration_seconds += time.perf_counter() - t0
+
+                t0 = time.perf_counter()
                 comparison = compare_dataset(
                     rows, dataset_id=dataset_id, family=spec.family,
                     target_m=spec.m, target_r=spec.r,
@@ -184,6 +201,7 @@ def run_preflight(output: Path, *, execution_authorized: bool = False) -> dict:
                     include_profile_diagnostics=False,
                     include_f5_concentration_profile_audit=False,
                 )
+                comparison_seconds += time.perf_counter() - t0
                 roster = {comparison.baseline.method_id}
                 roster.update(item.method_id for item in comparison.candidates)
                 expected = {
@@ -197,12 +215,11 @@ def run_preflight(output: Path, *, execution_authorized: bool = False) -> dict:
                     # Measure the full inversion path. The supplied cutoff is
                     # computational-only; no interval is scored or interpreted.
                     t0 = time.perf_counter()
-                    f1_profile_loglik(rows, between_variance=spec.true_between)
                     profile = f1_profile_between_confidence_set(
                         rows, family="F1",
                         likelihood_ratio_cutoff=F1_PROFILE_BENCHMARK_CUTOFF,
                     )
-                    profile_seconds += time.perf_counter() - t0
+                    profile_validation_seconds += time.perf_counter() - t0
                     record["F1_profile_status"] = profile.status
                     record["F1_profile_topology_status"] = profile.topology_status
                     record["F1_profile_nuisance_status"] = profile.nuisance_certification_status
@@ -219,12 +236,17 @@ def run_preflight(output: Path, *, execution_authorized: bool = False) -> dict:
                     sensitivity_seed = derive_seed("C5_bootstrap_B4000", cell_id, replicate)
                     record["C5_bootstrap_seed_B4000"] = sensitivity_seed
                     record["C5_bootstrap_B4000"] = C5_B_SENSITIVITY
-                    fitted_beta_binomial_parametric_bootstrap(
+                    sensitivity_result = fitted_beta_binomial_parametric_bootstrap(
                         rows, target_m=spec.m, target_r=spec.r,
                         bootstrap_replicates=C5_B_SENSITIVITY,
                         bootstrap_seed=sensitivity_seed,
                         confidence_level=0.95,
                     )
+                    record["C5_B4000_fit_status"] = (
+                        "ABSTAINED" if sensitivity_result.fit is None
+                        else "BOUNDARY" if sensitivity_result.fit.boundary else "INTERIOR"
+                    )
+                    record["C5_B4000_failure_reason"] = sensitivity_result.failure_reason
                     c5_sensitivity_seconds += time.perf_counter() - t0
             except F1ProfileError as exc:
                 record["F1_profile_status"] = "TYPED_ABSTENTION"
@@ -244,9 +266,9 @@ def run_preflight(output: Path, *, execution_authorized: bool = False) -> dict:
             "C5_bootstrap_B_sensitivity": C5_B_SENSITIVITY if spec.family == "F5" else None,
             "elapsed_seconds": elapsed,
             "seconds_per_dataset": elapsed / K_PER_CELL,
-            "F1_profile_seconds": profile_seconds if spec.family == "F1" else None,
+            "F1_profile_calibration_seconds": profile_calibration_seconds if spec.family == "F1" else None,\n            "F1_profile_validation_seconds": profile_validation_seconds if spec.family == "F1" else None,\n            "comparison_seconds": comparison_seconds,
             "C5_B4000_incremental_seconds": c5_sensitivity_seconds if spec.family == "F5" else None,
-            "peak_process_rss_bytes": peak_rss_bytes(),
+            "peak_process_rss_bytes": peak_rss_bytes(),\n            "peak_rss_scope": "PROCESS_LIFETIME_HIGH_WATERMARK_CUMULATIVE",
             "typed_abstentions": dict(sorted(typed_abstentions.items())),
             "fit_statuses": dict(sorted(fit_statuses.items())),
             "untyped_execution_failures": untyped_failures,
@@ -255,6 +277,39 @@ def run_preflight(output: Path, *, execution_authorized: bool = False) -> dict:
             "results_used_for_calibration": False,
             "results_used_for_validation": False,
         })
+    # Extrapolation follows the frozen v1.0 bank sizes. F1 A2 uses only
+    # the profile LR statistic; A3 adds C0/C1 comparison and interval inversion.
+    # F5 B2 uses C0/C5 at B=1,000; B3 adds B=4,000 on 500 selected datasets.
+    by_family = {item["family"]: item for item in results}
+    f1 = by_family["F1"]
+    f5 = by_family["F5"]
+    f1_cal_per_dataset = f1["F1_profile_calibration_seconds"] / K_PER_CELL
+    f1_validation_per_dataset = (
+        f1["comparison_seconds"] + f1["F1_profile_validation_seconds"]
+    ) / K_PER_CELL
+    f5_base_per_dataset = (
+        f5["elapsed_seconds"] - f5["C5_B4000_incremental_seconds"]
+    ) / K_PER_CELL
+    f5_b4000_per_dataset = f5["C5_B4000_incremental_seconds"] / K_PER_CELL
+    projection = {
+        "basis": "linear_per_dataset_extrapolation_from_one_representative_M30_R20_cell_per_family",
+        "F1_A2_calibration_datasets": 30000,
+        "F1_A3_validation_datasets": 30000,
+        "F5_B2_calibration_validation_datasets": 20000,
+        "F5_B3_selected_datasets": 500,
+        "F1_A2_projected_seconds": f1_cal_per_dataset * 30000,
+        "F1_A3_projected_seconds": f1_validation_per_dataset * 30000,
+        "F5_B2_projected_seconds": f5_base_per_dataset * 20000,
+        "F5_B3_B4000_incremental_projected_seconds": f5_b4000_per_dataset * 500,
+    }
+    projection["total_projected_seconds"] = sum(
+        value for key, value in projection.items()
+        if key.endswith("_projected_seconds")
+    )
+    projection["total_projected_hours"] = projection["total_projected_seconds"] / 3600.0
+    projection["B4000_projection_basis"] = (
+        "directly benchmarked on the same 100 representative F5 preflight datasets"
+    )
     root = Path(__file__).resolve().parents[3]
     try:
         commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
