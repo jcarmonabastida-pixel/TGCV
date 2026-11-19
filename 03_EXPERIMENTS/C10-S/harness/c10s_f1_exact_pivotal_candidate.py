@@ -65,8 +65,8 @@ def _joint_region_vertices(
 
 def f1_exact_pivotal_result(
     rows: Sequence[Sequence[float]], *,
-    target_m: int, target_r: int, confidence_level: float = 0.95,
-    family: str = "F1",
+    target_m: int, target_r: int, family: str,
+    confidence_level: float = 0.95,
 ) -> VarianceComparisonResult:
     """Return exact within, conservative raw-between and joint-set MCSE intervals.
 
@@ -90,7 +90,7 @@ def f1_exact_pivotal_result(
         raise F1PivotalError("confidence_level must lie strictly between 0 and 1")
 
     observed = observed_nested_mr_result(rows, target_m=target_m, target_r=target_r)
-    m, r = (int(value.split("=")[1]) for value in observed.provenance[0][1].split(","))
+    m, r = len(rows), len(rows[0])
     if m < 3:
         raise F1PivotalError("F1 exact/pivotal candidate requires M >= 3")
     df_w, df_b = m * (r - 1), m - 1
