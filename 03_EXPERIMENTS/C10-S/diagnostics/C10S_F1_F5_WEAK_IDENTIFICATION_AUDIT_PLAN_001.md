@@ -188,3 +188,17 @@ The extended profile audit initially used negative infinity to represent a zero-
 Finite endpoint-only two-point limits retain their finite log-likelihood and endpoint-mixture MLE. Tests assert `json.dumps(..., allow_nan=False)` succeeds for the profile audit and boundary records.
 
 The first static run on commit `1cdb9ea9b173f81cc3bc7c96e1e665b2d2d46032` exposed a conversion bug while constructing the new null value (four affected tests; 133 tests discovered). The return path was corrected to preserve `None` rather than coercing it to float. The correction is commit `9a4b6798a621505919356f5fa657a3667bf27cdb`; exact-commit static validation is pending.
+
+
+### Static validation — strict-JSON boundary correction
+
+The corrected exact-commit static workflow completed successfully:
+- Run: `44591980405`
+- Exact commit: `9a4b6798a621505919356f5fa657a3667bf27cdb`
+- Dependency installation: PASS
+- Compile: PASS
+- Deterministic suite: **133 tests passed**
+- Strict JSON serialization assertions for the profile audit and boundary objects: PASS
+- Null representation for the structurally zero two-point boundary with interior counts: PASS.
+
+The failure on predecessor commit `1cdb9ea9b173f81cc3bc7c96e1e665b2d2d46032` is retained as a historical failed validation, not overwritten. The corrected commit is the validated source identity for this increment.
