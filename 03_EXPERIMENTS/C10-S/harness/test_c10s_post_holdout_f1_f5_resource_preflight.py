@@ -52,6 +52,8 @@ class PostHoldoutResourcePreflightTests(unittest.TestCase):
         result = preflight.validate_seed_separation()
         self.assertEqual(result["status"], "PASS")
         self.assertGreater(result["historical_seed_values_checked"], 0)
+        self.assertEqual(result["historical_replicates_per_cell_checked"], 1000)
+        self.assertEqual(result["historical_cell_count"], 8)
         self.assertIn("C10S_NESTED_MR_COMPARATIVE_HOLDOUT_SEEDS_1.0", result["historical_schedules"])
 
     def test_preflight_is_resource_only_and_keeps_exact_rosters(self):
@@ -102,6 +104,7 @@ class PostHoldoutResourcePreflightTests(unittest.TestCase):
                 self.assertNotIn("conditional_coverage", serialized)
                 self.assertNotIn("coverage_results", serialized)
                 self.assertEqual(len(persisted["records"]), 2)
+                self.assertIn("total_projected_hours", persisted["resource_projection"])
                 self.assertTrue(all(record["rows_sha256"] for record in persisted["records"]))
             finally:
                 preflight.K_PER_CELL = original_k
