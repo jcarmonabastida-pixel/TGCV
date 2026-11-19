@@ -228,17 +228,18 @@ def _n5_rounding_cell_diagnostic() -> dict[str, Any]:
     }
 
 
-def _ceil_nth_root_fraction(value: Q, degree: int) -> int:
-    if value < 0 or degree < 1:
-        raise ValueError("NONNEGATIVE_VALUE_AND_POSITIVE_ROOT_DEGREE_REQUIRED")
+def _ceil_scaled_nth_root_fraction(value: Q, degree: int, scale: int = 2) -> int:
+    """Return the least integer m with (m/scale)**degree >= value."""
+    if value < 0 or degree < 1 or scale < 1:
+        raise ValueError("NONNEGATIVE_VALUE_AND_POSITIVE_DEGREE_SCALE_REQUIRED")
     if value == 0:
         return 0
-    low, high = 0, 1
-    while Q(high**degree) < value:
+    low, high = 0, scale
+    while Q(high, scale) ** degree < value:
         high *= 2
     while low + 1 < high:
         middle = (low + high) // 2
-        if Q(middle**degree) >= value:
+        if Q(middle, scale) ** degree >= value:
             high = middle
         else:
             low = middle
@@ -250,11 +251,11 @@ def _fujiwara_integer_bound(coefficients: Sequence[Q]) -> int:
         raise ValueError("NONDEGENERATE_CUBIC_REQUIRED")
     leading = abs(coefficients[-1])
     terms = (
-        _ceil_nth_root_fraction(abs(coefficients[0]) / leading, 3),
-        _ceil_nth_root_fraction(abs(coefficients[1]) / leading, 2),
-        _ceil_nth_root_fraction(abs(coefficients[2]) / leading, 1),
+        _ceil_scaled_nth_root_fraction(abs(coefficients[0]) / leading, 3),
+        _ceil_scaled_nth_root_fraction(abs(coefficients[1]) / leading, 2),
+        _ceil_scaled_nth_root_fraction(abs(coefficients[2]) / leading, 1),
     )
-    return 2 * max(terms)
+    return max(terms)
 
 
 def _ceil_log2_ratio(numerator: Q, denominator: Q) -> int:
