@@ -400,5 +400,84 @@ class F5BetaBinomialLikelihoodDiagnosticTests(unittest.TestCase):
             )
 
 
+    def test_profile_audit_fixture_matrix_keeps_three_likelihood_regimes_separate(self):
+        fixtures = (
+            (
+                "ENDPOINT_ONLY",
+                (0, 5, 0, 5, 5, 0),
+                "FINITE_ENDPOINT_MIXTURE_PROFILE",
+                0,
+                True,
+            ),
+            (
+                "LOW_DISPERSION",
+                (2, 2, 2, 2, 2, 2, 2, 2),
+                "ZERO_PROBABILITY_INTERIOR_COUNTS",
+                8,
+                False,
+            ),
+            (
+                "INTERIOR_COUNTS",
+                COUNTS,
+                "ZERO_PROBABILITY_INTERIOR_COUNTS",
+                8,
+                False,
+            ),
+        )
+        grid = (math.log(0.2), 0.0, math.log(5.0))
+        for name, counts, expected_boundary_status, expected_interior, has_two_point in fixtures:
+            with self.subTest(fixture=name):
+                profile = beta_binomial_profile_log_concentration(
+                    counts, R, grid, mean_grid_size=65,
+                )
+                boundary = beta_binomial_profiled_boundary_likelihoods(counts, R)
+                record = build_beta_binomial_profile_audit_record(
+                    SimpleNamespace(status="FIXTURE_OPTIMIZER_STATUS"),
+                    profile,
+                    boundary,
+                )
+                self.assertEqual(boundary.interior_count_observations, expected_interior)
+                self.assertEqual(boundary.two_point_boundary_status, expected_boundary_status)
+                self.assertTrue(math.isfinite(boundary.binomial_profile_log_likelihood))
+                self.assertEqual(
+                    boundary.two_point_profile_log_likelihood is not None,
+                    has_two_point,
+                )
+                if has_two_point:
+                    self.assertTrue(math.isfinite(boundary.two_point_profile_log_likelihood))
+                else:
+                    self.assertIsNone(boundary.two_point_profile_log_likelihood)
+                self.assertEqual(record.optimizer_convergence_status, "FIXTURE_OPTIMIZER_STATUS")
+                self.assertEqual(record.identification_status, "INDETERMINATE")
+                self.assertEqual(record.profile_point_count, len(grid))
+                self.assertEqual(
+                    record.profile_max_log_likelihood,
+                    max(point.profiled_log_likelihood for point in profile),
+                )
+                self.assertAlmostEqual(
+                    record.profile_minus_binomial_boundary,
+                    record.profile_max_log_likelihood
+                    - boundary.binomial_profile_log_likelihood,
+                    delta=1e-12,
+                )
+                if has_two_point:
+                    self.assertAlmostEqual(
+                        record.profile_minus_two_point_boundary,
+                        record.profile_max_log_likelihood
+                        - boundary.two_point_profile_log_likelihood,
+                        delta=1e-12,
+                    )
+                else:
+                    self.assertIsNone(record.profile_minus_two_point_boundary)
+                self.assertEqual(len(record.profile_curvature_values), len(grid))
+                self.assertEqual(
+                    record.profile_status,
+                    "NUMERICAL_PROFILE_UNCERTIFIED"
+                    if all(point.status == "NUMERICAL_PROFILE_UNCERTIFIED" for point in profile)
+                    else "PROFILE_HAS_BOUNDARY_OR_UNRESOLVED_POINTS",
+                )
+                json.dumps(asdict(record), allow_nan=False)
+
+
 if __name__ == "__main__":
     unittest.main()
