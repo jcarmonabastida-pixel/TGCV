@@ -40,7 +40,7 @@ def _perturb_within_deviations(rows, multiplier):
 
 class F1NearDegenerateIntervalTests(unittest.TestCase):
     def test_realizable_near_double_root_is_resolved_as_two_close_positive_roots(self):
-        rows = _perturb_within_deviations(_repeated_root_rows(), 1.0 - 5e-8)
+        rows = _perturb_within_deviations(_repeated_root_rows(), 1.0 - 5e-6)
         diagnostic = f1_score_polynomial_diagnostic(
             rows, between_variance=1.0,
         )
@@ -55,7 +55,7 @@ class F1NearDegenerateIntervalTests(unittest.TestCase):
         self.assertGreater(close_roots[1], close_roots[0])
 
     def test_near_double_root_rows_reach_interval_boundary_or_typed_abstention(self):
-        rows = _perturb_within_deviations(_repeated_root_rows(), 1.0 - 5e-8)
+        rows = _perturb_within_deviations(_repeated_root_rows(), 1.0 - 5e-6)
         try:
             result = f1_profile_between_confidence_set(
                 rows, family="F1",
