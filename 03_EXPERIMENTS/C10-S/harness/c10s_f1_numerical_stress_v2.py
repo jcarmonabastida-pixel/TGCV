@@ -151,9 +151,12 @@ def run_polynomial_stress_v2() -> dict[str, Any]:
         records.append(_annotate_topology(record, fixture))
     records.extend(_near_double_ulp_records())
     status_counts: dict[str, int] = {}
+    sturm_status_counts: dict[str, int] = {}
     for record in records:
-        key = str(record["topology_comparison_status"])
-        status_counts[key] = status_counts.get(key, 0) + 1
+        topology_key = str(record["topology_comparison_status"])
+        status_counts[topology_key] = status_counts.get(topology_key, 0) + 1
+        sturm_key = str(record["sturm_status"])
+        sturm_status_counts[sturm_key] = sturm_status_counts.get(sturm_key, 0) + 1
     return {
         "generator_version": GENERATOR_VERSION,
         "execution_performed": True,
@@ -161,7 +164,7 @@ def run_polynomial_stress_v2() -> dict[str, Any]:
         "historical_v1_fixture_grid_reused": True,
         "record_count": len(records),
         "topology_comparison_counts": status_counts,
-        "sturm_status_counts": v1["sturm_status_counts"],
+        "sturm_status_counts": sturm_status_counts,
         "records": records,
     }
 
