@@ -34,11 +34,11 @@ The validated baseline source files remain unchanged. The new harness is additiv
 
 The fixture record preserves the ideal rational coefficients, ideal roots where known, binary64 hexadecimal coefficients, exact rationalization of the binary64 values, domain, transformation, perturbation, width/depth settings and Sturm output. Nonrepresentable coefficient vectors are classified as representation-unresolved before Sturm is called.
 
-The current roster contains 56 base fixtures; N5 expands to 15 width/depth combinations in the polynomial runner, for 70 records total. This is a deterministic design count, not an execution result.
+The revised roster contains 59 base fixtures; four N5 fixtures each expand to 15 width/depth combinations, yielding 115 polynomial/Sturm records. This is a deterministic design count, not an execution result.
 
 ### F1 end-to-end lane
 
-N4 uses the existing observed-row interface and a fixed observation-scale ladder (2^k), (k in {-100,-50,-20,0,20,50,100}). It records the profile interval, MLE, F1 polynomial result and existing F1/Sturm adjudication after inverse scale mapping. Fail-closed exceptions remain visible as records.
+N4 uses the existing observed-row interface and a fixed observation-scale ladder (2^k), (k in {-100,-50,-20,0,20,50,100}). It records the profile log-likelihood, interval, MLE, F1 polynomial result and existing F1/Sturm adjudication. Variance quantities and nuisance-variance roots are mapped back by 2^(-2k), not 2^(-k). It computes predeclared equivariance errors against the k=0 baseline: 1e-7 absolute for profile log-likelihood, 1e-10 absolute for the MLE, 1e-8 absolute for each LR endpoint, and 1e-7 relative for the maximum polynomial-root location difference. It also requires polynomial and adjudication statuses to remain invariant. Fail-closed exceptions remain visible as records.
 
 ## 4. Critical interface boundary discovered during implementation
 
@@ -62,7 +62,7 @@ The code has been inspected against the existing module signatures and contracts
 - ULP perturbations use deterministic `math.nextafter` steps;
 - exact binary64 coefficient values are recorded with `float.hex()` and `Fraction.from_float`;
 - finite domains are explicitly supplied for the endpoint fixtures;
-- N5 varies both `max_width` and `max_depth`;
+- N5 varies both `max_width` and `max_depth` across a unit-scale close pair, a near-zero pair, a large-magnitude pair and an exact finite upper-endpoint pair;
 - Sturm's `ROOTS_UNRESOLVED` result is preserved without partial roots;
 - no randomness, external data, parameter fitting, or import-time execution is introduced;
 - the validated F1, Sturm and adjudication source modules are not edited.
@@ -86,7 +86,7 @@ The two runner functions return in-memory records only; they do not write eviden
 
 Before authorization, perform a second static design review focused on:
 1. whether the chosen exponent/ULP/depth ladders are bounded and scientifically adequate;
-2. whether the F1 scale ladder's recorded invariance metrics need explicit predeclared tolerances and acceptance states;
+2. whether the F1 scale ladder's predeclared invariance tolerances and acceptance states are adequate;
 3. whether N1–N3/N5–N6 should remain a Sturm-only numerical reference lane or whether a separate pure-polynomial F1 solver API is justified;
 4. whether the evidence schema should be JSONL plus summary JSON with deterministic canonicalization and hashes.
 
