@@ -389,10 +389,18 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
     baseline = next((r for r in records if r["exponent"] == 0 and
                      r["record_status"] == "RETURNED"), None)
     if baseline is not None:
+        baseline_resolved = (
+            baseline["score_polynomial_status"] == "POLYNOMIAL_ROOTS_ISOLATED"
+            and baseline["sturm_status"] == "ROOTS_ISOLATED"
+            and baseline["adjudication_status"] == "ROOTS_AGREE"
+        )
         df_total = len(rows) * (len(rows[0]) - 1) + len(rows) - 1
         for record in records:
             if record["record_status"] != "RETURNED":
                 record["equivariance_status"] = "UNRESOLVED"
+                continue
+            if not baseline_resolved:
+                record["equivariance_status"] = "UNRESOLVED_BASELINE"
                 continue
             factor = math.ldexp(1.0, int(record["exponent"]))
             expected = baseline["profile_loglik"] - df_total * math.log(factor * factor) / 2.0
@@ -429,6 +437,9 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
                 record["multiplicity_review_required"]
                 == baseline["multiplicity_review_required"]
             )
+            record["boundary_roots_equal"] = (
+                record["sturm_boundary_roots"] == baseline["sturm_boundary_roots"]
+            )
             current_intervals = record["sturm_independent_intervals_base_variance"]
             baseline_intervals = baseline["sturm_independent_intervals_base_variance"]
             interval_count_equal = len(current_intervals) == len(baseline_intervals)
@@ -464,6 +475,7 @@ def run_f1_observation_scale_ladder_v2() -> dict[str, Any]:
                     and record["adjudication_status"] == baseline["adjudication_status"]
                     and record["adjudication_root_counts_equal"]
                     and record["multiplicity_review_equal"]
+                    and record["boundary_roots_equal"]
                     and record["sturm_interval_equivariance"] == "PASS"
                 ) else "FAIL"
             )
