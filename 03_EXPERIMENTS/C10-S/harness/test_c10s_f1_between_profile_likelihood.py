@@ -8,6 +8,7 @@ from c10s_f1_between_profile_likelihood import (
     f1_profile_between_confidence_set,
     f1_profile_loglik,
     f1_profile_nuisance_optimizer_diagnostic,
+    f1_profile_nuisance_stability_diagnostic,
 )
 
 
@@ -112,6 +113,35 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
         self.assertGreaterEqual(result.stationary_points, 1)
         self.assertIsNotNone(result.absolute_loglik_difference)
         self.assertLessEqual(result.absolute_loglik_difference, 1e-7)
+
+    def test_multi_resolution_stability_records_full_grid_span_cross_product(self):
+        result = f1_profile_nuisance_stability_diagnostic(
+            ROWS, between_variance=0.25,
+            grid_resolutions=(241, 481, 961),
+            log_spans=(30.0, 36.0, 42.0),
+        )
+        self.assertEqual(len(result.configurations), 9)
+        self.assertEqual(len(result.stationary_point_counts), 9)
+        self.assertEqual(len(result.optimizer_statuses), 9)
+        self.assertIn(
+            result.status,
+            {
+                "OPTIMIZATION_CONCORDANT", "OPTIMIZATION_DISCORDANT",
+                "OPTIMIZATION_INSUFFICIENT", "OPTIMIZATION_BOUNDARY_SENSITIVE",
+            },
+        )
+
+    def test_multi_resolution_stability_rejects_invalid_resolution(self):
+        with self.assertRaisesRegex(F1ProfileError, "GRID_RESOLUTIONS"):
+            f1_profile_nuisance_stability_diagnostic(
+                ROWS, between_variance=0.25, grid_resolutions=(40, 241),
+            )
+
+    def test_multi_resolution_stability_rejects_invalid_log_span(self):
+        with self.assertRaisesRegex(F1ProfileError, "LOG_SPANS"):
+            f1_profile_nuisance_stability_diagnostic(
+                ROWS, between_variance=0.25, log_spans=(30.0, 0.0),
+            )
 
     def test_nuisance_diagnostic_rejects_underresolved_grid(self):
         with self.assertRaisesRegex(F1ProfileError, "NUISANCE_GRID_POINTS"):
