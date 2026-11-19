@@ -603,7 +603,9 @@ def beta_binomial_profiled_boundary_likelihoods(
     return BetaBinomialProfileBoundaryLikelihoods(
         binomial_profile_log_likelihood=float(binomial_ll),
         binomial_profile_mean=float(binomial_mean),
-        two_point_profile_log_likelihood=float(two_point_ll),
+        two_point_profile_log_likelihood=(
+            float(two_point_ll) if two_point_ll is not None else None
+        ),
         two_point_profile_mean=(
             float(two_point_mean) if two_point_mean is not None else None
         ),
