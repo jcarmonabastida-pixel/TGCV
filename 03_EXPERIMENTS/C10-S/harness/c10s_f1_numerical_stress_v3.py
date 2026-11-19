@@ -215,8 +215,10 @@ def _n5_rounding_cell_diagnostic() -> dict[str, Any]:
         ],
         "rounding_cell_topology_status": interval_status,
         "ideal_sturm_status": ideal_roots.status,
+        "ideal_sturm_root_count": len(ideal_roots.roots),
         "ideal_sturm_root_multiplicities": [r.multiplicity for r in ideal_roots.roots],
         "represented_sturm_status": represented_roots.status,
+        "represented_sturm_root_count": len(represented_roots.roots),
         "represented_sturm_root_multiplicities": [
             r.multiplicity for r in represented_roots.roots
         ],
