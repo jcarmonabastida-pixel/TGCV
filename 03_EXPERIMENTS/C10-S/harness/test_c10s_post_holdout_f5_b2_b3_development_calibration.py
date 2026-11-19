@@ -78,6 +78,38 @@ class F5DevelopmentCalibrationTests(unittest.TestCase):
         self.assertEqual(failed_coverage["status"], "FAIL_FROZEN_COMPONENT_GATE")
         self.assertEqual(_component_gate(None)["status"], "FAIL_MISSING_METRIC")
 
+    def test_optimizer_gate_accepts_only_complete_concordant_interior_audit(self):
+        start = {
+            "final_mean_logit": 0.1,
+            "final_log_concentration": 0.5,
+            "gradient_norm": 1e-8,
+            "lower_mean_bound_distance": 1.0,
+            "upper_mean_bound_distance": 2.0,
+            "lower_concentration_bound_distance": 1.5,
+            "upper_concentration_bound_distance": 3.0,
+        }
+        audit = {
+            "status": "OPTIMIZER_CONCORDANT",
+            "independent_optimizer_success": True,
+            "selected_mean_logit": 0.1,
+            "selected_log_concentration": 0.5,
+            "selected_log_likelihood": -10.0,
+            "selected_score_norm": 1e-7,
+            "profile_log_concentration_curvature": -0.5,
+            "independent_terminal_log_alpha": 0.2,
+            "independent_terminal_log_beta": 0.3,
+            "independent_score_norm": 1e-7,
+            "absolute_log_likelihood_difference": 1e-9,
+            "log_shape_parameter_distance": 1e-8,
+            "starts": [dict(start) for _ in range(3)],
+            "independent_observed_hessian": [[-2.0, 0.1], [0.1, -1.0]],
+        }
+        self.assertTrue(_optimizer_diagnostic_is_resolved({
+            "fit_status": "INTERIOR",
+            "optimizer_status": "OPTIMIZER_CONCORDANT",
+            "optimizer_audit": audit,
+        }))
+
     def test_optimizer_gate_fails_closed_on_missing_or_discordant_audit(self):
         self.assertFalse(_optimizer_diagnostic_is_resolved({
             "fit_status": "INTERIOR", "optimizer_status": "OPTIMIZER_DISCORDANT",
@@ -149,6 +181,10 @@ class F5DevelopmentCalibrationTests(unittest.TestCase):
                 run_f5_development_calibration(
                     Path(tmp), root=Path.cwd(), code_commit="0" * 40,
                     authorization={
+                        "validation_status": "PASS",
+                        "authorization_id": "TEST-F5-AUTH-001",
+                        "authorization_sha256": "a" * 64,
+                        "approved_code_commit": "0" * 40,
                         "scope": "WRONG",
                         "f5_b2_b3_authorized": False,
                         "f1_a2_a3_authorized": False,
