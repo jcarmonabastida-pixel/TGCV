@@ -198,8 +198,16 @@ def f1_profile_between_confidence_set(
     scale = max(within, s2_means)
 
     def profile(tau: float) -> float:
+        profile_scale = max(within, s2_means, tau)
+        log_span = max(
+            36.0, abs(math.log(profile_scale / within)) + 12.0,
+        )
+        grid_points = max(241, int(math.ceil(241.0 * log_span / 36.0)))
+        if grid_points > 4097:
+            raise F1ProfileError("PROFILE_NUISANCE_DIAGNOSTIC_RANGE_EXCEEDS_LIMIT")
         diagnostic = f1_profile_nuisance_optimizer_diagnostic(
             rows, between_variance=tau,
+            grid_points=grid_points, log_span=log_span,
         )
         if (diagnostic.status != "OPTIMIZATION_CONCORDANT"
                 or diagnostic.independent_loglik is None
