@@ -1,0 +1,47 @@
+name: Collective Toy OpenCV raster candidate benchmark
+
+on:
+  push:
+    branches:
+      - experiment/full-chain-image-import-paddle-opencv-001-20261020
+    paths:
+      - 'prototypes/collective_toy/web/opencv_raster_candidate_benchmark.py'
+      - 'prototypes/collective_toy/web/fixtures/ocr_graph_images/**'
+      - 'prototypes/collective_toy/web/ocr_graph_image_fixture_test.cjs'
+      - '.github/workflows/collective-toy-opencv-raster-candidate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  opencv-raster-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out selected ref
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned OpenCV runtime
+        run: python -m pip install opencv-python-headless==4.10.0.84
+      - name: Verify exact raster fixture integrity
+        working-directory: prototypes/collective_toy/web
+        run: node ocr_graph_image_fixture_test.cjs
+      - name: Run diagnostic OpenCV image-level candidate benchmark
+        working-directory: prototypes/collective_toy/web
+        run: python opencv_raster_candidate_benchmark.py
+      - name: Upload per-image candidate metrics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tgcv-opencv-raster-candidate-report
+          path: prototypes/collective_toy/web/opencv-raster-candidate-report.json
+          if-no-files-found: error
+          retention-days: 30
