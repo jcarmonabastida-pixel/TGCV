@@ -15,7 +15,7 @@
     "freeze_branch": "research/c10s-f1-validation-freeze-20261119",
     "frozen_commit": "0d430adae891b3914475c60334d93e977efc44cc",
     "manifest_path": "03_EXPERIMENTS/C10-S/harness/C10S_F1_VALIDATION_FREEZE_MANIFEST_001.md",
-    "manifest_commit": null,
+    "manifest_commit": "a2f73cccd0154fccaa1b9674fbbfee13db8da582",
     "execution_checkout": "Detached HEAD at frozen_commit; never execute from a moving branch tip"
   },
   "protocol": {
