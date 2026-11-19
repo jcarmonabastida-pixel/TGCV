@@ -1,0 +1,82 @@
+{
+  "schema": "C10S-F1-NUMERICAL-STRESS-AUTHORIZATION-1",
+  "authorization_id": "C10S-F1-NUMERICAL-STRESS-20261119-002",
+  "status": "APPROVED",
+  "execution_authorized": true,
+  "approved_by_user": true,
+  "one_shot": true,
+  "source_commit": "d5edc0010f7a8c6587677eb2004b545367fc4b35",
+  "freeze_manifest": "03_EXPERIMENTS/C10-S/harness/C10S_F1_NUMERICAL_STRESS_FREEZE_MANIFEST_003.md",
+  "freeze_manifest_commit": "aa30ab98eae2f8d505d569149aa4b342d32718bd",
+  "workflow": ".github/workflows/c10s-f1-numerical-stress-002.yml",
+  "runtime": {
+    "runner": "ubuntu-24.04",
+    "python": "3.12.3",
+    "numpy": "2.1.3",
+    "scipy": "1.14.1",
+    "virtual_environment": "isolated",
+    "dependency_install": "pip install --no-deps --only-binary=:all: numpy==2.1.3 scipy==1.14.1"
+  },
+  "command": {
+    "working_directory": "03_EXPERIMENTS/C10-S/harness",
+    "argv": [
+      "python",
+      "run_c10s_f1_numerical_stress.py",
+      "--source-commit",
+      "d5edc0010f7a8c6587677eb2004b545367fc4b35",
+      "--output-directory",
+      "$RUNNER_TEMP/c10s-f1-numerical-stress-evidence"
+    ]
+  },
+  "scope": {
+    "polynomial_sturm_records": 115,
+    "f1_observation_scale_records": 7,
+    "random_fixtures": false,
+    "adaptive_parameter_changes": false
+  },
+  "limits": {
+    "primary_executions": 1,
+    "automatic_retries": 0,
+    "replay": false,
+    "job_timeout_minutes": 15
+  },
+  "outputs": [
+    "numerical_stress_records.jsonl",
+    "numerical_stress_summary.json",
+    "numerical_stress_manifest.json",
+    "workflow-preflight.txt",
+    "runner.stdout",
+    "runner.stderr",
+    "runner-exit-code.txt"
+  ],
+  "prohibitions": {
+    "unit_tests": true,
+    "monte_carlo_calibration": true,
+    "dgp_experiment": true,
+    "inferential_coverage_study": true,
+    "parameter_tuning": true,
+    "external_dataset": true,
+    "scientific_c10_execution": true,
+    "source_modification_during_run": true
+  },
+  "approval_requirement": "A separate explicit user approval is required. Only then may status be changed to APPROVED, execution_authorized and approved_by_user set true, and the exact authorization record committed. Merely dispatching the workflow does not constitute approval.",
+  "consumed": false,
+  "freeze_manifest_blob_sha": "d54aec3adaca0eef95d529a987dfb28a294119b3",
+  "approval": {
+    "decision": "EXPLICIT_USER_APPROVAL_TO_RETRY_AFTER_PRE-EXECUTION_BLOCK",
+    "recorded_on": "2026-11-19",
+    "user_instruction": "Reintenta ejecución",
+    "scope": "One primary deterministic numerical stress execution only: 115 polynomial/Sturm records and 7 F1 observation-scale records; no retries or replay.",
+    "exclusions": [
+      "unit_tests",
+      "monte_carlo_calibration",
+      "dgp_experiment",
+      "inferential_coverage_study",
+      "parameter_tuning",
+      "external_dataset",
+      "scientific_c10_execution"
+    ]
+  },
+  "attempt_closed": false,
+  "workflow_blob_sha": "5117a33e56db24062ec51d69d08486ba91d9eda2"
+}
