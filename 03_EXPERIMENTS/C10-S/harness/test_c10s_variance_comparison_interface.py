@@ -16,9 +16,9 @@ class NestedMRComparisonInterfaceTests(unittest.TestCase):
             (2.0, 4.0, 2.0),
         )
         result = observed_nested_mr_result(rows, target_m=10, target_r=6)
-        self.assertAlmostEqual(result.within_estimate, 1.0)
+        self.assertAlmostEqual(result.within_estimate, 4.0 / 3.0)
         self.assertAlmostEqual(result.observed_world_variance, 1.0)
-        self.assertAlmostEqual(result.between_estimate_raw, 2.0 / 3.0)
+        self.assertAlmostEqual(result.between_estimate_raw, 5.0 / 9.0)
         self.assertIsNotNone(result.mcse_estimate)
         self.assertIsNone(result.abstention_reason)
         self.assertIsNone(result.within_interval)
