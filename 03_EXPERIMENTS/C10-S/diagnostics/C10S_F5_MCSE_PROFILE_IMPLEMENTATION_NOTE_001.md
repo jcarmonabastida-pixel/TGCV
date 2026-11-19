@@ -1,69 +1,92 @@
 # C10-S — F5 MCSE profile implementation note
 
-Status: PROFILE EVALUATOR IMPLEMENTED / ROOT INVERSION NOT IMPLEMENTED /
+Status: PROFILE EVALUATOR AND NUMERICAL LR-SET INVERSION IMPLEMENTED /
 NOT EXECUTED / NOT CALIBRATED
 Branch: `research/c10s-nested-mr-calibration-design-20261119`
 Scope: beta-binomial world-probability F5 only.
 
 ## Implemented
 
-New module:
+Module:
 `03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_mcse_profile.py`
 
-It evaluates the scalar MCSE profile log-likelihood using the full vector of
-world-cluster Bernoulli counts. It parameterizes the beta-binomial through
-mean μ and concentration κ, derives both μ branches from the target
-constraint, and maximizes each branch separately over concentration.
+The scalar MCSE profile evaluator uses the full vector of world-cluster
+Bernoulli counts. It parameterizes the beta-binomial through mean μ and
+concentration κ, derives both μ branches from the target constraint, and
+maximizes each branch separately over concentration.
 
 The evaluator includes:
-- exact finite-count beta-binomial log likelihood using log-beta/log-gamma;
-- both μ+ and μ- profile branches, retaining separate log likelihoods;
+- finite-count beta-binomial log likelihood using log-beta/log-gamma;
+- separate μ+ and μ- profile branches;
 - analytic κ→0 endpoint likelihood (two-point count support);
 - analytic κ→∞ endpoint likelihood (binomial limit);
-- explicit target-space upper bound (gleq1/(2sqrt{M^*}));
+- admissible target-space upper bound (g\leq1/(2\sqrt{M^*}));
 - finite feasible concentration cap when the target constraint ceases to be
   feasible at large κ;
 - typed failures and diagnostics for unsupported numerical cases.
 
-The shared comparative engine now records a diagnostic evaluation at the
-observed nonnegative point MCSE when one exists. This does not create a
-confidence interval and does not replace C5's current typed abstention.
+## Numerical LR-set inversion added
+
+Function:
+`f5_beta_binomial_mcse_profile_confidence_set(...)`
+
+It:
+1. scans the full admissible MCSE interval on a deterministic grid;
+2. refines grid-detected local maxima to estimate the unrestricted profile
+   maximum;
+3. forms the caller-specified LR acceptance set;
+4. retains each grid-detected connected component separately;
+5. refines each detected finite endpoint using Brent root finding;
+6. reports the interval hull, grid resolution, and a status distinguishing
+   connected from disconnected detected sets.
+
+The cutoff is mandatory and caller-supplied. No default, Wilks approximation,
+or calibration choice is embedded in the code.
+
+**Important qualification:** this is grid-detected topology, not a certified
+proof that every connected component or narrow island has been found. It is
+not yet acceptable as a final inferential interval without resolution
+sensitivity, adversarial multimodality tests, and independent likelihood
+checks. Root refinement cannot repair a component missed by the scan.
+
+## Comparative engine
+
+The common F1/F5 engine records a profile diagnostic at the observed
+nonnegative point MCSE when available. It does not emit the new LR set or
+replace C5's existing typed abstention. This separation is intentional:
+there is no selected or calibrated cutoff.
 
 ## Tests defined, not executed
 
-New test module:
-`03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_mcse_profile.py`
-
-Cases cover finite interior evaluation, retention of both branches, permutation
-invariance, the maximum-target concentration boundary, target values outside
-the parameter space, all-zero/zero-target boundary likelihood, and rejection
-of non-Bernoulli input.
+The test module now includes cases for finite profile evaluation, retention of
+both branches, permutation invariance, maximum-target and zero-target
+boundaries, infeasible targets, invalid input, and profile LR inversion with
+component/hull consistency and invalid-cutoff rejection.
 
 No tests have been executed. These are test definitions only.
 
-## Important limitations
+## Remaining limitations
 
 - Finite-κ maximization uses a deterministic log-concentration scan followed
-  by local bounded optimization around detected maxima. It is not yet a
-  certified global optimizer.
-- The profile evaluator is implemented; LR confidence-set inversion,
-  connected-component/hull reporting, and root refinement are not yet
-  implemented.
-- The κ limits are evaluated analytically, but the finite numerical search
-  still requires independent convergence and boundary diagnostics.
-- No LR cutoff is selected. No Wilks cutoff is assumed.
-- No calibration, holdout, simulation, or scientific C10 execution has run.
+  by local bounded optimization; it is not a certified global optimizer.
+- The MCSE LR-set scan is also grid-based and may miss narrow/disconnected
+  components. Increase-grid convergence and adversarial tests are mandatory.
+- The profile and LR set are restricted to this beta-binomial model and target
+  mapping; no generality beyond that model is claimed.
+- No LR cutoff is selected. No calibration or holdout has been run.
+- No simulation or scientific C10 execution has run.
 
 ## Next required work
 
-1. Add independent score/likelihood checks and adversarial tests for asymmetric
-   beta parameters and all boundary classes.
-2. Implement LR confidence-set scanning with explicit connected components,
-   then refine every endpoint by bracketed roots.
-3. Preserve the full confidence-set components and hull; abstain on unresolved
-   optimizer or root failures.
-4. Calibrate the cutoff prospectively on a calibration roster independent of
-   the holdout roster, only after separate authorization.
+1. Independent score/likelihood checks, including asymmetric beta parameters
+   and all boundary classes.
+2. Grid-resolution convergence and adversarial multimodality tests for both
+   concentration and MCSE scans.
+3. Robust root bracketing for non-finite profile regions and endpoint cases.
+4. Wire interval emission into C5 only after the cutoff and abstention policy
+   have been prospectively specified and authorized.
+5. Calibrate the cutoff on a calibration roster independent of the holdout
+   roster, only after separate authorization.
 
 This artifact changes no causal claim, estimand, frozen v002 baseline, main
 branch, RMA, Evidence→Claim Matrix, or scientific execution authorization.
