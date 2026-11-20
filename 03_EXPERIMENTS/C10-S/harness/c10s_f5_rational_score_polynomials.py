@@ -839,3 +839,172 @@ def beta_binomial_boundary_likelihoods(
         "corner_path_limits": "NOT_CLASSIFIED_BY_ONE_EDGE_PROFILES",
     }
 
+def _uni_trim(poly):
+    from fractions import Fraction
+    values = [Fraction(value) for value in poly]
+    while len(values) > 1 and values[-1] == 0:
+        values.pop()
+    return values or [Fraction(0)]
+
+
+def _uni_is_zero(poly):
+    return len(poly) == 1 and poly[0] == 0
+
+
+def _uni_monic(poly):
+    from fractions import Fraction
+    values = _uni_trim(poly)
+    if _uni_is_zero(values):
+        return values
+    lead = values[-1]
+    return [value / lead for value in values]
+
+
+def _uni_divmod(dividend, divisor):
+    from fractions import Fraction
+    a = _uni_trim(dividend)
+    b = _uni_trim(divisor)
+    if _uni_is_zero(b):
+        raise ZeroDivisionError("UNIVARIATE_ZERO_DIVISOR")
+    if len(a) < len(b):
+        return [Fraction(0)], a
+    quotient = [Fraction(0)] * (len(a) - len(b) + 1)
+    remainder = list(a)
+    while not _uni_is_zero(remainder) and len(remainder) >= len(b):
+        degree = len(remainder) - len(b)
+        coefficient = remainder[-1] / b[-1]
+        quotient[degree] = coefficient
+        for index, value in enumerate(b):
+            remainder[degree + index] -= coefficient * value
+        remainder = _uni_trim(remainder)
+    return _uni_trim(quotient), _uni_trim(remainder)
+
+
+def _uni_gcd(left, right):
+    a = _uni_trim(left)
+    b = _uni_trim(right)
+    while not _uni_is_zero(b):
+        _, remainder = _uni_divmod(a, b)
+        a, b = b, remainder
+    return _uni_monic(a)
+
+
+def _uni_derivative(poly):
+    from fractions import Fraction
+    values = _uni_trim(poly)
+    if len(values) <= 1:
+        return [Fraction(0)]
+    return _uni_trim([index * values[index] for index in range(1, len(values))])
+
+
+def _uni_squarefree_factors(poly):
+    """Return monic square-free factors paired with exact multiplicities."""
+    from fractions import Fraction
+    f = _uni_monic(poly)
+    if _uni_is_zero(f):
+        raise ValueError("ZERO_POLYNOMIAL_HAS_NO_FINITE_SQUAREFREE_DECOMPOSITION")
+    if len(f) <= 1:
+        return []
+    c = _uni_gcd(f, _uni_derivative(f))
+    w, remainder = _uni_divmod(f, c)
+    if not _uni_is_zero(remainder):
+        raise ArithmeticError("SQUAREFREE_INITIAL_DIVISION_FAILED")
+    multiplicity = 1
+    factors = []
+    while len(w) > 1:
+        y = _uni_gcd(w, c)
+        factor, remainder = _uni_divmod(w, y)
+        if not _uni_is_zero(remainder):
+            raise ArithmeticError("SQUAREFREE_FACTOR_DIVISION_FAILED")
+        if len(factor) > 1:
+            factors.append({
+                "multiplicity": multiplicity,
+                "coefficients": tuple(_uni_monic(factor)),
+            })
+        w = y
+        c, remainder = _uni_divmod(c, y)
+        if not _uni_is_zero(remainder):
+            raise ArithmeticError("SQUAREFREE_GCD_DIVISION_FAILED")
+        multiplicity += 1
+    if len(c) > 1:
+        raise ArithmeticError("SQUAREFREE_DECOMPOSITION_INCOMPLETE")
+    return factors
+
+
+def _edge_restriction(poly, edge):
+    from fractions import Fraction
+    if edge in ("mu_zero", "mu_one"):
+        fixed_mu = Fraction(0 if edge == "mu_zero" else 1)
+        degree = max((j for _, j in poly), default=0)
+        result = [Fraction(0)] * (degree + 1)
+        for (i, j), coefficient in poly.items():
+            result[j] += Fraction(coefficient) * fixed_mu**i
+        return _uni_trim(result)
+    if edge in ("t_zero", "t_one"):
+        fixed_t = Fraction(0 if edge == "t_zero" else 1)
+        degree = max((i for i, _ in poly), default=0)
+        result = [Fraction(0)] * (degree + 1)
+        for (i, j), coefficient in poly.items():
+            result[i] += Fraction(coefficient) * fixed_t**j
+        return _uni_trim(result)
+    raise ValueError("UNKNOWN_COMPACTIFIED_EDGE")
+
+
+def compactified_boundary_common_factors(
+    poly_p: Poly,
+    poly_q: Poly,
+) -> dict[str, object]:
+    """Find exact common score factors on each edge of [0,1]^2.
+
+    Edge parameter is t on mu=0/1 and mu on t=0/1. The polynomial gcd
+    preserves the minimum common-root multiplicity; square-free factorization
+    reports each factor with that multiplicity. An edge on which both
+    restrictions vanish identically is reported as a common component and
+    remains unresolved rather than being misreported as finitely many roots.
+    """
+    from collections.abc import Mapping
+    from fractions import Fraction
+
+    for poly in (poly_p, poly_q):
+        if not isinstance(poly, Mapping) or any(
+            not isinstance(monomial, tuple) or len(monomial) != 2
+            or type(i) is not int or i < 0
+            or type(j) is not int or j < 0
+            or type(coefficient) is not int
+            for monomial, coefficient in poly.items()
+            for i, j in (monomial,)
+        ):
+            raise ValueError("INTEGER_SPARSE_POLYNOMIALS_REQUIRED")
+
+    output = {}
+    for edge in ("mu_zero", "mu_one", "t_zero", "t_one"):
+        p_edge = _edge_restriction(poly_p, edge)
+        q_edge = _edge_restriction(poly_q, edge)
+        if _uni_is_zero(p_edge) and _uni_is_zero(q_edge):
+            output[edge] = {
+                "status": "COMMON_EDGE_COMPONENT_UNRESOLVED",
+                "p_coefficients": tuple(p_edge),
+                "q_coefficients": tuple(q_edge),
+                "common_gcd": None,
+                "squarefree_factors": [],
+            }
+            continue
+        common = _uni_gcd(p_edge, q_edge)
+        factors = _uni_squarefree_factors(common)
+        output[edge] = {
+            "status": "FINITE_COMMON_EDGE_ROOTS" if factors else "NO_COMMON_EDGE_ROOT",
+            "p_coefficients": tuple(p_edge),
+            "q_coefficients": tuple(q_edge),
+            "common_gcd": tuple(common),
+            "squarefree_factors": factors,
+        }
+    return {
+        "status": (
+            "BOUNDARY_COMMON_COMPONENTS_UNRESOLVED"
+            if any(v["status"] == "COMMON_EDGE_COMPONENT_UNRESOLVED" for v in output.values())
+            else "BOUNDARY_COMMON_FACTORS_CLASSIFIED"
+        ),
+        "edges": output,
+        "root_isolation": "NOT_YET_PERFORMED",
+    }
+
