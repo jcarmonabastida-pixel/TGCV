@@ -1514,3 +1514,225 @@ def compactified_axis_common_components(
         "general_mixed_bivariate_factors": "NOT_CHECKED",
     }
 
+def _uni_add_exact(left, right):
+    from fractions import Fraction
+    a = _uni_trim(left)
+    b = _uni_trim(right)
+    size = max(len(a), len(b))
+    return _uni_trim([
+        (a[i] if i < len(a) else Fraction(0))
+        + (b[i] if i < len(b) else Fraction(0))
+        for i in range(size)
+    ])
+
+
+def _uni_mul_exact(left, right):
+    from fractions import Fraction
+    a = _uni_trim(left)
+    b = _uni_trim(right)
+    if _uni_is_zero(a) or _uni_is_zero(b):
+        return [Fraction(0)]
+    out = [Fraction(0)] * (len(a) + len(b) - 1)
+    for i, x in enumerate(a):
+        for j, y in enumerate(b):
+            out[i + j] += x * y
+    return _uni_trim(out)
+
+
+def _uni_pow_exact(poly, exponent):
+    from fractions import Fraction
+    if type(exponent) is not int or exponent < 0:
+        raise ValueError("POLYNOMIAL_EXPONENT_MUST_BE_NONNEGATIVE_INTEGER")
+    result = [Fraction(1)]
+    factor = _uni_trim(poly)
+    power = exponent
+    while power:
+        if power & 1:
+            result = _uni_mul_exact(result, factor)
+        factor = _uni_mul_exact(factor, factor)
+        power >>= 1
+    return result
+
+
+def _uni_exact_quotient(dividend, divisor):
+    quotient, remainder = _uni_divmod(dividend, divisor)
+    if not _uni_is_zero(remainder):
+        raise ArithmeticError("BAREISS_DIVISION_NOT_EXACT")
+    return quotient
+
+
+def _bivariate_primitive_t_coefficients(poly):
+    """Return mu-content and primitive t-coefficients, highest t-degree first."""
+    from fractions import Fraction
+
+    content = _bivariate_axis_content(poly, "mu")
+    if _uni_is_zero(content):
+        return content, []
+    grouped = {}
+    for (degree_mu, degree_t), coefficient in poly.items():
+        if type(degree_mu) is not int or degree_mu < 0 or type(degree_t) is not int or degree_t < 0 or type(coefficient) is not int:
+            raise ValueError("POLYNOMIAL_MUST_HAVE_INTEGER_SPARSE_TERMS")
+        if coefficient:
+            grouped.setdefault(degree_t, {})
+            grouped[degree_t][degree_mu] = grouped[degree_t].get(degree_mu, 0) + coefficient
+    if not grouped:
+        return [Fraction(0)], []
+    primitive = {}
+    for degree_t, terms in grouped.items():
+        degree_mu = max(terms)
+        coefficient_poly = [Fraction(terms.get(i, 0)) for i in range(degree_mu + 1)]
+        quotient, remainder = _uni_divmod(coefficient_poly, content)
+        if not _uni_is_zero(remainder):
+            raise ArithmeticError("CONTENT_DIVISION_NOT_EXACT")
+        primitive[degree_t] = quotient
+    max_degree = max(primitive)
+    coefficients = [
+        _uni_trim(primitive.get(degree, [Fraction(0)]))
+        for degree in range(max_degree, -1, -1)
+    ]
+    while len(coefficients) > 1 and _uni_is_zero(coefficients[0]):
+        coefficients.pop(0)
+    return content, coefficients
+
+
+def _polynomial_resultant_bareiss(left_descending, right_descending, max_dimension):
+    """Exact Sylvester determinant over Q[mu] using fraction-free Bareiss."""
+    from fractions import Fraction
+
+    m = len(left_descending) - 1
+    n = len(right_descending) - 1
+    dimension = m + n
+    if dimension > max_dimension:
+        return {
+            "status": "RESULTANT_MATRIX_RESOURCE_LIMIT",
+            "resultant": None,
+            "matrix_dimension": dimension,
+        }
+    if dimension == 0:
+        return {
+            "status": "CONSTANT_POLYNOMIAL_PAIR",
+            "resultant": (Fraction(1),),
+            "matrix_dimension": 0,
+        }
+
+    zero = [Fraction(0)]
+    matrix = [[zero for _ in range(dimension)] for _ in range(dimension)]
+    for row in range(n):
+        for index, coefficient in enumerate(left_descending):
+            matrix[row][row + index] = coefficient
+    for row in range(m):
+        for index, coefficient in enumerate(right_descending):
+            matrix[n + row][row + index] = coefficient
+
+    previous_pivot = [Fraction(1)]
+    sign = 1
+    for pivot_index in range(dimension - 1):
+        pivot_row = next(
+            (
+                row for row in range(pivot_index, dimension)
+                if not _uni_is_zero(matrix[row][pivot_index])
+            ),
+            None,
+        )
+        if pivot_row is None:
+            return {
+                "status": "ZERO_RESULTANT_COMMON_FACTOR_OR_DEGENERACY",
+                "resultant": (Fraction(0),),
+                "matrix_dimension": dimension,
+            }
+        if pivot_row != pivot_index:
+            matrix[pivot_index], matrix[pivot_row] = matrix[pivot_row], matrix[pivot_index]
+            sign *= -1
+        pivot = matrix[pivot_index][pivot_index]
+        for row in range(pivot_index + 1, dimension):
+            for column in range(pivot_index + 1, dimension):
+                numerator = _uni_add_exact(
+                    _uni_mul_exact(matrix[row][column], pivot),
+                    [
+                        -value for value in _uni_mul_exact(
+                            matrix[row][pivot_index],
+                            matrix[pivot_index][column],
+                        )
+                    ],
+                )
+                matrix[row][column] = (
+                    numerator if pivot_index == 0
+                    else _uni_exact_quotient(numerator, previous_pivot)
+                )
+            matrix[row][pivot_index] = zero
+        previous_pivot = pivot
+
+    determinant = matrix[-1][-1]
+    if sign < 0:
+        determinant = [-value for value in determinant]
+    return {
+        "status": (
+            "ZERO_RESULTANT_COMMON_FACTOR_OR_DEGENERACY"
+            if _uni_is_zero(determinant) else "EXACT_RESULTANT_NONZERO"
+        ),
+        "resultant": tuple(_uni_trim(determinant)),
+        "matrix_dimension": dimension,
+    }
+
+
+def compactified_projection_resultant_mu(
+    poly_p: Poly,
+    poly_q: Poly,
+    *,
+    max_matrix_dimension: int = 64,
+) -> dict[str, object]:
+    """Compute exact Res_t(P,Q) as a rational polynomial in mu.
+
+    Coefficient contents in mu are separated before the Sylvester determinant.
+    The full resultant is reconstructed as content(P)^deg_t(Q) *
+    content(Q)^deg_t(P) * Res_t(P_primitive,Q_primitive). A zero primitive
+    resultant is reported as an unresolved common-factor/degeneracy state.
+    """
+    if type(max_matrix_dimension) is not int or max_matrix_dimension < 1:
+        raise ValueError("MAX_MATRIX_DIMENSION_MUST_BE_POSITIVE_INTEGER")
+    content_p, primitive_p = _bivariate_primitive_t_coefficients(poly_p)
+    content_q, primitive_q = _bivariate_primitive_t_coefficients(poly_q)
+    if not primitive_p or not primitive_q:
+        return {
+            "status": "ZERO_POLYNOMIAL_RESULTANT_UNRESOLVED",
+            "resultant": None,
+            "primitive_resultant": None,
+            "content_mu_p": tuple(content_p),
+            "content_mu_q": tuple(content_q),
+            "matrix_dimension": None,
+        }
+
+    primitive_result = _polynomial_resultant_bareiss(
+        primitive_p, primitive_q, max_matrix_dimension
+    )
+    if primitive_result["resultant"] is None:
+        return {
+            **primitive_result,
+            "resultant": None,
+            "primitive_resultant": None,
+            "content_mu_p": tuple(content_p),
+            "content_mu_q": tuple(content_q),
+        }
+
+    m = len(primitive_p) - 1
+    n = len(primitive_q) - 1
+    full = _uni_mul_exact(
+        _uni_mul_exact(
+            _uni_pow_exact(content_p, n),
+            _uni_pow_exact(content_q, m),
+        ),
+        primitive_result["resultant"],
+    )
+    return {
+        "status": primitive_result["status"],
+        "resultant": tuple(_uni_trim(full)),
+        "primitive_resultant": primitive_result["resultant"],
+        "content_mu_p": tuple(content_p),
+        "content_mu_q": tuple(content_q),
+        "degree_t_p": m,
+        "degree_t_q": n,
+        "matrix_dimension": primitive_result["matrix_dimension"],
+        "coefficient_order": "ASCENDING_MU_DEGREE",
+        "coefficient_domain": "EXACT_FRACTION",
+    }
+
