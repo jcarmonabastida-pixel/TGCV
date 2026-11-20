@@ -432,3 +432,7 @@ A new exact-rational edge-analysis primitive restricts both score polynomials to
 ### Sturm-certified boundary-root isolation (2026-11-20)
 
 The exact edge gcd/square-free pipeline now feeds rational Sturm isolation on `[0,1]`. It returns exact rational roots separately from rational intervals proved to contain one real root, and it abstains explicitly on depth or interval-budget exhaustion. Tests cover rational and irrational roots and a resource-limited case. Adjacent-edge corner deduplication and the interior root census remain open; no global certificate or method selection follows from this implementation.
+
+### Compactification corner ownership (2026-11-20)
+
+A canonical ownership layer now assigns each corner to exactly one vertical edge and retains the adjacent horizontal-edge occurrence as provenance-only. The corner registry carries coordinates, owner, factor index, root parameter and edge multiplicity. Unresolved ownership and partial Sturm isolation remain explicit. Tests cover a single shared corner, all four corners and propagation of a partial isolation. The boundary census is now deduplicated at corners but remains separate from the two-dimensional interior root census.
