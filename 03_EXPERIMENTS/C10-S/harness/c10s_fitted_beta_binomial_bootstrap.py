@@ -6,7 +6,7 @@ world-cluster model and the complete raw nested M/R estimator is recomputed.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import asdict, dataclass, replace
 import math
 from typing import Sequence
 
@@ -31,6 +31,24 @@ class BetaBinomialFitError(ValueError):
 
 
 @dataclass(frozen=True)
+class BetaBinomialProductionStartOutcome:
+    """Raw finite-difference L-BFGS-B production-start outcome."""
+    start_index: int
+    initial_mean_logit: float
+    initial_log_concentration: float
+    success: bool
+    message: str
+    final_mean_logit: float | None
+    final_log_concentration: float | None
+    negative_log_likelihood: float | None
+    gradient_norm: float | None
+    lower_mean_bound_distance: float | None
+    upper_mean_bound_distance: float | None
+    lower_concentration_bound_distance: float | None
+    upper_concentration_bound_distance: float | None
+
+
+@dataclass(frozen=True)
 class BetaBinomialFit:
     alpha: float
     beta: float
@@ -41,6 +59,8 @@ class BetaBinomialFit:
     boundary: bool
     boundary_reasons: tuple[str, ...]
     optimizer_message: str
+    selected_start_index: int = -1
+    production_starts: tuple[BetaBinomialProductionStartOutcome, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -55,6 +75,7 @@ class FittedBetaBinomialBootstrapResult:
     failure_reason: str | None
     optimizer_audit: BetaBinomialOptimizerAudit | None = None
     optimizer_audit_error: str | None = None
+    production_analytic_reconciliation: dict | None = None
 
 
 def fit_beta_binomial_counts(counts: Sequence[int], r: int) -> BetaBinomialFit:
@@ -104,11 +125,36 @@ def fit_beta_binomial_counts(counts: Sequence[int], r: int) -> BetaBinomialFit:
                  options={"maxiter": 4000, "ftol": 1e-12, "gtol": 1e-8})
         for start in starts
     ]
-    admissible = [result for result in fits if bool(result.success) and math.isfinite(float(result.fun))]
+    production_starts = []
+    for index, (start, result) in enumerate(zip(starts, fits)):
+        coordinates_finite = bool(np.all(np.isfinite(result.x)))
+        eta_i = float(result.x[0]) if coordinates_finite else None
+        xi_i = float(result.x[1]) if coordinates_finite else None
+        jac = getattr(result, "jac", None)
+        jac_array = np.asarray(jac, dtype=float) if jac is not None else None
+        gradient_norm = (
+            float(np.linalg.norm(jac_array))
+            if jac_array is not None and np.all(np.isfinite(jac_array)) else None
+        )
+        objective_value = float(result.fun) if math.isfinite(float(result.fun)) else None
+        production_starts.append(BetaBinomialProductionStartOutcome(
+            start_index=index,
+            initial_mean_logit=float(start[0]),
+            initial_log_concentration=float(start[1]),
+            success=bool(result.success), message=str(result.message),
+            final_mean_logit=eta_i, final_log_concentration=xi_i,
+            negative_log_likelihood=objective_value, gradient_norm=gradient_norm,
+            lower_mean_bound_distance=(eta_i - bounds[0][0] if eta_i is not None else None),
+            upper_mean_bound_distance=(bounds[0][1] - eta_i if eta_i is not None else None),
+            lower_concentration_bound_distance=(xi_i - bounds[1][0] if xi_i is not None else None),
+            upper_concentration_bound_distance=(bounds[1][1] - xi_i if xi_i is not None else None),
+        ))
+    admissible = [(index, result) for index, result in enumerate(fits)
+                  if bool(result.success) and math.isfinite(float(result.fun))]
     if not admissible:
         messages = "; ".join(str(result.message) for result in fits)
         raise BetaBinomialFitError(f"MLE_NONCONVERGENCE: {messages}")
-    best = min(admissible, key=lambda result: float(result.fun))
+    best_index, best = min(admissible, key=lambda item: float(item[1].fun))
 
     logit_mean, log_concentration = (float(v) for v in best.x)
     mean = 1.0 / (1.0 + math.exp(-logit_mean))
@@ -127,7 +173,89 @@ def fit_beta_binomial_counts(counts: Sequence[int], r: int) -> BetaBinomialFit:
         concentration=concentration, log_likelihood=-float(best.fun),
         converged=True, boundary=bool(reasons),
         boundary_reasons=tuple(reasons), optimizer_message=str(best.message),
+        selected_start_index=best_index,
+        production_starts=tuple(production_starts),
     )
+
+
+def build_production_analytic_reconciliation(
+    fit: BetaBinomialFit | None,
+    audit: BetaBinomialOptimizerAudit | None,
+    *, audit_error: str | None = None,
+) -> dict:
+    """Retain direct P/A terminal comparisons without inventing a tolerance."""
+    production = None
+    analytic = None
+    direct = None
+    if fit is not None:
+        production = {
+            "optimizer": "L-BFGS-B_FINITE_DIFFERENCE",
+            "selected_start_index": fit.selected_start_index,
+            "selected_alpha": fit.alpha, "selected_beta": fit.beta,
+            "selected_mean_probability": fit.mean_probability,
+            "selected_concentration": fit.concentration,
+            "selected_log_likelihood": fit.log_likelihood,
+            "selected_mean_logit": math.log(fit.mean_probability / (1.0 - fit.mean_probability)),
+            "selected_log_concentration": math.log(fit.concentration),
+            "selected_termination_message": fit.optimizer_message,
+            "selected_success": fit.converged,
+            "boundary": fit.boundary,
+            "boundary_reasons": list(fit.boundary_reasons),
+            "starts": [asdict(item) for item in fit.production_starts],
+        }
+    if audit is not None:
+        analytic = {
+            "optimizer": "L-BFGS-B_ANALYTIC_GRADIENT",
+            "status": audit.status,
+            "selected_mean_logit": audit.selected_mean_logit,
+            "selected_log_concentration": audit.selected_log_concentration,
+            "selected_log_likelihood": audit.selected_log_likelihood,
+            "selected_score_norm": audit.selected_score_norm,
+            "profile_log_concentration_curvature": audit.profile_log_concentration_curvature,
+            "starts": [asdict(item) for item in audit.starts],
+            "independent_check": {
+                "optimizer": "BFGS_LOG_ALPHA_LOG_BETA_INITIALIZED_FROM_ANALYTIC_FIT",
+                "success": audit.independent_optimizer_success,
+                "message": audit.independent_optimizer_message,
+                "log_likelihood": audit.independent_log_likelihood,
+                "terminal_log_alpha": audit.independent_terminal_log_alpha,
+                "terminal_log_beta": audit.independent_terminal_log_beta,
+                "score_norm": audit.independent_score_norm,
+                "absolute_log_likelihood_difference_vs_analytic": audit.absolute_log_likelihood_difference,
+                "log_shape_parameter_distance_vs_analytic": audit.log_shape_parameter_distance,
+            },
+        }
+    if production is not None and audit is not None:
+        eta_a, xi_a = audit.selected_mean_logit, audit.selected_log_concentration
+        ll_a = audit.selected_log_likelihood
+        mean_a = (1.0 / (1.0 + math.exp(-eta_a)) if eta_a >= 0
+                  else math.exp(eta_a) / (1.0 + math.exp(eta_a))) if eta_a is not None else None
+        concentration_a = math.exp(xi_a) if xi_a is not None else None
+        direct = {
+            "log_likelihood_difference_production_minus_analytic": fit.log_likelihood - ll_a if ll_a is not None else None,
+            "absolute_log_likelihood_difference": abs(fit.log_likelihood - ll_a) if ll_a is not None else None,
+            "mean_logit_difference_production_minus_analytic": production["selected_mean_logit"] - eta_a if eta_a is not None else None,
+            "log_concentration_difference_production_minus_analytic": production["selected_log_concentration"] - xi_a if xi_a is not None else None,
+            "alpha_difference_production_minus_analytic": fit.alpha - (math.exp(audit.independent_terminal_log_alpha) if audit.independent_terminal_log_alpha is not None else None) if audit.independent_terminal_log_alpha is not None else None,
+            "beta_difference_production_minus_analytic": fit.beta - (math.exp(audit.independent_terminal_log_beta) if audit.independent_terminal_log_beta is not None else None) if audit.independent_terminal_log_beta is not None else None,
+            "mean_probability_difference_production_minus_analytic": fit.mean_probability - mean_a if mean_a is not None else None,
+            "concentration_difference_production_minus_analytic": fit.concentration - concentration_a if concentration_a is not None else None,
+        }
+    status = (
+        "PRODUCTION_FIT_NOT_AVAILABLE" if fit is None else
+        "ANALYTIC_AUDIT_UNAVAILABLE" if audit is None else
+        "RAW_COMPARISON_RECORDED_NO_ADJUDICATION_THRESHOLD"
+    )
+    return {
+        "schema": "C10S_F5_PRODUCTION_ANALYTIC_RECONCILIATION_1.0",
+        "production_fit": production,
+        "analytic_fit": analytic,
+        "direct_comparison": direct,
+        "status": status,
+        "audit_error": audit_error,
+        "adjudication": "NOT_THRESHOLDED; termination, numerical agreement and statistical identification remain separate",
+        "independent_optimizer_scope": "LOCAL_BFGS_CHECK_INITIALIZED_FROM_ANALYTIC_FIT_NOT_GLOBAL_SEARCH",
+    }
 
 
 def fitted_beta_binomial_parametric_bootstrap(
@@ -183,7 +311,13 @@ def fitted_beta_binomial_parametric_bootstrap(
             failure_reason=str(exc),
             optimizer_audit=optimizer_audit,
             optimizer_audit_error=optimizer_audit_error,
+            production_analytic_reconciliation=build_production_analytic_reconciliation(
+                None, optimizer_audit, audit_error=optimizer_audit_error,
+            ),
         )
+    reconciliation = build_production_analytic_reconciliation(
+        fit, optimizer_audit, audit_error=optimizer_audit_error,
+    )
     if fit.boundary:
         reason = "BETA_BINOMIAL_MLE_BOUNDARY:" + ",".join(fit.boundary_reasons)
         return FittedBetaBinomialBootstrapResult(
@@ -198,6 +332,7 @@ def fitted_beta_binomial_parametric_bootstrap(
             failure_reason=reason,
             optimizer_audit=optimizer_audit,
             optimizer_audit_error=optimizer_audit_error,
+            production_analytic_reconciliation=reconciliation,
         )
 
     rng = np.random.Generator(np.random.PCG64(bootstrap_seed))
@@ -275,4 +410,5 @@ def fitted_beta_binomial_parametric_bootstrap(
         failure_reason=abstention,
         optimizer_audit=optimizer_audit,
         optimizer_audit_error=optimizer_audit_error,
+        production_analytic_reconciliation=reconciliation,
     )
