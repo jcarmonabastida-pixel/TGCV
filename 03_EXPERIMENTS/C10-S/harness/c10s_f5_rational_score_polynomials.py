@@ -1900,8 +1900,8 @@ def conditional_mean_tube_and_concentration_exclusion(
         t_lo, t_hi = (_exact_fraction(t_bounds[0]), _exact_fraction(t_bounds[1]))
     except ValueError:
         raise ValueError("INVALID_T_BOUNDS") from None
-    if not 0 <= t_lo < t_hi <= 1:
-        raise ValueError("T_BOUNDS_MUST_BE_WITHIN_UNIT_INTERVAL")
+    if not 0 < t_lo < t_hi < 1:
+        raise ValueError("T_BOUNDS_MUST_BE_STRICTLY_INSIDE_FINITE_DOMAIN")
     for poly in (poly_mean_score, poly_concentration_score):
         if not isinstance(poly, Mapping) or any(
             not isinstance(monomial, tuple) or len(monomial) != 2
