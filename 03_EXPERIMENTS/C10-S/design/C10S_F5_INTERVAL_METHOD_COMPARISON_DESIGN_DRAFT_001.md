@@ -98,43 +98,36 @@ M0 remains necessary as the baseline and must be reproduced bit-for-bit or withi
 
 Record the fixed parameter pair, boundary distances, optimizer states, bootstrap distribution of W/B estimators, interval widths and endpoint/miss directions. Separate conditional estimator variability from parameter-estimation variability; M0 contains only the former by construction.
 
-## 5. Candidate M1 — refitted parametric bootstrap with a centered estimation-error root
+## 5. Candidate M1 — refitted parametric bootstrap for the population functionals
 
-### 5.1 Why refitting must be tied to the frozen estimand
+### 5.1 Estimator/interval package distinction
 
-The frozen targets are the population components \\(\sigma_w^2=W(\theta)\\) and \\(\sigma_b^2=B(\theta)\\); the frozen sample statistics are \\(T_W=MSW\\) and \\(T_B=S^2_{\bar q}-MSW/R\\). Simply taking percentile quantiles of \\(W(\hat\theta^*)\\) and \\(B(\hat\theta^*)\\) would change the point-estimator construction relative to C5. It is a useful diagnostic but not a pure interval-only comparison.
+The frozen targets are the population components \\(\sigma_w^2=W(\theta)\\) and \\(\sigma_b^2=B(\theta)\\). C5's point statistics are \\(T_W=MSW\\) and \\(T_B=S^2_{\bar q}-MSW/R\\). A refitted parametric bootstrap that uses \\(W(\hat\theta^*)\\) and \\(B(\hat\theta^*)\\) is a different estimator/interval package from C5; it must not be described as an interval-only change. It is nevertheless directly comparable on coverage of the same frozen population truths.
 
-The primary M1 proposal therefore retains the observed-data C5 statistics and uses replicate-specific refits to construct a centered estimation-error distribution.
-
-### 5.2 Primary algorithm (proposed; not yet frozen)
+### 5.2 Algorithm (two prespecified interval variants)
 
 For each observed dataset:
 
-1. Compute the frozen observed statistics \\(T_W,T_B\\) and fit the beta-binomial model once using the frozen production estimator/start schedule, obtaining generating parameters \\(\hat\theta\\).
-2. For each bootstrap replicate, generate a complete nested dataset under \\(\hat\theta\\), preserving the exact M, R and frozen hierarchy.
-3. Refit the beta-binomial model to that replicate using the same likelihood, parameterization, bounds, starts, optimizer-selection semantics and diagnostics as the observed-data fit, obtaining \\(\hat\theta_b^*\\).
-4. Compute the frozen replicate statistics \\(T_{W,b}^*,T_{B,b}^*\\) and the replicate fitted population functionals \\(W(\hat\theta_b^*),B(\hat\theta_b^*)\\).
-5. Form paired bootstrap estimation errors:
-   \\[E_{W,b}^*=T_{W,b}^*-W(\hat\theta_b^*),\qquad
-   E_{B,b}^*=T_{B,b}^*-B(\hat\theta_b^*).\\]
-6. Let \\(q_{W,L},q_{W,U}\\) and \\(q_{B,L},q_{B,U}\\) be the prespecified lower and upper quantiles of these error distributions. The proposed centered/root intervals are:
-   \\[I_W=[T_W-q_{W,U},\ T_W-q_{W,L}],\\]
-   \\[I_B=[T_B-q_{B,U},\ T_B-q_{B,L}].\\]
-   This preserves the frozen observed point statistics and targets, while using refitted replicate functionals to estimate the sampling error. The sign convention, quantile interpolation and finite-sample handling must be fixed before prospective data.
-7. Retain every replicate's complete fit state. No failed or boundary replicate may be silently deleted or replaced.
+1. Compute and retain the frozen sample statistics \\(T_W,T_B\\) for matched reporting. Fit the beta-binomial likelihood using the frozen fit contract and obtain \\(\hat\theta\\).
+2. Compute the model-functional point estimates \\(\hat W=W(\hat\theta)\\) and \\(\hat B=B(\hat\theta)\\).
+3. For each bootstrap replicate, generate a complete nested dataset under \\(\hat\theta\\), preserving the exact M, R and frozen hierarchy.
+4. Refit the beta-binomial model to that replicate using the same likelihood, parameterization, bounds, starts, optimizer-selection semantics and diagnostics, obtaining \\(\hat\theta_b^*\\).
+5. Compute \\(W_b^*=W(\hat\theta_b^*)\\), \\(B_b^*=B(\hat\theta_b^*)\\), and the paired bootstrap deviations \\(\Delta_{W,b}^*=W_b^*-\hat W\\), \\(\Delta_{B,b}^*=B_b^*-\hat B\\).
+6. Preserve two prospectively declared variants:
+   - **M1-PCT:** percentile intervals from the empirical distributions of \\(W_b^*\\) and \\(B_b^*\\).
+   - **M1-BASIC:** basic intervals \\([\hat W-q_{W,U},\hat W-q_{W,L}]\\) and \\([\hat B-q_{B,U},\hat B-q_{B,L}]\\), where the q values are the corresponding quantiles of \\(\Delta_W^*,\Delta_B^*\\).
+7. No variant may be promoted after examining development outcomes. D1 must either designate one primary variant with the other secondary, or define both as co-primary with an explicit multiplicity/selection rule.
+8. Retain every replicate's complete fit state. No failed or boundary replicate may be silently deleted or replaced.
 
-### 5.3 Mandatory labelled diagnostics (not alternative primary methods)
+### 5.3 Matched diagnostics and estimator comparison
 
-Alongside the primary root interval, retain:
-- **M1-PCT-SAMPLE:** percentile intervals from \\(T_W^*,T_B^*\\). If replicate refitting is ignored, this should reproduce M0 and acts as a code-path consistency check.
-- **M1-PCT-FUNCTIONAL:** percentile intervals from \\(W(\hat\theta_b^*),B(\hat\theta_b^*)\\). This uses a different point-estimator construction and must be labelled as such.
-- **M1-BASIC-ROOT:** the centered/basic root construction above, if not chosen as primary after D1 review.
+For every dataset, report M0's frozen sample-statistic estimates alongside M1's fitted-functional estimates. This permits paired bias/RMSE/coverage/width comparison while making the estimator change visible.
 
-Only one construction may be designated primary in the frozen D1 specification. The others remain diagnostics and cannot be promoted after looking at development coverage.
+Also retain the bootstrap percentile distribution of the raw replicate statistics \\(T_W^*,T_B^*\\) as a code-path diagnostic. It should reproduce M0 when the same fixed generating parameters and streams are used; it is not an additional M1 candidate and does not include refitted-functional uncertainty.
 
 ### 5.4 Interpretation and limitations
 
-M1 is designed to account for the relation between the raw sample statistics and replicate-specific fitted population functionals. It may better represent the uncertainty arising from concentration estimation, but this is a methodological hypothesis, not a guaranteed correction. A parametric bootstrap generated from one fitted \\(\hat\theta\\) may still fail under weak identification, nonregular boundaries, non-unique fits or beta-binomial model misspecification. The bootstrap cannot create information absent from the likelihood.
+M1 is intended to represent the sampling variability of the fitted beta-binomial functionals through replicate-specific refitting. It may better represent concentration-estimation uncertainty, but this is a methodological hypothesis, not a guaranteed correction. A parametric bootstrap generated from one fitted \\(\hat\theta\\) may still fail under weak identification, nonregular boundaries, non-unique fits or beta-binomial model misspecification. The bootstrap cannot create information absent from the likelihood.
 
 ### 5.5 Failure and boundary semantics
 
@@ -149,11 +142,11 @@ Each replicate must receive exactly one mutually exclusive terminal state, at mi
 
 This is a proposed design vocabulary, not a claim that current code already emits these exact states. It must be reconciled with the implemented B1 typed diagnostics before D1.
 
-The primary interval may not condition silently on successful refits only. D1 must prespecify whether any unresolved state causes dataset-level abstention or whether a mathematically justified boundary-aware contribution exists. Complete-case deletion is prohibited. If a principled contribution cannot be specified, abstain and report failure fractions/state counts. The frozen emission and no-unresolved-state gates remain controlling.
+M1 may not condition silently on successful refits only. D1 must prespecify whether any unresolved state causes dataset-level abstention or whether a mathematically justified boundary-aware contribution exists. Complete-case deletion is prohibited. If a principled contribution cannot be specified, abstain and report failure fractions/state counts. The frozen emission and no-unresolved-state gates remain controlling.
 
 ### 5.6 Required diagnostics
 
-For each original dataset and bootstrap bank retain requested/completed replicate counts; state counts; distributions of \\(\hat\mu^*,\hat\kappa^*,W^*,B^*\\); paired \\(T_W^*,T_B^*\\) and root errors; boundary contact; start concordance; endpoints and widths; endpoint Monte Carlo uncertainty; abstention reasons; runtime and peak memory.
+For each original dataset and bootstrap bank retain requested/completed replicate counts; state counts; distributions of \\(\hat\mu^*,\hat\kappa^*,W^*,B^*\\); paired raw statistics; boundary contact; start concordance; endpoints and widths; endpoint Monte Carlo uncertainty; abstention reasons; runtime and peak memory.
 
 ## 6. Candidate M2 — profile-likelihood intervals for W and B
 
@@ -307,8 +300,8 @@ No gate is implicitly passed by completion of a prior one. The current state is 
 
 ## 12. Open design questions requiring resolution before D1
 
-1. The target mapping is resolved by frozen v1.0: score coverage of population σw²/σb²; preserve the frozen sample statistics MSW and untruncated raw-between as the point estimators for M0 and the primary M1 root construction. If a method also reports intervals centered on fitted model functionals, label these as a separate estimator construction.
-2. Should M1's primary interval be percentile on refitted W*/B*, or should a centered/basic construction be primary? The choice must be justified before data.
+1. The target mapping is resolved by frozen v1.0: score coverage of population σw²/σb²; preserve the frozen sample statistics MSW and untruncated raw-between for M0. M1's fitted-functional estimator package is a distinct candidate and must be labelled as such; both are scored against the same population truths.
+2. Should M1-PCT or M1-BASIC be primary, or should both be co-primary with a multiplicity/selection rule? This must be frozen before data.
 3. What is the mathematically defensible treatment of non-interior and failed bootstrap refits: dataset abstention, set-valued boundary contributions, or another method?
 4. Should M2b use a bootstrap-calibrated likelihood-ratio cutoff for each target value, and how will Monte Carlo uncertainty in that cutoff be controlled?
 5. Is a joint confidence region for (W,B) required as a formal secondary criterion, given W+B=μ(1−μ)?
