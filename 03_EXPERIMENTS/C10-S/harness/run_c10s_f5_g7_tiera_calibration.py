@@ -221,6 +221,53 @@ def run_bank(*, seed_namespace: str) -> dict[str, Any]:
     }
 
 
+def adjudicate_g7_metrics(primary_summary: dict[str, Any]) -> dict[str, Any]:
+    """Apply the frozen no-pooling F5 Tier-A criteria to the four C5 components."""
+    decisions = []
+    for cell_id in EXPECTED_CELLS:
+        cell = primary_summary.get(cell_id, {})
+        metrics = cell.get("metrics", [])
+        for target in ("within", "between"):
+            match = next((
+                item for item in metrics
+                if item.get("method_id") == "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"
+                and item.get("target") == target
+            ), None)
+            if match is None:
+                decisions.append({
+                    "cell_id": cell_id, "target": target,
+                    "pass": False, "reason": "MISSING_C5_METRIC",
+                })
+                continue
+            coverage = match.get("conditional_coverage")
+            wilson = match.get("coverage_wilson_95")
+            emission = match.get("interval_emission_rate")
+            passed = (
+                match.get("n_datasets") == K_PER_CELL
+                and isinstance(coverage, (int, float))
+                and 0.93 <= coverage <= 0.97
+                and isinstance(wilson, (list, tuple)) and len(wilson) == 2
+                and float(wilson[0]) <= 0.95 <= float(wilson[1])
+                and isinstance(emission, (int, float)) and emission >= 0.95
+            )
+            decisions.append({
+                "cell_id": cell_id,
+                "target": target,
+                "pass": passed,
+                "n_datasets": match.get("n_datasets"),
+                "conditional_coverage": coverage,
+                "coverage_wilson_95": wilson,
+                "interval_emission_rate": emission,
+                "abstention_count": match.get("abstention_count"),
+                "reason": "ALL_FROZEN_CRITERIA_MET" if passed else "ONE_OR_MORE_FROZEN_CRITERIA_FAILED",
+            })
+    return {
+        "status": "PASS" if len(decisions) == 4 and all(item["pass"] for item in decisions) else "NOT_VALIDATED",
+        "rule": "ALL_FOUR_C5_COMPONENT_CELLS_MUST_PASS_WITHOUT_POOLING",
+        "components": decisions,
+    }
+
+
 def execute_g7(output_dir: Path, *, code_commit: str) -> dict[str, Any]:
     if not isinstance(code_commit, str) or len(code_commit) != 40:
         raise F5G7Error("FULL_CODE_COMMIT_REQUIRED")
@@ -258,12 +305,18 @@ def execute_g7(output_dir: Path, *, code_commit: str) -> dict[str, Any]:
         cell_id: {"datasets_completed": value["datasets_completed"], "metrics": value["metrics"]}
         for cell_id, value in replay["cells"].items()
     }
+    g7_adjudication = adjudicate_g7_metrics(primary_summary)
     final = {
         "schema": "TGCV-C10S-F5-G7-RESULT-001",
         "protocol_id": PROTOCOL_ID,
         "protocol_version": PROTOCOL_VERSION,
         "code_commit": code_commit,
-        "status": "EXECUTED_PRIMARY_REPLAY_EXACT_MATCH",
+        "status": (
+            "G7_PASS_PRIMARY_REPLAY_EXACT_MATCH"
+            if g7_adjudication["status"] == "PASS"
+            else "G7_NOT_VALIDATED_PRIMARY_REPLAY_EXACT_MATCH"
+        ),
+        "g7_adjudication": g7_adjudication,
         "primary_replay_digest": primary_digest,
         "resource_preflight": preflight,
         "primary": primary_summary,
