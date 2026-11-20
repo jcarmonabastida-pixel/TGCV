@@ -764,3 +764,7 @@ Validation remains pending. The routine does not address multiple-root deflation
 ### Exact boundary likelihood arithmetic added (2026-11-20)
 
 A rational helper now evaluates the four one-edge beta-binomial boundary likelihood profiles exactly, including the Binomial limit at infinite concentration, the endpoint-mixture limit at zero concentration, and the two degenerate mean limits. Four deterministic tests cover exact values and invalid histogram handling. Joint corner/path limits and boundary stationary-root classification remain explicitly unhandled; no interior-vs-boundary global ordering is claimed. Governed CPython 3.12 execution remains pending.
+
+### Adaptive Bernstein–Krawczyk refinement (2026-11-20)
+
+The integrated exact controller now performs a deterministic breadth-first cycle of Bernstein exclusion, Krawczyk inclusion attempt, and rational box subdivision for inconclusive boxes. It has explicit processed-box and depth ceilings and retains all unresolved and unprocessed boxes. New deterministic tests check repeatability on a double-root fixture and explicit resource-limit abstention. No tests have been executed under governed CPython 3.12. The method still abstains on multiple/shared-boundary roots and does not establish exhaustive root isolation or global likelihood ordering.
