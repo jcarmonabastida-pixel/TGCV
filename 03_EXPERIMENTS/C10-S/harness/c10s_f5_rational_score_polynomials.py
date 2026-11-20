@@ -1470,7 +1470,15 @@ def compactified_axis_common_components(
     detect general mixed bivariate factors; those require Q(mu)[t] gcd or
     another exact bivariate factor algorithm.
     """
-    from fractions import Fraction
+    if not isinstance(poly_p, Mapping) or not isinstance(poly_q, Mapping):
+        raise ValueError("SPARSE_POLYNOMIAL_MAPPING_REQUIRED")
+    if not poly_p or not poly_q:
+        return {
+            "status": "ZERO_POLYNOMIAL_COMMON_COMPONENT_UNRESOLVED",
+            "axes": {},
+            "scope": "COMMON_FACTORS_DEPENDING_ON_MU_OR_T_ONLY",
+            "general_mixed_bivariate_factors": "NOT_CHECKED",
+        }
 
     output = {}
     for axis in ("mu", "t"):
