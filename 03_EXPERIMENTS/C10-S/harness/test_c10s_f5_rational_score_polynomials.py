@@ -464,6 +464,12 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(
             result["status"], "ZERO_POLYNOMIAL_COMMON_COMPONENT_UNRESOLVED"
         )
+        zero_terms = compactified_axis_common_components(
+            {(0, 0): 0}, {(1, 0): 1, (0, 0): -1}
+        )
+        self.assertEqual(
+            zero_terms["status"], "ZERO_POLYNOMIAL_COMMON_COMPONENT_UNRESOLVED"
+        )
         with self.assertRaisesRegex(ValueError, "POLYNOMIAL_MUST_HAVE_INTEGER_SPARSE_TERMS"):
             compactified_axis_common_components({}, {(0, 0): Fraction(1, 2)})
 
