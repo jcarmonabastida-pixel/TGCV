@@ -22,6 +22,7 @@ from c10s_f5_rational_score_polynomials import (
     compactified_concentration_resultant_t,
     compactified_concentration_root_isolation_t,
     conditional_mean_tube_and_concentration_exclusion,
+    conditional_mean_adaptive_concentration_census,
 )
 
 
@@ -908,6 +909,68 @@ class RationalScorePolynomialTests(unittest.TestCase):
                 {(0, 0): 1, (1, 0): -2}, {(0, 0): 1},
                 t_bounds=(Fraction(0), Fraction(1, 2)), max_mu_depth=4,
             )
+
+    def test_conditional_mean_adaptive_census_excludes_root_free_interval(self):
+        result = conditional_mean_adaptive_concentration_census(
+            {(0, 0): 1, (1, 0): -2},
+            {(0, 0): 1},
+            t_bounds=(Fraction(1, 4), Fraction(3, 4)),
+            max_intervals=10,
+            max_depth=4,
+        )
+        self.assertEqual(result["status"], "COMPLETE_CENSUS_ON_SUPPLIED_T_INTERVAL")
+        self.assertEqual(len(result["excluded_intervals"]), 1)
+        self.assertEqual(len(result["certified_simple_root_intervals"]), 0)
+
+    def test_conditional_mean_adaptive_census_certifies_one_simple_root(self):
+        result = conditional_mean_adaptive_concentration_census(
+            {(0, 0): 1, (1, 0): -2},
+            {(0, 1): 2, (0, 0): -1},
+            t_bounds=(Fraction(1, 4), Fraction(3, 4)),
+            max_intervals=10,
+            max_depth=4,
+        )
+        self.assertEqual(result["status"], "COMPLETE_CENSUS_ON_SUPPLIED_T_INTERVAL")
+        self.assertEqual(len(result["certified_simple_root_intervals"]), 1)
+        self.assertEqual(len(result["unresolved_intervals"]), 0)
+
+    def test_conditional_mean_adaptive_census_retains_multiple_root(self):
+        result = conditional_mean_adaptive_concentration_census(
+            {(0, 0): 1, (1, 0): -2},
+            {(0, 2): 4, (0, 1): -4, (0, 0): 1},
+            t_bounds=(Fraction(1, 4), Fraction(3, 4)),
+            max_intervals=20,
+            max_depth=0,
+        )
+        self.assertEqual(result["status"], "INCOMPLETE_UNRESOLVED_INTERVALS")
+        self.assertEqual(len(result["unresolved_intervals"]), 1)
+        self.assertEqual(
+            result["unresolved_intervals"][0]["state"], "UNRESOLVED_AT_MAX_DEPTH"
+        )
+
+    def test_conditional_mean_adaptive_census_reports_resource_remainder(self):
+        result = conditional_mean_adaptive_concentration_census(
+            {(0, 0): 1, (1, 0): -2},
+            {(0, 2): 4, (0, 1): -4, (0, 0): 1},
+            t_bounds=(Fraction(1, 4), Fraction(3, 4)),
+            max_intervals=1,
+            max_depth=4,
+        )
+        self.assertEqual(result["status"], "INCOMPLETE_RESOURCE_LIMIT")
+        self.assertGreater(len(result["unresolved_intervals"]), 0)
+
+    def test_conditional_mean_adaptive_census_rejects_invalid_bounds_and_budgets(self):
+        with self.assertRaisesRegex(ValueError, "T_BOUNDS_MUST_BE_STRICTLY_INSIDE_FINITE_DOMAIN"):
+            conditional_mean_adaptive_concentration_census(
+                {(0, 0): 1, (1, 0): -2}, {(0, 0): 1},
+                t_bounds=(Fraction(0), Fraction(1, 2)),
+            )
+        with self.assertRaisesRegex(ValueError, "MAX_INTERVALS_MUST_BE_POSITIVE_INTEGER"):
+            conditional_mean_adaptive_concentration_census(
+                {(0, 0): 1, (1, 0): -2}, {(0, 0): 1},
+                t_bounds=(Fraction(1, 4), Fraction(3, 4)), max_intervals=0,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
