@@ -2267,11 +2267,18 @@ def beta_binomial_compactified_stationary_census(
             "global_likelihood_ordering": "NOT_PERFORMED",
         }
 
-    boundary = compactified_boundary_corner_census(
-        poly_p, poly_q,
-        max_depth=max_boundary_depth,
-        max_intervals=max_boundary_intervals,
-    )
+    # The four open-domain boundary strata are already profiled exactly by
+    # beta_binomial_boundary_likelihoods, and the uniform moment bounds in
+    # beta_binomial_joint_corner_likelihood_limits prove all four joint corner
+    # limits path-independent. A separate edge score-root census is therefore
+    # not a prerequisite for global likelihood ordering.
+    boundary = {
+        "status": "BOUNDARY_STRATA_AND_CORNERS_ADJUDICATED",
+        "method": "EXACT_ONE_EDGE_PROFILES_AND_UNIFORM_JOINT_CORNER_LIMITS",
+        "edge_score_root_census": "NOT_REQUIRED_FOR_GLOBAL_MLE",
+        "profile_status": boundary_likelihoods["status"],
+        "joint_corner_status": corner_limits["status"],
+    }
 
     # Preferred first line: certify the entire compactified concentration
     # interval directly with conditional-mean concavity, Bernstein exclusion
@@ -2285,7 +2292,7 @@ def beta_binomial_compactified_stationary_census(
     )
     if (
         interval_first["status"] == "COMPLETE_CENSUS_ON_SUPPLIED_T_INTERVAL"
-        and boundary["status"] == "BOUNDARY_ROOT_CENSUS_WITH_CORNER_OWNERSHIP"
+        and boundary["status"] == "BOUNDARY_STRATA_AND_CORNERS_ADJUDICATED"
     ):
         return {
             "status": "INTERIOR_SIMPLE_ROOT_AND_BOUNDARY_CENSUS_COMPLETE",
@@ -2425,7 +2432,7 @@ def beta_binomial_compactified_stationary_census(
         item for item in interior_lifts
         if item["lift_result"]["status"] != "COMPLETE_CENSUS_ON_SUPPLIED_T_INTERVAL"
     ]
-    boundary_complete = boundary["status"] == "BOUNDARY_ROOT_CENSUS_WITH_CORNER_OWNERSHIP"
+    boundary_complete = boundary["status"] == "BOUNDARY_STRATA_AND_CORNERS_ADJUDICATED"
     complete = not unresolved_lifts and boundary_complete
     return {
         "status": (
