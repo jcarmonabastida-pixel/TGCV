@@ -392,3 +392,9 @@ D1 remains OPEN; the modular and Bernstein routes remain parallel. No backend is
 ### Additional adversarial retention fixtures (2026-11-20)
 
 Two further deterministic tests now exercise a common even-multiplicity root and two distinct common roots separated by exactly `2^-20`. Their purpose is deliberately limited: the exclusion controller must not return `ALL_BOXES_EXCLUDED` for either fixture. They do not establish root inclusion, uniqueness, multiplicity recovery, or successful isolation. The controller should retain unresolved boxes until a later inclusion/deflation layer is available. Both tests are committed and remain unexecuted under governed CPython 3.12.
+
+### Exact-input hardening — implemented, execution pending (2026-11-20)
+
+The Bernstein entry points now reject binary floating-point values rather than silently converting them through `Fraction(float)`. Bounds accepted by the box conversion and adaptive controller must be exact integers or `Fraction` values; coefficient matrices passed to sign exclusion and de Casteljau subdivision follow the same rule. The empty-polynomial path validates the rectangle before returning its zero coefficient matrix. Four adversarial tests were added for float bounds, float coefficient matrices, controller bounds, and invalid bounds with an empty polynomial.
+
+These are static implementation changes only. The tests have not been run in governed CPython 3.12. No PASS is claimed. The adaptive controller still covers the closed compactified rectangle; boundary strata remain separately unresolved, and no root inclusion/uniqueness certificate exists.
