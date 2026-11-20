@@ -16,6 +16,7 @@ from c10s_f5_rational_score_polynomials import (
     compactified_boundary_common_roots,
     compactified_boundary_corner_census,
     beta_binomial_joint_corner_likelihood_limits,
+    compactified_axis_common_components,
 )
 
 
@@ -421,6 +422,49 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(
             result["corner_deduplication"], "CORNER_OWNERSHIP_COMPLETE"
         )
+
+    def test_axis_common_component_detects_vertical_factor_and_multiplicity(self):
+        p = {(1, 1): 2, (1, 0): 2, (0, 1): -1, (0, 0): -1}
+        q = {(1, 2): 2, (1, 0): 4, (0, 2): -1, (0, 0): -2}
+        result = compactified_axis_common_components(p, q)
+        self.assertEqual(
+            result["status"], "AXIS_ALIGNED_COMMON_COMPONENTS_DETECTED"
+        )
+        vertical = result["axes"]["mu"]
+        self.assertEqual(vertical["component_type"], "VERTICAL_COMMON_COMPONENT")
+        self.assertEqual(vertical["common_factor"], (Fraction(-1, 2), Fraction(1)))
+        self.assertEqual(vertical["squarefree_factors"][0]["multiplicity"], 1)
+        self.assertEqual(
+            result["general_mixed_bivariate_factors"], "NOT_CHECKED"
+        )
+
+    def test_axis_common_component_detects_horizontal_repeated_factor(self):
+        p = {(0, 2): 4, (0, 1): -4, (1, 2): 2, (1, 1): -2}
+        q = {(0, 3): 8, (0, 2): -12, (0, 1): 4, (1, 3): 4, (1, 2): -6, (1, 1): 2}
+        result = compactified_axis_common_components(p, q)
+        horizontal = result["axes"]["t"]
+        self.assertEqual(
+            horizontal["component_type"], "HORIZONTAL_COMMON_COMPONENT"
+        )
+        self.assertEqual(horizontal["squarefree_factors"][0]["multiplicity"], 2)
+
+    def test_axis_common_component_reports_absence_without_overclaim(self):
+        p = {(1, 0): 1, (0, 1): 1}
+        q = {(0, 0): 1, (1, 1): 1}
+        result = compactified_axis_common_components(p, q)
+        self.assertEqual(
+            result["status"], "NO_AXIS_ALIGNED_COMMON_COMPONENT_DETECTED"
+        )
+        self.assertEqual(
+            result["general_mixed_bivariate_factors"], "NOT_CHECKED"
+        )
+
+    def test_axis_common_component_rejects_noninteger_sparse_input(self):
+        with self.assertRaisesRegex(ValueError, "POLYNOMIAL_MUST_HAVE_INTEGER_SPARSE_TERMS"):
+            compactified_axis_common_components({(0, 0): Fraction(1, 2)}, {(0, 0): 1})
+        with self.assertRaisesRegex(ValueError, "AXIS_MUST_BE_MU_OR_T"):
+            from c10s_f5_rational_score_polynomials import _bivariate_axis_content
+            _bivariate_axis_content({(0, 0): 1}, "kappa")
 
     def test_joint_corner_limits_are_path_independent_for_all_zero_histogram(self):
         result = beta_binomial_joint_corner_likelihood_limits(4, {0: 3})
