@@ -455,3 +455,9 @@ Section 12 records the preimplementation symbolic-sizing probe and the then-prop
 - [Run #53](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44773997684), commit `9d5ca258b8f976b700949b8a9a978e7312e28f1d`: 143/143 PASS; the forced exact resultant/Sturm route and default Bernstein/conditional-mean route returned the same M10/R5 global classification and matching simple-root certificates (overlapping Krawczyk boxes).
 
 The default route remains Bernstein/conditional-mean first. Exact resultant/Sturm is an independently exercised fallback/cross-check on the same bounded M10/R5 target; no universal method-selection claim is made. The CI default-source-revision provenance binding is under verification in run [#54](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44775205756). No prospective TierA calibration has been executed.
+
+### 11.2 Final G1–G6 engineering closure snapshot — run #54
+
+Run [44775205756](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44775205756), commit `a22f2edc7f7ff39f158e6ab2740eea2662b047d3`, passed 144/144 deterministic tests in 353.169 seconds. The test `test_input_provenance_defaults_to_actual_github_source_revision` passed, verifying that omitted explicit source revision binds to the actual Actions `GITHUB_SHA`. CPython 3.12.10, locked dependencies and six-module compilation all passed.
+
+**Disposition:** G1–G6 are PASS for the bounded M10/R5 and M30/R20 F5 target regime. Singular/multiple interior roots, arbitrary mixed common components and exhausted resource regimes remain explicit typed abstention states; no universal solver is claimed. G7 prospective TierA calibration is NOT RUN and remains separately authorization-gated. The comparison specification remains a D1 draft and no M1/M2 method has been universally selected.
