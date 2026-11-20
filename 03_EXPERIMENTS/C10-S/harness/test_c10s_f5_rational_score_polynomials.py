@@ -2,7 +2,10 @@
 from fractions import Fraction
 import unittest
 
-from c10s_f5_rational_score_polynomials import beta_binomial_score_numerators
+from c10s_f5_rational_score_polynomials import (
+    beta_binomial_score_numerators,
+    compactify_concentration,
+)
 
 
 def _evaluate(poly, mu, kappa):
@@ -70,6 +73,40 @@ class RationalScorePolynomialTests(unittest.TestCase):
         )
         self.assertEqual(len(n_mu), 629)
         self.assertEqual(len(n_kappa), 1368)
+
+
+    def test_exact_score_identity_on_m30_r20_fixture(self):
+        hist = {x: 1 for x in range(21)}
+        for x, extra in {0: 1, 5: 2, 10: 3, 15: 3}.items():
+            hist[x] += extra
+        n_mu, n_kappa = beta_binomial_score_numerators(20, hist)
+        for mu, kappa in (
+            (Fraction(1, 3), Fraction(7, 4)),
+            (Fraction(2, 5), Fraction(11, 3)),
+        ):
+            score_mu, score_kappa = _direct_scores(20, hist, mu, kappa)
+            d_mu, d_kappa = _denominators(20, mu, kappa)
+            self.assertEqual(_evaluate(n_mu, mu, kappa), score_mu * d_mu)
+            self.assertEqual(_evaluate(n_kappa, mu, kappa), score_kappa * d_kappa)
+
+    def test_exact_positive_concentration_compactification(self):
+        poly = {(0, 0): 2, (1, 1): -3, (2, 3): 5, (0, 4): -1}
+        transformed = compactify_concentration(poly)
+        degree = max(j for _, j in poly)
+        for mu, t in (
+            (Fraction(1, 3), Fraction(1, 4)),
+            (Fraction(2, 5), Fraction(3, 7)),
+            (Fraction(7, 8), Fraction(9, 10)),
+        ):
+            kappa = t / (1 - t)
+            lhs = _evaluate(transformed, mu, t)
+            rhs = (1 - t) ** degree * _evaluate(poly, mu, kappa)
+            self.assertEqual(lhs, rhs)
+
+    def test_compactification_preserves_interior_zero(self):
+        poly = {(0, 0): -1, (0, 1): 1}
+        transformed = compactify_concentration(poly)
+        self.assertEqual(_evaluate(transformed, Fraction(1, 2), Fraction(1, 2)), 0)
 
     def test_histogram_validation(self):
         with self.assertRaisesRegex(ValueError, "COUNT_OUTSIDE_0_TO_R"):
