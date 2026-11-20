@@ -625,58 +625,128 @@ def bernstein_krawczyk_root_classification(
     max_boxes: int = 10000,
     max_depth: int = 32,
 ) -> dict[str, object]:
-    """Integrate Bernstein exclusion and Krawczyk inclusion on one box cover.
+    """Adaptively combine exact Bernstein exclusion and Krawczyk inclusion.
 
-    The exclusion controller first partitions the initial closed rectangle.
-    Each surviving leaf is then passed to the exact Krawczyk simple-root
-    certificate. Successful leaves are certified; all other leaves remain
-    unresolved. Unprocessed resource-limit leaves are never certified.
-    This is not a complete root-isolation or MLE certificate.
+    A deterministic breadth-first queue processes each rational closed box:
+    Bernstein may exclude it; otherwise Krawczyk may certify one simple root;
+    otherwise the box is bisected until max_depth or max_boxes. Every
+    unclassified leaf and every unprocessed resource remainder is retained.
+    Shared-boundary roots and multiple roots are deliberately not promoted
+    to certified roots. This is not an exhaustive global MLE certificate.
     """
-    partition = bernstein_exclusion_subdivision(
-        poly_p, poly_q,
-        mu_bounds=mu_bounds, t_bounds=t_bounds,
-        max_boxes=max_boxes, max_depth=max_depth,
-    )
+    from collections import deque
+    from fractions import Fraction
+
+    if type(max_boxes) is not int or max_boxes < 1:
+        raise ValueError("MAX_BOXES_MUST_BE_POSITIVE_INTEGER")
+    if type(max_depth) is not int or max_depth < 0:
+        raise ValueError("MAX_DEPTH_MUST_BE_NONNEGATIVE_INTEGER")
+    if not isinstance(mu_bounds, tuple) or len(mu_bounds) != 2:
+        raise ValueError("INVALID_INITIAL_BOX")
+    if not isinstance(t_bounds, tuple) or len(t_bounds) != 2:
+        raise ValueError("INVALID_INITIAL_BOX")
+    try:
+        mu_lo, mu_hi = (_exact_fraction(v) for v in mu_bounds)
+        t_lo, t_hi = (_exact_fraction(v) for v in t_bounds)
+    except ValueError:
+        raise ValueError("INVALID_INITIAL_BOX") from None
+    if mu_lo >= mu_hi or t_lo >= t_hi:
+        raise ValueError("INVALID_INITIAL_BOX")
+
+    queue = deque([(mu_lo, mu_hi, t_lo, t_hi, 0)])
+    excluded = []
     certified = []
     unresolved = []
-    for leaf in partition["unresolved_boxes"]:
-        if leaf["state"] == "NOT_PROCESSED_RESOURCE_LIMIT":
-            unresolved.append({
-                **leaf,
-                "classification": "UNRESOLVED_RESOURCE_REMAINDER",
+    processed = 0
+    krawczyk_attempts = 0
+    subdivisions = 0
+
+    while queue and processed < max_boxes:
+        mu_a, mu_b, t_a, t_b, depth = queue.popleft()
+        processed += 1
+        p_coeff = bernstein_coefficients_on_box(
+            poly_p, (mu_a, mu_b), (t_a, t_b)
+        )
+        q_coeff = bernstein_coefficients_on_box(
+            poly_q, (mu_a, mu_b), (t_a, t_b)
+        )
+        if (
+            bernstein_box_excludes_zero(p_coeff)
+            or bernstein_box_excludes_zero(q_coeff)
+        ):
+            excluded.append({
+                "mu_bounds": (mu_a, mu_b),
+                "t_bounds": (t_a, t_b),
+                "depth": depth,
             })
             continue
+
+        krawczyk_attempts += 1
         result = krawczyk_certify_unique_root(
             poly_p, poly_q,
-            mu_bounds=leaf["mu_bounds"],
-            t_bounds=leaf["t_bounds"],
+            mu_bounds=(mu_a, mu_b),
+            t_bounds=(t_a, t_b),
         )
         if result["status"] == "CERTIFIED_UNIQUE_ROOT":
-            certified.append(result)
-        else:
+            certified.append({
+                **result,
+                "depth": depth,
+            })
+            continue
+
+        if depth >= max_depth:
             unresolved.append({
-                **leaf,
-                "classification": result["status"],
+                "mu_bounds": (mu_a, mu_b),
+                "t_bounds": (t_a, t_b),
+                "depth": depth,
+                "state": "UNRESOLVED_AT_MAX_DEPTH",
                 "certificate_attempt": result,
             })
+            continue
+
+        axis = "mu" if depth % 2 == 0 else "t"
+        if axis == "mu":
+            midpoint = (mu_a + mu_b) / 2
+            queue.append((mu_a, midpoint, t_a, t_b, depth + 1))
+            queue.append((midpoint, mu_b, t_a, t_b, depth + 1))
+        else:
+            midpoint = (t_a + t_b) / 2
+            queue.append((mu_a, mu_b, t_a, midpoint, depth + 1))
+            queue.append((mu_a, mu_b, midpoint, t_b, depth + 1))
+        subdivisions += 1
+
+    while queue:
+        mu_a, mu_b, t_a, t_b, depth = queue.popleft()
+        unresolved.append({
+            "mu_bounds": (mu_a, mu_b),
+            "t_bounds": (t_a, t_b),
+            "depth": depth,
+            "state": "NOT_PROCESSED_RESOURCE_LIMIT",
+        })
 
     if unresolved:
-        status = "PARTIAL_CERTIFICATION_WITH_REMAINDER"
+        status = (
+            "RESOURCE_LIMIT_WITH_REMAINDER"
+            if any(x["state"] == "NOT_PROCESSED_RESOURCE_LIMIT" for x in unresolved)
+            else "PARTIAL_CERTIFICATION_WITH_REMAINDER"
+        )
     elif certified:
         status = "ALL_SURVIVING_BOXES_CERTIFIED_SIMPLE_ROOTS"
     else:
         status = "ALL_BOXES_EXCLUDED"
+
     return {
         "status": status,
-        "excluded_boxes": partition["excluded_boxes"],
+        "excluded_boxes": excluded,
         "certified_root_boxes": certified,
         "unresolved_boxes": unresolved,
-        "partition_status": partition["status"],
-        "processed_boxes": partition["processed_boxes"],
+        "processed_boxes": processed,
+        "krawczyk_attempts": krawczyk_attempts,
+        "subdivisions": subdivisions,
         "max_boxes": max_boxes,
         "max_depth": max_depth,
     }
+
 
 def beta_binomial_boundary_likelihoods(
     r: int,
