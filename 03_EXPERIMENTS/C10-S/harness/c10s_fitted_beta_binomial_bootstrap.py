@@ -7,12 +7,17 @@ world-cluster model and the complete raw nested M/R estimator is recomputed.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, replace
+from collections import Counter
+import json
 import math
+import os
 from typing import Sequence
 
 import numpy as np
 from scipy.optimize import minimize
 from scipy.special import betaln, gammaln
+
+from c10s_f5_rational_score_polynomials import beta_binomial_global_mle_certificate
 
 from c10s_f5_beta_binomial_likelihood_diagnostics import (
     BetaBinomialOptimizerAudit,
@@ -80,6 +85,7 @@ class FittedBetaBinomialBootstrapResult:
     optimizer_audit: BetaBinomialOptimizerAudit | None = None
     optimizer_audit_error: str | None = None
     production_analytic_reconciliation: dict | None = None
+    global_mle_certificate: dict | None = None
 
 
 def fit_beta_binomial_counts(counts: Sequence[int], r: int) -> BetaBinomialFit:
@@ -286,6 +292,7 @@ def fitted_beta_binomial_parametric_bootstrap(
     target_m: int, target_r: int, bootstrap_replicates: int,
     bootstrap_seed: int, confidence_level: float = 0.95,
     minimum_valid_mcse_rate: float = 0.90,
+    require_global_mle_certificate: bool = False,
 ) -> FittedBetaBinomialBootstrapResult:
     """Fit F5, simulate beta-binomial worlds, and refit raw nested estimators.
 
@@ -302,6 +309,8 @@ def fitted_beta_binomial_parametric_bootstrap(
         raise BetaBinomialFitError("confidence_level must lie in (0,1)")
     if not (0.0 < minimum_valid_mcse_rate <= 1.0):
         raise BetaBinomialFitError("minimum_valid_mcse_rate must lie in (0,1]")
+    if not isinstance(require_global_mle_certificate, bool):
+        raise BetaBinomialFitError("require_global_mle_certificate must be boolean")
 
     observed = observed_nested_mr_result(rows, target_m=target_m, target_r=target_r)
     matrix = np.asarray(tuple(tuple(row) for row in rows), dtype=float)
@@ -342,6 +351,77 @@ def fitted_beta_binomial_parametric_bootstrap(
     reconciliation = build_production_analytic_reconciliation(
         fit, optimizer_audit, audit_error=optimizer_audit_error,
     )
+    global_certificate_summary = None
+    if require_global_mle_certificate:
+        try:
+            histogram = Counter(int(value) for value in counts)
+            certificate = beta_binomial_global_mle_certificate(
+                r, histogram, source_revision=os.environ.get("GITHUB_SHA"),
+            )
+            certificate_status = certificate.get("status", "MISSING_STATUS")
+            winner = certificate.get("winner", {})
+            parameter_box = winner.get("parameter_box")
+            source_revision = (
+                certificate.get("census", {}).get("input_provenance", {}).get("source_revision")
+            )
+            inside_certified_box = False
+            if (
+                certificate_status == "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED"
+                and winner.get("kind") == "INTERIOR_STATIONARY_ROOT"
+                and isinstance(parameter_box, (tuple, list))
+                and len(parameter_box) == 2
+            ):
+                mu_bounds, t_bounds = parameter_box
+                fitted_t = fit.concentration / (1.0 + fit.concentration)
+                inside_certified_box = (
+                    float(mu_bounds[0]) <= fit.mean_probability <= float(mu_bounds[1])
+                    and float(t_bounds[0]) <= fitted_t <= float(t_bounds[1])
+                )
+            global_certificate_summary = {
+                "status": certificate_status,
+                "winner_kind": winner.get("kind"),
+                "parameter_box": (
+                    [[str(v) for v in bounds] for bounds in parameter_box]
+                    if isinstance(parameter_box, (tuple, list)) and len(parameter_box) == 2
+                    else None
+                ),
+                "optimizer_inside_certified_root_box": inside_certified_box,
+                "globality_basis": certificate.get("globality_basis"),
+                "source_revision": source_revision,
+            }
+        except Exception as exc:
+            global_certificate_summary = {
+                "status": "GLOBAL_MLE_CERTIFICATE_ERROR",
+                "error": f"{type(exc).__name__}:{exc}",
+                "optimizer_inside_certified_root_box": False,
+            }
+        reconciliation["global_mle_certificate"] = global_certificate_summary
+        if (
+            global_certificate_summary.get("status") != "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED"
+            or global_certificate_summary.get("optimizer_inside_certified_root_box") is not True
+        ):
+            reason = (
+                "F5_GLOBAL_MLE_NOT_CERTIFIED:"
+                + str(global_certificate_summary.get("status"))
+            )
+            comparison = replace(
+                observed, method_id="F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0",
+                abstention_reason=reason,
+                provenance=observed.provenance + (
+                    ("fit_status", "GLOBAL_MLE_CERTIFICATION_ABSTENTION"),
+                    ("global_mle_certificate_status", str(global_certificate_summary.get("status"))),
+                ),
+            )
+            return FittedBetaBinomialBootstrapResult(
+                comparison=comparison, fit=fit,
+                bootstrap_replicates=bootstrap_replicates,
+                valid_mcse_replicates=0, valid_mcse_rate=0.0,
+                confidence_level=confidence_level, bootstrap_seed=bootstrap_seed,
+                failure_reason=reason, optimizer_audit=optimizer_audit,
+                optimizer_audit_error=optimizer_audit_error,
+                production_analytic_reconciliation=reconciliation,
+                global_mle_certificate=global_certificate_summary,
+            )
     if fit.boundary:
         reason = "BETA_BINOMIAL_MLE_BOUNDARY:" + ",".join(fit.boundary_reasons)
         return FittedBetaBinomialBootstrapResult(
@@ -416,6 +496,7 @@ def fitted_beta_binomial_parametric_bootstrap(
         ("mcse_valid_rate", format(valid_rate, ".17g")),
         ("interval_method", "parametric_percentile_exploratory"),
         ("mcse_interval_status", "NOT_IMPLEMENTED_BOUNDARY_AWARE_JOINT_INFERENCE"),
+        ("global_mle_certificate_status", str(global_certificate_summary.get("status", "NOT_REQUIRED") if global_certificate_summary else "NOT_REQUIRED")),
     )
     comparison = replace(
         observed,
@@ -435,4 +516,5 @@ def fitted_beta_binomial_parametric_bootstrap(
         optimizer_audit=optimizer_audit,
         optimizer_audit_error=optimizer_audit_error,
         production_analytic_reconciliation=reconciliation,
+        global_mle_certificate=global_certificate_summary,
     )

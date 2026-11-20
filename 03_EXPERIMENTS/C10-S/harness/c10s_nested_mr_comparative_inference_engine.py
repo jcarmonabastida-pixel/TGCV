@@ -466,6 +466,7 @@ def compare_dataset(
     include_profile_diagnostics: bool = True,
     include_f5_concentration_profile_audit: bool = False,
     f5_profile_log_concentration_grid: Sequence[float] | None = None,
+    require_f5_global_mle_certificate: bool = False,
 ) -> DatasetComparison:
     """Run C0 plus the currently implemented family-specific candidate."""
     if family not in IMPLEMENTED_METHODS:
@@ -474,6 +475,8 @@ def compare_dataset(
         raise ComparativeEngineError("INCLUDE_PROFILE_DIAGNOSTICS_MUST_BE_BOOLEAN")
     if not isinstance(include_f5_concentration_profile_audit, bool):
         raise ComparativeEngineError("INCLUDE_F5_CONCENTRATION_PROFILE_AUDIT_MUST_BE_BOOLEAN")
+    if not isinstance(require_f5_global_mle_certificate, bool):
+        raise ComparativeEngineError("REQUIRE_F5_GLOBAL_MLE_CERTIFICATE_MUST_BE_BOOLEAN")
     if include_f5_concentration_profile_audit:
         if family != "F5":
             raise ComparativeEngineError("F5_CONCENTRATION_PROFILE_AUDIT_REQUIRES_F5_FAMILY")
@@ -536,6 +539,7 @@ def compare_dataset(
             bootstrap_replicates=bootstrap_replicates,
             bootstrap_seed=bootstrap_seed,
             confidence_level=confidence_level,
+            require_global_mle_certificate=require_f5_global_mle_certificate,
         )
         fit = fitted.fit
         diagnostics = (

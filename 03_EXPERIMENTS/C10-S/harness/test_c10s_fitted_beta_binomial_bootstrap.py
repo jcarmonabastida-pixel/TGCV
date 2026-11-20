@@ -170,5 +170,64 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
                 fit_beta_binomial_counts(counts, r)
 
 
+
+    def test_global_mle_certificate_gate_accepts_optimizer_inside_certified_box(self):
+        import os
+        from unittest.mock import patch
+
+        rows = tuple(
+            tuple([1.0] * count + [0.0] * (5 - count))
+            for count in (0, 1, 2, 4, 5, 3, 1, 4, 2, 3)
+        )
+        counts = [sum(row) for row in rows]
+        from c10s_fitted_beta_binomial_bootstrap import fit_beta_binomial_counts
+        fit = fit_beta_binomial_counts(counts, 5)
+        fitted_t = fit.concentration / (1.0 + fit.concentration)
+        fake = {
+            "status": "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED",
+            "winner": {
+                "kind": "INTERIOR_STATIONARY_ROOT",
+                "parameter_box": (
+                    (fit.mean_probability - 1e-4, fit.mean_probability + 1e-4),
+                    (fitted_t - 1e-4, fitted_t + 1e-4),
+                ),
+            },
+            "globality_basis": "COMPLETE_INTERIOR_STATIONARY_CENSUS_PLUS_ALL_BOUNDARY_PROFILES_AND_CORNER_LIMITS",
+            "census": {"input_provenance": {"source_revision": "b" * 40}},
+        }
+        with patch.dict(os.environ, {"GITHUB_SHA": "b" * 40}), patch(
+            "c10s_fitted_beta_binomial_bootstrap.beta_binomial_global_mle_certificate",
+            return_value=fake,
+        ):
+            result = fitted_beta_binomial_parametric_bootstrap(
+                rows, target_m=10, target_r=5, bootstrap_replicates=20,
+                bootstrap_seed=12345, require_global_mle_certificate=True,
+            )
+        self.assertEqual(result.global_mle_certificate["status"], "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED")
+        self.assertTrue(result.global_mle_certificate["optimizer_inside_certified_root_box"])
+        self.assertEqual(dict(result.comparison.provenance)["global_mle_certificate_status"], "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED")
+
+    def test_global_mle_certificate_unresolved_forces_typed_abstention(self):
+        import os
+        from unittest.mock import patch
+
+        rows = tuple(
+            tuple([1.0] * count + [0.0] * (5 - count))
+            for count in (0, 1, 2, 4, 5, 3, 1, 4, 2, 3)
+        )
+        fake = {"status": "NUMERICAL_INTERVAL_CERTIFICATE_UNRESOLVED", "census": {}}
+        with patch.dict(os.environ, {"GITHUB_SHA": "c" * 40}), patch(
+            "c10s_fitted_beta_binomial_bootstrap.beta_binomial_global_mle_certificate",
+            return_value=fake,
+        ):
+            result = fitted_beta_binomial_parametric_bootstrap(
+                rows, target_m=10, target_r=5, bootstrap_replicates=20,
+                bootstrap_seed=12345, require_global_mle_certificate=True,
+            )
+        self.assertIsNone(result.comparison.within_interval)
+        self.assertIsNone(result.comparison.between_interval)
+        self.assertIn("F5_GLOBAL_MLE_NOT_CERTIFIED", result.comparison.abstention_reason)
+
+
 if __name__ == "__main__":
     unittest.main()
