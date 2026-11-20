@@ -233,5 +233,42 @@ class RationalScorePolynomialTests(unittest.TestCase):
             bernstein_exclusion_subdivision({(0, 0): 1}, {(0, 0): 1}, max_depth=-1)
 
 
+    def test_bernstein_controller_retains_even_multiplicity_common_root(self):
+        half = Fraction(1, 2)
+        square = {
+            (2, 0): 1,
+            (1, 0): -2 * half,
+            (0, 0): half * half,
+        }
+        square_t = {
+            (0, 2): 1,
+            (0, 1): -2 * half,
+            (0, 0): half * half,
+        }
+        result = bernstein_exclusion_subdivision(
+            square, square_t, max_boxes=100, max_depth=2
+        )
+        self.assertEqual(result["status"], "UNRESOLVED_BOXES")
+        self.assertGreater(len(result["unresolved_boxes"]), 0)
+
+    def test_bernstein_controller_retains_near_coincident_common_roots(self):
+        a = Fraction(1, 2)
+        b = a + Fraction(1, 2**20)
+        c = Fraction(1, 3)
+        # P=(mu-a)(mu-b); Q=(t-c). Both common roots are inside the box
+        # and closer than the coarse initial subdivision can separate.
+        p = {
+            (2, 0): 1,
+            (1, 0): -(a + b),
+            (0, 0): a * b,
+        }
+        q = {(0, 1): 1, (0, 0): -c}
+        result = bernstein_exclusion_subdivision(
+            p, q, max_boxes=100, max_depth=2
+        )
+        self.assertNotEqual(result["status"], "ALL_BOXES_EXCLUDED")
+        self.assertGreater(len(result["unresolved_boxes"]), 0)
+
+
 if __name__ == "__main__":
     unittest.main()
