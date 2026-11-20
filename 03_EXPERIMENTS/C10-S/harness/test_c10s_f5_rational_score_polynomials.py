@@ -15,6 +15,7 @@ from c10s_f5_rational_score_polynomials import (
     compactified_boundary_common_factors,
     compactified_boundary_common_roots,
     compactified_boundary_corner_census,
+    beta_binomial_joint_corner_likelihood_limits,
 )
 
 
@@ -420,6 +421,62 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(
             result["corner_deduplication"], "CORNER_OWNERSHIP_COMPLETE"
         )
+
+    def test_joint_corner_limits_are_path_independent_for_all_zero_histogram(self):
+        result = beta_binomial_joint_corner_likelihood_limits(4, {0: 3})
+        self.assertEqual(
+            result["status"], "ALL_JOINT_CORNER_LIMITS_PATH_INDEPENDENT"
+        )
+        self.assertEqual(
+            result["corners"]["mu_zero_t_zero"]["likelihood"], Fraction(1)
+        )
+        self.assertEqual(
+            result["corners"]["mu_zero_t_one"]["likelihood"], Fraction(1)
+        )
+        self.assertEqual(
+            result["corners"]["mu_one_t_zero"]["likelihood"], Fraction(0)
+        )
+        self.assertEqual(
+            result["corners"]["mu_one_t_one"]["likelihood"], Fraction(0)
+        )
+        self.assertEqual(
+            result["corners"]["mu_zero_t_zero"]["limit_distribution"],
+            (Fraction(1), Fraction(0), Fraction(0), Fraction(0), Fraction(0)),
+        )
+
+    def test_joint_corner_limits_are_path_independent_for_all_r_histogram(self):
+        result = beta_binomial_joint_corner_likelihood_limits(3, {3: 2})
+        self.assertEqual(
+            result["corners"]["mu_one_t_zero"]["likelihood"], Fraction(1)
+        )
+        self.assertEqual(
+            result["corners"]["mu_one_t_one"]["likelihood"], Fraction(1)
+        )
+        self.assertEqual(
+            result["corners"]["mu_zero_t_zero"]["likelihood"], Fraction(0)
+        )
+        self.assertEqual(
+            result["corners"]["mu_one_t_zero"]["limit_distribution"],
+            (Fraction(0), Fraction(0), Fraction(0), Fraction(1)),
+        )
+
+    def test_joint_corner_limits_zero_likelihood_for_mixed_and_interior_counts(self):
+        for histogram in ({0: 1, 4: 1}, {2: 1}, {0: 1, 2: 1, 4: 1}):
+            result = beta_binomial_joint_corner_likelihood_limits(4, histogram)
+            for corner in ("mu_zero_t_zero", "mu_zero_t_one"):
+                self.assertEqual(
+                    result["corners"][corner]["likelihood"], Fraction(0)
+                )
+            for corner in ("mu_one_t_zero", "mu_one_t_one"):
+                self.assertEqual(
+                    result["corners"][corner]["likelihood"], Fraction(0)
+                )
+
+    def test_joint_corner_limits_reuse_histogram_validation(self):
+        with self.assertRaisesRegex(ValueError, "POSITIVE_TOTAL_MULTIPLICITY_REQUIRED"):
+            beta_binomial_joint_corner_likelihood_limits(4, {0: 0})
+        with self.assertRaisesRegex(ValueError, "COUNT_OUTSIDE_0_TO_R"):
+            beta_binomial_joint_corner_likelihood_limits(4, {5: 1})
 
     def test_boundary_profiles_are_exact_for_endpoint_histogram(self):
         result = beta_binomial_boundary_likelihoods(2, {0: 1, 2: 1})
