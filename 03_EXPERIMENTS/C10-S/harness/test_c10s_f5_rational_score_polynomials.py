@@ -242,8 +242,8 @@ class RationalScorePolynomialTests(unittest.TestCase):
 
     def test_bernstein_controller_fails_closed_at_box_budget(self):
         result = bernstein_exclusion_subdivision(
-            {(1, 0): 1, (0, 0): Fraction(-1, 2)},
-            {(0, 1): 1, (0, 0): Fraction(-1, 2)},
+            {(1, 0): 2, (0, 0): -1},
+            {(0, 1): 2, (0, 0): -1},
             max_boxes=1, max_depth=20,
         )
         self.assertEqual(result["status"], "RESOURCE_LIMIT_WITH_REMAINDER")
