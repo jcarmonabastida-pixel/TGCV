@@ -519,3 +519,23 @@ In that same stratum, C5 coverage is 50.0%/35.6% within/raw-between in calibrati
 **Interpretation:** the evidence supports conditional plug-in miscalibration associated with upward fitted concentration and shifted variance allocation. The omission of alpha/beta re-estimation within bootstrap replicates is a concrete mechanism and plausible contributor, but the artifact does not prove it is the sole cause. No alternative interval method is selected or tuned.
 
 **Next operation:** prepare a separately versioned, static method-design comparison for fixed plug-in C5 versus a refitted parametric bootstrap and a profile/likelihood-based uncertainty approach. Define estimands, refit/boundary/failure semantics, interval construction, computational budget and prospective acceptance rules before any new development bank. The B2/B3 banks remain historical development evidence and cannot be used to select or tune the replacement.
+
+
+## Coordinated comparative interval-method design — 2026-11-20
+
+A single integrated design draft has been persisted at `03_EXPERIMENTS/C10-S/design/C10S_F5_INTERVAL_METHOD_COMPARISON_DESIGN_DRAFT_001.md`.
+
+It defines:
+- M0: incumbent fixed-parameter plug-in C5, retained as baseline and not validated;
+- M1: refitted parametric bootstrap, including full per-replicate fit-state retention, boundary/failure semantics and explicit abstention obligations;
+- M2a: asymptotic profile-likelihood reference, and M2b: bootstrap-calibrated profile likelihood, with nonregular/boundary caveats;
+- shared W/B target functionals, parameterization and boundary geometry;
+- paired per-dataset comparison, coverage/width/directional-miss/abstention/MCSE/cost outcomes;
+- deterministic validation requirements and shared implementation interfaces;
+- prospective disjoint development and confirmatory banks, selection/freeze gates, and explicit non-use of B2/B3 for tuning.
+
+C0 is restricted to a historical diagnostic comparator; MCSE interval construction remains excluded. No method has been selected, no acceptance criterion changed, and no implementation, calibration, bootstrap, replay or scientific execution was performed.
+
+**D0 remains OPEN.** The exact frozen v1.0 target/estimand mapping and interval semantics must be recovered and reconciled before D1 can be frozen. The draft explicitly leaves this unresolved rather than guessing whether the primary targets are population W/B functionals, finite-sample raw estimators, or both. It also leaves the M1 interval rule, failed-refit policy, M2b calibration precision and compute budget open.
+
+**Next operation:** locate the authoritative frozen v1.0 specification and original C5 target mapping in the repository history/tree; reconcile the eight D1 questions in one integrated revision. No code or numerical execution until D1 is frozen and separately authorized.
