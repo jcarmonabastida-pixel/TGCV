@@ -1749,8 +1749,17 @@ def compactified_projection_root_isolation_mu(
     to common (mu,t) roots and their multiplicities are not local intersection
     multiplicities.
     """
+    from fractions import Fraction
+
     if not isinstance(resultant_result, Mapping):
         raise ValueError("RESULTANT_RESULT_MAPPING_REQUIRED")
+    target_width = _exact_fraction(width)
+    if target_width <= 0:
+        raise ValueError("ISOLATION_WIDTH_MUST_BE_POSITIVE")
+    if type(max_depth) is not int or max_depth < 0:
+        raise ValueError("MAX_DEPTH_MUST_BE_NONNEGATIVE_INTEGER")
+    if type(max_intervals) is not int or max_intervals < 1:
+        raise ValueError("MAX_INTERVALS_MUST_BE_POSITIVE_INTEGER")
     status = resultant_result.get("status")
     if status != "EXACT_RESULTANT_NONZERO":
         return {
@@ -1759,8 +1768,10 @@ def compactified_projection_root_isolation_mu(
             "factors": [],
         }
     polynomial = resultant_result.get("resultant")
-    if polynomial is None:
+    if not isinstance(polynomial, (tuple, list)) or not polynomial:
         raise ValueError("NONZERO_RESULTANT_POLYNOMIAL_REQUIRED")
+    if any(type(value) is not int and type(value) is not Fraction for value in polynomial):
+        raise ValueError("EXACT_RATIONAL_REQUIRED")
     factors = _uni_squarefree_factors(polynomial)
     isolated_factors = []
     incomplete = False
