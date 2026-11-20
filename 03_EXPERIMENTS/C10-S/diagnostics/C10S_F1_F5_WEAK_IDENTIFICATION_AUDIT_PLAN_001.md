@@ -735,3 +735,8 @@ The algebraic and Bernstein routes remain unselected and in parallel development
 A FIFO breadth-first controller now applies both exact Bernstein sign-exclusion tests over rational boxes, alternating the split axis deterministically and using explicit box-count/depth ceilings. It returns all unresolved and unprocessed boxes with exact bounds and typed states. Only `ALL_BOXES_EXCLUDED` proves absence of common zeros over the covered closed rectangle; depth or resource exhaustion remains unresolved.
 
 Four additional controller tests are committed but not executed under governed CPython 3.12. The current implementation conservatively covers the closed compactified square, so explicit boundary classification remains necessary. The controller does not prove root existence/uniqueness and does not certify multiple roots. F5 remains OPEN; no scientific execution is authorized.
+
+
+### Multiple-root and near-coincident exclusion safeguards (2026-11-20)
+
+Two further deterministic tests have been committed: one with a common even-multiplicity root and one with two distinct common roots separated by `2^-20`. They assert only that the Bernstein exclusion controller does not declare these systems root-free. They do not certify existence/uniqueness or multiplicity. Tests remain unexecuted under governed CPython 3.12; the interval certificate remains incomplete.
