@@ -1,7 +1,7 @@
 # C10-S — F5 global beta-binomial MLE certification design 001
 
 **Record:** C10S-F5-GLOBAL-MLE-CERTIFICATION-001  
-**Status:** ANALYTICAL DESIGN + PARTIAL EXACT ALGEBRA PRIMITIVE IMPLEMENTED — GLOBAL CERTIFICATE NOT IMPLEMENTED / GOVERNED TESTS NOT RUN / NOT EXECUTED  
+**Status:** BOUNDED F5 CALIBRATION SUPPORT DESIGN + PARTIAL EXACT ALGEBRA PRIMITIVES IMPLEMENTED — GLOBAL CERTIFICATE NOT IMPLEMENTED / GOVERNED TESTS NOT RUN / NOT EXECUTED  
 **Date:** 2026-11-20  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
 **Scope:** F5 beta-binomial count likelihood, M10/R5 and M30/R20  
@@ -11,11 +11,11 @@
 
 ## 1. Purpose
 
-Resolve the D1 blocker concerning global maximum adjudication, multiple stationary roots, nearly degenerate stationary roots, and theoretical concentration boundaries.
+Resolve only the F5 likelihood-fit ambiguity that blocks reliable interpretation and calibration of the existing C5 within/raw-between intervals after Tier A/B2/B3 failed their frozen component gates. The concrete target is the beta-binomial count likelihood in the two frozen designs, M10/R5 and M30/R20, under the existing beta22 fixture. The work is subordinate to C10-S and exists to make its Analyzer/Evaluator calibration trustworthy; it is not a separate statistical research programme or a general-purpose inference library.
 
-The proposed solution is not another multistart heuristic and does not introduce an empirical likelihood-difference threshold. It exploits the finite-product form of the beta-binomial likelihood and uses exact algebraic elimination/root isolation as the global candidate-enumeration layer. Floating-point optimizers remain useful for candidate discovery and numerical cross-checks, but they do not certify globality.
+The exact algebraic and Bernstein/interval operations are tools, not deliverables in their own right. Each additional layer must resolve a demonstrated ambiguity in the fitted likelihood or profile calculation that materially affects fit-state adjudication, interval emission, or coverage calibration. If existing analytic scores/Hessians, multi-start concordance, independent likelihood checks and explicit concentration-boundary comparisons can resolve the issue with adequate evidence, further algebraic escalation is unnecessary and must stop. No generic solver, new estimator family, new DGP family, or expansion beyond the two frozen F5 designs is authorized by this design.
 
-This remains a design proposal for the complete global certificate. Partial executable research primitives now exist for exact rational score numerators, concentration compactification, and Bernstein box zero-exclusion. No resultant/root-isolation backend, complete interval root-inclusion certificate, global MLE certification, benchmark, simulation or scientific run is claimed.
+Partial executable research primitives now exist for exact rational score numerators, concentration compactification, Bernstein box zero-exclusion, axis-aligned common-component detection, an exact projection resultant and Sturm isolation of projection coordinates. These are source-level implementations only. The complete bivariate root lifting, multiplicity/local-root certification, interval inclusion, global likelihood adjudication and governed test execution remain incomplete. No global MLE certificate, benchmark, simulation, calibration or scientific run is claimed.
 
 ## 2. Likelihood in finite-product form
 
