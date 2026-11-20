@@ -1419,3 +1419,90 @@ def beta_binomial_joint_corner_likelihood_limits(
         "scope": "FINITE_INDEPENDENT_WORLD_HISTOGRAM",
     }
 
+def _bivariate_axis_content(poly: Poly, axis: str):
+    """Return the monic univariate content in one variable over Q."""
+    from fractions import Fraction
+
+    if axis not in ("mu", "t"):
+        raise ValueError("AXIS_MUST_BE_MU_OR_T")
+    if not isinstance(poly, Mapping):
+        raise ValueError("SPARSE_POLYNOMIAL_MAPPING_REQUIRED")
+    grouped = {}
+    for monomial, coefficient in poly.items():
+        if (
+            not isinstance(monomial, tuple) or len(monomial) != 2
+            or type(monomial[0]) is not int or monomial[0] < 0
+            or type(monomial[1]) is not int or monomial[1] < 0
+            or type(coefficient) is not int
+        ):
+            raise ValueError("POLYNOMIAL_MUST_HAVE_INTEGER_SPARSE_TERMS")
+        if coefficient == 0:
+            continue
+        variable_degree = monomial[0] if axis == "mu" else monomial[1]
+        coefficient_degree = monomial[1] if axis == "mu" else monomial[0]
+        grouped.setdefault(coefficient_degree, {})
+        grouped[coefficient_degree][variable_degree] = (
+            grouped[coefficient_degree].get(variable_degree, 0) + coefficient
+        )
+    if not grouped:
+        return [Fraction(0)]
+    coefficient_polynomials = []
+    for terms in grouped.values():
+        degree = max(terms)
+        coefficient_polynomials.append([
+            Fraction(terms.get(index, 0)) for index in range(degree + 1)
+        ])
+    content = coefficient_polynomials[0]
+    for coefficient_polynomial in coefficient_polynomials[1:]:
+        content = _uni_gcd(content, coefficient_polynomial)
+        if len(content) == 1:
+            break
+    return _uni_monic(content)
+
+
+def compactified_axis_common_components(
+    poly_p: Poly, poly_q: Poly
+) -> dict[str, object]:
+    """Detect common vertical/horizontal polynomial components exactly.
+
+    This detects common factors depending on mu alone (vertical components)
+    or t alone (horizontal components). It deliberately does not claim to
+    detect general mixed bivariate factors; those require Q(mu)[t] gcd or
+    another exact bivariate factor algorithm.
+    """
+    from fractions import Fraction
+
+    output = {}
+    for axis in ("mu", "t"):
+        content_p = _bivariate_axis_content(poly_p, axis)
+        content_q = _bivariate_axis_content(poly_q, axis)
+        common = _uni_gcd(content_p, content_q)
+        if len(common) > 1:
+            output[axis] = {
+                "component_type": (
+                    "VERTICAL_COMMON_COMPONENT" if axis == "mu"
+                    else "HORIZONTAL_COMMON_COMPONENT"
+                ),
+                "common_factor": tuple(common),
+                "squarefree_factors": _uni_squarefree_factors(common),
+            }
+        else:
+            output[axis] = {
+                "component_type": "NO_AXIS_ALIGNED_COMMON_COMPONENT",
+                "common_factor": tuple(common),
+                "squarefree_factors": [],
+            }
+    detected = any(
+        item["component_type"] != "NO_AXIS_ALIGNED_COMMON_COMPONENT"
+        for item in output.values()
+    )
+    return {
+        "status": (
+            "AXIS_ALIGNED_COMMON_COMPONENTS_DETECTED" if detected
+            else "NO_AXIS_ALIGNED_COMMON_COMPONENT_DETECTED"
+        ),
+        "axes": output,
+        "scope": "COMMON_FACTORS_DEPENDING_ON_MU_OR_T_ONLY",
+        "general_mixed_bivariate_factors": "NOT_CHECKED",
+    }
+
