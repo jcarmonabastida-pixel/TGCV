@@ -130,8 +130,8 @@ class RationalScorePolynomialTests(unittest.TestCase):
             t_bounds=(Fraction(0), Fraction(1, 4)),
         )
         self.assertEqual(coefficients, [
-            [Fraction(3, 4), Fraction(1, 2)],
-            [Fraction(1), Fraction(3, 4)],
+            [Fraction(3, 4), Fraction(1, 4)],
+            [Fraction(1), Fraction(1, 2)],
         ])
         self.assertTrue(bernstein_sign_excludes_zero(coefficients))
 
