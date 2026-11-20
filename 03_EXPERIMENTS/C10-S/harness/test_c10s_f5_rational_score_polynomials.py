@@ -315,6 +315,10 @@ class RationalScorePolynomialTests(unittest.TestCase):
             compactified_boundary_common_factors(
                 {(1, 0): Fraction(1, 2)}, {(0, 1): 1}
             )
+        with self.assertRaisesRegex(ValueError, "INTEGER_SPARSE_POLYNOMIALS_REQUIRED"):
+            compactified_boundary_common_factors(
+                {(1,): 1}, {(0, 1): 1}
+            )
 
     def test_boundary_profiles_are_exact_for_endpoint_histogram(self):
         result = beta_binomial_boundary_likelihoods(2, {0: 1, 2: 1})
