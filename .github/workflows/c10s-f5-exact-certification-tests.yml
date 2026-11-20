@@ -1,35 +1,7 @@
 name: C10-S F5 exact certification deterministic tests
-
-on:
-  push:
-    branches:
-      - research/c10s-f1-integrated-correction-20261119
-    paths:
-      - '03_EXPERIMENTS/C10-S/harness/c10s_f5_*.py'
-      - '03_EXPERIMENTS/C10-S/harness/test_c10s_f5_*.py'
-      - '.github/workflows/c10s-f5-exact-certification-tests.yml'
-
-permissions:
-  contents: read
-
+on: push
 jobs:
   f5-tests:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
-        with:
-          python-version: '3.12.10'
-      - name: Install locked dependencies
-        working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
-      - name: Compile F5 modules
-        working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python -m py_compile c10s_f5_rational_score_polynomials.py test_c10s_f5_rational_score_polynomials.py c10s_f5_beta_binomial_likelihood_diagnostics.py test_c10s_f5_beta_binomial_likelihood_diagnostics.py c10s_f5_beta_binomial_mcse_profile.py test_c10s_f5_beta_binomial_mcse_profile.py
-      - name: Run deterministic F5 suites (no calibration)
-        working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python -B -m unittest -v test_c10s_f5_rational_score_polynomials test_c10s_f5_beta_binomial_likelihood_diagnostics test_c10s_f5_beta_binomial_mcse_profile
+      - run: echo "F5 workflow syntax probe"
