@@ -754,3 +754,9 @@ Static inspection identified three Bernstein fixtures that passed rational coeff
 ### Resource-budget fixture alignment (2026-11-20)
 
 A final source scan found that the box-budget exhaustion test reused the simple common-root equations with `Fraction` coefficients. It has now been changed to the same integer-scaled equations (`2*mu-1`, `2*t-1`). Thus all four controller call sites in the adversarial tests honor the integer sparse-polynomial contract. This is a static source correction only; no test execution or PASS is claimed.
+
+### Krawczyk inclusion primitive added (2026-11-20)
+
+A rational exact Krawczyk inclusion routine and a Bernstein/Krawczyk composition wrapper were added to the research harness. The Jacobian range is bounded using exact Bernstein coefficients of derivative polynomials; interval arithmetic, midpoint evaluation and the preconditioner are rational. Certification requires strict Krawczyk inclusion and a strict contraction bound. Two adversarial tests cover an affine simple root and fail-closed behavior for a singular double root.
+
+Validation remains pending. The routine does not address multiple-root deflation, shared boundary roots between adjacent boxes, completeness of root isolation, the compactification boundary strata, or likelihood ordering. It is not a global MLE certificate. No execution, replay, calibration or scientific bank was performed.
