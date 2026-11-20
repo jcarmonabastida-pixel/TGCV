@@ -1992,3 +1992,146 @@ def conditional_mean_tube_and_concentration_exclusion(
         "scope": "INTERVAL_PRUNING_ONLY_NOT_ROOT_EXISTENCE_OR_GLOBAL_CENSUS",
         "required_input_provenance": "PAIRED_COMPACTIFIED_BETA_BINOMIAL_SCORE_NUMERATORS_FROM_ONE_NONDEGENERATE_HISTOGRAM",
     }
+
+
+def conditional_mean_adaptive_concentration_census(
+    poly_mean_score: Poly,
+    poly_concentration_score: Poly,
+    *,
+    t_bounds: tuple[object, object],
+    max_intervals: int = 10000,
+    max_depth: int = 32,
+    max_mu_depth: int = 10,
+) -> dict[str, object]:
+    """Certify an interval census using conditional-mean tubes and Krawczyk.
+
+    The supplied t interval must lie strictly inside (0,1). A deterministic
+    FIFO subdivision processes concentration intervals. On each interval,
+    exact Bernstein signs construct a tube containing the unique conditional
+    mean root for every finite t in that interval. A strict Bernstein sign of
+    the concentration score excludes the interval. Otherwise, a Krawczyk
+    certificate on the entire tube may certify exactly one simple common
+    stationary point there. Inconclusive intervals are bisected in t.
+
+    The result is a complete census only for the supplied closed t interval
+    and only when every interval is either excluded or certified to contain
+    exactly one simple root. Multiple roots, split-boundary roots, and
+    resource-limited intervals remain explicitly unresolved. The t=0 and
+    t=1 boundary strata are outside this operation and require the separate
+    boundary likelihood/corner adjudication.
+    """
+    from collections import deque
+    from fractions import Fraction
+
+    if type(max_intervals) is not int or max_intervals < 1:
+        raise ValueError("MAX_INTERVALS_MUST_BE_POSITIVE_INTEGER")
+    if type(max_depth) is not int or max_depth < 0:
+        raise ValueError("MAX_DEPTH_MUST_BE_NONNEGATIVE_INTEGER")
+    if not isinstance(t_bounds, tuple) or len(t_bounds) != 2:
+        raise ValueError("INVALID_T_BOUNDS")
+    try:
+        t_lo, t_hi = (_exact_fraction(t_bounds[0]), _exact_fraction(t_bounds[1]))
+    except ValueError:
+        raise ValueError("INVALID_T_BOUNDS") from None
+    if not 0 < t_lo < t_hi < 1:
+        raise ValueError("T_BOUNDS_MUST_BE_STRICTLY_INSIDE_FINITE_DOMAIN")
+
+    queue = deque([(t_lo, t_hi, 0)])
+    excluded = []
+    certified = []
+    unresolved = []
+    processed = 0
+    subdivisions = 0
+    krawczyk_attempts = 0
+
+    while queue and processed < max_intervals:
+        t_a, t_b, depth = queue.popleft()
+        processed += 1
+        tube = conditional_mean_tube_and_concentration_exclusion(
+            poly_mean_score,
+            poly_concentration_score,
+            t_bounds=(t_a, t_b),
+            max_mu_depth=max_mu_depth,
+        )
+        if tube["status"] == "NO_COMMON_STATIONARY_POINT_ON_T_INTERVAL":
+            excluded.append({
+                "t_bounds": (t_a, t_b),
+                "depth": depth,
+                "certificate": "BERNSTEIN_CONCENTRATION_SCORE_STRICT_SIGN_ON_MEAN_ROOT_TUBE",
+                "mean_root_tube_mu_bounds": tube["mean_root_tube_mu_bounds"],
+            })
+            continue
+
+        certificate = None
+        if tube["status"] == "CANDIDATE_T_INTERVAL_UNRESOLVED":
+            krawczyk_attempts += 1
+            certificate = krawczyk_certify_unique_root(
+                poly_mean_score,
+                poly_concentration_score,
+                mu_bounds=tube["mean_root_tube_mu_bounds"],
+                t_bounds=(t_a, t_b),
+            )
+            if certificate["status"] == "CERTIFIED_UNIQUE_ROOT":
+                certified.append({
+                    "t_bounds": (t_a, t_b),
+                    "mean_root_tube_mu_bounds": tube["mean_root_tube_mu_bounds"],
+                    "depth": depth,
+                    "root_certificate": certificate,
+                })
+                continue
+
+        if depth >= max_depth:
+            unresolved.append({
+                "t_bounds": (t_a, t_b),
+                "depth": depth,
+                "state": "UNRESOLVED_AT_MAX_DEPTH",
+                "mean_tube_result": tube,
+                "krawczyk_result": certificate,
+            })
+            continue
+
+        midpoint = (t_a + t_b) / 2
+        if midpoint == t_a or midpoint == t_b:
+            unresolved.append({
+                "t_bounds": (t_a, t_b),
+                "depth": depth,
+                "state": "UNRESOLVED_RATIONAL_SUBDIVISION_STAGNATION",
+                "mean_tube_result": tube,
+                "krawczyk_result": certificate,
+            })
+            continue
+        queue.append((t_a, midpoint, depth + 1))
+        queue.append((midpoint, t_b, depth + 1))
+        subdivisions += 1
+
+    while queue:
+        t_a, t_b, depth = queue.popleft()
+        unresolved.append({
+            "t_bounds": (t_a, t_b),
+            "depth": depth,
+            "state": "NOT_PROCESSED_RESOURCE_LIMIT",
+        })
+
+    if unresolved:
+        status = (
+            "INCOMPLETE_RESOURCE_LIMIT"
+            if any(item["state"] == "NOT_PROCESSED_RESOURCE_LIMIT" for item in unresolved)
+            else "INCOMPLETE_UNRESOLVED_INTERVALS"
+        )
+    else:
+        status = "COMPLETE_CENSUS_ON_SUPPLIED_T_INTERVAL"
+
+    return {
+        "status": status,
+        "scope": "FINITE_INTERIOR_T_INTERVAL_ONLY_BOUNDARY_STRATA_EXCLUDED",
+        "t_bounds": (t_lo, t_hi),
+        "excluded_intervals": excluded,
+        "certified_simple_root_intervals": certified,
+        "unresolved_intervals": unresolved,
+        "processed_intervals": processed,
+        "subdivisions": subdivisions,
+        "krawczyk_attempts": krawczyk_attempts,
+        "max_intervals": max_intervals,
+        "max_depth": max_depth,
+        "max_mu_depth": max_mu_depth,
+    }
