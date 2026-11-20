@@ -2521,6 +2521,20 @@ def _beta_binomial_likelihood_enclosure(
 
     if type(max_fraction_bits) is not int or max_fraction_bits < 64:
         raise ValueError("MAX_FRACTION_BITS_MUST_BE_INTEGER_AT_LEAST_64")
+    if type(r) is not int or r < 1:
+        raise ValueError("R_MUST_BE_POSITIVE_INTEGER")
+    if not isinstance(count_histogram, Mapping) or not count_histogram:
+        raise ValueError("NONEMPTY_COUNT_HISTOGRAM_REQUIRED")
+    validated_total = 0
+    for x, multiplicity in count_histogram.items():
+        if type(x) is not int or not 0 <= x <= r:
+            raise ValueError("COUNT_OUTSIDE_0_TO_R")
+        if type(multiplicity) is not int or multiplicity < 0:
+            raise ValueError("MULTIPLICITY_MUST_BE_NONNEGATIVE_INTEGER")
+        validated_total += multiplicity
+    if validated_total <= 0:
+        raise ValueError("POSITIVE_TOTAL_MULTIPLICITY_REQUIRED")
+
     mu_lo, mu_hi = (_exact_fraction(v) for v in mu_bounds)
     t_lo, t_hi = (_exact_fraction(v) for v in t_bounds)
     if not 0 < mu_lo <= mu_hi < 1 or not 0 < t_lo <= t_hi < 1:
