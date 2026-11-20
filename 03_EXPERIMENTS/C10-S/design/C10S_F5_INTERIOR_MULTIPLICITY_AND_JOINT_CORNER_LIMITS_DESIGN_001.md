@@ -169,3 +169,19 @@ The helper validates rational coefficients, positive isolation width, depth and 
 Three deterministic tests cover a repeated rational projection root, an irrational projection root, and partial/non-resultant abstention with strict input validation. The source-level suite now contains 63 test methods, still unexecuted under governed CPython 3.12.
 
 This completes only the projection-coordinate stage. It does not lift an algebraic \(\mu\)-root to one or more \(t\)-coordinates. The next algebraic operation must use subresultant sequences or specialized gcds over the isolated algebraic projection root, retain multiple distinct lifts sharing one projection, and verify both original equations. Projection multiplicity remains distinct from local intersection multiplicity.
+
+## 4D. Primary projection aligned with the F5 conditional-mean theorem
+
+The global design in `C10S_F5_GLOBAL_MLE_CERTIFICATION_DESIGN_001.md` specifies the primary elimination as \\(R(\\kappa)=\\operatorname{Res}_{\\mu}(P,Q)\\). After concentration compactification \\(t=\\kappa/(1+\\kappa)\\), the corresponding polynomial is \\(R(t)=\\operatorname{Res}_{\\mu}(P(\\mu,t),Q(\\mu,t))\\).
+
+The earlier `compactified_projection_resultant_mu` computes the complementary projection \\(\\operatorname{Res}_{t}(P,Q)\\), retaining \\(\\mu\\). That operation is mathematically valid and remains available as a diagnostic, but it is not the primary projection for the F5 fit. The strict conditional concavity theorem gives at most one interior conditional-mean maximizer for each fixed finite concentration, so the primary route should enumerate concentration candidates and then recover the unique admissible mean.
+
+The harness now includes:
+- `compactified_concentration_resultant_t(P,Q)`: swaps the sparse exponent axes and uses exact Sylvester/Bareiss arithmetic to compute \\(\\operatorname{Res}_{\\mu}(P,Q)\\) as a rational polynomial in \\(t\\);
+- `compactified_concentration_root_isolation_t(...)`: applies the existing square-free/Sturm isolation to the concentration projection on \\(0\\leq t\\leq1\\), retaining projection multiplicity and partial states.
+
+Three deterministic tests cover the linear projection \\(2t-1\\), a repeated projection root \\( (2t-1)^2\\), and malformed sparse input. The source-level suite now contains 66 test methods; none has been executed under governed CPython 3.12.
+
+This correction aligns the implementation with the stated mathematical reduction; it does not complete the fit certificate. For each isolated interior \\(t\\)-root, the next step is to recover \\(\\mu\\) using the strictly decreasing conditional score, with exact/rational interval enclosures over the isolating \\(t\\)-interval. A certified sign bracket plus strict monotonicity can establish existence and uniqueness without a general bivariate subresultant lift, provided the interval evaluation proves the endpoint signs uniformly over the full \\(t\\)-interval. If it cannot, refine the \\(t\\)-interval or abstain. The recovered pair must then be verified in both original score equations and compared against all explicit concentration/mean boundary likelihoods.
+
+Accordingly, the next operation is **not** general subresultant back-substitution by default. First implement and test this lower-dimensional lift. Escalate to general algebraic-number/subresultant machinery only if the conditional-score interval method cannot certify a candidate that materially affects the two frozen F5 designs.
