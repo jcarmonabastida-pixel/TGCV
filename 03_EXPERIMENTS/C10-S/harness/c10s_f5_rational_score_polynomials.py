@@ -1477,7 +1477,7 @@ def compactified_axis_common_components(
     for axis in ("mu", "t"):
         content_p = _bivariate_axis_content(poly_p, axis)
         content_q = _bivariate_axis_content(poly_q, axis)
-        if not poly_p or not poly_q:
+        if _uni_is_zero(content_p) or _uni_is_zero(content_q):
             return {
                 "status": "ZERO_POLYNOMIAL_COMMON_COMPONENT_UNRESOLVED",
                 "axes": {},
