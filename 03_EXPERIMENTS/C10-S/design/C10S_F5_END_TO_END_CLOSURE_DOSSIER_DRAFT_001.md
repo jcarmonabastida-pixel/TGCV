@@ -228,3 +228,16 @@ The test suite also passed explicit multiplicity fail-closed cases: a singular/m
 The existing `03_EXPERIMENTS/C10-S/calibration/p178_*` assets were inspected before proposing any new calibration. Their manifest identifies protocol `TGCV-C10-S-P178-FOCAL-MC-REPRO-001`, Python 3.13.5, 10,000 replications per cell, a 27-cell N=700 reference grid and a separate 32-cell central-N curve. The manifest explicitly limits the asset to a benchmark estimator: it contains no TGCV Analyzer, no adversarial measurement scenarios and no confirmatory experiment. Its DGP and outputs therefore do not satisfy the F5 TierA M10/R5 and M30/R20 prospective calibration gate and must not be relabelled as such.
 
 The current global-MLE design record `C10S_F5_GLOBAL_MLE_CERTIFICATION_DESIGN_001.md` and the interval comparison design/specification drafts also explicitly declare `Execution authorization: NONE`. The interval comparison specification is a D1 review candidate, not frozen. Accordingly, the P178 assets are retained as historical bounded benchmark evidence only; they are not a substitute for the still-unfrozen TierA protocol or its required authorization.
+
+### 9.6 Input-integrity hardening discovered during delegated G1–G6 audit — 2026-11-20
+
+A direct audit of the final likelihood-enclosure helper found that its internal loop validated histogram entries but an empty histogram or a histogram with only zero multiplicities could bypass the loop and return the multiplicative identity likelihood enclosure. The integrated public wrapper already validated its input through the score/census path, so this did not invalidate run 44767224308's tested M30/R20 result; nevertheless, the private enclosure primitive's own input contract was incomplete.
+
+Corrective change:
+- `_beta_binomial_likelihood_enclosure` now independently validates positive integer r, a nonempty Mapping, integer count keys in [0,r], nonnegative integer multiplicities and strictly positive total multiplicity before any likelihood arithmetic.
+- New deterministic regression `test_likelihood_enclosure_rejects_invalid_or_empty_histograms` covers invalid r, empty histogram, all-zero multiplicities, out-of-range count and negative multiplicity.
+- Code commit: `628bf7bb7bc040ff009b346dd38026a9f5d590bd`.
+- Regression commit: `4eda28ed28b23eacf641a81bc29705f1dd52d87d`.
+- Workflow run #50, ID `44770409949`, was triggered for the regression commit and is pending at the time of this record: [run #50](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44770409949).
+
+This is a G1 input-integrity hardening item, not a change to the estimator, DGP, target, or scientific protocol. Do not count the new regression as validated until run #50 completes successfully.
