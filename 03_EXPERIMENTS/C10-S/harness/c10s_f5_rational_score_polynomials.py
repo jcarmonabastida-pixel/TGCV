@@ -1361,3 +1361,69 @@ def compactified_boundary_corner_census(
         result["status"] = "BOUNDARY_ROOT_CENSUS_WITH_CORNER_OWNERSHIP"
     return result
 
+def beta_binomial_joint_corner_likelihood_limits(
+    r: int,
+    count_histogram: Mapping[int, int],
+) -> dict[str, object]:
+    """Classify all four joint (mu,t) compactification-corner limits.
+
+    Here t=kappa/(1+kappa). Uniformly over every kappa>0, the beta-binomial
+    mean gives P(X>0) <= E[X] = r*mu and
+    P(X<r) <= E[r-X] = r*(1-mu). Thus as mu->0 or mu->1,
+    the count distribution converges path-independently to the corresponding
+    endpoint point mass, even when kappa simultaneously tends to zero or
+    infinity. For a finite independent-world histogram the joint likelihood
+    limit is therefore exactly one iff every observed count is that endpoint,
+    and zero otherwise.
+    """
+    # Reuse the established input contract and exact one-edge evaluator.
+    beta_binomial_boundary_likelihoods(r, count_histogram)
+
+    zero_likelihood = Fraction(1)
+    one_likelihood = Fraction(1)
+    for x, multiplicity in count_histogram.items():
+        if type(x) is not int or not 0 <= x <= r:
+            raise ValueError("COUNT_OUTSIDE_0_TO_R")
+        if type(multiplicity) is not int or multiplicity < 0:
+            raise ValueError("MULTIPLICITY_MUST_BE_NONNEGATIVE_INTEGER")
+        if multiplicity:
+            if x != 0:
+                zero_likelihood = Fraction(0)
+            if x != r:
+                one_likelihood = Fraction(0)
+
+    zero_mass = tuple([Fraction(1)] + [Fraction(0)] * r)
+    one_mass = tuple([Fraction(0)] * r + [Fraction(1)])
+    corners = {
+        "mu_zero_t_zero": {
+            "coordinates": (Fraction(0), Fraction(0)),
+            "limit_distribution": zero_mass,
+            "likelihood": zero_likelihood,
+        },
+        "mu_zero_t_one": {
+            "coordinates": (Fraction(0), Fraction(1)),
+            "limit_distribution": zero_mass,
+            "likelihood": zero_likelihood,
+        },
+        "mu_one_t_zero": {
+            "coordinates": (Fraction(1), Fraction(0)),
+            "limit_distribution": one_mass,
+            "likelihood": one_likelihood,
+        },
+        "mu_one_t_one": {
+            "coordinates": (Fraction(1), Fraction(1)),
+            "limit_distribution": one_mass,
+            "likelihood": one_likelihood,
+        },
+    }
+    return {
+        "status": "ALL_JOINT_CORNER_LIMITS_PATH_INDEPENDENT",
+        "parameterization": "t=kappa/(1+kappa)",
+        "corners": corners,
+        "uniform_probability_bounds": {
+            "mu_to_zero": "P(X>0) <= r*mu",
+            "mu_to_one": "P(X<r) <= r*(1-mu)",
+        },
+        "scope": "FINITE_INDEPENDENT_WORLD_HISTOGRAM",
+    }
+
