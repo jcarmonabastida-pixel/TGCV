@@ -1378,21 +1378,11 @@ def beta_binomial_joint_corner_likelihood_limits(
     """
     from fractions import Fraction
 
-    # Reuse the established input contract and exact one-edge evaluator.
-    beta_binomial_boundary_likelihoods(r, count_histogram)
-
-    zero_likelihood = Fraction(1)
-    one_likelihood = Fraction(1)
-    for x, multiplicity in count_histogram.items():
-        if type(x) is not int or not 0 <= x <= r:
-            raise ValueError("COUNT_OUTSIDE_0_TO_R")
-        if type(multiplicity) is not int or multiplicity < 0:
-            raise ValueError("MULTIPLICITY_MUST_BE_NONNEGATIVE_INTEGER")
-        if multiplicity:
-            if x != 0:
-                zero_likelihood = Fraction(0)
-            if x != r:
-                one_likelihood = Fraction(0)
+    # Reuse both validation and exact endpoint likelihoods from the
+    # established one-edge boundary implementation.
+    profiles = beta_binomial_boundary_likelihoods(r, count_histogram)
+    zero_likelihood = profiles["mu_zero"]["likelihood"]
+    one_likelihood = profiles["mu_one"]["likelihood"]
 
     zero_mass = tuple([Fraction(1)] + [Fraction(0)] * r)
     one_mass = tuple([Fraction(0)] * r + [Fraction(1)])
