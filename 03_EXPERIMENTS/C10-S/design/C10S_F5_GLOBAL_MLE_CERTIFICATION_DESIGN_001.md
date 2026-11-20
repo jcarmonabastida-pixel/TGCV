@@ -340,3 +340,11 @@ Three root-retention fixtures were statically inconsistent with the module's int
 ### Resource-budget fixture alignment (2026-11-20)
 
 A final source scan found that the box-budget exhaustion test reused the simple common-root equations with `Fraction` coefficients. It has now been changed to the same integer-scaled equations (`2*mu-1`, `2*t-1`). Thus all four controller call sites in the adversarial tests honor the integer sparse-polynomial contract. This is a static source correction only; no test execution or PASS is claimed.
+
+### Exact Krawczyk inclusion primitive — implemented, validation pending (2026-11-20)
+
+The research harness now contains `krawczyk_certify_unique_root()`. It differentiates the integer sparse polynomials exactly, encloses each Jacobian entry over a rational rectangle using tensor-product Bernstein convex-hull bounds, evaluates the midpoint and rational preconditioner exactly, and forms the Krawczyk image with rational interval arithmetic. It emits `CERTIFIED_UNIQUE_ROOT` only when the Krawczyk image is strictly inside the box and an independently computed infinity-norm contraction upper bound is strictly below one. A singular midpoint Jacobian or failed inclusion/contraction returns an unresolved status.
+
+A wrapper, `bernstein_krawczyk_root_classification()`, now composes the existing deterministic Bernstein exclusion partition with Krawczyk attempts on surviving leaves. Excluded leaves remain excluded; successful simple-root leaves are certified; multiple-root/singular leaves and resource remainders remain unresolved. Two deterministic tests were added: an affine simple root with exact dyadic coordinates and a double-root singular fixture that must abstain.
+
+This is a local-box simple-root inclusion primitive, not exhaustive root isolation. It does not resolve multiple roots, boundary strata, overlaps/duplicate roots across adjacent closed boxes, or the global likelihood ordering. The wrapper currently attempts Krawczyk only after the exclusion controller reaches its configured depth; failed attempts are retained rather than adaptively refined further. All new tests remain unexecuted in governed CPython 3.12; no PASS is claimed.
