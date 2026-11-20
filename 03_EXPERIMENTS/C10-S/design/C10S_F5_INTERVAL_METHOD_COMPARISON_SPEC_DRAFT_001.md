@@ -340,3 +340,27 @@ The affine-box expected coefficients were independently checked with exact Fract
 This is the first concrete interval-route primitive, complementary to the exact score construction and concentration compactification. It provides rigorous *zero exclusion* on a box. It does not isolate or prove existence/uniqueness of a root, certify a root when Bernstein coefficients have mixed signs, or establish exhaustive coverage of the open square. A complete interval backend still needs deterministic subdivision, exact stopping/resource semantics, and a root-inclusion/uniqueness certificate (for example, a rigorously implemented interval-Newton/Krawczyk step) plus explicit boundary-stratum likelihood adjudication.
 
 No modular resultant backend is selected, no MLE is certified, and no scientific execution or bank generation has occurred.
+
+
+
+## 15. Exact de Casteljau subdivision primitive — implemented, tests committed (2026-11-20)
+
+The shared F5 harness now adds:
+- `bernstein_subdivide(coefficients, axis)`: exact midpoint subdivision of a tensor-product Bernstein coefficient matrix along `mu` or `t`, using rational de Casteljau recurrences;
+- `bernstein_box_excludes_zero(coefficients)`: an explicitly box-scoped name for the strict-sign exclusion predicate.
+
+The split is exact: the left/right coefficient matrices describe the two half-boxes, and their shared boundary coefficients agree. This avoids repeating the power-to-Bernstein affine conversion for every child box. It is a subdivision kernel, not yet an adaptive search/controller.
+
+Four new deterministic unit tests have been committed: exact univariate split along each axis, a bivariate shared-edge identity, and invalid-axis/nonrectangular-input rejection. They are committed but **not executed** in the governed CPython 3.12 environment. No PASS is claimed.
+
+### Required adaptive-controller contract
+
+The next implementation must be a deterministic breadth-first or depth-first controller with a fully specified, stable ordering; fixed axis-selection rule; exact rational box endpoints; and hard ceilings for processed boxes, maximum depth, coefficient bit length and wall-clock-independent operation counts. It must apply exclusion to both score polynomials and discard a box only when at least one polynomial has a strict one-sign Bernstein coefficient array. Mixed signs, zeros among coefficients, and failed inclusion tests remain unresolved and are subdivided or explicitly returned as unresolved.
+
+The controller must cover the compactified closed square while distinguishing its interior from the four boundary strata. Boundary roots at `mu=0/1` or `t=0/1` must not be reported as finite interior stationary points; their likelihood limits are adjudicated by the separate boundary contract. A root box touching a boundary cannot be silently promoted to an interior root.
+
+For simple roots, a rational Krawczyk/interval-Newton inclusion test may certify existence and uniqueness only when its interval hypotheses are satisfied. In particular, a nonsingular rational preconditioner, a strict inclusion in the box interior, and a verified contraction/regularity condition must be checked using outward-safe exact rational interval bounds. The implementation must not infer uniqueness from inclusion alone without its theorem's hypotheses.
+
+A multiple root has singular Jacobian in the usual system formulation and may defeat ordinary Krawczyk inclusion. Such a box must remain represented and be handled by a multiplicity-aware/deflation method or terminate as typed unresolved. It must never be excluded by a sign-change heuristic. A bounded computation that cannot separate or certify all remaining boxes returns abstention, not a partial global certificate.
+
+The exact algebraic and interval routes remain parallel candidates. This primitive does not select either route, close D1, certify an MLE, authorize D2 completion, or authorize any statistical/scientific execution.
