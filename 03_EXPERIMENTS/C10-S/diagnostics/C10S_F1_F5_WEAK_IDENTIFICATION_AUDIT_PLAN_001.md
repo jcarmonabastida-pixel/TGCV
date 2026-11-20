@@ -750,3 +750,7 @@ This is implementation hardening, not execution evidence. The four tests and the
 ### Adversarial fixture contract correction (2026-11-20)
 
 Static inspection identified three Bernstein fixtures that passed rational coefficients to a polynomial API requiring integer coefficients. The fixtures were corrected using positive integer equation scalings, preserving the simple common root, the double root, and the near-coincident pair at exact separation `2^-20`. This prevents an input-contract exception from being mistaken for a mathematical test result. The suite remains unexecuted; no PASS is claimed.
+
+### Resource-budget fixture alignment (2026-11-20)
+
+A final source scan found that the box-budget exhaustion test reused the simple common-root equations with `Fraction` coefficients. It has now been changed to the same integer-scaled equations (`2*mu-1`, `2*t-1`). Thus all four controller call sites in the adversarial tests honor the integer sparse-polynomial contract. This is a static source correction only; no test execution or PASS is claimed.
