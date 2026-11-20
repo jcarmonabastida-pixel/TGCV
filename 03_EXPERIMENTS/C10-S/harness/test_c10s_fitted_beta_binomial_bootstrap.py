@@ -229,5 +229,26 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
         self.assertIn("F5_GLOBAL_MLE_NOT_CERTIFIED", result.comparison.abstention_reason)
 
 
+    def test_actual_global_certificate_contains_production_fit_on_m10_r5_fixture(self):
+        import os
+        from collections import Counter
+        from unittest.mock import patch
+        from c10s_f5_rational_score_polynomials import beta_binomial_global_mle_certificate
+        from c10s_fitted_beta_binomial_bootstrap import fit_beta_binomial_counts
+
+        counts = (0, 1, 2, 4, 5, 3, 1, 4, 2, 3)
+        fit = fit_beta_binomial_counts(counts, 5)
+        with patch.dict(os.environ, {"GITHUB_SHA": "f" * 40}):
+            certificate = beta_binomial_global_mle_certificate(
+                5, Counter(counts), source_revision="f" * 40,
+            )
+        self.assertEqual(certificate["status"], "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED")
+        bounds = certificate["winner"]["parameter_box"]
+        fitted_t = fit.concentration / (1.0 + fit.concentration)
+        self.assertTrue(float(bounds[0][0]) <= fit.mean_probability <= float(bounds[0][1]))
+        self.assertTrue(float(bounds[1][0]) <= fitted_t <= float(bounds[1][1]))
+
+
+
 if __name__ == "__main__":
     unittest.main()
