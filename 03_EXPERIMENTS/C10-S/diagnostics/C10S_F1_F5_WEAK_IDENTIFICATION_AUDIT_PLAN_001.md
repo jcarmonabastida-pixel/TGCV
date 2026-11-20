@@ -776,3 +776,7 @@ The harness now computes exact univariate gcds of the two score restrictions on 
 ### Sturm isolation added for compactification-edge roots (2026-11-20)
 
 A rational Sturm-sequence isolator now processes the square-free common factors obtained on each compactification edge. It distinguishes exact rational roots from non-rational isolating intervals with root count one, and records incomplete intervals under explicit depth/resource limits. Adversarial tests cover a rational double root, an irrational common root and forced abstention. Adjacent-edge corner deduplication, interior multiple-root resolution and global likelihood comparison remain open. The 43 deterministic tests have not been executed in governed CPython 3.12.
+
+### Corner deduplication and canonical ownership added (2026-11-20)
+
+`compactified_boundary_corner_census()` wraps exact edge gcd/square-free/Sturm isolation and assigns each corner to one vertical edge, retaining the horizontal occurrence as a provenance reference. The registry preserves coordinates and per-edge multiplicity. Missing owner evidence fails closed; partial isolation status is propagated. Three adversarial tests were added, including all four corners and depth-limited isolation. This does not yet join boundary and interior roots or resolve joint corner/path likelihood limits. The 46-test suite remains unexecuted in governed CPython 3.12.
