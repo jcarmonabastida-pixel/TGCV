@@ -539,3 +539,33 @@ C0 is restricted to a historical diagnostic comparator; MCSE interval constructi
 **D0 remains OPEN.** The exact frozen v1.0 target/estimand mapping and interval semantics must be recovered and reconciled before D1 can be frozen. The draft explicitly leaves this unresolved rather than guessing whether the primary targets are population W/B functionals, finite-sample raw estimators, or both. It also leaves the M1 interval rule, failed-refit policy, M2b calibration precision and compute budget open.
 
 **Next operation:** locate the authoritative frozen v1.0 specification and original C5 target mapping in the repository history/tree; reconcile the eight D1 questions in one integrated revision. No code or numerical execution until D1 is frozen and separately authorized.
+
+
+## Integrated F5 interval-method comparison design — 2026-11-20
+
+Design draft: `03_EXPERIMENTS/C10-S/design/C10S_F5_INTERVAL_METHOD_COMPARISON_DESIGN_DRAFT_001.md`.
+
+The authoritative frozen v1.0 specification was located in the branch tree at `03_EXPERIMENTS/C10-S/diagnostics/C10S_POST_HOLDOUT_F1_F5_DEVELOPMENT_CALIBRATION_SPEC_001.md` (blob `d1c8bae882dc2e4cd0e1caae29609561b9ebac68`) and read before completing the design reconciliation.
+
+Resolved from frozen v1.0:
+- population targets are `sigma_w^2 = E[p(1-p)]` and `sigma_b^2 = Var(p)`;
+- frozen sample statistics are `MSW` and untruncated raw-between `S^2_barq - MSW/R`;
+- negative raw-between estimates and interval endpoints remain admissible; no clipping/truncation;
+- F5 DGP remains beta22 at M10/R5 and M30/R20; no new stress family is added in this work package;
+- the complete component gates remain conditional coverage [0.93, 0.97], 95% Wilson interval containing 0.95, emission >=0.95 and no unresolved numerical optimizer state, applied separately per cell × bank × target;
+- MCSE interval construction remains excluded/abstained;
+- historical B2/B3 data remain development evidence only and cannot be reused for method selection or tuning.
+
+Integrated comparison:
+- **M0:** existing fixed-parameter C5 percentile bootstrap of the frozen raw sample statistics; baseline, historically failed, unchanged.
+- **M1:** refitted parametric-bootstrap inference for the same population W/B targets, using replicate-specific fitted functionals. It is explicitly a different estimator/interval package from C5, not an interval-only change. Percentile and basic variants are retained as prospectively declared alternatives; no variant selected.
+- **M2a/M2b:** profile-likelihood inference for W/B, distinguishing asymptotic reference cutoffs from prospective bootstrap-calibrated LR cutoffs; nonregular boundaries and profile topology fail closed.
+- C0 remains diagnostic comparator only, not an accepted fallback.
+
+The design includes common target/boundary definitions, fit-state/failure semantics, deterministic tests, paired per-dataset comparison, coverage/width/directional miss/abstention/MCSE/cost reporting, disjoint future development and confirmatory banks, and staged D0–D6 gates.
+
+**Important qualification:** historical evidence establishes the fixed-parameter construction and conditional undercoverage association, but does not prove omitted refitting is the sole cause. M1 is a prospective candidate, not a proven repair.
+
+**Disposition:** D0 design draft persisted; not frozen, implemented or executed. No code, bootstrap, calibration, replay, new bank or scientific execution occurred. No frozen specification, estimator, acceptance criterion, historical result, RMA or Evidence→Claim Matrix was modified.
+
+**Next operation:** resolve the remaining design decisions in the draft (M1 percentile vs basic primary/co-primary rule; failed/boundary refit semantics; M2b cutoff calibration and Monte Carlo precision; joint W/B region status; precision targets and compute budget). Then produce one D1 successor specification and review it against frozen v1.0 before any implementation or authorization.
