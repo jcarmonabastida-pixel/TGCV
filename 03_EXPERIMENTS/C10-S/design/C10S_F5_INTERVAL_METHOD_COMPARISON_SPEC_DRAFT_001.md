@@ -418,3 +418,9 @@ This is not yet an exhaustive root-isolation algorithm. In particular, adjacent 
 The research harness now calculates exact rational likelihood probabilities for the four one-edge boundary profiles: `kappa -> 0`, `kappa -> infinity`, `mu -> 0`, and `mu -> 1`. The Binomial-limit mean and endpoint-mixture mean are rational pooled proportions; the likelihoods include the combinatorial factors. Boundary tests are added but not executed.
 
 This does not yet classify joint corner/path limits, boundary roots of the compactified score equations, or compare interior algebraic likelihood enclosures with boundary values. It is a separate candidate-evaluation primitive, not global certification.
+
+### Adaptive Bernstein–Krawczyk controller (2026-11-20)
+
+The integrated controller now adaptively refines boxes after an inconclusive Krawczyk attempt instead of applying Krawczyk only once to leaves produced by a separate exclusion pass. It uses deterministic breadth-first processing, alternating split axes, exact rational endpoints, and explicit depth/box ceilings. Resource remainders and depth-limited boxes are retained with distinct states. Tests for deterministic refinement and resource abstention have been added; governed execution remains pending.
+
+This remains a simple-root/local-box method. It does not resolve multiple roots or shared-boundary roots and does not establish a complete root census or global MLE certificate.
