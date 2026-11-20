@@ -440,3 +440,7 @@ A canonical ownership layer now assigns each corner to exactly one vertical edge
 ### Joint corner likelihood limits and singular-root contract (2026-11-20)
 
 All four joint compactification-corner likelihood limits are now classified path-independently using the uniform bounds `P(X>0) <= r*mu` and `P(X<r) <= r*(1-mu)`. The exact helper returns the limiting point-mass distribution and histogram likelihood at each corner. This does not classify stationary score roots or non-corner boundary likelihood profiles. For interior singular roots, Bernstein/Krawczyk remains a simple-root path only; a separate validated deflation theorem is required. The parallel algebraic route is specified through exact bivariate common-factor detection, projection resultants, square-free/Sturm isolation and subresultant back-substitution, with local multiplicity not inferred from resultant multiplicity.
+
+### Algebraic route: first exact coefficient-content subroutine (2026-11-20)
+
+The algebraic route now has an exact coefficient-content detector for common vertical (`mu`-only) and horizontal (`t`-only) components. It preserves repeated factors through square-free decomposition and fails closed on zero-polynomial ambiguity. General mixed bivariate factors remain unchecked; no resultant, CRT reconstruction, subresultant back-substitution or interior multiplicity certification is implemented by this helper. The interval route remains unchanged and independent.
