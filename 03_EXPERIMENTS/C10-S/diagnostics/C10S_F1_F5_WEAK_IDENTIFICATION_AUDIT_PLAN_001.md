@@ -486,3 +486,21 @@ Static validation:
 Implementation record: `C10S_F5_B1_PRODUCTION_ANALYTIC_RECONCILIATION_IMPLEMENTATION_001.md`. Current branch head after documentation updates: `10b2d16d0a97737c2b1859291a02239af650efc5`.
 
 The historical B2/B3 results, frozen development specification v1.0, C0 and C5 interval construction remain unchanged. No replay, calibration, bootstrap bank, resource preflight, holdout, or scientific C10 execution occurred.
+
+
+## Static historical-bank optimizer/start concordance diagnostic — 2026-11-20
+
+The original B2/B3 artifact was downloaded and its ZIP SHA-256 independently matched the GitHub artifact metadata. All four 5,000-row calibration/validation JSONL banks were read without replay or regeneration. The direct production P versus analytic A comparison was reconstructed from the original candidate provenance and optimizer-audit fields; no new scientific execution was performed.
+
+The analysis is recorded in `C10S_F5_B2_B3_OPTIMIZER_START_CONCORDANCE_DIAGNOSTIC_001.md`.
+
+Main results:
+- M30/R20 P/A agreement is extremely close across all 10,000 records: maximum absolute log-likelihood difference 8.07e-11 and maximum log-shape distance 6.76e-6.
+- M10/R5 P/A agreement has a close median but a very broad upper tail: calibration 499/4,822 and validation 480/4,798 have absolute log-likelihood difference >1e-6; log-shape-distance q90 is 3.146 and 0.290, respectively, with q99 14.201 and 14.164. This supports a design-specific weak concentration ridge, not a generic optimizer-termination explanation.
+- Analytic multi-start outcomes are heterogeneous. M30/R20 failed starts often lie essentially on the best successful solution, while a minority are far away and materially worse. M10/R5 failed starts show broader coordinate displacement even when objective gaps are small.
+- All-three-success is not sufficient for start concordance: 35/5,000 M30/R20 calibration and 29/5,000 validation records have successful-start objective spread >1e-6, with maxima 25.17 and 26.56.
+- Frozen B1 requires retaining and comparing all three starts; it does not require every start's success flag to be true. Frozen §8 nevertheless requires no unresolved numerical state. Thus the runner's Boolean is stricter than B1 wording, but it cannot simply be removed or replaced with an “at least one successful start” rule. No alternative threshold is justified here.
+
+Disposition: historical B2/B3 gates remain unchanged and failed. No retrospective PASS, no optimizer tolerance change, no new numerical bank, and no change to frozen specification v1.0.
+
+**Next operation:** diagnose the M30/R20 high-concentration C5 plug-in interval undercoverage separately from M10/R5 weak identification. Use only the existing raw artifact and deterministic/static calculations to trace what the bootstrap conditions on, which parameter uncertainty is omitted, and which interval endpoints/miss directions are implicated. Do not select or tune a replacement interval method from these development banks; any alternative requires a separately versioned design decision and fresh disjoint development data.
