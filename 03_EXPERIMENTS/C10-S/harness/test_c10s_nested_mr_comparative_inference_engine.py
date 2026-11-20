@@ -125,6 +125,16 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         self.assertEqual(candidate.method_id, "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0")
         diagnostic_map = dict(candidate.diagnostics)
         audit = json.loads(diagnostic_map["likelihood_optimizer_audit_json"])
+        reconciliation = json.loads(diagnostic_map["production_analytic_reconciliation_json"])
+        self.assertEqual(reconciliation["schema"], "C10S_F5_PRODUCTION_ANALYTIC_RECONCILIATION_1.0")
+        self.assertEqual(reconciliation["status"], "RAW_COMPARISON_RECORDED_NO_ADJUDICATION_THRESHOLD")
+        self.assertEqual(len(reconciliation["production_fit"]["starts"]), 3)
+        self.assertEqual(len(reconciliation["analytic_fit"]["starts"]), 3)
+        self.assertIsNotNone(reconciliation["direct_comparison"]["log_likelihood_difference_production_minus_analytic"])
+        self.assertEqual(
+            reconciliation["independent_optimizer_scope"],
+            "LOCAL_BFGS_CHECK_INITIALIZED_FROM_ANALYTIC_FIT_NOT_GLOBAL_SEARCH",
+        )
         self.assertEqual(len(audit["starts"]), 3)
         self.assertTrue(all(item["message"] for item in audit["starts"]))
         self.assertIn(audit["status"], (
