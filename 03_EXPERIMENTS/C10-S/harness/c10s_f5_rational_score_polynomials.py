@@ -2135,3 +2135,197 @@ def conditional_mean_adaptive_concentration_census(
         "max_depth": max_depth,
         "max_mu_depth": max_mu_depth,
     }
+
+
+def beta_binomial_compactified_stationary_census(
+    r: int,
+    count_histogram: Mapping[int, int],
+    *,
+    projection_width=(1, 2**16),
+    max_projection_depth: int = 64,
+    max_projection_intervals: int = 10000,
+    max_lift_intervals: int = 256,
+    max_lift_depth: int = 24,
+    max_mu_depth: int = 12,
+    max_boundary_depth: int = 64,
+    max_boundary_intervals: int = 10000,
+) -> dict[str, object]:
+    """Integrate exact concentration projection, simple-root lifting and boundary census.
+
+    The concentration resultant Res_mu(P,Q) plus exact Sturm isolation covers
+    every real projection root on the compactified closed t interval. Each
+    interior projection root is lifted against the original paired score
+    equations using the unique conditional-mean branch, exact Bernstein
+    exclusion and rational Krawczyk inclusion. Endpoint projection roots are
+    assigned to the separately certified boundary strata.
+
+    A nonzero resultant is necessary for a finite projection census. Axis-
+    aligned common components, zero resultants, non-simple lifts, incomplete
+    Sturm isolation and resource remainders remain explicit unresolved states.
+    This operation does not compare likelihood values and therefore never
+    claims a global MLE.
+    """
+    from fractions import Fraction
+
+    # Validate once through the exact score constructor, then preserve the
+    # paired provenance by compactifying both numerators from this histogram.
+    raw_p, raw_q = beta_binomial_score_numerators(r, count_histogram)
+    total = sum(count_histogram.values())
+    successes = sum(x * n for x, n in count_histogram.items())
+    if not 0 < successes < total * r:
+        boundaries = beta_binomial_boundary_likelihoods(r, count_histogram)
+        corners = beta_binomial_joint_corner_likelihood_limits(r, count_histogram)
+        return {
+            "status": "NO_INTERIOR_MEAN_ROOT_DEGENERATE_DATA",
+            "interior_stationary_candidates": [],
+            "boundary_likelihoods": boundaries,
+            "joint_corner_limits": corners,
+            "global_likelihood_ordering": "NOT_PERFORMED",
+            "scope": "DEGENERATE_POOLED_MEAN_HAS_NO_INTERIOR_CONDITIONAL_MEAN_ROOT",
+        }
+
+    poly_p = compactify_concentration(raw_p)
+    poly_q = compactify_concentration(raw_q)
+    axis_components = compactified_axis_common_components(poly_p, poly_q)
+    boundary = compactified_boundary_corner_census(
+        poly_p, poly_q,
+        max_depth=max_boundary_depth,
+        max_intervals=max_boundary_intervals,
+    )
+    boundary_likelihoods = beta_binomial_boundary_likelihoods(r, count_histogram)
+    corner_limits = beta_binomial_joint_corner_likelihood_limits(r, count_histogram)
+
+    if axis_components["status"] == "AXIS_ALIGNED_COMMON_COMPONENTS_DETECTED":
+        return {
+            "status": "INCOMPLETE_COMMON_COMPONENT",
+            "axis_components": axis_components,
+            "boundary_census": boundary,
+            "boundary_likelihoods": boundary_likelihoods,
+            "joint_corner_limits": corner_limits,
+            "interior_stationary_candidates": [],
+            "global_likelihood_ordering": "NOT_PERFORMED",
+        }
+
+    resultant = compactified_concentration_resultant_t(poly_p, poly_q)
+    if resultant["status"] != "EXACT_RESULTANT_NONZERO":
+        return {
+            "status": "INCOMPLETE_RESULTANT_OR_COMMON_COMPONENT",
+            "axis_components": axis_components,
+            "concentration_resultant": resultant,
+            "boundary_census": boundary,
+            "boundary_likelihoods": boundary_likelihoods,
+            "joint_corner_limits": corner_limits,
+            "interior_stationary_candidates": [],
+            "global_likelihood_ordering": "NOT_PERFORMED",
+        }
+
+    projection = compactified_concentration_root_isolation_t(
+        resultant,
+        width=projection_width,
+        max_depth=max_projection_depth,
+        max_intervals=max_projection_intervals,
+    )
+    if projection["status"] != "PROJECTION_ROOT_ISOLATION_COMPLETE":
+        return {
+            "status": "INCOMPLETE_PROJECTION_ROOT_ISOLATION",
+            "axis_components": axis_components,
+            "concentration_resultant": resultant,
+            "concentration_projection": projection,
+            "boundary_census": boundary,
+            "boundary_likelihoods": boundary_likelihoods,
+            "joint_corner_limits": corner_limits,
+            "interior_stationary_candidates": [],
+            "global_likelihood_ordering": "NOT_PERFORMED",
+        }
+
+    # Collect all non-endpoint real projection roots. Sturm intervals each
+    # contain exactly one root; rational roots are represented exactly and
+    # receive a disjoint rational neighborhood for the interval lift.
+    intervals = []
+    exact_roots = []
+    for factor in projection["factors"]:
+        intervals.extend(item["interval"] for item in factor["isolating_intervals"])
+        exact_roots.extend(factor["exact_roots"])
+    intervals = sorted((Fraction(a), Fraction(b)) for a, b in intervals)
+    exact_roots = sorted(set(Fraction(root) for root in exact_roots))
+    interior_roots = [root for root in exact_roots if 0 < root < 1]
+    endpoint_roots = [root for root in exact_roots if root in (0, 1)]
+
+    lift_brackets = [(a, b, "STURM_ISOLATING_INTERVAL") for a, b in intervals]
+    for root in interior_roots:
+        left_neighbors = [b for a, b in intervals if b < root]
+        right_neighbors = [a for a, b in intervals if a > root]
+        left_gap = root - max(left_neighbors, default=Fraction(0))
+        right_gap = min(right_neighbors, default=Fraction(1)) - root
+        radius = min(Fraction(1, 2**16), root / 2, (1 - root) / 2,
+                     left_gap / 4, right_gap / 4)
+        if radius <= 0:
+            return {
+                "status": "INCOMPLETE_RATIONAL_PROJECTION_ROOT_NEIGHBORHOOD",
+                "concentration_projection": projection,
+                "exact_root": root,
+                "global_likelihood_ordering": "NOT_PERFORMED",
+            }
+        lift_brackets.append((root - radius, root + radius, "EXACT_RATIONAL_ROOT_NEIGHBORHOOD"))
+
+    lift_brackets.sort(key=lambda item: item[0])
+    interior_lifts = []
+    for t_lo, t_hi, source in lift_brackets:
+        if not 0 < t_lo < t_hi < 1:
+            return {
+                "status": "INCOMPLETE_INTERIOR_PROJECTION_BRACKET_TOUCHES_BOUNDARY",
+                "concentration_projection": projection,
+                "interior_lifts": interior_lifts,
+                "offending_bracket": (t_lo, t_hi, source),
+                "global_likelihood_ordering": "NOT_PERFORMED",
+            }
+        lift = conditional_mean_adaptive_concentration_census(
+            poly_p, poly_q,
+            t_bounds=(t_lo, t_hi),
+            max_intervals=max_lift_intervals,
+            max_depth=max_lift_depth,
+            max_mu_depth=max_mu_depth,
+        )
+        interior_lifts.append({
+            "t_bounds": (t_lo, t_hi),
+            "projection_source": source,
+            "lift_result": lift,
+        })
+
+    unresolved_lifts = [
+        item for item in interior_lifts
+        if item["lift_result"]["status"] != "COMPLETE_CENSUS_ON_SUPPLIED_T_INTERVAL"
+    ]
+    boundary_complete = boundary["status"] == "BOUNDARY_ROOT_CENSUS_WITH_CORNER_OWNERSHIP"
+    complete = not unresolved_lifts and boundary_complete
+    return {
+        "status": (
+            "INTERIOR_SIMPLE_ROOT_AND_BOUNDARY_CENSUS_COMPLETE"
+            if complete else "INCOMPLETE_STATIONARY_CENSUS"
+        ),
+        "paired_score_provenance": "SAME_VALIDATED_NONDEGENERATE_COUNT_HISTOGRAM",
+        "compactified_parameterization": "t=kappa/(1+kappa)",
+        "axis_components": axis_components,
+        "concentration_resultant": resultant,
+        "concentration_projection": projection,
+        "interior_stationary_candidates": interior_lifts,
+        "endpoint_projection_roots": tuple(endpoint_roots),
+        "boundary_census": boundary,
+        "boundary_likelihoods": boundary_likelihoods,
+        "joint_corner_limits": corner_limits,
+        "unresolved_lifts": unresolved_lifts,
+        "global_likelihood_ordering": "NOT_PERFORMED",
+        "scope": (
+            "ALL_REAL_CONCENTRATION_PROJECTION_ROOTS_LIFTED_OR_EXPLICITLY_UNRESOLVED; "
+            "BOUNDARY_STRATA_CENSUSED; GLOBAL_MLE_NOT_CERTIFIED"
+        ),
+        "resource_contract": {
+            "max_projection_depth": max_projection_depth,
+            "max_projection_intervals": max_projection_intervals,
+            "max_lift_intervals_per_projection_root": max_lift_intervals,
+            "max_lift_depth": max_lift_depth,
+            "max_mu_depth": max_mu_depth,
+            "max_boundary_depth": max_boundary_depth,
+            "max_boundary_intervals": max_boundary_intervals,
+        },
+    }
