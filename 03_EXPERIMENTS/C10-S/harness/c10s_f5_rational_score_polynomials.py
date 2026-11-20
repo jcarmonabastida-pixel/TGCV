@@ -2510,8 +2510,21 @@ def beta_binomial_global_mle_certificate(
             "INTERIOR_SIMPLE_ROOT_AND_BOUNDARY_CENSUS_COMPLETE",
             "NO_INTERIOR_MEAN_ROOT_DEGENERATE_DATA",
         }:
+            if census["status"] == "INCOMPLETE_COMMON_COMPONENT":
+                disposition = census.get("component_disposition", {})
+                typed_status = (
+                    "NONISOLATED_STATIONARY_SET"
+                    if disposition.get("status") == "REAL_INTERIOR_AXIS_COMMON_COMPONENT_UNRESOLVED"
+                    else "ALGEBRAIC_CERTIFICATE_UNAVAILABLE"
+                )
+            elif census["status"] == "INCOMPLETE_RESULTANT_OR_COMMON_COMPONENT":
+                typed_status = "ALGEBRAIC_CERTIFICATE_UNAVAILABLE"
+            elif census["status"] == "INCOMPLETE_BOUNDARY_CENSUS":
+                typed_status = "BOUNDARY_SUPREMUM_UNRESOLVED"
+            else:
+                typed_status = "NUMERICAL_INTERVAL_CERTIFICATE_UNRESOLVED"
             return {
-                "status": "ABSTAIN_STATIONARY_CENSUS_INCOMPLETE",
+                "status": typed_status,
                 "census": census,
                 "refinement_history": history,
                 "likelihood_ordering": "NOT_PERFORMED",
@@ -2533,7 +2546,7 @@ def beta_binomial_global_mle_certificate(
                 )
                 if enclosure["status"] != "EXACT_RATIONAL_LIKELIHOOD_ENCLOSURE":
                     return {
-                        "status": "ABSTAIN_LIKELIHOOD_RESOURCE_LIMIT",
+                        "status": "NUMERICAL_INTERVAL_CERTIFICATE_UNRESOLVED",
                         "census": census,
                         "candidate_enclosure": enclosure,
                         "refinement_history": history,
@@ -2563,7 +2576,7 @@ def beta_binomial_global_mle_certificate(
 
         if not competitors:
             return {
-                "status": "ABSTAIN_NO_ADMISSIBLE_LIKELIHOOD_CANDIDATES",
+                "status": "GLOBAL_MAXIMUM_ORDER_UNRESOLVED",
                 "census": census,
                 "refinement_history": history,
                 "competitors": [],
@@ -2582,9 +2595,9 @@ def beta_binomial_global_mle_certificate(
             winner = winners[0]
             return {
                 "status": (
-                    "UNIQUE_GLOBAL_MLE_INTERIOR_CERTIFIED"
+                    "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED"
                     if winner["kind"] == "INTERIOR_STATIONARY_ROOT"
-                    else "GLOBAL_SUPREMUM_BOUNDARY_CERTIFIED"
+                    else "GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED"
                 ),
                 "winner": winner,
                 "competitors": competitors,
@@ -2617,9 +2630,9 @@ def beta_binomial_global_mle_certificate(
             if interior_upper < boundary_max:
                 return {
                     "status": (
-                        "GLOBAL_SUPREMUM_BOUNDARY_TIED_CERTIFIED"
+                        "GLOBAL_CO_MAXIMIZERS_CERTIFIED"
                         if len(top_boundaries) > 1
-                        else "GLOBAL_SUPREMUM_BOUNDARY_CERTIFIED"
+                        else "GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED"
                     ),
                     "winners": top_boundaries,
                     "competitors": competitors,
@@ -2630,7 +2643,7 @@ def beta_binomial_global_mle_certificate(
                 }
 
     return {
-        "status": "ABSTAIN_GLOBAL_LIKELIHOOD_ORDERING_UNRESOLVED",
+        "status": "GLOBAL_MAXIMUM_ORDER_UNRESOLVED",
         "census": census,
         "competitors": competitors,
         "refinement_history": history,
