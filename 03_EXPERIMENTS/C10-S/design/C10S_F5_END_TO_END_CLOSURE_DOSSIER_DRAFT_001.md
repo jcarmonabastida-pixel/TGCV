@@ -1,7 +1,7 @@
 # C10-S F5 — End-to-end closure dossier (research draft)
 
 **Date:** 2026-11-20  
-**Status:** OPEN — DETERMINISTIC SUITES PASS / GLOBAL CERTIFICATION AND TIERA CALIBRATION OPEN  
+**Status:** OPEN — G1–G6 PASS / G7 AUTHORIZED, EXECUTION PENDING  
 **Branch:** research/c10s-f1-integrated-correction-20261119  
 **Purpose:** consolidate the definitive F5 closure sequence into one auditable contract. This dossier does not authorize execution, change frozen F1/F5 semantics, or upgrade any scientific claim.
 
@@ -107,9 +107,9 @@ The existing boundary helpers provide exact ingredients, not yet a complete glob
 | G4 global likelihood ordering | Exact rational likelihood enclosures and outward-rounded dyadic accumulation; M10/R5 interior maximum, M30/R20 interior/boundary ordering, boundary supremum and exact degenerate co-maxima fixtures pass. Unresolved overlapping enclosures abstain. | <badge color="success">PASS</badge> |
 | G5 deterministic resource/abstention contract | Active projection/lift/mean ceilings validated before early returns; exact positive projection width; explicit resource remainders; boundary profiles correctly identified as closed-form with no iterative budget. Run #51 passed. | <badge color="success">PASS</badge> |
 | G6 governed software validation | Runs #50–#54 passed in sequence; final run #54 passed 144/144 tests on CPython 3.12.10 with locked dependencies and all six F5 modules compiled. Includes the M10/R5 Bernstein/resultant/Sturm comparison with matching global classification and overlapping root boxes. | <badge color="success">PASS</badge> |
-| G7 TierA relevance/calibration | No prospective calibration or scientific execution has been run. Historical P178 assets are not TierA confirmation. | NOT RUN — explicit user authorization required |
+| G7 TierA relevance/calibration | User authorization received 2026-11-20; successor F5-only protocol v1.0 frozen with new seeds, global-MLE fit gate, resource preflight, primary/replay and no-pooling criteria. | AUTHORIZED — one-use workflow pending |
 
-**Disposition:** the mathematical-operational/engineering closure of F5 through G6 is PASS for the bounded M10/R5 and M30/R20 target regimes. F5 overall remains functionally OPEN at G7 only. G7 is a prospective scientific calibration, not another software test, and is outside the current authorization.
+**Disposition:** the mathematical-operational/engineering closure of F5 through G6 is PASS for the bounded M10/R5 and M30/R20 target regimes. F5 overall remains functionally OPEN at G7 only. User authorization for the new F5 Tier-A G7 operation was received on 2026-11-20; execution is pending the one-use hash-bound workflow.
 
 ## 5. Accepted limitations and fail-closed scope
 
@@ -339,3 +339,15 @@ This closes the last pending G1 provenance item and supplies the final governed 
 **G7 remains NOT RUN.** It requires a frozen prospective TierA protocol, predeclared acceptance thresholds and explicit user authorization before any calibration bank, validation bank, Analyzer/Evaluator scientific execution or coverage results are generated.
 
 All work remains on `research/c10s-f1-integrated-correction-20261119`. No change was made to `main`, canonical RMA, Evidence→Claim Matrix, STATUS or scientific claims. This is the F5 G1–G6 research-branch closure record, not a promotion/merge.
+
+### 9.15 G7 authorization and successor protocol preparation — 2026-11-20
+
+The user explicitly authorized G7 on 2026-11-20. Historical reconstruction found that the earlier eight-cell comparative Tier-A holdout had already executed as run [44572812481](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44572812481) and was adjudicated NOT_VALIDATED (10/32 method × cell × component combinations passed; C5/F5 passed 0/4). That bank is consumed and unblinded; it is excluded from G7 and cannot be rerun or reused.
+
+A successor F5-only prospective protocol was therefore frozen: `C10S-F5-G7-TIERA-PROSPECTIVE-001 v1.0`, at `C10S_F5_G7_TIERA_PROSPECTIVE_PROTOCOL_001.md`. It tests the two frozen beta22 cells M10/R5 and M30/R20, K=1,000 per cell, C0/C5 B=1,000, a new SHA-256 seed schedule/namespace, 100-per-cell resource-only preflight, primary plus exact clean-source replay, and the unchanged no-pooling Tier-A criteria. The old v1.0 holdout and original v002 datasets are explicitly excluded.
+
+The C5 path now has a fail-closed global-MLE gate: the existing three-start production fit is accepted only if the exact Bernstein/conditional-mean/Krawczyk certificate returns `GLOBAL_INTERIOR_MAXIMUM_CERTIFIED` and the fitted mean/compactified concentration lies inside the certified unique-root box. Otherwise C5 emits no within/raw-between interval and records a typed abstention. The interval formula and percentile procedure are not changed. A real M10/R5 integration fixture verifies the optimizer point lies inside the actual certificate box.
+
+Static validation: GitHub Actions run [44803113319](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44803113319), commit `fa1b2009304f5de8382632ff1d15470a79e52cf2`, passed 180/180 tests under CPython 3.12.10 with locked dependencies. This includes the real M10/R5 certificate-to-production-fit linkage, G7 no-pooling adjudication, resource-only no-adjudication contract, seed-separation checks and one-use authorization validator tests.
+
+**Execution state:** authorized by the user, but not yet executed. The only pending action is the dedicated one-use authorization-branch push, hash-bound to the exact code/protocol/workflow snapshot. Tier B and C10 Generator/Analyzer/Evaluator scientific execution remain false and out of scope.

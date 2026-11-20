@@ -461,3 +461,13 @@ The default route remains Bernstein/conditional-mean first. Exact resultant/Stur
 Run [44775205756](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44775205756), commit `a22f2edc7f7ff39f158e6ab2740eea2662b047d3`, passed 144/144 deterministic tests in 353.169 seconds. The test `test_input_provenance_defaults_to_actual_github_source_revision` passed, verifying that omitted explicit source revision binds to the actual Actions `GITHUB_SHA`. CPython 3.12.10, locked dependencies and six-module compilation all passed.
 
 **Disposition:** G1–G6 are PASS for the bounded M10/R5 and M30/R20 F5 target regime. Singular/multiple interior roots, arbitrary mixed common components and exhausted resource regimes remain explicit typed abstention states; no universal solver is claimed. G7 prospective TierA calibration is NOT RUN and remains separately authorization-gated. The comparison specification remains a D1 draft and no M1/M2 method has been universally selected.
+
+### 11.3 G7 integration and prospective calibration authorization — 2026-11-20
+
+The user authorized the bounded G7 Tier-A operation. The production C5 path has been connected to the exact global-MLE certificate as a fail-closed gate: the three-start optimizer's selected `(mu, t=kappa/(1+kappa))` must lie inside the unique Krawczyk root box of a `GLOBAL_INTERIOR_MAXIMUM_CERTIFIED` result. Boundary suprema, co-maxima, unresolved roots/components, resource exhaustion, certificate errors and optimizer/root-box disagreement abstain; no percentile interval is emitted for that dataset. The percentile interval construction itself is unchanged.
+
+A real M10/R5 integration test confirms that the production optimizer fit lies within the actual exact certificate box. The F5 G7 runner applies the same gate per F5 dataset and records the certificate status and source revision. G7 is a new independent F5-only bank; the consumed v1.0 eight-cell holdout (run 44572812481) is not reused.
+
+Frozen protocol: `C10S-F5-G7-TIERA-PROSPECTIVE-001 v1.0`; two beta22 cells (M10/R5 and M30/R20), K=1,000, C0/C5 B=1,000, new resource/holdout seed namespaces, 100-per-cell resource preflight, primary/replay identity and four no-pooling C5 component criteria. Run [44803113319](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44803113319) passed 180/180 static tests, including the actual M10/R5 integration fixture.
+
+No G7 datasets, coverage metrics or calibration results have yet been generated. Execution will occur only through the one-use hash-bound G7 workflow. This authorization does not cover Tier B, F1 recalibration, F5 MCSE, M1/M2 interval alternatives, or C10 causal Generator/Analyzer/Evaluator execution.
