@@ -318,7 +318,7 @@ These are design questions, not requests to the user for immediate preference. T
 - **M2a/M2b:** DEFINED AT DESIGN LEVEL / NOT IMPLEMENTED / NOT EXECUTED.
 - **C0:** HISTORICAL DIAGNOSTIC COMPARATOR ONLY / NOT VALIDATED.
 - **B2/B3:** HISTORICAL DEVELOPMENT EVIDENCE ONLY / NOT REUSABLE FOR METHOD SELECTION.
-- **Design D0:** OPEN — the frozen target mapping and acceptance gates have now been reconciled; remaining open items concern M1 variant selection, failed-refit/boundary semantics, M2b calibration, precision and compute budget.
+- **Design D0:** RECONCILED AS A REVIEW DRAFT. Its successor D1 candidate is persisted in `C10S_F5_INTERVAL_METHOD_COMPARISON_SPEC_DRAFT_001.md`; D1 remains OPEN pending fit-state, profile certification, endpoint precision and cost resolution.
 - **Execution:** NOT AUTHORIZED.
 
-**Recommended next operation:** resolve the remaining M1 variant and failed-refit policy, M2b calibration design, Monte Carlo precision targets and compute budget; then produce D1 as a single integrated, versioned successor specification explicitly subordinate to frozen v1.0. Do not implement M1/M2 or generate any data until D1 is frozen and a separate execution authorization exists.
+**Recommended next operation:** resolve the seven blockers in the successor D1 review candidate and then freeze that separately versioned specification. Do not implement M1/M2 or generate any data until D1 is frozen and a separate execution authorization exists.
