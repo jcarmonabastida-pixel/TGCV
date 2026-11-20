@@ -18,6 +18,7 @@ from c10s_f5_rational_score_polynomials import (
     beta_binomial_joint_corner_likelihood_limits,
     compactified_axis_common_components,
     compactified_projection_resultant_mu,
+    compactified_projection_root_isolation_mu,
 )
 
 
@@ -422,6 +423,68 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(result["status"], "PARTIAL_BOUNDARY_ROOT_ISOLATION")
         self.assertEqual(
             result["corner_deduplication"], "CORNER_OWNERSHIP_COMPLETE"
+        )
+
+    def test_projection_root_isolation_preserves_projection_multiplicity(self):
+        # Res_t(t-mu, (t+mu-1)^2) = (2*mu-1)^2.
+        p = {(0, 1): 1, (1, 0): -1}
+        q = {
+            (0, 2): 1, (1, 1): 2, (0, 1): -2,
+            (2, 0): 1, (1, 0): -2, (0, 0): 1,
+        }
+        resultant = compactified_projection_resultant_mu(p, q)
+        self.assertEqual(
+            resultant["resultant"],
+            (Fraction(1), Fraction(-4), Fraction(4)),
+        )
+        isolated = compactified_projection_root_isolation_mu(
+            resultant, width=Fraction(1, 100)
+        )
+        self.assertEqual(
+            isolated["status"], "PROJECTION_ROOT_ISOLATION_COMPLETE"
+        )
+        factor = isolated["factors"][0]
+        self.assertEqual(factor["projection_multiplicity"], 2)
+        self.assertEqual(factor["exact_roots"], (Fraction(1, 2),))
+        self.assertEqual(
+            isolated["multiplicity_warning"],
+            "PROJECTION_MULTIPLICITY_IS_NOT_LOCAL_INTERSECTION_MULTIPLICITY",
+        )
+
+    def test_projection_root_isolation_handles_irrational_root(self):
+        # Res_t(t, 2*t+2*mu^2-1) = 2*mu^2-1.
+        p = {(0, 1): 1}
+        q = {(0, 1): 2, (2, 0): 2, (0, 0): -1}
+        resultant = compactified_projection_resultant_mu(p, q)
+        isolated = compactified_projection_root_isolation_mu(
+            resultant, width=Fraction(1, 32)
+        )
+        self.assertEqual(
+            isolated["status"], "PROJECTION_ROOT_ISOLATION_COMPLETE"
+        )
+        intervals = isolated["factors"][0]["isolating_intervals"]
+        self.assertEqual(len(intervals), 1)
+        self.assertEqual(intervals[0]["root_count"], 1)
+        self.assertLess(intervals[0]["interval"][0], Fraction(3, 4))
+        self.assertGreater(intervals[0]["interval"][1], Fraction(7, 10))
+
+    def test_projection_root_isolation_retains_partial_and_nonresultant_states(self):
+        p = {(0, 1): 1}
+        q = {(0, 1): 2, (2, 0): 2, (0, 0): -1}
+        resultant = compactified_projection_resultant_mu(p, q)
+        partial = compactified_projection_root_isolation_mu(
+            resultant, width=Fraction(1, 1000), max_depth=0
+        )
+        self.assertEqual(
+            partial["status"], "PROJECTION_ROOT_ISOLATION_PARTIAL"
+        )
+        unavailable = compactified_projection_root_isolation_mu(
+            {"status": "ZERO_RESULTANT_COMMON_FACTOR_OR_DEGENERACY"},
+            width=Fraction(1, 100),
+        )
+        self.assertEqual(
+            unavailable["status"],
+            "PROJECTION_ISOLATION_NOT_AVAILABLE_FROM_RESULTANT_STATUS",
         )
 
     def test_projection_resultant_exact_linear_fixture(self):
