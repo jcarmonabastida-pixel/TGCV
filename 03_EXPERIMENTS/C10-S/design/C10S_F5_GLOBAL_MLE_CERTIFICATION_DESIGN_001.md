@@ -293,3 +293,17 @@ Accordingly, the current work is not a restart from scratch: it reuses the exact
 The research harness now implements exact tensor-product Bernstein coefficients for a rational rectangular box in compactified coordinates, plus a strict-sign exclusion predicate. If all Bernstein coefficients of either score numerator are strictly positive or strictly negative, that score has no zero in the closed box; hence the box contains no common stationary point. Mixed-sign coefficients remain inconclusive.
 
 This gives the interval route a rigorous exclusion primitive. It does not prove root existence or uniqueness, isolate a root, or establish exhaustive coverage. The remaining interval certificate needs deterministic subdivision, a root-inclusion/uniqueness operator, resource-ceiling/abstention semantics, and separate boundary likelihood adjudication. Tests are committed but not yet executed in the governed CPython 3.12 environment. No global MLE certificate is claimed.
+
+
+
+## 17. Exact Bernstein subdivision kernel — partial implementation (2026-11-20)
+
+The F5 research module now contains an exact de Casteljau midpoint split for tensor-product Bernstein coefficient matrices. It subdivides along either compactified coordinate without converting the child rectangles again from the power basis. The operation uses `Fraction` arithmetic and returns both child coefficient matrices with an exactly shared interface.
+
+The accompanying four unit tests cover each coordinate direction, a bivariate shared-edge identity, and malformed input rejection. They are committed but have not been executed under the governed CPython 3.12 runtime; this record makes no test PASS claim.
+
+This is only the arithmetic kernel. The adaptive controller, exact box queue/order, resource accounting, boundary-stratum separation, and root inclusion/uniqueness procedure are still absent. For a simple root, Krawczyk/interval-Newton requires a verified nonsingular preconditioner and strict interval inclusion/contraction conditions. Multiple roots require multiplicity-aware deflation or explicit unresolved status; standard nonsingular-Jacobian inclusion is not presumed to work.
+
+The interval method must cover the open finite-parameter domain exhaustively while separately classifying roots on compactification boundaries. No boundary point may be counted as an interior finite stationary point. Any box not excluded or certified at the resource ceiling forces an incomplete/abstaining global result.
+
+D1 remains OPEN. No MLE certificate, method selection, governed test execution, benchmark, bootstrap, calibration, replay or scientific execution is claimed or authorized.
