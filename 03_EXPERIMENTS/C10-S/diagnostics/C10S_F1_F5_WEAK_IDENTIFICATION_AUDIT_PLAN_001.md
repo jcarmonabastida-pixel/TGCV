@@ -780,3 +780,7 @@ A rational Sturm-sequence isolator now processes the square-free common factors 
 ### Corner deduplication and canonical ownership added (2026-11-20)
 
 `compactified_boundary_corner_census()` wraps exact edge gcd/square-free/Sturm isolation and assigns each corner to one vertical edge, retaining the horizontal occurrence as a provenance reference. The registry preserves coordinates and per-edge multiplicity. Missing owner evidence fails closed; partial isolation status is propagated. Three adversarial tests were added, including all four corners and depth-limited isolation. This does not yet join boundary and interior roots or resolve joint corner/path likelihood limits. The 46-test suite remains unexecuted in governed CPython 3.12.
+
+### Joint corner limits and interior multiplicity proof obligations (2026-11-20)
+
+A uniform beta-binomial mean bound now classifies the four joint `(mu,t)` corner likelihood limits independently of the relative approach rates: `P(X>0) <= r*mu` and `P(X<r) <= r*(1-mu)`. The finite-histogram corner likelihood is one only for observations entirely at the corresponding endpoint, otherwise zero. Four deterministic tests are added; the 50-test suite remains unexecuted in governed CPython 3.12. The new integrated design specifies a distinct exact resultant/subresultant enumeration route and the proof obligations for validated interval deflation of singular interior roots. Neither route is yet a multiple-root certificate; unresolved singular boxes continue to block exhaustive/global claims.
