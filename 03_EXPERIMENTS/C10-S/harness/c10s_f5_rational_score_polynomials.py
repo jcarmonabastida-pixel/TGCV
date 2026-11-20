@@ -437,3 +437,182 @@ def bernstein_exclusion_subdivision(
         "max_boxes": max_boxes,
         "max_depth": max_depth,
     }
+
+def _poly_derivative(poly: Poly, axis: int) -> Poly:
+    if axis not in (0, 1):
+        raise ValueError("DERIVATIVE_AXIS_MUST_BE_ZERO_OR_ONE")
+    return {
+        (i - 1, j) if axis == 0 else (i, j - 1): coefficient * (i if axis == 0 else j)
+        for (i, j), coefficient in poly.items()
+        if (i if axis == 0 else j) > 0
+    }
+
+
+def _poly_evaluate_rational(poly: Poly, mu, t):
+    from fractions import Fraction
+
+    mu = _exact_fraction(mu)
+    t = _exact_fraction(t)
+    return sum(
+        Fraction(coefficient) * mu**i * t**j
+        for (i, j), coefficient in poly.items()
+    )
+
+
+def _interval_add(a, b):
+    return (a[0] + b[0], a[1] + b[1])
+
+
+def _interval_neg(a):
+    return (-a[1], -a[0])
+
+
+def _interval_sub(a, b):
+    return _interval_add(a, _interval_neg(b))
+
+
+def _interval_mul(a, b):
+    products = (a[0] * b[0], a[0] * b[1], a[1] * b[0], a[1] * b[1])
+    return (min(products), max(products))
+
+
+def _interval_scale(scalar, interval):
+    return _interval_mul((scalar, scalar), interval)
+
+
+def _interval_abs_upper(interval):
+    return max(abs(interval[0]), abs(interval[1]))
+
+
+def _bernstein_range(poly: Poly, mu_bounds, t_bounds):
+    coefficients = bernstein_coefficients_on_box(poly, mu_bounds, t_bounds)
+    flat = [value for row in coefficients for value in row]
+    return (min(flat), max(flat))
+
+
+def krawczyk_certify_unique_root(
+    poly_p: Poly,
+    poly_q: Poly,
+    *,
+    mu_bounds: tuple[object, object],
+    t_bounds: tuple[object, object],
+) -> dict[str, object]:
+    """Attempt a rigorous simple-root certificate on one rational rectangle.
+
+    All calculations use Fraction arithmetic. The Jacobian enclosure is
+    obtained from tensor-product Bernstein convex-hull bounds for the exact
+    derivative polynomials. A rational point preconditioner C is the inverse
+    of the Jacobian at the box midpoint. Certification requires C nonsingular,
+    strict Krawczyk inclusion in the interior of the box, and a strict
+    infinity-norm contraction bound for I-C*J(X).
+
+    This certifies exactly one common zero in the box when successful. It is
+    not a multiple-root method; singular or inconclusive boxes are UNRESOLVED.
+    """
+    from fractions import Fraction
+
+    if not isinstance(mu_bounds, tuple) or len(mu_bounds) != 2:
+        raise ValueError("INVALID_MU_BOUNDS")
+    if not isinstance(t_bounds, tuple) or len(t_bounds) != 2:
+        raise ValueError("INVALID_T_BOUNDS")
+    try:
+        mu_lo, mu_hi = (_exact_fraction(v) for v in mu_bounds)
+        t_lo, t_hi = (_exact_fraction(v) for v in t_bounds)
+    except ValueError:
+        raise ValueError("EXACT_RATIONAL_BOUNDS_REQUIRED") from None
+    if mu_lo >= mu_hi or t_lo >= t_hi:
+        raise ValueError("INVALID_CERTIFICATION_BOX")
+    for poly in (poly_p, poly_q):
+        if not isinstance(poly, Mapping) or any(
+            type(i) is not int or i < 0 or type(j) is not int or j < 0
+            or type(c) is not int
+            for (i, j), c in poly.items()
+        ):
+            raise ValueError("INTEGER_SPARSE_POLYNOMIALS_REQUIRED")
+
+    x0 = ((mu_lo + mu_hi) / 2, (t_lo + t_hi) / 2)
+    f0 = (
+        _poly_evaluate_rational(poly_p, *x0),
+        _poly_evaluate_rational(poly_q, *x0),
+    )
+    derivatives = (
+        (_poly_derivative(poly_p, 0), _poly_derivative(poly_p, 1)),
+        (_poly_derivative(poly_q, 0), _poly_derivative(poly_q, 1)),
+    )
+    j0 = tuple(tuple(
+        _poly_evaluate_rational(derivatives[row][col], *x0)
+        for col in range(2)
+    ) for row in range(2))
+    determinant = j0[0][0] * j0[1][1] - j0[0][1] * j0[1][0]
+    if determinant == 0:
+        return {
+            "status": "UNRESOLVED_SINGULAR_MIDPOINT_JACOBIAN",
+            "box": (mu_bounds, t_bounds),
+            "reason": "MIDPOINT_JACOBIAN_NOT_INVERTIBLE",
+        }
+
+    # C = inverse(J(x0)); exact rational preconditioner.
+    c = (
+        (j0[1][1] / determinant, -j0[0][1] / determinant),
+        (-j0[1][0] / determinant, j0[0][0] / determinant),
+    )
+    j_box = tuple(tuple(
+        _bernstein_range(derivatives[row][col], (mu_lo, mu_hi), (t_lo, t_hi))
+        for col in range(2)
+    ) for row in range(2))
+
+    # B = I - C*J(X), using outward-exact interval operations.
+    b = []
+    for row in range(2):
+        b_row = []
+        for col in range(2):
+            total = (Fraction(0), Fraction(0))
+            for k in range(2):
+                total = _interval_add(
+                    total,
+                    _interval_scale(c[row][k], j_box[k][col]),
+                )
+            identity = (Fraction(1), Fraction(1)) if row == col else (Fraction(0), Fraction(0))
+            b_row.append(_interval_sub(identity, total))
+        b.append(tuple(b_row))
+
+    delta = (
+        (mu_lo - x0[0], mu_hi - x0[0]),
+        (t_lo - x0[1], t_hi - x0[1]),
+    )
+    k_box = []
+    for row in range(2):
+        center = x0[row] - sum(c[row][k] * f0[k] for k in range(2))
+        correction = (Fraction(0), Fraction(0))
+        for col in range(2):
+            correction = _interval_add(
+                correction, _interval_mul(b[row][col], delta[col])
+            )
+        k_box.append(_interval_add((center, center), correction))
+
+    contraction = max(
+        sum(_interval_abs_upper(b[row][col]) for col in range(2))
+        for row in range(2)
+    )
+    strict_inclusion = (
+        mu_lo < k_box[0][0] and k_box[0][1] < mu_hi
+        and t_lo < k_box[1][0] and k_box[1][1] < t_hi
+    )
+    if strict_inclusion and contraction < 1:
+        return {
+            "status": "CERTIFIED_UNIQUE_ROOT",
+            "box": ((mu_lo, mu_hi), (t_lo, t_hi)),
+            "krawczyk_box": tuple(k_box),
+            "contraction_bound": contraction,
+            "preconditioner": c,
+            "jacobian_interval": j_box,
+        }
+    return {
+        "status": "UNRESOLVED",
+        "box": ((mu_lo, mu_hi), (t_lo, t_hi)),
+        "krawczyk_box": tuple(k_box),
+        "contraction_bound": contraction,
+        "strict_inclusion": strict_inclusion,
+        "reason": "INCLUSION_OR_CONTRACTION_NOT_PROVED",
+    }
+
