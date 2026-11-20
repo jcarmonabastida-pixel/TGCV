@@ -1,7 +1,7 @@
 # C10-S — F5 global beta-binomial MLE certification design 001
 
 **Record:** C10S-F5-GLOBAL-MLE-CERTIFICATION-001  
-**Status:** ANALYTICAL DESIGN — NOT IMPLEMENTED / NOT TESTED / NOT EXECUTED  
+**Status:** ANALYTICAL DESIGN + PARTIAL EXACT ALGEBRA PRIMITIVE IMPLEMENTED — GLOBAL CERTIFICATE NOT IMPLEMENTED / GOVERNED TESTS NOT RUN / NOT EXECUTED  
 **Date:** 2026-11-20  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
 **Scope:** F5 beta-binomial count likelihood, M10/R5 and M30/R20  
