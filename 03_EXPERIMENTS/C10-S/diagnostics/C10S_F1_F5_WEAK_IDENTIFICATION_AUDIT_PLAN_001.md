@@ -792,3 +792,7 @@ The F5 harness now computes exact coefficient contents and their gcd for each co
 ### Exact projection resultant prototype added (2026-11-20)
 
 An exact rational-coefficient `mu`-projection resultant now uses a Sylvester matrix and fraction-free Bareiss elimination over `Q[mu]`, with coefficient-content restoration and typed abstention for zero polynomials, zero resultants and resource ceilings. Five fixtures were added; the source-level suite count is 60 and remains unexecuted in governed CPython 3.12. This is a computational algebra primitive only; no F1 identification, weak-identification or scientific evidence status changes.
+
+### Projection-root isolation added to exact algebraic route (2026-11-20)
+
+The exact resultant is now square-free factorized and real projection roots are isolated with rational Sturm counts on the compactified `mu` interval. Multiplicity and incomplete intervals are retained; no `t`-lifting or local multiplicity is claimed. Three deterministic tests were added, bringing the source-level suite to 63 methods, still unexecuted under governed CPython 3.12. This is a mathematical harness increment only; F1/F5 evidence and identification statuses remain unchanged.
