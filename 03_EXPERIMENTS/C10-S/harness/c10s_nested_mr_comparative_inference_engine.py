@@ -542,8 +542,15 @@ def compare_dataset(
             require_global_mle_certificate=require_f5_global_mle_certificate,
         )
         fit = fitted.fit
+        global_cert_status = str((fitted.global_mle_certificate or {}).get("status", "NOT_REQUIRED"))
+        if fit is None:
+            fit_status = "ABSTAINED"
+        elif require_f5_global_mle_certificate and global_cert_status != "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED":
+            fit_status = "GLOBAL_MLE_CERTIFICATION_ABSTAINED"
+        else:
+            fit_status = "BOUNDARY" if fit.boundary else "INTERIOR"
         diagnostics = (
-            ("fit_status", "ABSTAINED" if fit is None else "BOUNDARY" if fit.boundary else "INTERIOR"),
+            ("fit_status", fit_status),
             ("bootstrap_replicates", str(fitted.bootstrap_replicates)),
             ("projectable_mcse_replicates", str(fitted.valid_mcse_replicates)),
             ("projectable_mcse_draw_fraction", format(fitted.valid_mcse_rate, ".17g")),
