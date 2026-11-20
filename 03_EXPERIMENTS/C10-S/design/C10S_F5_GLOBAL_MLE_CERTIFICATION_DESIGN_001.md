@@ -1,7 +1,7 @@
 # C10-S — F5 global beta-binomial MLE certification design 001
 
 **Record:** C10S-F5-GLOBAL-MLE-CERTIFICATION-001  
-**Status:** BOUNDED F5 CALIBRATION SUPPORT DESIGN + PARTIAL EXACT ALGEBRA PRIMITIVES IMPLEMENTED — GLOBAL CERTIFICATE NOT IMPLEMENTED / GOVERNED TESTS NOT RUN / NOT EXECUTED  
+**Status:** BOUNDED F5 CALIBRATION SUPPORT DESIGN + EXACT SCORE / BERNSTEIN / KRAWCZYK / BOUNDARY / GLOBAL-LIKELIHOOD IMPLEMENTATION PRESENT — BOUNDED DETERMINISTIC FIXTURES PASS; GENERAL SINGULAR-ROOT COMPLETENESS AND PROSPECTIVE TIER-A VALIDATION OPEN  
 **Date:** 2026-11-20  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
 **Scope:** F5 beta-binomial count likelihood, M10/R5 and M30/R20  
@@ -15,7 +15,7 @@ Resolve only the F5 likelihood-fit ambiguity that blocks reliable interpretation
 
 The exact algebraic and Bernstein/interval operations are tools, not deliverables in their own right. Each additional layer must resolve a demonstrated ambiguity in the fitted likelihood or profile calculation that materially affects fit-state adjudication, interval emission, or coverage calibration. If existing analytic scores/Hessians, multi-start concordance, independent likelihood checks and explicit concentration-boundary comparisons can resolve the issue with adequate evidence, further algebraic escalation is unnecessary and must stop. No generic solver, new estimator family, new DGP family, or expansion beyond the two frozen F5 designs is authorized by this design.
 
-Partial executable research primitives now exist for exact rational score numerators, concentration compactification, Bernstein box zero-exclusion, axis-aligned common-component detection, an exact projection resultant and Sturm isolation of projection coordinates. These are source-level implementations only. The complete bivariate root lifting, multiplicity/local-root certification, interval inclusion, global likelihood adjudication and governed test execution remain incomplete. No global MLE certificate, benchmark, simulation, calibration or scientific run is claimed.
+Partial executable research primitives now exist for exact rational score numerators, concentration compactification, Bernstein box zero-exclusion, axis-aligned common-component detection, an exact projection resultant and Sturm isolation of projection coordinates. These are source-level implementations only. The implementation now includes conditional-mean Bernstein tube census, Krawczyk simple-root inclusion, exact one-edge profiles, uniform joint-corner limits, exact rational likelihood enclosures and a global-likelihood adjudicator. The bounded M30/R20 fixture and a smaller nondegenerate fixture pass deterministic tests. General singular/multiple interior-root certification remains unresolved and must fail closed; no universal global MLE claim is made. No prospective TierA calibration or scientific run is claimed.
 
 ## 2. Likelihood in finite-product form
 
@@ -435,3 +435,15 @@ This controller is the current preferred reduced route for the interior concentr
 ## 23. Consolidated end-to-end closure contract (2026-11-20)
 
 The definitive F5 closure gates G1–G7, the reconstructed implementation inventory, current blocker classification, method-selection rule, and required final evidence record are consolidated in `C10S_F5_END_TO_END_CLOSURE_DOSSIER_DRAFT_001.md`. This is a research-branch coordination/design artifact only. It does not upgrade implementation or execution status. In particular, full open-domain interior census, multiple-root lifting/classification, rigorous global likelihood ordering, governed CPython 3.12 validation, and authorized prospective TierA calibration remain open. F5 remains OPEN.
+
+
+## 11. Evidence reconciliation — 2026-11-20
+
+The source and governed workflow evidence supersede the stale implementation-status statements above where they conflict:
+- Workflow `.github/workflows/c10s-f5-exact-certification-tests.yml`, run [44767224308](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44767224308), source commit `a9a56d7c142b441b0893858c75e13a38ae38a9a2`: 135 deterministic tests PASS on CPython 3.12.10.
+- The integrated bounded M30/R20 test requires a completed full-domain simple-root census, exact rational likelihood interval ordering and a globality basis including all one-edge profiles and joint-corner limits. It passes for that fixed histogram and declared resource budget.
+- The implementation deliberately does not certify arbitrary interior multiple/singular roots. Such boxes remain unresolved and prevent a global certificate. The axis-component helper only detects axis-aligned factors; general mixed bivariate factors are not directly classified by that helper. The interval-first census must therefore retain unresolved boxes rather than promote them.
+- Boundary coverage includes exact one-edge likelihood profiles and a uniform Markov-bound proof for all four joint corners. This supports path-independent corner likelihood limits for finite independent-world histograms; it does not prove every conceivable boundary statement outside this beta-binomial model.
+- The exact score-numerator implementation has independent direct-rational score identity tests on small and M30/R20 fixtures. This is deterministic algebraic consistency evidence, not an independent external mathematical audit.
+
+**Current gate interpretation:** the global-MLE wrapper is implemented and tested on bounded fixtures. G1's independent derivation/provenance review, G2's supported-regime completeness plus explicit singular abstention, G3's cross-stratum adversarial audit, G5's unified resource contract, and G6's evidence packaging remain in the F5 closure work order. Execution authorization in this design remains `NONE` for prospective scientific calibration; deterministic software verification is a separate engineering activity.
