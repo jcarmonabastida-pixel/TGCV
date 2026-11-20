@@ -2188,26 +2188,42 @@ def beta_binomial_compactified_stationary_census(
 
     poly_p = compactify_concentration(raw_p)
     poly_q = compactify_concentration(raw_q)
-    axis_components = compactified_axis_common_components(poly_p, poly_q)
-    boundary = compactified_boundary_corner_census(
-        poly_p, poly_q,
-        max_depth=max_boundary_depth,
-        max_intervals=max_boundary_intervals,
-    )
+    original_axis_components = compactified_axis_common_components(poly_p, poly_q)
     boundary_likelihoods = beta_binomial_boundary_likelihoods(r, count_histogram)
     corner_limits = beta_binomial_joint_corner_likelihood_limits(r, count_histogram)
 
-    if axis_components["status"] == "AXIS_ALIGNED_COMMON_COMPONENTS_DETECTED":
+    stripped = _strip_noninterior_axis_common_components(
+        poly_p, poly_q, original_axis_components
+    )
+    if stripped["status"] != "NO_REAL_INTERIOR_AXIS_COMMON_COMPONENT":
+        return {
+            "status": "INCOMPLETE_COMMON_COMPONENT",
+            "axis_components": original_axis_components,
+            "component_disposition": stripped,
+            "boundary_likelihoods": boundary_likelihoods,
+            "joint_corner_limits": corner_limits,
+            "interior_stationary_candidates": [],
+            "global_likelihood_ordering": "NOT_PERFORMED",
+        }
+    poly_p = stripped["poly_p"]
+    poly_q = stripped["poly_q"]
+    axis_components = compactified_axis_common_components(poly_p, poly_q)
+    if axis_components["status"] != "NO_AXIS_ALIGNED_COMMON_COMPONENT_DETECTED":
         return {
             "status": "INCOMPLETE_COMMON_COMPONENT",
             "axis_components": axis_components,
-            "boundary_census": boundary,
+            "component_disposition": stripped,
             "boundary_likelihoods": boundary_likelihoods,
             "joint_corner_limits": corner_limits,
             "interior_stationary_candidates": [],
             "global_likelihood_ordering": "NOT_PERFORMED",
         }
 
+    boundary = compactified_boundary_corner_census(
+        poly_p, poly_q,
+        max_depth=max_boundary_depth,
+        max_intervals=max_boundary_intervals,
+    )
     resultant = compactified_concentration_resultant_t(poly_p, poly_q)
     if resultant["status"] != "EXACT_RESULTANT_NONZERO":
         return {
@@ -2610,4 +2626,116 @@ def beta_binomial_global_mle_certificate(
         "refinement_history": history,
         "ordering_method": "EXACT_RATIONAL_PROBABILITY_INTERVALS",
         "reason": "INTERVALS_OVERLAP_AFTER_MAXIMUM_DETERMINISTIC_REFINEMENTS",
+    }
+
+
+def _axis_factor_has_open_unit_root(coefficients) -> bool:
+    """Use exact Sturm counting to decide whether an axis factor vanishes in (0,1)."""
+    from fractions import Fraction
+
+    factor = _uni_monic(coefficients)
+    for endpoint in (Fraction(0), Fraction(1)):
+        if len(factor) > 1 and _uni_evaluate(factor, endpoint) == 0:
+            factor = _uni_divide_linear(factor, endpoint)
+    if len(factor) <= 1:
+        return False
+    sequence = _uni_sturm_sequence(factor)
+    return _uni_sturm_root_count(sequence, Fraction(0), Fraction(1)) > 0
+
+
+def _divide_sparse_by_axis_factor(poly: Poly, axis: str, factor):
+    """Divide a sparse bivariate polynomial by an exact univariate axis factor."""
+    from fractions import Fraction
+
+    if axis not in ("mu", "t"):
+        raise ValueError("AXIS_MUST_BE_MU_OR_T")
+    grouped = {}
+    for (degree_mu, degree_t), coefficient in poly.items():
+        variable_degree = degree_mu if axis == "mu" else degree_t
+        other_degree = degree_t if axis == "mu" else degree_mu
+        grouped.setdefault(other_degree, {})
+        grouped[other_degree][variable_degree] = (
+            grouped[other_degree].get(variable_degree, 0) + coefficient
+        )
+    output = {}
+    for other_degree, terms in grouped.items():
+        degree = max(terms, default=0)
+        coefficients = [Fraction(terms.get(i, 0)) for i in range(degree + 1)]
+        quotient, remainder = _uni_divmod(coefficients, factor)
+        if not _uni_is_zero(remainder):
+            raise ArithmeticError("COMMON_AXIS_FACTOR_DIVISION_NOT_EXACT")
+        for variable_degree, coefficient in enumerate(quotient):
+            if not coefficient:
+                continue
+            monomial = (
+                (variable_degree, other_degree)
+                if axis == "mu" else (other_degree, variable_degree)
+            )
+            if coefficient.denominator != 1:
+                raise ArithmeticError("INTEGER_POLYNOMIAL_QUOTIENT_NOT_INTEGRAL")
+            output[monomial] = int(coefficient)
+    return output
+
+
+def _strip_noninterior_axis_common_components(
+    poly_p: Poly,
+    poly_q: Poly,
+    axis_components: Mapping[str, object],
+) -> dict[str, object]:
+    """Remove common axis factors with no real zero in the open unit domain.
+
+    Factors that vanish at an interior axis coordinate describe a genuine
+    common component and remain unresolved. Factors supported only at the
+    compactification boundary (or with no real unit-interval zero) do not
+    affect the open-domain stationary set and are divided out exactly before
+    the interior resultant. Their boundary likelihood is handled separately.
+    """
+    if axis_components.get("status") == "ZERO_POLYNOMIAL_COMMON_COMPONENT_UNRESOLVED":
+        return {
+            "status": "ZERO_POLYNOMIAL_COMMON_COMPONENT_UNRESOLVED",
+            "removed_factors": [],
+            "interior_components": [],
+        }
+    reduced_p = dict(poly_p)
+    reduced_q = dict(poly_q)
+    removed = []
+    interior = []
+    for axis, record in axis_components.get("axes", {}).items():
+        if record.get("component_type") in {
+            "NO_AXIS_ALIGNED_COMMON_COMPONENT",
+            None,
+        }:
+            continue
+        for factor_record in record.get("squarefree_factors", []):
+            factor = tuple(factor_record["coefficients"])
+            multiplicity = factor_record["multiplicity"]
+            if _axis_factor_has_open_unit_root(factor):
+                interior.append({
+                    "axis": axis,
+                    "factor": factor,
+                    "multiplicity": multiplicity,
+                    "status": "REAL_COMMON_COMPONENT_INTERSECTS_OPEN_DOMAIN",
+                })
+                continue
+            for _ in range(multiplicity):
+                reduced_p = _divide_sparse_by_axis_factor(reduced_p, axis, factor)
+                reduced_q = _divide_sparse_by_axis_factor(reduced_q, axis, factor)
+            removed.append({
+                "axis": axis,
+                "factor": factor,
+                "multiplicity": multiplicity,
+                "status": "COMMON_FACTOR_REMOVED_FROM_OPEN_DOMAIN_CENSUS",
+            })
+    if interior:
+        return {
+            "status": "REAL_INTERIOR_AXIS_COMMON_COMPONENT_UNRESOLVED",
+            "removed_factors": removed,
+            "interior_components": interior,
+        }
+    return {
+        "status": "NO_REAL_INTERIOR_AXIS_COMMON_COMPONENT",
+        "poly_p": reduced_p,
+        "poly_q": reduced_q,
+        "removed_factors": removed,
+        "interior_components": [],
     }
