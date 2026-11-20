@@ -2255,8 +2255,14 @@ def beta_binomial_compactified_stationary_census(
 
     lift_brackets = [(a, b, "STURM_ISOLATING_INTERVAL") for a, b in intervals]
     for root in interior_roots:
-        left_neighbors = [b for a, b in intervals if b < root]
-        right_neighbors = [a for a, b in intervals if a > root]
+        left_neighbors = (
+            [b for a, b in intervals if b < root]
+            + [other for other in exact_roots if other < root]
+        )
+        right_neighbors = (
+            [a for a, b in intervals if a > root]
+            + [other for other in exact_roots if other > root]
+        )
         left_gap = root - max(left_neighbors, default=Fraction(0))
         right_gap = min(right_neighbors, default=Fraction(1)) - root
         radius = min(Fraction(1, 2**16), root / 2, (1 - root) / 2,
