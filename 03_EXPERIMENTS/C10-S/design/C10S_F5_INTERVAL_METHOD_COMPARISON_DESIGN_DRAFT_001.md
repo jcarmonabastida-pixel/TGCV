@@ -21,7 +21,7 @@ Compare three interval constructions without selecting a winner from historical 
 
 C0 is retained only as a matched historical diagnostic comparator, not as a candidate or acceptance fallback. No method is selected, tuned, or promoted by this draft. M0 is the incumbent baseline; M1 and M2 are design candidates whose validity must be demonstrated prospectively.
 
-The central scientific issue is not merely interval width. The method must represent uncertainty in the fitted concentration and its induced covariance with the target components, while remaining honest when concentration is weakly identified or the likelihood reaches a boundary.
+The central scientific issue is not merely interval width. The method must provide calibrated uncertainty for the frozen population variance components while remaining honest when concentration is weakly identified or the likelihood reaches a boundary. The fixed-parameter bootstrap is a plug-in approximation to the sampling distribution of the frozen raw estimators; the historical evidence does not by itself prove that omitted refitting is the cause of undercoverage.
 
 ## 2. Historical reconstruction and constraints
 
@@ -53,7 +53,7 @@ Let the latent world probability be (p_jsimmathrm{Beta}(\alpha,\beta)), and cond
 - (\kappa=\alpha+\beta), the concentration;
 - (\operatorname{logit}(\mu)=\eta), (\log(\kappa)=\lambda).
 
-The two F5 targets are the population variance components:
+The two F5 population targets are fixed by frozen specification v1.0 as \(\sigma_w^2=E[p(1-p)]\) and \(\sigma_b^2=\operatorname{Var}(p)\). The corresponding frozen sample estimators are \(MSW\) and the untruncated raw-between estimator \(S^2_{\bar q}-MSW/R\). The raw-between estimator and its scored interval may be negative; no truncation is permitted. The two model functionals are:
 
 [
 W(\mu,\kappa)=E[p(1-p)]
@@ -65,7 +65,7 @@ B(\mu,\kappa)=\operatorname{Var}(p)
 =\frac{\mu(1-\mu)}{\kappa+1}.
 ]
 
-They satisfy (W+B=\mu(1-\mu)). The comparison must preserve the frozen mapping between these population targets and the actual within/raw-between estimators and reported coverage endpoints. The identities above are the model functionals; they do not authorize replacing the frozen estimators or redefining the raw-between target.
+They satisfy (W+B=\mu(1-\mu)). This distinction is mandatory: coverage is scored against the population truths \((\sigma_w^2,\sigma_b^2)\), while the frozen C5 point statistics are \((MSW,S^2_{\bar q}-MSW/R)\). A candidate may use a different inferential construction, but it must state whether it preserves the frozen point estimator or also changes the estimator; no change may be hidden inside an interval-method comparison.
 
 For every method, report intervals separately for W and B. Also retain the joint geometry of (W,B), because the shared ((\mu,\kappa)) estimate induces dependence and the two components are not independent. Marginal 95% intervals do not imply 95% simultaneous coverage of the pair.
 
@@ -225,7 +225,7 @@ Do not pool cells or targets to rescue a failing component. Report the joint (W,
 
 ### 8.3 Acceptance and selection
 
-- The frozen v1.0 component acceptance criteria remain controlling unless a separately approved decision explicitly supersedes them before prospective data generation.
+- The frozen v1.0 component acceptance criteria remain controlling: for each F5 cell × bank × target, conditional coverage must lie in [0.93, 0.97], the two-sided 95% Wilson interval must contain 0.95, interval emission must be at least 0.95, and there must be no unresolved numerical optimizer state. These are development eligibility gates, not confirmatory claims. No pooling across cells, banks or components. A separately approved decision made before prospective data generation would be required to supersede them.
 - Apply the complete gate independently by cell, bank and target; no average/pooled PASS.
 - Coverage alone is insufficient: report width and miss direction, but do not introduce an unapproved width optimum.
 - Abstention is not silently counted as coverage or removed from the denominator. Report both unconditional operational success/abstention and conditional coverage among eligible intervals; the acceptance rule for each must be frozen in advance.
@@ -294,7 +294,7 @@ No gate is implicitly passed by completion of a prior one. The current state is 
 
 ## 12. Open design questions requiring resolution before D1
 
-1. Does the frozen target require intervals for the population functionals W/B, the finite-sample raw estimators, or both as separate outputs? The frozen C5 estimator-to-target mapping must be quoted and reconciled, not inferred.
+1. The target mapping is resolved by frozen v1.0: score coverage of population σw²/σb²; preserve the frozen sample statistics MSW and untruncated raw-between as the point estimators for M0 and the primary M1 root construction. If a method also reports intervals centered on fitted model functionals, label these as a separate estimator construction.
 2. Should M1's primary interval be percentile on refitted W*/B*, or should a centered/basic construction be primary? The choice must be justified before data.
 3. What is the mathematically defensible treatment of non-interior and failed bootstrap refits: dataset abstention, set-valued boundary contributions, or another method?
 4. Should M2b use a bootstrap-calibrated likelihood-ratio cutoff for each target value, and how will Monte Carlo uncertainty in that cutoff be controlled?
