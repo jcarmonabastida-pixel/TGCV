@@ -5,6 +5,8 @@ import unittest
 from c10s_f5_rational_score_polynomials import (
     beta_binomial_score_numerators,
     compactify_concentration,
+    bernstein_coefficients_on_box,
+    bernstein_sign_excludes_zero,
 )
 
 
@@ -107,6 +109,39 @@ class RationalScorePolynomialTests(unittest.TestCase):
         poly = {(0, 0): -1, (0, 1): 1}
         transformed = compactify_concentration(poly)
         self.assertEqual(_evaluate(transformed, Fraction(1, 2), Fraction(1, 2)), 0)
+
+
+    def test_bernstein_coefficients_enclose_positive_polynomial(self):
+        # p(mu,t)=1+mu+t is bounded by [1,3] on the unit square.
+        coefficients = bernstein_coefficients_on_box(
+            {(0, 0): 1, (1, 0): 1, (0, 1): 1}
+        )
+        self.assertEqual(coefficients, [
+            [Fraction(1), Fraction(2)],
+            [Fraction(2), Fraction(3)],
+        ])
+        self.assertTrue(bernstein_sign_excludes_zero(coefficients))
+
+    def test_bernstein_exact_affine_box_substitution(self):
+        # p(mu,t)=mu-2t is strictly positive on [3/4,1] x [0,1/4].
+        coefficients = bernstein_coefficients_on_box(
+            {(1, 0): 1, (0, 1): -2},
+            mu_bounds=(Fraction(3, 4), Fraction(1)),
+            t_bounds=(Fraction(0), Fraction(1, 4)),
+        )
+        self.assertEqual(coefficients, [
+            [Fraction(3, 4), Fraction(1, 2)],
+            [Fraction(1), Fraction(3, 4)],
+        ])
+        self.assertTrue(bernstein_sign_excludes_zero(coefficients))
+
+    def test_bernstein_mixed_sign_does_not_claim_exclusion(self):
+        coefficients = bernstein_coefficients_on_box({(1, 0): 1, (0, 0): -1})
+        self.assertFalse(bernstein_sign_excludes_zero(coefficients))
+
+    def test_bernstein_rejects_degenerate_box(self):
+        with self.assertRaisesRegex(ValueError, "INVALID_MU_BOUNDS"):
+            bernstein_coefficients_on_box({(0, 0): 1}, mu_bounds=(1, 1))
 
     def test_histogram_validation(self):
         with self.assertRaisesRegex(ValueError, "COUNT_OUTSIDE_0_TO_R"):
