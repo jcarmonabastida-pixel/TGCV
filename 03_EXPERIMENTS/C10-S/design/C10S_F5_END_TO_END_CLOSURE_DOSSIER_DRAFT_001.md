@@ -1,7 +1,7 @@
 # C10-S F5 — End-to-end closure dossier (research draft)
 
 **Date:** 2026-11-20  
-**Status:** OPEN — IMPLEMENTATION PARTIAL / GOVERNED VALIDATION NOT RUN  
+**Status:** OPEN — DETERMINISTIC SUITES PASS / GLOBAL CERTIFICATION AND TIERA CALIBRATION OPEN  
 **Branch:** research/c10s-f1-integrated-correction-20261119  
 **Purpose:** consolidate the definitive F5 closure sequence into one auditable contract. This dossier does not authorize execution, change frozen F1/F5 semantics, or upgrade any scientific claim.
 
@@ -107,7 +107,7 @@ The existing boundary helpers provide exact ingredients, not yet a complete glob
 | G3 boundary/corner ingredients | Exact edge limits, edge root census, corner ownership and joint corner limits exist; integrated global adjudication not demonstrated | PARTIAL |
 | G4 global likelihood ordering | No complete rigorous candidate-vs-boundary ordering engine | OPEN |
 | G5 deterministic abstention | Several component-level limits/states exist; unified global result contract and ceilings not frozen | PARTIAL |
-| G6 governed validation | 76 tests defined; no governed CPython 3.12 execution record | NOT RUN |
+| G6 governed validation | CPython 3.12.10, locked dependencies, compile PASS; 124/124 deterministic tests PASS in two independent Actions runs (44749347942 and 44749353232) on research snapshots 2c276b4ddc77e2e7a6e2a89bd11000271b34cd1b and 67d147b75ed6fc46c4a83792c50951d82e2dcf49 | PASS — deterministic software suite only |
 | G7 TierA relevance/calibration | No prospective calibration authorized or run | NOT RUN |
 
 ## 5. Known blockers that prevent honest F5 closure
@@ -116,7 +116,7 @@ The existing boundary helpers provide exact ingredients, not yet a complete glob
 2. Full open-domain coverage: the adaptive conditional-mean controller accepts only 0<t_-<t_+<1. Its success on a supplied interior interval does not cover neighborhoods of t=0 or t=1.
 3. Projection-to-root lifting: Res_mu(P,Q) candidates must be lifted and verified against both original score equations; projection multiplicity is not local bivariate multiplicity.
 4. Boundary/global ordering: exact edge and corner limits exist, but no integrated rigorous comparison of all interior and boundary likelihood candidates has been demonstrated.
-5. Governed validation and calibration: the 76-test suite is unexecuted in CPython 3.12; no authorized prospective M10/R5 or M30/R20 calibration evidence exists.
+5. Governed validation and calibration: deterministic software validation now passes (124/124 in CPython 3.12.10, two independent runs); no authorized prospective M10/R5 or M30/R20 calibration evidence exists. This validates tested software behavior only, not completeness of the mathematical census.
 
 These are substantive proof/validation gaps, not documentation tasks. They cannot be closed by changing status labels or by adding a wrapper that reports a local census as global.
 
@@ -146,3 +146,33 @@ Until all applicable items pass, the correct status is F5 OPEN — PARTIAL IMPLE
 This dossier is a research-branch design/coordination artifact. It does not modify main, RMA, Evidence→Claim Matrix, frozen F1/F5 contracts, B2/B3, or any scientific claim. It does not authorize execution. The canonical workflow remains: historical reconstruction → integrity preflight → explicit authorization → execution → primary audit → replay gate → final audit → scientific closure.
 
 The purpose remains narrow: repair the fitting/coverage reliability limitation that blocked TierA, then return to the C10-S causal question of whether accessibility contributes to Value. F5 is not an independent statistical research programme.
+
+
+## 9. Validation update — 2026-11-20
+
+The three assertion defects identified in run 44747642542 were corrected in the research test source:
+- exact Krawczyk image for the affine fixture;
+- a genuinely multiple-root fixture for the resource-remainder assertion;
+- inclusive comparison at the exact Sturm isolation-width threshold.
+
+The unchanged production mathematics was then exercised by two independent deterministic workflow runs:
+- [Run 44749347942](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44749347942), source snapshot `2c276b4ddc77e2e7a6e2a89bd11000271b34cd1b`: 124 tests, 91.666 seconds, **OK**.
+- [Run 44749353232](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44749353232), source snapshot `67d147b75ed6fc46c4a83792c50951d82e2dcf49`: 124 tests, 91.917 seconds, **OK**.
+
+Both runs passed locked dependency installation, CPython 3.12.10 setup, compilation of the six F5 modules, and all three deterministic suites. The duplicate run is an independent repeat, not 248 distinct tests.
+
+This closes the deterministic software-test gate for the current tested source snapshot. It does **not** close G2–G5: the tests do not establish complete lifting of every concentration-resultant root, resolution of all multiple/common-component cases, a global likelihood ordering, or TierA coverage. F5 remains OPEN.
+
+## 10. Integrated resolution sequence from this validated baseline
+
+The next implementation is one connected certification pipeline, not a parallel statistics package:
+
+1. Build the paired exact score numerators from one frozen histogram and compactify both to ((\mu,t)\).
+2. Compute the primary \\(\operatorname{Res}_{\mu}(P,Q)\\) concentration projection and isolate every real root on the closed compactified interval; classify (t=0,1) as boundary strata, not finite-interior roots.
+3. Lift every interior projection root back to the original paired equations. Use conditional-mean strict concavity to reduce the lift to one admissible mean branch; use Bernstein exclusion and Krawczyk for simple roots. Any singular/multiple lift must be resolved by exact subresultant/gcd multiplicity analysis or remain explicitly unresolved.
+4. Reconcile the lifted interior set with the four edge censuses, exact corner limits, and unique corner ownership. Common components and projection degeneracies must not be counted as finite isolated roots.
+5. Compare every admissible interior stationary candidate and boundary supremum under one likelihood contract. Use certified rational probability enclosures and rigorous logarithm enclosures; refine until the ordering is strict or return TIE/UNRESOLVED, never use floating-point optimizer ranking as proof.
+6. Enforce deterministic caps for resultant dimension/coefficient growth, Sturm intervals, lift subdivisions, rational bit growth, and likelihood refinement. Every exhausted cap returns a machine-readable remainder and ABSTAIN.
+7. Only after the integrated deterministic certificate and its adversarial fixtures pass, prepare the frozen prospective TierA M10/R5 and M30/R20 calibration protocol. No B2/B3 reuse or post-hoc tuning.
+
+The preferred implementation remains the conditional-mean/Bernstein reduction first, with exact resultant/Sturm projection as the global concentration census and fallback/cross-check. This ordering uses the model structure and avoids a general-purpose algebraic backend.
