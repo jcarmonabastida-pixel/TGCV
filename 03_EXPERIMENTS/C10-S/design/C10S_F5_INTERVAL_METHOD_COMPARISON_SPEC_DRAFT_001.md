@@ -474,3 +474,8 @@ The comparison must include a reduced route that does not immediately lift every
 ### Integrated adaptive conditional-mean census
 
 The reduced route now combines conditional-mean tube construction, Bernstein concentration-score exclusion, and a Krawczyk attempt on the entire tube. A deterministic FIFO controller bisects only concentration (t) when neither exclusion nor a simple-root inclusion certificate succeeds. A supplied finite interior t interval is complete only if every subinterval is either excluded or contains exactly one certified simple common root. Singular/multiple roots, roots on subdivision boundaries, and resource/depth remainders remain explicit unresolved outcomes. This avoids lifting every resultant root by default. It does not yet cover endpoint neighborhoods (t=0,1), certify multiple roots, or establish the full open-domain global census. Compare its cost and unresolved rate against the algebraic resultant/Sturm route on the frozen hand-constructed F5 fixtures before any method selection.
+
+
+### Consolidated closure contract (2026-11-20)
+
+Use `C10S_F5_END_TO_END_CLOSURE_DOSSIER_DRAFT_001.md` as the integrated G1–G7 closure contract for both candidate routes. It prevents local interior interval completeness, projection-root isolation, or edge-limit calculations from being represented as a global MLE certificate. The reduced Bernstein/conditional-mean route remains first-line; resultant/Sturm remains targeted fallback/cross-check. Method selection requires common deterministic fixtures and the full mathematical/software gates.
