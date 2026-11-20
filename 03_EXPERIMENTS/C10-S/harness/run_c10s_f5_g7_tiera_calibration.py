@@ -8,7 +8,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from c10s_nested_mr_fixtures import tier_a_specs
+from c10s_nested_mr_fixtures import derive_seed as derive_v002_seed, tier_a_specs
 from c10s_nested_mr_comparative_inference_engine import (
     IMPLEMENTED_METHODS,
     adjudicate_matched_datasets,
@@ -72,6 +72,9 @@ def validate_seed_separation(k: int = K_PER_CELL) -> None:
                 legacy = derive_holdout_seed(legacy_stream, cell_id, replicate)
                 if value == legacy:
                     raise F5G7Error("G7_SEED_COLLISION_WITH_CONSUMED_V1_HOLDOUT")
+                v002_stream = "fixture_dataset" if stream == "dataset" else "bootstrap"
+                if value == derive_v002_seed(v002_stream, cell_id, replicate):
+                    raise F5G7Error("G7_SEED_COLLISION_WITH_ORIGINAL_V002_TIERA")
     resource_seen: set[int] = set()
     for cell_id in EXPECTED_CELLS:
         for replicate in range(RESOURCE_K_PER_CELL):
@@ -79,6 +82,9 @@ def validate_seed_separation(k: int = K_PER_CELL) -> None:
                 value = derive_seed(RESOURCE_NAMESPACE, stream, cell_id, replicate)
                 if value in resource_seen or value in seen:
                     raise F5G7Error("G7_RESOURCE_SEED_COLLISION")
+                v002_stream = "fixture_dataset" if stream == "dataset" else "bootstrap"
+                if value == derive_v002_seed(v002_stream, cell_id, replicate):
+                    raise F5G7Error("G7_RESOURCE_SEED_COLLISION_WITH_ORIGINAL_V002_TIERA")
                 resource_seen.add(value)
 
 
@@ -93,7 +99,7 @@ def run_cell(spec, *, k: int, c0_b: int, c5_b: int,
     comparisons, truths, records = [], [], []
     seed_sets = {name: set() for name in ("dataset", "C0_bootstrap", "C5_bootstrap")}
     for replicate in range(k):
-        dataset_id = f"{PROTOCOL_VERSION}:{spec.cell_id}:{replicate:06d}"
+        dataset_id = f"{PROTOCOL_VERSION}:{seed_namespace}:{spec.cell_id}:{replicate:06d}"
         seeds = {
             name: derive_seed(seed_namespace, name, spec.cell_id, replicate)
             for name in seed_sets

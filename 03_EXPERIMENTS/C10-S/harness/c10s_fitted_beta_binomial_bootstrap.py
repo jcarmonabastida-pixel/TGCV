@@ -437,6 +437,7 @@ def fitted_beta_binomial_parametric_bootstrap(
             optimizer_audit=optimizer_audit,
             optimizer_audit_error=optimizer_audit_error,
             production_analytic_reconciliation=reconciliation,
+            global_mle_certificate=global_certificate_summary,
         )
 
     rng = np.random.Generator(np.random.PCG64(bootstrap_seed))
