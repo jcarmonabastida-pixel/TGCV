@@ -727,3 +727,11 @@ The F5 module now includes exact midpoint de Casteljau subdivision of tensor-pro
 The operation is only the subdivision kernel. It does not yet provide an adaptive exhaustive controller, resource ceilings, boundary-stratum classification, or root inclusion/uniqueness. Krawczyk/interval-Newton can only certify simple roots when its full nonsingularity, inclusion and contraction hypotheses are checked. Multiple-root boxes must be retained for multiplicity-aware deflation or explicit abstention; sign-change logic is insufficient.
 
 The algebraic and Bernstein routes remain unselected and in parallel development. F5 remains OPEN. No MLE certification, bank, replay, calibration or scientific execution is claimed or authorized.
+
+
+
+### Deterministic Bernstein exclusion controller — implemented, not validated (2026-11-20)
+
+A FIFO breadth-first controller now applies both exact Bernstein sign-exclusion tests over rational boxes, alternating the split axis deterministically and using explicit box-count/depth ceilings. It returns all unresolved and unprocessed boxes with exact bounds and typed states. Only `ALL_BOXES_EXCLUDED` proves absence of common zeros over the covered closed rectangle; depth or resource exhaustion remains unresolved.
+
+Four additional controller tests are committed but not executed under governed CPython 3.12. The current implementation conservatively covers the closed compactified square, so explicit boundary classification remains necessary. The controller does not prove root existence/uniqueness and does not certify multiple roots. F5 remains OPEN; no scientific execution is authorized.
