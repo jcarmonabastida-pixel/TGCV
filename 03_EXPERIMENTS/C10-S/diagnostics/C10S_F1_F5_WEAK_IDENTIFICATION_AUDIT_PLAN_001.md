@@ -448,3 +448,17 @@ The one-use F5-only B2/B3 execution completed in GitHub Actions run `44615173745
 **B2/B3 disposition:** EXECUTED / PRIMARY ARTIFACT INTEGRITY AUDITED / C5 NOT VALIDATED / C0 NOT VALIDATED / NON-CONFIRMATORY DEVELOPMENT EVIDENCE ONLY. No frozen rule, estimator or threshold was changed. The one-use authorization is consumed; no further numerical execution is authorized by it.
 
 **Next operation:** static diagnosis of independent-optimizer precision-loss outcomes and the M10/R5 vs M30/R20 coverage divergence. Any new optimizer adjudication rule or revised candidate must be designed and independently tested before fresh development banks; current banks cannot become confirmatory data.
+
+
+## 15. F5 B2/B3 coordinated static diagnosis — 2026-11-20
+
+The post-result diagnosis is recorded in `C10S_F5_B2_B3_COORDINATED_DIAGNOSTIC_001.md`. It uses the existing raw artifact from run `44615173745`; no replay, new K/B sample, or scientific execution was performed.
+
+New findings:
+- The C5 production fit uses three L-BFGS-B starts without an analytic Jacobian; the diagnostic fit uses the same starts with an analytic Jacobian. The BFGS check then starts from the analytic-gradient fit. The existing audit therefore does not directly reconcile the production fit against the analytic-gradient fit and is not an independently initialized global optimizer.
+- M30/R20's large BFGS unresolved count is predominantly a termination-flag issue: despite precision-loss messages, BFGS and analytic-gradient solutions have virtually identical likelihood and parameters. This remains a failed frozen optimizer gate; no retrospective PASS.
+- M10/R5 shows substantial production-versus-analytic fit-path parameter divergence on a near-flat concentration ridge adjacent to the binomial limit. The upper fitted-concentration decile has near-zero profile curvature and near-zero likelihood advantage over the binomial limit.
+- M30/R20's high-fitted-concentration upper decile is different: profile curvature remains materially negative and the likelihood remains separated from the binomial limit, yet C5 coverage falls to 50.0%/35.6% (within/raw-between) in calibration and 50.8%/35.0% in validation. Matched C0 coverage in the same post-fit strata remains approximately 96–98%. C5 intervals are narrower and misses are directional.
+- These are exploratory post-fit strata, not acceptance gates or causal proof. They indicate that M10/R5 weak identification and M30/R20 high-κ plug-in interval undercoverage must be diagnosed separately.
+
+**Next operation:** implement a static per-dataset production-fit vs analytic-fit reconciliation record; separate optimizer termination from numerical agreement without relaxing the frozen gate; add deterministic fixtures for precision-loss/local concordance, weak concentration ridge, true disagreement and upper-bound contact; and diagnose the plug-in C5 interval failure. Do not replay run `44615173745`, increase B/K, or launch another numerical bank at this stage. Any alternative interval method requires a separate versioned design decision and fresh disjoint development data.
