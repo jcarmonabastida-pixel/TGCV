@@ -14,6 +14,7 @@ from c10s_f5_rational_score_polynomials import (
     beta_binomial_boundary_likelihoods,
     compactified_boundary_common_factors,
     compactified_boundary_common_roots,
+    compactified_boundary_corner_census,
 )
 
 
@@ -362,6 +363,63 @@ class RationalScorePolynomialTests(unittest.TestCase):
             compactified_boundary_common_factors(
                 {(1,): 1}, {(0, 1): 1}
             )
+
+    def test_corner_census_assigns_one_owner_and_keeps_both_edge_references(self):
+        # P=mu+t and Q=2*mu+2*t share exactly the corner (0,0).
+        p = {(1, 0): 1, (0, 1): 1}
+        q = {(1, 0): 2, (0, 1): 2}
+        result = compactified_boundary_corner_census(p, q)
+        self.assertEqual(
+            result["status"], "BOUNDARY_ROOT_CENSUS_WITH_CORNER_OWNERSHIP"
+        )
+        corner = result["corners"]["mu0_t0"]
+        self.assertEqual(corner["status"], "CORNER_OWNED_ONCE")
+        self.assertEqual(corner["owner"]["edge"], "mu_zero")
+        self.assertEqual(
+            {item["edge"] for item in corner["occurrences"]},
+            {"mu_zero", "t_zero"},
+        )
+        vertical = result["edges"]["mu_zero"]["isolated_factors"][0]
+        horizontal = result["edges"]["t_zero"]["isolated_factors"][0]
+        self.assertEqual(
+            vertical["root_ownership"][0]["state"],
+            "CANONICAL_CORNER_OWNER",
+        )
+        self.assertEqual(
+            horizontal["root_ownership"][0]["state"],
+            "CORNER_REFERENCE_ONLY",
+        )
+
+    def test_corner_census_assigns_each_of_four_corners_to_vertical_edge(self):
+        # The two score polynomials share the product of all four corners.
+        p = {(2, 0): 1, (0, 2): 1, (0, 0): -1}
+        q = {(2, 0): 2, (0, 2): 2, (0, 0): -2}
+        result = compactified_boundary_corner_census(p, q)
+        self.assertEqual(
+            result["status"], "BOUNDARY_ROOT_CENSUS_WITH_CORNER_OWNERSHIP"
+        )
+        self.assertEqual(len(result["corners"]), 4)
+        self.assertEqual(
+            {key: value["owner"]["edge"] for key, value in result["corners"].items()},
+            {
+                "mu0_t0": "mu_zero",
+                "mu0_t1": "mu_zero",
+                "mu1_t0": "mu_one",
+                "mu1_t1": "mu_one",
+            },
+        )
+
+    def test_corner_census_propagates_partial_edge_isolation(self):
+        p = {(0, 2): 2, (0, 0): -1}
+        q = {(0, 4): 4, (0, 2): -4, (0, 0): 1}
+        result = compactified_boundary_corner_census(
+            p, q, width=Fraction(1, 2**30),
+            max_depth=1, max_intervals=100,
+        )
+        self.assertEqual(result["status"], "PARTIAL_BOUNDARY_ROOT_ISOLATION")
+        self.assertEqual(
+            result["corner_deduplication"], "CORNER_OWNERSHIP_COMPLETE"
+        )
 
     def test_boundary_profiles_are_exact_for_endpoint_histogram(self):
         result = beta_binomial_boundary_likelihoods(2, {0: 1, 2: 1})
