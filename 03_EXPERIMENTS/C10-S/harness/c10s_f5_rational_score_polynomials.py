@@ -2192,10 +2192,8 @@ def beta_binomial_compactified_stationary_census(
     boundary_likelihoods = beta_binomial_boundary_likelihoods(r, count_histogram)
     corner_limits = beta_binomial_joint_corner_likelihood_limits(r, count_histogram)
 
-    stripped = _strip_noninterior_axis_common_components(
-        poly_p, poly_q, original_axis_components
-    )
-    if stripped["status"] != "NO_REAL_INTERIOR_AXIS_COMMON_COMPONENT":
+    stripped = _strip_axis_content_factors_outside_open_unit_domain(poly_p, poly_q)
+    if stripped["status"] != "NO_REAL_INTERIOR_AXIS_CONTENT_FACTORS":
         return {
             "status": "INCOMPLETE_COMMON_COMPONENT",
             "axis_components": original_axis_components,
@@ -2761,4 +2759,78 @@ def _strip_noninterior_axis_common_components(
         "poly_q": reduced_q,
         "removed_factors": removed,
         "interior_components": [],
+    }
+
+
+def _strip_axis_content_factors_outside_open_unit_domain(
+    poly_p: Poly, poly_q: Poly
+) -> dict[str, object]:
+    """Strip per-score axis factors that never vanish in the open unit square.
+
+    Compactification and denominator clearing can leave factors supported at
+    mu/t endpoints. Such factors are nonzero throughout the open parameter
+    domain and may be divided out of each score separately without changing
+    its interior zero set. Factors with any real root in (0,1) are retained.
+    """
+    from fractions import Fraction
+
+    reduced = {"P": dict(poly_p), "Q": dict(poly_q)}
+    removed = []
+    retained_interior = []
+    for label in ("P", "Q"):
+        for axis in ("mu", "t"):
+            content = _bivariate_axis_content(reduced[label], axis)
+            if _uni_is_zero(content):
+                return {
+                    "status": "ZERO_SCORE_POLYNOMIAL_UNRESOLVED",
+                    "removed_factors": removed,
+                    "interior_factors": retained_interior,
+                }
+            for factor_record in _uni_squarefree_factors(content):
+                factor = _uni_monic(factor_record["coefficients"])
+                multiplicity = factor_record["multiplicity"]
+                original_factor = tuple(factor)
+                for endpoint in (Fraction(0), Fraction(1)):
+                    if len(factor) > 1 and _uni_evaluate(factor, endpoint) == 0:
+                        linear = [-endpoint, Fraction(1)]
+                        for _ in range(multiplicity):
+                            reduced[label] = _divide_sparse_by_axis_factor(
+                                reduced[label], axis, linear
+                            )
+                        factor = _uni_divide_linear(factor, endpoint)
+                        removed.append({
+                            "polynomial": label,
+                            "axis": axis,
+                            "factor": tuple(linear),
+                            "multiplicity": multiplicity,
+                            "reason": "COMPACTIFICATION_ENDPOINT_FACTOR",
+                        })
+                if len(factor) <= 1:
+                    continue
+                if _axis_factor_has_open_unit_root(factor):
+                    retained_interior.append({
+                        "polynomial": label,
+                        "axis": axis,
+                        "factor": tuple(factor),
+                        "multiplicity": multiplicity,
+                        "status": "REAL_INTERIOR_AXIS_FACTOR_RETAINED",
+                    })
+                    continue
+                for _ in range(multiplicity):
+                    reduced[label] = _divide_sparse_by_axis_factor(
+                        reduced[label], axis, factor
+                    )
+                removed.append({
+                    "polynomial": label,
+                    "axis": axis,
+                    "factor": tuple(factor),
+                    "multiplicity": multiplicity,
+                    "reason": "NO_REAL_ZERO_IN_OPEN_UNIT_INTERVAL",
+                })
+    return {
+        "status": "NO_REAL_INTERIOR_AXIS_CONTENT_FACTORS",
+        "poly_p": reduced["P"],
+        "poly_q": reduced["Q"],
+        "removed_factors": removed,
+        "interior_factors": retained_interior,
     }
