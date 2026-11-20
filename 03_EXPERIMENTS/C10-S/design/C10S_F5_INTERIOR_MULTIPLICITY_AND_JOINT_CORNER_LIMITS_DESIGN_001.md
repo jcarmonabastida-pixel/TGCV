@@ -142,4 +142,4 @@ The common content is square-free factorized in characteristic zero, preserving 
 
 This is a useful first exact component of the algebraic route, but it is not a general bivariate gcd. It does not detect mixed factors such as \\(\\mu+t-1\\), does not compute a resultant, does not isolate the component's intersections with the domain, and does not prove that no other common component exists. A negative axis-aligned result must never be interpreted as absence of a general common component.
 
-Four deterministic tests cover a vertical factor, a repeated horizontal factor, absence of axis-aligned factors without overclaiming, malformed inputs and zero-polynomial abstention (five tests total). The source-level suite now contains 55 test methods. All remain unexecuted under governed CPython 3.12.
+Five deterministic tests cover a vertical factor, a repeated horizontal factor, absence of axis-aligned factors without overclaiming, malformed inputs and zero-polynomial abstention. The source-level suite now contains 55 test methods. All remain unexecuted under governed CPython 3.12.
