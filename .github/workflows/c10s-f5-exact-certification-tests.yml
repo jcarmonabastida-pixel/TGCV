@@ -5,7 +5,12 @@ on:
     branches:
       - research/c10s-f1-integrated-correction-20261119
     paths:
-      - .github/workflows/c10s-f5-runner-sentinel
+      - 03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py
+      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_rational_score_polynomials.py
+      - 03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py
+      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_likelihood_diagnostics.py
+      - 03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_mcse_profile.py
+      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_mcse_profile.py
 
 permissions:
   contents: read
