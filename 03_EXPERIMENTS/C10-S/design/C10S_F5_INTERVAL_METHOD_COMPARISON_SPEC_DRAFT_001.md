@@ -406,3 +406,9 @@ Static review found that three adversarial fixtures supplied rational coefficien
 ### Resource-budget fixture alignment (2026-11-20)
 
 A final source scan found that the box-budget exhaustion test reused the simple common-root equations with `Fraction` coefficients. It has now been changed to the same integer-scaled equations (`2*mu-1`, `2*t-1`). Thus all four controller call sites in the adversarial tests honor the integer sparse-polynomial contract. This is a static source correction only; no test execution or PASS is claimed.
+
+### Krawczyk inclusion stage — first exact primitive implemented (2026-11-20)
+
+The Bernstein path now has a rational Krawczyk operator using Bernstein enclosures of exact polynomial derivatives. A box is certified as containing exactly one simple common root only if strict Krawczyk inclusion and a strict infinity-norm contraction bound are both proved. The integrated wrapper retains exclusions, certified boxes, unresolved multiple/singular boxes and resource remainders separately.
+
+This is not yet an exhaustive root-isolation algorithm. In particular, adjacent closed partition boxes can share boundary roots; the current wrapper does not yet canonicalize shared-edge/vertex roots or prove global uniqueness across the whole cover. Multiple roots remain unresolved. No governed test execution has occurred, and no method comparison or MLE certificate is claimed.
