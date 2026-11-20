@@ -124,3 +124,10 @@ The likelihood comparison gate is separate: a complete stationary-root census is
 7. Continue to keep M10/R5 and M30/R20 scientific banks, replays and calibrations outside this design-only authorization.
 
 **Current conclusion:** the four joint compactification-corner likelihood limits are analytically classified and a rational helper is implemented. Interior multiple-root certification, a complete interior census, cross-stratum likelihood ordering, and global MLE certification remain OPEN. No backend is selected.
+
+## 9. Coordinator crosswalk
+
+- Global MLE certification design: this document closes only the four joint corner likelihood limits; it does not close the score-root census or global likelihood comparison.
+- Interval-method comparison specification: the interval backend remains simple-root Krawczyk plus Bernstein exclusion until a validated deflation theorem is implemented; the algebraic backend remains a parallel exact resultant/subresultant candidate.
+- F1/F5 weak-identification audit: the corner result is a boundary-likelihood classification, not an identification or causal evidence upgrade. Weak-identification diagnostics and statistical execution gates remain unchanged.
+- Test inventory: four new deterministic joint-corner tests bring the source-level test-method count to 50. Governed execution remains pending.
