@@ -132,3 +132,8 @@ The next coordinated static/diagnostic work should:
 5. If a revised C5 candidate or rule is genuinely necessary, create a new versioned design decision and fresh disjoint development banks. The current banks remain historical development evidence and are not confirmatory.
 
 No further numerical execution is authorized by the one-use authorization used for run `44615173745`. The frozen specification v1.0 remains unchanged.
+
+
+## 8. Follow-on coordinated diagnostic
+
+The subsequent static raw-artifact analysis is recorded in `C10S_F5_B2_B3_COORDINATED_DIAGNOSTIC_001.md`. It identifies a B1 reconciliation gap between the production finite-difference L-BFGS-B fit and the analytic-gradient diagnostic fit, separates M30/R20 BFGS precision-loss termination from M10/R5 concentration-ridge divergence, and shows severe C5 undercoverage in the high fitted-concentration tail on matched data where C0 remains near nominal. The analysis is exploratory and does not alter the frozen adjudication. Replay is deferred; the next gate is static reconciliation and deterministic testing, not another numerical bank.
