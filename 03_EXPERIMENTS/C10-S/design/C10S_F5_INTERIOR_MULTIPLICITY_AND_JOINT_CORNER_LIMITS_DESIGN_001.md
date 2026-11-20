@@ -159,3 +159,13 @@ A zero primitive resultant is reported as `ZERO_RESULTANT_COMMON_FACTOR_OR_DEGEN
 Five deterministic fixtures have been added: a simple linear resultant, a shared mixed factor, restoration of common axis contents, a projection root associated with degree drop, and resource/invalid/zero-polynomial abstention. The source-level suite now contains 60 test methods. They are committed but have not been executed under governed CPython 3.12.
 
 This is the first resultant implementation, not yet a complete algebraic root solver. The resultant's real roots still require square-free decomposition and exact Sturm isolation in \(\mu\); each projection root must then be lifted through subresultants or specialized gcds in \(t\), with exact back-substitution into both original equations. Projection multiplicity is not local intersection multiplicity. A zero resultant still requires common-component classification, including mixed bivariate factors. No exhaustive interior census or global MLE certificate follows yet.
+
+## 4C. Implemented projection-root square-free and Sturm isolation
+
+The algebraic path now includes `compactified_projection_root_isolation_mu(resultant_result, ...)`. It accepts only a nonzero exact resultant, performs characteristic-zero square-free decomposition, and isolates every real projection root in the compactified interval \\(0\\leq\\mu\\leq1\\) using the existing exact rational Sturm sequence. Rational roots, including endpoints, are returned exactly; irrational roots are returned as rational intervals with Sturm count one. The projection multiplicity is retained as metadata.
+
+The helper validates rational coefficients, positive isolation width, depth and interval budgets. Non-resultant/zero-resultant statuses are not passed to Sturm as if they were finite polynomials. Depth and resource exhaustion preserve unresolved intervals and produce a partial status.
+
+Three deterministic tests cover a repeated rational projection root, an irrational projection root, and partial/non-resultant abstention with strict input validation. The source-level suite now contains 63 test methods, still unexecuted under governed CPython 3.12.
+
+This completes only the projection-coordinate stage. It does not lift an algebraic \\(\\mu\\)-root to one or more \\(t\\)-coordinates. The next algebraic operation must use subresultant sequences or specialized gcds over the isolated algebraic projection root, retain multiple distinct lifts sharing one projection, and verify both original equations. Projection multiplicity remains distinct from local intersection multiplicity.
