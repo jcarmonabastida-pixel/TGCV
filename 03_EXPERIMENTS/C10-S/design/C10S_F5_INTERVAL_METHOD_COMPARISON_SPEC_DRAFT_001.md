@@ -444,3 +444,7 @@ All four joint compactification-corner likelihood limits are now classified path
 ### Algebraic route: first exact coefficient-content subroutine (2026-11-20)
 
 The algebraic route now has an exact coefficient-content detector for common vertical (`mu`-only) and horizontal (`t`-only) components. It preserves repeated factors through square-free decomposition and fails closed on zero-polynomial ambiguity. General mixed bivariate factors remain unchecked; no resultant, CRT reconstruction, subresultant back-substitution or interior multiplicity certification is implemented by this helper. The interval route remains unchanged and independent.
+
+### Algebraic route: exact projection resultant prototype (2026-11-20)
+
+The algebraic path now computes `Res_t(P,Q)` over `Q[mu]` with exact Sylvester/Bareiss arithmetic, including coefficient-content restoration and resource abstention. This is a first resultant primitive. It does not yet isolate projection roots, lift them with subresultants, verify all candidates in the original equations, classify local multiplicity, or establish an exhaustive census. The Bernstein/Krawczyk interval route has not changed; neither route is selected.
