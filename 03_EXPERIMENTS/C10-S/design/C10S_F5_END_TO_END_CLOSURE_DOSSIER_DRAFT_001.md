@@ -31,7 +31,7 @@ The research harness currently contains the following reusable primitives in har
 - exact projection resultants and Sturm projection-root isolation, including the primary Res_mu(P,Q) concentration projection;
 - conditional-mean tube construction and a deterministic adaptive concentration-interval census combining Bernstein exclusion and Krawczyk inclusion.
 
-The test source contains 76 deterministic test methods. This is a source-level count only. The tests have not been executed in the governed CPython 3.12 environment and no PASS is claimed.
+The three deterministic test modules currently define 132 test methods (84 exact-score/certification, 26 likelihood diagnostics, 22 MCSE profile). This is a source-level count, distinct from executed/discovered counts.
 
 ## 3. Definitive mathematical closure contract
 
@@ -84,7 +84,7 @@ The existing boundary helpers provide exact ingredients, not yet a complete glob
 
 ### G6 — Governed software validation
 
-- Run the complete 76-method suite under the canonical CPython 3.12 environment after integrity preflight.
+- Run the complete 132-method suite under the canonical CPython 3.12 environment after integrity preflight.
 - Add missing end-to-end tests for exact histogram-to-score provenance, resultant-root lifting, multiple-root resolution/abstention, shared subdivision-boundary roots, endpoint-neighborhood coverage, all boundary profiles/corners, likelihood ordering, and resource exhaustion.
 - Run independent exact fixtures for simple, double, triple, near-coincident, boundary, common-component, and non-identifiable cases.
 - Record command, interpreter/build, dependency state, source commit, test discovery count, stdout/stderr, exit code, and hashes.
@@ -103,11 +103,11 @@ The existing boundary helpers provide exact ingredients, not yet a complete glob
 | Gate | Current evidence | Status |
 |---|---|---|
 | G1 exact score/input primitives | Implemented in research harness; governed execution pending | IMPLEMENTED / NOT VALIDATED |
-| G2 complete interior census | Simple-root local census exists; projection roots not fully lifted; multiple roots and endpoint neighborhoods open | OPEN |
-| G3 boundary/corner ingredients | Exact edge limits, edge root census, corner ownership and joint corner limits exist; integrated global adjudication not demonstrated | PARTIAL |
-| G4 global likelihood ordering | No complete rigorous candidate-vs-boundary ordering engine | OPEN |
+| G2 complete interior census | Closed-domain Bernstein/conditional-mean first-line census and exact resultant/Sturm fallback are implemented; simple-root inclusion only, multiple roots and endpoint accumulation remain unresolved; latest integrated run did not pass | OPEN |
+| G3 boundary/corner ingredients | Exact one-edge profiles and uniform joint-corner limits are integrated into the global path; deterministic helper tests pass in the prior run, but integrated global certificate remains unvalidated | PARTIAL |
+| G4 global likelihood ordering | Exact rational likelihood enclosures and strict candidate-vs-boundary separation engine are implemented; end-to-end nondegenerate fixture failed in latest completed run and remains unvalidated | OPEN |
 | G5 deterministic abstention | Several component-level limits/states exist; unified global result contract and ceilings not frozen | PARTIAL |
-| G6 governed validation | CPython 3.12.10, locked dependencies, compile PASS; 124/124 deterministic tests PASS in two independent Actions runs (44749347942 and 44749353232) on research snapshots 2c276b4ddc77e2e7a6e2a89bd11000271b34cd1b and 67d147b75ed6fc46c4a83792c50951d82e2dcf49 | PASS — deterministic software suite only |
+| G6 governed validation | CPython 3.12.10, locked dependencies and compilation PASS. Latest completed integrated run 44754937282 discovered/executed 132 tests: 128 PASS, 4 FAIL. The failures exposed an incorrect separable Bernstein basis accumulation plus three downstream census/global-ordering failures. The basis accumulation was corrected at 8edf65e; rerun 44761185930 is in progress. | OPEN — rerun pending |
 | G7 TierA relevance/calibration | No prospective calibration authorized or run | NOT RUN |
 
 ## 5. Known blockers that prevent honest F5 closure
@@ -116,7 +116,7 @@ The existing boundary helpers provide exact ingredients, not yet a complete glob
 2. Full open-domain coverage: the adaptive conditional-mean controller accepts only 0<t_-<t_+<1. Its success on a supplied interior interval does not cover neighborhoods of t=0 or t=1.
 3. Projection-to-root lifting: Res_mu(P,Q) candidates must be lifted and verified against both original score equations; projection multiplicity is not local bivariate multiplicity.
 4. Boundary/global ordering: exact edge and corner limits exist, but no integrated rigorous comparison of all interior and boundary likelihood candidates has been demonstrated.
-5. Governed validation and calibration: deterministic software validation now passes (124/124 in CPython 3.12.10, two independent runs); no authorized prospective M10/R5 or M30/R20 calibration evidence exists. This validates tested software behavior only, not completeness of the mathematical census.
+5. Governed validation and calibration: latest completed deterministic run failed 128/132; a corrective commit (8edf65e) fixes the identified Bernstein basis omission and a rerun is in progress. No governed prospective M10/R5 or M30/R20 calibration authorization/evidence exists. Even a clean software suite will not, by itself, establish mathematical completeness or TierA coverage.
 
 These are substantive proof/validation gaps, not documentation tasks. They cannot be closed by changing status labels or by adding a wrapper that reports a local census as global.
 
