@@ -13,6 +13,15 @@ from collections.abc import Mapping
 Poly = dict[tuple[int, int], int]
 
 
+def _exact_fraction(value):
+    """Convert only integers/Fractions; reject binary floats at the boundary."""
+    from fractions import Fraction
+
+    if type(value) is int or type(value) is Fraction:
+        return Fraction(value)
+    raise ValueError("EXACT_RATIONAL_REQUIRED")
+
+
 def _add(a: Poly, b: Poly) -> Poly:
     out = dict(a)
     for monomial, coefficient in b.items():
@@ -187,6 +196,19 @@ def bernstein_coefficients_on_box(
     from fractions import Fraction
     from math import comb
 
+    def rational_pair(bounds, code):
+        if not isinstance(bounds, tuple) or len(bounds) != 2:
+            raise ValueError(code)
+        try:
+            lo, hi = (_exact_fraction(bounds[0]), _exact_fraction(bounds[1]))
+        except ValueError:
+            raise ValueError(code) from None
+        if lo >= hi:
+            raise ValueError(code)
+        return lo, hi
+
+    mu_lo, mu_hi = rational_pair(mu_bounds, "INVALID_MU_BOUNDS")
+    t_lo, t_hi = rational_pair(t_bounds, "INVALID_T_BOUNDS")
     if not poly:
         return [[Fraction(0)]]
     if any(
@@ -195,20 +217,6 @@ def bernstein_coefficients_on_box(
         for (i, j), coefficient in poly.items()
     ):
         raise ValueError("POLYNOMIAL_MUST_HAVE_NONNEGATIVE_INTEGER_MONOMIALS")
-
-    def rational_pair(bounds, code):
-        if not isinstance(bounds, tuple) or len(bounds) != 2:
-            raise ValueError(code)
-        try:
-            lo, hi = Fraction(bounds[0]), Fraction(bounds[1])
-        except (TypeError, ValueError, ZeroDivisionError):
-            raise ValueError(code) from None
-        if lo >= hi:
-            raise ValueError(code)
-        return lo, hi
-
-    mu_lo, mu_hi = rational_pair(mu_bounds, "INVALID_MU_BOUNDS")
-    t_lo, t_hi = rational_pair(t_bounds, "INVALID_T_BOUNDS")
     degree_mu = max(i for i, _ in poly)
     degree_t = max(j for _, j in poly)
 
@@ -244,10 +252,15 @@ def bernstein_coefficients_on_box(
 
 def bernstein_sign_excludes_zero(coefficients: list[list[object]]) -> bool:
     """Return True only when exact Bernstein coefficients exclude zero."""
-    from fractions import Fraction
-
-    flat = [Fraction(value) for row in coefficients for value in row]
-    return bool(flat) and (all(value > 0 for value in flat) or all(value < 0 for value in flat))
+    if not isinstance(coefficients, list) or not coefficients:
+        raise ValueError("NONEMPTY_RECTANGULAR_COEFFICIENT_MATRIX_REQUIRED")
+    if any(not isinstance(row, list) or not row for row in coefficients):
+        raise ValueError("NONEMPTY_RECTANGULAR_COEFFICIENT_MATRIX_REQUIRED")
+    width = len(coefficients[0])
+    if any(len(row) != width for row in coefficients):
+        raise ValueError("RECTANGULAR_COEFFICIENT_MATRIX_REQUIRED")
+    flat = [_exact_fraction(value) for row in coefficients for value in row]
+    return all(value > 0 for value in flat) or all(value < 0 for value in flat)
 
 
 
@@ -273,7 +286,7 @@ def bernstein_subdivide(
     width = len(coefficients[0])
     if any(len(row) != width for row in coefficients):
         raise ValueError("RECTANGULAR_COEFFICIENT_MATRIX_REQUIRED")
-    matrix = [[Fraction(value) for value in row] for row in coefficients]
+    matrix = [[_exact_fraction(value) for value in row] for row in coefficients]
 
     def split_line(values):
         levels = [values]
@@ -344,8 +357,15 @@ def bernstein_exclusion_subdivision(
         raise ValueError("MAX_BOXES_MUST_BE_POSITIVE_INTEGER")
     if type(max_depth) is not int or max_depth < 0:
         raise ValueError("MAX_DEPTH_MUST_BE_NONNEGATIVE_INTEGER")
-    mu_lo, mu_hi = Fraction(mu_bounds[0]), Fraction(mu_bounds[1])
-    t_lo, t_hi = Fraction(t_bounds[0]), Fraction(t_bounds[1])
+    if not isinstance(mu_bounds, tuple) or len(mu_bounds) != 2:
+        raise ValueError("INVALID_INITIAL_BOX")
+    if not isinstance(t_bounds, tuple) or len(t_bounds) != 2:
+        raise ValueError("INVALID_INITIAL_BOX")
+    try:
+        mu_lo, mu_hi = (_exact_fraction(mu_bounds[0]), _exact_fraction(mu_bounds[1]))
+        t_lo, t_hi = (_exact_fraction(t_bounds[0]), _exact_fraction(t_bounds[1]))
+    except ValueError:
+        raise ValueError("INVALID_INITIAL_BOX") from None
     if mu_lo >= mu_hi or t_lo >= t_hi:
         raise ValueError("INVALID_INITIAL_BOX")
 
