@@ -1,8 +1,9 @@
 """Deterministic algebra tests for c10s_f5_rational_score_polynomials."""
 from fractions import Fraction
 import unittest
+import os
 
-TEST_SOURCE_REVISION = "a" * 40
+TEST_SOURCE_REVISION = os.environ.get("GITHUB_SHA", "a" * 40)
 
 
 from c10s_f5_rational_score_polynomials import (
@@ -1105,7 +1106,14 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(first["source_revision"], TEST_SOURCE_REVISION)
         self.assertEqual(len(first["histogram_sha256"]), 64)
 
-    def test_input_provenance_rejects_missing_or_malformed_source_revision(self):
+    def test_input_provenance_defaults_to_actual_github_source_revision(self):
+        expected_revision = os.environ.get("GITHUB_SHA")
+        if not expected_revision:
+            self.skipTest("GITHUB_SHA is supplied by the governed Actions runner")
+        provenance = _f5_input_provenance(5, {0: 1, 5: 1}, None)
+        self.assertEqual(provenance["source_revision"], expected_revision.lower())
+
+    def test_input_provenance_rejects_malformed_source_revision(self):
         with self.assertRaisesRegex(ValueError, "SOURCE_REVISION_MUST_BE_40_HEX_SHA"):
             _f5_input_provenance(2, {0: 1, 2: 1}, "not-a-commit-sha")
 
