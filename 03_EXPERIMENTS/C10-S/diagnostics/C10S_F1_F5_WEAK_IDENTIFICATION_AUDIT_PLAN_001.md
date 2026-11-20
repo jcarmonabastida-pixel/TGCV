@@ -784,3 +784,7 @@ A rational Sturm-sequence isolator now processes the square-free common factors 
 ### Joint corner limits and interior multiplicity proof obligations (2026-11-20)
 
 A uniform beta-binomial mean bound now classifies the four joint `(mu,t)` corner likelihood limits independently of the relative approach rates: `P(X>0) <= r*mu` and `P(X<r) <= r*(1-mu)`. The finite-histogram corner likelihood is one only for observations entirely at the corresponding endpoint, otherwise zero. Four deterministic tests are added; the 50-test suite remains unexecuted in governed CPython 3.12. The new integrated design specifies a distinct exact resultant/subresultant enumeration route and the proof obligations for validated interval deflation of singular interior roots. Neither route is yet a multiple-root certificate; unresolved singular boxes continue to block exhaustive/global claims.
+
+### Axis-aligned algebraic common-component detector added (2026-11-20)
+
+The F5 harness now computes exact coefficient contents and their gcd for each compactification axis, detecting common vertical/horizontal factors and retaining shared multiplicities by square-free decomposition. Zero-polynomial cases return an unresolved state; malformed sparse inputs are rejected. General mixed bivariate factors are explicitly outside scope. Five tests are added; the source-level suite count is 55, still unexecuted in governed CPython 3.12. This is an algebraic diagnostic primitive only and does not upgrade identification, weak-identification or scientific evidence status.
