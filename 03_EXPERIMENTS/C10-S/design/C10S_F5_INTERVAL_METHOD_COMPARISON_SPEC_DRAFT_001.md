@@ -298,3 +298,22 @@ These are technical/statistical blockers to be resolved by analysis and determin
 See `diagnostics/C10S_F5_MODULAR_BACKEND_FEASIBILITY_NOTE_001.md`. On the deterministic M30/R20 score-numerator fixture, the sparse Sylvester pattern has a 79×79 determinant. A maximum-weight perfect matching using each nonzero entry's degree in kappa gives a rigorous determinant-term degree upper bound of 3,501 (versus the coarse dense bound 3,862). This is not the actual resultant degree. Full evaluation/interpolation to that bound would require up to 3,502 evaluations per good prime before CRT and is not yet an acceptable implementation strategy.
 
 Generic SymPy PRS over GF(p)[kappa] also exceeded the 60-second tool ceiling. The next modular candidate must exploit sparse subresultant/degree-drop structure rather than merely changing the coefficient field. D1 remains OPEN; D2 remains a partial exact score-construction primitive only.
+
+
+## 13. Compactified concentration coordinate — implementation status (2026-11-20)
+
+The research harness now has exact sparse score numerators and an exact coordinate transformation
+\[
+t=\frac{\kappa}{1+\kappa},\qquad
+\widetilde P(\mu,t)=(1-t)^dP\!\left(\mu,\frac{t}{1-t}\right),
+\quad d=\deg_\kappa P.
+\]
+This maps finite positive concentration to \(0<t<1\) and preserves the interior zero set because the multiplier is strictly positive there. The two endpoints are not finite concentration candidates: they encode the already-required \(\kappa\to0\) and \(\kappa\to\infty\) boundary strata and must be compared using their analytic likelihood limits.
+
+The implementation and new deterministic exact-rational tests are committed in:
+- `harness/c10s_f5_rational_score_polynomials.py`
+- `harness/test_c10s_f5_rational_score_polynomials.py`
+
+The added tests cover exact M30/R20 score identities and the compactification identity/root correspondence. They are committed but not yet executed under the governed CPython 3.12 environment. This is preprocessing only, not a root certificate.
+
+**Backend decision remains OPEN.** The next comparison must use the compactified exact numerator pair as common input. The modular route must prove its modular reconstruction bound and independently verify the reconstructed result; the interval route must certify exhaustive coverage of the open square, including even-multiplicity stationary points, and abstain on unresolved boxes. Both must separately handle t=0, t=1, mu=0 and mu=1 strata. No backend is selected by this coordinate transformation alone.
