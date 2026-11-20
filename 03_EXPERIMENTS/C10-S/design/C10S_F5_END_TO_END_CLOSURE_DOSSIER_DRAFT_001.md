@@ -86,15 +86,14 @@ The existing boundary helpers provide exact ingredients, not yet a complete glob
 
 - Run the complete 132-method suite under the canonical CPython 3.12 environment after integrity preflight.
 - Add missing end-to-end tests for exact histogram-to-score provenance, resultant-root lifting, multiple-root resolution/abstention, shared subdivision-boundary roots, endpoint-neighborhood coverage, all boundary profiles/corners, likelihood ordering, and resource exhaustion.
-- Run independent exact fixtures for simple, double, triple, near-coincident, boundary, common-component, and non-identifiable cases.
-- Record command, interpreter/build, dependency state, source commit, test discovery count, stdout/stderr, exit code, and hashes.
+- Run independent exact fixtures for simple, double, triple, near-coincident, boundary, common-component, and non-identifiable cases; certify or explicitly abstain without promoting unsupported roots.
+- Cross-check the Bernstein/conditional-mean route against exact resultant/Sturm on the same hand-constructed M10/R5 target where computationally feasible; compare the lifted stationary set and global classification, and record coefficient growth, interval counts, unresolved fraction and runtime. This is deterministic engineering validation, not scientific calibration.
+- Record command, interpreter/build, dependency state, source commit, test discovery count, stdout/stderr, exit code, and input/polynomial hashes.
 - Audit the primary run; replay only if the applicable authorization and replay gate permit it.
 
 ### G7 — F5 relevance and TierA calibration gate
 
-- On frozen hand-constructed fixtures, compare the reduced Bernstein/conditional-mean route against the exact resultant/Sturm route for identical mathematical targets.
-- Measure coefficient growth, intervals processed, unresolved fraction, runtime and memory under declared ceilings.
-- Only after software and mathematical gates pass, run the specifically authorized M10/R5 and M30/R20 coverage/calibration operation.
+- Only after G1–G6 pass, run the specifically authorized prospective M10/R5 and M30/R20 TierA coverage/calibration operation.
 - Assess the original TierA failure criteria prospectively; B2/B3 remain diagnostic history and must not be reused to select a method or tune calibration.
 - Decide whether the recovered coverage is adequate for C10-S or whether the procedure must abstain in defined regimes.
 
