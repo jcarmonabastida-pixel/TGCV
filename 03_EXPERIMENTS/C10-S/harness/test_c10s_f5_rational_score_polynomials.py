@@ -236,6 +236,39 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(result["certified_root_boxes"], [])
         self.assertEqual(len(result["unresolved_boxes"]), 1)
 
+    def test_integrated_controller_refines_unresolved_boxes_deterministically(self):
+        # A repeated root must remain unresolved after adaptive subdivision.
+        square_mu = {(2, 0): 4, (1, 0): -4, (0, 0): 1}
+        linear_t = {(0, 1): 2, (0, 0): -1}
+        first = bernstein_krawczyk_root_classification(
+            square_mu, linear_t,
+            mu_bounds=(Fraction(1, 4), Fraction(3, 4)),
+            t_bounds=(Fraction(1, 4), Fraction(3, 4)),
+            max_boxes=9, max_depth=2,
+        )
+        second = bernstein_krawczyk_root_classification(
+            square_mu, linear_t,
+            mu_bounds=(Fraction(1, 4), Fraction(3, 4)),
+            t_bounds=(Fraction(1, 4), Fraction(3, 4)),
+            max_boxes=9, max_depth=2,
+        )
+        self.assertEqual(first, second)
+        self.assertGreater(first["subdivisions"], 0)
+        self.assertEqual(first["certified_root_boxes"], [])
+        self.assertTrue(first["unresolved_boxes"])
+
+    def test_integrated_controller_marks_unprocessed_budget_remainder(self):
+        result = bernstein_krawczyk_root_classification(
+            {(1, 0): 2, (0, 0): -1},
+            {(0, 1): 2, (0, 0): -1},
+            max_boxes=1, max_depth=10,
+        )
+        self.assertEqual(result["status"], "RESOURCE_LIMIT_WITH_REMAINDER")
+        self.assertTrue(any(
+            box["state"] == "NOT_PROCESSED_RESOURCE_LIMIT"
+            for box in result["unresolved_boxes"]
+        ))
+
     def test_boundary_profiles_are_exact_for_endpoint_histogram(self):
         result = beta_binomial_boundary_likelihoods(2, {0: 1, 2: 1})
         self.assertEqual(result["kappa_infinity"]["profile_mean"], Fraction(1, 2))
