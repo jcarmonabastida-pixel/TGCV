@@ -1946,34 +1946,54 @@ def conditional_mean_tube_and_concentration_exclusion(
         return 0
 
     denominator = 2**max_mu_depth
-    signs = [
-        line_bernstein_sign(poly_mean_score, Fraction(i, denominator))
-        for i in range(denominator + 1)
-    ]
-    positive = [i for i, sign in enumerate(signs) if sign > 0]
-    negative = [i for i, sign in enumerate(signs) if sign < 0]
-    if not positive or not negative:
+    lower = Fraction(0)
+    upper = Fraction(1)
+    lower_sign = line_bernstein_sign(poly_mean_score, lower)
+    upper_sign = line_bernstein_sign(poly_mean_score, upper)
+    if lower_sign <= 0 or upper_sign >= 0:
         return {
             "status": "MEAN_ROOT_TUBE_UNRESOLVED_ENDPOINT_SIGNS",
             "t_bounds": (t_lo, t_hi),
             "grid_denominator": denominator,
-            "certified_positive_grid_indices": positive,
-            "certified_negative_grid_indices": negative,
+            "certified_positive_grid_indices": [],
+            "certified_negative_grid_indices": [],
         }
-    lower_index = max(positive)
-    upper_index = min(negative)
-    if lower_index >= upper_index:
+
+    # Strict conditional concavity means any uniformly positive lower witness
+    # and negative upper witness bracket the unique mean root. Bisection needs
+    # O(depth) exact line-sign evaluations rather than scanning 2**depth points.
+    for _ in range(max_mu_depth):
+        midpoint = (lower + upper) / 2
+        midpoint_sign = line_bernstein_sign(poly_mean_score, midpoint)
+        if midpoint_sign > 0:
+            lower = midpoint
+        elif midpoint_sign < 0:
+            upper = midpoint
+        else:
+            # A zero/mixed Bernstein enclosure at the midpoint is not a sign
+            # claim. Probe its adjacent dyadic grid points; if they bracket
+            # uniformly, retain the narrow bracket, otherwise let t subdivision
+            # reduce the variation and retry.
+            step = Fraction(1, denominator)
+            left_probe = max(lower, midpoint - step)
+            right_probe = min(upper, midpoint + step)
+            left_sign = line_bernstein_sign(poly_mean_score, left_probe)
+            right_sign = line_bernstein_sign(poly_mean_score, right_probe)
+            if left_sign > 0 and right_sign < 0:
+                lower, upper = left_probe, right_probe
+            break
+
+    lower_index = int(lower * denominator)
+    upper_index = int(upper * denominator)
+    if lower >= upper or lower_sign <= 0 or upper_sign >= 0:
         return {
             "status": "MEAN_ROOT_TUBE_UNRESOLVED_SIGN_ORDER",
             "t_bounds": (t_lo, t_hi),
             "grid_denominator": denominator,
-            "certified_positive_grid_indices": positive,
-            "certified_negative_grid_indices": negative,
+            "certified_positive_grid_indices": [lower_index],
+            "certified_negative_grid_indices": [upper_index],
         }
-    mu_bounds = (
-        Fraction(lower_index, denominator),
-        Fraction(upper_index, denominator),
-    )
+    mu_bounds = (lower, upper)
     q_coefficients = bernstein_coefficients_on_box(
         poly_concentration_score, mu_bounds, (t_lo, t_hi)
     )
@@ -2844,10 +2864,13 @@ def _strip_axis_content_factors_outside_open_unit_domain(
                 for endpoint in (Fraction(0), Fraction(1)):
                     if len(factor) > 1 and _uni_evaluate(factor, endpoint) == 0:
                         linear = [-endpoint, Fraction(1)]
+                        linear_sign = 1 if _uni_evaluate(linear, Fraction(1, 2)) > 0 else -1
                         for _ in range(multiplicity):
                             reduced[label] = _divide_sparse_by_axis_factor(
                                 reduced[label], axis, linear
                             )
+                        if linear_sign < 0 and multiplicity % 2:
+                            reduced[label] = {monomial: -value for monomial, value in reduced[label].items()}
                         factor = _uni_divide_linear(factor, endpoint)
                         removed.append({
                             "polynomial": label,
@@ -2867,10 +2890,13 @@ def _strip_axis_content_factors_outside_open_unit_domain(
                         "status": "REAL_INTERIOR_AXIS_FACTOR_RETAINED",
                     })
                     continue
+                factor_sign = 1 if _uni_evaluate(factor, Fraction(1, 2)) > 0 else -1
                 for _ in range(multiplicity):
                     reduced[label] = _divide_sparse_by_axis_factor(
                         reduced[label], axis, factor
                     )
+                if factor_sign < 0 and multiplicity % 2:
+                    reduced[label] = {monomial: -value for monomial, value in reduced[label].items()}
                 removed.append({
                     "polynomial": label,
                     "axis": axis,
