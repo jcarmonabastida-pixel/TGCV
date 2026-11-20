@@ -227,9 +227,10 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(result["unresolved_boxes"], [])
 
     def test_bernstein_controller_retains_common_root_box(self):
+        # Integer scaling preserves the common zero at (1/2, 1/2).
         result = bernstein_exclusion_subdivision(
-            {(1, 0): 1, (0, 0): Fraction(-1, 2)},
-            {(0, 1): 1, (0, 0): Fraction(-1, 2)},
+            {(1, 0): 2, (0, 0): -1},
+            {(0, 1): 2, (0, 0): -1},
             max_boxes=100, max_depth=2,
         )
         self.assertEqual(result["status"], "UNRESOLVED_BOXES")
@@ -256,17 +257,9 @@ class RationalScorePolynomialTests(unittest.TestCase):
 
 
     def test_bernstein_controller_retains_even_multiplicity_common_root(self):
-        half = Fraction(1, 2)
-        square = {
-            (2, 0): 1,
-            (1, 0): -2 * half,
-            (0, 0): half * half,
-        }
-        square_t = {
-            (0, 2): 1,
-            (0, 1): -2 * half,
-            (0, 0): half * half,
-        }
+        # (2*mu-1)^2 and (2*t-1)^2: integer-scaled double-root fixture.
+        square = {(2, 0): 4, (1, 0): -4, (0, 0): 1}
+        square_t = {(0, 2): 4, (0, 1): -4, (0, 0): 1}
         result = bernstein_exclusion_subdivision(
             square, square_t, max_boxes=100, max_depth=2
         )
@@ -274,17 +267,17 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertGreater(len(result["unresolved_boxes"]), 0)
 
     def test_bernstein_controller_retains_near_coincident_common_roots(self):
-        a = Fraction(1, 2)
-        b = a + Fraction(1, 2**20)
-        c = Fraction(1, 3)
-        # P=(mu-a)(mu-b); Q=(t-c). Both common roots are inside the box
-        # and closer than the coarse initial subdivision can separate.
+        denominator = 2**20
+        a_num = denominator // 2
+        b_num = a_num + 1
+        # P=(D*mu-a_num)(D*mu-b_num), Q=3*t-1.
+        # Integer scaling preserves roots separated by exactly 2^-20.
         p = {
-            (2, 0): 1,
-            (1, 0): -(a + b),
-            (0, 0): a * b,
+            (2, 0): denominator**2,
+            (1, 0): -denominator * (a_num + b_num),
+            (0, 0): a_num * b_num,
         }
-        q = {(0, 1): 1, (0, 0): -c}
+        q = {(0, 1): 3, (0, 0): -1}
         result = bernstein_exclusion_subdivision(
             p, q, max_boxes=100, max_depth=2
         )
