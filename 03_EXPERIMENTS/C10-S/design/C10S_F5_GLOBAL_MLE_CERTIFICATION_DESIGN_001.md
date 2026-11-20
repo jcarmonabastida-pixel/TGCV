@@ -250,3 +250,29 @@ The first exact score-numerator constructor is now implemented and tested. The e
 Decision: do not select either generic SymPy PRS or CAD by assumption. Next compare a purpose-built modular subresultant/CRT path with an interval-certified one-dimensional profile path on the same deterministic M30/R20 fixtures. The latter exploits the strict conditional concavity in mu and may avoid constructing a high-degree resultant, but it must prove exhaustive stationary-root coverage, including even-multiplicity roots, or abstain. A bounded exact backend comparison is still required before D1 can close.
 
 The implementation does not compute a resultant, isolate roots, evaluate likelihood enclosures, or certify globality. It is the first verified algebra layer only. No fit, bootstrap, calibration, coverage run, or scientific execution was performed.
+
+
+## 14. Exact compactification of the concentration domain — implemented (2026-11-20)
+
+The score-polynomial module now includes `compactify_concentration(P)`. For a sparse integer polynomial
+\[
+P(\mu,\kappa)=\sum_{i,j}c_{ij}\mu^i\kappa^j,
+\qquad d=\max\{j:c_{ij}\ne0\},
+\]
+it returns the exact integer polynomial
+\[
+\widetilde P(\mu,t)=(1-t)^dP\!\left(\mu,\frac{t}{1-t}\right).
+\]
+The bijection \(t=\kappa/(1+\kappa)\) maps the open concentration domain \(0<\kappa<\infty\) to the bounded interval \(0<t<1\). Since \((1-t)^d>0\) there, the transformation preserves the interior zero set exactly. It is implemented using integer binomial coefficients only.
+
+The endpoints are deliberately excluded from interior root enumeration:
+- \(t=0\) represents the \(\kappa\to0\) boundary;
+- \(t=1\) represents \(\kappa\to\infty\), and its value is governed by the leading-concentration coefficient polynomial.
+
+Endpoint likelihood limits remain separate boundary candidates; endpoint roots of the compactified score polynomial must not be misreported as finite interior stationary points. Each score numerator is compactified with its own actual concentration degree; their degrees need not match.
+
+Three additional deterministic tests were added: exact M30/R20 score identity at rational parameter points, exact compactification identity at rational points, and preservation of an interior zero under the map. The transformation identity was also independently checked with exact rational arithmetic in a separate scratch calculation. The repository test suite has not been executed in the governed Python 3.12 environment; these tests are committed, not yet reported PASS.
+
+### What this does and does not solve
+
+This removes the unbounded concentration coordinate from the prospective elimination and interval-certification interfaces. It does not itself isolate roots, prove there are no even-multiplicity roots, order likelihood candidates, or certify the global MLE. The next implementation layer must operate on the compactified pair and provide a complete certificate on the open unit interval while treating both endpoints explicitly.
