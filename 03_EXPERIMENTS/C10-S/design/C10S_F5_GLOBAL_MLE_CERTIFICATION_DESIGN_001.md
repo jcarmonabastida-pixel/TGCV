@@ -326,3 +326,9 @@ No global MLE certification, D1 closure, backend selection, benchmark, calibrati
 ### Multiple/near-coincident retention fixtures added (2026-11-20)
 
 The interval exclusion test contract now includes a hand-constructed common double root and a pair of distinct common roots separated by `2^-20`. Current controller assertions require that neither case is declared root-free. They are preservation/negative-certification tests only; the controller does not yet isolate these roots or certify multiplicity. Governed CPython 3.12 execution remains pending.
+
+### 19. Exact-rational input contract hardened (2026-11-20)
+
+The Bernstein conversion, sign predicate, de Casteljau subdivision and adaptive exclusion controller now enforce exact input types at their public boundaries: integers and `Fraction` only. Binary floats are rejected rather than rationalized from their binary representation. The empty-polynomial conversion also validates the supplied rectangle before returning. Four adversarial tests were added for these rejection paths.
+
+This closes an input-integrity gap, not a mathematical certification gap. The adaptive controller remains exclusion-only; it does not prove existence, uniqueness, multiplicity or global optimality. The closed-square boundary issue remains open. Tests remain unexecuted under governed CPython 3.12; no PASS or MLE certificate is claimed.
