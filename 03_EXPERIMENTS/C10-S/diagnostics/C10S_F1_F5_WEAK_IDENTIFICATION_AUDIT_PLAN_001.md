@@ -772,3 +772,7 @@ The integrated exact controller now performs a deterministic breadth-first cycle
 ### Exact compactification-edge multiplicity analysis added (2026-11-20)
 
 The harness now computes exact univariate gcds of the two score restrictions on `mu=0`, `mu=1`, `t=0` and `t=1`, then square-free-factorizes each common gcd to preserve the minimum shared multiplicity. Common components (both restrictions identically zero) fail closed as unresolved. Three deterministic tests were added, including a shared double factor and malformed monomial validation. This does not yet isolate real edge roots, deduplicate corners, resolve interior multiple roots or certify global likelihood ordering. Governed CPython 3.12 execution remains pending.
+
+### Sturm isolation added for compactification-edge roots (2026-11-20)
+
+A rational Sturm-sequence isolator now processes the square-free common factors obtained on each compactification edge. It distinguishes exact rational roots from non-rational isolating intervals with root count one, and records incomplete intervals under explicit depth/resource limits. Adversarial tests cover a rational double root, an irrational common root and forced abstention. Adjacent-edge corner deduplication, interior multiple-root resolution and global likelihood comparison remain open. The 43 deterministic tests have not been executed in governed CPython 3.12.
