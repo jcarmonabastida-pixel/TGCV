@@ -1,17 +1,20 @@
-name: C10-S F5 deterministic certification
+name: C10-S F5 exact certification deterministic tests
 
 on:
-  push:
-    branches:
-      - research/c10s-f1-integrated-correction-20261119
-    paths:
-      - .github/workflows/c10s-f5-runner-sentinel
+  workflow_dispatch:
+    inputs:
+      confirm_f5_deterministic_validation:
+        description: "Authorize deterministic F5 unit/adversarial tests only; no calibration, replay or scientific bank"
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
   f5-tests:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/c10s-f1-integrated-correction-20261119' && inputs.confirm_f5_deterministic_validation == true
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
