@@ -439,8 +439,8 @@ class RationalScorePolynomialTests(unittest.TestCase):
         )
 
     def test_axis_common_component_detects_horizontal_repeated_factor(self):
-        p = {(0, 2): 4, (0, 1): -4, (1, 2): 2, (1, 1): -2}
-        q = {(0, 3): 8, (0, 2): -12, (0, 1): 4, (1, 3): 4, (1, 2): -6, (1, 1): 2}
+        p = {(0, 2): 4, (0, 1): -4, (0, 0): 1, (1, 2): 4, (1, 1): -4, (1, 0): 1}
+        q = {(0, 2): 8, (0, 1): -8, (0, 0): 2, (1, 2): 4, (1, 1): -4, (1, 0): 1}
         result = compactified_axis_common_components(p, q)
         horizontal = result["axes"]["t"]
         self.assertEqual(
