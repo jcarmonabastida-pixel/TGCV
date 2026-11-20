@@ -1866,3 +1866,125 @@ def compactified_concentration_root_isolation_t(
         "finite_positive_concentration_domain": (0, 1),
     }
 
+
+
+def conditional_mean_tube_and_concentration_exclusion(
+    poly_mean_score: Poly,
+    poly_concentration_score: Poly,
+    *,
+    t_bounds: tuple[object, object],
+    max_mu_depth: int = 10,
+) -> dict[str, object]:
+    """Bracket the unique conditional mean root uniformly over a t interval.
+
+    For each rational grid point mu=i/2**max_mu_depth, evaluate the mean-score
+    numerator as a univariate polynomial in t and use exact univariate
+    Bernstein coefficients on t_bounds to certify its strict sign. The
+    strictly decreasing conditional beta-binomial mean score implies that
+    certified positive/negative grid points bracket its unique root for every
+    t in the interval. The concentration-score numerator is then bounded on
+    the resulting rational (mu,t) tube by tensor-product Bernstein coefficients.
+
+    If that second numerator has strict constant sign on the tube, the entire
+    t interval contains no common stationary point. Otherwise the tube is a
+    conservative candidate region, not a root/existence certificate.
+    """
+    from fractions import Fraction
+    from math import comb
+
+    if type(max_mu_depth) is not int or not 1 <= max_mu_depth <= 16:
+        raise ValueError("MAX_MU_DEPTH_MUST_BE_INTEGER_1_TO_16")
+    if not isinstance(t_bounds, tuple) or len(t_bounds) != 2:
+        raise ValueError("INVALID_T_BOUNDS")
+    try:
+        t_lo, t_hi = (_exact_fraction(t_bounds[0]), _exact_fraction(t_bounds[1]))
+    except ValueError:
+        raise ValueError("INVALID_T_BOUNDS") from None
+    if not 0 <= t_lo < t_hi <= 1:
+        raise ValueError("T_BOUNDS_MUST_BE_WITHIN_UNIT_INTERVAL")
+    for poly in (poly_mean_score, poly_concentration_score):
+        if not isinstance(poly, Mapping) or any(
+            not isinstance(monomial, tuple) or len(monomial) != 2
+            or type(monomial[0]) is not int or monomial[0] < 0
+            or type(monomial[1]) is not int or monomial[1] < 0
+            or type(coefficient) is not int
+            for monomial, coefficient in poly.items()
+        ):
+            raise ValueError("POLYNOMIAL_MUST_HAVE_INTEGER_SPARSE_TERMS")
+
+    def line_bernstein_sign(poly, mu_value):
+        # Restrict P(mu,t) to the rational line mu=mu_value.
+        coeffs = defaultdict(Fraction)
+        for (i, j), coefficient in poly.items():
+            coeffs[j] += Fraction(coefficient) * mu_value**i
+        while coeffs and max(coeffs) > 0 and coeffs[max(coeffs)] == 0:
+            del coeffs[max(coeffs)]
+        if not coeffs:
+            return 0
+        degree = max(coeffs)
+        # Substitute t=t_lo+(t_hi-t_lo)*u in the power basis.
+        transformed = [Fraction(0) for _ in range(degree + 1)]
+        for power, coefficient in coeffs.items():
+            for j in range(power + 1):
+                transformed[j] += (
+                    coefficient * comb(power, j) * t_lo**(power-j)
+                    * (t_hi-t_lo)**j
+                )
+        bernstein = []
+        for i in range(degree + 1):
+            value = Fraction(0)
+            for j in range(i + 1):
+                value += transformed[j] * Fraction(comb(i, j), comb(degree, j))
+            bernstein.append(value)
+        if all(value > 0 for value in bernstein):
+            return 1
+        if all(value < 0 for value in bernstein):
+            return -1
+        return 0
+
+    denominator = 2**max_mu_depth
+    signs = [
+        line_bernstein_sign(poly_mean_score, Fraction(i, denominator))
+        for i in range(denominator + 1)
+    ]
+    positive = [i for i, sign in enumerate(signs) if sign > 0]
+    negative = [i for i, sign in enumerate(signs) if sign < 0]
+    if not positive or not negative:
+        return {
+            "status": "MEAN_ROOT_TUBE_UNRESOLVED_ENDPOINT_SIGNS",
+            "t_bounds": (t_lo, t_hi),
+            "grid_denominator": denominator,
+            "certified_positive_grid_indices": positive,
+            "certified_negative_grid_indices": negative,
+        }
+    lower_index = max(positive)
+    upper_index = min(negative)
+    if lower_index >= upper_index:
+        return {
+            "status": "MEAN_ROOT_TUBE_UNRESOLVED_SIGN_ORDER",
+            "t_bounds": (t_lo, t_hi),
+            "grid_denominator": denominator,
+            "certified_positive_grid_indices": positive,
+            "certified_negative_grid_indices": negative,
+        }
+    mu_bounds = (
+        Fraction(lower_index, denominator),
+        Fraction(upper_index, denominator),
+    )
+    q_coefficients = bernstein_coefficients_on_box(
+        poly_concentration_score, mu_bounds, (t_lo, t_hi)
+    )
+    excludes = bernstein_sign_excludes_zero(q_coefficients)
+    return {
+        "status": (
+            "NO_COMMON_STATIONARY_POINT_ON_T_INTERVAL"
+            if excludes else "CANDIDATE_T_INTERVAL_UNRESOLVED"
+        ),
+        "t_bounds": (t_lo, t_hi),
+        "mean_root_tube_mu_bounds": mu_bounds,
+        "grid_denominator": denominator,
+        "mean_root_existence_for_every_t_certified": True,
+        "mean_root_uniqueness_for_every_t_relies_on_strict_conditional_concavity": True,
+        "concentration_score_excludes_zero_on_tube": excludes,
+        "scope": "INTERVAL_PRUNING_ONLY_NOT_ROOT_EXISTENCE_OR_GLOBAL_CENSUS",
+    }
