@@ -133,3 +133,34 @@ def beta_binomial_score_numerators(
             n_kappa = _add(n_kappa, _scale(abc_excluded[2 * r + j], -total))
 
     return n_mu, n_kappa
+
+
+def compactify_concentration(poly: Poly) -> Poly:
+    """Map kappa in (0,+inf) to t=kappa/(1+kappa) in (0,1).
+
+    Returns (1-t)^d * P(mu, t/(1-t)), where d is the maximum kappa
+    degree in P. This is an exact integer polynomial transformation and
+    preserves the zero set for 0<t<1. The endpoints t=0 and t=1 represent
+    kappa->0 and kappa->infinity and must be adjudicated separately; roots
+    there are not interior stationary points.
+    """
+    from math import comb
+
+    if not poly:
+        return {}
+    if any(
+        type(i) is not int or i < 0 or type(j) is not int or j < 0
+        or type(coefficient) is not int
+        for (i, j), coefficient in poly.items()
+    ):
+        raise ValueError("POLYNOMIAL_MUST_HAVE_NONNEGATIVE_INTEGER_MONOMIALS")
+    degree_kappa = max(j for _, j in poly)
+    out: defaultdict[tuple[int, int], int] = defaultdict(int)
+    for (degree_mu, degree_kappa_term), coefficient in poly.items():
+        remaining = degree_kappa - degree_kappa_term
+        for power in range(remaining + 1):
+            out[(degree_mu, degree_kappa_term + power)] += (
+                coefficient * comb(remaining, power)
+                * (-1 if power % 2 else 1)
+            )
+    return {monomial: coefficient for monomial, coefficient in out.items() if coefficient}
