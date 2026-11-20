@@ -402,3 +402,7 @@ These are static implementation changes only. The tests have not been run in gov
 ### Fixture contract correction — integer-scaled root polynomials (2026-11-20)
 
 Static review found that three adversarial fixtures supplied rational coefficients to a Bernstein converter whose polynomial contract is integer-coefficient sparse polynomials. The fixtures have been corrected by multiplying each equation by a positive integer denominator: the simple common root uses `2*mu-1` and `2*t-1`; the double-root fixture uses `(2*mu-1)^2` and `(2*t-1)^2`; the near-coincident fixture uses integer-scaled factors with root separation exactly `2^-20`. These scalings preserve the zero sets exactly and retain the integer-polynomial contract. The corrected tests remain unexecuted.
+
+### Resource-budget fixture alignment (2026-11-20)
+
+A final source scan found that the box-budget exhaustion test reused the simple common-root equations with `Fraction` coefficients. It has now been changed to the same integer-scaled equations (`2*mu-1`, `2*t-1`). Thus all four controller call sites in the adversarial tests honor the integer sparse-polynomial contract. This is a static source correction only; no test execution or PASS is claimed.
