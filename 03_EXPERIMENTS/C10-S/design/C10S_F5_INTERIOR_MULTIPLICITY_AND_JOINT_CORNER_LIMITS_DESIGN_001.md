@@ -219,3 +219,7 @@ This design does not claim a universal multiplicity-aware bivariate root solver.
 The run #51 resource-contract suite passed 138/138; run #52 passed 142/142, including the explicit unattained boundary-supremum global certificate; run #53 passed 143/143, including the common M10/R5 Bernstein-versus-resultant/Sturm cross-check with matching simple-root certificates. See the end-to-end closure dossier §9.12–§9.13 for exact commit SHAs and execution records.
 
 The remaining multiplicity limitation is intentionally fail-closed: simple roots in the bounded M10/R5 and M30/R20 targets are completely censused; multiple/singular interior roots and arbitrary mixed common components are not certified as simple roots and block global status. This is the accepted F5 contract for unsupported regimes, not a claim that general multiplicity-aware bivariate lifting has been solved.
+
+### 10.2 Final provenance and closure verification — run #54
+
+Run [44775205756](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44775205756), commit `a22f2edc7f7ff39f158e6ab2740eea2662b047d3`, passed 144/144 tests. The CI source-revision default is verified against the actual `GITHUB_SHA`; the global certificate provenance record binds histogram and raw/compactified score hashes to that revision. This completes the bounded G1–G6 engineering closure record. The fail-closed singular-root and mixed-component limitations in §10 remain unchanged; G7 TierA calibration remains unauthorized and unrun.
