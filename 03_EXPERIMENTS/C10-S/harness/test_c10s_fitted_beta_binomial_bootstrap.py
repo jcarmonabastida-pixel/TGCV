@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 import unittest
+from types import SimpleNamespace
+from unittest.mock import patch
+
+import numpy as np
 
 from c10s_fitted_beta_binomial_bootstrap import (
     BetaBinomialFitError,
@@ -108,6 +112,30 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
         self.assertEqual(missing["status"], "ANALYTIC_AUDIT_UNAVAILABLE")
         self.assertIsNone(missing["direct_comparison"])
         self.assertEqual(missing["audit_error"], "INJECTED")
+
+    def test_failed_production_multistart_outcomes_are_retained_for_reconciliation(self):
+        from c10s_fitted_beta_binomial_bootstrap import build_production_analytic_reconciliation
+
+        failed = SimpleNamespace(
+            x=np.asarray([0.1, 0.2]), success=False,
+            message="precision loss", fun=12.5,
+            jac=np.asarray([1e-7, -1e-7]),
+        )
+        with patch(
+            "c10s_fitted_beta_binomial_bootstrap.minimize",
+            side_effect=[failed, failed, failed],
+        ):
+            with self.assertRaises(BetaBinomialFitError) as caught:
+                fit_beta_binomial_counts((0, 0, 1, 4, 5, 5, 2, 3, 0, 5), 5)
+        self.assertEqual(len(caught.exception.production_starts), 3)
+        self.assertTrue(all(not item.success for item in caught.exception.production_starts))
+        record = build_production_analytic_reconciliation(
+            None, None, production_starts=caught.exception.production_starts,
+        )
+        self.assertEqual(record["status"], "PRODUCTION_OPTIMIZATION_NO_ADMISSIBLE_FIT")
+        self.assertEqual(len(record["production_fit"]["starts"]), 3)
+        self.assertIsNone(record["production_fit"]["selected_log_likelihood"])
+        self.assertIsNone(record["direct_comparison"])
 
     def test_all_zero_and_all_one_worlds_abstain_with_typed_boundary(self):
         for value in (0, 1):
