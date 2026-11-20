@@ -158,6 +158,7 @@ def run_cell(spec, *, k: int, c0_b: int, c5_b: int,
 
 
 def run_resource_preflight() -> dict[str, Any]:
+    validate_seed_separation()
     start = time.perf_counter()
     peak_before = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     cells = []

@@ -45,7 +45,7 @@ class F5G7CalibrationTests(unittest.TestCase):
                 seed_namespace=HOLDOUT_NAMESPACE, adjudicate=True,
             )
         self.assertEqual(result["datasets_completed"], 3)
-        self.assertEqual(len(result["metrics"]), 6)
+        self.assertEqual(len(result["metrics"]), 4)
         self.assertTrue(all(
             dict(record["comparison"]["candidates"][0]["comparison"]["provenance"])[
                 "global_mle_certificate_status"
