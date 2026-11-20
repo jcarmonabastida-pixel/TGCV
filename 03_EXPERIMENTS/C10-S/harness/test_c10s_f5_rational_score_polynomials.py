@@ -24,6 +24,8 @@ from c10s_f5_rational_score_polynomials import (
     conditional_mean_tube_and_concentration_exclusion,
     conditional_mean_adaptive_concentration_census,
     beta_binomial_compactified_stationary_census,
+    _beta_binomial_likelihood_enclosure,
+    beta_binomial_global_mle_certificate,
 )
 
 
@@ -1018,6 +1020,32 @@ class RationalScorePolynomialTests(unittest.TestCase):
         )
         self.assertEqual(result["status"], "INCOMPLETE_UNRESOLVED_INTERVALS")
         self.assertGreater(len(result["unresolved_intervals"]), 0)
+
+
+    def test_exact_likelihood_enclosure_contains_rational_point_likelihood(self):
+        result = _beta_binomial_likelihood_enclosure(
+            2, {0: 1, 1: 2, 2: 1},
+            mu_bounds=(Fraction(1, 3), Fraction(2, 3)),
+            t_bounds=(Fraction(1, 3), Fraction(2, 3)),
+        )
+        self.assertEqual(result["status"], "EXACT_RATIONAL_LIKELIHOOD_ENCLOSURE")
+        lower, upper = result["likelihood_bounds"]
+        # At mu=1/2, kappa=1 (t=1/2), the exact likelihood is 9/1024.
+        point_likelihood = Fraction(9, 1024)
+        self.assertLessEqual(lower, point_likelihood)
+        self.assertLessEqual(point_likelihood, upper)
+
+    def test_global_mle_certificate_orders_degenerate_boundary_ties_exactly(self):
+        result = beta_binomial_global_mle_certificate(5, {0: 3})
+        self.assertEqual(
+            result["status"],
+            "GLOBAL_SUPREMUM_BOUNDARY_TIED_CERTIFIED",
+        )
+        self.assertGreaterEqual(len(result["winners"]), 2)
+        self.assertEqual(
+            result["ordering_method"],
+            "EXACT_RATIONAL_PROBABILITY_INTERVALS",
+        )
 
 
 if __name__ == "__main__":
