@@ -265,7 +265,7 @@ def bernstein_coefficients_on_box(
         for j in range(degree_t + 1):
             intermediate[k][j] = sum(
                 power[i][j] * mu_basis[i][k]
-                for i in range(k + 1)
+                for i in range(degree_mu + 1)
             )
 
     # Then transform the t power axis.
@@ -277,7 +277,7 @@ def bernstein_coefficients_on_box(
         for ell in range(degree_t + 1):
             result[k][ell] = sum(
                 intermediate[k][j] * t_basis[j][ell]
-                for j in range(ell + 1)
+                for j in range(degree_t + 1)
             )
     return result
 
