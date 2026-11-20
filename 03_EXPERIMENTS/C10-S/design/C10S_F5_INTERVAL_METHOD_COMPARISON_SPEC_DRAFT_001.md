@@ -387,3 +387,8 @@ The current controller conservatively covers the closed compactified square. It 
 The adaptive controller is an exhaustive *exclusion* mechanism only. Any non-excluded boxes still require root inclusion/uniqueness or a typed unresolved result. In particular, even-/odd-multiplicity roots are retained because no sign-change criterion is used; singular multiple-root boxes may remain unresolved under ordinary Krawczyk inclusion.
 
 D1 remains OPEN; the modular and Bernstein routes remain parallel. No backend is selected, no MLE is certified, and no scientific execution is authorized.
+
+
+### Additional adversarial retention fixtures (2026-11-20)
+
+Two further deterministic tests now exercise a common even-multiplicity root and two distinct common roots separated by exactly `2^-20`. Their purpose is deliberately limited: the exclusion controller must not return `ALL_BOXES_EXCLUDED` for either fixture. They do not establish root inclusion, uniqueness, multiplicity recovery, or successful isolation. The controller should retain unresolved boxes until a later inclusion/deflation layer is available. Both tests are committed and remain unexecuted under governed CPython 3.12.
