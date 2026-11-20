@@ -267,8 +267,8 @@ No gate passes implicitly. Completion of D2/D3 does not authorize D5.
 
 ## 12. Explicit open blockers for D1 review
 
-1. Implement and validate the exact rational-score/resultant/Sturm global-fit certificate; verify its feasibility and deterministic resource ceiling without thresholds tuned on B2/B3.
-2. Extend the exact root-isolation certificate to constrained M2 one-dimensional profiles, including endpoint limits and disconnected accepted-set topology.
+1. Select and validate a feasible exact elimination backend (modular resultant/CRT with a rigorous reconstruction bound, or pinned exact CAD/real-root isolation), then implement and validate the rational-score/global-fit certificate; naive exact rational resultant did not finish the M30/R20 deterministic sizing fixture within 60 seconds.
+2. Extend the exact root-isolation certificate to constrained M2 one-dimensional profiles, including endpoint limits and disconnected accepted-set topology; generalize or separately version the existing F1 Sturm isolator, whose current degree ceiling is three.
 3. Exact M2b calibration rank calculation for four cutoffs and the corresponding bank size/precision.
 4. Exact M1 bootstrap replicate count from an endpoint-MCSE target.
 5. Wilson operating-characteristic calculation and confirmation of N=5,000 or a justified alternative.
