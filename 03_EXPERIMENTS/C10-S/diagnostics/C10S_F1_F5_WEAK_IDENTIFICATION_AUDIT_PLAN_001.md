@@ -717,3 +717,13 @@ The F5 algebra harness now converts a bivariate power polynomial to exact tensor
 Four deterministic tests are committed (unit-square positive enclosure, rational affine-box substitution, mixed-sign non-exclusion, and degenerate-box rejection). The affine-box coefficients were independently checked with exact Fraction arithmetic and the expected values corrected before commit. No governed CPython 3.12 run is available in this session, so these tests are not reported PASS.
 
 This is only the interval route's box-exclusion layer. Root inclusion/uniqueness, exhaustive subdivision, deterministic resource limits, and all likelihood boundary comparisons remain open. No method is selected; D1 remains OPEN.
+
+
+
+### Exact Bernstein subdivision — partial implementation, not validated (2026-11-20)
+
+The F5 module now includes exact midpoint de Casteljau subdivision of tensor-product Bernstein coefficient matrices along either compactified coordinate. Four additional deterministic tests are committed for axis-specific exact splits, a bivariate shared-edge identity, and invalid inputs. These tests have not been run under governed CPython 3.12 and are not PASS evidence.
+
+The operation is only the subdivision kernel. It does not yet provide an adaptive exhaustive controller, resource ceilings, boundary-stratum classification, or root inclusion/uniqueness. Krawczyk/interval-Newton can only certify simple roots when its full nonsingularity, inclusion and contraction hypotheses are checked. Multiple-root boxes must be retained for multiplicity-aware deflation or explicit abstention; sign-change logic is insufficient.
+
+The algebraic and Bernstein routes remain unselected and in parallel development. F5 remains OPEN. No MLE certification, bank, replay, calibration or scientific execution is claimed or authorized.
