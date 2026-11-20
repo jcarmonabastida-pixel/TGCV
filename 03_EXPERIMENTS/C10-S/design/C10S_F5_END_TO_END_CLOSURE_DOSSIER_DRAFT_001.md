@@ -197,3 +197,28 @@ A new test, `test_m30_r20_global_mle_orders_interior_and_boundary_candidates`, n
 Run [44764446630](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44764446630), commit `31e28f8803153a20fc083dfe78b8084c3363382d`, completed with 134 tests and one failure. The integrated stationary/boundary census completed, but the exact rational product enclosure hit `LIKELIHOOD_FRACTION_RESOURCE_LIMIT` at 200,000 bits. This is an ordering-layer resource failure, not an unresolved stationary census.
 
 The likelihood enclosure now accumulates nonnegative rational probability intervals on a 256-bit dyadic grid, rounding lower products downward and upper products upward using integer arithmetic only. This preserves a rigorous enclosure while bounding intermediate integer growth. A large-histogram regression test checks bounded representation and enclosure validity. The correction is committed as `5c1223d` with regression test `2fcf3f2`; run [44765936307](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44765936307) is validating the combined snapshot. No global-MLE PASS is claimed until this run succeeds.
+
+### 9.4 Run 44767224308 — dyadic likelihood enclosure correction (2026-11-20)
+
+The run previously described as pending in §4–§5 and §9.3 has now completed successfully. GitHub Actions run [44767224308](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44767224308), workflow run number 48, checked out exact source commit `a9a56d7c142b441b0893858c75e13a38ae38a9a2` on `research/c10s-f1-integrated-correction-20261119`.
+
+Execution evidence from job `f5-tests`:
+- Ubuntu 24.04 runner; CPython 3.12.10; locked dependencies installed with hash enforcement.
+- All six F5 modules compiled successfully.
+- All three deterministic F5 suites completed: **135 tests, 342.600 seconds, exit status 0 (OK)**.
+- The large-histogram dyadic likelihood enclosure regression passed after intersecting the rational upper probability bound with the mathematical unit interval [0,1].
+- `test_m30_r20_full_domain_bernstein_route_avoids_large_resultant` passed.
+- `test_m30_r20_global_mle_orders_interior_and_boundary_candidates` passed. Its assertions require one of the three certified global classifications (interior maximum, boundary supremum, or co-maximizers), exact rational probability-interval ordering, and the declared globality basis `COMPLETE_INTERIOR_STATIONARY_CENSUS_PLUS_ALL_BOUNDARY_PROFILES_AND_CORNER_LIMITS`. Thus the bounded M30/R20 fixture now passes the integrated public wrapper; this is not a universal theorem over all histograms.
+
+The test suite also passed explicit multiplicity fail-closed cases: a singular/multiple common root is retained as unresolved and is not promoted to a certified simple root; edge square-free multiplicity and Sturm isolation fixtures pass; resource-limit remainders are tested. These establish correct behavior on those fixtures, not general resolution of arbitrary interior multiple roots or all common components.
+
+**Updated gate classification for this tested snapshot:**
+- G1: deterministic exact-score and input-validation tests PASS; independent mathematical/provenance audit remains OPEN.
+- G2: bounded full-domain M30/R20 simple-root census PASS; general multiple/singular interior-root lifting and broader endpoint/degeneracy completeness remain OPEN or explicit abstention regimes.
+- G3: exact edge/corner ingredients and selected adversarial fixtures PASS; exhaustive cross-stratum ownership, co-maxima and non-attainment coverage remains OPEN.
+- G4: bounded M30/R20 integrated interior-versus-boundary global ordering fixture PASS; broader adversarial ordering regimes remain OPEN.
+- G5: deterministic abstention/resource remainders are exercised; one unified, frozen ceiling contract across every layer and its complete adversarial audit remain OPEN.
+- G6: deterministic software validation PASS for commit `a9a56d7...`; independent replay is not claimed or required by this push-only test workflow. A separate primary execution audit of the certificate payload/provenance remains OPEN.
+- G7: NOT RUN. The canonical C10-S mission currently records calibration/dispatch/scientific execution as not authorized. This user's delegation is treated as authority to continue the engineering and protocol-preparation work, but it does not silently amend the frozen execution-authorization record. No stochastic TierA calibration has been run.
+
+**Disposition:** F5 remains OPEN. The run closes the immediate likelihood-enclosure software blocker and validates one end-to-end M30/R20 global-MLE fixture. It does not close mathematical-operational F5 across the required admissible regime, and does not close functional F5/TierA coverage. Continue by consolidating the smallest remaining mathematical/abstention contract and preparing the prospective TierA protocol without running calibration until its explicit governance authorization is resolved. The work remains on the research branch; `main`, RMA, Evidence→Claim Matrix, STATUS and scientific claims are unchanged.
