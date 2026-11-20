@@ -1,7 +1,7 @@
 # C10-S — F5 comparative interval-method specification draft 001
 
 **Record:** C10S-F5-INTERVAL-METHOD-COMPARISON-SPEC-001  
-**Status:** D1 REVIEW CANDIDATE — NOT FROZEN / PARTIAL EXACT ALGEBRA PRIMITIVE IMPLEMENTED / GLOBAL CERTIFICATION NOT IMPLEMENTED / NOT EXECUTED  
+**Status:** D1 REVIEW CANDIDATE — NOT FROZEN / BOUNDED GLOBAL-MLE CERTIFICATION IMPLEMENTED AND DETERMINISTICALLY TESTED / M1-M2 METHOD COMPARISON AND PROSPECTIVE CALIBRATION NOT EXECUTED  
 **Date:** 2026-11-20  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
 **Parent design:** `C10S_F5_INTERVAL_METHOD_COMPARISON_DESIGN_DRAFT_001.md`  
@@ -141,7 +141,7 @@ Minimum mutually exclusive states:
 
 A finite optimizer bound is never a theoretical model boundary. The theoretical limits \(\kappa\to\infty\) and \(\kappa\to0\) must be evaluated as limits where mathematically supported. A boundary state may be accepted only if the limiting likelihood is evaluated independently and its global status is established; otherwise it is unresolved.
 
-**D1 resolution — analytical route designed, implementation feasibility still OPEN:** the separate artifact `C10S_F5_GLOBAL_MLE_CERTIFICATION_DESIGN_001.md` derives strict conditional concavity in μ at fixed κ and an exact rational-score/resultant/Sturm route to enumerate all finite interior stationary points, preserve multiplicity, isolate near-coincident roots and compare them with profiled theoretical boundaries. This replaces the proposed arbitrary scale-aware likelihood-difference threshold. It is not yet implemented or validated. D1 therefore remains OPEN until exact polynomial construction, root isolation, interval likelihood ordering, boundary strata and resource ceilings pass deterministic adversarial fixtures. Until then M1/M2 must abstain whenever globality is not certified. Optimizer starts remain diagnostic; neither at least one nor all starts succeeding is a global certificate.
+**D1 disposition — bounded global-fit certification implemented; method-comparison decision remains OPEN:** the linked artifact `C10S_F5_GLOBAL_MLE_CERTIFICATION_DESIGN_001.md` now has an implemented interval-first conditional-mean/Bernstein/Krawczyk route, exact resultant/Sturm fallback, exact boundary profiles and rational global-likelihood comparison. Bounded M10/R5 and M30/R20 deterministic fixtures pass; general singular/multiple roots and arbitrary mixed common components remain explicit abstention regimes. The exact fit-certification layer does not select or validate M1/M2 interval procedures, and it does not replace the need to compare their point-estimator/interval packages on a frozen prospective protocol. This D1 specification therefore remains OPEN and NOT FROZEN. Optimizer starts remain diagnostic; neither at least one nor all starts succeeding is a global certificate.
 
 ## 5. Bootstrap failure and emission semantics — proposed fail-closed rule
 
