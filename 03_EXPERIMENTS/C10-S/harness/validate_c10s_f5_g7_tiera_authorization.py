@@ -27,6 +27,15 @@ SOURCE_HASH_PATHS = {
     "static_workflow_sha256": ".github/workflows/c10-s-nested-mr-calibration-comparator-static.yml",
     "runner_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_tiera_calibration.py",
     "authorization_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_tiera_authorization.py",
+    "variance_interface_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_variance_comparison_interface.py",
+    "f5_likelihood_diagnostics_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py",
+    "f1_candidate_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f1_exact_pivotal_candidate.py",
+    "gaussian_oracle_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_gaussian_variance_oracles.py",
+    "beta_binomial_oracle_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_beta_binomial_variance_oracles.py",
+    "f1_profile_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f1_between_profile_likelihood.py",
+    "fitter_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_fitted_beta_binomial_bootstrap.py",
+    "engine_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_inference_engine.py",
+    "legacy_runner_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_holdout.py",
 }
 PROTOCOL_ID = "C10S-F5-G7-TIERA-PROSPECTIVE-001"
 PROTOCOL_VERSION = "1.0"
