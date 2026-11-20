@@ -488,3 +488,18 @@ The F5 exact-score/Bernstein/Krawczyk/global-likelihood harness is now implement
 The user has delegated completion of F5 engineering closure gates G1–G6 on the research branch. This permits code changes, deterministic tests, workflows, mathematical/software audit and documentation needed for those gates. It does not amend the explicit `Execution authorization: NONE` for prospective scientific calibration. G7 protocol preparation may proceed; generation of prospective calibration data, validation-bank execution or Analyzer/Evaluator scientific execution remains stopped pending explicit user authorization.
 
 The successor remains bounded to the frozen beta22 target and M10/R5 plus M30/R20. No new DGP families, estimator families, Tier B, or general-purpose solver work is introduced. If the current exact method returns a typed unresolved/abstention state for a supported-design fixture, that is a software-safe outcome but it does not count as functional TierA calibration success; G7 must determine whether its frequency permits the required coverage.
+
+## 13. Engineering evidence reconciliation — 2026-11-20
+
+The opening status and §4 describe the state before the F5 global-likelihood certification work. They remain accurate as to the *method-comparison decision*: this D1 specification is still not frozen, no M1/M2 interval method has been selected, and no prospective execution is authorized. They must not be read as saying that the global beta-binomial fit-certification implementation is absent.
+
+The linked harness now contains exact paired score construction, conditional-mean/Bernstein full-domain simple-root census, Krawczyk inclusion, exact resultant/Sturm fallback, exact one-edge and joint-corner likelihood limits, rational likelihood enclosures, and a global-MLE adjudicator. Bounded deterministic M10/R5 and M30/R20 fixtures have passed integrated global ordering tests. General singular/multiple interior roots and arbitrary mixed bivariate common components remain typed abstention regimes; no universal solver claim is made.
+
+The governed evidence is:
+- run [44767224308](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44767224308): 135/135 deterministic tests PASS;
+- run [44770409949](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44770409949): 136/136 PASS, including likelihood input-integrity hardening;
+- run [44771555687](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44771555687): 138/138 PASS, including active resource-contract validation.
+
+Input/source/polynomial provenance binding and an explicit non-attained boundary-supremum end-to-end test are implemented in commit `05cffe1843d4ed6f64837e51ac1d16983c115fd8`; governed verification is run [44772784165](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44772784165), pending at this update.
+
+The deterministic comparison of Bernstein-first and exact resultant/Sturm routes on a common M10/R5 fixture belongs to engineering validation G6, not to the scientific calibration G7. G7 is reserved for the prospective TierA calibration/coverage execution on the frozen M10/R5 and M30/R20 design cells, which remains unauthorized. Nothing in this section freezes this D1 comparison specification or changes the parent v1.0 scientific contract.
