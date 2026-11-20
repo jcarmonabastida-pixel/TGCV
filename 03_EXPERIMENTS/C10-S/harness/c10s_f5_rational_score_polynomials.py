@@ -2509,13 +2509,12 @@ def _beta_binomial_likelihood_enclosure(
     t_bounds: tuple[object, object],
     max_fraction_bits: int = 200000,
 ) -> dict[str, object]:
-    """Enclose the beta-binomial likelihood on a rational interior box.
+    """Enclose likelihood with exact outward-rounded fixed-point products.
 
-    Under t=kappa/(1+kappa), each rising-factor ratio is a product of
-    positive bilinear factors divided by positive affine factors. Extrema of
-    each bilinear factor on a rectangle occur at its corners. Multiplying
-    rational lower/upper bounds therefore gives a rigorous likelihood
-    enclosure without floating point or logarithm approximation.
+    Per-outcome probability bounds are rational. The product over the full
+    histogram is accumulated on a dyadic grid with directed integer rounding,
+    preventing numerator/denominator bit growth while preserving a rigorous
+    enclosure. No floating-point arithmetic is used.
     """
     from fractions import Fraction
     from math import comb
@@ -2541,8 +2540,36 @@ def _beta_binomial_likelihood_enclosure(
                 values.append((1 - mu) * t + j * (1 - t))
         return min(values), max(values)
 
-    likelihood_lo = Fraction(1)
-    likelihood_hi = Fraction(1)
+    # A fixed 256-bit dyadic accumulator keeps resource use independent of
+    # sample size. The caller's ceiling remains a hard upper bound.
+    precision = min(256, max_fraction_bits // 4)
+    scale = 1 << precision
+
+    def floor_scaled(value: Fraction) -> int:
+        return (value.numerator * scale) // value.denominator
+
+    def ceil_scaled(value: Fraction) -> int:
+        return -((-value.numerator * scale) // value.denominator)
+
+    def multiply_interval(left, right):
+        lo = (left[0] * right[0]) // scale
+        hi_product = right[1] * left[1]
+        hi = (hi_product + scale - 1) // scale
+        return lo, hi
+
+    def power_interval(interval, exponent: int):
+        result = (scale, scale)
+        base = interval
+        n = exponent
+        while n:
+            if n & 1:
+                result = multiply_interval(result, base)
+            n >>= 1
+            if n:
+                base = multiply_interval(base, base)
+        return result
+
+    likelihood = (scale, scale)
     for x, multiplicity in count_histogram.items():
         if type(x) is not int or not 0 <= x <= r:
             raise ValueError("COUNT_OUTSIDE_0_TO_R")
@@ -2572,25 +2599,24 @@ def _beta_binomial_likelihood_enclosure(
         combinatorial = Fraction(comb(r, x))
         probability_lo = combinatorial * numerator_lo / denominator_hi
         probability_hi = combinatorial * numerator_hi / denominator_lo
-        likelihood_lo *= probability_lo**multiplicity
-        likelihood_hi *= probability_hi**multiplicity
-
-        if max(
-            likelihood_lo.numerator.bit_length(),
-            likelihood_lo.denominator.bit_length(),
-            likelihood_hi.numerator.bit_length(),
-            likelihood_hi.denominator.bit_length(),
-        ) > max_fraction_bits:
-            return {
-                "status": "LIKELIHOOD_FRACTION_RESOURCE_LIMIT",
-                "likelihood_bounds": None,
-                "max_fraction_bits": max_fraction_bits,
-            }
+        probability = (
+            floor_scaled(probability_lo),
+            ceil_scaled(probability_hi),
+        )
+        likelihood = multiply_interval(
+            likelihood,
+            power_interval(probability, multiplicity),
+        )
 
     return {
         "status": "EXACT_RATIONAL_LIKELIHOOD_ENCLOSURE",
-        "likelihood_bounds": (likelihood_lo, likelihood_hi),
+        "likelihood_bounds": (
+            Fraction(likelihood[0], scale),
+            Fraction(likelihood[1], scale),
+        ),
         "max_fraction_bits": max_fraction_bits,
+        "accumulator": "OUTWARD_ROUNDED_DYADIC_FIXED_POINT",
+        "precision_bits": precision,
     }
 
 
