@@ -256,7 +256,7 @@ The deterministic suite does not establish statistical coverage. No Monte Carlo 
 |---|---|---|---|
 | D0 | Comparative design | Target mapping and candidates reconstructed | COMPLETE AS DRAFT |
 | D1 | Method specification | Fit-state rule, M1/M2 procedures, precision and cost fields resolved; review against v1.0 | REVIEW CANDIDATE — OPEN |
-| D2 | Static implementation | Shared interfaces and deterministic adversarial tests | PARTIAL RESEARCH PRIMITIVE ONLY — exact sparse score numerator constructor and four deterministic tests; global elimination/root certification not implemented |
+| D2 | Static implementation | Shared interfaces and deterministic adversarial tests | PARTIAL RESEARCH PRIMITIVES — exact sparse score numerators, concentration compactification, Bernstein conversion/exclusion, de Casteljau subdivision and bounded exclusion controller; tests committed but not governed-executed; root inclusion/uniqueness and algebraic elimination/isolation absent |
 | D3 | Static/resource preflight | Exact commit, dependency lock, deterministic microbenchmarks and resource report | NOT STARTED |
 | D4 | Execution authorization | Separate one-use authorization bound to protocol/code/seeds/budget | NONE |
 | D5 | Prospective development | New calibration/evaluation banks and full per-cell audit | NOT AUTHORIZED |
