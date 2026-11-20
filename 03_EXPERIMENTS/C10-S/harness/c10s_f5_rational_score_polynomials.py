@@ -317,3 +317,103 @@ def bernstein_subdivide(
 def bernstein_box_excludes_zero(coefficients: list[list[object]]) -> bool:
     """Named box-level predicate; mixed signs and zero coefficients are inconclusive."""
     return bernstein_sign_excludes_zero(coefficients)
+
+
+
+def bernstein_exclusion_subdivision(
+    poly_p: Poly,
+    poly_q: Poly,
+    *,
+    mu_bounds: tuple[object, object] = (0, 1),
+    t_bounds: tuple[object, object] = (0, 1),
+    max_boxes: int = 10000,
+    max_depth: int = 32,
+) -> dict[str, object]:
+    """Deterministically subdivide a rational box cover using Bernstein exclusion.
+
+    This controller proves absence of common zeros only when every processed
+    leaf is excluded by at least one score polynomial. It does not certify
+    existence or uniqueness of roots. Boxes reaching max_depth are retained
+    as unresolved; boxes left in the FIFO queue at max_boxes are returned as
+    an unprocessed remainder. Axis selection alternates mu,t by depth.
+    """
+    from collections import deque
+    from fractions import Fraction
+
+    if type(max_boxes) is not int or max_boxes < 1:
+        raise ValueError("MAX_BOXES_MUST_BE_POSITIVE_INTEGER")
+    if type(max_depth) is not int or max_depth < 0:
+        raise ValueError("MAX_DEPTH_MUST_BE_NONNEGATIVE_INTEGER")
+    mu_lo, mu_hi = Fraction(mu_bounds[0]), Fraction(mu_bounds[1])
+    t_lo, t_hi = Fraction(t_bounds[0]), Fraction(t_bounds[1])
+    if mu_lo >= mu_hi or t_lo >= t_hi:
+        raise ValueError("INVALID_INITIAL_BOX")
+
+    p0 = bernstein_coefficients_on_box(
+        poly_p, (mu_lo, mu_hi), (t_lo, t_hi)
+    )
+    q0 = bernstein_coefficients_on_box(
+        poly_q, (mu_lo, mu_hi), (t_lo, t_hi)
+    )
+    queue = deque([(
+        mu_lo, mu_hi, t_lo, t_hi, 0, p0, q0
+    )])
+    excluded = 0
+    processed = 0
+    unresolved: list[dict[str, object]] = []
+
+    while queue and processed < max_boxes:
+        mu_a, mu_b, t_a, t_b, depth, p_coeff, q_coeff = queue.popleft()
+        processed += 1
+        if (
+            bernstein_box_excludes_zero(p_coeff)
+            or bernstein_box_excludes_zero(q_coeff)
+        ):
+            excluded += 1
+            continue
+        if depth >= max_depth:
+            unresolved.append({
+                "mu_bounds": (mu_a, mu_b),
+                "t_bounds": (t_a, t_b),
+                "depth": depth,
+                "state": "UNRESOLVED_AT_MAX_DEPTH",
+            })
+            continue
+
+        axis = "mu" if depth % 2 == 0 else "t"
+        if axis == "mu":
+            midpoint = (mu_a + mu_b) / 2
+            p_left, p_right = bernstein_subdivide(p_coeff, "mu")
+            q_left, q_right = bernstein_subdivide(q_coeff, "mu")
+            queue.append((mu_a, midpoint, t_a, t_b, depth + 1, p_left, q_left))
+            queue.append((midpoint, mu_b, t_a, t_b, depth + 1, p_right, q_right))
+        else:
+            midpoint = (t_a + t_b) / 2
+            p_left, p_right = bernstein_subdivide(p_coeff, "t")
+            q_left, q_right = bernstein_subdivide(q_coeff, "t")
+            queue.append((mu_a, mu_b, t_a, midpoint, depth + 1, p_left, q_left))
+            queue.append((mu_a, mu_b, midpoint, t_b, depth + 1, p_right, q_right))
+
+    while queue:
+        mu_a, mu_b, t_a, t_b, depth, _, _ = queue.popleft()
+        unresolved.append({
+            "mu_bounds": (mu_a, mu_b),
+            "t_bounds": (t_a, t_b),
+            "depth": depth,
+            "state": "NOT_PROCESSED_RESOURCE_LIMIT",
+        })
+
+    if not unresolved:
+        status = "ALL_BOXES_EXCLUDED"
+    elif any(item["state"] == "NOT_PROCESSED_RESOURCE_LIMIT" for item in unresolved):
+        status = "RESOURCE_LIMIT_WITH_REMAINDER"
+    else:
+        status = "UNRESOLVED_BOXES"
+    return {
+        "status": status,
+        "processed_boxes": processed,
+        "excluded_boxes": excluded,
+        "unresolved_boxes": unresolved,
+        "max_boxes": max_boxes,
+        "max_depth": max_depth,
+    }
