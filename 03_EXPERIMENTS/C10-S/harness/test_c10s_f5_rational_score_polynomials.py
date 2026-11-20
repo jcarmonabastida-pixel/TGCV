@@ -459,6 +459,14 @@ class RationalScorePolynomialTests(unittest.TestCase):
             result["general_mixed_bivariate_factors"], "NOT_CHECKED"
         )
 
+    def test_axis_common_component_abstains_on_zero_polynomial(self):
+        result = compactified_axis_common_components({}, {(1, 0): 1, (0, 0): -1})
+        self.assertEqual(
+            result["status"], "ZERO_POLYNOMIAL_COMMON_COMPONENT_UNRESOLVED"
+        )
+        with self.assertRaisesRegex(ValueError, "POLYNOMIAL_MUST_HAVE_INTEGER_SPARSE_TERMS"):
+            compactified_axis_common_components({}, {(0, 0): Fraction(1, 2)})
+
     def test_axis_common_component_rejects_noninteger_sparse_input(self):
         with self.assertRaisesRegex(ValueError, "POLYNOMIAL_MUST_HAVE_INTEGER_SPARSE_TERMS"):
             compactified_axis_common_components({(0, 0): Fraction(1, 2)}, {(0, 0): 1})
