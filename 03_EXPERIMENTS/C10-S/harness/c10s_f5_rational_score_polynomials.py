@@ -1887,7 +1887,10 @@ def conditional_mean_tube_and_concentration_exclusion(
 
     If that second numerator has strict constant sign on the tube, the entire
     t interval contains no common stationary point. Otherwise the tube is a
-    conservative candidate region, not a root/existence certificate.
+    conservative candidate region, not a root/existence certificate. The
+    caller must supply the compactified exact score numerators produced from
+    the same nondegenerate beta-binomial histogram; the concavity implication
+    is not valid for arbitrary unrelated polynomial pairs.
     """
     from fractions import Fraction
     from math import comb
@@ -1987,4 +1990,5 @@ def conditional_mean_tube_and_concentration_exclusion(
         "mean_root_uniqueness_for_every_t_relies_on_strict_conditional_concavity": True,
         "concentration_score_excludes_zero_on_tube": excludes,
         "scope": "INTERVAL_PRUNING_ONLY_NOT_ROOT_EXISTENCE_OR_GLOBAL_CENSUS",
+        "required_input_provenance": "PAIRED_COMPACTIFIED_BETA_BINOMIAL_SCORE_NUMERATORS_FROM_ONE_NONDEGENERATE_HISTOGRAM",
     }
