@@ -391,9 +391,9 @@ class RationalScorePolynomialTests(unittest.TestCase):
         )
 
     def test_corner_census_assigns_each_of_four_corners_to_vertical_edge(self):
-        # The two score polynomials share the product of all four corners.
-        p = {(2, 0): 1, (0, 2): 1, (0, 0): -1}
-        q = {(2, 0): 2, (0, 2): 2, (0, 0): -2}
+        # P=mu*(1-mu)+t*(1-t), Q=2P: all four corners are roots.
+        p = {(1, 0): 1, (2, 0): -1, (0, 1): 1, (0, 2): -1}
+        q = {(1, 0): 2, (2, 0): -2, (0, 1): 2, (0, 2): -2}
         result = compactified_boundary_corner_census(p, q)
         self.assertEqual(
             result["status"], "BOUNDARY_ROOT_CENSUS_WITH_CORNER_OWNERSHIP"
