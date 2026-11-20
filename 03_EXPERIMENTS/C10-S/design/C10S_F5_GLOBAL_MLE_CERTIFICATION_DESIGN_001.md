@@ -200,3 +200,27 @@ D1 may close only after:
 - failure/abstention semantics and resource ceilings are frozen.
 
 Until those conditions pass, the global MLE certificate remains `DESIGNED_NOT_IMPLEMENTED`, M1/M2 remain unvalidated candidates, and no new bank or scientific execution is authorized.
+
+
+## 12. Deterministic symbolic-sizing probe (2026-11-20; not scientific execution)
+
+A local static algebra prototype was attempted using exact rational polynomial construction and a general-purpose symbolic resultant implementation. The inputs were hand-constructed deterministic count fixtures, not generated from the F5 DGP and not drawn from B2/B3.
+
+- M10/R5 fixture: the exact score-numerator polynomials had bidegrees (9,15) and (10,13); the exact resultant completed in approximately 0.40 seconds, with degree 235 in kappa.
+- M30/R20 fixture: exact score-numerator construction completed in approximately 5.7 seconds, with bidegrees (39,60) and (40,58). The general-purpose exact rational resultant did not complete within the 60-second tool limit. No resultant or root count is claimed for this fixture.
+
+This probe demonstrates that naive rational subresultant computation is not yet an acceptable D2 engine for M30/R20. It is a static symbolic computation, not a scientific run, bootstrap, calibration or coverage evaluation.
+
+### Required implementation route refinement
+
+Before coding the F5 certificate, select and validate one exact elimination backend:
+- preferred candidate: modular subresultant/resultant over several good primes, with exact Chinese-remainder reconstruction, a rigorous coefficient bound, rational reconstruction where needed, and independent verification modulo additional primes;
+- alternative: an exact bivariate real-root isolation/CAD backend with a pinned, governed dependency and deterministic resource ceiling.
+
+The current F1 isolator `c10s_f1_independent_root_isolator.py` is reusable as a conceptual and code base for exact rational Sturm isolation, but it deliberately rejects polynomial degree >3. Its existing adversarial suite already covers double/triple roots and very close distinct roots. It cannot be called unchanged for a degree-235-or-higher F5 resultant. A backward-compatible general-degree extension and its complexity tests are required, or a separate F5 isolator must be versioned.
+
+No dependency lock has been changed. The existing vcont lock is not an F5 dependency contract and does not include a symbolic algebra backend. Do not add an unpinned dependency or silently borrow another harness's environment.
+
+### Updated D1 exit condition
+
+D1 remains OPEN. The mathematical reduction and exact elimination formulation are established, but the M30/R20 computational route is not yet feasible under the naive backend. The next D2-preparation operation is a bounded, deterministic comparison of modular-resultant and CAD/interval backends on hand-constructed M10/R5 and M30/R20 fixtures, followed by general-degree root-isolator validation. No scientific data, B2/B3 outcomes or prospective bank may be used for this engineering choice.
