@@ -1800,3 +1800,69 @@ def compactified_projection_root_isolation_mu(
         "multiplicity_warning": "PROJECTION_MULTIPLICITY_IS_NOT_LOCAL_INTERSECTION_MULTIPLICITY",
     }
 
+def compactified_concentration_resultant_t(
+    poly_p: Poly,
+    poly_q: Poly,
+    *,
+    max_matrix_dimension: int = 64,
+) -> dict[str, object]:
+    """Compute Res_mu(P,Q) as an exact rational polynomial in compactified t.
+
+    The sparse input convention is (degree_mu, degree_t). Swapping exponents
+    lets the existing exact Sylvester/Bareiss kernel eliminate mu and retain t.
+    This is the projection aligned with the F5 profile-likelihood reduction:
+    t=kappa/(1+kappa), with 0<t<1 for finite positive concentration.
+    """
+    if not isinstance(poly_p, Mapping) or not isinstance(poly_q, Mapping):
+        raise ValueError("SPARSE_POLYNOMIAL_MAPPING_REQUIRED")
+
+    def swap_axes(poly):
+        swapped = {}
+        for monomial, coefficient in poly.items():
+            if (
+                not isinstance(monomial, tuple) or len(monomial) != 2
+                or type(monomial[0]) is not int or monomial[0] < 0
+                or type(monomial[1]) is not int or monomial[1] < 0
+                or type(coefficient) is not int
+            ):
+                raise ValueError("POLYNOMIAL_MUST_HAVE_INTEGER_SPARSE_TERMS")
+            swapped[(monomial[1], monomial[0])] = coefficient
+        return swapped
+
+    result = compactified_projection_resultant_mu(
+        swap_axes(poly_p),
+        swap_axes(poly_q),
+        max_matrix_dimension=max_matrix_dimension,
+    )
+    return {
+        **result,
+        "projection_axis": "t",
+        "eliminated_axis": "mu",
+        "mathematical_object": "RESULTANT_MU_P_Q",
+        "concentration_parameterization": "t=kappa/(1+kappa)",
+        "finite_positive_concentration_domain": (0, 1),
+    }
+
+
+def compactified_concentration_root_isolation_t(
+    resultant_result: Mapping[str, object],
+    *,
+    width,
+    max_depth: int = 64,
+    max_intervals: int = 10000,
+) -> dict[str, object]:
+    """Sturm-isolate the exact concentration-projection roots in 0<t<1."""
+    isolated = compactified_projection_root_isolation_mu(
+        resultant_result,
+        width=width,
+        max_depth=max_depth,
+        max_intervals=max_intervals,
+    )
+    return {
+        **isolated,
+        "axis": "t",
+        "scope": "CONCENTRATION_PROJECTION_ONLY_NOT_YET_LIFTED_TO_MEAN_ROOT",
+        "concentration_parameterization": "t=kappa/(1+kappa)",
+        "finite_positive_concentration_domain": (0, 1),
+    }
+
