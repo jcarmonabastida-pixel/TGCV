@@ -17,6 +17,7 @@ from c10s_f5_rational_score_polynomials import (
     compactified_boundary_corner_census,
     beta_binomial_joint_corner_likelihood_limits,
     compactified_axis_common_components,
+    compactified_projection_resultant_mu,
 )
 
 
@@ -422,6 +423,57 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(
             result["corner_deduplication"], "CORNER_OWNERSHIP_COMPLETE"
         )
+
+    def test_projection_resultant_exact_linear_fixture(self):
+        p = {(0, 1): 1, (1, 0): -1}       # t - mu
+        q = {(0, 1): 2, (0, 0): -1}      # 2*t - 1
+        result = compactified_projection_resultant_mu(p, q)
+        self.assertEqual(result["status"], "EXACT_RESULTANT_NONZERO")
+        self.assertEqual(result["resultant"], (Fraction(-1), Fraction(2)))
+        self.assertEqual(result["matrix_dimension"], 2)
+
+    def test_projection_resultant_detects_mixed_common_factor(self):
+        # P=(t-mu)(t+1), Q=(t-mu)(t+2).
+        p = {(0, 2): 1, (0, 1): 1, (1, 1): -1, (1, 0): -1}
+        q = {(0, 2): 1, (0, 1): 2, (1, 1): -1, (1, 0): -2}
+        result = compactified_projection_resultant_mu(p, q)
+        self.assertEqual(
+            result["status"], "ZERO_RESULTANT_COMMON_FACTOR_OR_DEGENERACY"
+        )
+        self.assertEqual(result["resultant"], (Fraction(0),))
+
+    def test_projection_resultant_restores_axis_contents(self):
+        # P=(mu-1)(t+1), Q=(mu-1)(t+2).
+        p = {(1, 1): 1, (0, 1): -1, (1, 0): 1, (0, 0): -1}
+        q = {(1, 1): 1, (0, 1): -1, (1, 0): 2, (0, 0): -2}
+        result = compactified_projection_resultant_mu(p, q)
+        self.assertEqual(result["status"], "EXACT_RESULTANT_NONZERO")
+        self.assertEqual(
+            result["resultant"],
+            (Fraction(1), Fraction(-2), Fraction(1)),
+        )
+        self.assertEqual(result["content_mu_p"], (Fraction(-1), Fraction(1)))
+        self.assertEqual(result["content_mu_q"], (Fraction(-1), Fraction(1)))
+
+    def test_projection_resultant_retains_degree_drop_candidate(self):
+        # P=mu*t+1, Q=t+1; the resultant vanishes at mu=1.
+        p = {(1, 1): 1, (0, 0): 1}
+        q = {(0, 1): 1, (0, 0): 1}
+        result = compactified_projection_resultant_mu(p, q)
+        self.assertEqual(result["resultant"], (Fraction(-1), Fraction(1)))
+        self.assertEqual(result["status"], "EXACT_RESULTANT_NONZERO")
+
+    def test_projection_resultant_resource_and_invalid_input_abstain(self):
+        p = {(0, 2): 1, (0, 0): 1}
+        q = {(0, 2): 1, (0, 1): 1}
+        limited = compactified_projection_resultant_mu(
+            p, q, max_matrix_dimension=3
+        )
+        self.assertEqual(limited["status"], "RESULTANT_MATRIX_RESOURCE_LIMIT")
+        with self.assertRaisesRegex(ValueError, "MAX_MATRIX_DIMENSION_MUST_BE_POSITIVE_INTEGER"):
+            compactified_projection_resultant_mu(p, q, max_matrix_dimension=0)
+        zero = compactified_projection_resultant_mu({}, q)
+        self.assertEqual(zero["status"], "ZERO_POLYNOMIAL_RESULTANT_UNRESOLVED")
 
     def test_axis_common_component_detects_vertical_factor_and_multiplicity(self):
         p = {(1, 1): 2, (1, 0): 2, (0, 1): -1, (0, 0): -1}
