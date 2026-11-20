@@ -616,3 +616,65 @@ def krawczyk_certify_unique_root(
         "reason": "INCLUSION_OR_CONTRACTION_NOT_PROVED",
     }
 
+def bernstein_krawczyk_root_classification(
+    poly_p: Poly,
+    poly_q: Poly,
+    *,
+    mu_bounds: tuple[object, object] = (0, 1),
+    t_bounds: tuple[object, object] = (0, 1),
+    max_boxes: int = 10000,
+    max_depth: int = 32,
+) -> dict[str, object]:
+    """Integrate Bernstein exclusion and Krawczyk inclusion on one box cover.
+
+    The exclusion controller first partitions the initial closed rectangle.
+    Each surviving leaf is then passed to the exact Krawczyk simple-root
+    certificate. Successful leaves are certified; all other leaves remain
+    unresolved. Unprocessed resource-limit leaves are never certified.
+    This is not a complete root-isolation or MLE certificate.
+    """
+    partition = bernstein_exclusion_subdivision(
+        poly_p, poly_q,
+        mu_bounds=mu_bounds, t_bounds=t_bounds,
+        max_boxes=max_boxes, max_depth=max_depth,
+    )
+    certified = []
+    unresolved = []
+    for leaf in partition["unresolved_boxes"]:
+        if leaf["state"] == "NOT_PROCESSED_RESOURCE_LIMIT":
+            unresolved.append({
+                **leaf,
+                "classification": "UNRESOLVED_RESOURCE_REMAINDER",
+            })
+            continue
+        result = krawczyk_certify_unique_root(
+            poly_p, poly_q,
+            mu_bounds=leaf["mu_bounds"],
+            t_bounds=leaf["t_bounds"],
+        )
+        if result["status"] == "CERTIFIED_UNIQUE_ROOT":
+            certified.append(result)
+        else:
+            unresolved.append({
+                **leaf,
+                "classification": result["status"],
+                "certificate_attempt": result,
+            })
+
+    if unresolved:
+        status = "PARTIAL_CERTIFICATION_WITH_REMAINDER"
+    elif certified:
+        status = "ALL_SURVIVING_BOXES_CERTIFIED_SIMPLE_ROOTS"
+    else:
+        status = "ALL_BOXES_EXCLUDED"
+    return {
+        "status": status,
+        "excluded_boxes": partition["excluded_boxes"],
+        "certified_root_boxes": certified,
+        "unresolved_boxes": unresolved,
+        "partition_status": partition["status"],
+        "processed_boxes": partition["processed_boxes"],
+        "max_boxes": max_boxes,
+        "max_depth": max_depth,
+    }
+
