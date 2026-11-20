@@ -806,3 +806,8 @@ The research harness now includes an exact interval-pruning operation that brack
 ### Adaptive conditional-mean concentration census added (2026-11-20)
 
 The research harness now integrates exact Bernstein conditional-mean tubes, concentration-score exclusion, and exact-rational Krawczyk inclusion in a deterministic FIFO subdivision over a supplied strictly interior compactified-concentration interval. It certifies a local interval census only when each processed interval is either excluded or its entire mean-root tube is certified to contain exactly one simple common root. Otherwise it bisects concentration or returns typed unresolved/depth/resource states. Five deterministic tests are defined; the source suite contains 76 methods and remains unexecuted under governed CPython 3.12. The controller does not cover the endpoint strata t=0/1, does not resolve multiple roots, and does not yet establish a full open-domain census or global MLE. Production use requires paired score numerators from one nondegenerate beta-binomial histogram. No calibration, bank, replay or scientific execution is authorized or claimed.
+
+
+### Consolidated F5 closure state (2026-11-20)
+
+The end-to-end F5 closure dossier is `03_EXPERIMENTS/C10-S/design/C10S_F5_END_TO_END_CLOSURE_DOSSIER_DRAFT_001.md`. It records G1–G7 and confirms that the current exact-score, Bernstein, Krawczyk, boundary, Sturm and conditional-mean primitives do not yet establish a complete global MLE certificate. The 76 test methods are defined but not governed-executed; M10/R5 and M30/R20 prospective calibration has not been authorized/run. No TierA coverage, weak-identification, causal or scientific claim status changes. F5 remains OPEN.
