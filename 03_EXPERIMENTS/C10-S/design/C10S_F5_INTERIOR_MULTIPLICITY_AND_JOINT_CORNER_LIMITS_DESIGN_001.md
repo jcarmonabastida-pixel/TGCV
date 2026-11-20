@@ -197,3 +197,19 @@ Run [44767224308](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/447
 - exact M30/R20 full-domain simple-root census and integrated global-likelihood ordering.
 
 This evidence closes only the named fixtures. No local multiplicity theorem or universal interior singular-root census has been implemented. General mixed bivariate common factors are not certified by the axis-aligned detector; an unresolved interval/resultant state must block exhaustive/global status. Keep the multiplicity-aware algebraic/subresultant and validated deflation proposals as optional bounded escalation only if a concrete TierA fit regime demonstrates that the current fail-closed behavior prevents the required calibration. Do not build a general algebraic-geometry subsystem by default.
+
+## 10. Current implementation/evidence reconciliation — 2026-11-20
+
+The earlier sections 4–8 remain the specification for *general* singular-root resolution; they must not be read as a description of completed code. The implemented bounded path is narrower:
+- Primary route: full-domain conditional-mean/Bernstein exclusion with Krawczyk inclusion for simple roots.
+- Fallback/cross-check: exact concentration resultant and Sturm projection isolation, preserving distinct projection roots and multiplicity metadata; projection candidates are lifted through the paired conditional-mean interval route.
+- Axis-only common components are detected exactly. General mixed bivariate common factors are not comprehensively classified; zero resultants and unresolved lifts fail closed.
+- Boundary edges are exact closed-form profiles. The four joint corners are path-independent by the uniform moment bounds in §2; they are not handled by an iterative edge-root search.
+- Multiple/singular interior roots are not certified in general. The implementation retains unresolved boxes and does not issue a complete/global certificate for such cases.
+
+Evidence:
+- Run [44767224308](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44767224308): 135/135 deterministic tests PASS, including M30/R20 full-domain census and integrated global ordering.
+- Run [44770409949](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44770409949): 136/136 PASS, including likelihood-helper invalid/empty histogram rejection.
+- The subsequent G5 change in commit `3591a63e095a67aa0dfaeae2df5528076a90b708` removes inert boundary-budget arguments, validates active interval/projection budgets before early returns, and requires a positive exact-rational projection width. Its governed suite is [run 44771555687](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44771555687), pending at the time of this update.
+
+This design does not claim a universal multiplicity-aware bivariate root solver. Its purpose is to preserve the mathematical boundary between certified simple roots and explicit singular-root abstention, while keeping the implementation bounded to the frozen F5 M10/R5 and M30/R20 designs.
