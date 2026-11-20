@@ -248,3 +248,72 @@ def bernstein_sign_excludes_zero(coefficients: list[list[object]]) -> bool:
 
     flat = [Fraction(value) for row in coefficients for value in row]
     return bool(flat) and (all(value > 0 for value in flat) or all(value < 0 for value in flat))
+
+
+
+def bernstein_subdivide(
+    coefficients: list[list[object]], axis: str
+) -> tuple[list[list[object]], list[list[object]]]:
+    """Split an exact tensor-product Bernstein coefficient matrix at its midpoint.
+
+    The input matrix uses rows for the mu degree and columns for the t degree,
+    matching bernstein_coefficients_on_box(). The split is performed by the
+    de Casteljau algorithm using Fraction arithmetic only. The two returned
+    matrices represent the lower/left and upper/right half along the selected
+    axis. No polynomial is approximated and no floating-point operation occurs.
+    """
+    from fractions import Fraction
+
+    if axis not in ("mu", "t"):
+        raise ValueError("AXIS_MUST_BE_MU_OR_T")
+    if not isinstance(coefficients, list) or not coefficients:
+        raise ValueError("NONEMPTY_RECTANGULAR_COEFFICIENT_MATRIX_REQUIRED")
+    if any(not isinstance(row, list) or not row for row in coefficients):
+        raise ValueError("NONEMPTY_RECTANGULAR_COEFFICIENT_MATRIX_REQUIRED")
+    width = len(coefficients[0])
+    if any(len(row) != width for row in coefficients):
+        raise ValueError("RECTANGULAR_COEFFICIENT_MATRIX_REQUIRED")
+    matrix = [[Fraction(value) for value in row] for row in coefficients]
+
+    def split_line(values):
+        levels = [values]
+        while len(levels[-1]) > 1:
+            previous = levels[-1]
+            levels.append([
+                (previous[i] + previous[i + 1]) / 2
+                for i in range(len(previous) - 1)
+            ])
+        degree = len(values) - 1
+        left = [levels[k][0] for k in range(degree + 1)]
+        right = [levels[degree - k][k] for k in range(degree + 1)]
+        return left, right
+
+    if axis == "mu":
+        left_columns = []
+        right_columns = []
+        for j in range(width):
+            left, right = split_line([matrix[i][j] for i in range(len(matrix))])
+            left_columns.append(left)
+            right_columns.append(right)
+        left_matrix = [
+            [left_columns[j][i] for j in range(width)]
+            for i in range(len(matrix))
+        ]
+        right_matrix = [
+            [right_columns[j][i] for j in range(width)]
+            for i in range(len(matrix))
+        ]
+        return left_matrix, right_matrix
+
+    left_rows = []
+    right_rows = []
+    for row in matrix:
+        left, right = split_line(row)
+        left_rows.append(left)
+        right_rows.append(right)
+    return left_rows, right_rows
+
+
+def bernstein_box_excludes_zero(coefficients: list[list[object]]) -> bool:
+    """Named box-level predicate; mixed signs and zero coefficients are inconclusive."""
+    return bernstein_sign_excludes_zero(coefficients)
