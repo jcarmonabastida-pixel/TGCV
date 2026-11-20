@@ -7,6 +7,7 @@ from c10s_f5_rational_score_polynomials import (
     compactify_concentration,
     bernstein_coefficients_on_box,
     bernstein_sign_excludes_zero,
+    bernstein_subdivide,
 )
 
 
@@ -156,6 +157,41 @@ class RationalScorePolynomialTests(unittest.TestCase):
         c, d = beta_binomial_score_numerators(5, {0: 2, 1: 1, 5: 0})
         self.assertEqual(a, c)
         self.assertEqual(b, d)
+
+
+    def test_bernstein_subdivision_mu_is_exact(self):
+        coefficients = bernstein_coefficients_on_box(
+            {(0, 0): 0, (1, 0): 1}
+        )
+        left, right = bernstein_subdivide(coefficients, "mu")
+        self.assertEqual(left, [[Fraction(0)], [Fraction(1, 2)]])
+        self.assertEqual(right, [[Fraction(1, 2)], [Fraction(1)]])
+
+    def test_bernstein_subdivision_t_is_exact(self):
+        coefficients = bernstein_coefficients_on_box(
+            {(0, 0): 0, (0, 1): 1}
+        )
+        left, right = bernstein_subdivide(coefficients, "t")
+        self.assertEqual(left, [[Fraction(0), Fraction(1, 2)]])
+        self.assertEqual(right, [[Fraction(1, 2), Fraction(1)]])
+
+    def test_bernstein_subdivision_bivariate_tensor_product(self):
+        coefficients = bernstein_coefficients_on_box(
+            {(0, 0): 0, (1, 0): 1, (0, 1): 1, (1, 1): 1}
+        )
+        left, right = bernstein_subdivide(coefficients, "mu")
+        self.assertEqual(len(left), len(coefficients))
+        self.assertEqual(len(right), len(coefficients))
+        self.assertEqual([len(row) for row in left], [2, 2])
+        self.assertEqual([len(row) for row in right], [2, 2])
+        # The two pieces agree exactly on their shared subdivision edge.
+        self.assertEqual(left[-1], right[0])
+
+    def test_bernstein_subdivision_rejects_invalid_inputs(self):
+        with self.assertRaisesRegex(ValueError, "AXIS_MUST_BE_MU_OR_T"):
+            bernstein_subdivide([[Fraction(1)]], "kappa")
+        with self.assertRaisesRegex(ValueError, "RECTANGULAR_COEFFICIENT_MATRIX_REQUIRED"):
+            bernstein_subdivide([[Fraction(1)], [Fraction(1), Fraction(2)]], "mu")
 
 
 if __name__ == "__main__":
