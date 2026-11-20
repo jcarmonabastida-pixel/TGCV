@@ -287,3 +287,9 @@ The harness already contains relevant numerical assets; they have been inspected
 3. `c10s_f5_beta_binomial_mcse_profile.py` already handles both mean branches and analytic concentration limits for a scalar MCSE target. However, its finite-concentration search uses a 241-point grid plus local scalar refinement and explicitly describes itself as numerical/diagnostic rather than globally certified. Its branch/limit bookkeeping can inform interface design, but its objective constraint and search cannot certify the F5 MLE or W/B profiles.
 
 Accordingly, the current work is not a restart from scratch: it reuses the exact F1 isolation/adversarial semantics and the F5 MCSE branch/boundary representation while adding the missing high-degree global stationary certification for the distinct beta-binomial MLE and W/B targets. No existing F1 or MCSE behavior is modified by this work.
+
+## 16. Interval-route primitive added — Bernstein box exclusion (2026-11-20)
+
+The research harness now implements exact tensor-product Bernstein coefficients for a rational rectangular box in compactified coordinates, plus a strict-sign exclusion predicate. If all Bernstein coefficients of either score numerator are strictly positive or strictly negative, that score has no zero in the closed box; hence the box contains no common stationary point. Mixed-sign coefficients remain inconclusive.
+
+This gives the interval route a rigorous exclusion primitive. It does not prove root existence or uniqueness, isolate a root, or establish exhaustive coverage. The remaining interval certificate needs deterministic subdivision, a root-inclusion/uniqueness operator, resource-ceiling/abstention semantics, and separate boundary likelihood adjudication. Tests are committed but not yet executed in the governed CPython 3.12 environment. No global MLE certificate is claimed.
