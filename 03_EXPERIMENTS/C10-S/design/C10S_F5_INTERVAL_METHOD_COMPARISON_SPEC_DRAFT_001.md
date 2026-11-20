@@ -291,3 +291,10 @@ These are technical/statistical blockers to be resolved by analysis and determin
 - Execution: NOT AUTHORIZED.
 
 **Next operation:** continue the bounded backend comparison using the tested sparse score numerators as common input: purpose-built modular subresultant/CRT versus interval-certified one-dimensional profile isolation. Require identical M30/R20 fixtures and adversarial even-multiplicity/near-coincident-root cases under fixed resource ceilings. The score-numerator helper is a preliminary research primitive only; it does not mean D2 is complete or D1 is closed. Then extend the selected certificate to constrained M2 profiles and close precision/cost/emission semantics. No numerical bank, replay, calibration or scientific execution is authorized.
+
+
+### Modular backend feasibility refinement (2026-11-20)
+
+See `diagnostics/C10S_F5_MODULAR_BACKEND_FEASIBILITY_NOTE_001.md`. On the deterministic M30/R20 score-numerator fixture, the sparse Sylvester pattern has a 79×79 determinant. A maximum-weight perfect matching using each nonzero entry's degree in kappa gives a rigorous determinant-term degree upper bound of 3,501 (versus the coarse dense bound 3,862). This is not the actual resultant degree. Full evaluation/interpolation to that bound would require up to 3,502 evaluations per good prime before CRT and is not yet an acceptable implementation strategy.
+
+Generic SymPy PRS over GF(p)[kappa] also exceeded the 60-second tool ceiling. The next modular candidate must exploit sparse subresultant/degree-drop structure rather than merely changing the coefficient field. D1 remains OPEN; D2 remains a partial exact score-construction primitive only.
