@@ -412,3 +412,9 @@ A final source scan found that the box-budget exhaustion test reused the simple 
 The Bernstein path now has a rational Krawczyk operator using Bernstein enclosures of exact polynomial derivatives. A box is certified as containing exactly one simple common root only if strict Krawczyk inclusion and a strict infinity-norm contraction bound are both proved. The integrated wrapper retains exclusions, certified boxes, unresolved multiple/singular boxes and resource remainders separately.
 
 This is not yet an exhaustive root-isolation algorithm. In particular, adjacent closed partition boxes can share boundary roots; the current wrapper does not yet canonicalize shared-edge/vertex roots or prove global uniqueness across the whole cover. Multiple roots remain unresolved. No governed test execution has occurred, and no method comparison or MLE certificate is claimed.
+
+### Boundary candidate arithmetic — first exact profile implementation (2026-11-20)
+
+The research harness now calculates exact rational likelihood probabilities for the four one-edge boundary profiles: `kappa -> 0`, `kappa -> infinity`, `mu -> 0`, and `mu -> 1`. The Binomial-limit mean and endpoint-mixture mean are rational pooled proportions; the likelihoods include the combinatorial factors. Boundary tests are added but not executed.
+
+This does not yet classify joint corner/path limits, boundary roots of the compactified score equations, or compare interior algebraic likelihood enclosures with boundary values. It is a separate candidate-evaluation primitive, not global certification.
