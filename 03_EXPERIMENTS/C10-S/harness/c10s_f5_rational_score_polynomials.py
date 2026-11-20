@@ -1177,7 +1177,7 @@ def compactified_boundary_common_roots(
     poly_p: Poly,
     poly_q: Poly,
     *,
-    width=Fraction(1, 2**20),
+    width=None,
     max_depth: int = 64,
     max_intervals: int = 10000,
 ) -> dict[str, object]:
@@ -1191,6 +1191,8 @@ def compactified_boundary_common_roots(
     """
     from fractions import Fraction
 
+    if width is None:
+        width = Fraction(1, 2**20)
     _exact_fraction(width)
     factors = compactified_boundary_common_factors(poly_p, poly_q)
     if factors["status"] == "BOUNDARY_COMMON_COMPONENTS_UNRESOLVED":
