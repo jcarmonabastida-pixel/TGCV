@@ -2337,3 +2337,277 @@ def beta_binomial_compactified_stationary_census(
             "max_boundary_intervals": max_boundary_intervals,
         },
     }
+
+
+def _beta_binomial_likelihood_enclosure(
+    r: int,
+    count_histogram: Mapping[int, int],
+    *,
+    mu_bounds: tuple[object, object],
+    t_bounds: tuple[object, object],
+    max_fraction_bits: int = 200000,
+) -> dict[str, object]:
+    """Enclose the beta-binomial likelihood on a rational interior box.
+
+    Under t=kappa/(1+kappa), each rising-factor ratio is a product of
+    positive bilinear factors divided by positive affine factors. Extrema of
+    each bilinear factor on a rectangle occur at its corners. Multiplying
+    rational lower/upper bounds therefore gives a rigorous likelihood
+    enclosure without floating point or logarithm approximation.
+    """
+    from fractions import Fraction
+    from math import comb
+
+    if type(max_fraction_bits) is not int or max_fraction_bits < 64:
+        raise ValueError("MAX_FRACTION_BITS_MUST_BE_INTEGER_AT_LEAST_64")
+    mu_lo, mu_hi = (_exact_fraction(v) for v in mu_bounds)
+    t_lo, t_hi = (_exact_fraction(v) for v in t_bounds)
+    if not 0 < mu_lo < mu_hi < 1 or not 0 < t_lo < t_hi < 1:
+        raise ValueError("LIKELIHOOD_BOX_MUST_BE_STRICTLY_INTERIOR")
+
+    corners = (
+        (mu_lo, t_lo), (mu_lo, t_hi),
+        (mu_hi, t_lo), (mu_hi, t_hi),
+    )
+
+    def bilinear_range(which: str, j: int):
+        values = []
+        for mu, t in corners:
+            if which == "alpha":
+                values.append(mu * t + j * (1 - t))
+            else:
+                values.append((1 - mu) * t + j * (1 - t))
+        return min(values), max(values)
+
+    likelihood_lo = Fraction(1)
+    likelihood_hi = Fraction(1)
+    for x, multiplicity in count_histogram.items():
+        if type(x) is not int or not 0 <= x <= r:
+            raise ValueError("COUNT_OUTSIDE_0_TO_R")
+        if type(multiplicity) is not int or multiplicity < 0:
+            raise ValueError("MULTIPLICITY_MUST_BE_NONNEGATIVE_INTEGER")
+        if multiplicity == 0:
+            continue
+
+        numerator_lo = Fraction(1)
+        numerator_hi = Fraction(1)
+        for j in range(x):
+            lo, hi = bilinear_range("alpha", j)
+            numerator_lo *= lo
+            numerator_hi *= hi
+        for j in range(r - x):
+            lo, hi = bilinear_range("beta", j)
+            numerator_lo *= lo
+            numerator_hi *= hi
+
+        denominator_lo = Fraction(1)
+        denominator_hi = Fraction(1)
+        for j in range(r):
+            values = (t_lo + j * (1 - t_lo), t_hi + j * (1 - t_hi))
+            denominator_lo *= min(values)
+            denominator_hi *= max(values)
+
+        combinatorial = Fraction(comb(r, x))
+        probability_lo = combinatorial * numerator_lo / denominator_hi
+        probability_hi = combinatorial * numerator_hi / denominator_lo
+        likelihood_lo *= probability_lo**multiplicity
+        likelihood_hi *= probability_hi**multiplicity
+
+        if max(
+            likelihood_lo.numerator.bit_length(),
+            likelihood_lo.denominator.bit_length(),
+            likelihood_hi.numerator.bit_length(),
+            likelihood_hi.denominator.bit_length(),
+        ) > max_fraction_bits:
+            return {
+                "status": "LIKELIHOOD_FRACTION_RESOURCE_LIMIT",
+                "likelihood_bounds": None,
+                "max_fraction_bits": max_fraction_bits,
+            }
+
+    return {
+        "status": "EXACT_RATIONAL_LIKELIHOOD_ENCLOSURE",
+        "likelihood_bounds": (likelihood_lo, likelihood_hi),
+        "max_fraction_bits": max_fraction_bits,
+    }
+
+
+def beta_binomial_global_mle_certificate(
+    r: int,
+    count_histogram: Mapping[int, int],
+    *,
+    max_refinements: int = 3,
+    projection_bits: int = 16,
+    max_projection_depth: int = 64,
+    max_projection_intervals: int = 10000,
+    max_lift_intervals: int = 256,
+    max_lift_depth: int = 24,
+    max_mu_depth: int = 12,
+    max_boundary_depth: int = 64,
+    max_boundary_intervals: int = 10000,
+    max_fraction_bits: int = 200000,
+) -> dict[str, object]:
+    """Certify the global beta-binomial likelihood winner or explicitly abstain.
+
+    This is the final comparison layer over the integrated stationary/boundary
+    census. Interior candidates are bounded with exact rational likelihood
+    intervals; boundary profiles are exact rational values. A winner is
+    reported only when its lower bound strictly exceeds every competitor's
+    upper bound. Otherwise the concentration projection/lift is refined up to
+    the deterministic budget and the operation returns an unresolved state.
+    """
+    from fractions import Fraction
+
+    if type(max_refinements) is not int or max_refinements < 0:
+        raise ValueError("MAX_REFINEMENTS_MUST_BE_NONNEGATIVE_INTEGER")
+    if type(projection_bits) is not int or projection_bits < 4:
+        raise ValueError("PROJECTION_BITS_MUST_BE_INTEGER_AT_LEAST_4")
+    if type(max_fraction_bits) is not int or max_fraction_bits < 64:
+        raise ValueError("MAX_FRACTION_BITS_MUST_BE_INTEGER_AT_LEAST_64")
+
+    history = []
+    for refinement in range(max_refinements + 1):
+        census = beta_binomial_compactified_stationary_census(
+            r, count_histogram,
+            projection_width=Fraction(1, 2 ** (projection_bits + 4 * refinement)),
+            max_projection_depth=max_projection_depth + 8 * refinement,
+            max_projection_intervals=max_projection_intervals,
+            max_lift_intervals=max_lift_intervals,
+            max_lift_depth=max_lift_depth + 4 * refinement,
+            max_mu_depth=max_mu_depth,
+            max_boundary_depth=max_boundary_depth,
+            max_boundary_intervals=max_boundary_intervals,
+        )
+        history.append({
+            "refinement": refinement,
+            "projection_width": Fraction(1, 2 ** (projection_bits + 4 * refinement)),
+            "census_status": census["status"],
+        })
+
+        if census["status"] not in {
+            "INTERIOR_SIMPLE_ROOT_AND_BOUNDARY_CENSUS_COMPLETE",
+            "NO_INTERIOR_MEAN_ROOT_DEGENERATE_DATA",
+        }:
+            return {
+                "status": "ABSTAIN_STATIONARY_CENSUS_INCOMPLETE",
+                "census": census,
+                "refinement_history": history,
+                "likelihood_ordering": "NOT_PERFORMED",
+            }
+
+        competitors = []
+        interior_index = 0
+        for lift_record in census.get("interior_stationary_candidates", []):
+            lift = lift_record["lift_result"]
+            for certified in lift["certified_simple_root_intervals"]:
+                root_box = certified["root_certificate"]["box"]
+                enclosure = _beta_binomial_likelihood_enclosure(
+                    r, count_histogram,
+                    mu_bounds=root_box[0],
+                    t_bounds=root_box[1],
+                    max_fraction_bits=max_fraction_bits,
+                )
+                if enclosure["status"] != "EXACT_RATIONAL_LIKELIHOOD_ENCLOSURE":
+                    return {
+                        "status": "ABSTAIN_LIKELIHOOD_RESOURCE_LIMIT",
+                        "census": census,
+                        "candidate_enclosure": enclosure,
+                        "refinement_history": history,
+                        "likelihood_ordering": "NOT_CERTIFIED",
+                    }
+                lower, upper = enclosure["likelihood_bounds"]
+                competitors.append({
+                    "candidate_id": f"interior-{interior_index}",
+                    "kind": "INTERIOR_STATIONARY_ROOT",
+                    "parameter_box": root_box,
+                    "likelihood_bounds": (lower, upper),
+                    "attained_in_open_domain": True,
+                })
+                interior_index += 1
+
+        for name, record in census["boundary_likelihoods"].items():
+            value = record["likelihood"]
+            competitors.append({
+                "candidate_id": f"boundary-{name}",
+                "kind": "BOUNDARY_SUPREMUM",
+                "boundary": name,
+                "likelihood_bounds": (value, value),
+                "attained_in_open_domain": False,
+            })
+
+        if not competitors:
+            return {
+                "status": "ABSTAIN_NO_ADMISSIBLE_LIKELIHOOD_CANDIDATES",
+                "census": census,
+                "refinement_history": history,
+                "competitors": [],
+            }
+
+        winners = []
+        for index, candidate in enumerate(competitors):
+            lower = candidate["likelihood_bounds"][0]
+            if all(
+                lower > other["likelihood_bounds"][1]
+                for j, other in enumerate(competitors) if j != index
+            ):
+                winners.append(candidate)
+
+        if len(winners) == 1:
+            winner = winners[0]
+            return {
+                "status": (
+                    "UNIQUE_GLOBAL_MLE_INTERIOR_CERTIFIED"
+                    if winner["kind"] == "INTERIOR_STATIONARY_ROOT"
+                    else "GLOBAL_SUPREMUM_BOUNDARY_CERTIFIED"
+                ),
+                "winner": winner,
+                "competitors": competitors,
+                "census": census,
+                "refinement_history": history,
+                "ordering_method": "EXACT_RATIONAL_PROBABILITY_INTERVALS",
+                "globality_basis": "COMPLETE_INTERIOR_STATIONARY_CENSUS_PLUS_ALL_BOUNDARY_PROFILES_AND_CORNER_LIMITS",
+            }
+
+        boundary_values = [
+            candidate["likelihood_bounds"][0]
+            for candidate in competitors
+            if candidate["kind"] == "BOUNDARY_SUPREMUM"
+        ]
+        if boundary_values:
+            boundary_max = max(boundary_values)
+            top_boundaries = [
+                candidate for candidate in competitors
+                if candidate["kind"] == "BOUNDARY_SUPREMUM"
+                and candidate["likelihood_bounds"][0] == boundary_max
+            ]
+            interior_upper = max(
+                (
+                    candidate["likelihood_bounds"][1]
+                    for candidate in competitors
+                    if candidate["kind"] == "INTERIOR_STATIONARY_ROOT"
+                ),
+                default=Fraction(0),
+            )
+            if interior_upper < boundary_max:
+                return {
+                    "status": (
+                        "GLOBAL_SUPREMUM_BOUNDARY_TIED_CERTIFIED"
+                        if len(top_boundaries) > 1
+                        else "GLOBAL_SUPREMUM_BOUNDARY_CERTIFIED"
+                    ),
+                    "winners": top_boundaries,
+                    "competitors": competitors,
+                    "census": census,
+                    "refinement_history": history,
+                    "ordering_method": "EXACT_RATIONAL_PROBABILITY_INTERVALS",
+                    "globality_basis": "COMPLETE_INTERIOR_STATIONARY_CENSUS_PLUS_ALL_BOUNDARY_PROFILES_AND_CORNER_LIMITS",
+                }
+
+    return {
+        "status": "ABSTAIN_GLOBAL_LIKELIHOOD_ORDERING_UNRESOLVED",
+        "census": census,
+        "competitors": competitors,
+        "refinement_history": history,
+        "ordering_method": "EXACT_RATIONAL_PROBABILITY_INTERVALS",
+        "reason": "INTERVALS_OVERLAP_AFTER_MAXIMUM_DETERMINISTIC_REFINEMENTS",
+    }
