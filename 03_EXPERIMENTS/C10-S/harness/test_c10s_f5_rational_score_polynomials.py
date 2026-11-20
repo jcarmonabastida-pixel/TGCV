@@ -978,23 +978,21 @@ class RationalScorePolynomialTests(unittest.TestCase):
 
     def test_integrated_stationary_census_lifts_simple_interior_root(self):
         result = beta_binomial_compactified_stationary_census(
-            1, {0: 1, 1: 1},
-            projection_width=Fraction(1, 16),
-            max_projection_depth=16,
-            max_projection_intervals=100,
-            max_lift_intervals=20,
-            max_lift_depth=8,
-            max_mu_depth=6,
-            max_boundary_depth=12,
-            max_boundary_intervals=100,
+            5, {0: 1, 1: 2, 2: 2, 3: 2, 4: 2, 5: 1},
+            projection_width=Fraction(1, 64),
+            max_projection_depth=24,
+            max_projection_intervals=1000,
+            max_lift_intervals=100,
+            max_lift_depth=16,
+            max_mu_depth=8,
+            max_boundary_depth=24,
+            max_boundary_intervals=1000,
         )
-        self.assertIn(
+        self.assertEqual(
             result["status"],
-            {
-                "INTERIOR_SIMPLE_ROOT_AND_BOUNDARY_CENSUS_COMPLETE",
-                "INCOMPLETE_STATIONARY_CENSUS",
-            },
+            "INTERIOR_SIMPLE_ROOT_AND_BOUNDARY_CENSUS_COMPLETE",
         )
+        self.assertEqual(len(result["unresolved_lifts"]), 0)
         self.assertIn("concentration_resultant", result)
         self.assertIn("concentration_projection", result)
         self.assertIn("boundary_census", result)
