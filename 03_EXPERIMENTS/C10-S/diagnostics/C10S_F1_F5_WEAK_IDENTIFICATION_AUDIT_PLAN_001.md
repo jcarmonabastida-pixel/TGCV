@@ -746,3 +746,7 @@ Two further deterministic tests have been committed: one with a common even-mult
 Static code review identified that `Fraction(float)` accepts binary floating-point inputs, which contradicted the exact-rational contract. The Bernstein box converter, sign predicate, de Casteljau subdivision and adaptive controller now reject floats and accept only exact integer/`Fraction` values at their public input boundaries. Empty-polynomial box conversion validates bounds before returning. Four deterministic adversarial tests were added.
 
 This is implementation hardening, not execution evidence. The four tests and the existing Bernstein suite remain pending governed CPython 3.12 execution. Boundary-stratum adjudication, root inclusion/uniqueness, multiple-root treatment, exhaustive global certification and method comparison remain OPEN. No scientific execution, replay, calibration or bank is authorized by this update.
+
+### Adversarial fixture contract correction (2026-11-20)
+
+Static inspection identified three Bernstein fixtures that passed rational coefficients to a polynomial API requiring integer coefficients. The fixtures were corrected using positive integer equation scalings, preserving the simple common root, the double root, and the near-coincident pair at exact separation `2^-20`. This prevents an input-contract exception from being mistaken for a mathematical test result. The suite remains unexecuted; no PASS is claimed.
