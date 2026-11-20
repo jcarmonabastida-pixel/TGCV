@@ -336,3 +336,7 @@ This closes an input-integrity gap, not a mathematical certification gap. The ad
 ### 20. Adversarial fixture coefficient-contract correction (2026-11-20)
 
 Three root-retention fixtures were statically inconsistent with the module's integer-coefficient polynomial contract: they supplied `Fraction` coefficients. They now use positive integer scalings of the same equations. The common-root fixture is `(2*mu-1, 2*t-1)`; the double-root fixture is their squared form; the near-coincident fixture uses integer factors with exact separation `2^-20`. Zero sets and multiplicities are unchanged. This is a fixture correction only; governed tests remain pending.
+
+### Resource-budget fixture alignment (2026-11-20)
+
+A final source scan found that the box-budget exhaustion test reused the simple common-root equations with `Fraction` coefficients. It has now been changed to the same integer-scaled equations (`2*mu-1`, `2*t-1`). Thus all four controller call sites in the adversarial tests honor the integer sparse-polynomial contract. This is a static source correction only; no test execution or PASS is claimed.
