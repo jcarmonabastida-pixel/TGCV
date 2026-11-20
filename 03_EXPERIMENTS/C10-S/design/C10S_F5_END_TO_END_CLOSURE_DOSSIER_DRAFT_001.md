@@ -111,15 +111,15 @@ The existing boundary helpers provide exact ingredients, not yet a complete glob
 
 **Disposition:** the mathematical-operational/engineering closure of F5 through G6 is PASS for the bounded M10/R5 and M30/R20 target regimes. F5 overall remains functionally OPEN at G7 only. G7 is a prospective scientific calibration, not another software test, and is outside the current authorization.
 
-## 5. Remaining limitations and closure conditions
+## 5. Accepted limitations and fail-closed scope
 
-1. **General singular/multiple interior roots.** Krawczyk inclusion certifies simple roots. Projection/edge Sturm isolation preserves univariate multiplicity, but arbitrary projection-root-to-bivariate-root multiplicity lifting is not implemented. Such boxes remain typed unresolved; the global wrapper must abstain. This is an explicit supported limitation, not permission to report a partial census as exhaustive.
+1. **General singular/multiple interior roots.** Krawczyk inclusion certifies simple roots. Projection/edge Sturm isolation preserves univariate multiplicity, but arbitrary projection-root-to-bivariate-root multiplicity lifting is not implemented. Such boxes remain typed unresolved; the global wrapper abstains. This is an explicit scope limitation, not permission to report a partial census as exhaustive.
 2. **General mixed common components.** The exact component detector classifies axis-aligned factors. It does not claim a complete bivariate gcd for arbitrary mixed factors. A zero resultant or unresolved common-component state blocks global certification.
-3. **Boundary-supremum end-to-end case.** Exact edge profiles and uniform joint-corner limits are implemented; M10/R5 and M30/R20 global interior cases and degenerate co-maxima have passed. The direct non-attained `kappa->0` boundary-supremum fixture passed in run #52 and is part of the bounded G3/G4 evidence.
-4. **G1 provenance binding.** Canonical hashes of the normalized histogram, raw/compactified score polynomials and source revision have been implemented. The corresponding tests are pending run #52.
+3. **Boundary-supremum adjudication.** Exact edge profiles and uniform joint-corner limits are implemented; M10/R5 and M30/R20 global interior cases, degenerate co-maxima and the direct non-attained `kappa->0` boundary-supremum fixture all passed.
+4. **G1 provenance binding.** Canonical hashes bind normalized histogram, r, sample size, pooled successes, raw/compactified score polynomials and source revision. Run #54 passed the actual GitHub Actions `GITHUB_SHA` default binding.
 5. **G7 scientific relevance.** No prospective TierA calibration has been run. Historical P178 benchmark assets do not satisfy this gate. G7 remains a separate scientific execution gate and requires explicit user authorization.
 
-The closure decision for G1–G6 is bounded and fail-closed: the required M10/R5 and M30/R20 deterministic fixtures must receive complete certificates; every unsupported singular/common-component/resource regime must return a typed incomplete/abstention state; no local or partial result may be labelled global. G7 is not part of this engineering authorization.
+The G1–G6 closure decision is bounded and fail-closed: the required M10/R5 and M30/R20 deterministic fixtures receive complete certificates; every unsupported singular/common-component/resource regime returns a typed incomplete/abstention state; no local or partial result is labelled global. G7 is not part of this engineering authorization.
 
 ## 6. Method-selection rule
 
