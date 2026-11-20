@@ -616,3 +616,15 @@ Therefore the all-starts-success Boolean cannot simply be removed, but neither c
 Resolve the D1 blockers in the successor specification through analytic derivation and deterministic contract design: (i) global-fit/failed-start adjudication, (ii) profile topology and boundary certification, (iii) exact M2b order-statistic/tolerance calculation and bank size, (iv) M1 endpoint-MCSE-based bootstrap count, (v) exact Wilson precision operating characteristics, and (vi) static runtime/memory ceiling after the implementation contract is frozen. Then review and freeze D1 as a separately versioned successor specification. Only then begin D2 shared implementation and deterministic adversarial tests.
 
 **No changes** to frozen v1.0, C5/C0 production semantics, B2/B3 results, acceptance gates, seeds, RMA, Evidence→Claim Matrix, main, or scientific authorization.
+
+
+### D1 analytical refinements — 2026-11-20
+
+The successor specification now includes an exact algebraic reduction for the M2 target profiles. Since `W+B = mu(1-mu)` and `W/B = kappa`, a fixed-W profile can be parameterized by the complementary B on `[0, 0.25-W]`; a fixed-B profile analogously uses complementary W. At every interior nuisance value, both mean branches `mu = (1 ± sqrt(1-4(W+B)))/2` must be evaluated, with `alpha=mu*kappa` and `beta=(1-mu)*kappa`. Thus each target profile is a bounded one-dimensional search plus explicit `kappa→0`, `kappa→∞`, `mu→0/1` and `mu=0.5` limit handling. This removes the need for a generic 2D constrained optimizer at every target value, but it does not certify globality; stationary-point isolation and topology remain D1 blockers.
+
+The provisional precision calculations were independently evaluated:
+- N=5,000 at coverage 0.95 gives MCSE 0.003082.
+- The inherited joint point-coverage/Wilson gate accepts 4,720–4,780 successes out of 5,000 (94.4%–95.6%) because the Wilson interval must contain 0.95.
+- For four M2b cutoffs, Kcal=5,000 and order-statistic rank k=4,785 give one-sided per-cutoff tolerance confidence 0.988711, exceeding Bonferroni's required 0.9875.
+
+These are analytical design calculations only. They are not a coverage run, bootstrap, calibration or authorization. Wilson/rank helper tests and independent implementation checks remain required before D1 freeze.
