@@ -30,6 +30,16 @@ The current audit's `optimizer_status` compares operations 2 and 3. It does not 
 
 This is a concrete B1 traceability/diagnostic gap, not a reason to discard the existing records. The result report must distinguish the production fit from the analytic-gradient audit fit; the top-level `fit_diagnostics.selected_alpha/beta/concentration` fields describe the analytic-gradient audit fit, not necessarily the production fit used to generate C5 bootstrap draws.
 
+### 2.1 The current runner imposes an additional all-starts-success gate
+
+The runner's `_optimizer_diagnostic_is_resolved` requires **all three** analytic-gradient L-BFGS-B starts to report success. The frozen B1 specification requires retaining and comparing all three outcomes; it does not state that every start must individually converge when one or more successful starts agree on the admissible fit. This implementation therefore adds a stricter condition that must be reconciled with the frozen wording before it is treated as a scientific acceptance requirement.
+
+The raw outcomes show why a blanket Boolean rule is inadequate:
+- M30/R20: 342/5,000 calibration and 355/5,000 validation records have one or more failed starts, but their successful starts have median negative-log-likelihood spread around (8.5\times10^{-14}) and (8.5\times10^{-14}), with maxima (4.55\times10^{-13}) and (2.27\times10^{-13}); successful-start parameter spreads have maxima (2.08\times10^{-7}) and (5.13\times10^{-8}). The failed starts are commonly far worse in objective value. This pattern is consistent with a noncompetitive start failing while the successful starts agree.
+- M10/R5: 684/5,000 calibration and 655/5,000 validation records have at least one failed start while another succeeds; successful-start objective and parameter spreads have much heavier tails (q90 parameter spread approximately 1.32 and 1.35 log-coordinate units). Here a failed start may coexist with genuine concentration-ridge ambiguity and cannot be dismissed by the same rule.
+
+The runner's stricter gate leaves only 2,565/5,000 and 2,591/5,000 M10/R5 records resolved, and 1,596/5,000 and 1,608/5,000 M30/R20 records resolved under its combined conditions. These are implementation-gate counts, not frozen scientific component outcomes. Removing the all-starts-success condition alone would not turn the run into a PASS: the BFGS termination state and, independently, the coverage/Wilson failures remain.
+
 ## 3. Independent-coordinate BFGS: distinguish termination failure from likelihood disagreement
 
 ### M30/R20
