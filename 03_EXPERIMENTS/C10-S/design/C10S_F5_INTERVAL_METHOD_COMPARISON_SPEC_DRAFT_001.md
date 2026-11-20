@@ -148,7 +148,7 @@ Proposed bounded design:
 - independent random-stream namespaces for dataset generation, M0 bootstrap, M1 bootstrap and M2b calibration;
 - immutable manifests and hashes, with seed derivation including protocol version, namespace, cell and dataset index.
 
-For a coverage estimate near 0.95, N=5,000 gives descriptive MCSE approximately 0.0031. This motivates 5,000 as an initial precision target, not as a guarantee of acceptance or as a copied historical sample size. D1 must calculate the exact Wilson/precision operating characteristics before freezing N.
+For a coverage estimate near 0.95, N=5,000 gives descriptive MCSE approximately 0.0031. This motivates a provisional 5,000 datasets per cell in each development and development-validation bank; it is not a guarantee of acceptance or a copied historical sample size. D1 must calculate exact Wilson/precision operating characteristics before freezing N. The separate M2b cutoff-calibration bank has a different purpose and its size must be derived from the simultaneous tolerance requirement, not assumed to be 5,000.
 
 A separate confirmatory bank is not part of this successor development package. It would require a further frozen method and a new authorization.
 
