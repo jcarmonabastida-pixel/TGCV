@@ -430,3 +430,8 @@ The controller returns `COMPLETE_CENSUS_ON_SUPPLIED_T_INTERVAL` only when every 
 Five deterministic controller tests cover root-free exclusion, a simple affine root, retention of a multiple root, resource remainder and invalid domains/budgets. The source-level test module now contains 76 methods. These tests are committed but have not been executed in governed CPython 3.12. The simple affine fixtures test the numerical-certification kernel contract; production use remains restricted to paired score numerators generated from the same nondegenerate beta-binomial histogram. No calibration, bank, replay or scientific execution is claimed or authorized.
 
 This controller is the current preferred reduced route for the interior concentration search. Algebraic resultant/Sturm isolation remains a complementary cross-check and fallback for unresolved concentration intervals; it is not invoked indiscriminately. Multiple-root deflation and endpoint-complete domain coverage remain open proof obligations. D1/F5 remain OPEN.
+
+
+## 23. Consolidated end-to-end closure contract (2026-11-20)
+
+The definitive F5 closure gates G1–G7, the reconstructed implementation inventory, current blocker classification, method-selection rule, and required final evidence record are consolidated in `C10S_F5_END_TO_END_CLOSURE_DOSSIER_DRAFT_001.md`. This is a research-branch coordination/design artifact only. It does not upgrade implementation or execution status. In particular, full open-domain interior census, multiple-root lifting/classification, rigorous global likelihood ordering, governed CPython 3.12 validation, and authorized prospective TierA calibration remain open. F5 remains OPEN.
