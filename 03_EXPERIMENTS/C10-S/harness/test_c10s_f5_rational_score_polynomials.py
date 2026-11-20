@@ -1048,7 +1048,7 @@ class RationalScorePolynomialTests(unittest.TestCase):
         result = beta_binomial_global_mle_certificate(5, {0: 3})
         self.assertEqual(
             result["status"],
-            "GLOBAL_SUPREMUM_BOUNDARY_TIED_CERTIFIED",
+            "GLOBAL_CO_MAXIMIZERS_CERTIFIED",
         )
         self.assertGreaterEqual(len(result["winners"]), 2)
         self.assertEqual(
@@ -1071,7 +1071,7 @@ class RationalScorePolynomialTests(unittest.TestCase):
         )
         self.assertEqual(
             result["status"],
-            "UNIQUE_GLOBAL_MLE_INTERIOR_CERTIFIED",
+            "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED",
             msg=repr({
                 "status": result["status"],
                 "refinement_history": result.get("refinement_history"),
