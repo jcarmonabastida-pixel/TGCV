@@ -12,6 +12,7 @@ from c10s_f5_rational_score_polynomials import (
     krawczyk_certify_unique_root,
     bernstein_krawczyk_root_classification,
     beta_binomial_boundary_likelihoods,
+    compactified_boundary_common_factors,
 )
 
 
@@ -268,6 +269,52 @@ class RationalScorePolynomialTests(unittest.TestCase):
             box["state"] == "NOT_PROCESSED_RESOURCE_LIMIT"
             for box in result["unresolved_boxes"]
         ))
+
+    def test_compactified_edge_common_factor_preserves_multiplicity(self):
+        # On mu=0 and mu=1: P=(2t-1)^2, Q=(2t-1)^3.
+        p = {(0, 2): 4, (0, 1): -4, (0, 0): 1}
+        q = {(0, 3): 8, (0, 2): -12, (0, 1): 6, (0, 0): -1}
+        result = compactified_boundary_common_factors(p, q)
+        self.assertEqual(result["status"], "BOUNDARY_COMMON_FACTORS_CLASSIFIED")
+        for edge in ("mu_zero", "mu_one"):
+            self.assertEqual(
+                result["edges"][edge]["status"], "FINITE_COMMON_EDGE_ROOTS"
+            )
+            self.assertEqual(
+                result["edges"][edge]["squarefree_factors"],
+                [{
+                    "multiplicity": 2,
+                    "coefficients": (
+                        Fraction(-1, 2), Fraction(1)
+                    ),
+                }],
+            )
+        self.assertEqual(
+            result["edges"]["t_zero"]["status"], "NO_COMMON_EDGE_ROOT"
+        )
+        self.assertEqual(
+            result["edges"]["t_one"]["status"], "NO_COMMON_EDGE_ROOT"
+        )
+        self.assertEqual(result["root_isolation"], "NOT_YET_PERFORMED")
+
+    def test_compactified_edge_common_component_abstains(self):
+        # Both score polynomials vanish identically on mu=0.
+        result = compactified_boundary_common_factors(
+            {(1, 0): 1}, {(1, 0): 2}
+        )
+        self.assertEqual(
+            result["edges"]["mu_zero"]["status"],
+            "COMMON_EDGE_COMPONENT_UNRESOLVED",
+        )
+        self.assertEqual(
+            result["status"], "BOUNDARY_COMMON_COMPONENTS_UNRESOLVED"
+        )
+
+    def test_compactified_edge_factor_validation(self):
+        with self.assertRaisesRegex(ValueError, "INTEGER_SPARSE_POLYNOMIALS_REQUIRED"):
+            compactified_boundary_common_factors(
+                {(1, 0): Fraction(1, 2)}, {(0, 1): 1}
+            )
 
     def test_boundary_profiles_are_exact_for_endpoint_histogram(self):
         result = beta_binomial_boundary_likelihoods(2, {0: 1, 2: 1})
