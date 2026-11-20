@@ -164,3 +164,87 @@ def compactify_concentration(poly: Poly) -> Poly:
                 * (-1 if power % 2 else 1)
             )
     return {monomial: coefficient for monomial, coefficient in out.items() if coefficient}
+
+
+def bernstein_coefficients_on_box(
+    poly: Poly,
+    mu_bounds: tuple[object, object] = (0, 1),
+    t_bounds: tuple[object, object] = (0, 1),
+) -> list[list[object]]:
+    """Return exact tensor-product Bernstein coefficients on a rational box.
+
+    The input is a sparse power-basis polynomial in (mu,t). Bounds must be
+    ordered rational values (int or Fraction). The returned matrix has shape
+    (degree_mu+1) x (degree_t+1). Its convex-hull property encloses the
+    polynomial range on the closed box. Consequently, coefficients all
+    strictly positive or all strictly negative certify that the polynomial
+    has no zero anywhere in that box.
+
+    This is a root-exclusion primitive only. Mixed-sign coefficients do not
+    prove that a root exists, and this function does not certify a root of a
+    two-polynomial system or handle open-domain boundary likelihoods.
+    """
+    from fractions import Fraction
+    from math import comb
+
+    if not poly:
+        return [[Fraction(0)]]
+    if any(
+        type(i) is not int or i < 0 or type(j) is not int or j < 0
+        or type(coefficient) is not int
+        for (i, j), coefficient in poly.items()
+    ):
+        raise ValueError("POLYNOMIAL_MUST_HAVE_NONNEGATIVE_INTEGER_MONOMIALS")
+
+    def rational_pair(bounds, code):
+        if not isinstance(bounds, tuple) or len(bounds) != 2:
+            raise ValueError(code)
+        try:
+            lo, hi = Fraction(bounds[0]), Fraction(bounds[1])
+        except (TypeError, ValueError, ZeroDivisionError):
+            raise ValueError(code) from None
+        if lo >= hi:
+            raise ValueError(code)
+        return lo, hi
+
+    mu_lo, mu_hi = rational_pair(mu_bounds, "INVALID_MU_BOUNDS")
+    t_lo, t_hi = rational_pair(t_bounds, "INVALID_T_BOUNDS")
+    degree_mu = max(i for i, _ in poly)
+    degree_t = max(j for _, j in poly)
+
+    # First substitute mu=mu_lo+(mu_hi-mu_lo)u and
+    # t=t_lo+(t_hi-t_lo)v into the power basis.
+    power: defaultdict[tuple[int, int], Fraction] = defaultdict(Fraction)
+    for (i, j), coefficient in poly.items():
+        for a in range(i + 1):
+            ca = Fraction(comb(i, a)) * mu_lo ** (i - a) * (mu_hi - mu_lo) ** a
+            for b in range(j + 1):
+                cb = Fraction(comb(j, b)) * t_lo ** (j - b) * (t_hi - t_lo) ** b
+                power[(a, b)] += coefficient * ca * cb
+
+    # Convert power coefficients to tensor-product Bernstein coefficients.
+    result = []
+    for k in range(degree_mu + 1):
+        row = []
+        for ell in range(degree_t + 1):
+            value = Fraction(0)
+            for i in range(k + 1):
+                for j in range(ell + 1):
+                    coefficient = power.get((i, j), Fraction(0))
+                    if coefficient:
+                        value += (
+                            coefficient
+                            * Fraction(comb(k, i), comb(degree_mu, i))
+                            * Fraction(comb(ell, j), comb(degree_t, j))
+                        )
+            row.append(value)
+        result.append(row)
+    return result
+
+
+def bernstein_sign_excludes_zero(coefficients: list[list[object]]) -> bool:
+    """Return True only when exact Bernstein coefficients exclude zero."""
+    from fractions import Fraction
+
+    flat = [Fraction(value) for row in coefficients for value in row]
+    return bool(flat) and (all(value > 0 for value in flat) or all(value < 0 for value in flat))
