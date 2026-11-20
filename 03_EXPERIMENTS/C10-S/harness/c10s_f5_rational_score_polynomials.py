@@ -1009,3 +1009,220 @@ def compactified_boundary_common_factors(
         "root_isolation": "NOT_YET_PERFORMED",
     }
 
+def _uni_evaluate(poly, point):
+    from fractions import Fraction
+    x = Fraction(point)
+    total = Fraction(0)
+    for coefficient in reversed(_uni_trim(poly)):
+        total = total * x + coefficient
+    return total
+
+
+def _uni_sturm_sequence(poly):
+    p = _uni_monic(poly)
+    if len(p) <= 1:
+        return [p]
+    sequence = [p, _uni_derivative(p)]
+    while not _uni_is_zero(sequence[-1]):
+        _, remainder = _uni_divmod(sequence[-2], sequence[-1])
+        if _uni_is_zero(remainder):
+            break
+        sequence.append([-value for value in remainder])
+    return sequence
+
+
+def _uni_sign_variations(sequence, point):
+    signs = []
+    for poly in sequence:
+        value = _uni_evaluate(poly, point)
+        if value > 0:
+            signs.append(1)
+        elif value < 0:
+            signs.append(-1)
+    return sum(left != right for left, right in zip(signs, signs[1:]))
+
+
+def _uni_sturm_root_count(sequence, left, right):
+    if _uni_evaluate(sequence[0], left) == 0 or _uni_evaluate(sequence[0], right) == 0:
+        raise ValueError("STURM_INTERVAL_ENDPOINT_IS_ROOT")
+    return (
+        _uni_sign_variations(sequence, left)
+        - _uni_sign_variations(sequence, right)
+    )
+
+
+def _uni_divide_linear(poly, root):
+    from fractions import Fraction
+    quotient, remainder = _uni_divmod(poly, [-Fraction(root), Fraction(1)])
+    if not _uni_is_zero(remainder):
+        raise ArithmeticError("EXPECTED_EXACT_LINEAR_FACTOR")
+    return _uni_monic(quotient)
+
+
+def _uni_isolate_squarefree_unit_roots(
+    poly,
+    *,
+    width,
+    max_depth,
+    max_intervals,
+):
+    from collections import deque
+    from fractions import Fraction
+
+    target_width = _exact_fraction(width)
+    if target_width <= 0:
+        raise ValueError("ISOLATION_WIDTH_MUST_BE_POSITIVE")
+    if type(max_depth) is not int or max_depth < 0:
+        raise ValueError("MAX_DEPTH_MUST_BE_NONNEGATIVE_INTEGER")
+    if type(max_intervals) is not int or max_intervals < 1:
+        raise ValueError("MAX_INTERVALS_MUST_BE_POSITIVE_INTEGER")
+
+    current = _uni_monic(poly)
+    exact_roots = []
+    processed = 0
+    while len(current) > 1:
+        if _uni_evaluate(current, Fraction(0)) == 0:
+            exact_roots.append(Fraction(0))
+            current = _uni_divide_linear(current, Fraction(0))
+            continue
+        if len(current) > 1 and _uni_evaluate(current, Fraction(1)) == 0:
+            exact_roots.append(Fraction(1))
+            current = _uni_divide_linear(current, Fraction(1))
+            continue
+        if len(current) <= 1:
+            break
+
+        sequence = _uni_sturm_sequence(current)
+        total = _uni_sturm_root_count(sequence, Fraction(0), Fraction(1))
+        queue = deque([(Fraction(0), Fraction(1), 0, total)])
+        intervals = []
+        unresolved = []
+        discovered_rational_root = None
+
+        while queue:
+            left, right, depth, count = queue.popleft()
+            if count == 0:
+                continue
+            processed += 1
+            if processed > max_intervals:
+                unresolved.append({
+                    "interval": (left, right),
+                    "root_count": count,
+                    "depth": depth,
+                    "state": "NOT_PROCESSED_INTERVAL_BUDGET",
+                })
+                unresolved.extend({
+                    "interval": (a, b),
+                    "root_count": n,
+                    "depth": d,
+                    "state": "NOT_PROCESSED_INTERVAL_BUDGET",
+                } for a, b, d, n in queue if n)
+                return {
+                    "status": "RESOURCE_LIMIT_WITH_REMAINDER",
+                    "exact_roots": tuple(sorted(exact_roots)),
+                    "isolating_intervals": intervals,
+                    "unresolved_intervals": unresolved,
+                    "processed_intervals": processed,
+                }
+            if count == 1 and right - left <= target_width:
+                intervals.append({
+                    "interval": (left, right),
+                    "root_count": 1,
+                    "state": "ISOLATED_SINGLE_REAL_ROOT",
+                })
+                continue
+            if depth >= max_depth:
+                unresolved.append({
+                    "interval": (left, right),
+                    "root_count": count,
+                    "depth": depth,
+                    "state": "UNRESOLVED_AT_MAX_DEPTH",
+                })
+                continue
+
+            midpoint = (left + right) / 2
+            if _uni_evaluate(current, midpoint) == 0:
+                discovered_rational_root = midpoint
+                break
+            left_count = _uni_sturm_root_count(sequence, left, midpoint)
+            right_count = _uni_sturm_root_count(sequence, midpoint, right)
+            if left_count:
+                queue.append((left, midpoint, depth + 1, left_count))
+            if right_count:
+                queue.append((midpoint, right, depth + 1, right_count))
+
+        if discovered_rational_root is not None:
+            exact_roots.append(discovered_rational_root)
+            current = _uni_divide_linear(current, discovered_rational_root)
+            continue
+
+        return {
+            "status": "ISOLATION_COMPLETE" if not unresolved else "PARTIAL_ISOLATION",
+            "exact_roots": tuple(sorted(exact_roots)),
+            "isolating_intervals": intervals,
+            "unresolved_intervals": unresolved,
+            "processed_intervals": processed,
+        }
+
+    return {
+        "status": "ISOLATION_COMPLETE",
+        "exact_roots": tuple(sorted(exact_roots)),
+        "isolating_intervals": [],
+        "unresolved_intervals": [],
+        "processed_intervals": processed,
+    }
+
+
+def compactified_boundary_common_roots(
+    poly_p: Poly,
+    poly_q: Poly,
+    *,
+    width=Fraction(1, 2**20),
+    max_depth: int = 64,
+    max_intervals: int = 10000,
+) -> dict[str, object]:
+    """Isolate real common score roots on all four compactification edges.
+
+    Common factors and multiplicities are obtained by exact gcd/square-free
+    decomposition. Each square-free factor is then isolated on [0,1] by an
+    exact rational Sturm sequence. Returned intervals are disjoint within
+    each factor; exact rational roots (including endpoints) are separated.
+    A common edge component or any resource/depth remainder remains explicit.
+    """
+    from fractions import Fraction
+
+    _exact_fraction(width)
+    factors = compactified_boundary_common_factors(poly_p, poly_q)
+    if factors["status"] == "BOUNDARY_COMMON_COMPONENTS_UNRESOLVED":
+        return {
+            "status": "BOUNDARY_COMMON_COMPONENTS_UNRESOLVED",
+            "edges": factors["edges"],
+        }
+
+    output = {}
+    incomplete = False
+    for edge, edge_result in factors["edges"].items():
+        isolated = []
+        for factor in edge_result["squarefree_factors"]:
+            result = _uni_isolate_squarefree_unit_roots(
+                factor["coefficients"],
+                width=width,
+                max_depth=max_depth,
+                max_intervals=max_intervals,
+            )
+            isolated.append({
+                "multiplicity": factor["multiplicity"],
+                **result,
+            })
+            if result["status"] != "ISOLATION_COMPLETE":
+                incomplete = True
+        output[edge] = {
+            **edge_result,
+            "isolated_factors": isolated,
+        }
+    return {
+        "status": "PARTIAL_BOUNDARY_ROOT_ISOLATION" if incomplete else "BOUNDARY_ROOT_ISOLATION_COMPLETE",
+        "edges": output,
+        "corner_deduplication": "NOT_YET_PERFORMED",
+    }
+
