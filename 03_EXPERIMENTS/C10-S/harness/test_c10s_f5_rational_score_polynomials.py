@@ -1126,5 +1126,24 @@ class RationalScorePolynomialTests(unittest.TestCase):
         )
 
 
+    def test_conditional_mean_tube_strips_endpoint_only_line_factor(self):
+        result = conditional_mean_tube_and_concentration_exclusion(
+            {
+                (0, 0): 1,
+                (1, 0): -2,
+                (0, 1): -1,
+                (1, 1): 2,
+            },
+            {(0, 0): 1},
+            t_bounds=(Fraction(1, 2), Fraction(1)),
+            max_mu_depth=6,
+        )
+        self.assertEqual(
+            result["status"],
+            "NO_COMMON_STATIONARY_POINT_ON_T_INTERVAL",
+        )
+        self.assertTrue(result["mean_root_existence_for_every_t_certified"])
+
+
 if __name__ == "__main__":
     unittest.main()
