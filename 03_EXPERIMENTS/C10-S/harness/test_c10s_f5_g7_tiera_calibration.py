@@ -9,6 +9,7 @@ from run_c10s_f5_g7_tiera_calibration import (
     EXPECTED_CELLS,
     HOLDOUT_NAMESPACE,
     RESOURCE_NAMESPACE,
+    adjudicate_g7_metrics,
     derive_seed,
     run_cell,
     validate_seed_separation,
@@ -74,6 +75,31 @@ class F5G7CalibrationTests(unittest.TestCase):
             )
         self.assertEqual(result["metrics"], [])
         self.assertEqual(result["coverage_adjudication"], "NOT_PERFORMED_RESOURCE_ONLY")
+
+
+    def test_g7_acceptance_is_no_pooling_and_requires_all_four_c5_components(self):
+        summary = {}
+        for cell_id in EXPECTED_CELLS:
+            summary[cell_id] = {
+                "datasets_completed": 1000,
+                "metrics": [
+                    {
+                        "method_id": "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0",
+                        "target": target,
+                        "n_datasets": 1000,
+                        "conditional_coverage": 0.95,
+                        "coverage_wilson_95": [0.94, 0.96],
+                        "interval_emission_rate": 0.99,
+                        "abstention_count": 10,
+                    }
+                    for target in ("within", "between")
+                ],
+            }
+        self.assertEqual(adjudicate_g7_metrics(summary)["status"], "PASS")
+        summary[EXPECTED_CELLS[1]]["metrics"][1]["conditional_coverage"] = 0.90
+        decision = adjudicate_g7_metrics(summary)
+        self.assertEqual(decision["status"], "NOT_VALIDATED")
+        self.assertFalse(decision["components"][-1]["pass"])
 
 
 if __name__ == "__main__":
