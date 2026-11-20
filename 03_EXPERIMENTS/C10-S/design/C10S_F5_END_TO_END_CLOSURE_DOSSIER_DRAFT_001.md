@@ -31,7 +31,7 @@ The research harness currently contains the following reusable primitives in har
 - exact projection resultants and Sturm projection-root isolation, including the primary Res_mu(P,Q) concentration projection;
 - conditional-mean tube construction and a deterministic adaptive concentration-interval census combining Bernstein exclusion and Krawczyk inclusion.
 
-The three deterministic test modules currently define 132 test methods (84 exact-score/certification, 26 likelihood diagnostics, 22 MCSE profile). This is a source-level count, distinct from executed/discovered counts.
+The three deterministic test modules currently define 133 test methods (85 exact-score/certification, 26 likelihood diagnostics, 22 MCSE profile). This is a source-level count, distinct from executed/discovered counts.
 
 ## 3. Definitive mathematical closure contract
 
@@ -102,12 +102,12 @@ The existing boundary helpers provide exact ingredients, not yet a complete glob
 
 | Gate | Current evidence | Status |
 |---|---|---|
-| G1 exact score/input primitives | Implemented in research harness; governed execution pending | IMPLEMENTED / NOT VALIDATED |
-| G2 complete interior census | Closed-domain Bernstein/conditional-mean first-line census and exact resultant/Sturm fallback are implemented; simple-root inclusion only, multiple roots and endpoint accumulation remain unresolved; latest integrated run did not pass | OPEN |
-| G3 boundary/corner ingredients | Exact one-edge profiles and uniform joint-corner limits are integrated into the global path; deterministic helper tests pass in the prior run, but integrated global certificate remains unvalidated | PARTIAL |
-| G4 global likelihood ordering | Exact rational likelihood enclosures and strict candidate-vs-boundary separation engine are implemented; end-to-end nondegenerate fixture failed in latest completed run and remains unvalidated | OPEN |
-| G5 deterministic abstention | Several component-level limits/states exist; unified global result contract and ceilings not frozen | PARTIAL |
-| G6 governed validation | CPython 3.12.10, locked dependencies and compilation PASS. Latest completed integrated run 44754937282 discovered/executed 132 tests: 128 PASS, 4 FAIL. The failures exposed an incorrect separable Bernstein basis accumulation plus three downstream census/global-ordering failures. The basis accumulation was corrected at 8edf65e; rerun 44761185930 is in progress. | OPEN — rerun pending |
+| G1 exact score/input primitives | Exact paired score construction and compactification are implemented; deterministic CPython 3.12.10 workflow run 44762685571 passed all 133 discovered tests on source snapshot a3bca9d | SOFTWARE TESTS PASS; MATHEMATICAL INPUT-PROVENANCE AUDIT OPEN |
+| G2 complete interior census | Closed-domain Bernstein/conditional-mean first-line census passed the M30/R20 full-domain fixture, including the t=1 endpoint-neighborhood regression; Krawczyk inclusion remains simple-root only and multiple roots/common components/split-boundary roots remain unresolved. Exact resultant/Sturm projection fallback still needs complete candidate lifting | PARTIAL — SIMPLE-ROOT FIXTURE PASS |
+| G3 boundary/corner ingredients | Exact one-edge profiles and uniform joint-corner limits are integrated; helper tests passed in run 44762685571. Their assumptions, edge/corner ownership and global candidate completeness still require adversarial fixture coverage | PARTIAL |
+| G4 global likelihood ordering | Exact rational likelihood enclosures and strict separation engine pass the small nondegenerate fixture. A new M30/R20 end-to-end test now exercises census plus interior-vs-boundary ordering; run 44764446630 is queued | OPEN — M30/R20 GLOBAL ORDERING UNDER TEST |
+| G5 deterministic abstention | Explicit statuses/remainders exist at interval, resultant and likelihood-enclosure layers; unified ceilings and full resource-exhaustion adversarial coverage remain incomplete | PARTIAL |
+| G6 governed validation | Run 44762685571 on a3bca9d completed successfully: CPython 3.12.10, locked dependencies, six-module compilation, and all three deterministic suites PASS; 133 tests discovered/executed in 243.863 seconds. Run 44764446630 adds a dedicated M30/R20 global-likelihood-ordering test and is queued. | PASS — deterministic suite; additional adversarial coverage in progress |
 | G7 TierA relevance/calibration | No prospective calibration authorized or run | NOT RUN |
 
 ## 5. Known blockers that prevent honest F5 closure
@@ -116,7 +116,7 @@ The existing boundary helpers provide exact ingredients, not yet a complete glob
 2. Full open-domain coverage: the adaptive conditional-mean controller accepts only 0<t_-<t_+<1. Its success on a supplied interior interval does not cover neighborhoods of t=0 or t=1.
 3. Projection-to-root lifting: Res_mu(P,Q) candidates must be lifted and verified against both original score equations; projection multiplicity is not local bivariate multiplicity.
 4. Boundary/global ordering: exact edge and corner limits exist, but no integrated rigorous comparison of all interior and boundary likelihood candidates has been demonstrated.
-5. Governed validation and calibration: latest completed deterministic run failed 128/132; a corrective commit (8edf65e) fixes the identified Bernstein basis omission and a rerun is in progress. No governed prospective M10/R5 or M30/R20 calibration authorization/evidence exists. Even a clean software suite will not, by itself, establish mathematical completeness or TierA coverage.
+5. Governed validation and calibration: run 44762685571 passed all 133 deterministic tests on a3bca9d. The M30/R20 full-domain simple-root census and endpoint-adjacent Bernstein regression now pass. A new M30/R20 end-to-end global likelihood-ordering test is queued in run 44764446630. No governed prospective M10/R5 or M30/R20 calibration authorization/evidence exists; a clean deterministic suite does not establish multiple-root completeness or TierA coverage.
 
 These are substantive proof/validation gaps, not documentation tasks. They cannot be closed by changing status labels or by adding a wrapper that reports a local census as global.
 
@@ -176,3 +176,17 @@ The next implementation is one connected certification pipeline, not a parallel 
 7. Only after the integrated deterministic certificate and its adversarial fixtures pass, prepare the frozen prospective TierA M10/R5 and M30/R20 calibration protocol. No B2/B3 reuse or post-hoc tuning.
 
 The preferred implementation remains the conditional-mean/Bernstein reduction first, with exact resultant/Sturm projection as the global concentration census and fallback/cross-check. This ordering uses the model structure and avoids a general-purpose algebraic backend.
+
+
+### 9.1 Full-domain Bernstein correction and governed deterministic PASS
+
+Run [44762685571](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44762685571), source snapshot `a3bca9d3712736532bf2b3454d037ea815122135`, completed successfully on CPython 3.12.10 with locked dependencies. All six F5 modules compiled; all three deterministic suites completed with 133 tests in 243.863 seconds and exit status 0. The run includes:
+- exact stripping of endpoint-only `(t-1)^m` factors from restricted mean-score lines on intervals ending at (t=1), with parity-correct sign restoration;
+- a regression test that proves the endpoint-only factor does not prevent a uniform conditional-mean tube on the open concentration domain;
+- the M30/R20 full-closed-domain Bernstein census, which now completes without invoking the dimension-77 resultant fallback.
+
+This is a deterministic software/fixture PASS, not a proof for all admissible histograms. Krawczyk inclusion still certifies simple roots only. The current adaptive census explicitly leaves multiple roots, split-boundary roots, and unresolved components as incomplete.
+
+### 9.2 M30/R20 global likelihood-ordering validation
+
+A new test, `test_m30_r20_global_mle_orders_interior_and_boundary_candidates`, now exercises the complete public global-MLE wrapper on the same M30/R20 histogram. It requires an exact rational winner/co-winner/boundary-supremum classification and the declared globality basis. It is committed as `31e28f8803153a20fc083dfe78b8084c3363382d`; workflow [44764446630](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44764446630) is queued. This test is a deliberately bounded fixture; it does not replace multiplicity, common-component, or prospective coverage gates.
