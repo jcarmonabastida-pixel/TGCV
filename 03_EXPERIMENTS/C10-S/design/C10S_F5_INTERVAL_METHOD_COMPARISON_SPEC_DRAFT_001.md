@@ -364,3 +364,26 @@ For simple roots, a rational Krawczyk/interval-Newton inclusion test may certify
 A multiple root has singular Jacobian in the usual system formulation and may defeat ordinary Krawczyk inclusion. Such a box must remain represented and be handled by a multiplicity-aware/deflation method or terminate as typed unresolved. It must never be excluded by a sign-change heuristic. A bounded computation that cannot separate or certify all remaining boxes returns abstention, not a partial global certificate.
 
 The exact algebraic and interval routes remain parallel candidates. This primitive does not select either route, close D1, certify an MLE, authorize D2 completion, or authorize any statistical/scientific execution.
+
+
+
+## 16. Deterministic Bernstein exclusion controller — implemented, tests committed (2026-11-20)
+
+The harness now provides `bernstein_exclusion_subdivision(P,Q,...)`. It starts from an exact rational rectangle, uses a FIFO breadth-first queue, alternates split axes deterministically by depth (`mu`, then `t`), and applies the strict-sign exclusion predicate to both score polynomials on every processed box. Child Bernstein matrices are produced by the exact de Casteljau kernel; child endpoints are rational midpoints.
+
+The controller has explicit `max_boxes` and `max_depth` ceilings and returns typed outcomes:
+- `ALL_BOXES_EXCLUDED`: every box in the initial closed rectangle was excluded by at least one score;
+- `UNRESOLVED_BOXES`: at least one box reached the depth ceiling;
+- `RESOURCE_LIMIT_WITH_REMAINDER`: the box budget was reached and unprocessed boxes are retained in the result.
+
+The returned record includes processed/excluded counts and every unresolved or unprocessed box with exact bounds, depth and state. No remaining box is silently dropped. The controller does not certify root existence, multiplicity, uniqueness, or the likelihood maximum. `ALL_BOXES_EXCLUDED` is the only result that proves no common zero in the covered closed rectangle.
+
+Four further deterministic tests are committed: root-free exclusion, retention of a known common-root box, fail-closed box-budget exhaustion, and invalid-budget rejection. They have **not** been executed under governed CPython 3.12. No PASS is claimed.
+
+### Important scope boundary
+
+The current controller conservatively covers the closed compactified square. It therefore may retain boundary-root boxes even when the open finite-parameter domain has no corresponding interior root. This is safe but can be inefficient. A later boundary-aware controller may partition/classify `mu=0`, `mu=1`, `t=0`, and `t=1` explicitly, but may not discard a boundary-adjacent box without a proof that its interior contains no common zero.
+
+The adaptive controller is an exhaustive *exclusion* mechanism only. Any non-excluded boxes still require root inclusion/uniqueness or a typed unresolved result. In particular, even-/odd-multiplicity roots are retained because no sign-change criterion is used; singular multiple-root boxes may remain unresolved under ordinary Krawczyk inclusion.
+
+D1 remains OPEN; the modular and Bernstein routes remain parallel. No backend is selected, no MLE is certified, and no scientific execution is authorized.
