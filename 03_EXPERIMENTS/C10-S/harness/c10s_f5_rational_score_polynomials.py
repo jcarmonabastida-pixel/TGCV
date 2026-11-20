@@ -2249,6 +2249,7 @@ def beta_binomial_compactified_stationary_census(
     max_lift_intervals: int = 256,
     max_lift_depth: int = 24,
     max_mu_depth: int = 12,
+    force_exact_resultant_crosscheck: bool = False,
 ) -> dict[str, object]:
     """Integrate exact concentration projection, simple-root lifting and boundary census.
 
@@ -2274,6 +2275,8 @@ def beta_binomial_compactified_stationary_census(
         max_lift_depth=max_lift_depth,
         max_mu_depth=max_mu_depth,
     )
+    if type(force_exact_resultant_crosscheck) is not bool:
+        raise ValueError("FORCE_EXACT_RESULTANT_CROSSCHECK_MUST_BE_BOOLEAN")
     # Validate the projection width even when the interval-first route avoids
     # the resultant/Sturm fallback.
     if projection_width is None:
@@ -2349,15 +2352,23 @@ def beta_binomial_compactified_stationary_census(
     # Preferred first line: certify the entire compactified concentration
     # interval directly with conditional-mean concavity, Bernstein exclusion
     # and Krawczyk inclusion. The exact resultant is the fallback/cross-check.
-    interval_first = conditional_mean_adaptive_concentration_census(
-        poly_p, poly_q,
-        t_bounds=(Fraction(0), Fraction(1)),
-        max_intervals=max_lift_intervals,
-        max_depth=max_lift_depth,
-        max_mu_depth=max_mu_depth,
+    interval_first = (
+        {
+            "status": "SKIPPED_BY_EXPLICIT_RESULTANT_CROSSCHECK",
+            "method": "FORCED_EXACT_RESULTANT_STURM",
+        }
+        if force_exact_resultant_crosscheck
+        else conditional_mean_adaptive_concentration_census(
+            poly_p, poly_q,
+            t_bounds=(Fraction(0), Fraction(1)),
+            max_intervals=max_lift_intervals,
+            max_depth=max_lift_depth,
+            max_mu_depth=max_mu_depth,
+        )
     )
     if (
-        interval_first["status"] == "COMPLETE_CENSUS_ON_SUPPLIED_T_INTERVAL"
+        not force_exact_resultant_crosscheck
+        and interval_first["status"] == "COMPLETE_CENSUS_ON_SUPPLIED_T_INTERVAL"
         and boundary["status"] == "BOUNDARY_STRATA_AND_CORNERS_ADJUDICATED"
     ):
         return {
@@ -2391,6 +2402,7 @@ def beta_binomial_compactified_stationary_census(
                 "max_lift_intervals": max_lift_intervals,
                 "max_lift_depth": max_lift_depth,
                 "max_mu_depth": max_mu_depth,
+                "primary_route": "BERNSTEIN_CONDITIONAL_MEAN_FIRST",
                 "boundary_evaluation": "EXACT_CLOSED_FORM_NO_ITERATIVE_BUDGET",
             },
         }
@@ -2529,6 +2541,11 @@ def beta_binomial_compactified_stationary_census(
             "max_lift_intervals_per_projection_root": max_lift_intervals,
             "max_lift_depth": max_lift_depth,
             "max_mu_depth": max_mu_depth,
+            "primary_route": (
+                "FORCED_EXACT_RESULTANT_STURM_CROSSCHECK"
+                if force_exact_resultant_crosscheck
+                else "BERNSTEIN_CONDITIONAL_MEAN_THEN_RESULTANT_FALLBACK"
+            ),
             "boundary_evaluation": "EXACT_CLOSED_FORM_NO_ITERATIVE_BUDGET",
         },
     }
@@ -2738,6 +2755,7 @@ def beta_binomial_global_mle_certificate(
     max_mu_depth: int = 12,
     max_fraction_bits: int = 200000,
     source_revision: str | None = None,
+    force_exact_resultant_crosscheck: bool = False,
 ) -> dict[str, object]:
     """Certify the global beta-binomial likelihood winner or explicitly abstain.
 
@@ -2747,6 +2765,8 @@ def beta_binomial_global_mle_certificate(
     reported only when its lower bound strictly exceeds every competitor's
     upper bound. Otherwise the concentration projection/lift is refined up to
     the deterministic budget and the operation returns an unresolved state.
+    Set force_exact_resultant_crosscheck=True only for deterministic method
+    comparison; production defaults to the Bernstein/conditional-mean route.
     """
     from fractions import Fraction
 
@@ -2763,6 +2783,8 @@ def beta_binomial_global_mle_certificate(
         max_lift_depth=max_lift_depth,
         max_mu_depth=max_mu_depth,
     )
+    if type(force_exact_resultant_crosscheck) is not bool:
+        raise ValueError("FORCE_EXACT_RESULTANT_CROSSCHECK_MUST_BE_BOOLEAN")
     input_provenance = _f5_input_provenance(
         r, count_histogram, source_revision
     )
@@ -2777,6 +2799,7 @@ def beta_binomial_global_mle_certificate(
             max_lift_intervals=max_lift_intervals,
             max_lift_depth=max_lift_depth + 4 * refinement,
             max_mu_depth=max_mu_depth,
+            force_exact_resultant_crosscheck=force_exact_resultant_crosscheck,
         )
         census["input_provenance"] = input_provenance
         history.append({

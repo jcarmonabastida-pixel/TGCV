@@ -1124,6 +1124,56 @@ class RationalScorePolynomialTests(unittest.TestCase):
 
 
 
+    def test_m10_r5_bernstein_and_resultant_routes_agree(self):
+        hist = {0: 1, 1: 2, 2: 2, 3: 2, 4: 2, 5: 1}
+        common = {
+            "max_refinements": 1,
+            "projection_bits": 12,
+            "max_projection_depth": 40,
+            "max_projection_intervals": 10000,
+            "max_lift_intervals": 256,
+            "max_lift_depth": 24,
+            "max_mu_depth": 12,
+            "source_revision": TEST_SOURCE_REVISION,
+        }
+        bernstein = beta_binomial_global_mle_certificate(5, hist, **common)
+        resultant = beta_binomial_global_mle_certificate(
+            5, hist, force_exact_resultant_crosscheck=True, **common,
+        )
+        self.assertEqual(bernstein["status"], "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED")
+        self.assertEqual(resultant["status"], bernstein["status"])
+        self.assertEqual(
+            resultant["census"]["concentration_resultant"]["status"],
+            "EXACT_RESULTANT_NONZERO",
+        )
+        self.assertEqual(
+            resultant["census"]["concentration_projection"]["status"],
+            "PROJECTION_ROOT_ISOLATION_COMPLETE",
+        )
+        self.assertEqual(
+            resultant["census"]["resource_contract"]["primary_route"],
+            "FORCED_EXACT_RESULTANT_STURM_CROSSCHECK",
+        )
+
+        def certified_root_boxes(certificate):
+            boxes = []
+            for candidate in certificate["census"]["interior_stationary_candidates"]:
+                lift = candidate["lift_result"]
+                for root in lift["certified_simple_root_intervals"]:
+                    boxes.append(root["root_certificate"]["krawczyk_box"])
+            return boxes
+
+        bernstein_boxes = certified_root_boxes(bernstein)
+        resultant_boxes = certified_root_boxes(resultant)
+        self.assertEqual(len(bernstein_boxes), len(resultant_boxes))
+        self.assertGreater(len(bernstein_boxes), 0)
+        for left, right in zip(bernstein_boxes, resultant_boxes):
+            for axis in range(2):
+                self.assertLessEqual(
+                    max(left[axis][0], right[axis][0]),
+                    min(left[axis][1], right[axis][1]),
+                )
+
     def test_global_mle_certifies_unattained_kappa_zero_boundary_supremum(self):
         result = beta_binomial_global_mle_certificate(
             5, {0: 1, 5: 1}, source_revision=TEST_SOURCE_REVISION,
