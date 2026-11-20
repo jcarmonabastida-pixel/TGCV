@@ -332,3 +332,7 @@ The interval exclusion test contract now includes a hand-constructed common doub
 The Bernstein conversion, sign predicate, de Casteljau subdivision and adaptive exclusion controller now enforce exact input types at their public boundaries: integers and `Fraction` only. Binary floats are rejected rather than rationalized from their binary representation. The empty-polynomial conversion also validates the supplied rectangle before returning. Four adversarial tests were added for these rejection paths.
 
 This closes an input-integrity gap, not a mathematical certification gap. The adaptive controller remains exclusion-only; it does not prove existence, uniqueness, multiplicity or global optimality. The closed-square boundary issue remains open. Tests remain unexecuted under governed CPython 3.12; no PASS or MLE certificate is claimed.
+
+### 20. Adversarial fixture coefficient-contract correction (2026-11-20)
+
+Three root-retention fixtures were statically inconsistent with the module's integer-coefficient polynomial contract: they supplied `Fraction` coefficients. They now use positive integer scalings of the same equations. The common-root fixture is `(2*mu-1, 2*t-1)`; the double-root fixture is their squared form; the near-coincident fixture uses integer factors with exact separation `2^-20`. Zero sets and multiplicities are unchanged. This is a fixture correction only; governed tests remain pending.
