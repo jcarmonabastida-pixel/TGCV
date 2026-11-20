@@ -694,3 +694,8 @@ Four deterministic tests pass:
 Observed constructor plus test time was ~0.5 s in the available Python 3.13 environment. The harness is pure standard library; execution parity under governed CPython 3.12 remains to be checked. This primitive does not perform elimination, root isolation or global adjudication.
 
 Backend decision remains open. Generic exact rational resultant and SymPy generic finite-field PRS resultant each exceeded the 60-second ceiling on M30/R20; the latter is not a purpose-built modular CRT algorithm. No CAD backend is installed in the available environment. The next engineering comparison is purpose-built modular subresultant/CRT versus interval-certified one-dimensional profile isolation, with identical deterministic adversarial fixtures. D1 remains OPEN.
+
+
+### Modular elimination feasibility update — 2026-11-20
+
+The dedicated backend note `C10S_F5_MODULAR_BACKEND_FEASIBILITY_NOTE_001.md` records the latest static check. On the deterministic M30/R20 sparse score polynomials, the 79×79 Sylvester determinant pattern yields a maximum-weight-assignment upper bound of 3,501 for the resultant degree in kappa (coarse dense bound 3,862). This is a rigorous upper bound for that coefficient pattern, not the actual resultant degree. Naive modular evaluation/interpolation at this bound is too expensive to select without further structure. Generic SymPy PRS over GF(p)[kappa] also exceeded 60 seconds. A purpose-built sparse modular subresultant route remains unimplemented. D1 remains OPEN; no stochastic or scientific execution was performed.
