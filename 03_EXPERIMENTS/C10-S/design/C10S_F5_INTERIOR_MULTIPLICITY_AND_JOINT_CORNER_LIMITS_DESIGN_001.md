@@ -1,6 +1,6 @@
 # C10-S F5 — Interior multiplicity and joint compactification-corner limits
 
-**Status:** RESEARCH DESIGN / IMPLEMENTATION PARTIAL — NOT VALIDATED  
+**Status:** RESEARCH DESIGN / PARTIAL IMPLEMENTATION — SELECTED FIXTURES GOVERNED PASS; GENERAL SINGULAR-ROOT CERTIFICATION OPEN  
 **Date:** 2026-11-20  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
 **Scope:** F5 global stationary-candidate and likelihood-boundary certification only.
@@ -9,7 +9,7 @@
 
 This design consolidates the next unresolved layer without recreating existing primitives. The research harness already contains exact integer score numerators, concentration compactification, tensor-product Bernstein conversion and exclusion, rational de Casteljau subdivision, adaptive Bernstein exclusion, rational Krawczyk inclusion for simple roots, an adaptive Bernstein–Krawczyk controller, one-edge likelihood limits, exact edge gcd/square-free decomposition, Sturm edge-root isolation, and canonical corner ownership.
 
-The current deterministic suite has 50 test methods after the joint-corner additions in this change. None is represented as governed CPython 3.12 PASS by this design. No scientific bank, replay, calibration or empirical execution is authorized.
+The current governed F5 suite completed 135 tests under CPython 3.12.10 in run 44767224308. Passing selected multiple-root fixtures demonstrates fail-closed behavior, not general singular-root resolution. No scientific bank, replay, calibration or empirical execution is authorized.
 
 The new work closes one analytically tractable part of the boundary problem and specifies, without pretending to implement it, the missing multiplicity-aware interior census.
 
@@ -41,7 +41,7 @@ This is stronger than extrapolating the one-edge profiles: it supplies a uniform
 
 `beta_binomial_joint_corner_likelihood_limits(r, count_histogram)` returns all four exact corner distributions and likelihoods, the uniform bounds, and an explicit path-independent status. It reuses the existing histogram validation contract and uses only rational values for the returned point masses and likelihoods.
 
-Four deterministic tests cover all-zero observations, all-(r) observations, mixed/interior observations, and invalid histograms. These tests are committed but not executed.
+Four deterministic tests cover all-zero observations, all-(r) observations, mixed/interior observations, and invalid histograms. They are included in the governed suite; run 44767224308 passed 135 tests in total.
 
 ## 3. Interior roots: separate simple and singular cases
 
@@ -185,3 +185,15 @@ Three deterministic tests cover the linear projection \\(2t-1\\), a repeated pro
 This correction aligns the implementation with the stated mathematical reduction; it does not complete the fit certificate. For each isolated interior \\(t\\)-root, the next step is to recover \\(\\mu\\) using the strictly decreasing conditional score, with exact/rational interval enclosures over the isolating \\(t\\)-interval. A certified sign bracket plus strict monotonicity can establish existence and uniqueness without a general bivariate subresultant lift, provided the interval evaluation proves the endpoint signs uniformly over the full \\(t\\)-interval. If it cannot, refine the \\(t\\)-interval or abstain. The recovered pair must then be verified in both original score equations and compared against all explicit concentration/mean boundary likelihoods.
 
 Accordingly, the next operation is **not** general subresultant back-substitution by default. First implement and test this lower-dimensional lift. Escalate to general algebraic-number/subresultant machinery only if the conditional-score interval method cannot certify a candidate that materially affects the two frozen F5 designs.
+
+
+## 10. Evidence update — 2026-11-20
+
+Run [44767224308](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44767224308), commit `a9a56d7c142b441b0893858c75e13a38ae38a9a2`, passed the 135-test deterministic suite. Relevant passing regressions include:
+- Krawczyk abstention on a singular multiple root;
+- integrated census does not promote a multiple root;
+- adaptive Bernstein census retains even-multiplicity and near-coincident common-root boxes;
+- exact joint-corner path-independent likelihood limits;
+- exact M30/R20 full-domain simple-root census and integrated global-likelihood ordering.
+
+This evidence closes only the named fixtures. No local multiplicity theorem or universal interior singular-root census has been implemented. General mixed bivariate common factors are not certified by the axis-aligned detector; an unresolved interval/resultant state must block exhaustive/global status. Keep the multiplicity-aware algebraic/subresultant and validated deflation proposals as optional bounded escalation only if a concrete TierA fit regime demonstrates that the current fail-closed behavior prevents the required calibration. Do not build a general algebraic-geometry subsystem by default.
