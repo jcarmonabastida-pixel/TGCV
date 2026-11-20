@@ -699,3 +699,13 @@ Backend decision remains open. Generic exact rational resultant and SymPy generi
 ### Modular elimination feasibility update — 2026-11-20
 
 The dedicated backend note `C10S_F5_MODULAR_BACKEND_FEASIBILITY_NOTE_001.md` records the latest static check. On the deterministic M30/R20 sparse score polynomials, the 79×79 Sylvester determinant pattern yields a maximum-weight-assignment upper bound of 3,501 for the resultant degree in kappa (coarse dense bound 3,862). This is a rigorous upper bound for that coefficient pattern, not the actual resultant degree. Naive modular evaluation/interpolation at this bound is too expensive to select without further structure. Generic SymPy PRS over GF(p)[kappa] also exceeded 60 seconds. A purpose-built sparse modular subresultant route remains unimplemented. D1 remains OPEN; no stochastic or scientific execution was performed.
+
+
+### Exact concentration compactification — implemented as a static primitive (2026-11-20)
+
+`c10s_f5_rational_score_polynomials.py` now provides `compactify_concentration(P)`, computing
+`(1-t)^d P(mu,t/(1-t))` exactly over integer coefficients, where `t=kappa/(1+kappa)` and `d` is the actual maximum kappa degree. This maps finite positive concentration to the bounded open interval (0,1) and preserves the score-numerator zero set there. The t=0 and t=1 boundary strata remain separately adjudicated and are not included as finite stationary points.
+
+The test module now adds exact rational identity checks for the M30/R20 score equations, compactification at rational parameter points, and preservation of an interior root. These tests have been committed but have not been executed in the governed CPython 3.12 harness; no PASS claim is made. An independent scratch calculation verified the compactification identity at three rational points.
+
+This is a reusable preprocessing layer for both a modular elimination backend and an interval/ Bernstein subdivision backend. It does not resolve the backend choice or global-root certification. D1 remains OPEN.
