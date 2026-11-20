@@ -1903,8 +1903,8 @@ def conditional_mean_tube_and_concentration_exclusion(
         t_lo, t_hi = (_exact_fraction(t_bounds[0]), _exact_fraction(t_bounds[1]))
     except ValueError:
         raise ValueError("INVALID_T_BOUNDS") from None
-    if not 0 < t_lo < t_hi < 1:
-        raise ValueError("T_BOUNDS_MUST_BE_STRICTLY_INSIDE_FINITE_DOMAIN")
+    if not 0 <= t_lo < t_hi <= 1:
+        raise ValueError("T_BOUNDS_MUST_BE_WITHIN_COMPACTIFIED_CLOSURE")
     for poly in (poly_mean_score, poly_concentration_score):
         if not isinstance(poly, Mapping) or any(
             not isinstance(monomial, tuple) or len(monomial) != 2
@@ -2005,7 +2005,7 @@ def conditional_mean_adaptive_concentration_census(
 ) -> dict[str, object]:
     """Certify an interval census using conditional-mean tubes and Krawczyk.
 
-    The supplied t interval must lie strictly inside (0,1). A deterministic
+    The supplied t interval may be any nonempty rational subinterval of [0,1]. A deterministic
     FIFO subdivision processes concentration intervals. On each interval,
     exact Bernstein signs construct a tube containing the unique conditional
     mean root for every finite t in that interval. A strict Bernstein sign of
@@ -2033,8 +2033,8 @@ def conditional_mean_adaptive_concentration_census(
         t_lo, t_hi = (_exact_fraction(t_bounds[0]), _exact_fraction(t_bounds[1]))
     except ValueError:
         raise ValueError("INVALID_T_BOUNDS") from None
-    if not 0 < t_lo < t_hi < 1:
-        raise ValueError("T_BOUNDS_MUST_BE_STRICTLY_INSIDE_FINITE_DOMAIN")
+    if not 0 <= t_lo < t_hi <= 1:
+        raise ValueError("T_BOUNDS_MUST_BE_WITHIN_COMPACTIFIED_CLOSURE")
 
     queue = deque([(t_lo, t_hi, 0)])
     excluded = []
@@ -2123,7 +2123,7 @@ def conditional_mean_adaptive_concentration_census(
 
     return {
         "status": status,
-        "scope": "FINITE_INTERIOR_T_INTERVAL_ONLY_BOUNDARY_STRATA_EXCLUDED",
+        "scope": "CLOSED_COMPACTIFIED_T_INTERVAL_BOUNDARY_ROOTS_NOT_PROMOTED_AS_INTERIOR",
         "t_bounds": (t_lo, t_hi),
         "excluded_intervals": excluded,
         "certified_simple_root_intervals": certified,
