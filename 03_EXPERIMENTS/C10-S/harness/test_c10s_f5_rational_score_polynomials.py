@@ -909,12 +909,12 @@ class RationalScorePolynomialTests(unittest.TestCase):
             )
 
 
-    def test_conditional_mean_tube_rejects_compactification_endpoints(self):
-        with self.assertRaisesRegex(ValueError, "T_BOUNDS_MUST_BE_STRICTLY_INSIDE_FINITE_DOMAIN"):
-            conditional_mean_tube_and_concentration_exclusion(
-                {(0, 0): 1, (1, 0): -2}, {(0, 0): 1},
-                t_bounds=(Fraction(0), Fraction(1, 2)), max_mu_depth=4,
-            )
+    def test_conditional_mean_tube_accepts_closed_compactification_interval(self):
+        result = conditional_mean_tube_and_concentration_exclusion(
+            {(0, 0): 1, (1, 0): -2}, {(0, 0): 1},
+            t_bounds=(Fraction(0), Fraction(1)), max_mu_depth=4,
+        )
+        self.assertEqual(result["status"], "NO_COMMON_STATIONARY_POINT_ON_T_INTERVAL")
 
     def test_conditional_mean_adaptive_census_excludes_root_free_interval(self):
         result = conditional_mean_adaptive_concentration_census(
@@ -966,10 +966,10 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertGreater(len(result["unresolved_intervals"]), 0)
 
     def test_conditional_mean_adaptive_census_rejects_invalid_bounds_and_budgets(self):
-        with self.assertRaisesRegex(ValueError, "T_BOUNDS_MUST_BE_STRICTLY_INSIDE_FINITE_DOMAIN"):
+        with self.assertRaisesRegex(ValueError, "T_BOUNDS_MUST_BE_WITHIN_COMPACTIFIED_CLOSURE"):
             conditional_mean_adaptive_concentration_census(
                 {(0, 0): 1, (1, 0): -2}, {(0, 0): 1},
-                t_bounds=(Fraction(0), Fraction(1, 2)),
+                t_bounds=(Fraction(-1, 4), Fraction(1, 2)),
             )
         with self.assertRaisesRegex(ValueError, "MAX_INTERVALS_MUST_BE_POSITIVE_INTEGER"):
             conditional_mean_adaptive_concentration_census(
@@ -1002,7 +1002,7 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(len(result["unresolved_lifts"]), 0)
         self.assertEqual(
             result["component_disposition"]["status"],
-            "NO_REAL_INTERIOR_AXIS_COMMON_COMPONENT",
+            "NO_REAL_INTERIOR_AXIS_CONTENT_FACTORS",
         )
         self.assertIn("concentration_resultant", result)
         self.assertIn("concentration_projection", result)
@@ -1082,6 +1082,19 @@ class RationalScorePolynomialTests(unittest.TestCase):
             result["ordering_method"],
             "EXACT_RATIONAL_PROBABILITY_INTERVALS",
         )
+
+
+    def test_conditional_mean_adaptive_census_covers_full_closed_t_interval(self):
+        result = conditional_mean_adaptive_concentration_census(
+            {(0, 0): 1, (1, 0): -2},
+            {(0, 1): 2, (0, 0): -1},
+            t_bounds=(Fraction(0), Fraction(1)),
+            max_intervals=10,
+            max_depth=4,
+        )
+        self.assertEqual(result["status"], "COMPLETE_CENSUS_ON_SUPPLIED_T_INTERVAL")
+        self.assertEqual(len(result["certified_simple_root_intervals"]), 1)
+        self.assertEqual(len(result["unresolved_intervals"]), 0)
 
 
 if __name__ == "__main__":
