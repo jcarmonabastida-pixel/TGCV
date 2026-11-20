@@ -238,9 +238,9 @@ def bernstein_coefficients_on_box(
             for _ in range(degree + 1)
         ]
         for monomial_degree in range(degree + 1):
-            for bernstein_index in range(monomial_degree, degree + 1):
+            for bernstein_index in range(degree + 1):
                 value = Fraction(0)
-                for normalized_degree in range(monomial_degree + 1):
+                for normalized_degree in range(min(monomial_degree, bernstein_index) + 1):
                     value += (
                         Fraction(comb(monomial_degree, normalized_degree))
                         * lower ** (monomial_degree - normalized_degree)
