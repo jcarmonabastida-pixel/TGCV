@@ -307,3 +307,17 @@ This is only the arithmetic kernel. The adaptive controller, exact box queue/ord
 The interval method must cover the open finite-parameter domain exhaustively while separately classifying roots on compactification boundaries. No boundary point may be counted as an interior finite stationary point. Any box not excluded or certified at the resource ceiling forces an incomplete/abstaining global result.
 
 D1 remains OPEN. No MLE certificate, method selection, governed test execution, benchmark, bootstrap, calibration, replay or scientific execution is claimed or authorized.
+
+
+
+## 18. Deterministic Bernstein exclusion controller — partial implementation (2026-11-20)
+
+A bounded breadth-first controller has been added on top of exact de Casteljau subdivision. It applies both score-polynomial Bernstein sign tests to each box, alternates the split axis by depth in a fixed order, and preserves rational box endpoints. The box-count and depth ceilings are explicit. Every unresolved or unprocessed box is returned with bounds and a typed reason.
+
+The only conclusive zero-free outcome is `ALL_BOXES_EXCLUDED`, which means every box in the covered closed rectangle was excluded by at least one score. Depth exhaustion returns `UNRESOLVED_BOXES`; box-budget exhaustion returns `RESOURCE_LIMIT_WITH_REMAINDER`. Neither may be treated as a partial root certificate.
+
+The controller is conservative at compactification boundaries: it covers the closed square and can therefore retain boxes containing boundary roots. Explicit boundary-stratum classification is still required for the open finite-parameter domain and likelihood supremum comparison.
+
+Four controller tests are committed but not run in governed CPython 3.12. Root inclusion/uniqueness is still missing. Simple roots may be candidates for rational Krawczyk/interval-Newton certification under all theorem hypotheses; multiple roots require deflation or abstention. The controller never uses sign changes to exclude roots.
+
+No global MLE certification, D1 closure, backend selection, benchmark, calibration or scientific execution is claimed or authorized.
