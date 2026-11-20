@@ -8,6 +8,7 @@ from c10s_f5_rational_score_polynomials import (
     bernstein_coefficients_on_box,
     bernstein_sign_excludes_zero,
     bernstein_subdivide,
+    bernstein_exclusion_subdivision,
 )
 
 
@@ -192,6 +193,44 @@ class RationalScorePolynomialTests(unittest.TestCase):
             bernstein_subdivide([[Fraction(1)]], "kappa")
         with self.assertRaisesRegex(ValueError, "RECTANGULAR_COEFFICIENT_MATRIX_REQUIRED"):
             bernstein_subdivide([[Fraction(1)], [Fraction(1), Fraction(2)]], "mu")
+
+
+    def test_bernstein_controller_excludes_root_free_system(self):
+        result = bernstein_exclusion_subdivision(
+            {(0, 0): 1}, {(0, 0): -2}, max_boxes=10, max_depth=4
+        )
+        self.assertEqual(result["status"], "ALL_BOXES_EXCLUDED")
+        self.assertEqual(result["processed_boxes"], 1)
+        self.assertEqual(result["excluded_boxes"], 1)
+        self.assertEqual(result["unresolved_boxes"], [])
+
+    def test_bernstein_controller_retains_common_root_box(self):
+        result = bernstein_exclusion_subdivision(
+            {(1, 0): 1, (0, 0): Fraction(-1, 2)},
+            {(0, 1): 1, (0, 0): Fraction(-1, 2)},
+            max_boxes=100, max_depth=2,
+        )
+        self.assertEqual(result["status"], "UNRESOLVED_BOXES")
+        self.assertGreater(len(result["unresolved_boxes"]), 0)
+        self.assertTrue(all(
+            item["state"] == "UNRESOLVED_AT_MAX_DEPTH"
+            for item in result["unresolved_boxes"]
+        ))
+
+    def test_bernstein_controller_fails_closed_at_box_budget(self):
+        result = bernstein_exclusion_subdivision(
+            {(1, 0): 1, (0, 0): Fraction(-1, 2)},
+            {(0, 1): 1, (0, 0): Fraction(-1, 2)},
+            max_boxes=1, max_depth=20,
+        )
+        self.assertEqual(result["status"], "RESOURCE_LIMIT_WITH_REMAINDER")
+        self.assertGreater(len(result["unresolved_boxes"]), 0)
+
+    def test_bernstein_controller_rejects_invalid_budgets(self):
+        with self.assertRaisesRegex(ValueError, "MAX_BOXES_MUST_BE_POSITIVE_INTEGER"):
+            bernstein_exclusion_subdivision({(0, 0): 1}, {(0, 0): 1}, max_boxes=0)
+        with self.assertRaisesRegex(ValueError, "MAX_DEPTH_MUST_BE_NONNEGATIVE_INTEGER"):
+            bernstein_exclusion_subdivision({(0, 0): 1}, {(0, 0): 1}, max_depth=-1)
 
 
 if __name__ == "__main__":
