@@ -740,3 +740,9 @@ Four additional controller tests are committed but not executed under governed C
 ### Multiple-root and near-coincident exclusion safeguards (2026-11-20)
 
 Two further deterministic tests have been committed: one with a common even-multiplicity root and one with two distinct common roots separated by `2^-20`. They assert only that the Bernstein exclusion controller does not declare these systems root-free. They do not certify existence/uniqueness or multiplicity. Tests remain unexecuted under governed CPython 3.12; the interval certificate remains incomplete.
+
+### Bernstein exact-input boundary hardening (2026-11-20)
+
+Static code review identified that `Fraction(float)` accepts binary floating-point inputs, which contradicted the exact-rational contract. The Bernstein box converter, sign predicate, de Casteljau subdivision and adaptive controller now reject floats and accept only exact integer/`Fraction` values at their public input boundaries. Empty-polynomial box conversion validates bounds before returning. Four deterministic adversarial tests were added.
+
+This is implementation hardening, not execution evidence. The four tests and the existing Bernstein suite remain pending governed CPython 3.12 execution. Boundary-stratum adjudication, root inclusion/uniqueness, multiple-root treatment, exhaustive global certification and method comparison remain OPEN. No scientific execution, replay, calibration or bank is authorized by this update.
