@@ -192,13 +192,17 @@ No method is selected if any required cell/target fails. C0 is not an accepted f
 
 ## 8. Monte Carlo precision and computational feasibility — D1 blockers
 
-The 5,000-dataset target is provisionally motivated by coverage MCSE near 0.0031 at nominal 95%. Before D1 freeze:
-1. calculate exact Wilson interval operating characteristics at coverage values around the acceptance boundaries;
-2. calculate the M2b four-cutoff order-statistic ranks and simultaneous tolerance confidence;
-3. set bootstrap replicate counts for M1 from a prespecified endpoint Monte Carlo error target;
-4. set M2 profile grid/bracketing tolerances and constrained-optimizer start policy using deterministic numerical analysis;
-5. establish a compute ceiling and worst-case runtime/memory budget from static deterministic microbenchmarks after the implementation contract is frozen;
-6. define stop rules for calibration failure, profile topology failure and resource-budget exceedance.
+The following exact calculations have now been completed analytically for the provisional N=5,000:
+- At nominal coverage 0.95, the descriptive coverage MCSE is \\(\\sqrt{0.95\\cdot0.05/5000}=0.003082\\).
+- Under the inherited joint gate (point coverage in [0.93,0.97] and 95% Wilson interval containing 0.95), the admissible integer success-count range is 4,720–4,780 inclusive (observed coverage 0.944–0.956). The Wilson condition is materially stricter than the point-coverage band near its edges.
+- For M2b's four simultaneous cutoffs (W/B × M10/R5 and M30/R20), Bonferroni assigns one-sided error 0.05/4=0.0125 per cutoff. With Kcal=5,000, the upper tolerance order-statistic rank is provisionally k=4,785; P{Binomial(5000,0.95) ≤ 4784}=0.988711, exceeding the required per-cutoff confidence 0.9875 and yielding family-wise confidence at least 0.95 by Bonferroni.
+
+Before D1 freeze:
+1. independently verify and unit-test the Wilson and order-statistic calculations, including off-by-one rank conventions;
+2. set bootstrap replicate counts for M1 from a prespecified endpoint Monte Carlo error target;
+3. set M2 profile grid/bracketing tolerances and constrained-optimizer start policy using deterministic numerical analysis;
+4. establish a compute ceiling and worst-case runtime/memory budget from static deterministic microbenchmarks after the implementation contract is frozen;
+5. define stop rules for calibration failure, profile topology failure and resource-budget exceedance.
 
 No numeric bootstrap B, M2 profile grid density, runtime ceiling or memory ceiling is declared here because no measured benchmark or endpoint-MCSE analysis is yet available. These are blocking fields, not permission to choose them during execution.
 
