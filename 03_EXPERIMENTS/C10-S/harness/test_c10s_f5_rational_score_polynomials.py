@@ -486,6 +486,15 @@ class RationalScorePolynomialTests(unittest.TestCase):
             unavailable["status"],
             "PROJECTION_ISOLATION_NOT_AVAILABLE_FROM_RESULTANT_STATUS",
         )
+        with self.assertRaisesRegex(ValueError, "EXACT_RATIONAL_REQUIRED"):
+            compactified_projection_root_isolation_mu(
+                {"status": "EXACT_RESULTANT_NONZERO", "resultant": (0.5, 1)},
+                width=Fraction(1, 100),
+            )
+        with self.assertRaisesRegex(ValueError, "ISOLATION_WIDTH_MUST_BE_POSITIVE"):
+            compactified_projection_root_isolation_mu(
+                resultant, width=0
+            )
 
     def test_projection_resultant_exact_linear_fixture(self):
         p = {(0, 1): 1, (1, 0): -1}       # t - mu
