@@ -2599,9 +2599,13 @@ def _beta_binomial_likelihood_enclosure(
         combinatorial = Fraction(comb(r, x))
         probability_lo = combinatorial * numerator_lo / denominator_hi
         probability_hi = combinatorial * numerator_hi / denominator_lo
+        # Every beta-binomial outcome probability is in [0, 1]. The
+        # rectangular numerator/denominator enclosure can be wider than that
+        # simplex constraint, so intersect its upper endpoint with the exact
+        # universal probability bound before fixed-point rounding.
         probability = (
             floor_scaled(probability_lo),
-            ceil_scaled(probability_hi),
+            ceil_scaled(min(Fraction(1), probability_hi)),
         )
         likelihood = multiply_interval(
             likelihood,
