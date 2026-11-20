@@ -14,7 +14,7 @@
 
 ## 1. Purpose and governance relationship
 
-This document advances D0 into a D1 review candidate for a **separate, successor F5 method-comparison work package**. It does not amend, supersede or reinterpret frozen specification v1.0.
+This document advances D0 into a D1 review candidate for a **bounded successor F5 calibration work package within the single C10-S experiment**. It is not a separate statistical research programme. It does not amend, supersede or reinterpret frozen specification v1.0.
 
 The parent v1.0 package remains authoritative for its defined F1 and F5 work. In particular, its F5 Phase B is explicitly limited to diagnosis of the existing C5 fitted beta-binomial percentile procedure against unchanged C0; it states that no alternative F5 interval method is selected in that package. This draft respects that boundary by proposing a separately versioned successor package, with fresh data and its own future authorization.
 
@@ -25,6 +25,14 @@ The successor package is restricted to the same frozen F5 beta22 DGP and the two
 - M30/R20.
 
 It does not add stress families, misspecification cells, new targets, MCSE intervals, Tier B, or C10 Generator/Analyzer/Evaluator execution.
+
+### 1.1 Purpose boundary — no statistical-project drift
+
+The reason for this bounded successor work is the Tier A/B2/B3 coverage failure of the existing interval procedures. Its only scientific purpose is to obtain defensible fit-state and interval-calibration behaviour for the F5 component of C10-S, so that the complete synthetic causal experiment can be evaluated without a defective nuisance-fit/interval layer.
+
+The algebraic and interval certification primitives in the linked F5 global-fit design are subordinate technical means. They are justified only where they resolve a concrete F5 ambiguity affecting the beta-binomial likelihood fit, boundary adjudication, profile likelihood, interval emission or coverage. They are not independent research objectives. The work must stop at the simplest method that supplies adequate, auditable evidence for the two frozen F5 design cells.
+
+No general statistical framework, reusable solver product, new DGP family, additional estimand, F1 expansion, Tier B programme or C10 causal execution is introduced here. The parent v1.0 remains immutable; B2/B3 remains historical development evidence and cannot be reused for tuning or confirmatory acceptance.
 
 ## 2. Frozen scientific target and estimators
 
