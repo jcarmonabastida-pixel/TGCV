@@ -1057,5 +1057,32 @@ class RationalScorePolynomialTests(unittest.TestCase):
         )
 
 
+    def test_global_mle_certificate_orders_nondegenerate_interior_solution(self):
+        result = beta_binomial_global_mle_certificate(
+            5, {0: 1, 1: 2, 2: 2, 3: 2, 4: 2, 5: 1},
+            max_refinements=1,
+            projection_bits=12,
+            max_projection_depth=40,
+            max_lift_intervals=100,
+            max_lift_depth=20,
+            max_mu_depth=10,
+            max_boundary_depth=32,
+            max_boundary_intervals=1000,
+        )
+        self.assertEqual(
+            result["status"],
+            "UNIQUE_GLOBAL_MLE_INTERIOR_CERTIFIED",
+            msg=repr({
+                "status": result["status"],
+                "refinement_history": result.get("refinement_history"),
+                "reason": result.get("reason"),
+            }),
+        )
+        self.assertEqual(
+            result["ordering_method"],
+            "EXACT_RATIONAL_PROBABILITY_INTERVALS",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
