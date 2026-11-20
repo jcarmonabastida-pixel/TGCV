@@ -224,3 +224,29 @@ No dependency lock has been changed. The existing vcont lock is not an F5 depend
 ### Updated D1 exit condition
 
 D1 remains OPEN. The mathematical reduction and exact elimination formulation are established, but the M30/R20 computational route is not yet feasible under the naive backend. The next D2-preparation operation is a bounded, deterministic comparison of modular-resultant and CAD/interval backends on hand-constructed M10/R5 and M30/R20 fixtures, followed by general-degree root-isolator validation. No scientific data, B2/B3 outcomes or prospective bank may be used for this engineering choice.
+
+
+## 13. First exact algebra primitive implemented — rational score numerator construction (2026-11-20)
+
+Two research-only harness files are now present:
+- `harness/c10s_f5_rational_score_polynomials.py`
+- `harness/test_c10s_f5_rational_score_polynomials.py`
+
+The constructor uses sparse bivariate integer polynomials and exact prefix/suffix products of the finite-product likelihood denominators. It avoids symbolic expression expansion, floating-point coefficients and external dependencies. It returns the exact numerator pair for the rational scores, with separate minimal positive-domain denominators:
+- `S_mu = N_mu / product_j[(mu*kappa+j)((1-mu)*kappa+j)]`;
+- `S_kappa = N_kappa / product_j[(mu*kappa+j)((1-mu)*kappa+j)(kappa+j)]`.
+
+The implementation was checked against direct rational score evaluation at three exact rational parameter points on a hand-constructed R=5 fixture. Four deterministic unit tests pass, including histogram validation and a hand-constructed M=30, R=20 histogram spanning all 21 count cells. For that M30/R20 fixture, the sparse numerator sizes are 629 and 1,368 terms, with bidegrees (39,40) and (40,58), respectively. Construction plus the four tests took approximately 0.5 seconds in the available Python 3.13 environment. This is a harness-level static result, not yet a parity claim for the governed CPython 3.12 execution environment.
+
+The separate-denominator representation explains why bidegrees can differ from earlier sizing notes that cleared both scores against the larger shared denominator: multiplying N_mu by the positive product of the C_j=(kappa+j) factors raises its kappa degree by R without changing its zero set in the open domain. The implementation deliberately uses the smaller numerator and retains the denominator formula explicitly.
+
+### Backend comparison status
+
+The first exact score-numerator constructor is now implemented and tested. The elimination backend is not selected yet:
+- A general-purpose exact rational resultant on the earlier M30/R20 sizing fixture exceeded the 60-second tool ceiling.
+- A trial of SymPy's generic subresultant resultant routine over a finite field also exceeded the 60-second ceiling on the new sparse M30/R20 score polynomials. This is not a modular-CRT implementation and does not show that a properly engineered modular resultant will fail; it does show that simply changing the coefficient field inside the generic PRS routine is insufficient.
+- No exact CAD/real-algebraic backend is installed in the available environment, so no CAD performance result is claimed.
+
+Decision: do not select either generic SymPy PRS or CAD by assumption. Next compare a purpose-built modular subresultant/CRT path with an interval-certified one-dimensional profile path on the same deterministic M30/R20 fixtures. The latter exploits the strict conditional concavity in mu and may avoid constructing a high-degree resultant, but it must prove exhaustive stationary-root coverage, including even-multiplicity roots, or abstain. A bounded exact backend comparison is still required before D1 can close.
+
+The implementation does not compute a resultant, isolate roots, evaluate likelihood enclosures, or certify globality. It is the first verified algebra layer only. No fit, bootstrap, calibration, coverage run, or scientific execution was performed.
