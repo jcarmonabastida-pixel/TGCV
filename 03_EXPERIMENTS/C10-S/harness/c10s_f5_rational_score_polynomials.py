@@ -2218,6 +2218,27 @@ def conditional_mean_adaptive_concentration_census(
     }
 
 
+def _validate_f5_census_budgets(
+    *,
+    max_projection_depth: int,
+    max_projection_intervals: int,
+    max_lift_intervals: int,
+    max_lift_depth: int,
+    max_mu_depth: int,
+) -> None:
+    """Validate every active deterministic ceiling before any early return."""
+    for name, value, minimum in (
+        ("MAX_PROJECTION_DEPTH", max_projection_depth, 0),
+        ("MAX_PROJECTION_INTERVALS", max_projection_intervals, 1),
+        ("MAX_LIFT_INTERVALS", max_lift_intervals, 1),
+        ("MAX_LIFT_DEPTH", max_lift_depth, 0),
+    ):
+        if type(value) is not int or value < minimum:
+            raise ValueError(f"{name}_MUST_BE_INTEGER_AT_LEAST_{minimum}")
+    if type(max_mu_depth) is not int or not 1 <= max_mu_depth <= 16:
+        raise ValueError("MAX_MU_DEPTH_MUST_BE_INTEGER_1_TO_16")
+
+
 def beta_binomial_compactified_stationary_census(
     r: int,
     count_histogram: Mapping[int, int],
@@ -2228,8 +2249,6 @@ def beta_binomial_compactified_stationary_census(
     max_lift_intervals: int = 256,
     max_lift_depth: int = 24,
     max_mu_depth: int = 12,
-    max_boundary_depth: int = 64,
-    max_boundary_intervals: int = 10000,
 ) -> dict[str, object]:
     """Integrate exact concentration projection, simple-root lifting and boundary census.
 
@@ -2248,10 +2267,26 @@ def beta_binomial_compactified_stationary_census(
     """
     from fractions import Fraction
 
-    # Validate once through the exact score constructor, then preserve the
-    # paired provenance by compactifying both numerators from this histogram.
+    _validate_f5_census_budgets(
+        max_projection_depth=max_projection_depth,
+        max_projection_intervals=max_projection_intervals,
+        max_lift_intervals=max_lift_intervals,
+        max_lift_depth=max_lift_depth,
+        max_mu_depth=max_mu_depth,
+    )
+    # Validate the projection width even when the interval-first route avoids
+    # the resultant/Sturm fallback.
     if projection_width is None:
         projection_width = Fraction(1, 2**16)
+    try:
+        projection_width = _exact_fraction(projection_width)
+    except (TypeError, ValueError, ZeroDivisionError):
+        raise ValueError("PROJECTION_WIDTH_MUST_BE_POSITIVE_RATIONAL") from None
+    if projection_width <= 0:
+        raise ValueError("PROJECTION_WIDTH_MUST_BE_POSITIVE_RATIONAL")
+
+    # Validate once through the exact score constructor, then preserve the
+    # paired provenance by compactifying both numerators from this histogram.
     raw_p, raw_q = beta_binomial_score_numerators(r, count_histogram)
     total = sum(count_histogram.values())
     successes = sum(x * n for x, n in count_histogram.items())
@@ -2356,8 +2391,7 @@ def beta_binomial_compactified_stationary_census(
                 "max_lift_intervals": max_lift_intervals,
                 "max_lift_depth": max_lift_depth,
                 "max_mu_depth": max_mu_depth,
-                "max_boundary_depth": max_boundary_depth,
-                "max_boundary_intervals": max_boundary_intervals,
+                "boundary_evaluation": "EXACT_CLOSED_FORM_NO_ITERATIVE_BUDGET",
             },
         }
 
@@ -2495,8 +2529,7 @@ def beta_binomial_compactified_stationary_census(
             "max_lift_intervals_per_projection_root": max_lift_intervals,
             "max_lift_depth": max_lift_depth,
             "max_mu_depth": max_mu_depth,
-            "max_boundary_depth": max_boundary_depth,
-            "max_boundary_intervals": max_boundary_intervals,
+            "boundary_evaluation": "EXACT_CLOSED_FORM_NO_ITERATIVE_BUDGET",
         },
     }
 
@@ -2649,8 +2682,6 @@ def beta_binomial_global_mle_certificate(
     max_lift_intervals: int = 256,
     max_lift_depth: int = 24,
     max_mu_depth: int = 12,
-    max_boundary_depth: int = 64,
-    max_boundary_intervals: int = 10000,
     max_fraction_bits: int = 200000,
 ) -> dict[str, object]:
     """Certify the global beta-binomial likelihood winner or explicitly abstain.
@@ -2670,6 +2701,13 @@ def beta_binomial_global_mle_certificate(
         raise ValueError("PROJECTION_BITS_MUST_BE_INTEGER_AT_LEAST_4")
     if type(max_fraction_bits) is not int or max_fraction_bits < 64:
         raise ValueError("MAX_FRACTION_BITS_MUST_BE_INTEGER_AT_LEAST_64")
+    _validate_f5_census_budgets(
+        max_projection_depth=max_projection_depth,
+        max_projection_intervals=max_projection_intervals,
+        max_lift_intervals=max_lift_intervals,
+        max_lift_depth=max_lift_depth,
+        max_mu_depth=max_mu_depth,
+    )
 
     history = []
     for refinement in range(max_refinements + 1):
@@ -2681,8 +2719,6 @@ def beta_binomial_global_mle_certificate(
             max_lift_intervals=max_lift_intervals,
             max_lift_depth=max_lift_depth + 4 * refinement,
             max_mu_depth=max_mu_depth,
-            max_boundary_depth=max_boundary_depth,
-            max_boundary_intervals=max_boundary_intervals,
         )
         history.append({
             "refinement": refinement,

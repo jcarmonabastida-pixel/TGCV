@@ -987,8 +987,6 @@ class RationalScorePolynomialTests(unittest.TestCase):
             max_lift_intervals=100,
             max_lift_depth=16,
             max_mu_depth=8,
-            max_boundary_depth=24,
-            max_boundary_intervals=1000,
         )
         self.assertEqual(
             result["status"],
@@ -1085,8 +1083,6 @@ class RationalScorePolynomialTests(unittest.TestCase):
             max_lift_intervals=100,
             max_lift_depth=20,
             max_mu_depth=10,
-            max_boundary_depth=32,
-            max_boundary_intervals=1000,
         )
         self.assertEqual(
             result["status"],
@@ -1127,8 +1123,6 @@ class RationalScorePolynomialTests(unittest.TestCase):
             max_lift_intervals=128,
             max_lift_depth=12,
             max_mu_depth=8,
-            max_boundary_depth=16,
-            max_boundary_intervals=512,
         )
         self.assertEqual(
             result["status"],
@@ -1158,8 +1152,6 @@ class RationalScorePolynomialTests(unittest.TestCase):
             max_lift_intervals=128,
             max_lift_depth=12,
             max_mu_depth=8,
-            max_boundary_depth=16,
-            max_boundary_intervals=512,
         )
         self.assertIn(
             result["status"],
@@ -1219,6 +1211,37 @@ class RationalScorePolynomialTests(unittest.TestCase):
             _beta_binomial_likelihood_enclosure(2, {3: 1}, **box)
         with self.assertRaisesRegex(ValueError, "MULTIPLICITY_MUST_BE_NONNEGATIVE_INTEGER"):
             _beta_binomial_likelihood_enclosure(2, {1: -1}, **box)
+
+
+    def test_integrated_census_validates_budgets_before_degenerate_shortcut(self):
+        histogram = {0: 1}
+        invalid_budgets = (
+            ({"max_projection_depth": -1}, "MAX_PROJECTION_DEPTH"),
+            ({"max_projection_intervals": 0}, "MAX_PROJECTION_INTERVALS"),
+            ({"max_lift_intervals": 0}, "MAX_LIFT_INTERVALS"),
+            ({"max_lift_depth": -1}, "MAX_LIFT_DEPTH"),
+            ({"max_mu_depth": 0}, "MAX_MU_DEPTH"),
+        )
+        for kwargs, message in invalid_budgets:
+            with self.subTest(kwargs=kwargs):
+                with self.assertRaisesRegex(ValueError, message):
+                    beta_binomial_compactified_stationary_census(
+                        5, histogram, **kwargs,
+                    )
+        with self.assertRaisesRegex(ValueError, "PROJECTION_WIDTH_MUST_BE_POSITIVE_RATIONAL"):
+            beta_binomial_compactified_stationary_census(
+                5, histogram, projection_width=Fraction(0),
+            )
+
+    def test_global_mle_validates_resource_contract_before_degenerate_shortcut(self):
+        with self.assertRaisesRegex(ValueError, "MAX_PROJECTION_INTERVALS"):
+            beta_binomial_global_mle_certificate(
+                5, {0: 1}, max_projection_intervals=0,
+            )
+        with self.assertRaisesRegex(ValueError, "MAX_FRACTION_BITS"):
+            beta_binomial_global_mle_certificate(
+                5, {0: 1}, max_fraction_bits=32,
+            )
 
 
 if __name__ == "__main__":
