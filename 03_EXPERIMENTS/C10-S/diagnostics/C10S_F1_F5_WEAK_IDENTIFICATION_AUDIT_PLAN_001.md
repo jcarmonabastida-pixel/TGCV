@@ -628,3 +628,39 @@ The provisional precision calculations were independently evaluated:
 - For four M2b cutoffs, Kcal=5,000 and order-statistic rank k=4,785 give one-sided per-cutoff tolerance confidence 0.988711, exceeding Bonferroni's required 0.9875.
 
 These are analytical design calculations only. They are not a coverage run, bootstrap, calibration or authorization. Wilson/rank helper tests and independent implementation checks remain required before D1 freeze.
+
+
+## Global beta-binomial MLE certification — analytical blocker resolution (2026-11-20)
+
+A dedicated design has been persisted:
+03_EXPERIMENTS/C10-S/design/C10S_F5_GLOBAL_MLE_CERTIFICATION_DESIGN_001.md
+
+### Mathematical result
+
+For fixed concentration kappa > 0, the finite-product beta-binomial log-likelihood is strictly concave in mu whenever the observed counts are nondegenerate (0 < sum(x_i) < M*R). Its second derivative is a sum of negative reciprocal-square terms, with at least one strictly negative j=0 term. Thus there is exactly one conditional mean maximizer at each fixed positive concentration. All competing finite interior maxima must therefore be located along the one-dimensional concentration profile.
+
+Both joint score equations are rational functions of (mu,kappa) because R and all observed counts are integers. Clearing their positive-domain denominators yields exact bivariate polynomials. The proposed exhaustive certificate computes their exact resultant, square-free/multiplicity decomposition and Sturm isolation of every distinct positive concentration root; subresultant recovery and interval verification identify the corresponding mean root. It then compares all certified stationary candidates with the exact profiled limits kappa→0, kappa→infinity, mu→0 and mu→1.
+
+This is the intended solution to multiple and near-degenerate stationary roots. It does not rely on a sign-change grid, multistart success, or a fitted likelihood-difference tolerance. If the resultant is identically zero, a common factor intersects the positive domain, roots cannot be separated, interval likelihood ordering remains unresolved, or arithmetic/resource ceilings are exceeded, the procedure abstains rather than claiming globality.
+
+### Existing-code reconciliation
+
+The existing likelihood implementation already has:
+- exact finite-R beta-binomial likelihood through beta/gamma functions;
+- analytic digamma/trigamma score and Hessian in mean-logit/log-concentration coordinates;
+- an independently parameterized log-alpha/log-beta derivative route;
+- profiled kappa→0 and kappa→infinity boundary likelihoods;
+- three bounded L-BFGS-B starts and a local BFGS cross-check;
+- a supplied-grid numerical concentration profile explicitly marked uncertified.
+
+It does not have exact polynomial score construction, resultant/Sturm root isolation, interval proof of candidate ordering, or a global certificate. Its mean grid and local BFGS cannot certify the global maximum. The current fitted bootstrap also treats the analytic audit as diagnostic and still uses the legacy production fit for C5; this successor design must not silently change that frozen production path.
+
+### Typed separation
+
+Optimizer termination is now explicitly separate from statistical/global status. A valid global certificate may stand even when a heuristic start reports failure; all starts succeeding does not itself certify globality. New global states and abstention semantics are specified in the dedicated design.
+
+### Remaining gate
+
+The mathematical route is designed, but D1 remains OPEN until the exact algebraic construction, multiplicity-preserving isolation, boundary comparisons and interval likelihood ordering are implemented and pass deterministic adversarial tests. Coefficient growth and runtime for representative M10/R5 and M30/R20 fixtures must be measured before setting resource ceilings. The same root-isolation primitive should then be adapted to constrained W/B profiles.
+
+No stochastic bank, replay, bootstrap calibration or scientific execution was run or authorized. Frozen F1/F5 v1.0, C5/C0 semantics, B2/B3, main, RMA and Evidence→Claim Matrix remain unchanged.
