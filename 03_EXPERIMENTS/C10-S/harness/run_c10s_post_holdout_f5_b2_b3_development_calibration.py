@@ -269,12 +269,19 @@ def _optimizer_fields(comparison) -> dict[str, Any]:
     diagnostics = dict(candidate.diagnostics)
     raw = diagnostics.get("likelihood_optimizer_audit_json", "null")
     audit = json.loads(raw) if raw != "null" else None
+    reconciliation_raw = diagnostics.get("production_analytic_reconciliation_json", "null")
+    reconciliation = json.loads(reconciliation_raw) if reconciliation_raw != "null" else None
     fit_status = diagnostics.get("fit_status", "FIT_STATUS_MISSING")
     failure_reason = diagnostics.get("failure_reason", "FAILURE_REASON_MISSING")
     derived: dict[str, Any] = {
         "fit_status": fit_status,
         "failure_reason": failure_reason,
         "optimizer_audit": audit,
+        "production_analytic_reconciliation": reconciliation,
+        "production_analytic_reconciliation_status": (
+            reconciliation.get("status", "RECONCILIATION_STATUS_MISSING")
+            if isinstance(reconciliation, dict) else "RECONCILIATION_UNAVAILABLE"
+        ),
     }
     if audit is None:
         derived["optimizer_status"] = "DIAGNOSTIC_UNAVAILABLE"
