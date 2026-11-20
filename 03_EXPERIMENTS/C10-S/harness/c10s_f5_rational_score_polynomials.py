@@ -2228,6 +2228,8 @@ def beta_binomial_compactified_stationary_census(
     if resultant["status"] != "EXACT_RESULTANT_NONZERO":
         return {
             "status": "INCOMPLETE_RESULTANT_OR_COMMON_COMPONENT",
+            "original_axis_components": original_axis_components,
+            "component_disposition": stripped,
             "axis_components": axis_components,
             "concentration_resultant": resultant,
             "boundary_census": boundary,
@@ -2246,6 +2248,8 @@ def beta_binomial_compactified_stationary_census(
     if projection["status"] != "PROJECTION_ROOT_ISOLATION_COMPLETE":
         return {
             "status": "INCOMPLETE_PROJECTION_ROOT_ISOLATION",
+            "original_axis_components": original_axis_components,
+            "component_disposition": stripped,
             "axis_components": axis_components,
             "concentration_resultant": resultant,
             "concentration_projection": projection,
@@ -2329,6 +2333,8 @@ def beta_binomial_compactified_stationary_census(
         ),
         "paired_score_provenance": "SAME_VALIDATED_NONDEGENERATE_COUNT_HISTOGRAM",
         "compactified_parameterization": "t=kappa/(1+kappa)",
+        "original_axis_components": original_axis_components,
+        "component_disposition": stripped,
         "axis_components": axis_components,
         "concentration_resultant": resultant,
         "concentration_projection": projection,
