@@ -13,62 +13,23 @@ permissions:
   contents: read
 
 jobs:
-  f5-deterministic-tests:
-    name: F5 deterministic unit and adversarial tests (no calibration)
+  f5-tests:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
-      - name: Checkout exact research commit
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-
-      - name: Set up CPython 3.12
-        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
         with:
           python-version: '3.12.10'
-
-      - name: Install hash-locked dependencies
+      - name: Install locked dependencies
         working-directory: 03_EXPERIMENTS/C10-S/harness
         run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
-
-      - name: Record runtime and source identity
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/f5-evidence"
-          python - <<'PY' > "$RUNNER_TEMP/f5-evidence/runtime.json"
-          import json, platform, sys
-          print(json.dumps({"python":sys.version,"implementation":platform.python_implementation(),"platform":platform.platform(),"machine":platform.machine()},sort_keys=True))
-          PY
-          git rev-parse HEAD > "$RUNNER_TEMP/f5-evidence/commit.txt"
-          git rev-parse HEAD^{tree} > "$RUNNER_TEMP/f5-evidence/tree.txt"
-          sha256sum 03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_rational_score_polynomials.py 03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_likelihood_diagnostics.py 03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_mcse_profile.py 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_mcse_profile.py > "$RUNNER_TEMP/f5-evidence/source-sha256.txt"
-
-      - name: Compile F5 source and test modules
+      - name: Compile F5 modules
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: |
-          python -m py_compile c10s_f5_rational_score_polynomials.py test_c10s_f5_rational_score_polynomials.py c10s_f5_beta_binomial_likelihood_diagnostics.py test_c10s_f5_beta_binomial_likelihood_diagnostics.py c10s_f5_beta_binomial_mcse_profile.py test_c10s_f5_beta_binomial_mcse_profile.py
-
-      - name: Run exact rational, likelihood diagnostic and MCSE profile suites
-        id: tests
+        run: python -m py_compile c10s_f5_rational_score_polynomials.py test_c10s_f5_rational_score_polynomials.py c10s_f5_beta_binomial_likelihood_diagnostics.py test_c10s_f5_beta_binomial_likelihood_diagnostics.py c10s_f5_beta_binomial_mcse_profile.py test_c10s_f5_beta_binomial_mcse_profile.py
+      - name: Run deterministic F5 suites (no calibration)
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        shell: bash
-        run: |
-          set +e
-          python -B -m unittest -v test_c10s_f5_rational_score_polynomials test_c10s_f5_beta_binomial_likelihood_diagnostics test_c10s_f5_beta_binomial_mcse_profile > "$RUNNER_TEMP/f5-evidence/tests.stdout.txt" 2> "$RUNNER_TEMP/f5-evidence/tests.stderr.txt"
-          status=$?
-          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
-          cat "$RUNNER_TEMP/f5-evidence/tests.stdout.txt"
-          cat "$RUNNER_TEMP/f5-evidence/tests.stderr.txt" >&2
-          exit "$status"
-
-      - name: Upload immutable execution evidence
-        if: always()
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
-        with:
-          name: c10s-f5-deterministic-tests-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/f5-evidence/
-          if-no-files-found: warn
-          retention-days: 90
+        run: python -B -m unittest -v test_c10s_f5_rational_score_polynomials test_c10s_f5_beta_binomial_likelihood_diagnostics test_c10s_f5_beta_binomial_mcse_profile
