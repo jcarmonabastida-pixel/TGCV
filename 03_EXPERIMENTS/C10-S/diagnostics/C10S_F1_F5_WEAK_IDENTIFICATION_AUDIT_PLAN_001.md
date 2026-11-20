@@ -465,3 +465,24 @@ New findings:
 
 
 Additional adjudication-control finding: the runner currently requires all three analytic-gradient starts to succeed, whereas frozen B1 requires their complete outcomes to be retained and compared, not necessarily all to succeed. M30/R20's failed starts are often clearly noncompetitive while successful starts agree to near machine precision; M10/R5 has much wider successful-start parameter spread. The next static change must reconcile this stricter Boolean gate with the frozen specification and replace it with raw multi-start concordance diagnostics, without relaxing the no-unresolved-state rule or retrospectively changing B2/B3.
+
+
+## Implementation increment — direct production/analytic reconciliation (2026-11-20)
+
+The per-dataset F5 traceability gap is now implemented additively. The production fit P (finite-difference L-BFGS-B) retains all three start outcomes and selected-start identity. The analytic fit A (analytic-gradient L-BFGS-B) and independent-coordinate BFGS check I remain distinct; I is explicitly labelled as a local check initialized from A, not a global search.
+
+A strict-JSON reconciliation object records raw P-minus-A likelihood, mean-logit, log-concentration, alpha, beta, mean-probability and concentration differences, together with all P/A starts and typed missing-path states. The object propagates through the comparative inference engine into each calibration-runner dataset record.
+
+No tolerance, binary weak-identification threshold, optimizer replacement, or automatic PASS is introduced. The runner's existing all-starts-success gate remains unchanged pending a separate interpretation against frozen B1 and §8; a failed start is neither presumed harmless nor presumed to imply materially different solutions.
+
+Static validation:
+- exact tested code/test commit: `18e1c6372af1c191b640e0d1f8d3318b889b28b9`;
+- workflow run: `44645072630`;
+- hash-locked dependency installation: PASS;
+- compile: PASS;
+- deterministic suite: **171 tests passed in 24.023 s**;
+- direct P/A reconciliation, missing-audit and all-failed-production-start tests: PASS.
+
+Implementation record: `C10S_F5_B1_PRODUCTION_ANALYTIC_RECONCILIATION_IMPLEMENTATION_001.md`. Current branch head after documentation updates: `10b2d16d0a97737c2b1859291a02239af650efc5`.
+
+The historical B2/B3 results, frozen development specification v1.0, C0 and C5 interval construction remain unchanged. No replay, calibration, bootstrap bank, resource preflight, holdout, or scientific C10 execution occurred.
