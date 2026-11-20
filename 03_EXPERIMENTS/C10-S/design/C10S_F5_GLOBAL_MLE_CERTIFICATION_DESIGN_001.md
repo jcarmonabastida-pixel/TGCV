@@ -321,3 +321,8 @@ The controller is conservative at compactification boundaries: it covers the clo
 Four controller tests are committed but not run in governed CPython 3.12. Root inclusion/uniqueness is still missing. Simple roots may be candidates for rational Krawczyk/interval-Newton certification under all theorem hypotheses; multiple roots require deflation or abstention. The controller never uses sign changes to exclude roots.
 
 No global MLE certification, D1 closure, backend selection, benchmark, calibration or scientific execution is claimed or authorized.
+
+
+### Multiple/near-coincident retention fixtures added (2026-11-20)
+
+The interval exclusion test contract now includes a hand-constructed common double root and a pair of distinct common roots separated by `2^-20`. Current controller assertions require that neither case is declared root-free. They are preservation/negative-certification tests only; the controller does not yet isolate these roots or certify multiplicity. Governed CPython 3.12 execution remains pending.
