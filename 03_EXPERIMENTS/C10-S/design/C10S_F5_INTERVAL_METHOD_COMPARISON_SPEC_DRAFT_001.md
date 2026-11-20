@@ -436,3 +436,7 @@ The exact edge gcd/square-free pipeline now feeds rational Sturm isolation on `[
 ### Compactification corner ownership (2026-11-20)
 
 A canonical ownership layer now assigns each corner to exactly one vertical edge and retains the adjacent horizontal-edge occurrence as provenance-only. The corner registry carries coordinates, owner, factor index, root parameter and edge multiplicity. Unresolved ownership and partial Sturm isolation remain explicit. Tests cover a single shared corner, all four corners and propagation of a partial isolation. The boundary census is now deduplicated at corners but remains separate from the two-dimensional interior root census.
+
+### Joint corner likelihood limits and singular-root contract (2026-11-20)
+
+All four joint compactification-corner likelihood limits are now classified path-independently using the uniform bounds `P(X>0) <= r*mu` and `P(X<r) <= r*(1-mu)`. The exact helper returns the limiting point-mass distribution and histogram likelihood at each corner. This does not classify stationary score roots or non-corner boundary likelihood profiles. For interior singular roots, Bernstein/Krawczyk remains a simple-root path only; a separate validated deflation theorem is required. The parallel algebraic route is specified through exact bivariate common-factor detection, projection resultants, square-free/Sturm isolation and subresultant back-substitution, with local multiplicity not inferred from resultant multiplicity.
