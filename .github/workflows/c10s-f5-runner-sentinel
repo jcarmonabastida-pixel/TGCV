@@ -1,0 +1,3 @@
+C10-S F5 deterministic validation sentinel.
+Scope: compile and deterministic unit/adversarial suites only.
+No calibration, replay, or scientific bank execution.
