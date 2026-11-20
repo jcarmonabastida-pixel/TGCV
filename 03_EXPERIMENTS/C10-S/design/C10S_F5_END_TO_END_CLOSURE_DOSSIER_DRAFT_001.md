@@ -263,3 +263,20 @@ Corrective change in commit `3591a63e095a67aa0dfaeae2df5528076a90b708`:
 - The exact boundary work is therefore accurately represented as closed-form, not falsely budgeted. Active interval and projection loops retain deterministic hard ceilings and typed incomplete/resource outcomes.
 
 The change is under deterministic verification in [run #51](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44771555687). Do not count the new G5 contract regression as PASS until that run completes.
+
+### 9.9 G1 mathematical derivation audit — internal exact review (2026-11-20)
+
+A line-by-line mathematical review was completed against the implemented score construction and the finite-product beta-binomial likelihood. This is an internal derivation audit, not an independent external review.
+
+1. **Likelihood identity.** The beta-binomial PMF is written as the rising-factorial product in `alpha=mu*kappa`, `beta=(1-mu)*kappa`, and `kappa`; the binomial coefficient is data-only for score purposes and is restored in the likelihood comparator.
+2. **Score derivatives.** Differentiation gives
+   `S_mu = sum_x n_x[sum_{j<x} kappa/(mu*kappa+j) - sum_{j<r-x} kappa/((1-mu)*kappa+j)]`
+   and
+   `S_kappa = sum_x n_x[sum_{j<x} mu/(mu*kappa+j) + sum_{j<r-x}(1-mu)/((1-mu)*kappa+j) - sum_{j<r}1/(kappa+j)]`.
+   The polynomial builder multiplies these terms by the corresponding common products with one factor omitted. All cleared factors are strictly positive on the open domain, so the paired polynomial zero set is exactly the score zero set there.
+3. **Conditional mean uniqueness.** For nondegenerate pooled counts, at least one observation has x>0 and at least one has x<r. The second derivative in mu is a sum of nonpositive terms and contains at least one strictly negative j=0 term. Hence it is strictly negative for every 0<mu<1 and fixed kappa>0; the endpoint score signs give one and only one conditional-mean root.
+4. **Compactification.** t=kappa/(1+kappa) is a bijection from positive finite concentration to 0<t<1. Multiplication by (1-t)^d gives the exact transformed integer polynomial and preserves the open-domain zero set. t=0 and t=1 are handled only as boundary strata.
+5. **Exclusion/inclusion.** Bernstein coefficients provide exact convex-hull range enclosures; strict one-sign coefficients exclude zeros. Krawczyk inclusion is used only for simple-root existence/uniqueness; mixed signs and singular/multiple cases remain unresolved, never promoted.
+6. **Boundary/global comparison.** The four edge profiles are exact closed forms. The joint-corner limits follow uniformly from P(X>0)<=r*mu and P(X<r)<=r*(1-mu). The interior likelihood enclosure bounds every PMF factor by exact rational intervals and multiplies with outward-rounded dyadic integer arithmetic. A global winner is returned only under strict enclosure separation or a proven boundary co-maximum; overlapping intervals abstain.
+
+The derivation is supported by the direct-rational score identity fixtures (small M10/R5 and M30/R20), exact compactification tests, boundary/corner fixtures, and independent exact PMF/score diagnostics. This closes the *derivation review portion* of G1 on the implemented model. Input validation was separately exercised by run #50. The resource-contract correction under run #51 remains pending; G1–G6 are not yet declared closed as a group.
