@@ -1472,18 +1472,18 @@ def compactified_axis_common_components(
     """
     if not isinstance(poly_p, Mapping) or not isinstance(poly_q, Mapping):
         raise ValueError("SPARSE_POLYNOMIAL_MAPPING_REQUIRED")
-    if not poly_p or not poly_q:
-        return {
-            "status": "ZERO_POLYNOMIAL_COMMON_COMPONENT_UNRESOLVED",
-            "axes": {},
-            "scope": "COMMON_FACTORS_DEPENDING_ON_MU_OR_T_ONLY",
-            "general_mixed_bivariate_factors": "NOT_CHECKED",
-        }
 
     output = {}
     for axis in ("mu", "t"):
         content_p = _bivariate_axis_content(poly_p, axis)
         content_q = _bivariate_axis_content(poly_q, axis)
+        if not poly_p or not poly_q:
+            return {
+                "status": "ZERO_POLYNOMIAL_COMMON_COMPONENT_UNRESOLVED",
+                "axes": {},
+                "scope": "COMMON_FACTORS_DEPENDING_ON_MU_OR_T_ONLY",
+                "general_mixed_bivariate_factors": "NOT_CHECKED",
+            }
         common = _uni_gcd(content_p, content_q)
         if len(common) > 1:
             output[axis] = {
