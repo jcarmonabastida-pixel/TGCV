@@ -2542,7 +2542,7 @@ def beta_binomial_global_mle_certificate(
                 interior_index += 1
 
         for name, record in census["boundary_likelihoods"].items():
-            if name == "status":
+            if not isinstance(record, Mapping) or "likelihood" not in record:
                 continue
             value = record["likelihood"]
             competitors.append({
