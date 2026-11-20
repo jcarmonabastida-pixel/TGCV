@@ -796,3 +796,8 @@ An exact rational-coefficient `mu`-projection resultant now uses a Sylvester mat
 ### Projection-root isolation added to exact algebraic route (2026-11-20)
 
 The exact resultant is now square-free factorized and real projection roots are isolated with rational Sturm counts on the compactified `mu` interval. Multiplicity and incomplete intervals are retained; no `t`-lifting or local multiplicity is claimed. Three deterministic tests were added, bringing the source-level suite to 63 methods, still unexecuted under governed CPython 3.12. This is a mathematical harness increment only; F1/F5 evidence and identification statuses remain unchanged.
+
+
+### Reduced conditional-mean pruning added to F5 route (2026-11-20)
+
+The research harness now includes an exact interval-pruning operation that brackets the unique conditional mean root uniformly over a strictly interior compactified concentration interval. It certifies signs of the mean-score numerator at rational dyadic mean values using univariate Bernstein coefficients over the complete concentration interval, then bounds the concentration-score numerator over the resulting rational tube. Strict sign excludes the whole concentration interval; otherwise the interval remains an unresolved candidate. The operation explicitly rejects compactification endpoints because (t=0,1) belong to separately adjudicated boundary strata. It does not certify root existence, multiplicity, or global completeness. Five adversarial tests are defined, pending governed CPython 3.12 execution. This is intended to reduce unnecessary algebraic lifting and keep F5 work proportional to the TierA coverage/calibration need; no calibration or scientific execution is authorized or claimed.
