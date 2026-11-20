@@ -1,6 +1,6 @@
 # C10-S — F5 B1 production-fit reconciliation design draft 001
 
-**Status:** RESEARCH DESIGN DRAFT — NOT FROZEN / NOT IMPLEMENTED  
+**Status:** DESIGN DRAFT — IMPLEMENTED IN RESEARCH BRANCH; STATIC VALIDATION PENDING  
 **Date:** 2026-11-20  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
 **Scope:** static implementation design and deterministic controls only  
@@ -9,7 +9,7 @@
 
 ## 1. Purpose
 
-Close the B1 traceability gap identified by the coordinated F5 diagnosis: the current per-dataset audit records the C5 production fit and a separate analytic-gradient fit, but does not directly reconcile them in one explicit record. This draft specifies the minimum additive diagnostic contract before code changes.
+Close the B1 traceability gap identified by the coordinated F5 diagnosis: the current per-dataset audit records the C5 production fit and a separate analytic-gradient fit, but does not directly reconcile them in one explicit record. This draft specified the additive diagnostic contract. Its implementation is recorded in `C10S_F5_B1_PRODUCTION_ANALYTIC_RECONCILIATION_IMPLEMENTATION_001.md`. Static validation remains pending.
 
 It does not select a new estimator, change C5 production fitting, change interval construction, define a weak-identification threshold, alter frozen acceptance criteria, or authorize numerical execution.
 
