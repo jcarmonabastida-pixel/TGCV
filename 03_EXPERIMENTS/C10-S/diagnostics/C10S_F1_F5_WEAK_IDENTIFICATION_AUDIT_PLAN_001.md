@@ -768,3 +768,7 @@ A rational helper now evaluates the four one-edge beta-binomial boundary likelih
 ### Adaptive Bernstein–Krawczyk refinement (2026-11-20)
 
 The integrated exact controller now performs a deterministic breadth-first cycle of Bernstein exclusion, Krawczyk inclusion attempt, and rational box subdivision for inconclusive boxes. It has explicit processed-box and depth ceilings and retains all unresolved and unprocessed boxes. New deterministic tests check repeatability on a double-root fixture and explicit resource-limit abstention. No tests have been executed under governed CPython 3.12. The method still abstains on multiple/shared-boundary roots and does not establish exhaustive root isolation or global likelihood ordering.
+
+### Exact compactification-edge multiplicity analysis added (2026-11-20)
+
+The harness now computes exact univariate gcds of the two score restrictions on `mu=0`, `mu=1`, `t=0` and `t=1`, then square-free-factorizes each common gcd to preserve the minimum shared multiplicity. Common components (both restrictions identically zero) fail closed as unresolved. Three deterministic tests were added, including a shared double factor and malformed monomial validation. This does not yet isolate real edge roots, deduplicate corners, resolve interior multiple roots or certify global likelihood ordering. Governed CPython 3.12 execution remains pending.
