@@ -133,7 +133,7 @@ Minimum mutually exclusive states:
 
 A finite optimizer bound is never a theoretical model boundary. The theoretical limits \(\kappa\to\infty\) and \(\kappa\to0\) must be evaluated as limits where mathematically supported. A boundary state may be accepted only if the limiting likelihood is evaluated independently and its global status is established; otherwise it is unresolved.
 
-**D1 blocker:** the current artifacts do not yet provide a justified scale-aware rule that adjudicates failed-start competitiveness, near-equal likelihood with materially different concentration, and global-optimum status without arbitrary thresholds. The historical raw banks cannot be used to invent or tune such thresholds. Until a deterministic analytic certificate or independently justified tolerance contract is specified, M1/M2 must abstain on the affected fit. Do not substitute “at least one start succeeded” or “all starts succeeded” as a complete scientific adjudication.
+**D1 resolution — analytical route designed, implementation feasibility still OPEN:** the separate artifact `C10S_F5_GLOBAL_MLE_CERTIFICATION_DESIGN_001.md` derives strict conditional concavity in μ at fixed κ and an exact rational-score/resultant/Sturm route to enumerate all finite interior stationary points, preserve multiplicity, isolate near-coincident roots and compare them with profiled theoretical boundaries. This replaces the proposed arbitrary scale-aware likelihood-difference threshold. It is not yet implemented or validated. D1 therefore remains OPEN until exact polynomial construction, root isolation, interval likelihood ordering, boundary strata and resource ceilings pass deterministic adversarial fixtures. Until then M1/M2 must abstain whenever globality is not certified. Optimizer starts remain diagnostic; neither at least one nor all starts succeeding is a global certificate.
 
 ## 5. Bootstrap failure and emission semantics — proposed fail-closed rule
 
@@ -267,8 +267,8 @@ No gate passes implicitly. Completion of D2/D3 does not authorize D5.
 
 ## 12. Explicit open blockers for D1 review
 
-1. A defensible deterministic fit-state adjudication rule for failed-start competitiveness and weak concentration identification, without thresholds tuned on B2/B3.
-2. Exact M2 one-dimensional global profile certification, stationary-point isolation/tolerance and boundary-limit implementation contract.
+1. Implement and validate the exact rational-score/resultant/Sturm global-fit certificate; verify its feasibility and deterministic resource ceiling without thresholds tuned on B2/B3.
+2. Extend the exact root-isolation certificate to constrained M2 one-dimensional profiles, including endpoint limits and disconnected accepted-set topology.
 3. Exact M2b calibration rank calculation for four cutoffs and the corresponding bank size/precision.
 4. Exact M1 bootstrap replicate count from an endpoint-MCSE target.
 5. Wilson operating-characteristic calculation and confirmation of N=5,000 or a justified alternative.
