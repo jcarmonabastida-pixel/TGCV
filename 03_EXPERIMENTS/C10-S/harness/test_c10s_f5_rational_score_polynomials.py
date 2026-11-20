@@ -13,6 +13,7 @@ from c10s_f5_rational_score_polynomials import (
     bernstein_krawczyk_root_classification,
     beta_binomial_boundary_likelihoods,
     compactified_boundary_common_factors,
+    compactified_boundary_common_roots,
 )
 
 
@@ -296,6 +297,45 @@ class RationalScorePolynomialTests(unittest.TestCase):
             result["edges"]["t_one"]["status"], "NO_COMMON_EDGE_ROOT"
         )
         self.assertEqual(result["root_isolation"], "NOT_YET_PERFORMED")
+
+    def test_sturm_isolates_exact_rational_edge_root_and_multiplicity(self):
+        p = {(0, 2): 4, (0, 1): -4, (0, 0): 1}
+        q = {(0, 3): 8, (0, 2): -12, (0, 1): 6, (0, 0): -1}
+        result = compactified_boundary_common_roots(p, q)
+        self.assertEqual(result["status"], "BOUNDARY_ROOT_ISOLATION_COMPLETE")
+        for edge in ("mu_zero", "mu_one"):
+            factor = result["edges"][edge]["isolated_factors"][0]
+            self.assertEqual(factor["multiplicity"], 2)
+            self.assertEqual(factor["exact_roots"], (Fraction(1, 2),))
+            self.assertEqual(factor["isolating_intervals"], [])
+
+    def test_sturm_isolates_irrational_edge_root(self):
+        # The common factor 2*t^2-1 has one root in [0,1], sqrt(1/2).
+        p = {(0, 2): 2, (0, 0): -1}
+        q = {(0, 4): 4, (0, 2): -4, (0, 0): 1}
+        result = compactified_boundary_common_roots(
+            p, q, width=Fraction(1, 32)
+        )
+        self.assertEqual(result["status"], "BOUNDARY_ROOT_ISOLATION_COMPLETE")
+        factor = result["edges"]["mu_zero"]["isolated_factors"][0]
+        self.assertEqual(factor["multiplicity"], 1)
+        self.assertEqual(len(factor["isolating_intervals"]), 1)
+        left, right = factor["isolating_intervals"][0]["interval"]
+        self.assertLess(left, Fraction(1, 2**0) / 1)  # interval lies inside unit edge
+        self.assertLess(right - left, Fraction(1, 32))
+        self.assertEqual(factor["isolating_intervals"][0]["root_count"], 1)
+
+    def test_sturm_boundary_isolation_abstains_on_resource_limit(self):
+        p = {(0, 2): 2, (0, 0): -1}
+        q = {(0, 4): 4, (0, 2): -4, (0, 0): 1}
+        result = compactified_boundary_common_roots(
+            p, q, width=Fraction(1, 2**30),
+            max_depth=1, max_intervals=100,
+        )
+        self.assertEqual(result["status"], "PARTIAL_BOUNDARY_ROOT_ISOLATION")
+        factor = result["edges"]["mu_zero"]["isolated_factors"][0]
+        self.assertEqual(factor["status"], "PARTIAL_ISOLATION")
+        self.assertTrue(factor["unresolved_intervals"])
 
     def test_compactified_edge_common_component_abstains(self):
         # Both score polynomials vanish identically on mu=0.
