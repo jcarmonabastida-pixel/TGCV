@@ -993,6 +993,11 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(
             result["status"],
             "INTERIOR_SIMPLE_ROOT_AND_BOUNDARY_CENSUS_COMPLETE",
+            msg=repr({
+                "component_disposition": result.get("component_disposition"),
+                "axis_components": result.get("axis_components"),
+                "status": result["status"],
+            }),
         )
         self.assertEqual(len(result["unresolved_lifts"]), 0)
         self.assertIn("concentration_resultant", result)
