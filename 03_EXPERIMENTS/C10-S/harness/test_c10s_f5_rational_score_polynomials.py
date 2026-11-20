@@ -19,6 +19,8 @@ from c10s_f5_rational_score_polynomials import (
     compactified_axis_common_components,
     compactified_projection_resultant_mu,
     compactified_projection_root_isolation_mu,
+    compactified_concentration_resultant_t,
+    compactified_concentration_root_isolation_t,
 )
 
 
@@ -424,6 +426,47 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(
             result["corner_deduplication"], "CORNER_OWNERSHIP_COMPLETE"
         )
+
+    def test_concentration_resultant_eliminates_mean_and_projects_t(self):
+        # P=mu-t, Q=2*mu-1; Res_mu(P,Q)=2*t-1.
+        p = {(1, 0): 1, (0, 1): -1}
+        q = {(1, 0): 2, (0, 0): -1}
+        result = compactified_concentration_resultant_t(p, q)
+        self.assertEqual(result["status"], "EXACT_RESULTANT_NONZERO")
+        self.assertEqual(result["resultant"], (Fraction(-1), Fraction(2)))
+        self.assertEqual(result["eliminated_axis"], "mu")
+        self.assertEqual(result["projection_axis"], "t")
+        self.assertEqual(result["mathematical_object"], "RESULTANT_MU_P_Q")
+
+    def test_concentration_root_isolation_preserves_even_multiplicity(self):
+        # P=mu-t, Q=(mu+t-1)^2; Res_mu(P,Q)=(2*t-1)^2.
+        p = {(1, 0): 1, (0, 1): -1}
+        q = {
+            (2, 0): 1, (1, 1): 2, (0, 2): 1,
+            (1, 0): -2, (0, 1): -2, (0, 0): 1,
+        }
+        resultant = compactified_concentration_resultant_t(p, q)
+        self.assertEqual(
+            resultant["resultant"],
+            (Fraction(1), Fraction(-4), Fraction(4)),
+        )
+        isolated = compactified_concentration_root_isolation_t(
+            resultant, width=Fraction(1, 100)
+        )
+        self.assertEqual(
+            isolated["status"], "PROJECTION_ROOT_ISOLATION_COMPLETE"
+        )
+        self.assertEqual(isolated["axis"], "t")
+        self.assertEqual(isolated["factors"][0]["projection_multiplicity"], 2)
+        self.assertEqual(
+            isolated["factors"][0]["exact_roots"], (Fraction(1, 2),)
+        )
+
+    def test_concentration_resultant_rejects_malformed_sparse_input(self):
+        with self.assertRaisesRegex(ValueError, "POLYNOMIAL_MUST_HAVE_INTEGER_SPARSE_TERMS"):
+            compactified_concentration_resultant_t(
+                {(0.5, 0): 1}, {(1, 0): 1}
+            )
 
     def test_projection_root_isolation_preserves_projection_multiplicity(self):
         # Res_t(t-mu, (t+mu-1)^2) = (2*mu-1)^2.
