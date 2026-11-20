@@ -2671,6 +2671,60 @@ def _beta_binomial_likelihood_enclosure(
     }
 
 
+def _f5_input_provenance(
+    r: int,
+    count_histogram: Mapping[int, int],
+    source_revision: str | None,
+) -> dict[str, object]:
+    """Bind an F5 certificate to exact input, score polynomials and source SHA."""
+    import hashlib
+    import json
+    import os
+    import re
+
+    revision = source_revision or os.environ.get("GITHUB_SHA")
+    if not isinstance(revision, str) or re.fullmatch(r"[0-9a-fA-F]{40}", revision) is None:
+        raise ValueError("SOURCE_REVISION_MUST_BE_40_HEX_SHA")
+    revision = revision.lower()
+
+    score_mu, score_kappa = beta_binomial_score_numerators(r, count_histogram)
+    compact_mu = compactify_concentration(score_mu)
+    compact_kappa = compactify_concentration(score_kappa)
+    normalized_histogram = sorted(
+        (x, n) for x, n in count_histogram.items() if n
+    )
+
+    def digest(value) -> str:
+        payload = json.dumps(
+            value, sort_keys=True, separators=(",", ":"), ensure_ascii=True
+        ).encode("ascii")
+        return hashlib.sha256(payload).hexdigest()
+
+    def polynomial_payload(poly: Poly):
+        return [[i, j, coefficient] for (i, j), coefficient in sorted(poly.items())]
+
+    return {
+        "schema": "TGCV-C10-S-F5-INPUT-PROVENANCE-001",
+        "source_revision": revision,
+        "r": r,
+        "sample_size": sum(n for _, n in normalized_histogram),
+        "pooled_successes": sum(x * n for x, n in normalized_histogram),
+        "histogram_sha256": digest({
+            "r": r,
+            "histogram": normalized_histogram,
+        }),
+        "score_numerator_sha256": {
+            "mu": digest(polynomial_payload(score_mu)),
+            "kappa": digest(polynomial_payload(score_kappa)),
+        },
+        "compactified_score_numerator_sha256": {
+            "mu": digest(polynomial_payload(compact_mu)),
+            "kappa": digest(polynomial_payload(compact_kappa)),
+        },
+        "hash_algorithm": "SHA256_CANONICAL_JSON",
+    }
+
+
 def beta_binomial_global_mle_certificate(
     r: int,
     count_histogram: Mapping[int, int],
@@ -2683,6 +2737,7 @@ def beta_binomial_global_mle_certificate(
     max_lift_depth: int = 24,
     max_mu_depth: int = 12,
     max_fraction_bits: int = 200000,
+    source_revision: str | None = None,
 ) -> dict[str, object]:
     """Certify the global beta-binomial likelihood winner or explicitly abstain.
 
@@ -2708,6 +2763,9 @@ def beta_binomial_global_mle_certificate(
         max_lift_depth=max_lift_depth,
         max_mu_depth=max_mu_depth,
     )
+    input_provenance = _f5_input_provenance(
+        r, count_histogram, source_revision
+    )
 
     history = []
     for refinement in range(max_refinements + 1):
@@ -2720,6 +2778,7 @@ def beta_binomial_global_mle_certificate(
             max_lift_depth=max_lift_depth + 4 * refinement,
             max_mu_depth=max_mu_depth,
         )
+        census["input_provenance"] = input_provenance
         history.append({
             "refinement": refinement,
             "projection_width": Fraction(1, 2 ** (projection_bits + 4 * refinement)),

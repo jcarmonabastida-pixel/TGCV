@@ -2,6 +2,9 @@
 from fractions import Fraction
 import unittest
 
+TEST_SOURCE_REVISION = "a" * 40
+
+
 from c10s_f5_rational_score_polynomials import (
     beta_binomial_score_numerators,
     compactify_concentration,
@@ -25,6 +28,7 @@ from c10s_f5_rational_score_polynomials import (
     conditional_mean_adaptive_concentration_census,
     beta_binomial_compactified_stationary_census,
     _beta_binomial_likelihood_enclosure,
+    _f5_input_provenance,
     beta_binomial_global_mle_certificate,
 )
 
@@ -79,6 +83,27 @@ class RationalScorePolynomialTests(unittest.TestCase):
             d_mu, d_kappa = _denominators(r, mu, kappa)
             self.assertEqual(_evaluate(n_mu, mu, kappa), score_mu * d_mu)
             self.assertEqual(_evaluate(n_kappa, mu, kappa), score_kappa * d_kappa)
+
+    def test_exact_score_identity_exhaustive_small_histogram_grid(self):
+        r = 2
+        points = (
+            (Fraction(1, 4), Fraction(1, 3)),
+            (Fraction(2, 3), Fraction(5, 2)),
+        )
+        for n0 in range(3):
+            for n1 in range(3):
+                for n2 in range(3):
+                    hist = {0: n0, 1: n1, 2: n2}
+                    if not any(hist.values()):
+                        continue
+                    with self.subTest(hist=hist):
+                        score_mu_poly, score_kappa_poly = beta_binomial_score_numerators(r, hist)
+                        for mu, kappa in points:
+                            score_mu, score_kappa = _direct_scores(r, hist, mu, kappa)
+                            d_mu, d_kappa = _denominators(r, mu, kappa)
+                            self.assertEqual(_evaluate(score_mu_poly, mu, kappa), score_mu * d_mu)
+                            self.assertEqual(_evaluate(score_kappa_poly, mu, kappa), score_kappa * d_kappa)
+
 
     def test_m30_r20_bidegrees_and_sparse_size(self):
         hist = {x: 1 for x in range(21)}
@@ -1061,8 +1086,32 @@ class RationalScorePolynomialTests(unittest.TestCase):
         )
 
 
+    def test_input_provenance_binds_semantic_histogram_and_exact_polynomials(self):
+        first = _f5_input_provenance(
+            5, {0: 1, 1: 2, 2: 0, 3: 1}, TEST_SOURCE_REVISION,
+        )
+        same_semantics = _f5_input_provenance(
+            5, {0: 1, 1: 2, 3: 1}, TEST_SOURCE_REVISION,
+        )
+        changed_data = _f5_input_provenance(
+            5, {0: 1, 1: 1, 3: 2}, TEST_SOURCE_REVISION,
+        )
+        self.assertEqual(first, same_semantics)
+        self.assertNotEqual(first["histogram_sha256"], changed_data["histogram_sha256"])
+        self.assertNotEqual(
+            first["score_numerator_sha256"],
+            changed_data["score_numerator_sha256"],
+        )
+        self.assertEqual(first["source_revision"], TEST_SOURCE_REVISION)
+        self.assertEqual(len(first["histogram_sha256"]), 64)
+
+    def test_input_provenance_rejects_missing_or_malformed_source_revision(self):
+        with self.assertRaisesRegex(ValueError, "SOURCE_REVISION_MUST_BE_40_HEX_SHA"):
+            _f5_input_provenance(2, {0: 1, 2: 1}, "not-a-commit-sha")
+
+
     def test_global_mle_certificate_orders_degenerate_boundary_ties_exactly(self):
-        result = beta_binomial_global_mle_certificate(5, {0: 3})
+        result = beta_binomial_global_mle_certificate(5, {0: 3}, source_revision=TEST_SOURCE_REVISION)
         self.assertEqual(
             result["status"],
             "GLOBAL_CO_MAXIMIZERS_CERTIFIED",
@@ -1074,6 +1123,19 @@ class RationalScorePolynomialTests(unittest.TestCase):
         )
 
 
+
+    def test_global_mle_certifies_unattained_kappa_zero_boundary_supremum(self):
+        result = beta_binomial_global_mle_certificate(
+            5, {0: 1, 5: 1}, source_revision=TEST_SOURCE_REVISION,
+        )
+        self.assertEqual(result["status"], "GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED")
+        self.assertEqual(result["winner"]["boundary"], "kappa_zero")
+        self.assertFalse(result["winner"]["attained_in_open_domain"])
+        self.assertEqual(
+            result["census"]["input_provenance"]["source_revision"],
+            TEST_SOURCE_REVISION,
+        )
+
     def test_global_mle_certificate_orders_nondegenerate_interior_solution(self):
         result = beta_binomial_global_mle_certificate(
             5, {0: 1, 1: 2, 2: 2, 3: 2, 4: 2, 5: 1},
@@ -1083,6 +1145,7 @@ class RationalScorePolynomialTests(unittest.TestCase):
             max_lift_intervals=100,
             max_lift_depth=20,
             max_mu_depth=10,
+            source_revision=TEST_SOURCE_REVISION,
         )
         self.assertEqual(
             result["status"],
@@ -1152,6 +1215,7 @@ class RationalScorePolynomialTests(unittest.TestCase):
             max_lift_intervals=128,
             max_lift_depth=12,
             max_mu_depth=8,
+            source_revision=TEST_SOURCE_REVISION,
         )
         self.assertIn(
             result["status"],
