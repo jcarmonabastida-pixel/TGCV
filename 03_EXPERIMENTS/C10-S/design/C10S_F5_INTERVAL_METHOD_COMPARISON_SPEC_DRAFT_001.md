@@ -507,3 +507,7 @@ The deterministic comparison of Bernstein-first and exact resultant/Sturm routes
 ### 13.1 Deterministic route comparison result — run #53
 
 The bounded M10/R5 cross-check is now executed, not merely planned. Run [44773997684](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44773997684), commit `9d5ca258b8f976b700949b8a9a978e7312e28f1d`, passed all 143 tests. With the same M10/R5 histogram and paired score equations, the default Bernstein/conditional-mean route and the forced exact resultant/Sturm route both returned `GLOBAL_INTERIOR_MAXIMUM_CERTIFIED`; the exact resultant was nonzero, Sturm projection isolation complete, certified simple-root counts matched, and corresponding Krawczyk boxes overlapped in both coordinates. This is a bounded engineering cross-check only; it neither freezes this D1 specification nor selects one route universally.
+
+### 13.2 Final provenance verification — run #54
+
+Run [44775205756](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44775205756), commit `a22f2edc7f7ff39f158e6ab2740eea2662b047d3`, passed 144/144 deterministic tests, including actual `GITHUB_SHA` source-revision binding. This supplies the final G1 provenance evidence for bounded G1–G6 F5 engineering closure. It does not freeze the D1 method-comparison specification, select M1/M2, or authorize G7 prospective TierA calibration.
