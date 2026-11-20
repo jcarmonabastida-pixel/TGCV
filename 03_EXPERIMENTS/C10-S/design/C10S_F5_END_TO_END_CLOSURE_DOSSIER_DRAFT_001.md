@@ -112,10 +112,10 @@ The existing boundary helpers provide exact ingredients, not yet a complete glob
 
 ## 5. Known blockers that prevent honest F5 closure
 
-1. Interior multiple-root certification: Krawczyk certifies simple roots only. The current algebraic route isolates projection roots but does not provide a complete subresultant/specialized-gcd lift with local multiplicity classification for all candidates.
-2. Full open-domain coverage: the adaptive conditional-mean controller accepts only 0<t_-<t_+<1. Its success on a supplied interior interval does not cover neighborhoods of t=0 or t=1.
-3. Projection-to-root lifting: Res_mu(P,Q) candidates must be lifted and verified against both original score equations; projection multiplicity is not local bivariate multiplicity.
-4. Boundary/global ordering: exact edge and corner limits exist, but no integrated rigorous comparison of all interior and boundary likelihood candidates has been demonstrated.
+1. Interior multiple-root certification: Krawczyk certifies simple roots only. Exact univariate square-free/Sturm multiplicities are implemented for projection and edge polynomials, but a general projection-root-to-bivariate-root multiplicity lift is not implemented. Multiple/singular common roots therefore remain explicit abstention cases, not certified stationary candidates.
+2. Full open-domain coverage: the adaptive conditional-mean controller now accepts closed subintervals of [0,1], and exact one-sided removal of endpoint-only (t-1)^m factors allows the M30/R20 fixture to census the full compactified interval without the large resultant. General endpoint-accumulation and degeneracy coverage across admissible histograms is not yet established; the single M30/R20 fixture is not a universal completeness proof.
+3. Projection-to-root lifting: the exact fallback isolates every real projection root on the unit interval and sends each interior isolating interval/neighborhood through the paired conditional-mean/Bernstein/Krawczyk lift. Simple-root lifts are supported; projection multiplicity is not local bivariate multiplicity, and non-simple lifts remain unresolved. The M30/R20 preferred interval-first path does not invoke this fallback.
+4. Boundary/global ordering: exact one-edge profiles and path-independent joint-corner limits are integrated. The global-MLE wrapper compares certified interior-root likelihood enclosures with all boundary-profile values using exact rational probability intervals, and a small nondegenerate fixture passes. The dedicated M30/R20 end-to-end ordering test is currently running; global ordering across other regimes and adversarial co-maxima/non-attainment cases remains to be demonstrated.
 5. Governed validation and calibration: run 44762685571 passed all 133 deterministic tests on a3bca9d. The M30/R20 full-domain simple-root census and endpoint-adjacent Bernstein regression now pass. A new M30/R20 end-to-end global likelihood-ordering test is queued in run 44764446630. No governed prospective M10/R5 or M30/R20 calibration authorization/evidence exists; a clean deterministic suite does not establish multiple-root completeness or TierA coverage.
 
 These are substantive proof/validation gaps, not documentation tasks. They cannot be closed by changing status labels or by adding a wrapper that reports a local census as global.
@@ -139,7 +139,7 @@ F5 may be changed from OPEN only by one evidence-backed closure record that link
 - prospective TierA coverage/calibration results and their frozen acceptance criteria;
 - explicit limits and regimes in which the fitter abstains.
 
-Until all applicable items pass, the correct status is F5 OPEN — PARTIAL IMPLEMENTATION; GLOBAL MLE AND COVERAGE NOT CERTIFIED.
+Until all applicable items pass, the correct status is F5 OPEN — DETERMINISTIC SOFTWARE PASS; GENERAL GLOBAL-MLE COMPLETENESS AND TIERA COVERAGE NOT CERTIFIED.
 
 ## 8. Governance and scientific boundary
 
