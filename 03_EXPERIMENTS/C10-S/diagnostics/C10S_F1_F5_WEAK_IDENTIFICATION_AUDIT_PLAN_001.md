@@ -788,3 +788,7 @@ A uniform beta-binomial mean bound now classifies the four joint `(mu,t)` corner
 ### Axis-aligned algebraic common-component detector added (2026-11-20)
 
 The F5 harness now computes exact coefficient contents and their gcd for each compactification axis, detecting common vertical/horizontal factors and retaining shared multiplicities by square-free decomposition. Zero-polynomial cases return an unresolved state; malformed sparse inputs are rejected. General mixed bivariate factors are explicitly outside scope. Five tests are added; the source-level suite count is 55, still unexecuted in governed CPython 3.12. This is an algebraic diagnostic primitive only and does not upgrade identification, weak-identification or scientific evidence status.
+
+### Exact projection resultant prototype added (2026-11-20)
+
+An exact rational-coefficient `mu`-projection resultant now uses a Sylvester matrix and fraction-free Bareiss elimination over `Q[mu]`, with coefficient-content restoration and typed abstention for zero polynomials, zero resultants and resource ceilings. Five fixtures were added; the source-level suite count is 60 and remains unexecuted in governed CPython 3.12. This is a computational algebra primitive only; no F1 identification, weak-identification or scientific evidence status changes.
