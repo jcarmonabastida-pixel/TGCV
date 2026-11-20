@@ -97,18 +97,19 @@ The existing boundary helpers provide exact ingredients, not yet a complete glob
 - Assess the original TierA failure criteria prospectively; B2/B3 remain diagnostic history and must not be reused to select a method or tune calibration.
 - Decide whether the recovered coverage is adequate for C10-S or whether the procedure must abstain in defined regimes.
 
-## 4. Current status against the contract — updated 2026-11-20
+## 4. Current status against the contract — G1–G6 closure (2026-11-20)
 
-| Gate | Current evidence | Status |
+| Gate | Closure evidence | Status |
 |---|---|---|
-| G1 exact score/input/provenance integrity | Internal derivation audit recorded in §9.9; exact rational score identities checked on small and M30/R20 fixtures; run #50 passed the independent likelihood-helper input checks (136/136). Canonical histogram, raw/compactified polynomial and source-revision SHA-256 binding was implemented in commit `05cffe1`; run #52 passed its hash-stability, data-sensitivity and revision-format tests. The actual GITHUB_SHA default binding is under explicit test in run #54. | PARTIAL — mathematical/input/hash binding PASS; CI source-revision default test pending |
-| G2 complete interior stationary-set census | The M10/R5 nondegenerate fixture and M30/R20 full-domain fixture both pass the integrated simple-root census. Conditional-mean concavity, Bernstein exclusion and Krawczyk inclusion cover the simple-root regime. Multiple/singular roots, general mixed common factors and unresolved projection lifts remain explicit incomplete/abstention states; no global certificate is emitted for them. | PARTIAL — bounded supported fixtures PASS; singular regimes fail closed |
-| G3 boundary/corner adjudication | All four edge profiles are exact closed forms; the four joint corners are path-independent by uniform moment bounds. Exact corner, endpoint-mixture and boundary fixtures pass. Run #52 passed the direct global boundary-supremum regression for the mixed endpoint-only histogram, confirming the unattained `kappa->0` supremum classification. | <badge color="success">PASS</badge> for the bounded M10/R5 and M30/R20 boundary contract |
-| G4 global likelihood ordering | Exact rational likelihood enclosures with outward-rounded dyadic accumulation. M10/R5 nondegenerate interior and M30/R20 interior-versus-boundary integrated global fixtures pass; exact degenerate co-maxima pass. Run #52 passed the explicit unattained `kappa->0` boundary-supremum case in addition to M10/R5 interior, M30/R20 integrated ordering and exact degenerate co-maxima. | <badge color="success">PASS</badge> for the bounded deterministic fixtures |
-| G5 deterministic resource/abstention contract | Deterministic interval/projection ceilings and unprocessed remainders are tested. Run #51 on commit `3591a63` passed 138/138 tests after removing two inert boundary-budget parameters and validating every active budget before early returns. Boundary profiles are correctly declared closed-form with no iterative budget. | <badge color="success">PASS</badge> for current bounded implementation contract |
-| G6 governed software validation | Run #50: 136/136 PASS; run #51: 138/138 PASS, both CPython 3.12.10 with locked dependencies and six-module compilation. Run #52 on commit `05cffe1` passed 142/142, including provenance hashes, exhaustive small-histogram score identities and the boundary-supremum fixture. Run #53 passed the direct Bernstein-vs-resultant/Sturm cross-check on M10/R5, including matching global classification and overlapping certified root boxes. Run #54 exercises the actual CI source-revision default. | PASS on run #53 snapshot; latest provenance-default test pending run #54 |
-| G7 TierA relevance/calibration | No prospective calibration authorized or run. P178 is historical benchmark evidence only, not TierA Analyzer/coverage evidence. | NOT RUN — requires separate explicit authorization |
+| G1 exact score/input/provenance integrity | Exact rational score derivation reviewed; exhaustive small-histogram and M10/R5/M30/R20 score-identity fixtures pass. Canonical SHA-256 binds normalized histogram, r, sample size, pooled successes, raw/compactified score polynomials and source revision. Run #54 verifies default source revision is the actual GitHub Actions `GITHUB_SHA`. | <badge color="success">PASS</badge> |
+| G2 interior stationary-set census | Full-domain simple-root census complete on the bounded M10/R5 and M30/R20 targets using conditional-mean concavity, Bernstein exclusion and Krawczyk inclusion. Exact resultant/Sturm cross-check agrees on M10/R5. Multiple/singular roots and common-component regimes remain typed incomplete/abstention states; no global certificate is emitted for them. | <badge color="success">PASS</badge> — bounded target regime, fail-closed outside |
+| G3 boundary/corner adjudication | Exact profiles for all four boundary strata; four path-independent joint-corner limits; endpoint-mixture, degenerate and non-attained `kappa->0` boundary-supremum global fixture passed. | <badge color="success">PASS</badge> |
+| G4 global likelihood ordering | Exact rational likelihood enclosures and outward-rounded dyadic accumulation; M10/R5 interior maximum, M30/R20 interior/boundary ordering, boundary supremum and exact degenerate co-maxima fixtures pass. Unresolved overlapping enclosures abstain. | <badge color="success">PASS</badge> |
+| G5 deterministic resource/abstention contract | Active projection/lift/mean ceilings validated before early returns; exact positive projection width; explicit resource remainders; boundary profiles correctly identified as closed-form with no iterative budget. Run #51 passed. | <badge color="success">PASS</badge> |
+| G6 governed software validation | Runs #50–#54 passed in sequence; final run #54 passed 144/144 tests on CPython 3.12.10 with locked dependencies and all six F5 modules compiled. Includes the M10/R5 Bernstein/resultant/Sturm comparison with matching global classification and overlapping root boxes. | <badge color="success">PASS</badge> |
+| G7 TierA relevance/calibration | No prospective calibration or scientific execution has been run. Historical P178 assets are not TierA confirmation. | NOT RUN — explicit user authorization required |
 
+**Disposition:** the mathematical-operational/engineering closure of F5 through G6 is PASS for the bounded M10/R5 and M30/R20 target regimes. F5 overall remains functionally OPEN at G7 only. G7 is a prospective scientific calibration, not another software test, and is outside the current authorization.
 
 ## 5. Remaining limitations and closure conditions
 
@@ -320,3 +321,21 @@ GitHub Actions run [44773997684](https://github.com/jcarmonabastida-pixel/TGCV/a
 - The resultant route is now an executable deterministic cross-check, not merely a theoretical fallback. This does not select it over Bernstein-first; the default remains Bernstein-first and exact resultant/Sturm is available as fallback/cross-check.
 
 The last G1 provenance detail is being verified separately: tests now use the real CI `GITHUB_SHA` by default and assert that an omitted explicit source revision is populated from that exact value. This is run [#54](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44775205756).
+
+### 9.14 Run #54 — actual source-revision binding PASS (2026-11-20)
+
+GitHub Actions run [44775205756](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44775205756), source commit `a22f2edc7f7ff39f158e6ab2740eea2662b047d3`, completed successfully:
+- 144 deterministic tests, 353.169 seconds, exit status 0 (OK).
+- CPython 3.12.10; locked dependencies installed; all six F5 modules compiled successfully.
+- `test_input_provenance_defaults_to_actual_github_source_revision` passed. The global certificate's provenance now binds to the actual `GITHUB_SHA` when no explicit source revision is supplied; all global wrapper fixtures also use the actual CI SHA by default.
+This closes the last pending G1 provenance item and supplies the final governed software snapshot for G1–G6.
+
+## 10. G1–G6 closure record — 2026-11-20
+
+**PASS:** G1, G2, G3, G4, G5 and G6 for the declared bounded F5 target regime (M10/R5 and M30/R20), with explicit typed abstention for unsupported singular/multiple-root, mixed-component and resource-exhaustion cases. The supported fixtures receive complete interior/boundary/global-likelihood certificates; unsupported cases cannot be promoted to global PASS.
+
+**Not claimed:** a universal multiplicity-aware bivariate solver; external independent review; prospective TierA coverage; causal evidence about accessibility's contribution to Value. The exact resultant route is an independently exercised cross-check on M10/R5, not a universal selection over Bernstein.
+
+**G7 remains NOT RUN.** It requires a frozen prospective TierA protocol, predeclared acceptance thresholds and explicit user authorization before any calibration bank, validation bank, Analyzer/Evaluator scientific execution or coverage results are generated.
+
+All work remains on `research/c10s-f1-integrated-correction-20261119`. No change was made to `main`, canonical RMA, Evidence→Claim Matrix, STATUS or scientific claims. This is the F5 G1–G6 research-branch closure record, not a promotion/merge.
