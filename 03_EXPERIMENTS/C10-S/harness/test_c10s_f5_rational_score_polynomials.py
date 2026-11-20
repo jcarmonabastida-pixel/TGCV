@@ -191,8 +191,8 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(result["status"], "CERTIFIED_UNIQUE_ROOT")
         self.assertEqual(result["contraction_bound"], 0)
         self.assertEqual(result["krawczyk_box"], (
-            (Fraction(1, 2), Fraction(1, 2)),
-            (Fraction(1, 2), Fraction(1, 2)),
+            (Fraction(7, 16), Fraction(9, 16)),
+            (Fraction(7, 16), Fraction(9, 16)),
         ))
 
     def test_krawczyk_abstains_on_singular_multiple_root(self):
@@ -865,7 +865,7 @@ class RationalScorePolynomialTests(unittest.TestCase):
             max_mu_depth=4,
         )
         self.assertEqual(result["status"], "NO_COMMON_STATIONARY_POINT_ON_T_INTERVAL")
-        self.assertEqual(result["mean_root_tube_mu_bounds"], (Fraction(1, 2), Fraction(1, 2)))
+        self.assertEqual(result["mean_root_tube_mu_bounds"], (Fraction(7, 16), Fraction(9, 16)))
         self.assertTrue(result["mean_root_existence_for_every_t_certified"])
         self.assertTrue(result["concentration_score_excludes_zero_on_tube"])
 
@@ -877,7 +877,7 @@ class RationalScorePolynomialTests(unittest.TestCase):
             max_mu_depth=4,
         )
         self.assertEqual(result["status"], "CANDIDATE_T_INTERVAL_UNRESOLVED")
-        self.assertEqual(result["mean_root_tube_mu_bounds"], (Fraction(1, 2), Fraction(1, 2)))
+        self.assertEqual(result["mean_root_tube_mu_bounds"], (Fraction(7, 16), Fraction(9, 16)))
         self.assertFalse(result["concentration_score_excludes_zero_on_tube"])
 
     def test_conditional_mean_tube_abstains_without_strict_endpoint_signs(self):
