@@ -1097,5 +1097,34 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(len(result["unresolved_intervals"]), 0)
 
 
+    def test_m30_r20_full_domain_bernstein_route_avoids_large_resultant(self):
+        hist = {x: 1 for x in range(21)}
+        for x, extra in {0: 1, 5: 2, 10: 3, 15: 3}.items():
+            hist[x] += extra
+        result = beta_binomial_compactified_stationary_census(
+            20, hist,
+            max_projection_depth=12,
+            max_projection_intervals=256,
+            max_lift_intervals=128,
+            max_lift_depth=12,
+            max_mu_depth=8,
+            max_boundary_depth=16,
+            max_boundary_intervals=512,
+        )
+        self.assertEqual(
+            result["status"],
+            "INTERIOR_SIMPLE_ROOT_AND_BOUNDARY_CENSUS_COMPLETE",
+            msg=repr({
+                "status": result["status"],
+                "interval_first_attempt": result.get("interval_first_attempt"),
+                "resultant": result.get("concentration_resultant"),
+            }),
+        )
+        self.assertEqual(
+            result["concentration_resultant"]["status"],
+            "NOT_REQUIRED_INTERVAL_FIRST_LINE_COMPLETE",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
