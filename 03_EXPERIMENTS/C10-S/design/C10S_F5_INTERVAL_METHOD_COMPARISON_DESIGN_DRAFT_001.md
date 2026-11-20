@@ -21,7 +21,7 @@ Compare three interval constructions without selecting a winner from historical 
 
 C0 is retained only as a matched historical diagnostic comparator, not as a candidate or acceptance fallback. No method is selected, tuned, or promoted by this draft. M0 is the incumbent baseline; M1 and M2 are design candidates whose validity must be demonstrated prospectively.
 
-The central scientific issue is not merely interval width. The method must provide calibrated uncertainty for the frozen population variance components while remaining honest when concentration is weakly identified or the likelihood reaches a boundary. The fixed-parameter bootstrap is a plug-in approximation to the sampling distribution of the frozen raw estimators; the historical evidence does not by itself prove that omitted refitting is the cause of undercoverage.
+The central scientific issue is not merely interval width. The method must provide calibrated uncertainty for the frozen population variance components while remaining honest when concentration is weakly identified or the likelihood reaches a boundary. The fixed-parameter bootstrap is a plug-in approximation to the sampling distribution of the frozen raw estimators; the historical evidence does not by itself prove that its conditioning approximation or omitted refitting is the cause of undercoverage.
 
 ## 2. Historical reconstruction and constraints
 
@@ -90,7 +90,7 @@ A method must not return a deceptively narrow interval merely because an optimiz
 
 ### 4.2 Statistical meaning
 
-M0 approximates the conditional sampling distribution of the nested estimators under one fitted latent law. It does not include the repeated-sampling distribution of the fitted concentration estimator because it does not refit alpha/beta within bootstrap replicates.
+M0 uses a plug-in parametric approximation: it conditions on the single fitted generating pair when constructing the bootstrap law, then estimates the sampling distribution of the frozen nested statistics under that law. It does not refit alpha/beta inside replicates or explicitly form a statistic-minus-refitted-functional error root. This is a concrete distinction in construction, but it does not alone prove that parameter-estimation uncertainty is the cause of the observed undercoverage.
 
 M0 remains necessary as the baseline and must be reproduced bit-for-bit or within the existing deterministic contract on a future disjoint bank. It is not currently validated and cannot be treated as a default accepted method.
 
@@ -98,26 +98,47 @@ M0 remains necessary as the baseline and must be reproduced bit-for-bit or withi
 
 Record the fixed parameter pair, boundary distances, optimizer states, bootstrap distribution of W/B estimators, interval widths and endpoint/miss directions. Separate conditional estimator variability from parameter-estimation variability; M0 contains only the former by construction.
 
-## 5. Candidate M1 — refitted parametric bootstrap
+## 5. Candidate M1 — refitted parametric bootstrap with a centered estimation-error root
 
-### 5.1 Algorithm
+### 5.1 Why refitting must be tied to the frozen estimand
+
+The frozen targets are the population components \\(\sigma_w^2=W(\theta)\\) and \\(\sigma_b^2=B(\theta)\\); the frozen sample statistics are \\(T_W=MSW\\) and \\(T_B=S^2_{\bar q}-MSW/R\\). Simply taking percentile quantiles of \\(W(\hat\theta^*)\\) and \\(B(\hat\theta^*)\\) would change the point-estimator construction relative to C5. It is a useful diagnostic but not a pure interval-only comparison.
+
+The primary M1 proposal therefore retains the observed-data C5 statistics and uses replicate-specific refits to construct a centered estimation-error distribution.
+
+### 5.2 Primary algorithm (proposed; not yet frozen)
 
 For each observed dataset:
 
-1. Fit the frozen beta-binomial likelihood once, using the frozen production estimator and start schedule, to obtain generating parameters (hat\theta=(\hat\mu,\hat\kappa)).
-2. For each bootstrap replicate (b), generate a complete nested dataset under (hat\theta), preserving the original number of worlds, within-world replication, allocation, missingness/weighting rules if any, and all design features of the frozen DGP.
-3. Refit the beta-binomial model to that replicate using the same estimator, parameterization, bounds, starts, convergence diagnostics and selection semantics as the observed-data fit.
-4. Compute (W(\hat\theta_b^*)), (B(\hat\theta_b^*)), and any frozen sample-estimator targets required for direct comparability.
-5. Construct marginal intervals using a single interval rule declared before the prospective bank. The initial design comparison should report percentile intervals for the refitted functionals and a clearly labelled centered/basic sensitivity analysis; the latter must not replace the primary interval after outcomes are seen.
-6. Retain every replicate's raw fit state and all failed/ boundary/indeterminate outcomes. Never silently discard failed fits or replace them with successful draws.
+1. Compute the frozen observed statistics \\(T_W,T_B\\) and fit the beta-binomial model once using the frozen production estimator/start schedule, obtaining generating parameters \\(\hat\theta\\).
+2. For each bootstrap replicate, generate a complete nested dataset under \\(\hat\theta\\), preserving the exact M, R and frozen hierarchy.
+3. Refit the beta-binomial model to that replicate using the same likelihood, parameterization, bounds, starts, optimizer-selection semantics and diagnostics as the observed-data fit, obtaining \\(\hat\theta_b^*\\).
+4. Compute the frozen replicate statistics \\(T_{W,b}^*,T_{B,b}^*\\) and the replicate fitted population functionals \\(W(\hat\theta_b^*),B(\hat\theta_b^*)\\).
+5. Form paired bootstrap estimation errors:
+   \\[E_{W,b}^*=T_{W,b}^*-W(\hat\theta_b^*),\qquad
+   E_{B,b}^*=T_{B,b}^*-B(\hat\theta_b^*).\\]
+6. Let \\(q_{W,L},q_{W,U}\\) and \\(q_{B,L},q_{B,U}\\) be the prespecified lower and upper quantiles of these error distributions. The proposed centered/root intervals are:
+   \\[I_W=[T_W-q_{W,U},\ T_W-q_{W,L}],\\]
+   \\[I_B=[T_B-q_{B,U},\ T_B-q_{B,L}].\\]
+   This preserves the frozen observed point statistics and targets, while using refitted replicate functionals to estimate the sampling error. The sign convention, quantile interpolation and finite-sample handling must be fixed before prospective data.
+7. Retain every replicate's complete fit state. No failed or boundary replicate may be silently deleted or replaced.
 
-### 5.2 What M1 adds and what it does not guarantee
+### 5.3 Mandatory labelled diagnostics (not alternative primary methods)
 
-M1 can propagate the sampling variability of alpha/beta estimation into W/B. It is a plausible response to the fixed-parameter omission identified in C5. It is not automatically valid under weak identification, nonregular boundaries, model misspecification, or frequent optimizer failure. A parametric bootstrap generated from a single unstable (hat\theta) can reproduce the wrong local regime and can fail to approximate the estimator's true sampling distribution.
+Alongside the primary root interval, retain:
+- **M1-PCT-SAMPLE:** percentile intervals from \\(T_W^*,T_B^*\\). If replicate refitting is ignored, this should reproduce M0 and acts as a code-path consistency check.
+- **M1-PCT-FUNCTIONAL:** percentile intervals from \\(W(\hat\theta_b^*),B(\hat\theta_b^*)\\). This uses a different point-estimator construction and must be labelled as such.
+- **M1-BASIC-ROOT:** the centered/basic root construction above, if not chosen as primary after D1 review.
 
-### 5.3 Failure and boundary semantics
+Only one construction may be designated primary in the frozen D1 specification. The others remain diagnostics and cannot be promoted after looking at development coverage.
 
-Every replicate must be assigned exactly one mutually exclusive terminal state, at minimum:
+### 5.4 Interpretation and limitations
+
+M1 is designed to account for the relation between the raw sample statistics and replicate-specific fitted population functionals. It may better represent the uncertainty arising from concentration estimation, but this is a methodological hypothesis, not a guaranteed correction. A parametric bootstrap generated from one fitted \\(\hat\theta\\) may still fail under weak identification, nonregular boundaries, non-unique fits or beta-binomial model misspecification. The bootstrap cannot create information absent from the likelihood.
+
+### 5.5 Failure and boundary semantics
+
+Each replicate must receive exactly one mutually exclusive terminal state, at minimum:
 
 - `INTERIOR_FIT_SELECTED`;
 - `BOUNDARY_LIMIT_SELECTED`;
@@ -126,21 +147,13 @@ Every replicate must be assigned exactly one mutually exclusive terminal state, 
 - `NO_ADMISSIBLE_FIT`;
 - `NUMERICAL_EXCEPTION`.
 
-The exact state vocabulary must be reconciled with the implemented B1 typed diagnostics before implementation; this list is a proposed design schema, not a claim that the current code already emits these states.
+This is a proposed design vocabulary, not a claim that current code already emits these exact states. It must be reconciled with the implemented B1 typed diagnostics before D1.
 
-The interval algorithm may not condition silently on only successful replicates. The design must prespecify whether any non-interior state causes dataset-level abstention, a boundary-aware set-valued contribution, or another mathematically justified treatment. Simple complete-case deletion is prohibited because it changes the bootstrap distribution in a data-dependent way. If a principled boundary contribution cannot be specified, the method must abstain and report the failure fraction and state counts.
+The primary interval may not condition silently on successful refits only. D1 must prespecify whether any unresolved state causes dataset-level abstention or whether a mathematically justified boundary-aware contribution exists. Complete-case deletion is prohibited. If a principled contribution cannot be specified, abstain and report failure fractions/state counts. The frozen emission and no-unresolved-state gates remain controlling.
 
-### 5.4 Required diagnostics
+### 5.6 Required diagnostics
 
-For each original dataset and bootstrap bank retain:
-- requested and completed replicate counts;
-- counts by terminal state;
-- distributions of (hat\mu^*), (hat\kappa^*), W*, B*;
-- boundary-contact and optimizer-start concordance summaries;
-- marginal interval endpoints and widths;
-- whether endpoints are finite, boundary-determined or unresolved;
-- Monte Carlo uncertainty of each endpoint and coverage estimate;
-- computational cost, wall time and peak memory.
+For each original dataset and bootstrap bank retain requested/completed replicate counts; state counts; distributions of \\(\hat\mu^*,\hat\kappa^*,W^*,B^*\\); paired \\(T_W^*,T_B^*\\) and root errors; boundary contact; start concordance; endpoints and widths; endpoint Monte Carlo uncertainty; abstention reasons; runtime and peak memory.
 
 ## 6. Candidate M2 — profile-likelihood intervals for W and B
 
