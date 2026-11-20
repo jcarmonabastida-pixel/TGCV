@@ -460,3 +460,7 @@ The algebraic path now computes `Res_t(P,Q)` over `Q[mu]` with exact Sylvester/B
 ### Algebraic route: exact projection-root isolation (2026-11-20)
 
 The exact `mu`-resultant now feeds square-free decomposition and rational Sturm isolation on `[0,1]`, preserving projection multiplicities and partial intervals. This is not bivariate root isolation: multiple `t`-lifts for one projection coordinate remain to be recovered by subresultants/specialized gcds and checked in the original equations. The interval route remains independent and unchanged.
+
+### Projection alignment and complexity control (2026-11-20)
+
+The primary algebraic elimination follows the frozen mathematical reduction `Res_mu(P,Q)`, producing candidate compactified concentrations `t=kappa/(1+kappa)`. The harness now exposes `compactified_concentration_resultant_t()` and Sturm isolation of its roots. The earlier `Res_t(P,Q)` projection onto `mu` is retained only as a complementary diagnostic. The strict conditional concavity in `mu` should be exploited to recover the unique conditional mean using certified interval score signs; a general subresultant/algebraic-number lift is not the default and is justified only if this lower-dimensional route fails on the two frozen F5 designs. This keeps the mathematical work bounded to fit and calibration reliability within C10-S.
