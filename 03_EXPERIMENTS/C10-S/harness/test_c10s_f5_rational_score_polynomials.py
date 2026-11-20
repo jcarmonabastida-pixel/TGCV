@@ -1204,5 +1204,22 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertTrue(result["mean_root_existence_for_every_t_certified"])
 
 
+    def test_likelihood_enclosure_rejects_invalid_or_empty_histograms(self):
+        box = {
+            "mu_bounds": (Fraction(1, 3), Fraction(2, 3)),
+            "t_bounds": (Fraction(1, 3), Fraction(2, 3)),
+        }
+        with self.assertRaisesRegex(ValueError, "R_MUST_BE_POSITIVE_INTEGER"):
+            _beta_binomial_likelihood_enclosure(0, {0: 1}, **box)
+        with self.assertRaisesRegex(ValueError, "NONEMPTY_COUNT_HISTOGRAM_REQUIRED"):
+            _beta_binomial_likelihood_enclosure(2, {}, **box)
+        with self.assertRaisesRegex(ValueError, "POSITIVE_TOTAL_MULTIPLICITY_REQUIRED"):
+            _beta_binomial_likelihood_enclosure(2, {0: 0, 1: 0}, **box)
+        with self.assertRaisesRegex(ValueError, "COUNT_OUTSIDE_0_TO_R"):
+            _beta_binomial_likelihood_enclosure(2, {3: 1}, **box)
+        with self.assertRaisesRegex(ValueError, "MULTIPLICITY_MUST_BE_NONNEGATIVE_INTEGER"):
+            _beta_binomial_likelihood_enclosure(2, {1: -1}, **box)
+
+
 if __name__ == "__main__":
     unittest.main()
