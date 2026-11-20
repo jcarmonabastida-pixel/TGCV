@@ -47,7 +47,7 @@ The central scientific issue is not merely interval width. The method must provi
 
 ## 3. Estimands and statistical parameterization
 
-Let the latent world probability be (p_jsimmathrm{Beta}(\alpha,\beta)), and conditional observations be (X_jmid p_jsimmathrm{Binomial}(R,p_j)). Define:
+Let the latent world probability be (p_jsimmathrm{Beta}(\alpha,\beta)), and conditional observations be (X_j\\mid p_j\\sim\\mathrm{Binomial}(R,p_j)). Define:
 
 - (\mu=\alpha/(\alpha+\beta)), the mean world probability;
 - (\kappa=\alpha+\beta), the concentration;
@@ -96,7 +96,7 @@ M0 remains necessary as the baseline and must be reproduced bit-for-bit or withi
 
 ### 4.3 Required diagnostics
 
-Record the fixed parameter pair, boundary distances, optimizer states, bootstrap distribution of W/B estimators, interval widths and endpoint/miss directions. Separate conditional estimator variability from parameter-estimation variability; M0 contains only the former by construction.
+Record the fixed parameter pair, boundary distances, optimizer states, bootstrap distribution of W/B estimators, interval widths and endpoint/miss directions. Separate conditional estimator variability from parameter-estimation variability; M0 contains the sampling variation of the raw statistics under the single fitted generating law; it does not add replicate-specific refitting of the concentration parameter.
 
 ## 5. Candidate M1 — refitted parametric bootstrap for the population functionals
 
@@ -318,7 +318,7 @@ These are design questions, not requests to the user for immediate preference. T
 - **M2a/M2b:** DEFINED AT DESIGN LEVEL / NOT IMPLEMENTED / NOT EXECUTED.
 - **C0:** HISTORICAL DIAGNOSTIC COMPARATOR ONLY / NOT VALIDATED.
 - **B2/B3:** HISTORICAL DEVELOPMENT EVIDENCE ONLY / NOT REUSABLE FOR METHOD SELECTION.
-- **Design D0:** OPEN — review and reconcile target semantics and exact frozen acceptance language.
+- **Design D0:** OPEN — the frozen target mapping and acceptance gates have now been reconciled; remaining open items concern M1 variant selection, failed-refit/boundary semantics, M2b calibration, precision and compute budget.
 - **Execution:** NOT AUTHORIZED.
 
-**Recommended next operation:** recover the exact frozen v1.0 specification and C5 estimator-target mapping from the canonical repository, resolve the open estimand/interval/failure semantics in this draft, and produce D1 as a single integrated, versioned method specification. Do not implement M1/M2 or generate any data until D1 is frozen and a separate execution authorization exists.
+**Recommended next operation:** resolve the remaining M1 variant and failed-refit policy, M2b calibration design, Monte Carlo precision targets and compute budget; then produce D1 as a single integrated, versioned successor specification explicitly subordinate to frozen v1.0. Do not implement M1/M2 or generate any data until D1 is frozen and a separate execution authorization exists.
