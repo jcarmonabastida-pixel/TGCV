@@ -321,7 +321,10 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(factor["multiplicity"], 1)
         self.assertEqual(len(factor["isolating_intervals"]), 1)
         left, right = factor["isolating_intervals"][0]["interval"]
-        self.assertLess(left, Fraction(1, 2**0) / 1)  # interval lies inside unit edge
+        self.assertGreaterEqual(left, 0)
+        self.assertLessEqual(right, 1)
+        self.assertLess(2 * left * left, 1)
+        self.assertGreater(2 * right * right, 1)
         self.assertLess(right - left, Fraction(1, 32))
         self.assertEqual(factor["isolating_intervals"][0]["root_count"], 1)
 
