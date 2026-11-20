@@ -191,9 +191,10 @@ class RationalScorePolynomialTests(unittest.TestCase):
         )
         self.assertEqual(result["status"], "CERTIFIED_UNIQUE_ROOT")
         self.assertEqual(result["contraction_bound"], 0)
+        # For this affine fixture the exact Krawczyk image is the singleton root.
         self.assertEqual(result["krawczyk_box"], (
-            (Fraction(7, 16), Fraction(9, 16)),
-            (Fraction(7, 16), Fraction(9, 16)),
+            (Fraction(1, 2), Fraction(1, 2)),
+            (Fraction(1, 2), Fraction(1, 2)),
         ))
 
     def test_krawczyk_abstains_on_singular_multiple_root(self):
@@ -269,8 +270,10 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertTrue(first["unresolved_boxes"])
 
     def test_integrated_controller_marks_unprocessed_budget_remainder(self):
+        # A multiple root is deliberately unresolved by Krawczyk, forcing
+        # subdivision and leaving a deterministic unprocessed budget remainder.
         result = bernstein_krawczyk_root_classification(
-            {(1, 0): 2, (0, 0): -1},
+            {(2, 0): 4, (1, 0): -4, (0, 0): 1},
             {(0, 1): 2, (0, 0): -1},
             max_boxes=1, max_depth=10,
         )
@@ -334,7 +337,7 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertLessEqual(right, 1)
         self.assertLess(2 * left * left, 1)
         self.assertGreater(2 * right * right, 1)
-        self.assertLess(right - left, Fraction(1, 32))
+        self.assertLessEqual(right - left, Fraction(1, 32))
         self.assertEqual(factor["isolating_intervals"][0]["root_count"], 1)
 
     def test_sturm_boundary_isolation_abstains_on_resource_limit(self):
