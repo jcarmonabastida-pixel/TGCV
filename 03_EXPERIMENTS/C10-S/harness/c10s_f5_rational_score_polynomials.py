@@ -220,33 +220,65 @@ def bernstein_coefficients_on_box(
     degree_mu = max(i for i, _ in poly)
     degree_t = max(j for _, j in poly)
 
-    # First substitute mu=mu_lo+(mu_hi-mu_lo)u and
-    # t=t_lo+(t_hi-t_lo)v into the power basis.
-    power: defaultdict[tuple[int, int], Fraction] = defaultdict(Fraction)
+    # Convert the sparse power basis to a dense coefficient matrix once.
+    # Then apply the two univariate power-to-Bernstein transforms separately.
+    # This reduces exact arithmetic from O(d_mu^2*d_t^2) to
+    # O(d_mu^2*d_t + d_mu*d_t^2), which matters for M30/R20 degrees.
+    power = [
+        [Fraction(0) for _ in range(degree_t + 1)]
+        for _ in range(degree_mu + 1)
+    ]
     for (i, j), coefficient in poly.items():
-        for a in range(i + 1):
-            ca = Fraction(comb(i, a)) * mu_lo ** (i - a) * (mu_hi - mu_lo) ** a
-            for b in range(j + 1):
-                cb = Fraction(comb(j, b)) * t_lo ** (j - b) * (t_hi - t_lo) ** b
-                power[(a, b)] += coefficient * ca * cb
+        power[i][j] += Fraction(coefficient)
 
-    # Convert power coefficients to tensor-product Bernstein coefficients.
-    result = []
-    for k in range(degree_mu + 1):
-        row = []
-        for ell in range(degree_t + 1):
-            value = Fraction(0)
-            for i in range(k + 1):
-                for j in range(ell + 1):
-                    coefficient = power.get((i, j), Fraction(0))
-                    if coefficient:
-                        value += (
-                            coefficient
-                            * Fraction(comb(k, i), comb(degree_mu, i))
-                            * Fraction(comb(ell, j), comb(degree_t, j))
+    def monomial_bernstein_basis(degree, lower, upper):
+        width = upper - lower
+        basis = [
+            [Fraction(0) for _ in range(degree + 1)]
+            for _ in range(degree + 1)
+        ]
+        for monomial_degree in range(degree + 1):
+            for bernstein_index in range(monomial_degree, degree + 1):
+                value = Fraction(0)
+                for normalized_degree in range(monomial_degree + 1):
+                    value += (
+                        Fraction(comb(monomial_degree, normalized_degree))
+                        * lower ** (monomial_degree - normalized_degree)
+                        * width ** normalized_degree
+                        * Fraction(
+                            comb(bernstein_index, normalized_degree),
+                            comb(degree, normalized_degree),
                         )
-            row.append(value)
-        result.append(row)
+                    )
+                basis[monomial_degree][bernstein_index] = value
+        return basis
+
+    mu_basis = monomial_bernstein_basis(degree_mu, mu_lo, mu_hi)
+    t_basis = monomial_bernstein_basis(degree_t, t_lo, t_hi)
+
+    # First transform the mu power axis.
+    intermediate = [
+        [Fraction(0) for _ in range(degree_t + 1)]
+        for _ in range(degree_mu + 1)
+    ]
+    for k in range(degree_mu + 1):
+        for j in range(degree_t + 1):
+            intermediate[k][j] = sum(
+                power[i][j] * mu_basis[i][k]
+                for i in range(k + 1)
+            )
+
+    # Then transform the t power axis.
+    result = [
+        [Fraction(0) for _ in range(degree_t + 1)]
+        for _ in range(degree_mu + 1)
+    ]
+    for k in range(degree_mu + 1):
+        for ell in range(degree_t + 1):
+            result[k][ell] = sum(
+                intermediate[k][j] * t_basis[j][ell]
+                for j in range(ell + 1)
+            )
     return result
 
 
