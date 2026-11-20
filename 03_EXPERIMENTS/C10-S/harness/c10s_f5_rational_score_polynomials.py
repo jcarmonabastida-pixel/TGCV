@@ -966,15 +966,16 @@ def compactified_boundary_common_factors(
     from fractions import Fraction
 
     for poly in (poly_p, poly_q):
-        if not isinstance(poly, Mapping) or any(
-            not isinstance(monomial, tuple) or len(monomial) != 2
-            or type(i) is not int or i < 0
-            or type(j) is not int or j < 0
-            or type(coefficient) is not int
-            for monomial, coefficient in poly.items()
-            for i, j in (monomial,)
-        ):
+        if not isinstance(poly, Mapping):
             raise ValueError("INTEGER_SPARSE_POLYNOMIALS_REQUIRED")
+        for monomial, coefficient in poly.items():
+            if (
+                not isinstance(monomial, tuple) or len(monomial) != 2
+                or type(monomial[0]) is not int or monomial[0] < 0
+                or type(monomial[1]) is not int or monomial[1] < 0
+                or type(coefficient) is not int
+            ):
+                raise ValueError("INTEGER_SPARSE_POLYNOMIALS_REQUIRED")
 
     output = {}
     for edge in ("mu_zero", "mu_one", "t_zero", "t_one"):
