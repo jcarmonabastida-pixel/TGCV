@@ -675,3 +675,22 @@ A static exact-symbolic probe used hand-constructed count fixtures only:
 This is not scientific data or a coverage run. It is a computational feasibility finding: the naive exact rational resultant is not acceptable as the M30/R20 backend. The F1 exact-rational Sturm isolator is relevant prior work and already tests repeated and close roots, but its current explicit degree ceiling is three, so it cannot directly isolate the F5 resultant. It must be extended compatibly or replaced for F5.
 
 The next static engineering decision is a bounded comparison of modular subresultant/resultant with CRT and rigorous coefficient reconstruction versus a pinned exact CAD/real-root-isolation backend. No unpinned symbolic dependency will be introduced. D1 remains OPEN until the M30 route is repeatable within a declared deterministic resource ceiling.
+
+
+### Exact sparse score numerator primitive — implemented and tested (2026-11-20)
+
+Research-only files:
+- `harness/c10s_f5_rational_score_polynomials.py`
+- `harness/test_c10s_f5_rational_score_polynomials.py`
+
+The implementation constructs the two exact sparse integer numerator polynomials for the rational beta-binomial scores using prefix/suffix products. Their denominators are strictly positive throughout the open fit domain, so the numerator zero sets are equivalent to the score zero sets there.
+
+Four deterministic tests pass:
+1. Exact equality to direct rational score evaluation at three rational (mu,kappa) points on an R=5 fixture.
+2. M=30/R=20 hand-constructed histogram with all 21 count cells populated; exact numerator bidegrees (39,40) and (40,58), sparse term counts 629 and 1,368.
+3. Invalid histogram rejection.
+4. Zero-multiplicity cell invariance.
+
+Observed constructor plus test time was ~0.5 s in the available Python 3.13 environment. The harness is pure standard library; execution parity under governed CPython 3.12 remains to be checked. This primitive does not perform elimination, root isolation or global adjudication.
+
+Backend decision remains open. Generic exact rational resultant and SymPy generic finite-field PRS resultant each exceeded the 60-second ceiling on M30/R20; the latter is not a purpose-built modular CRT algorithm. No CAD backend is installed in the available environment. The next engineering comparison is purpose-built modular subresultant/CRT versus interval-certified one-dimensional profile isolation, with identical deterministic adversarial fixtures. D1 remains OPEN.
