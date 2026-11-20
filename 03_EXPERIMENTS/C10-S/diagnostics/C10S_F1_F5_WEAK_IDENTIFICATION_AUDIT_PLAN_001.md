@@ -664,3 +664,14 @@ Optimizer termination is now explicitly separate from statistical/global status.
 The mathematical route is designed, but D1 remains OPEN until the exact algebraic construction, multiplicity-preserving isolation, boundary comparisons and interval likelihood ordering are implemented and pass deterministic adversarial tests. Coefficient growth and runtime for representative M10/R5 and M30/R20 fixtures must be measured before setting resource ceilings. The same root-isolation primitive should then be adapted to constrained W/B profiles.
 
 No stochastic bank, replay, bootstrap calibration or scientific execution was run or authorized. Frozen F1/F5 v1.0, C5/C0 semantics, B2/B3, main, RMA and Evidence→Claim Matrix remain unchanged.
+
+
+### Exact elimination backend sizing — 2026-11-20
+
+A static exact-symbolic probe used hand-constructed count fixtures only:
+- M10/R5: score numerator bidegrees (9,15) and (10,13); resultant degree 235; exact rational resultant completed in ~0.40 s.
+- M30/R20: score numerator bidegrees (39,60) and (40,58); exact polynomial construction took ~5.7 s, but the general-purpose exact rational resultant did not complete within the 60 s tool limit.
+
+This is not scientific data or a coverage run. It is a computational feasibility finding: the naive exact rational resultant is not acceptable as the M30/R20 backend. The F1 exact-rational Sturm isolator is relevant prior work and already tests repeated and close roots, but its current explicit degree ceiling is three, so it cannot directly isolate the F5 resultant. It must be extended compatibly or replaced for F5.
+
+The next static engineering decision is a bounded comparison of modular subresultant/resultant with CRT and rigorous coefficient reconstruction versus a pinned exact CAD/real-root-isolation backend. No unpinned symbolic dependency will be introduced. D1 remains OPEN until the M30 route is repeatable within a declared deterministic resource ceiling.
