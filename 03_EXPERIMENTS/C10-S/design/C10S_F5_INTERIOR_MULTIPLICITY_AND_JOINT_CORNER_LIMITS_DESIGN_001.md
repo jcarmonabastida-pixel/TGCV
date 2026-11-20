@@ -146,16 +146,16 @@ Five deterministic tests cover a vertical factor, a repeated horizontal factor, 
 
 ## 4B. Implemented exact projection resultant in the algebraic route
 
-The harness now includes `compactified_projection_resultant_mu(P,Q)`, computing \\(\\operatorname{Res}_t(P,Q)\\) as an exact rational-coefficient polynomial in \\(\\mu\\). The implementation:
-1. extracts the exact \\(\\mu\\)-content of each polynomial;
-2. divides coefficient polynomials by their content to obtain primitive polynomials in \\(t\\);
-3. constructs the Sylvester matrix over \\(\\mathbb Q[\\mu]\\);
+The harness now includes `compactified_projection_resultant_mu(P,Q)`, computing \(\operatorname{Res}_t(P,Q)\) as an exact rational-coefficient polynomial in \(\mu\). The implementation:
+1. extracts the exact \(\mu\)-content of each polynomial;
+2. divides coefficient polynomials by their content to obtain primitive polynomials in \(t\);
+3. constructs the Sylvester matrix over \(\mathbb Q[\mu]\);
 4. evaluates its determinant with fraction-free Bareiss elimination and exact polynomial division;
-5. restores the full resultant by multiplying \\(c_P(\\mu)^{\\deg_t Q}c_Q(\\mu)^{\\deg_t P}\\);
+5. restores the full resultant by multiplying \(c_P(\mu)^{\deg_t Q}c_Q(\mu)^{\deg_t P}\);
 6. returns exact rational coefficients, matrix dimension and explicit resource/degeneracy statuses.
 
-A zero primitive resultant is reported as `ZERO_RESULTANT_COMMON_FACTOR_OR_DEGENERACY`, not as a finite root list. A matrix-dimension ceiling returns `RESULTANT_MATRIX_RESOURCE_LIMIT` with no fabricated polynomial. Constant-in-`t` cases retain their coefficient-content interpretation; the separate axis-component detector remains necessary when both equations are independent of \\(t\\).
+A zero primitive resultant is reported as `ZERO_RESULTANT_COMMON_FACTOR_OR_DEGENERACY`, not as a finite root list. A matrix-dimension ceiling returns `RESULTANT_MATRIX_RESOURCE_LIMIT` with no fabricated polynomial. Constant-in-`t` cases retain their coefficient-content interpretation; the separate axis-component detector remains necessary when both equations are independent of \(t\).
 
 Five deterministic fixtures have been added: a simple linear resultant, a shared mixed factor, restoration of common axis contents, a projection root associated with degree drop, and resource/invalid/zero-polynomial abstention. The source-level suite now contains 60 test methods. They are committed but have not been executed under governed CPython 3.12.
 
-This is the first resultant implementation, not yet a complete algebraic root solver. The resultant's real roots still require square-free decomposition and exact Sturm isolation in \\(\\mu\\); each projection root must then be lifted through subresultants or specialized gcds in \\(t\\), with exact back-substitution into both original equations. Projection multiplicity is not local intersection multiplicity. A zero resultant still requires common-component classification, including mixed bivariate factors. No exhaustive interior census or global MLE certificate follows yet.
+This is the first resultant implementation, not yet a complete algebraic root solver. The resultant's real roots still require square-free decomposition and exact Sturm isolation in \(\mu\); each projection root must then be lifted through subresultants or specialized gcds in \(t\), with exact back-substitution into both original equations. Projection multiplicity is not local intersection multiplicity. A zero resultant still requires common-component classification, including mixed bivariate factors. No exhaustive interior census or global MLE certificate follows yet.
