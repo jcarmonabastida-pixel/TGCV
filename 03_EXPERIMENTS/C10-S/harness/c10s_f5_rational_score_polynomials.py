@@ -678,3 +678,94 @@ def bernstein_krawczyk_root_classification(
         "max_depth": max_depth,
     }
 
+def beta_binomial_boundary_likelihoods(
+    r: int,
+    count_histogram: Mapping[int, int],
+) -> dict[str, object]:
+    """Return exact profiled likelihood values on the four open-domain edges.
+
+    Values are exact probabilities (Fractions), including binomial
+    combinatorial factors, for independent worlds represented by a histogram.
+    They are boundary suprema/limits, not finite-parameter interior MLEs.
+    Corner/path limits where two boundary coordinates diverge together are
+    deliberately not inferred from these one-edge profiles.
+    """
+    from fractions import Fraction
+    from math import comb
+
+    if type(r) is not int or r < 1:
+        raise ValueError("R_MUST_BE_POSITIVE_INTEGER")
+    if not isinstance(count_histogram, Mapping) or not count_histogram:
+        raise ValueError("NONEMPTY_COUNT_HISTOGRAM_REQUIRED")
+    hist = {}
+    for x, n in count_histogram.items():
+        if type(x) is not int or not 0 <= x <= r:
+            raise ValueError("COUNT_OUTSIDE_0_TO_R")
+        if type(n) is not int or n < 0:
+            raise ValueError("MULTIPLICITY_MUST_BE_NONNEGATIVE_INTEGER")
+        if n:
+            hist[x] = hist.get(x, 0) + n
+    total = sum(hist.values())
+    if total == 0:
+        raise ValueError("POSITIVE_TOTAL_MULTIPLICITY_REQUIRED")
+
+    pooled_successes = sum(x * n for x, n in hist.items())
+    mu_inf = Fraction(pooled_successes, total * r)
+    binomial_limit = Fraction(1)
+    for x, n in hist.items():
+        probability = (
+            Fraction(comb(r, x))
+            * mu_inf**x
+            * (1 - mu_inf) ** (r - x)
+        )
+        binomial_limit *= probability**n
+
+    n_zero = hist.get(0, 0)
+    n_r = hist.get(r, 0)
+    n_interior = total - n_zero - n_r
+    endpoint_total = n_zero + n_r
+    if n_interior:
+        mu_zero_concentration = None
+        zero_concentration_likelihood = Fraction(0)
+        zero_concentration_status = "ZERO_LIMIT_LIKELIHOOD"
+    elif endpoint_total:
+        mu_zero_concentration = Fraction(n_r, endpoint_total)
+        zero_concentration_likelihood = (
+            (1 - mu_zero_concentration) ** n_zero
+            * mu_zero_concentration**n_r
+        )
+        zero_concentration_status = "PROFILED_ENDPOINT_MIXTURE_LIMIT"
+    else:
+        mu_zero_concentration = None
+        zero_concentration_likelihood = Fraction(0)
+        zero_concentration_status = "ZERO_LIMIT_LIKELIHOOD"
+
+    mu_zero_likelihood = Fraction(1) if all(x == 0 for x in hist) else Fraction(0)
+    mu_one_likelihood = Fraction(1) if all(x == r for x in hist) else Fraction(0)
+
+    return {
+        "status": "EXACT_ONE_EDGE_BOUNDARY_LIMITS",
+        "kappa_infinity": {
+            "status": "BINOMIAL_LIMIT",
+            "profile_mean": mu_inf,
+            "likelihood": binomial_limit,
+        },
+        "kappa_zero": {
+            "status": zero_concentration_status,
+            "profile_mean": mu_zero_concentration,
+            "likelihood": zero_concentration_likelihood,
+            "zero_count_worlds": n_zero,
+            "endpoint_count_worlds": n_r,
+            "interior_count_worlds": n_interior,
+        },
+        "mu_zero": {
+            "status": "DEGENERATE_AT_ZERO",
+            "likelihood": mu_zero_likelihood,
+        },
+        "mu_one": {
+            "status": "DEGENERATE_AT_R",
+            "likelihood": mu_one_likelihood,
+        },
+        "corner_path_limits": "NOT_CLASSIFIED_BY_ONE_EDGE_PROFILES",
+    }
+
