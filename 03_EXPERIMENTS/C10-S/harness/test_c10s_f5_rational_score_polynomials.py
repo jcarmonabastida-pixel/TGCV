@@ -1044,6 +1044,25 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertLessEqual(lower, point_likelihood)
         self.assertLessEqual(point_likelihood, upper)
 
+    def test_likelihood_enclosure_uses_bounded_dyadic_accumulator_for_large_histogram(self):
+        result = _beta_binomial_likelihood_enclosure(
+            20,
+            {x: 1000 for x in range(21)},
+            mu_bounds=(Fraction(1, 3), Fraction(2, 3)),
+            t_bounds=(Fraction(1, 3), Fraction(2, 3)),
+        )
+        self.assertEqual(result["status"], "EXACT_RATIONAL_LIKELIHOOD_ENCLOSURE")
+        self.assertEqual(result["accumulator"], "OUTWARD_ROUNDED_DYADIC_FIXED_POINT")
+        lower, upper = result["likelihood_bounds"]
+        self.assertGreaterEqual(lower, 0)
+        self.assertLessEqual(lower, upper)
+        self.assertLessEqual(upper, 1)
+        self.assertLessEqual(
+            max(lower.numerator.bit_length(), upper.denominator.bit_length()),
+            300,
+        )
+
+
     def test_global_mle_certificate_orders_degenerate_boundary_ties_exactly(self):
         result = beta_binomial_global_mle_certificate(5, {0: 3})
         self.assertEqual(
