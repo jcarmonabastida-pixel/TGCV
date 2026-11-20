@@ -504,3 +504,18 @@ Main results:
 Disposition: historical B2/B3 gates remain unchanged and failed. No retrospective PASS, no optimizer tolerance change, no new numerical bank, and no change to frozen specification v1.0.
 
 **Next operation:** diagnose the M30/R20 high-concentration C5 plug-in interval undercoverage separately from M10/R5 weak identification. Use only the existing raw artifact and deterministic/static calculations to trace what the bootstrap conditions on, which parameter uncertainty is omitted, and which interval endpoints/miss directions are implicated. Do not select or tune a replacement interval method from these development banks; any alternative requires a separately versioned design decision and fresh disjoint development data.
+
+
+## Static C5 high-concentration plug-in interval diagnosis — 2026-11-20
+
+The existing B2 artifact and the exact historical C5 source were examined. The detailed record is `C10S_F5_C5_HIGH_CONCENTRATION_PLUGIN_COVERAGE_DIAGNOSTIC_001.md`.
+
+The source confirms that C5 fits alpha/beta once, generates beta-distributed world probabilities from that fixed pair, samples binomial counts, and computes nested estimators. It does not refit alpha/beta inside bootstrap replicates. Thus the bootstrap is conditional on one fitted parameter pair and does not reproduce the repeated-sampling distribution of the concentration estimator.
+
+For M30/R20's top fitted-κ decile, median fitted κ is 7.668 (calibration) and 7.735 (validation), against DGP κ=4. The beta-binomial moment identities at the median fitted parameters imply within variance about 0.2212 and between variance about 0.0287–0.0288, close to observed point-estimate medians (within 0.2195–0.2196; raw-between 0.0297–0.0301) but shifted from true (0.20, 0.05).
+
+In that same stratum, C5 coverage is 50.0%/35.6% within/raw-between in calibration and 50.8%/35.0% in validation, with directional misses and median intervals 16–18% narrower than matched C0. C0 is not validated overall; it is only a matched diagnostic comparator here.
+
+**Interpretation:** the evidence supports conditional plug-in miscalibration associated with upward fitted concentration and shifted variance allocation. The omission of alpha/beta re-estimation within bootstrap replicates is a concrete mechanism and plausible contributor, but the artifact does not prove it is the sole cause. No alternative interval method is selected or tuned.
+
+**Next operation:** prepare a separately versioned, static method-design comparison for fixed plug-in C5 versus a refitted parametric bootstrap and a profile/likelihood-based uncertainty approach. Define estimands, refit/boundary/failure semantics, interval construction, computational budget and prospective acceptance rules before any new development bank. The B2/B3 banks remain historical development evidence and cannot be used to select or tune the replacement.
