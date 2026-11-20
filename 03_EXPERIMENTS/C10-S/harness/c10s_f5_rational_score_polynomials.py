@@ -1228,3 +1228,137 @@ def compactified_boundary_common_roots(
         "corner_deduplication": "NOT_YET_PERFORMED",
     }
 
+def _boundary_corner_for_root(edge, root):
+    from fractions import Fraction
+    value = Fraction(root)
+    if edge == "mu_zero":
+        return (Fraction(0), value) if value in (0, 1) else None
+    if edge == "mu_one":
+        return (Fraction(1), value) if value in (0, 1) else None
+    if edge == "t_zero":
+        return (value, Fraction(0)) if value in (0, 1) else None
+    if edge == "t_one":
+        return (value, Fraction(1)) if value in (0, 1) else None
+    raise ValueError("UNKNOWN_COMPACTIFIED_EDGE")
+
+
+def _corner_name(corner):
+    from fractions import Fraction
+    names = {
+        (Fraction(0), Fraction(0)): "mu0_t0",
+        (Fraction(0), Fraction(1)): "mu0_t1",
+        (Fraction(1), Fraction(0)): "mu1_t0",
+        (Fraction(1), Fraction(1)): "mu1_t1",
+    }
+    return names[corner]
+
+
+def _apply_boundary_corner_ownership(edges):
+    """Assign each corner once; retain every edge occurrence as provenance."""
+    from fractions import Fraction
+
+    corner_occurrences = {}
+    for edge, edge_result in edges.items():
+        for factor_index, factor in enumerate(edge_result.get("isolated_factors", [])):
+            for root in factor.get("exact_roots", ()):
+                corner = _boundary_corner_for_root(edge, root)
+                if corner is None:
+                    continue
+                corner_occurrences.setdefault(corner, []).append({
+                    "edge": edge,
+                    "factor_index": factor_index,
+                    "root_parameter": Fraction(root),
+                    "multiplicity": factor["multiplicity"],
+                })
+
+    corner_records = {}
+    for corner, occurrences in corner_occurrences.items():
+        # Vertical edges own corners; horizontal edges remain provenance-only.
+        owner_edge = "mu_zero" if corner[0] == 0 else "mu_one"
+        owner = next((item for item in occurrences if item["edge"] == owner_edge), None)
+        if owner is None:
+            # Defensive fail-closed behavior: never silently invent ownership.
+            corner_records[_corner_name(corner)] = {
+                "coordinates": corner,
+                "status": "CORNER_OWNERSHIP_UNRESOLVED",
+                "owner": None,
+                "occurrences": occurrences,
+            }
+            continue
+        corner_records[_corner_name(corner)] = {
+            "coordinates": corner,
+            "status": "CORNER_OWNED_ONCE",
+            "owner": {
+                "edge": owner_edge,
+                "factor_index": owner["factor_index"],
+                "root_parameter": owner["root_parameter"],
+                "multiplicity": owner["multiplicity"],
+            },
+            "occurrences": occurrences,
+        }
+
+    for edge, edge_result in edges.items():
+        for factor in edge_result.get("isolated_factors", []):
+            factor["root_ownership"] = []
+            for root in factor.get("exact_roots", ()):
+                corner = _boundary_corner_for_root(edge, root)
+                if corner is None:
+                    factor["root_ownership"].append({
+                        "root": root,
+                        "state": "EDGE_INTERIOR_ROOT",
+                    })
+                    continue
+                record = corner_records[_corner_name(corner)]
+                is_owner = (
+                    record["status"] == "CORNER_OWNED_ONCE"
+                    and record["owner"]["edge"] == edge
+                    and record["owner"]["root_parameter"] == root
+                    and record["owner"]["factor_index"]
+                    == edge_result["isolated_factors"].index(factor)
+                )
+                factor["root_ownership"].append({
+                    "root": root,
+                    "state": "CANONICAL_CORNER_OWNER" if is_owner
+                    else "CORNER_REFERENCE_ONLY",
+                    "corner": _corner_name(corner),
+                })
+    return corner_records
+
+
+def compactified_boundary_corner_census(
+    poly_p: Poly,
+    poly_q: Poly,
+    *,
+    width=None,
+    max_depth: int = 64,
+    max_intervals: int = 10000,
+) -> dict[str, object]:
+    """Return edge roots with a unique, auditable owner for each corner."""
+    result = compactified_boundary_common_roots(
+        poly_p, poly_q, width=width,
+        max_depth=max_depth, max_intervals=max_intervals,
+    )
+    if result["status"] == "BOUNDARY_COMMON_COMPONENTS_UNRESOLVED":
+        return {
+            "status": result["status"],
+            "edges": result["edges"],
+            "corners": {},
+        }
+    corners = _apply_boundary_corner_ownership(result["edges"])
+    unresolved = any(
+        corner["status"] != "CORNER_OWNED_ONCE"
+        for corner in corners.values()
+    )
+    result["corners"] = corners
+    result["corner_deduplication"] = (
+        "CORNER_OWNERSHIP_COMPLETE" if not unresolved
+        else "CORNER_OWNERSHIP_PARTIAL"
+    )
+    if result["status"] == "PARTIAL_BOUNDARY_ROOT_ISOLATION":
+        result["status"] = "PARTIAL_BOUNDARY_ROOT_ISOLATION"
+    elif unresolved:
+        result["status"] = "CORNER_OWNERSHIP_UNRESOLVED"
+    else:
+        result["status"] = "BOUNDARY_ROOT_CENSUS_WITH_CORNER_OWNERSHIP"
+    return result
+
