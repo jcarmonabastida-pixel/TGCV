@@ -1000,6 +1000,10 @@ class RationalScorePolynomialTests(unittest.TestCase):
             }),
         )
         self.assertEqual(len(result["unresolved_lifts"]), 0)
+        self.assertEqual(
+            result["component_disposition"]["status"],
+            "NO_REAL_INTERIOR_AXIS_COMMON_COMPONENT",
+        )
         self.assertIn("concentration_resultant", result)
         self.assertIn("concentration_projection", result)
         self.assertIn("boundary_census", result)
