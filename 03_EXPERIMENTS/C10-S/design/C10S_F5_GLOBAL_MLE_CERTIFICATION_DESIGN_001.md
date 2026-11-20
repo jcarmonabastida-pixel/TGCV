@@ -276,3 +276,14 @@ Three additional deterministic tests were added: exact M30/R20 score identity at
 ### What this does and does not solve
 
 This removes the unbounded concentration coordinate from the prospective elimination and interval-certification interfaces. It does not itself isolate roots, prove there are no even-multiplicity roots, order likelihood candidates, or certify the global MLE. The next implementation layer must operate on the compactified pair and provide a complete certificate on the open unit interval while treating both endpoints explicitly.
+
+
+## 15. Historical asset reuse check — compatibility boundary (2026-11-20)
+
+The harness already contains relevant numerical assets; they have been inspected rather than recreated:
+
+1. `c10s_f1_independent_root_isolator.py` and its tests provide exact-rational Sturm isolation, square-free multiplicity handling, and adversarial double/triple/close-root fixtures. Its explicit degree ceiling is three. Reuse the mathematical test patterns and fail-closed semantics, not the implementation unchanged for the high-degree F5 elimination polynomial.
+2. `c10s_f1_between_profile_likelihood.py` solves a balanced Gaussian random-intercept F1 nuisance profile. Its score polynomial and one-stationary-point argument are model-specific and do not transfer to the beta-binomial F5 likelihood.
+3. `c10s_f5_beta_binomial_mcse_profile.py` already handles both mean branches and analytic concentration limits for a scalar MCSE target. However, its finite-concentration search uses a 241-point grid plus local scalar refinement and explicitly describes itself as numerical/diagnostic rather than globally certified. Its branch/limit bookkeeping can inform interface design, but its objective constraint and search cannot certify the F5 MLE or W/B profiles.
+
+Accordingly, the current work is not a restart from scratch: it reuses the exact F1 isolation/adversarial semantics and the F5 MCSE branch/boundary representation while adding the missing high-degree global stationary certification for the distinct beta-binomial MLE and W/B targets. No existing F1 or MCSE behavior is modified by this work.
