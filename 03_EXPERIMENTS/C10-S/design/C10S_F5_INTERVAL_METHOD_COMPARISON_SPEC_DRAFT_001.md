@@ -1,0 +1,277 @@
+# C10-S — F5 comparative interval-method specification draft 001
+
+**Record:** C10S-F5-INTERVAL-METHOD-COMPARISON-SPEC-001  
+**Status:** D1 REVIEW CANDIDATE — NOT FROZEN / NOT IMPLEMENTED / NOT EXECUTED  
+**Date:** 2026-11-20  
+**Branch:** `research/c10s-f1-integrated-correction-20261119`  
+**Parent design:** `C10S_F5_INTERVAL_METHOD_COMPARISON_DESIGN_DRAFT_001.md`  
+**Frozen parent specification:** `C10S_POST_HOLDOUT_F1_F5_DEVELOPMENT_CALIBRATION_SPEC_001.md`, v1.0, unchanged  
+**Historical evidence:** Tier A/B2/B3 and run `44615173745`, artifact `14586221304`  
+**Execution authorization:** NONE  
+**Decision:** no interval method selected or validated
+
+---
+
+## 1. Purpose and governance relationship
+
+This document advances D0 into a D1 review candidate for a **separate, successor F5 method-comparison work package**. It does not amend, supersede or reinterpret frozen specification v1.0.
+
+The parent v1.0 package remains authoritative for its defined F1 and F5 work. In particular, its F5 Phase B is explicitly limited to diagnosis of the existing C5 fitted beta-binomial percentile procedure against unchanged C0; it states that no alternative F5 interval method is selected in that package. This draft respects that boundary by proposing a separately versioned successor package, with fresh data and its own future authorization.
+
+No new F5 method is implemented or executed by this document. No B2/B3 record, seed, output, gate or adjudication is reused for selection or tuning. Historical B2/B3 data are retained only as labelled development evidence and deterministic regression fixtures where already permitted by v1.0.
+
+The successor package is restricted to the same frozen F5 beta22 DGP and the two original design cells:
+- M10/R5;
+- M30/R20.
+
+It does not add stress families, misspecification cells, new targets, MCSE intervals, Tier B, or C10 Generator/Analyzer/Evaluator execution.
+
+## 2. Frozen scientific target and estimators
+
+Let independent world probabilities satisfy (p_m\sim\mathrm{Beta}(\alpha,\beta)), and let the R Bernoulli contributions within each world be conditionally independent given (p_m).
+
+Define:
+- \(\mu=\alpha/(\alpha+\beta)\);
+- \(\kappa=\alpha+\beta\);
+- \(W(\mu,\kappa)=E[p(1-p)]=\mu(1-\mu)\kappa/(\kappa+1)\);
+- \(B(\mu,\kappa)=\operatorname{Var}(p)=\mu(1-\mu)/(\kappa+1)\).
+
+The population coverage truths remain \(\sigma_w^2=W\) and \(\sigma_b^2=B\). Under the frozen beta22 DGP, these are 0.20 and 0.05 respectively.
+
+The frozen C5 sample statistics remain:
+- \(T_W=MSW\);
+- \(T_B=S^2_{\bar q}-MSW/R\), untruncated.
+
+Negative raw-between estimates and interval endpoints remain admissible. No candidate may clip, truncate, project to positive-only samples, or silently replace the frozen raw-between target.
+
+The comparison deliberately distinguishes **method/estimator packages**:
+- M0 intervals are centered on/distributed from the frozen raw sample statistics.
+- M1 estimates W/B through replicate-specific beta-binomial MLE functionals.
+- M2 obtains confidence sets for W/B by inverting the beta-binomial likelihood.
+
+All candidates are scored against the same population truths. A comparison must not be described as an interval-only comparison when its point-estimator construction differs.
+
+## 3. Candidate roster and proposed roles
+
+### M0 — frozen C5 fixed-parameter plug-in bootstrap
+
+- Exact current C5 method ID and point-statistic semantics are retained.
+- Fit \((\alpha,\beta)\) once to the observed dataset.
+- Generate all bootstrap worlds under this fixed fitted pair.
+- Recompute the frozen raw sample statistics and percentile intervals.
+- Do not change the existing production implementation or historical results.
+
+Role: incumbent comparator. Historical B2/B3 show that it fails the frozen component gates; a fresh successor bank can quantify paired performance but cannot erase that result.
+
+### M1 — refitted parametric bootstrap of fitted population functionals
+
+For each original dataset:
+1. Fit the beta-binomial likelihood using a versioned fit contract.
+2. Compute \(\hat W=W(\hat\theta)\) and \(\hat B=B(\hat\theta)\).
+3. Generate complete nested datasets under \(\hat\theta\), preserving M, R and the frozen hierarchy.
+4. Refit the beta-binomial model in every bootstrap replicate using the same fit contract.
+5. Retain replicate-specific \(\hat W_b^*,\hat B_b^*\) and every raw fit state.
+6. Construct the interval variants below.
+
+**Proposed primary: M1-PCT.** Percentile intervals from the empirical distributions of \(\hat W_b^*\) and \(\hat B_b^*\). This is preferred as the initial primary candidate because the fitted functionals remain in their natural feasible range when every replicate fit is admissible; it does not require clipping an unconstrained basic interval back into the parameter space.
+
+**Prespecified secondary diagnostic: M1-BASIC.** Let \(\Delta_W^*=\hat W_b^*-\hat W\) and \(\Delta_B^*=\hat B_b^*-\hat B\). Form basic intervals \([\hat W-q_{W,U},\hat W-q_{W,L}]\) and \([\hat B-q_{B,U},\hat B-q_{B,L}]\). These may extend beyond the feasible parameter range. Do not clip them. Report feasibility violations and coverage without repairing endpoints.
+
+M1-PCT is a proposal, not a frozen choice. D1 review must confirm that the different estimator package is acceptable as a candidate and that the MLE fit contract is sufficiently defined.
+
+### M2 — profile-likelihood confidence sets for W and B
+
+For each target \(\psi\in\{W,B\}\), define:
+\[
+\ell_p(\psi_0)=\sup_{\theta:\psi(\theta)=\psi_0}\ell(\theta),
+\qquad
+D(\psi_0)=2\{\ell(\hat\theta)-\ell_p(\psi_0)\}.
+\]
+
+Retain the full accepted set over the feasible target range, including disconnected components. Do not replace disconnected sets with a single convex hull for primary scoring. If a display-only hull is supplied, label it secondary and score the actual union.
+
+Two variants:
+- **M2a — asymptotic LR reference:** use the regular \(\chi^2_1\) cutoff only as a diagnostic reference. It is not eligible for acceptance where weak identification, boundary nonregularity, incomplete global maximization or unresolved profile topology is present.
+- **M2b — beta22/design-cell calibrated LR:** calibrate the LR cutoff separately for W and B in each of M10/R5 and M30/R20 using a new calibration bank generated from the frozen beta22 DGP. For each calibration dataset, calculate the LR statistic at the known population target; the truth is used only for calibration, never in fitting or profile inversion. Use an upper tolerance order statistic with simultaneous one-sided confidence at least 95% across the four target × design cutoffs (Bonferroni family-wise control). Apply the frozen cutoffs to a separate validation bank without retuning.
+
+M2b's scope is explicitly bounded to the two beta22 design cells. It does not imply uniform coverage over a continuum of beta-binomial parameters or under model misspecification.
+
+## 4. Fit-state and boundary contract — unresolved D1 blocker
+
+The existing B1 evidence requires retention of all three production starts, comparison with the analytic-gradient path and independent optimizer, and separation of optimizer termination from statistical identification. It does not require all three starts to report success. The historical runner's all-starts-success Boolean is not itself the frozen scientific rule, but removing it without a defensible replacement is also prohibited.
+
+Every fit in M1 and every constrained/unconstrained fit in M2 must retain:
+- all start vectors and terminal vectors;
+- termination flags/messages and objective values;
+- analytic score norm and independent score check;
+- Hessian/observed-information or profile-curvature diagnostics;
+- distances to finite numerical bounds;
+- direct production/analytic likelihood and parameter comparisons;
+- boundary-limit likelihood comparisons;
+- typed terminal state and exact abstention reason.
+
+Minimum mutually exclusive states:
+- `INTERIOR_IDENTIFIED_CANDIDATE`;
+- `THEORETICAL_BOUNDARY_LIMIT`;
+- `WEAK_IDENTIFICATION_OR_FLAT_PROFILE`;
+- `MULTISTART_OR_OPTIMIZER_DISAGREEMENT`;
+- `NUMERICAL_TERMINATION_UNRESOLVED`;
+- `NO_ADMISSIBLE_FIT`;
+- `NUMERICAL_EXCEPTION`.
+
+A finite optimizer bound is never a theoretical model boundary. The theoretical limits \(\kappa\to\infty\) and \(\kappa\to0\) must be evaluated as limits where mathematically supported. A boundary state may be accepted only if the limiting likelihood is evaluated independently and its global status is established; otherwise it is unresolved.
+
+**D1 blocker:** the current artifacts do not yet provide a justified scale-aware rule that adjudicates failed-start competitiveness, near-equal likelihood with materially different concentration, and global-optimum status without arbitrary thresholds. The historical raw banks cannot be used to invent or tune such thresholds. Until a deterministic analytic certificate or independently justified tolerance contract is specified, M1/M2 must abstain on the affected fit. Do not substitute “at least one start succeeded” or “all starts succeeded” as a complete scientific adjudication.
+
+## 5. Bootstrap failure and emission semantics — proposed fail-closed rule
+
+No bootstrap replicate may be silently dropped, redrawn, replaced, or treated as if it were successful.
+
+For M1, preserve the requested replicate count and one terminal state per replicate. A dataset-level interval is emitted only if all required replicate contributions are mathematically defined under the frozen fit contract. If any replicate is unresolved and no valid boundary contribution has been formally specified, the dataset abstains. Report failure counts and reasons; no complete-case bootstrap distribution is allowed.
+
+For M2b calibration, a calibration dataset with unresolved global MLE/profile state is not silently removed. The calibration procedure must either produce a valid LR statistic under the frozen boundary contract or mark the calibration cell blocked. It must not lower the cutoff by deleting difficult cases.
+
+For M2 inversion, any unresolved profile segment, unbracketed endpoint or unverified global maximum causes a typed profile abstention. Disconnected accepted regions are retained as unions.
+
+This rule is deliberately conservative. Its operational emission consequences must be measured in deterministic tests and then prospectively; it cannot be weakened after observing coverage.
+
+## 6. Matched prospective evaluation
+
+### 6.1 Banks and data separation
+
+A new successor package requires fresh, disjoint banks. No B2/B3 seed, dataset, bootstrap stream or outcome may enter them.
+
+Proposed bounded design:
+- M10/R5 and M30/R20, beta22 only;
+- 5,000 independent datasets per cell for method development/validation, with the exact split between calibration and validation specified below;
+- a distinct M2b cutoff-calibration bank, separate from all method-comparison evaluation datasets;
+- independent random-stream namespaces for dataset generation, M0 bootstrap, M1 bootstrap and M2b calibration;
+- immutable manifests and hashes, with seed derivation including protocol version, namespace, cell and dataset index.
+
+For a coverage estimate near 0.95, N=5,000 gives descriptive MCSE approximately 0.0031. This motivates 5,000 as an initial precision target, not as a guarantee of acceptance or as a copied historical sample size. D1 must calculate the exact Wilson/precision operating characteristics before freezing N.
+
+A separate confirmatory bank is not part of this successor development package. It would require a further frozen method and a new authorization.
+
+### 6.2 Paired method comparison
+
+On each common evaluation dataset, run M0, M1-PCT, M1-BASIC and M2a; run M2b after its cutoff has been calibrated independently. Retain the same dataset ID, raw input hash, DGP truth and method roster.
+
+M0 is rerun only on the new prospective datasets as a matched comparator. This is not a replay of B2/B3 and cannot alter their historical adjudication.
+
+### 6.3 Outcomes
+
+For each method × cell × target:
+- conditional coverage and two-sided 95% Wilson interval;
+- unconditional usable-and-covering rate;
+- interval/set emission and abstention rate;
+- lower- and upper-tail misses;
+- interval width (for disconnected sets, total measure of the union);
+- endpoint/set boundary frequency;
+- estimator bias and RMSE where a point estimate exists;
+- optimizer/profile terminal-state frequencies;
+- MCSE for coverage and interval quantiles;
+- runtime and peak memory.
+
+No pooling across M/R cells or W/B targets. Joint W/B coverage may be reported as a secondary outcome, never as a replacement for marginal component gates.
+
+## 7. Acceptance gates inherited from frozen v1.0
+
+For each M/R cell × bank × target, retain the complete frozen component gate:
+- conditional coverage in [0.93, 0.97];
+- two-sided 95% Wilson interval contains 0.95;
+- interval emission at least 0.95;
+- no unresolved numerical optimizer state;
+- no truth, denominator, method-roster or provenance mismatch;
+- no raw-between truncation or positive-only conditioning.
+
+These are development eligibility gates, not confirmatory claims. They are not relaxed by the new package. M2's set-valued regions are scored by membership of the truth in the union; their total measure is reported for efficiency.
+
+Abstentions are not counted as covered and are not deleted from the operational denominator. Report both conditional coverage among emitted intervals and unconditional usable-and-covering rate. The frozen emission gate applies separately.
+
+No method is selected if any required cell/target fails. C0 is not an accepted fallback. MCSE interval construction remains an explicit abstention.
+
+## 8. Monte Carlo precision and computational feasibility — D1 blockers
+
+The 5,000-dataset target is provisionally motivated by coverage MCSE near 0.0031 at nominal 95%. Before D1 freeze:
+1. calculate exact Wilson interval operating characteristics at coverage values around the acceptance boundaries;
+2. calculate the M2b four-cutoff order-statistic ranks and simultaneous tolerance confidence;
+3. set bootstrap replicate counts for M1 from a prespecified endpoint Monte Carlo error target;
+4. set M2 profile grid/bracketing tolerances and constrained-optimizer start policy using deterministic numerical analysis;
+5. establish a compute ceiling and worst-case runtime/memory budget from static deterministic microbenchmarks after the implementation contract is frozen;
+6. define stop rules for calibration failure, profile topology failure and resource-budget exceedance.
+
+No numeric bootstrap B, M2 profile grid density, runtime ceiling or memory ceiling is declared here because no measured benchmark or endpoint-MCSE analysis is yet available. These are blocking fields, not permission to choose them during execution.
+
+## 9. Shared implementation architecture
+
+Do not build three parallel likelihoods or data generators. Reuse the existing canonical F5 likelihood, exact finite-R oracle, nested-data generator and comparison interfaces. Add only the minimum shared contracts:
+
+- `F5FitResult`: complete start roster, selected parameters, likelihood, score/curvature, boundary comparison, terminal state.
+- `F5TargetFunctional`: W/B and feasible ranges.
+- `F5ProfileResult`: target grid/brackets, nuisance optimizer states, accepted-set components, topology and terminal state.
+- `F5BootstrapReplicateRecord`: seed/stream, generated-data digest, fit result, W/B functionals and terminal state.
+- `F5IntervalResult`: interval or union of sets, method/version, target, emission/abstention, numerical diagnostics and MCSE.
+- `F5MatchedMethodRecord`: common dataset ID/hash, truths, all method outputs and provenance.
+
+M0 must be wrapped, not rewritten. M1 must reuse the frozen likelihood and fit diagnostics. M2 must reuse the same likelihood and fit contract for unconstrained and constrained optimization. Any alteration to the frozen C5 production estimator is out of scope and requires its own versioned decision.
+
+## 10. Deterministic validation before any numerical bank
+
+Required deterministic contracts:
+1. analytic W/B identities and W+B=μ(1−μ);
+2. parameterization invariance between (α,β) and (η,λ);
+3. exact κ→0, κ→∞ and μ→0/1 limit checks;
+4. M0 bitwise/contract reproduction on existing fixed fixtures;
+5. M1-PCT and M1-BASIC quantile calculations on hand-constructed replicate arrays, including boundary-support and out-of-range basic endpoints;
+6. M1 refit invocation and one terminal record per requested replicate;
+7. injected failed-start, optimizer-disagreement, theoretical-boundary and numerical-exception paths;
+8. proof that no failed replicate is silently omitted or replaced;
+9. M2 constrained profile optimum never exceeds the verified unconstrained global maximum beyond a justified scale-aware tolerance;
+10. M2 disconnected-set preservation, boundary inclusion, unbracketed endpoint and unresolved-topology abstention;
+11. exact M2b order-statistic rank and simultaneous confidence calculation;
+12. coverage/Wilson/MCSE/abstention denominator bookkeeping;
+13. deterministic stream separation, serialization and provenance.
+
+The deterministic suite does not establish statistical coverage. No Monte Carlo or bootstrap bank is authorized by passing these tests.
+
+## 11. Integrated gates and sequence
+
+| Gate | Work | Exit condition | Current status |
+|---|---|---|---|
+| D0 | Comparative design | Target mapping and candidates reconstructed | COMPLETE AS DRAFT |
+| D1 | Method specification | Fit-state rule, M1/M2 procedures, precision and cost fields resolved; review against v1.0 | REVIEW CANDIDATE — OPEN |
+| D2 | Static implementation | Shared interfaces and deterministic adversarial tests | NOT STARTED |
+| D3 | Static/resource preflight | Exact commit, dependency lock, deterministic microbenchmarks and resource report | NOT STARTED |
+| D4 | Execution authorization | Separate one-use authorization bound to protocol/code/seeds/budget | NONE |
+| D5 | Prospective development | New calibration/evaluation banks and full per-cell audit | NOT AUTHORIZED |
+| D6 | Method freeze | Select method or no validated method using only development data | NOT STARTED |
+| D7 | Confirmatory design | Separate fresh holdout and authorization | NOT STARTED |
+
+No gate passes implicitly. Completion of D2/D3 does not authorize D5.
+
+## 12. Explicit open blockers for D1 review
+
+1. A defensible deterministic fit-state adjudication rule for failed-start competitiveness and weak concentration identification, without thresholds tuned on B2/B3.
+2. Exact M2 global profile certification/tolerance and boundary-limit implementation contract.
+3. Exact M2b calibration rank calculation for four cutoffs and the corresponding bank size/precision.
+4. Exact M1 bootstrap replicate count from an endpoint-MCSE target.
+5. Wilson operating-characteristic calculation and confirmation of N=5,000 or a justified alternative.
+6. Static compute ceiling and stopping policy, based on measured deterministic benchmarks.
+7. Whether the no-unresolved-state gate is applied to every internal bootstrap/profile subfit or to the emitted dataset-level fit after a formally justified state aggregation. No unresolved state may be hidden.
+
+These are technical/statistical blockers to be resolved by analysis and deterministic fixtures. They are not user preference questions and must not be settled by post-hoc inspection of prospective coverage.
+
+## 13. Current disposition
+
+- Frozen parent specification v1.0: unchanged and operative.
+- M0/C5: implemented and historically executed; failed frozen F5 component gates.
+- M1-PCT: proposed primary candidate; not implemented/executed/validated.
+- M1-BASIC: prespecified secondary diagnostic proposal; not implemented/executed/validated.
+- M2a: asymptotic diagnostic reference only.
+- M2b: proposed design-cell-calibrated profile candidate; not implemented/executed/validated.
+- C0: historical/matched diagnostic comparator only; not an accepted fallback.
+- Historical B2/B3: immutable development evidence; prohibited for new method selection/tuning.
+- D1: REVIEW CANDIDATE / OPEN because fit-state adjudication, M2 global-profile certification, precision and cost fields remain unresolved.
+- Execution: NOT AUTHORIZED.
+
+**Next operation:** resolve the seven D1 blockers through deterministic analytic derivation and existing-code contract inspection; then revise this one specification and submit it for D1 review. Only after D1 is frozen should D2 implementation begin. No numerical bank, replay, calibration or scientific execution is authorized.
