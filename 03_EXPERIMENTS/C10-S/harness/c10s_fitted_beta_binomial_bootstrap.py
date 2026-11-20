@@ -236,8 +236,22 @@ def build_production_analytic_reconciliation(
             "absolute_log_likelihood_difference": abs(fit.log_likelihood - ll_a) if ll_a is not None else None,
             "mean_logit_difference_production_minus_analytic": production["selected_mean_logit"] - eta_a if eta_a is not None else None,
             "log_concentration_difference_production_minus_analytic": production["selected_log_concentration"] - xi_a if xi_a is not None else None,
-            "alpha_difference_production_minus_analytic": fit.alpha - (math.exp(audit.independent_terminal_log_alpha) if audit.independent_terminal_log_alpha is not None else None) if audit.independent_terminal_log_alpha is not None else None,
-            "beta_difference_production_minus_analytic": fit.beta - (math.exp(audit.independent_terminal_log_beta) if audit.independent_terminal_log_beta is not None else None) if audit.independent_terminal_log_beta is not None else None,
+            "log_alpha_difference_production_minus_analytic": (
+                math.log(fit.alpha) - math.log(mean_a * concentration_a)
+                if mean_a is not None and concentration_a is not None else None
+            ),
+            "log_beta_difference_production_minus_analytic": (
+                math.log(fit.beta) - math.log((1.0 - mean_a) * concentration_a)
+                if mean_a is not None and concentration_a is not None else None
+            ),
+            "alpha_difference_production_minus_analytic": (
+                fit.alpha - mean_a * concentration_a
+                if mean_a is not None and concentration_a is not None else None
+            ),
+            "beta_difference_production_minus_analytic": (
+                fit.beta - (1.0 - mean_a) * concentration_a
+                if mean_a is not None and concentration_a is not None else None
+            ),
             "mean_probability_difference_production_minus_analytic": fit.mean_probability - mean_a if mean_a is not None else None,
             "concentration_difference_production_minus_analytic": fit.concentration - concentration_a if concentration_a is not None else None,
         }
