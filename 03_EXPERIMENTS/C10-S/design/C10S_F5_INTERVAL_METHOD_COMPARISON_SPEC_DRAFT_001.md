@@ -317,3 +317,26 @@ The implementation and new deterministic exact-rational tests are committed in:
 The added tests cover exact M30/R20 score identities and the compactification identity/root correspondence. They are committed but not yet executed under the governed CPython 3.12 environment. This is preprocessing only, not a root certificate.
 
 **Backend decision remains OPEN.** The next comparison must use the compactified exact numerator pair as common input. The modular route must prove its modular reconstruction bound and independently verify the reconstructed result; the interval route must certify exhaustive coverage of the open square, including even-multiplicity stationary points, and abstain on unresolved boxes. Both must separately handle t=0, t=1, mu=0 and mu=1 strata. No backend is selected by this coordinate transformation alone.
+
+
+## 14. Exact Bernstein range-enclosure primitive — implemented, tests committed (2026-11-20)
+
+The shared F5 algebra harness now includes:
+- `bernstein_coefficients_on_box(P, mu_bounds, t_bounds)`: exact tensor-product power-to-Bernstein conversion after rational affine mapping of an arbitrary rectangular box into the unit square;
+- `bernstein_sign_excludes_zero(coefficients)`: returns true only when every exact Bernstein coefficient is strictly positive or every coefficient is strictly negative.
+
+By the Bernstein convex-hull property, the polynomial then has that strict sign throughout the closed box, so the box cannot contain a zero of that score numerator. For a two-score system, exclusion by either score is sufficient to rule out a common stationary point in the box. Mixed-sign coefficients are inconclusive and must trigger subdivision or a different certification step; they are never treated as evidence that a root exists.
+
+Four deterministic tests were added for:
+1. exact coefficients and exclusion of a strictly positive polynomial on the unit square;
+2. exact rational affine-box substitution and strict-sign exclusion;
+3. mixed-sign coefficients remaining inconclusive;
+4. rejection of a degenerate box.
+
+The affine-box expected coefficients were independently checked with exact Fraction arithmetic and corrected before commit. These are committed tests, not a claim that the repository suite has run under CPython 3.12. The current GitHub integration does not provide a workflow-dispatch operation in this session, so no new CI execution is claimed.
+
+### Scope and limitations
+
+This is the first concrete interval-route primitive, complementary to the exact score construction and concentration compactification. It provides rigorous *zero exclusion* on a box. It does not isolate or prove existence/uniqueness of a root, certify a root when Bernstein coefficients have mixed signs, or establish exhaustive coverage of the open square. A complete interval backend still needs deterministic subdivision, exact stopping/resource semantics, and a root-inclusion/uniqueness certificate (for example, a rigorously implemented interval-Newton/Krawczyk step) plus explicit boundary-stratum likelihood adjudication.
+
+No modular resultant backend is selected, no MLE is certified, and no scientific execution or bank generation has occurred.
