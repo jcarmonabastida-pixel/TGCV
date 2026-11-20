@@ -529,6 +529,11 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
             )
         diagnostic_map = dict(record.candidates[0].diagnostics)
         self.assertEqual(diagnostic_map["likelihood_optimizer_audit_json"], "null")
+        reconciliation = json.loads(diagnostic_map["production_analytic_reconciliation_json"])
+        self.assertEqual(reconciliation["status"], "ANALYTIC_AUDIT_UNAVAILABLE")
+        self.assertEqual(len(reconciliation["production_fit"]["starts"]), 3)
+        self.assertIsNone(reconciliation["analytic_fit"])
+        self.assertIsNone(reconciliation["direct_comparison"])
         self.assertEqual(
             diagnostic_map["likelihood_optimizer_audit_error"],
             "ValueError:FIXTURE_OPTIMIZER_AUDIT_FAILURE",
