@@ -448,3 +448,7 @@ The algebraic route now has an exact coefficient-content detector for common ver
 ### Algebraic route: exact projection resultant prototype (2026-11-20)
 
 The algebraic path now computes `Res_t(P,Q)` over `Q[mu]` with exact Sylvester/Bareiss arithmetic, including coefficient-content restoration and resource abstention. This is a first resultant primitive. It does not yet isolate projection roots, lift them with subresultants, verify all candidates in the original equations, classify local multiplicity, or establish an exhaustive census. The Bernstein/Krawczyk interval route has not changed; neither route is selected.
+
+### Algebraic route: exact projection-root isolation (2026-11-20)
+
+The exact `mu`-resultant now feeds square-free decomposition and rational Sturm isolation on `[0,1]`, preserving projection multiplicities and partial intervals. This is not bivariate root isolation: multiple `t`-lifts for one projection coordinate remain to be recovered by subresultants/specialized gcds and checked in the original equations. The interval route remains independent and unchanged.
