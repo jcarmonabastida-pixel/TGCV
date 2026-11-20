@@ -11,6 +11,7 @@ from c10s_f5_rational_score_polynomials import (
     bernstein_exclusion_subdivision,
     krawczyk_certify_unique_root,
     bernstein_krawczyk_root_classification,
+    beta_binomial_boundary_likelihoods,
 )
 
 
@@ -234,6 +235,41 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(result["status"], "PARTIAL_CERTIFICATION_WITH_REMAINDER")
         self.assertEqual(result["certified_root_boxes"], [])
         self.assertEqual(len(result["unresolved_boxes"]), 1)
+
+    def test_boundary_profiles_are_exact_for_endpoint_histogram(self):
+        result = beta_binomial_boundary_likelihoods(2, {0: 1, 2: 1})
+        self.assertEqual(result["kappa_infinity"]["profile_mean"], Fraction(1, 2))
+        self.assertEqual(result["kappa_infinity"]["likelihood"], Fraction(1, 16))
+        self.assertEqual(result["kappa_zero"]["profile_mean"], Fraction(1, 2))
+        self.assertEqual(result["kappa_zero"]["likelihood"], Fraction(1, 4))
+        self.assertEqual(result["mu_zero"]["likelihood"], 0)
+        self.assertEqual(result["mu_one"]["likelihood"], 0)
+        self.assertEqual(
+            result["corner_path_limits"], "NOT_CLASSIFIED_BY_ONE_EDGE_PROFILES"
+        )
+
+    def test_zero_concentration_limit_is_zero_with_interior_counts(self):
+        result = beta_binomial_boundary_likelihoods(2, {1: 1})
+        self.assertEqual(result["kappa_zero"]["likelihood"], 0)
+        self.assertEqual(result["kappa_zero"]["status"], "ZERO_LIMIT_LIKELIHOOD")
+        self.assertIsNone(result["kappa_zero"]["profile_mean"])
+        self.assertEqual(result["kappa_infinity"]["likelihood"], Fraction(1, 2))
+
+    def test_degenerate_mean_boundary_profiles(self):
+        all_zero = beta_binomial_boundary_likelihoods(3, {0: 2})
+        self.assertEqual(all_zero["mu_zero"]["likelihood"], 1)
+        self.assertEqual(all_zero["mu_one"]["likelihood"], 0)
+        self.assertEqual(all_zero["kappa_infinity"]["likelihood"], 1)
+        all_r = beta_binomial_boundary_likelihoods(3, {3: 2})
+        self.assertEqual(all_r["mu_zero"]["likelihood"], 0)
+        self.assertEqual(all_r["mu_one"]["likelihood"], 1)
+        self.assertEqual(all_r["kappa_zero"]["likelihood"], 1)
+
+    def test_boundary_profile_rejects_invalid_histogram(self):
+        with self.assertRaisesRegex(ValueError, "COUNT_OUTSIDE_0_TO_R"):
+            beta_binomial_boundary_likelihoods(2, {3: 1})
+        with self.assertRaisesRegex(ValueError, "MULTIPLICITY_MUST_BE_NONNEGATIVE_INTEGER"):
+            beta_binomial_boundary_likelihoods(2, {1: -1})
 
     def test_histogram_validation(self):
         with self.assertRaisesRegex(ValueError, "COUNT_OUTSIDE_0_TO_R"):
