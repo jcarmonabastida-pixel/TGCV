@@ -90,6 +90,18 @@ D(\psi_0)=2\{\ell(\hat\theta)-\ell_p(\psi_0)\}.
 
 Retain the full accepted set over the feasible target range, including disconnected components. Do not replace disconnected sets with a single convex hull for primary scoring. If a display-only hull is supplied, label it secondary and score the actual union.
 
+The constrained profile has an exact one-dimensional nuisance reduction that should be used instead of a generic two-dimensional constrained optimizer. Since
+\\[
+q=W+B=\\mu(1-\\mu),\\qquad \\kappa=W/B,
+\\]
+for a fixed W=w, profile over the complementary component b=B in \\(0\\le b\\le0.25-w\\), set \\(q=w+b\\), \\(\\kappa=w/b\\), and evaluate both mean branches
+\\[
+\\mu_\\pm=\\frac{1\\pm\\sqrt{1-4q}}{2}.
+\\]
+For a fixed B=b, profile analogously over w=W in \\(0\\le w\\le0.25-b\\), with the same q, κ and two μ branches. Each branch maps to \\(\\alpha=\\mu\\kappa\\), \\(\\beta=(1-\\mu)\\kappa\\). The likelihood is evaluated on both branches; symmetry must not be assumed for an observed count vector.
+
+This reduces each target profile to a bounded one-dimensional search over the complementary variance component, plus explicit endpoint limits. It does not by itself prove globality: all stationary regions and both branches must be traced, and the endpoints must be evaluated analytically. The corners (W=B=0), W=0 (κ→0), B=0 (κ→∞), and q=0.25 (μ=0.5) require explicit limiting evaluation. If the one-dimensional global maximum or accepted-set topology cannot be certified, M2 abstains.
+
 Two variants:
 - **M2a — asymptotic LR reference:** use the regular \(\chi^2_1\) cutoff only as a diagnostic reference. It is not eligible for acceptance where weak identification, boundary nonregularity, incomplete global maximization or unresolved profile topology is present.
 - **M2b — beta22/design-cell calibrated LR:** calibrate the LR cutoff separately for W and B in each of M10/R5 and M30/R20 using a new calibration bank generated from the frozen beta22 DGP. For each calibration dataset, calculate the LR statistic at the known population target; the truth is used only for calibration, never in fitting or profile inversion. Use an upper tolerance order statistic with simultaneous one-sided confidence at least 95% across the four target × design cutoffs (Bonferroni family-wise control). Apply the frozen cutoffs to a separate validation bank without retuning.
@@ -230,7 +242,7 @@ Required deterministic contracts:
 6. M1 refit invocation and one terminal record per requested replicate;
 7. injected failed-start, optimizer-disagreement, theoretical-boundary and numerical-exception paths;
 8. proof that no failed replicate is silently omitted or replaced;
-9. M2 constrained profile optimum never exceeds the verified unconstrained global maximum beyond a justified scale-aware tolerance;
+9. M2 one-dimensional profile reduction is checked against direct parameterization on analytic fixtures; constrained profile optimum never exceeds the verified unconstrained global maximum beyond a justified scale-aware tolerance;
 10. M2 disconnected-set preservation, boundary inclusion, unbracketed endpoint and unresolved-topology abstention;
 11. exact M2b order-statistic rank and simultaneous confidence calculation;
 12. coverage/Wilson/MCSE/abstention denominator bookkeeping;
@@ -256,7 +268,7 @@ No gate passes implicitly. Completion of D2/D3 does not authorize D5.
 ## 12. Explicit open blockers for D1 review
 
 1. A defensible deterministic fit-state adjudication rule for failed-start competitiveness and weak concentration identification, without thresholds tuned on B2/B3.
-2. Exact M2 global profile certification/tolerance and boundary-limit implementation contract.
+2. Exact M2 one-dimensional global profile certification, stationary-point isolation/tolerance and boundary-limit implementation contract.
 3. Exact M2b calibration rank calculation for four cutoffs and the corresponding bank size/precision.
 4. Exact M1 bootstrap replicate count from an endpoint-MCSE target.
 5. Wilson operating-characteristic calculation and confirmation of N=5,000 or a justified alternative.
