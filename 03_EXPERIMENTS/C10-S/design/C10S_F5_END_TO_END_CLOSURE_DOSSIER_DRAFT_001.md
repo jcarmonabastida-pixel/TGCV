@@ -280,3 +280,22 @@ A line-by-line mathematical review was completed against the implemented score c
 6. **Boundary/global comparison.** The four edge profiles are exact closed forms. The joint-corner limits follow uniformly from P(X>0)<=r*mu and P(X<r)<=r*(1-mu). The interior likelihood enclosure bounds every PMF factor by exact rational intervals and multiplies with outward-rounded dyadic integer arithmetic. A global winner is returned only under strict enclosure separation or a proven boundary co-maximum; overlapping intervals abstain.
 
 The derivation is supported by the direct-rational score identity fixtures (small M10/R5 and M30/R20), exact compactification tests, boundary/corner fixtures, and independent exact PMF/score diagnostics. This closes the *derivation review portion* of G1 on the implemented model. Input validation was separately exercised by run #50. The resource-contract correction under run #51 remains pending; G1–G6 are not yet declared closed as a group.
+
+### 9.10 Run #51 — active resource contract regression PASS (2026-11-20)
+
+GitHub Actions run [44771555687](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44771555687), source commit `3591a63e095a67aa0dfaeae2df5528076a90b708`, completed successfully:
+- 138 deterministic tests, 341.429 seconds, exit status 0.
+- All six F5 modules compiled; locked dependencies installed.
+- The new early-validation tests for projection/lift/mean budgets, positive exact projection width, and degenerate-data early returns passed.
+This validates the G5 resource-contract correction on that source snapshot. It does not alone close the broader G5 gate until all resource-remainder and result-payload requirements are reconciled.
+
+### 9.11 G1 provenance binding — implementation added, verification pending (2026-11-20)
+
+The G1 audit found that a global-MLE result contained a same-histogram provenance label but did not bind the returned census payload to the actual histogram, trial count, source revision and exact score equations. This is now addressed in code commit `05cffe1843d4ed6f64837e51ac1d16983c115fd8`:
+- A canonical SHA-256 provenance record is generated from `r`, the normalized positive-multiplicity histogram, sample size and pooled successes.
+- It records the explicit 40-hex source revision (or the GitHub Actions `GITHUB_SHA` when no explicit revision is supplied).
+- It hashes both exact raw score-numerator polynomials and their compactified forms using canonical sorted sparse terms.
+- The provenance record is attached to every stationary census returned within the global-MLE certificate, including typed incomplete/abstention results.
+- New tests verify semantic normalization of zero-count entries, hash sensitivity to changed data, source-SHA validation, and explicit binding in a boundary-supremum certificate. An exhaustive small-histogram rational score-identity test was also added.
+
+The new deterministic workflow is [run #52](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44772784165), queued at the time of this record. Do not count G1 provenance binding as validated until it completes successfully.
