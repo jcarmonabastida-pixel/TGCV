@@ -233,7 +233,7 @@ def build_production_analytic_reconciliation(
                 "log_shape_parameter_distance_vs_analytic": audit.log_shape_parameter_distance,
             },
         }
-    if production is not None and audit is not None:
+    if fit is not None and production is not None and audit is not None:
         eta_a, xi_a = audit.selected_mean_logit, audit.selected_log_concentration
         ll_a = audit.selected_log_likelihood
         mean_a = (1.0 / (1.0 + math.exp(-eta_a)) if eta_a >= 0
@@ -264,7 +264,8 @@ def build_production_analytic_reconciliation(
             "concentration_difference_production_minus_analytic": fit.concentration - concentration_a if concentration_a is not None else None,
         }
     status = (
-        "PRODUCTION_FIT_NOT_AVAILABLE" if fit is None else
+        "PRODUCTION_FIT_NOT_AVAILABLE" if fit is None and not production_starts else
+        "PRODUCTION_OPTIMIZATION_NO_ADMISSIBLE_FIT" if fit is None else
         "ANALYTIC_AUDIT_UNAVAILABLE" if audit is None else
         "RAW_COMPARISON_RECORDED_NO_ADJUDICATION_THRESHOLD"
     )
