@@ -1376,6 +1376,8 @@ def beta_binomial_joint_corner_likelihood_limits(
     limit is therefore exactly one iff every observed count is that endpoint,
     and zero otherwise.
     """
+    from fractions import Fraction
+
     # Reuse the established input contract and exact one-edge evaluator.
     beta_binomial_boundary_likelihoods(r, count_histogram)
 
