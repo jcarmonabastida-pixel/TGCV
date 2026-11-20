@@ -411,3 +411,22 @@ A reduced interval operation, `conditional_mean_tube_and_concentration_exclusion
 If the concentration score excludes zero throughout the tube, the whole concentration interval is certified to contain no common stationary point. Otherwise it is retained as an unresolved candidate interval. Failure to certify both signs returns an explicit unresolved status. The operation is interval pruning only: it does not prove existence of a stationary point, isolate a concentration root, certify multiplicity, or establish a global census. The dyadic mean grid is bounded by an explicit depth ceiling. Five deterministic tests cover successful pruning, candidate retention, endpoint-sign abstention, invalid budgets/domains and explicit rejection of compactification endpoints. They are committed but not executed under governed CPython 3.12.
 
 This is the preferred next step in the reduced route because it exploits conditional mean uniqueness without requiring immediate algebraic lifting of each resultant root. Subresultant lifting remains a fallback for candidate intervals that cannot be resolved by interval pruning or require exact algebraic root recovery. No F5 closure, calibration, benchmark or scientific execution is claimed.
+
+
+## 22. Adaptive conditional-mean concentration census (2026-11-20)
+
+The reduced interval route now has an integrated deterministic controller, `conditional_mean_adaptive_concentration_census()`. Its input is a strictly interior rational compactified-concentration interval ([t_-,t_+]subset(0,1)), together with the paired exact compactified beta-binomial score numerators from one nondegenerate histogram.
+
+For each FIFO-processed concentration interval, the controller:
+
+1. certifies signs of the mean-score numerator at rational dyadic μ grid points over the entire t interval using exact univariate Bernstein coefficients;
+2. uses strict conditional concavity of the underlying beta-binomial log-likelihood to obtain a tube containing the unique conditional mean root for every t in that interval;
+3. excludes the interval if the concentration-score numerator has a strict Bernstein sign throughout the tube;
+4. otherwise attempts the existing exact-rational Krawczyk certificate on the complete tube; strict inclusion plus the contraction bound certifies exactly one simple common stationary point in that tube;
+5. bisects t deterministically when neither exclusion nor inclusion succeeds, retaining multiple/singular roots, split-boundary roots, and all depth/resource remainders as unresolved.
+
+The controller returns `COMPLETE_CENSUS_ON_SUPPLIED_T_INTERVAL` only when every interval in the supplied closed finite-t range is either excluded or certified to contain exactly one simple root. It returns explicit incomplete statuses otherwise. This is a local-domain census, not a certificate over all (0<t<1): the t=0 and t=1 boundary strata are excluded and remain subject to the separately specified exact boundary/corner likelihood adjudication. The caller must cover the full finite domain with an independently justified endpoint treatment before claiming global exhaustiveness.
+
+Five deterministic controller tests cover root-free exclusion, a simple affine root, retention of a multiple root, resource remainder and invalid domains/budgets. The source-level test module now contains 76 methods. These tests are committed but have not been executed in governed CPython 3.12. The simple affine fixtures test the numerical-certification kernel contract; production use remains restricted to paired score numerators generated from the same nondegenerate beta-binomial histogram. No calibration, bank, replay or scientific execution is claimed or authorized.
+
+This controller is the current preferred reduced route for the interior concentration search. Algebraic resultant/Sturm isolation remains a complementary cross-check and fallback for unresolved concentration intervals; it is not invoked indiscriminately. Multiple-root deflation and endpoint-complete domain coverage remain open proof obligations. D1/F5 remain OPEN.
