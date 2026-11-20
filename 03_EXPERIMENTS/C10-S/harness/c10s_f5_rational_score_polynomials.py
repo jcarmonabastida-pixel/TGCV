@@ -1736,3 +1736,56 @@ def compactified_projection_resultant_mu(
         "coefficient_domain": "EXACT_FRACTION",
     }
 
+def compactified_projection_root_isolation_mu(
+    resultant_result: Mapping[str, object],
+    *,
+    width,
+    max_depth: int = 64,
+    max_intervals: int = 10000,
+) -> dict[str, object]:
+    """Square-free factor and Sturm-isolate real projection roots in mu in [0,1].
+
+    Returned roots are projection coordinates only. They are not yet lifted
+    to common (mu,t) roots and their multiplicities are not local intersection
+    multiplicities.
+    """
+    if not isinstance(resultant_result, Mapping):
+        raise ValueError("RESULTANT_RESULT_MAPPING_REQUIRED")
+    status = resultant_result.get("status")
+    if status != "EXACT_RESULTANT_NONZERO":
+        return {
+            "status": "PROJECTION_ISOLATION_NOT_AVAILABLE_FROM_RESULTANT_STATUS",
+            "resultant_status": status,
+            "factors": [],
+        }
+    polynomial = resultant_result.get("resultant")
+    if polynomial is None:
+        raise ValueError("NONZERO_RESULTANT_POLYNOMIAL_REQUIRED")
+    factors = _uni_squarefree_factors(polynomial)
+    isolated_factors = []
+    incomplete = False
+    for factor in factors:
+        isolation = _uni_isolate_squarefree_unit_roots(
+            factor["coefficients"],
+            width=width,
+            max_depth=max_depth,
+            max_intervals=max_intervals,
+        )
+        if isolation["status"] != "ISOLATION_COMPLETE":
+            incomplete = True
+        isolated_factors.append({
+            "projection_multiplicity": factor["multiplicity"],
+            **isolation,
+        })
+    return {
+        "status": (
+            "PROJECTION_ROOT_ISOLATION_COMPLETE" if not incomplete
+            else "PROJECTION_ROOT_ISOLATION_PARTIAL"
+        ),
+        "axis": "mu",
+        "domain": (0, 1),
+        "factors": isolated_factors,
+        "scope": "PROJECTION_COORDINATES_ONLY_NOT_LIFTED_TO_BIVARIATE_ROOTS",
+        "multiplicity_warning": "PROJECTION_MULTIPLICITY_IS_NOT_LOCAL_INTERSECTION_MULTIPLICITY",
+    }
+
