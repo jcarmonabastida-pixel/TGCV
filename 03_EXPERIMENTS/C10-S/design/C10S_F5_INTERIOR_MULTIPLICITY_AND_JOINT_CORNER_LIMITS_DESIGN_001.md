@@ -213,3 +213,9 @@ Evidence:
 - The subsequent G5 change in commit `3591a63e095a67aa0dfaeae2df5528076a90b708` removes inert boundary-budget arguments, validates active interval/projection budgets before early returns, and requires a positive exact-rational projection width. Its governed suite is [run 44771555687](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44771555687), pending at the time of this update.
 
 This design does not claim a universal multiplicity-aware bivariate root solver. Its purpose is to preserve the mathematical boundary between certified simple roots and explicit singular-root abstention, while keeping the implementation bounded to the frozen F5 M10/R5 and M30/R20 designs.
+
+### 10.1 Verification update — runs #51–#53 (2026-11-20)
+
+The run #51 resource-contract suite passed 138/138; run #52 passed 142/142, including the explicit unattained boundary-supremum global certificate; run #53 passed 143/143, including the common M10/R5 Bernstein-versus-resultant/Sturm cross-check with matching simple-root certificates. See the end-to-end closure dossier §9.12–§9.13 for exact commit SHAs and execution records.
+
+The remaining multiplicity limitation is intentionally fail-closed: simple roots in the bounded M10/R5 and M30/R20 targets are completely censused; multiple/singular interior roots and arbitrary mixed common components are not certified as simple roots and block global status. This is the accepted F5 contract for unsupported regimes, not a claim that general multiplicity-aware bivariate lifting has been solved.
