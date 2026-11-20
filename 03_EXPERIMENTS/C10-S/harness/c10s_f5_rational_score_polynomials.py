@@ -2222,6 +2222,57 @@ def beta_binomial_compactified_stationary_census(
         max_depth=max_boundary_depth,
         max_intervals=max_boundary_intervals,
     )
+
+    # Preferred first line: certify the entire compactified concentration
+    # interval directly with conditional-mean concavity, Bernstein exclusion
+    # and Krawczyk inclusion. The exact resultant is the fallback/cross-check.
+    interval_first = conditional_mean_adaptive_concentration_census(
+        poly_p, poly_q,
+        t_bounds=(Fraction(0), Fraction(1)),
+        max_intervals=max_lift_intervals,
+        max_depth=max_lift_depth,
+        max_mu_depth=max_mu_depth,
+    )
+    if (
+        interval_first["status"] == "COMPLETE_CENSUS_ON_SUPPLIED_T_INTERVAL"
+        and boundary["status"] == "BOUNDARY_ROOT_CENSUS_WITH_CORNER_OWNERSHIP"
+    ):
+        return {
+            "status": "INTERIOR_SIMPLE_ROOT_AND_BOUNDARY_CENSUS_COMPLETE",
+            "paired_score_provenance": "SAME_VALIDATED_NONDEGENERATE_COUNT_HISTOGRAM",
+            "compactified_parameterization": "t=kappa/(1+kappa)",
+            "original_axis_components": original_axis_components,
+            "component_disposition": stripped,
+            "axis_components": axis_components,
+            "concentration_resultant": {
+                "status": "NOT_REQUIRED_INTERVAL_FIRST_LINE_COMPLETE",
+                "method": "CONDITIONAL_MEAN_BERNSTEIN_KRAWCZYK",
+            },
+            "concentration_projection": {
+                "status": "NOT_REQUIRED_INTERVAL_FIRST_LINE_COMPLETE",
+                "domain": (Fraction(0), Fraction(1)),
+            },
+            "interior_stationary_candidates": [{
+                "projection_source": "FULL_DOMAIN_CONDITIONAL_MEAN_BERNSTEIN",
+                "lift_result": interval_first,
+            }],
+            "interval_first_attempt": interval_first,
+            "endpoint_projection_roots": (),
+            "boundary_census": boundary,
+            "boundary_likelihoods": boundary_likelihoods,
+            "joint_corner_limits": corner_limits,
+            "unresolved_lifts": [],
+            "global_likelihood_ordering": "NOT_PERFORMED",
+            "scope": "FULL_OPEN_CONCENTRATION_DOMAIN_CENSUSED_WITH_BOUNDARY_STRATA_SEPARATE",
+            "resource_contract": {
+                "max_lift_intervals": max_lift_intervals,
+                "max_lift_depth": max_lift_depth,
+                "max_mu_depth": max_mu_depth,
+                "max_boundary_depth": max_boundary_depth,
+                "max_boundary_intervals": max_boundary_intervals,
+            },
+        }
+
     resultant = compactified_concentration_resultant_t(poly_p, poly_q)
     if resultant["status"] != "EXACT_RESULTANT_NONZERO":
         return {
