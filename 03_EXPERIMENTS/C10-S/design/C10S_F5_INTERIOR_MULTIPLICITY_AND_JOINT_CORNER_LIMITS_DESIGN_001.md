@@ -131,3 +131,15 @@ The likelihood comparison gate is separate: a complete stationary-root census is
 - Interval-method comparison specification: the interval backend remains simple-root Krawczyk plus Bernstein exclusion until a validated deflation theorem is implemented; the algebraic backend remains a parallel exact resultant/subresultant candidate.
 - F1/F5 weak-identification audit: the corner result is a boundary-likelihood classification, not an identification or causal evidence upgrade. Weak-identification diagnostics and statistical execution gates remain unchanged.
 - Test inventory: four new deterministic joint-corner tests bring the source-level test-method count to 50. Governed execution remains pending.
+
+## 4A. Implemented first algebraic subroutine: axis-aligned common components
+
+The harness now includes `compactified_axis_common_components(P,Q)`. For each axis it treats the bivariate polynomial as a univariate polynomial in that axis with coefficient polynomials in the other variable, computes the exact coefficient content over \\(\\mathbb Q\\), and takes the gcd of the two contents. It therefore detects:
+- common factors depending on \\(\\mu\\) alone, which represent vertical components in the compactified square;
+- common factors depending on \\(t\\) alone, which represent horizontal components.
+
+The common content is square-free factorized in characteristic zero, preserving the minimum shared multiplicity encoded by the gcd. A zero input polynomial returns `ZERO_POLYNOMIAL_COMMON_COMPONENT_UNRESOLVED`; malformed sparse terms are rejected. The result explicitly reports `general_mixed_bivariate_factors = NOT_CHECKED`.
+
+This is a useful first exact component of the algebraic route, but it is not a general bivariate gcd. It does not detect mixed factors such as \\(\\mu+t-1\\), does not compute a resultant, does not isolate the component's intersections with the domain, and does not prove that no other common component exists. A negative axis-aligned result must never be interpreted as absence of a general common component.
+
+Four deterministic tests cover a vertical factor, a repeated horizontal factor, absence of axis-aligned factors without overclaiming, malformed inputs and zero-polynomial abstention (five tests total). The source-level suite now contains 55 test methods. All remain unexecuted under governed CPython 3.12.
