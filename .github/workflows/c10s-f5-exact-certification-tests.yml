@@ -12,6 +12,10 @@ on:
       - 03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_mcse_profile.py
       - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_mcse_profile.py
 
+concurrency:
+  group: c10s-f5-deterministic-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
