@@ -861,7 +861,7 @@ class RationalScorePolynomialTests(unittest.TestCase):
         result = conditional_mean_tube_and_concentration_exclusion(
             {(0, 0): 1, (1, 0): -2},
             {(0, 0): 1},
-            t_bounds=(Fraction(0), Fraction(1)),
+            t_bounds=(Fraction(1, 4), Fraction(3, 4)),
             max_mu_depth=4,
         )
         self.assertEqual(result["status"], "NO_COMMON_STATIONARY_POINT_ON_T_INTERVAL")
@@ -873,7 +873,7 @@ class RationalScorePolynomialTests(unittest.TestCase):
         result = conditional_mean_tube_and_concentration_exclusion(
             {(0, 0): 1, (1, 0): -2},
             {(0, 1): 2, (0, 0): -1},
-            t_bounds=(Fraction(0), Fraction(1)),
+            t_bounds=(Fraction(1, 4), Fraction(3, 4)),
             max_mu_depth=4,
         )
         self.assertEqual(result["status"], "CANDIDATE_T_INTERVAL_UNRESOLVED")
@@ -884,13 +884,13 @@ class RationalScorePolynomialTests(unittest.TestCase):
         result = conditional_mean_tube_and_concentration_exclusion(
             {(1, 0): 1},
             {(0, 0): 1},
-            t_bounds=(Fraction(0), Fraction(1)),
+            t_bounds=(Fraction(1, 4), Fraction(3, 4)),
             max_mu_depth=4,
         )
         self.assertEqual(result["status"], "MEAN_ROOT_TUBE_UNRESOLVED_ENDPOINT_SIGNS")
 
     def test_conditional_mean_tube_rejects_invalid_domain_and_budget(self):
-        with self.assertRaisesRegex(ValueError, "T_BOUNDS_MUST_BE_WITHIN_UNIT_INTERVAL"):
+        with self.assertRaisesRegex(ValueError, "T_BOUNDS_MUST_BE_STRICTLY_INSIDE_FINITE_DOMAIN"):
             conditional_mean_tube_and_concentration_exclusion(
                 {(0, 0): 1, (1, 0): -2}, {(0, 0): 1},
                 t_bounds=(Fraction(-1, 2), Fraction(1)), max_mu_depth=4,
