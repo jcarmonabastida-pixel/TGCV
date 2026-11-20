@@ -15,7 +15,7 @@ The new work closes one analytically tractable part of the boundary problem and 
 
 ## 2. Joint likelihood limits at the four compactification corners
 
-The compactification is (t=\kappa/(1+\kappa)), so (t=0) denotes \(\kappa\to0\) and (t=1) denotes \(\kappa\to\infty\). The four corners combine either \(\mu\to0\) or \(\mu\to1\) with either concentration limit.
+The compactification is \\(t=\\kappa/(1+\\kappa)\\), so \\(t=0\\) denotes \\(\\kappa\\to0\\) and \\(t=1\\) denotes \\(\\kappa\\to\\infty\\). The four corners combine either \(\mu\to0\) or \(\mu\to1\) with either concentration limit.
 
 For a beta-binomial count \(X\in\{0,\ldots,r\}\), the mean is \(E[X]=r\mu\). Therefore, for every \(\kappa>0\), irrespective of its magnitude or its rate of approach to zero/infinity,
 
@@ -61,8 +61,8 @@ The existing Krawczyk certificate is restricted to simple roots: strict inclusio
 The following is the exact algebraic candidate route; it is a design contract, not an implemented claim.
 
 1. Validate integer sparse input and remove zero terms.
-2. Detect whether \(P,Q\) have a nonconstant common bivariate factor. If so, classify a common component; do not treat a zero resultant as a finite root list.
-3. Compute the exact projection resultant \(R_\mu(\mu)=\operatorname{Res}_t(P,Q)\). A symmetric \(R_t(t)\) is an independent projection check.
+2. Treat \\(P,Q\\) as polynomials in \\(t\\) with coefficients in \\(\\mathbb Z[\\mu]\\). Extract and compare their coefficient contents in \\(\\mathbb Z[\\mu]\\); a nonconstant common content factor identifies a vertical common component candidate and must be isolated/classified separately. Form primitive parts and compute their gcd over \\(\\mathbb Q(\\mu)[t]\\). A nonconstant gcd identifies a nonvertical common component; do not treat an identically zero resultant as a finite root list.
+3. Compute the exact projection resultant of the primitive parts, \\(R_\\mu(\\mu)=\\operatorname{Res}_t(P_{\\mathrm{prim}},Q_{\\mathrm{prim}})\\). A symmetric \\(R_t(t)\\), with the analogous content extraction, is an independent projection check.
 4. If the resultant is nonzero, compute its square-free decomposition and isolate all real projection roots in the compactified unit interval with exact Sturm counts.
 5. For each isolated algebraic projection root, use a subresultant chain / specialized polynomial gcd to recover the common roots in the eliminated coordinate. Verify every recovered pair in the original two equations using exact algebraic-number arithmetic.
 6. Distinguish isolated affine roots, degree-drop/projection artifacts, roots on already-owned boundary strata, and unresolved algebraic components. Resultant multiplicity is not to be equated automatically with local intersection multiplicity.
