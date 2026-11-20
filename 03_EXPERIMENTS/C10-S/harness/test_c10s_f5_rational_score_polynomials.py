@@ -898,7 +898,7 @@ class RationalScorePolynomialTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "MAX_MU_DEPTH_MUST_BE_INTEGER_1_TO_16"):
             conditional_mean_tube_and_concentration_exclusion(
                 {(0, 0): 1, (1, 0): -2}, {(0, 0): 1},
-                t_bounds=(Fraction(0), Fraction(1)), max_mu_depth=0,
+                t_bounds=(Fraction(1, 4), Fraction(3, 4)), max_mu_depth=0,
             )
 
 
