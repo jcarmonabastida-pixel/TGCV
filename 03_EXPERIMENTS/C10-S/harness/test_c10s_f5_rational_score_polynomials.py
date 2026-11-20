@@ -1126,6 +1126,46 @@ class RationalScorePolynomialTests(unittest.TestCase):
         )
 
 
+    def test_m30_r20_global_mle_orders_interior_and_boundary_candidates(self):
+        hist = {x: 1 for x in range(21)}
+        for x, extra in {0: 1, 5: 2, 10: 3, 15: 3}.items():
+            hist[x] += extra
+        result = beta_binomial_global_mle_certificate(
+            20, hist,
+            max_refinements=0,
+            projection_bits=12,
+            max_projection_depth=12,
+            max_projection_intervals=256,
+            max_lift_intervals=128,
+            max_lift_depth=12,
+            max_mu_depth=8,
+            max_boundary_depth=16,
+            max_boundary_intervals=512,
+        )
+        self.assertIn(
+            result["status"],
+            {
+                "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED",
+                "GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED",
+                "GLOBAL_CO_MAXIMIZERS_CERTIFIED",
+            },
+            msg=repr({
+                "status": result["status"],
+                "census_status": result.get("census", {}).get("status"),
+                "refinement_history": result.get("refinement_history"),
+                "candidate_enclosure": result.get("candidate_enclosure"),
+            }),
+        )
+        self.assertEqual(
+            result["ordering_method"],
+            "EXACT_RATIONAL_PROBABILITY_INTERVALS",
+        )
+        self.assertEqual(
+            result["globality_basis"],
+            "COMPLETE_INTERIOR_STATIONARY_CENSUS_PLUS_ALL_BOUNDARY_PROFILES_AND_CORNER_LIMITS",
+        )
+
+
     def test_conditional_mean_tube_strips_endpoint_only_line_factor(self):
         result = conditional_mean_tube_and_concentration_exclusion(
             {
