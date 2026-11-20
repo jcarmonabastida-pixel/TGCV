@@ -2384,8 +2384,8 @@ def _beta_binomial_likelihood_enclosure(
         raise ValueError("MAX_FRACTION_BITS_MUST_BE_INTEGER_AT_LEAST_64")
     mu_lo, mu_hi = (_exact_fraction(v) for v in mu_bounds)
     t_lo, t_hi = (_exact_fraction(v) for v in t_bounds)
-    if not 0 < mu_lo < mu_hi < 1 or not 0 < t_lo < t_hi < 1:
-        raise ValueError("LIKELIHOOD_BOX_MUST_BE_STRICTLY_INTERIOR")
+    if not 0 < mu_lo <= mu_hi < 1 or not 0 < t_lo <= t_hi < 1:
+        raise ValueError("LIKELIHOOD_BOX_MUST_BE_INTERIOR")
 
     corners = (
         (mu_lo, t_lo), (mu_lo, t_hi),
@@ -2522,7 +2522,9 @@ def beta_binomial_global_mle_certificate(
         for lift_record in census.get("interior_stationary_candidates", []):
             lift = lift_record["lift_result"]
             for certified in lift["certified_simple_root_intervals"]:
-                root_box = certified["root_certificate"]["box"]
+                # The Krawczyk image is a valid (usually tighter) enclosure
+                # of the unique root, unlike the full subdivision input box.
+                root_box = certified["root_certificate"]["krawczyk_box"]
                 enclosure = _beta_binomial_likelihood_enclosure(
                     r, count_histogram,
                     mu_bounds=root_box[0],
