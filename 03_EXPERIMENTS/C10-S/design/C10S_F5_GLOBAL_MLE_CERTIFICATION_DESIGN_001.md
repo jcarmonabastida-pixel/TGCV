@@ -15,7 +15,7 @@ Resolve the D1 blocker concerning global maximum adjudication, multiple stationa
 
 The proposed solution is not another multistart heuristic and does not introduce an empirical likelihood-difference threshold. It exploits the finite-product form of the beta-binomial likelihood and uses exact algebraic elimination/root isolation as the global candidate-enumeration layer. Floating-point optimizers remain useful for candidate discovery and numerical cross-checks, but they do not certify globality.
 
-This is a design proposal. No executable implementation, numerical root isolation, benchmark, simulation or scientific run is claimed.
+This remains a design proposal for the complete global certificate. Partial executable research primitives now exist for exact rational score numerators, concentration compactification, and Bernstein box zero-exclusion. No resultant/root-isolation backend, complete interval root-inclusion certificate, global MLE certification, benchmark, simulation or scientific run is claimed.
 
 ## 2. Likelihood in finite-product form
 
