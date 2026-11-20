@@ -1877,12 +1877,11 @@ def conditional_mean_tube_and_concentration_exclusion(
 ) -> dict[str, object]:
     """Bracket the unique conditional mean root uniformly over a t interval.
 
-    For each rational grid point mu=i/2**max_mu_depth, evaluate the mean-score
-    numerator as a univariate polynomial in t and use exact univariate
-    Bernstein coefficients on t_bounds to certify its strict sign. The
-    strictly decreasing conditional beta-binomial mean score implies that
-    certified positive/negative grid points bracket its unique root for every
-    t in the interval. The concentration-score numerator is then bounded on
+    Evaluate the mean-score numerator at rational mu values by exact
+    univariate Bernstein bounds in t. Strict conditional concavity permits
+    sign-guided dyadic bisection: a uniformly positive lower witness and a
+    uniformly negative upper witness bracket the unique mean root for every
+    t in the interval. This takes O(max_mu_depth) exact line evaluations. The concentration-score numerator is then bounded on
     the resulting rational (mu,t) tube by tensor-product Bernstein coefficients.
 
     If that second numerator has strict constant sign on the tube, the entire
@@ -2035,10 +2034,9 @@ def conditional_mean_adaptive_concentration_census(
 
     The result is a complete census only for the supplied closed t interval
     and only when every interval is either excluded or certified to contain
-    exactly one simple root. Multiple roots, split-boundary roots, and
-    resource-limited intervals remain explicitly unresolved. The t=0 and
-    t=1 boundary strata are outside this operation and require the separate
-    boundary likelihood/corner adjudication.
+    exactly one simple root. Multiple roots, split-boundary roots, boundary
+    roots at t=0 or t=1, and resource-limited intervals remain explicitly
+    unresolved; the separate edge/corner census adjudicates the boundary strata.
     """
     from collections import deque
     from fractions import Fraction
@@ -2301,6 +2299,7 @@ def beta_binomial_compactified_stationary_census(
             "component_disposition": stripped,
             "axis_components": axis_components,
             "concentration_resultant": resultant,
+            "interval_first_attempt": interval_first,
             "boundary_census": boundary,
             "boundary_likelihoods": boundary_likelihoods,
             "joint_corner_limits": corner_limits,
@@ -2322,6 +2321,7 @@ def beta_binomial_compactified_stationary_census(
             "axis_components": axis_components,
             "concentration_resultant": resultant,
             "concentration_projection": projection,
+            "interval_first_attempt": interval_first,
             "boundary_census": boundary,
             "boundary_likelihoods": boundary_likelihoods,
             "joint_corner_limits": corner_limits,
@@ -2407,6 +2407,7 @@ def beta_binomial_compactified_stationary_census(
         "axis_components": axis_components,
         "concentration_resultant": resultant,
         "concentration_projection": projection,
+        "interval_first_attempt": interval_first,
         "interior_stationary_candidates": interior_lifts,
         "endpoint_projection_roots": tuple(endpoint_roots),
         "boundary_census": boundary,
