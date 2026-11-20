@@ -569,3 +569,50 @@ The design includes common target/boundary definitions, fit-state/failure semant
 **Disposition:** D0 design draft persisted; not frozen, implemented or executed. No code, bootstrap, calibration, replay, new bank or scientific execution occurred. No frozen specification, estimator, acceptance criterion, historical result, RMA or Evidence→Claim Matrix was modified.
 
 **Next operation:** resolve the remaining design decisions in the draft (M1 percentile vs basic primary/co-primary rule; failed/boundary refit semantics; M2b cutoff calibration and Monte Carlo precision; joint W/B region status; precision targets and compute budget). Then produce one D1 successor specification and review it against frozen v1.0 before any implementation or authorization.
+
+
+## D1 successor specification — coordinated sequence update (2026-11-20)
+
+A separate successor specification review candidate has been persisted:
+
+`03_EXPERIMENTS/C10-S/design/C10S_F5_INTERVAL_METHOD_COMPARISON_SPEC_DRAFT_001.md`
+
+This is deliberately **not** an amendment to frozen `C10S_POST_HOLDOUT_F1_F5_DEVELOPMENT_CALIBRATION_SPEC_001.md` v1.0. Parent v1.0 expressly limits its F5 Phase B to diagnosis of existing C5 versus C0 and states that no alternative F5 interval method is selected in that package. The new document therefore defines a distinct successor work package, still design-only and requiring its own later authorization. v1.0, B2/B3 and their historical dispositions remain immutable.
+
+### D1 design decisions now made provisionally
+
+- M0 remains the exact existing C5 fixed-parameter bootstrap of frozen raw sample statistics.
+- M1 is explicitly a different estimator/interval package using replicate-specific beta-binomial MLE functionals for the same population W/B truths. M1-PCT is proposed primary because it preserves the natural feasible range of admissible fitted functionals; M1-BASIC is a labelled secondary diagnostic and is never clipped.
+- M2a is only an asymptotic LR diagnostic reference.
+- M2b is proposed as a beta22/design-cell calibrated LR candidate, with separate W/B × M/R cutoffs and a distinct calibration bank; scope is limited to the two frozen beta22 cells, not a uniform-parameter or misspecification claim.
+- Disconnected profile sets remain unions; no convex-hull substitution for primary scoring.
+- No failed bootstrap/profile fit may be silently dropped, redrawn or replaced.
+- A provisional 5,000-dataset target per cell for each of the separate development and development-validation banks is motivated by coverage MCSE near 0.0031 at nominal 95%; the distinct M2b calibration-bank size is to be derived from its simultaneous tolerance-confidence requirement.
+
+### Static contract inspection — blockers identified
+
+The current F5 fit path and likelihood diagnostics were inspected. They already provide useful shared assets: analytic score/Hessian in mean-logit/log-concentration coordinates, an independently parameterized log-alpha/log-beta derivative check, three analytic L-BFGS-B starts, boundary-limit likelihood calculations, profile-concentration diagnostics, and the frozen exact finite-R oracle.
+
+They do **not** yet provide a complete global-fit certificate:
+- both the production fit and analytic audit select the best successful bounded start;
+- the independent BFGS check is initialized from the analytic selected fit and is explicitly local, not an independent global search;
+- a failed start can be far from the selected optimum or lie near it, while successful starts can also disagree materially;
+- finite bounds are not theoretical limits, and current boundary comparisons require an independently justified global interpretation;
+- the existing concentration profile diagnostic uses a supplied grid and is not itself proof that all stationary regions/global maxima have been found.
+
+Therefore the all-starts-success Boolean cannot simply be removed, but neither can it serve as a complete scientific adjudicator. A scale-aware/global-fit rule remains a D1 blocker. No arbitrary objective/parameter threshold is inferred from B2/B3.
+
+### Integrated gate status
+
+- D0: comparative design reconstructed and persisted.
+- D1: successor specification review candidate persisted; **OPEN**, not frozen.
+- D2: not started. No M1/M2 code or test was written because the fit-state, boundary and calibration contracts are not yet freezeable.
+- D3: not started. No resource microbenchmark or preflight performed.
+- D4/D5: no authorization; no new bank, bootstrap, calibration, replay or scientific execution.
+- D6/D7: not started.
+
+### Next operation
+
+Resolve the D1 blockers in the successor specification through analytic derivation and deterministic contract design: (i) global-fit/failed-start adjudication, (ii) profile topology and boundary certification, (iii) exact M2b order-statistic/tolerance calculation and bank size, (iv) M1 endpoint-MCSE-based bootstrap count, (v) exact Wilson precision operating characteristics, and (vi) static runtime/memory ceiling after the implementation contract is frozen. Then review and freeze D1 as a separately versioned successor specification. Only then begin D2 shared implementation and deterministic adversarial tests.
+
+**No changes** to frozen v1.0, C5/C0 production semantics, B2/B3 results, acceptance gates, seeds, RMA, Evidence→Claim Matrix, main, or scientific authorization.
