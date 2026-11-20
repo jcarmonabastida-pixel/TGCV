@@ -23,6 +23,7 @@ from c10s_f5_rational_score_polynomials import (
     compactified_concentration_root_isolation_t,
     conditional_mean_tube_and_concentration_exclusion,
     conditional_mean_adaptive_concentration_census,
+    beta_binomial_compactified_stationary_census,
 )
 
 
@@ -973,6 +974,52 @@ class RationalScorePolynomialTests(unittest.TestCase):
                 {(0, 0): 1, (1, 0): -2}, {(0, 0): 1},
                 t_bounds=(Fraction(1, 4), Fraction(3, 4)), max_intervals=0,
             )
+
+
+    def test_integrated_stationary_census_lifts_simple_interior_root(self):
+        result = beta_binomial_compactified_stationary_census(
+            1, {0: 1, 1: 1},
+            projection_width=Fraction(1, 16),
+            max_projection_depth=16,
+            max_projection_intervals=100,
+            max_lift_intervals=20,
+            max_lift_depth=8,
+            max_mu_depth=6,
+            max_boundary_depth=12,
+            max_boundary_intervals=100,
+        )
+        self.assertIn(
+            result["status"],
+            {
+                "INTERIOR_SIMPLE_ROOT_AND_BOUNDARY_CENSUS_COMPLETE",
+                "INCOMPLETE_STATIONARY_CENSUS",
+            },
+        )
+        self.assertIn("concentration_resultant", result)
+        self.assertIn("concentration_projection", result)
+        self.assertIn("boundary_census", result)
+        self.assertEqual(result["global_likelihood_ordering"], "NOT_PERFORMED")
+
+    def test_integrated_stationary_census_reports_degenerate_pooled_mean(self):
+        result = beta_binomial_compactified_stationary_census(3, {0: 4})
+        self.assertEqual(result["status"], "NO_INTERIOR_MEAN_ROOT_DEGENERATE_DATA")
+        self.assertEqual(result["global_likelihood_ordering"], "NOT_PERFORMED")
+
+    def test_integrated_stationary_census_does_not_promote_multiple_root(self):
+        # P=1-2*mu has a unique conditional mean root; Q=(2*t-1)^2
+        # creates a singular common root that Krawczyk must not certify.
+        from c10s_f5_rational_score_polynomials import (
+            conditional_mean_adaptive_concentration_census,
+        )
+        result = conditional_mean_adaptive_concentration_census(
+            {(0, 0): 1, (1, 0): -2},
+            {(0, 2): 4, (0, 1): -4, (0, 0): 1},
+            t_bounds=(Fraction(1, 4), Fraction(3, 4)),
+            max_intervals=20,
+            max_depth=2,
+        )
+        self.assertEqual(result["status"], "INCOMPLETE_UNRESOLVED_INTERVALS")
+        self.assertGreater(len(result["unresolved_intervals"]), 0)
 
 
 if __name__ == "__main__":
