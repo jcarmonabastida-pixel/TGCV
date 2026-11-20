@@ -1,6 +1,6 @@
 # C10-S — F5 B1 production/analytic reconciliation implementation 001
 
-**Status:** IMPLEMENTED IN RESEARCH — STATIC VALIDATION PENDING  
+**Status:** IMPLEMENTED IN RESEARCH — PASS_STATIC  
 **Date:** 2026-11-20  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`  
 **Scope:** static software implementation and deterministic tests only  
@@ -111,9 +111,9 @@ The current branch head is later than some source updates because the commit tra
 ## 8. Validation disposition
 
 **Implementation persistence:** PASS_STATIC (source and tests fetched from the research branch).  
-**Static compile/unit workflow:** PENDING / NOT_VERIFIED in this record.  
+**Static compile/unit workflow:** PASS — exact tested code commit `18e1c6372af1c191b640e0d1f8d3318b889b28b9`; GitHub Actions run `44645072630`; compile PASS; hash-locked dependency installation PASS; 171 deterministic tests PASS in 24.023 s.  
 **Scientific execution:** NOT RUN / NOT AUTHORIZED.  
 **F5 method eligibility:** OPEN; historical B2/B3 failed frozen gates.  
 **Production/analytic numerical adjudication:** RAW DIFFERENCES NOW EXPOSED; NO THRESHOLD OR PASS/FAIL RULE SELECTED.
 
-The workflow is configured to run on the changed paths, but no successful workflow run or test count is claimed here. The next admissible action is to inspect the exact-commit static workflow result, repair any static failures, and then review the multi-start gate interpretation. No replay or calibration is part of that next step.
+The static workflow completed successfully on the exact code/test commit. The later branch commits changed only research documentation; the implementation/test blobs are unchanged from the tested commit. The next admissible action is to review the multi-start gate interpretation and the observed P/A differences in the existing results. No replay or calibration is part of that next step.
