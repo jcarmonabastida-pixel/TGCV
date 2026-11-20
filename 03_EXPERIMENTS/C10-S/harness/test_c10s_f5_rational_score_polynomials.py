@@ -21,6 +21,7 @@ from c10s_f5_rational_score_polynomials import (
     compactified_projection_root_isolation_mu,
     compactified_concentration_resultant_t,
     compactified_concentration_root_isolation_t,
+    conditional_mean_tube_and_concentration_exclusion,
 )
 
 
@@ -854,6 +855,51 @@ class RationalScorePolynomialTests(unittest.TestCase):
         )
         self.assertNotEqual(result["status"], "ALL_BOXES_EXCLUDED")
         self.assertGreater(len(result["unresolved_boxes"]), 0)
+
+
+    def test_conditional_mean_tube_prunes_interval_when_concentration_score_excludes_zero(self):
+        result = conditional_mean_tube_and_concentration_exclusion(
+            {(0, 0): 1, (1, 0): -2},
+            {(0, 0): 1},
+            t_bounds=(Fraction(0), Fraction(1)),
+            max_mu_depth=4,
+        )
+        self.assertEqual(result["status"], "NO_COMMON_STATIONARY_POINT_ON_T_INTERVAL")
+        self.assertEqual(result["mean_root_tube_mu_bounds"], (Fraction(1, 2), Fraction(1, 2)))
+        self.assertTrue(result["mean_root_existence_for_every_t_certified"])
+        self.assertTrue(result["concentration_score_excludes_zero_on_tube"])
+
+    def test_conditional_mean_tube_retains_candidate_interval(self):
+        result = conditional_mean_tube_and_concentration_exclusion(
+            {(0, 0): 1, (1, 0): -2},
+            {(0, 1): 2, (0, 0): -1},
+            t_bounds=(Fraction(0), Fraction(1)),
+            max_mu_depth=4,
+        )
+        self.assertEqual(result["status"], "CANDIDATE_T_INTERVAL_UNRESOLVED")
+        self.assertEqual(result["mean_root_tube_mu_bounds"], (Fraction(1, 2), Fraction(1, 2)))
+        self.assertFalse(result["concentration_score_excludes_zero_on_tube"])
+
+    def test_conditional_mean_tube_abstains_without_strict_endpoint_signs(self):
+        result = conditional_mean_tube_and_concentration_exclusion(
+            {(1, 0): 1},
+            {(0, 0): 1},
+            t_bounds=(Fraction(0), Fraction(1)),
+            max_mu_depth=4,
+        )
+        self.assertEqual(result["status"], "MEAN_ROOT_TUBE_UNRESOLVED_ENDPOINT_SIGNS")
+
+    def test_conditional_mean_tube_rejects_invalid_domain_and_budget(self):
+        with self.assertRaisesRegex(ValueError, "T_BOUNDS_MUST_BE_WITHIN_UNIT_INTERVAL"):
+            conditional_mean_tube_and_concentration_exclusion(
+                {(0, 0): 1, (1, 0): -2}, {(0, 0): 1},
+                t_bounds=(Fraction(-1, 2), Fraction(1)), max_mu_depth=4,
+            )
+        with self.assertRaisesRegex(ValueError, "MAX_MU_DEPTH_MUST_BE_INTEGER_1_TO_16"):
+            conditional_mean_tube_and_concentration_exclusion(
+                {(0, 0): 1, (1, 0): -2}, {(0, 0): 1},
+                t_bounds=(Fraction(0), Fraction(1)), max_mu_depth=0,
+            )
 
 
 if __name__ == "__main__":
