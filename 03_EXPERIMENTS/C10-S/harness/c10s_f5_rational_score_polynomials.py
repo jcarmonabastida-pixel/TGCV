@@ -1955,6 +1955,35 @@ def conditional_mean_tube_and_concentration_exclusion(
             del coeffs[max(coeffs)]
         if not coeffs:
             return 0
+
+        # The open concentration domain excludes t=1. A restricted mean-score
+        # line may therefore carry an endpoint-only factor (t-1)^m even when
+        # the full bivariate score has no common horizontal factor. Strip it
+        # exactly before taking Bernstein bounds on an interval ending at 1;
+        # on t<1 its sign is (-1)^m and it cannot create or remove an interior
+        # mean root. The endpoint stratum itself is adjudicated separately.
+        endpoint_multiplicity = 0
+        if t_hi == 1 and t_lo < 1:
+            while coeffs and sum(coeffs.values(), Fraction(0)) == 0:
+                degree_now = max(coeffs)
+                if degree_now == 0:
+                    return 0
+                ascending = [
+                    Fraction(coeffs.get(index, 0))
+                    for index in range(degree_now + 1)
+                ]
+                quotient, remainder = _uni_divmod(
+                    ascending, (Fraction(-1), Fraction(1))
+                )
+                if not _uni_is_zero(remainder):
+                    break
+                coeffs = defaultdict(Fraction)
+                for index, value in enumerate(quotient):
+                    if value:
+                        coeffs[index] = value
+                endpoint_multiplicity += 1
+        if not coeffs:
+            return 0
         degree = max(coeffs)
         # Substitute t=t_lo+(t_hi-t_lo)*u in the power basis.
         transformed = [Fraction(0) for _ in range(degree + 1)]
@@ -1971,10 +2000,12 @@ def conditional_mean_tube_and_concentration_exclusion(
                 value += transformed[j] * Fraction(comb(i, j), comb(degree, j))
             bernstein.append(value)
         if all(value > 0 for value in bernstein):
-            return 1
-        if all(value < 0 for value in bernstein):
-            return -1
-        return 0
+            sign = 1
+        elif all(value < 0 for value in bernstein):
+            sign = -1
+        else:
+            return 0
+        return sign * (-1 if endpoint_multiplicity % 2 else 1)
 
     denominator = 2**max_mu_depth
     lower = Fraction(0)
