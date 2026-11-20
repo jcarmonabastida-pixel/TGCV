@@ -56,6 +56,59 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
         self.assertGreaterEqual(first.valid_mcse_rate, 0.90)
         self.assertEqual(first.comparison.method_id, "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0")
 
+    def test_production_fit_retains_all_starts_and_direct_analytic_reconciliation(self):
+        from c10s_fitted_beta_binomial_bootstrap import build_production_analytic_reconciliation
+        from c10s_f5_beta_binomial_likelihood_diagnostics import audit_beta_binomial_count_fit
+
+        counts = (0, 0, 1, 4, 5, 5, 2, 3, 0, 5)
+        production = fit_beta_binomial_counts(counts, 5)
+        analytic = audit_beta_binomial_count_fit(counts, 5)
+        self.assertEqual(len(production.production_starts), 3)
+        self.assertIn(production.selected_start_index, (0, 1, 2))
+        self.assertEqual(
+            production.log_likelihood,
+            -production.production_starts[production.selected_start_index].negative_log_likelihood,
+        )
+        record = build_production_analytic_reconciliation(production, analytic)
+        self.assertEqual(record["schema"], "C10S_F5_PRODUCTION_ANALYTIC_RECONCILIATION_1.0")
+        self.assertEqual(record["status"], "RAW_COMPARISON_RECORDED_NO_ADJUDICATION_THRESHOLD")
+        self.assertEqual(record["adjudication"].split(";")[0], "NOT_THRESHOLDED")
+        self.assertEqual(len(record["production_fit"]["starts"]), 3)
+        self.assertEqual(len(record["analytic_fit"]["starts"]), 3)
+        direct = record["direct_comparison"]
+        self.assertAlmostEqual(
+            direct["log_likelihood_difference_production_minus_analytic"],
+            production.log_likelihood - analytic.selected_log_likelihood,
+            places=12,
+        )
+        self.assertAlmostEqual(
+            direct["alpha_difference_production_minus_analytic"],
+            production.alpha - (
+                (1.0 / (1.0 + __import__("math").exp(-analytic.selected_mean_logit))
+                 if analytic.selected_mean_logit >= 0
+                 else __import__("math").exp(analytic.selected_mean_logit)
+                 / (1.0 + __import__("math").exp(analytic.selected_mean_logit)))
+                * __import__("math").exp(analytic.selected_log_concentration)
+            ),
+            places=10,
+        )
+        self.assertEqual(
+            record["independent_optimizer_scope"],
+            "LOCAL_BFGS_CHECK_INITIALIZED_FROM_ANALYTIC_FIT_NOT_GLOBAL_SEARCH",
+        )
+
+    def test_reconciliation_is_typed_when_production_or_analytic_fit_is_missing(self):
+        from c10s_fitted_beta_binomial_bootstrap import build_production_analytic_reconciliation
+        self.assertEqual(
+            build_production_analytic_reconciliation(None, None)["status"],
+            "PRODUCTION_FIT_NOT_AVAILABLE",
+        )
+        fit = fit_beta_binomial_counts((0, 0, 1, 4, 5, 5, 2, 3, 0, 5), 5)
+        missing = build_production_analytic_reconciliation(fit, None, audit_error="INJECTED")
+        self.assertEqual(missing["status"], "ANALYTIC_AUDIT_UNAVAILABLE")
+        self.assertIsNone(missing["direct_comparison"])
+        self.assertEqual(missing["audit_error"], "INJECTED")
+
     def test_all_zero_and_all_one_worlds_abstain_with_typed_boundary(self):
         for value in (0, 1):
             rows = tuple(tuple(value for _ in range(5)) for _ in range(8))
