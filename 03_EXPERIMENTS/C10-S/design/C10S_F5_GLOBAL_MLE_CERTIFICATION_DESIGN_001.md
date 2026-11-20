@@ -362,3 +362,9 @@ The previous one-shot composition has been replaced by a deterministic breadth-f
 Two deterministic tests were added for repeatable adaptive subdivision of a double-root fixture and fail-closed resource-budget exhaustion. These tests are committed but have not been executed in governed CPython 3.12.
 
 This improves local refinement but does not close the proof gaps: shared-edge/vertex roots can remain unresolved, multiple roots are not deflated, closed-square boundary strata are not separated from the finite-parameter interior, and certified boxes do not yet constitute a global non-overlapping root census. No global MLE ordering or certification is claimed.
+
+### Exact common-factor and multiplicity analysis on compactification edges (2026-11-20)
+
+The research harness now includes `compactified_boundary_common_factors(poly_p, poly_q)`. It restricts both integer sparse score polynomials to each of the four edges of the compactified square (`mu=0`, `mu=1`, `t=0`, `t=1`), computes their exact univariate polynomial gcd over `Fraction`, and applies characteristic-zero square-free factorization to report common factors with their minimum shared algebraic multiplicities. If both restrictions vanish identically on an edge, the routine returns `COMMON_EDGE_COMPONENT_UNRESOLVED` rather than inventing a finite root list. Three deterministic tests cover a common double factor, a common edge component and malformed sparse inputs.
+
+This is exact edge algebra, not yet root isolation: the rational factors still need Sturm-certified real-root isolation on the unit interval, endpoint/corner deduplication, and integration with the interior census. It also does not solve two-dimensional multiple roots or joint corner/path likelihood limits. The test file now contains 40 deterministic tests; none has been executed in governed CPython 3.12. No PASS or global MLE certificate is claimed.
