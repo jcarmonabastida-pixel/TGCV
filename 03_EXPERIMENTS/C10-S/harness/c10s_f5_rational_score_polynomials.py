@@ -2141,7 +2141,7 @@ def beta_binomial_compactified_stationary_census(
     r: int,
     count_histogram: Mapping[int, int],
     *,
-    projection_width=(1, 2**16),
+    projection_width=None,
     max_projection_depth: int = 64,
     max_projection_intervals: int = 10000,
     max_lift_intervals: int = 256,
@@ -2169,6 +2169,8 @@ def beta_binomial_compactified_stationary_census(
 
     # Validate once through the exact score constructor, then preserve the
     # paired provenance by compactifying both numerators from this histogram.
+    if projection_width is None:
+        projection_width = Fraction(1, 2**16)
     raw_p, raw_q = beta_binomial_score_numerators(r, count_histogram)
     total = sum(count_histogram.values())
     successes = sum(x * n for x, n in count_histogram.items())
