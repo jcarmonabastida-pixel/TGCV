@@ -171,6 +171,22 @@ class F5DevelopmentCalibrationTests(unittest.TestCase):
             audit = fit["optimizer_audit"]
             self.assertIsInstance(audit, dict)
             self.assertEqual(len(audit["starts"]), 3)
+            reconciliation = fit["production_analytic_reconciliation"]
+            self.assertEqual(
+                reconciliation["schema"],
+                "C10S_F5_PRODUCTION_ANALYTIC_RECONCILIATION_1.0",
+            )
+            self.assertEqual(
+                fit["production_analytic_reconciliation_status"],
+                "RAW_COMPARISON_RECORDED_NO_ADJUDICATION_THRESHOLD",
+            )
+            self.assertEqual(len(reconciliation["production_fit"]["starts"]), 3)
+            self.assertEqual(len(reconciliation["analytic_fit"]["starts"]), 3)
+            self.assertIsNotNone(
+                reconciliation["direct_comparison"][
+                    "log_likelihood_difference_production_minus_analytic"
+                ]
+            )
             self.assertEqual(record["comparison"]["candidates"][0]["comparison"]["mcse_interval"], None)
             self.assertIsNotNone(record["comparison"]["candidates"][0]["comparison"]["within_interval"])
             self.assertIsNotNone(record["comparison"]["candidates"][0]["comparison"]["between_interval"])
