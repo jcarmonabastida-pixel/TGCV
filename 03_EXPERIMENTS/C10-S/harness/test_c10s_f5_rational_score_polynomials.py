@@ -57,7 +57,10 @@ class RationalScorePolynomialTests(unittest.TestCase):
             self.assertEqual(_evaluate(n_kappa, mu, kappa), score_kappa * d_kappa)
 
     def test_m30_r20_bidegrees_and_sparse_size(self):
-        hist = {x: (x * 7 % 13) + 1 for x in range(21)}
+        hist = {x: 1 for x in range(21)}
+        for x, extra in {0: 1, 5: 2, 10: 3, 15: 3}.items():
+            hist[x] += extra
+        self.assertEqual(sum(hist.values()), 30)
         n_mu, n_kappa = beta_binomial_score_numerators(20, hist)
         self.assertEqual(
             (max(i for i, _ in n_mu), max(j for _, j in n_mu)), (39, 40)
