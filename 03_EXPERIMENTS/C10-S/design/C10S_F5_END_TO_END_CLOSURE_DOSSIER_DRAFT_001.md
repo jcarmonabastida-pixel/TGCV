@@ -241,3 +241,25 @@ Corrective change:
 - Workflow run #50, ID `44770409949`, was triggered for the regression commit and is pending at the time of this record: [run #50](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44770409949).
 
 This is a G1 input-integrity hardening item, not a change to the estimator, DGP, target, or scientific protocol. Do not count the new regression as validated until run #50 completes successfully.
+
+### 9.7 Run #50 — G1 likelihood input contract regression PASS (2026-11-20)
+
+GitHub Actions run [44770409949](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44770409949), source commit `4eda28ed28b23eacf641a81bc29705f1dd52d87d`, completed successfully:
+- 136 deterministic tests, 339.734 seconds, exit status 0.
+- The five invalid/empty histogram cases for the likelihood enclosure helper passed.
+- Locked dependency installation and compilation of all six F5 modules passed.
+This closes the specific G1 input-validation regression on that source snapshot. It does not constitute the independent derivation/provenance audit or the full G1 gate.
+
+### 9.8 G5 resource-contract audit — remove inert boundary ceilings (2026-11-20)
+
+A review of the global-MLE wrapper found that `max_boundary_depth` and `max_boundary_intervals` were accepted and reported as resource ceilings but never controlled any computation: the one-edge beta-binomial profiles and the four joint-corner limits are closed-form exact evaluations, not iterative censuses. Reporting unused controls as operative ceilings was misleading.
+
+Corrective change in commit `3591a63e095a67aa0dfaeae2df5528076a90b708`:
+- Removed the two inert boundary-budget arguments from the stationary census and global-MLE APIs and their tests.
+- Replaced their misleading resource-contract entries with `boundary_evaluation = EXACT_CLOSED_FORM_NO_ITERATIVE_BUDGET`.
+- Added one shared early validator for every active projection/lift/conditional-mean ceiling; both the stationary census and global wrapper validate before degenerate-data early returns.
+- Projection width is now required to be a positive exact rational even when the interval-first path avoids resultant/Sturm.
+- Added regressions for invalid depth/interval/mean ceilings, zero projection width, and global-wrapper budget validation on degenerate data.
+- The exact boundary work is therefore accurately represented as closed-form, not falsely budgeted. Active interval and projection loops retain deterministic hard ceilings and typed incomplete/resource outcomes.
+
+The change is under deterministic verification in [run #51](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44771555687). Do not count the new G5 contract regression as PASS until that run completes.
