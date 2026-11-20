@@ -1298,7 +1298,7 @@ def _apply_boundary_corner_ownership(edges):
         }
 
     for edge, edge_result in edges.items():
-        for factor in edge_result.get("isolated_factors", []):
+        for factor_index, factor in enumerate(edge_result.get("isolated_factors", [])):
             factor["root_ownership"] = []
             for root in factor.get("exact_roots", ()):
                 corner = _boundary_corner_for_root(edge, root)
@@ -1313,8 +1313,7 @@ def _apply_boundary_corner_ownership(edges):
                     record["status"] == "CORNER_OWNED_ONCE"
                     and record["owner"]["edge"] == edge
                     and record["owner"]["root_parameter"] == root
-                    and record["owner"]["factor_index"]
-                    == edge_result["isolated_factors"].index(factor)
+                    and record["owner"]["factor_index"] == factor_index
                 )
                 factor["root_ownership"].append({
                     "root": root,
