@@ -428,3 +428,7 @@ This remains a simple-root/local-box method. It does not resolve multiple roots 
 ### Compactification-edge common factors (2026-11-20)
 
 A new exact-rational edge-analysis primitive restricts both score polynomials to all four edges of the compactified square, computes their univariate gcd, and square-free-factorizes that gcd to retain common-root multiplicity. Identically vanishing pairs on an edge are classified as unresolved common components. Tests cover a shared double root, an edge component and malformed input. Real-root isolation, corner ownership and joint corner limits remain open; governed test execution is pending.
+
+### Sturm-certified boundary-root isolation (2026-11-20)
+
+The exact edge gcd/square-free pipeline now feeds rational Sturm isolation on `[0,1]`. It returns exact rational roots separately from rational intervals proved to contain one real root, and it abstains explicitly on depth or interval-budget exhaustion. Tests cover rational and irrational roots and a resource-limited case. Adjacent-edge corner deduplication and the interior root census remain open; no global certificate or method selection follows from this implementation.
