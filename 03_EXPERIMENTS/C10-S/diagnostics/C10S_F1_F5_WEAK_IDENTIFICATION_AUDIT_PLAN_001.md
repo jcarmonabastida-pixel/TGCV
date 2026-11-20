@@ -760,3 +760,7 @@ A final source scan found that the box-budget exhaustion test reused the simple 
 A rational exact Krawczyk inclusion routine and a Bernstein/Krawczyk composition wrapper were added to the research harness. The Jacobian range is bounded using exact Bernstein coefficients of derivative polynomials; interval arithmetic, midpoint evaluation and the preconditioner are rational. Certification requires strict Krawczyk inclusion and a strict contraction bound. Two adversarial tests cover an affine simple root and fail-closed behavior for a singular double root.
 
 Validation remains pending. The routine does not address multiple-root deflation, shared boundary roots between adjacent boxes, completeness of root isolation, the compactification boundary strata, or likelihood ordering. It is not a global MLE certificate. No execution, replay, calibration or scientific bank was performed.
+
+### Exact boundary likelihood arithmetic added (2026-11-20)
+
+A rational helper now evaluates the four one-edge beta-binomial boundary likelihood profiles exactly, including the Binomial limit at infinite concentration, the endpoint-mixture limit at zero concentration, and the two degenerate mean limits. Four deterministic tests cover exact values and invalid histogram handling. Joint corner/path limits and boundary stationary-root classification remain explicitly unhandled; no interior-vs-boundary global ordering is claimed. Governed CPython 3.12 execution remains pending.
