@@ -424,3 +424,7 @@ This does not yet classify joint corner/path limits, boundary roots of the compa
 The integrated controller now adaptively refines boxes after an inconclusive Krawczyk attempt instead of applying Krawczyk only once to leaves produced by a separate exclusion pass. It uses deterministic breadth-first processing, alternating split axes, exact rational endpoints, and explicit depth/box ceilings. Resource remainders and depth-limited boxes are retained with distinct states. Tests for deterministic refinement and resource abstention have been added; governed execution remains pending.
 
 This remains a simple-root/local-box method. It does not resolve multiple roots or shared-boundary roots and does not establish a complete root census or global MLE certificate.
+
+### Compactification-edge common factors (2026-11-20)
+
+A new exact-rational edge-analysis primitive restricts both score polynomials to all four edges of the compactified square, computes their univariate gcd, and square-free-factorizes that gcd to retain common-root multiplicity. Identically vanishing pairs on an edge are classified as unresolved common components. Tests cover a shared double root, an edge component and malformed input. Real-root isolation, corner ownership and joint corner limits remain open; governed test execution is pending.
