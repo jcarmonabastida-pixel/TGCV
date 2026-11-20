@@ -9,6 +9,7 @@ from c10s_f5_rational_score_polynomials import (
     bernstein_sign_excludes_zero,
     bernstein_subdivide,
     bernstein_exclusion_subdivision,
+    krawczyk_certify_unique_root,
 )
 
 
@@ -166,6 +167,45 @@ class RationalScorePolynomialTests(unittest.TestCase):
     def test_empty_polynomial_still_validates_box(self):
         with self.assertRaisesRegex(ValueError, "INVALID_MU_BOUNDS"):
             bernstein_coefficients_on_box({}, mu_bounds=(1, 1))
+
+    def test_krawczyk_certifies_simple_common_root_exactly(self):
+        # P=2*mu-1, Q=2*t-1; the unique root is exactly (1/2,1/2).
+        result = krawczyk_certify_unique_root(
+            {(1, 0): 2, (0, 0): -1},
+            {(0, 1): 2, (0, 0): -1},
+            mu_bounds=(Fraction(1, 4), Fraction(3, 4)),
+            t_bounds=(Fraction(1, 4), Fraction(3, 4)),
+        )
+        self.assertEqual(result["status"], "CERTIFIED_UNIQUE_ROOT")
+        self.assertEqual(result["contraction_bound"], 0)
+        self.assertEqual(result["krawczyk_box"], (
+            (Fraction(1, 2), Fraction(1, 2)),
+            (Fraction(1, 2), Fraction(1, 2)),
+        ))
+
+    def test_krawczyk_abstains_on_singular_multiple_root(self):
+        # P=(2*mu-1)^2, Q=2*t-1; midpoint Jacobian is singular.
+        result = krawczyk_certify_unique_root(
+            {(2, 0): 4, (1, 0): -4, (0, 0): 1},
+            {(0, 1): 2, (0, 0): -1},
+            mu_bounds=(Fraction(1, 4), Fraction(3, 4)),
+            t_bounds=(Fraction(1, 4), Fraction(3, 4)),
+        )
+        self.assertEqual(result["status"], "UNRESOLVED_SINGULAR_MIDPOINT_JACOBIAN")
+
+    def test_krawczyk_rejects_float_bounds(self):
+        with self.assertRaisesRegex(ValueError, "EXACT_RATIONAL_BOUNDS_REQUIRED"):
+            krawczyk_certify_unique_root(
+                {(1, 0): 1}, {(0, 1): 1},
+                mu_bounds=(0.1, 1), t_bounds=(0, 1),
+            )
+
+    def test_krawczyk_rejects_degenerate_box(self):
+        with self.assertRaisesRegex(ValueError, "INVALID_CERTIFICATION_BOX"):
+            krawczyk_certify_unique_root(
+                {(1, 0): 1}, {(0, 1): 1},
+                mu_bounds=(1, 1), t_bounds=(0, 1),
+            )
 
     def test_histogram_validation(self):
         with self.assertRaisesRegex(ValueError, "COUNT_OUTSIDE_0_TO_R"):
