@@ -2542,6 +2542,8 @@ def beta_binomial_global_mle_certificate(
                 interior_index += 1
 
         for name, record in census["boundary_likelihoods"].items():
+            if name == "status":
+                continue
             value = record["likelihood"]
             competitors.append({
                 "candidate_id": f"boundary-{name}",
