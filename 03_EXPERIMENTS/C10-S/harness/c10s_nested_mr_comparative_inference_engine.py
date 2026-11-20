@@ -554,6 +554,13 @@ def compare_dataset(
                 if fitted.optimizer_audit is not None else "null"
             )),
             ("likelihood_optimizer_audit_error", fitted.optimizer_audit_error or "NONE"),
+            ("production_analytic_reconciliation_json", (
+                json.dumps(
+                    _finite_json_value(fitted.production_analytic_reconciliation),
+                    sort_keys=True, separators=(",", ":"), allow_nan=False,
+                )
+                if fitted.production_analytic_reconciliation is not None else "null"
+            )),
         )
         if include_profile_diagnostics:
             diagnostics += _f5_profile_diagnostic(
