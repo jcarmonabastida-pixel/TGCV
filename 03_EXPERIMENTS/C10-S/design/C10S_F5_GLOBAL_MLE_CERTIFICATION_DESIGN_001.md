@@ -80,30 +80,26 @@ Every denominator is strictly positive in the open parameter domain (0<mu<1, kap
 
 The coefficients are rational/integer because r, x and n_x are integers. Construct them exactly (integer/rational arithmetic), not by fitting coefficients from floating-point evaluations.
 
-## 5. Exhaustive stationary-point enumeration
+## 5. Exhaustive stationary-point enumeration — implemented bounded route
 
-Proposed certificate procedure:
+The current implementation is interval-first, with exact elimination retained as fallback/cross-check. This ordering follows the project decision to develop Bernstein and algebraic certification in parallel without prematurely selecting a universal method.
 
-1. Construct P and Q exactly from the observed count histogram.
-2. Compute their polynomial gcd and the resultant R(kappa)=Res_mu(P,Q), with exact arithmetic.
-3. If a nonconstant common factor intersects the positive open domain, record a non-isolated stationary component. Unless its likelihood supremum can itself be certified by a separate exact argument, return `NONISOLATED_STATIONARY_SET` and abstain. Do not perturb the data or regularize the likelihood to remove it.
-4. If the resultant is identically zero, or elimination degree/coefficient growth exceeds the declared deterministic resource ceiling, return `ALGEBRAIC_CERTIFICATE_UNAVAILABLE`; no numerical multistart fallback may be promoted to a global certificate.
-5. Factor/square-free decompose the nonzero resultant while retaining multiplicity metadata. Use an exact Sturm/subresultant real-root isolation procedure to isolate every distinct positive real kappa root in disjoint rational intervals. Repeated roots are retained as one distinct candidate with algebraic multiplicity recorded, not discarded.
-6. For each isolated kappa interval, recover the corresponding mu root(s) using subresultant representation and rational interval refinement. Intersect with 0<mu<1 and verify the original two score equations with interval enclosures. Because of the strict conditional concavity theorem, at most one valid mu root exists for a given positive kappa.
-7. Refine each candidate enclosure until it is disjoint from all other candidates and the score-system inclusion/uniqueness test succeeds. A candidate that cannot be certified because it is too close to another root, has singular unresolved multiplicity, or exceeds the arithmetic/resource ceiling is typed unresolved; it is not merged with a neighbor.
-8. Evaluate the original log-likelihood over certified candidate enclosures using outward-rounded interval arithmetic. Compare candidate likelihood enclosures with each other and with all theoretical boundary likelihoods. If the intervals do not establish a unique ordering or a set of co-maximizers, increase precision/refine. If still unresolved at the resource ceiling, abstain.
+1. Construct the paired rational score numerators P(mu,kappa), Q(mu,kappa) exactly from one validated count histogram. Their open-domain zero set agrees with the two rational score equations because all cleared denominator factors are strictly positive for 0<mu<1 and kappa>0.
+2. Compactify concentration with t=kappa/(1+kappa), preserving the interior zero set on 0<t<1 and treating t=0,1 as boundary strata.
+3. Use strict conditional concavity in mu. For each rational t interval, exact Bernstein bounds at rational mean witnesses construct a tube containing the unique conditional-mean root for every finite t in that interval.
+4. Apply tensor-product Bernstein bounds to Q over that tube. A strict sign excludes the entire t interval. Otherwise, exact rational Krawczyk inclusion is attempted to certify one simple common root in the box.
+5. Bisect inconclusive concentration intervals under deterministic interval/depth/mean-depth ceilings. A complete interval-first census is returned only when every interval is either excluded or certified to contain exactly one simple root. Multiple/singular roots, endpoint ambiguity and unprocessed budget remainders remain explicitly unresolved; they are never promoted to simple roots.
+6. If the interval-first route is incomplete, compute the exact concentration resultant and isolate its distinct real projection roots with square-free/Sturm machinery, retaining multiplicity metadata. Each interior projection candidate is then lifted through the same conditional-mean tube and Krawczyk procedure. The resultant is a candidate projection, not proof of a bivariate stationary point. Mixed common factors or unresolved lifts prevent a complete census.
+7. Profile all four open-domain boundary strata exactly and establish the four joint-corner limits by uniform moment bounds (see §6). These are closed-form evaluations, not an iterative boundary-root search.
+8. Enclose every certified interior candidate's likelihood by exact rational probability intervals with outward-rounded dyadic accumulation. Compare these enclosures with exact boundary suprema. Return a global classification only when strict interval ordering or a certified boundary co-maximum establishes the winner; otherwise return a typed unresolved state.
 
-The resultant may contain extraneous kappa roots caused by leading-coefficient degeneration or roots for which the corresponding mu is not in (0,1). These are rejected only after exact/subresultant recovery and domain verification; they are never counted as likelihood stationary points.
+The strict-concavity theorem guarantees at most one conditional-mean root for each finite positive concentration. It does not imply that the one-dimensional concentration profile has only one stationary point. The census must therefore cover the full compactified concentration interval, not a local optimizer neighborhood.
 
-### Why this handles multiple and near-degenerate roots
+### Scope of the implemented certificate
 
-- Sturm isolation counts all distinct real roots, including roots with even multiplicity that a sign-change scan would miss.
-- Square-free factorization preserves multiplicity metadata.
-- Distinct roots receive disjoint rational isolating intervals, even when very close.
-- A root that cannot be separated within the resource ceiling remains unresolved; no distance threshold is invented.
-- The original likelihood and score equations, not optimizer termination flags, determine candidate stationarity.
+The current axis-content detector classifies common factors depending only on mu or t. It does not claim to classify every general mixed bivariate common factor. A zero resultant, a mixed common component, a non-simple interior lift or any incomplete interval/Sturm state blocks exhaustive/global status. This is intentional fail-closed behavior, not an implicit certificate.
 
-This is a mathematical certification route, not yet a claim that its computational cost is acceptable. Exact resultant degrees and coefficient growth for M10/R5 and M30/R20 must be measured on deterministic fixtures before D2 can be frozen.
+The bounded M10/R5 and M30/R20 deterministic fixtures exercise the integrated global wrapper. The M30/R20 fixture requires the full-domain Bernstein route, exact likelihood interval ordering and the declared globality basis. These fixtures do not establish a universal theorem for every possible histogram at those M and R values.
 
 ## 6. Boundary strata and their profiled likelihoods
 
@@ -188,19 +184,19 @@ Before any numerical bank:
 
 The fixtures must be deterministic and hand-constructed or algebraically specified. No stochastic bank is part of this test suite.
 
-## 11. D1 disposition
+## 11. D1 disposition and current evidence
 
-This design resolves the *mathematical route* to global adjudication. It does not yet resolve the *implementation feasibility* gate.
+The original D1 design route is now implemented in a bounded form, but the design/comparison decision is not frozen and no method is selected as universally superior. The production order is Bernstein/conditional-mean first, exact resultant/Sturm as fallback and cross-check.
 
-D1 may close only after:
-- exact polynomial construction and resultant/root-isolation prototypes pass deterministic adversarial fixtures;
-- coefficient growth and runtime are measured for representative M10/R5 and M30/R20 count histograms;
-- interval evaluation of likelihood ordering and boundary limits is independently checked;
-- constrained W/B profile root isolation is specified consistently;
-- failure/abstention semantics and resource ceilings are frozen.
+Evidence currently available:
+- Exact rational score numerators are checked against an independent direct-rational score oracle on a small fixture and the M30/R20 fixture.
+- Strict conditional concavity, compactification, Bernstein range enclosure, Krawczyk simple-root inclusion, multiplicity-preserving fail-closed behavior, edge profiles and joint-corner limits have deterministic adversarial tests.
+- The M10/R5 nondegenerate fixture and M30/R20 fixture pass the integrated global-MLE wrapper, including exact rational likelihood ordering against all boundary profiles and corners.
+- Run [44770424308](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44767224308) (commit `a9a56d7c142b441b0893858c75e13a38ae38a9a2`) passed 135 tests. Run [44770409949](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44770409949) (commit `4eda28ed28b23eacf641a81bc29705f1dd52d87d`) passed 136 tests, including the subsequent likelihood-input integrity regression.
+- General singular/multiple interior-root lifting and arbitrary mixed common-component classification remain unresolved by design; these cases must abstain. The exact resultant/Sturm fallback preserves projection multiplicities but does not by itself prove a bivariate lift.
+- The current active-resource contract is being hardened and revalidated in run [44771555687](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44771555687), commit `3591a63e095a67aa0dfaeae2df5528076a90b708`.
 
-Until those conditions pass, the global MLE certificate remains `DESIGNED_NOT_IMPLEMENTED`, M1/M2 remain unvalidated candidates, and no new bank or scientific execution is authorized.
-
+D1 must not be described as universally closed or as a selected method. Its bounded implementation evidence is sufficient to continue F5 engineering closure, while the remaining G1–G6 audits and adversarial contracts stay explicit in the end-to-end closure dossier. No stochastic TierA calibration, new bank, Analyzer/Evaluator scientific execution or coverage claim is authorized by this design. Prospective TierA calibration remains G7 and requires separate explicit authorization.
 
 ## 12. Deterministic symbolic-sizing probe (2026-11-20; not scientific execution)
 
