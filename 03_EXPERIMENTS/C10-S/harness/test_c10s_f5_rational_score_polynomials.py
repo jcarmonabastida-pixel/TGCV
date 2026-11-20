@@ -902,5 +902,12 @@ class RationalScorePolynomialTests(unittest.TestCase):
             )
 
 
+    def test_conditional_mean_tube_rejects_compactification_endpoints(self):
+        with self.assertRaisesRegex(ValueError, "T_BOUNDS_MUST_BE_STRICTLY_INSIDE_FINITE_DOMAIN"):
+            conditional_mean_tube_and_concentration_exclusion(
+                {(0, 0): 1, (1, 0): -2}, {(0, 0): 1},
+                t_bounds=(Fraction(0), Fraction(1, 2)), max_mu_depth=4,
+            )
+
 if __name__ == "__main__":
     unittest.main()
