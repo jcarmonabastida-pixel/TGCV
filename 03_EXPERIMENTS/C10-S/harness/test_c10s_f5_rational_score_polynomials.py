@@ -10,6 +10,7 @@ from c10s_f5_rational_score_polynomials import (
     bernstein_subdivide,
     bernstein_exclusion_subdivision,
     krawczyk_certify_unique_root,
+    bernstein_krawczyk_root_classification,
 )
 
 
@@ -206,6 +207,33 @@ class RationalScorePolynomialTests(unittest.TestCase):
                 {(1, 0): 1}, {(0, 1): 1},
                 mu_bounds=(1, 1), t_bounds=(0, 1),
             )
+
+    def test_integrated_bernstein_krawczyk_certifies_simple_root(self):
+        # Root (3/8,3/8) is the midpoint of the rational test box.
+        result = bernstein_krawczyk_root_classification(
+            {(1, 0): 8, (0, 0): -3},
+            {(0, 1): 8, (0, 0): -3},
+            mu_bounds=(Fraction(1, 4), Fraction(1, 2)),
+            t_bounds=(Fraction(1, 4), Fraction(1, 2)),
+            max_boxes=1, max_depth=0,
+        )
+        self.assertEqual(
+            result["status"], "ALL_SURVIVING_BOXES_CERTIFIED_SIMPLE_ROOTS"
+        )
+        self.assertEqual(len(result["certified_root_boxes"]), 1)
+        self.assertEqual(result["unresolved_boxes"], [])
+
+    def test_integrated_bernstein_krawczyk_preserves_multiple_root_as_unresolved(self):
+        result = bernstein_krawczyk_root_classification(
+            {(2, 0): 4, (1, 0): -4, (0, 0): 1},
+            {(0, 1): 2, (0, 0): -1},
+            mu_bounds=(Fraction(1, 4), Fraction(3, 4)),
+            t_bounds=(Fraction(1, 4), Fraction(3, 4)),
+            max_boxes=1, max_depth=0,
+        )
+        self.assertEqual(result["status"], "PARTIAL_CERTIFICATION_WITH_REMAINDER")
+        self.assertEqual(result["certified_root_boxes"], [])
+        self.assertEqual(len(result["unresolved_boxes"]), 1)
 
     def test_histogram_validation(self):
         with self.assertRaisesRegex(ValueError, "COUNT_OUTSIDE_0_TO_R"):
