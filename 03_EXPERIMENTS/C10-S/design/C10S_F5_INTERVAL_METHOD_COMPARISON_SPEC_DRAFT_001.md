@@ -479,3 +479,12 @@ The reduced route now combines conditional-mean tube construction, Bernstein con
 ### Consolidated closure contract (2026-11-20)
 
 Use `C10S_F5_END_TO_END_CLOSURE_DOSSIER_DRAFT_001.md` as the integrated G1–G7 closure contract for both candidate routes. It prevents local interior interval completeness, projection-root isolation, or edge-limit calculations from being represented as a global MLE certificate. The reduced Bernstein/conditional-mean route remains first-line; resultant/Sturm remains targeted fallback/cross-check. Method selection requires common deterministic fixtures and the full mathematical/software gates.
+
+
+## 12. Engineering evidence and current authorization boundary — 2026-11-20
+
+The F5 exact-score/Bernstein/Krawczyk/global-likelihood harness is now implemented beyond the partial primitives described in the original D1 status: the integrated global-MLE wrapper has deterministic bounded-fixture evidence, including M30/R20, in GitHub Actions run [44767224308](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44767224308) (135/135 tests PASS; commit `a9a56d7c142b441b0893858c75e13a38ae38a9a2`). This is engineering evidence only. It does not freeze this comparison specification, select M1/M2, or authorize prospective TierA calibration.
+
+The user has delegated completion of F5 engineering closure gates G1–G6 on the research branch. This permits code changes, deterministic tests, workflows, mathematical/software audit and documentation needed for those gates. It does not amend the explicit `Execution authorization: NONE` for prospective scientific calibration. G7 protocol preparation may proceed; generation of prospective calibration data, validation-bank execution or Analyzer/Evaluator scientific execution remains stopped pending explicit user authorization.
+
+The successor remains bounded to the frozen beta22 target and M10/R5 plus M30/R20. No new DGP families, estimator families, Tier B, or general-purpose solver work is introduced. If the current exact method returns a typed unresolved/abstention state for a supported-design fixture, that is a software-safe outcome but it does not count as functional TierA calibration success; G7 must determine whether its frequency permits the required coverage.
