@@ -145,6 +145,28 @@ class RationalScorePolynomialTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "INVALID_MU_BOUNDS"):
             bernstein_coefficients_on_box({(0, 0): 1}, mu_bounds=(1, 1))
 
+    def test_bernstein_rejects_binary_float_bounds(self):
+        with self.assertRaisesRegex(ValueError, "INVALID_MU_BOUNDS"):
+            bernstein_coefficients_on_box({(0, 0): 1}, mu_bounds=(0.1, 1))
+        with self.assertRaisesRegex(ValueError, "INVALID_T_BOUNDS"):
+            bernstein_coefficients_on_box({(0, 0): 1}, t_bounds=(0, 0.9))
+
+    def test_bernstein_rejects_binary_float_coefficients(self):
+        with self.assertRaisesRegex(ValueError, "EXACT_RATIONAL_REQUIRED"):
+            bernstein_sign_excludes_zero([[0.5, 1]])
+        with self.assertRaisesRegex(ValueError, "EXACT_RATIONAL_REQUIRED"):
+            bernstein_subdivide([[0.5, 1]], "t")
+
+    def test_bernstein_controller_rejects_binary_float_bounds(self):
+        with self.assertRaisesRegex(ValueError, "INVALID_INITIAL_BOX"):
+            bernstein_exclusion_subdivision(
+                {(0, 0): 1}, {(0, 0): 1}, mu_bounds=(0.1, 1)
+            )
+
+    def test_empty_polynomial_still_validates_box(self):
+        with self.assertRaisesRegex(ValueError, "INVALID_MU_BOUNDS"):
+            bernstein_coefficients_on_box({}, mu_bounds=(1, 1))
+
     def test_histogram_validation(self):
         with self.assertRaisesRegex(ValueError, "COUNT_OUTSIDE_0_TO_R"):
             beta_binomial_score_numerators(5, {6: 1})
