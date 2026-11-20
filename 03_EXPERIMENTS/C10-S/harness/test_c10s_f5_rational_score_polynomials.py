@@ -897,7 +897,7 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(result["status"], "MEAN_ROOT_TUBE_UNRESOLVED_ENDPOINT_SIGNS")
 
     def test_conditional_mean_tube_rejects_invalid_domain_and_budget(self):
-        with self.assertRaisesRegex(ValueError, "T_BOUNDS_MUST_BE_STRICTLY_INSIDE_FINITE_DOMAIN"):
+        with self.assertRaisesRegex(ValueError, "T_BOUNDS_MUST_BE_WITHIN_COMPACTIFIED_CLOSURE"):
             conditional_mean_tube_and_concentration_exclusion(
                 {(0, 0): 1, (1, 0): -2}, {(0, 0): 1},
                 t_bounds=(Fraction(-1, 2), Fraction(1)), max_mu_depth=4,
