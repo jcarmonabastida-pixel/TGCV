@@ -709,3 +709,11 @@ The dedicated backend note `C10S_F5_MODULAR_BACKEND_FEASIBILITY_NOTE_001.md` rec
 The test module now adds exact rational identity checks for the M30/R20 score equations, compactification at rational parameter points, and preservation of an interior root. These tests have been committed but have not been executed in the governed CPython 3.12 harness; no PASS claim is made. An independent scratch calculation verified the compactification identity at three rational points.
 
 This is a reusable preprocessing layer for both a modular elimination backend and an interval/ Bernstein subdivision backend. It does not resolve the backend choice or global-root certification. D1 remains OPEN.
+
+### Bernstein interval exclusion primitive — implemented, not yet governed-test-verified (2026-11-20)
+
+The F5 algebra harness now converts a bivariate power polynomial to exact tensor-product Bernstein coefficients on any rational box in (mu,t), after exact affine substitution. A strict one-sign coefficient array certifies that the polynomial has no zero in that box; either score numerator can therefore exclude a common stationary point. Mixed-sign arrays are inconclusive.
+
+Four deterministic tests are committed (unit-square positive enclosure, rational affine-box substitution, mixed-sign non-exclusion, and degenerate-box rejection). The affine-box coefficients were independently checked with exact Fraction arithmetic and the expected values corrected before commit. No governed CPython 3.12 run is available in this session, so these tests are not reported PASS.
+
+This is only the interval route's box-exclusion layer. Root inclusion/uniqueness, exhaustive subdivision, deterministic resource limits, and all likelihood boundary comparisons remain open. No method is selected; D1 remains OPEN.
