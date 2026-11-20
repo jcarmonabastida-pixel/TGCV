@@ -29,6 +29,10 @@ from c10s_variance_comparison_interface import (
 class BetaBinomialFitError(ValueError):
     """The F5 beta-binomial model cannot be fitted admissibly."""
 
+    def __init__(self, message: str, *, production_starts=()):
+        super().__init__(message)
+        self.production_starts = tuple(production_starts)
+
 
 @dataclass(frozen=True)
 class BetaBinomialProductionStartOutcome:
@@ -153,7 +157,10 @@ def fit_beta_binomial_counts(counts: Sequence[int], r: int) -> BetaBinomialFit:
                   if bool(result.success) and math.isfinite(float(result.fun))]
     if not admissible:
         messages = "; ".join(str(result.message) for result in fits)
-        raise BetaBinomialFitError(f"MLE_NONCONVERGENCE: {messages}")
+        raise BetaBinomialFitError(
+            f"MLE_NONCONVERGENCE: {messages}",
+            production_starts=production_starts,
+        )
     best_index, best = min(admissible, key=lambda item: float(item[1].fun))
 
     logit_mean, log_concentration = (float(v) for v in best.x)
@@ -181,27 +188,28 @@ def fit_beta_binomial_counts(counts: Sequence[int], r: int) -> BetaBinomialFit:
 def build_production_analytic_reconciliation(
     fit: BetaBinomialFit | None,
     audit: BetaBinomialOptimizerAudit | None,
-    *, audit_error: str | None = None,
+    *, audit_error: str | None = None, production_starts=(),
 ) -> dict:
     """Retain direct P/A terminal comparisons without inventing a tolerance."""
     production = None
     analytic = None
     direct = None
-    if fit is not None:
+    if fit is not None or production_starts:
         production = {
             "optimizer": "L-BFGS-B_FINITE_DIFFERENCE",
-            "selected_start_index": fit.selected_start_index,
-            "selected_alpha": fit.alpha, "selected_beta": fit.beta,
-            "selected_mean_probability": fit.mean_probability,
-            "selected_concentration": fit.concentration,
-            "selected_log_likelihood": fit.log_likelihood,
-            "selected_mean_logit": math.log(fit.mean_probability / (1.0 - fit.mean_probability)),
-            "selected_log_concentration": math.log(fit.concentration),
-            "selected_termination_message": fit.optimizer_message,
-            "selected_success": fit.converged,
-            "boundary": fit.boundary,
-            "boundary_reasons": list(fit.boundary_reasons),
-            "starts": [asdict(item) for item in fit.production_starts],
+            "selected_start_index": fit.selected_start_index if fit is not None else None,
+            "selected_alpha": fit.alpha if fit is not None else None,
+            "selected_beta": fit.beta if fit is not None else None,
+            "selected_mean_probability": fit.mean_probability if fit is not None else None,
+            "selected_concentration": fit.concentration if fit is not None else None,
+            "selected_log_likelihood": fit.log_likelihood if fit is not None else None,
+            "selected_mean_logit": math.log(fit.mean_probability / (1.0 - fit.mean_probability)) if fit is not None else None,
+            "selected_log_concentration": math.log(fit.concentration) if fit is not None else None,
+            "selected_termination_message": fit.optimizer_message if fit is not None else None,
+            "selected_success": fit.converged if fit is not None else False,
+            "boundary": fit.boundary if fit is not None else None,
+            "boundary_reasons": list(fit.boundary_reasons) if fit is not None else [],
+            "starts": [asdict(item) for item in (fit.production_starts if fit is not None else production_starts)],
         }
     if audit is not None:
         analytic = {
@@ -327,6 +335,7 @@ def fitted_beta_binomial_parametric_bootstrap(
             optimizer_audit_error=optimizer_audit_error,
             production_analytic_reconciliation=build_production_analytic_reconciliation(
                 None, optimizer_audit, audit_error=optimizer_audit_error,
+                production_starts=exc.production_starts,
             ),
         )
     reconciliation = build_production_analytic_reconciliation(
