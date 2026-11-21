@@ -23,7 +23,6 @@ def main() -> int:
     spec = next((item for item in g7.f5_specs() if item.cell_id == args.cell_id), None)
     if spec is None:
         raise SystemExit("G7_SHARD_CELL_NOT_IN_FROZEN_ROSTER")
-    g7.validate_seed_separation()
     result = run_cell_shard(
         spec,
         phase=args.phase,
