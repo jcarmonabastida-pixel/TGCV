@@ -1,0 +1,55 @@
+{
+  "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-001",
+  "profile_run_id": 44926453920,
+  "profile_run_url": "https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44926453920",
+  "profile_artifact_id": 14717426261,
+  "profile_artifact_name": "c10s-f5-g7-resource-parallel-profile-469ecdd6f17639d10b9142158c527727e9add303",
+  "profile_artifact_archive_sha256": "90399529105bffbe50205a68fd7bad30809c3d328a8172a331740f1b417d71a4",
+  "profile_artifact_expires_at": "2026-12-21T17:29:07Z",
+  "profile_source_commit": "469ecdd6f17639d10b9142158c527727e9add303",
+  "profile_json_sha256": "f11d45b06ae75b0f03c80e5b7ac4d5e3572b5271bbe8f2be662224de79560e41",
+  "profile_schema": "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-001",
+  "profile_scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_NO_COVERAGE_NO_HOLDOUT",
+  "seed_namespace": "c10s_f5_g7_resource_v1",
+  "K_per_cell": 100,
+  "C0_B": 1000,
+  "C5_B": 1000,
+  "coverage_adjudication": "NOT_PERFORMED",
+  "seed_separation_validation": "PASS",
+  "wall_elapsed_seconds": 2469.193131086,
+  "process_cpu_seconds": 2636.456402654,
+  "peak_rss_kib": 251028,
+  "cell_summary": {
+    "F5_beta22_M10_R5": {
+      "datasets_completed": 100,
+      "mean_dataset_seconds": 0.44373690557000034,
+      "p95_dataset_seconds": 0.8641537219999975,
+      "p99_dataset_seconds": 0.9610499190000041,
+      "max_dataset_seconds": 1.0050520519999964,
+      "certificate_status_counts": {
+        "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED": 67,
+        "GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED": 18,
+        "GLOBAL_MAXIMUM_ORDER_UNRESOLVED": 14,
+        "MISSING": 1
+      },
+      "interval_emission_counts": {
+        "within": 67,
+        "between": 67
+      }
+    },
+    "F5_beta22_M30_R20": {
+      "datasets_completed": 100,
+      "mean_dataset_seconds": 24.246279093100014,
+      "p95_dataset_seconds": 36.014135650000014,
+      "p99_dataset_seconds": 40.422756173999915,
+      "max_dataset_seconds": 42.550656118999996,
+      "certificate_status_counts": {
+        "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED": 100
+      },
+      "interval_emission_counts": {
+        "within": 100,
+        "between": 100
+      }
+    }
+  }
+}
