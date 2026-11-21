@@ -353,25 +353,17 @@ Static validation: GitHub Actions run [44803113319](https://github.com/jcarmonab
 **Execution state:** authorized by the user, but not yet executed. The only pending action is the dedicated one-use authorization-branch push, hash-bound to the exact code/protocol/workflow snapshot. Tier B and C10 Generator/Analyzer/Evaluator scientific execution remain false and out of scope.
 
 
-### 9.4 Exact likelihood-enclosure correction and governed deterministic PASS — 2026-11-20
+### 9.16 Historical deterministic validation snapshot — run 44767224308 (2026-11-20)
 
-Run [44767224308](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44767224308), source commit `a9a56d7c142b441b0893858c75e13a38ae38a9a2`, completed with conclusion **SUCCESS** on CPython 3.12.10. Locked dependencies installed, all six F5 modules compiled, and the three deterministic suites completed: **135 tests in 342.600 seconds; OK; exit status 0**.
+Run [44767224308](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44767224308), source commit `a9a56d7c142b441b0893858c75e13a38ae38a9a2`, completed successfully on CPython 3.12.10. Locked dependencies installed, all six F5 modules compiled, and the three deterministic suites completed: **135 tests in 342.600 seconds; OK; exit status 0**.
 
-The run validates the bounded dyadic likelihood enclosure correction after the preceding resource failures:
-- nonnegative rational probability intervals are multiplied using a 256-bit outward-rounded dyadic accumulator and integer-only rounding;
-- the upper bound for each beta-binomial outcome probability is intersected with the mathematical unit interval before dyadic rounding, preventing a rectangular intermediate enclosure from exceeding the known probability bound of 1;
-- the large-histogram regression verifies enclosure ordering, non-negativity, the unit upper bound, and bounded representation;
-- `test_m30_r20_global_mle_orders_interior_and_boundary_candidates` passes. It requires one of the typed certified global outcomes (interior maximum, boundary supremum, or co-maximizers), the exact rational probability-interval ordering method, and the declared globality basis comprising the complete interior census plus all boundary profiles/corner limits.
+This historical run validated the bounded dyadic likelihood-enclosure correction after the preceding resource failures:
+- nonnegative rational probability intervals were multiplied using a 256-bit outward-rounded dyadic accumulator and integer-only rounding;
+- each beta-binomial outcome-probability upper bound was intersected with the mathematical unit interval before dyadic rounding;
+- the large-histogram regression verified enclosure ordering, non-negativity, the unit upper bound and bounded representation;
+- the M30/R20 global-ordering fixture passed its then-current typed-certificate assertions.
 
-**Interpretation boundary:** the M30/R20 test is one frozen fixture and accepts any of the three mathematically typed certified global outcomes; it is not an independent expected-winner oracle, nor does it establish global ordering across all admissible histograms. The PASS closes the specific M30/R20 fixture's deterministic software assertion, not general G2/G3/G4 completeness.
+This run is retained as an intermediate evidence point, not the final G1–G6 validation snapshot. Its M30/R20 fixture accepted any of the three typed certified global outcomes and was not an independent expected-winner oracle. Later work strengthened the implementation and evidence: run [44775205756](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44775205756) bound input provenance to the actual GitHub source revision (144/144 tests), and run [44803113319](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44803113319) passed 180/180 tests, including the real M10/R5 certificate-to-production-fit linkage, G7 no-pooling adjudication, resource-only no-adjudication, seed-separation and one-use authorization-validator tests.
 
-Updated gate disposition:
-- **G1:** exact score and likelihood-enclosure primitives pass their deterministic tests; the separate input/provenance and mathematical denominator audit remains open.
-- **G2:** the M30/R20 full-domain simple-root census fixture passes. Multiple/singular bivariate roots, projection-root lifting in non-simple cases, common components and shared subdivision-boundary ownership remain unresolved or explicitly abstaining.
-- **G3:** exact one-edge profiles and path-independent joint-corner limits are implemented and tested; broader adversarial edge/corner ownership and attained-maximum versus supremum cases remain open.
-- **G4:** the M30/R20 interior-versus-boundary global-ordering fixture now passes under the exact interval method. Other regimes, ties/co-maxima and non-attainment adversarial fixtures remain open.
-- **G5:** bounded dyadic likelihood accumulation and the probability-unit upper-bound correction pass their regression tests. Unified global ceilings and adversarial exhaustion/remainder auditing across all census, lifting and ordering layers remain open.
-- **G6:** deterministic governed software validation is PASS for this source snapshot: 135/135 tests, six-module compilation, locked dependencies, CPython 3.12.10. This is not a scientific execution or prospective calibration.
-- **G7:** NOT RUN. No prospective TierA calibration was authorized or executed; B2/B3 remain diagnostic history and are not reused for tuning or method selection.
+The current consolidated disposition is therefore the one recorded in §10 and §9.15 above: **G1–G6 PASS for the declared bounded F5 target regime, with explicit typed abstention for unsupported singular/multiple-root, mixed-component and resource-exhaustion cases. G7 is authorized by the user and its successor protocol is frozen, but the one-use authorization-branch workflow has not yet executed.** The G1–G6 closure is not a universal multiplicity-aware solver, external review, prospective TierA coverage result or causal evidence for `ΔT_acc → Value`.
 
-F5 therefore remains **OPEN — DETERMINISTIC SOFTWARE VALIDATION PASS; GENERAL GLOBAL-MLE COMPLETENESS AND TIERA CALIBRATION NOT CERTIFIED**. No scientific bank, replay, calibration, TierA operation or C10 causal execution was performed by this run.
