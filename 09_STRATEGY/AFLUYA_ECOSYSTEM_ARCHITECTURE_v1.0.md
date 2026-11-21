@@ -1,12 +1,12 @@
 # AFLUYA — Arquitectura integrada del ecosistema abierto
 
-## Versión 1.0 — Arquitectura estratégica y de crecimiento AWGI
+## Versión 1.1 — Arquitectura estratégica, identidad verbal y crecimiento AWGI
 
 **Identificador:** AFLUYA-ARCH-001  
-**Fecha:** 2026-11-10  
+**Fecha:** 2026-11-21  
 **Estado:** DRAFT — arquitectura integrada para revisión y aprobación del usuario.  
 **Ámbito:** identidad, propósito, modelo de ecosistema, experiencia digital, participación, gobernanza, actividad, sostenibilidad y evolución de AFLUYA.  
-**Plan operativo asociado:** `09_STRATEGY/AFLUYA_IMPLEMENTATION_PLAN_v0.1.md` (versión 0.6 — AWGI).  
+**Plan operativo asociado:** `09_STRATEGY/AFLUYA_IMPLEMENTATION_PLAN_v0.1.md` (versión 0.7 — AWGI).  
 **Archivo histórico:** `09_STRATEGY/archive/AFLUYA_ECOSYSTEM_ARCHITECTURE_HISTORICAL_v0.7_to_v1.1_2026-11-10.md`.  
 **Rama de trabajo:** `strategy/afluya-ecosystem-v0.2`.  
 **Relación con TGCV:** documento estratégico de AFLUYA. No modifica ni sustituye la gobernanza científica de TGCV.
@@ -71,13 +71,27 @@ AFLUYA debe presentarse como:
 
 No presentarse como una organización plenamente consolidada, una plataforma tecnológica terminada, una comunidad masiva ni una teoría científica validada.
 
-### 1.7 Mensaje público de partida
+### 1.7 Mensaje principal de la Home
 
-> **AFLUYA conecta conocimiento, capacidades, personas y oportunidades para explorar nuevas posibilidades y construir valor.**
+La formulación preferente para el titular y la apertura de la Home es:
+
+> **Tu organización tiene más potencial del que hoy consigue convertir en valor.**
 >
-> Un ecosistema abierto en construcción. Explora lo que estamos descubriendo, utiliza lo que compartimos y ayuda a dar forma a lo que puede venir.
+> **Conectemos lo que sabe, lo que tiene y lo que puede llegar a hacer. Hagamos que AFLUYA.**
 
-Este mensaje es una hipótesis editorial que debe probarse con personas externas y revisarse a partir de sus respuestas.
+Esta formulación combina deliberadamente dos movimientos:
+1. **Reconocimiento en segunda persona:** «Tu organización…» sitúa al visitante en el centro y le permite reconocerse en una situación concreta.
+2. **Invitación compartida en primera persona del plural:** «Conectemos… Hagamos…» establece un vínculo de colaboración. AFLUYA no se presenta como una entidad externa que posee todas las respuestas, sino como un ecosistema abierto que invita a explorar y construir posibilidades conjuntamente.
+
+«Hagamos que AFLUYA» convierte el nombre en una llamada a la acción y expresa tanto el propósito como la participación en el desarrollo del ecosistema.
+
+La formulación se adopta como **mensaje preferente de trabajo para prototipar y probar la Home**. Su comprensión, resonancia y posibles interpretaciones se validarán con personas externas mediante la prueba del Efecto Ajá antes de considerarla definitivamente cerrada para publicación.
+
+La tagline general del ecosistema se mantiene, con función distinta:
+
+> «El potencial está dentro. Las posibilidades emergen al conectarlo».
+
+La tagline expresa la identidad global; el nuevo mensaje es una interpelación concreta dirigida a organizaciones y visitantes. No se sustituyen entre sí.
 
 ## 2. Arquitectura pública de conceptos y nombres
 
@@ -255,13 +269,19 @@ No es una campaña de captación ni un sitio institucional convencional. Es la p
 
 **Coste y riesgo mínimos:** evitar marketing pagado, desarrollo completo anticipado, herramientas complejas, contrataciones y costes operacionales no justificados por uso real.
 
-### 6.3 Experiencia del visitante
+### 6.3 Experiencia del visitante y vínculo compartido
 
-La web debe sentirse como una invitación a descubrir y construir:
+La web debe conseguir que el visitante se reconozca primero en una posibilidad propia y, a continuación, perciba que puede explorarla y desarrollarla junto con AFLUYA. La voz no debe situar al proyecto como protagonista ni hablar desde un «nosotros» cerrado: debe combinar reconocimiento del visitante e invitación compartida.
 
-«Mira lo que estamos explorando. Descubre lo que puede llegar a ser. Explora lo que ya está abierto. Encuentra algo que te interese. Propón, conecta, contribuye o ayúdanos a hacerlo posible».
+La secuencia editorial de referencia es:
 
-No debe sentirse como una organización terminada que presenta servicios y pide contacto.
+1. **Reconocimiento:** «Tu organización tiene más potencial del que hoy consigue convertir en valor».
+2. **Invitación:** «Conectemos lo que sabe, lo que tiene y lo que puede llegar a hacer».
+3. **Acción e identidad:** «Hagamos que AFLUYA».
+
+La experiencia debe transmitir: «Mira lo que puedes descubrir. Explora lo que ya está disponible. Imagina qué podrías hacer de otra manera. Encuentra personas, conocimiento y oportunidades con las que conectar. Propón, contribuye o construye algo en común».
+
+AFLUYA debe ofrecer valor antes de solicitar participación y presentarse como facilitador de exploración y construcción compartida, no como una organización terminada que presenta servicios y pide contacto.
 
 ### 6.4 Ciclo de crecimiento
 
@@ -547,11 +567,31 @@ Evitar:
 - Riguroso sin tecnicismo innecesario.
 - Abierto sin fingir madurez o escala.
 - Transparente sobre lo disponible, lo experimental y lo futuro.
-- Centrado en posibilidades, exploración, conexión y construcción de valor.
+- Centrado en las posibilidades del visitante, la exploración, la conexión y la construcción de valor.
+- Capaz de combinar una interpelación directa («tu organización», «lo que puedes conseguir») con una invitación inclusiva («conectemos», «exploremos», «hagamos»).
+- El «nosotros» expresa colaboración y propósito compartido; no debe convertirse en la voz de una institución que habla de sí misma y desplaza al visitante.
 
 ### 11.3 Regla editorial
 
-La Home habla del propósito y la oportunidad. Los detalles técnicos se despliegan progresivamente. No se abre con un listado de productos, servicios, siglas o unidades.
+La Home habla primero de la situación, el potencial y las posibilidades del visitante. Los detalles técnicos se despliegan progresivamente. No se abre con un listado de productos, servicios, siglas o unidades.
+
+La voz editorial sigue una secuencia de **reconocimiento personal → invitación compartida → posibilidad de acción**. La segunda persona ayuda a que cada visitante se vea reflejado; la primera persona del plural crea vínculo y expresa que las posibilidades pueden explorarse y construirse en común. No se impondrá mecánicamente una sola persona gramatical en toda la web: se elegirá la que haga al visitante protagonista y la invitación creíble.
+
+### 11.4 Organización como arquitectura dinámica de capacidades y relaciones
+
+Como fundamento conceptual de la narrativa dirigida a organizaciones, AFLUYA adopta esta formulación de trabajo:
+
+> **Una organización es la arquitectura dinámica de capacidades conectadas mediante relaciones.**
+
+Una organización no es solo la suma de sus recursos, personas, conocimientos o tecnologías. Integra personas, conocimiento, tecnología, inteligencia artificial y datos, entre otros elementos, cuyas capacidades pueden encontrarse fragmentadas, aisladas o insuficientemente conectadas. La forma en que esas capacidades se relacionan condiciona lo que la organización puede aprender, decidir, innovar, adaptarse y hacer.
+
+La red de capacidades y relaciones permite comprender tanto las posibilidades actuales como aquellas que todavía no se han reconocido o desarrollado. Por eso, la pregunta no es únicamente qué recursos tiene una organización, sino qué puede llegar a hacer con ellos cuando sus capacidades se hacen accesibles, se conectan y se transforman de manera adecuada.
+
+La formulación sobre valor debe mantener una cautela esencial:
+
+> Los sistemas humanos no generan valor por el mero hecho de disponer de recursos o capacidades. El valor emerge de los resultados que pueden alcanzar cuando sus capacidades, relaciones y transformaciones les permiten realizar propósitos de forma sostenible en un contexto determinado.
+
+No toda conexión es beneficiosa ni conectar capacidades garantiza por sí mismo valor. Importan el propósito, el contexto, la calidad de las relaciones, las transformaciones posibles, las trayectorias y los resultados. Esta narrativa es un fundamento conceptual y editorial de AFLUYA; no constituye por sí misma una afirmación de causalidad científicamente demostrada ni anticipa la resolución de las preguntas abiertas de TGCV.
 
 ## 12. Criterios de éxito y aprendizaje
 
@@ -638,6 +678,17 @@ Las siguientes cuestiones no se consideran resueltas por este documento:
 Cada decisión se resolverá cuando corresponda, con información vigente y aprobación expresa. No se interpreta la inclusión de una opción como autorización de compra, contratación, publicación o ejecución.
 
 ## 17. Control de cambios
+
+### v1.1 — 2026-11-21
+- Se incorpora como mensaje preferente de trabajo para la Home: «Tu organización tiene más potencial del que hoy consigue convertir en valor. Conectemos lo que sabe, lo que tiene y lo que puede llegar a hacer. Hagamos que AFLUYA».
+- Se documenta la secuencia editorial de reconocimiento del visitante, invitación compartida y llamada a la acción; la tagline global se conserva con una función diferenciada.
+- Se establece la combinación deliberada de segunda persona para que el visitante se reconozca y primera persona del plural para crear vínculo y expresar construcción compartida.
+- Se incorpora la organización como arquitectura dinámica de capacidades conectadas mediante relaciones.
+- Se explicita que personas, conocimiento, tecnología, IA y datos pueden estar fragmentados y que su integración condiciona aprendizaje, decisión, innovación, adaptación y acción.
+- Se precisa la formulación contextual del valor: no emerge automáticamente de poseer o conectar recursos, sino de resultados que permiten realizar propósitos de forma sostenible en un contexto.
+- Se preserva la separación entre narrativa conceptual de AFLUYA y afirmaciones causales/evidencia científica de TGCV.
+- Se incorpora la prueba externa del Efecto Ajá como condición para cerrar el mensaje de Home antes de publicarlo.
+- Se actualiza la referencia al plan operativo AWGI v0.7.
 
 ### v1.0 — 2026-11-10
 - Se crea una arquitectura integrada y limpia que sustituye como referencia vigente al documento histórico acumulativo.
