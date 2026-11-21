@@ -56,6 +56,7 @@ def _load_phase(directory: Path, phase: str, source_commit: str) -> dict[str, di
         cell: {} for cell in g7.EXPECTED_CELLS
     }
     files = sorted(directory.glob("*.json"))
+    all_seed_values = set()
     if not files:
         raise ValueError(f"G7_{phase.upper()}_SHARDS_MISSING")
     for path in files:
@@ -99,22 +100,33 @@ def _load_phase(directory: Path, phase: str, source_commit: str) -> dict[str, di
             )
             if record.get("dataset_id") != expected_id:
                 raise ValueError(f"G7_{phase.upper()}_SHARD_DATASET_ID_MISMATCH:{expected_id}")
-            if record.get("dataset_seed") != g7.derive_seed(g7.HOLDOUT_NAMESPACE, "dataset", cell_id, replicate):
-                raise ValueError(f"G7_{phase.upper()}_DATASET_SEED_MISMATCH:{expected_id}")
-            if record.get("C0_bootstrap_seed") != g7.derive_seed(g7.HOLDOUT_NAMESPACE, "C0_bootstrap", cell_id, replicate):
-                raise ValueError(f"G7_{phase.upper()}_C0_SEED_MISMATCH:{expected_id}")
-            if record.get("C5_bootstrap_seed") != g7.derive_seed(g7.HOLDOUT_NAMESPACE, "C5_bootstrap", cell_id, replicate):
-                raise ValueError(f"G7_{phase.upper()}_C5_SEED_MISMATCH:{expected_id}")
+            expected_seeds = {
+                "dataset_seed": g7.derive_seed(g7.HOLDOUT_NAMESPACE, "dataset", cell_id, replicate),
+                "C0_bootstrap_seed": g7.derive_seed(g7.HOLDOUT_NAMESPACE, "C0_bootstrap", cell_id, replicate),
+                "C5_bootstrap_seed": g7.derive_seed(g7.HOLDOUT_NAMESPACE, "C5_bootstrap", cell_id, replicate),
+            }
+            for seed_field, expected_seed in expected_seeds.items():
+                actual_seed = record.get(seed_field)
+                if actual_seed != expected_seed:
+                    raise ValueError(f"G7_{phase.upper()}_{seed_field.upper()}_MISMATCH:{expected_id}")
+                if actual_seed in all_seed_values:
+                    raise ValueError(f"G7_{phase.upper()}_CROSS_STREAM_OR_DATASET_SEED_COLLISION:{expected_id}")
+                all_seed_values.add(actual_seed)
             row_digest = record.get("rows_sha256")
             if not isinstance(row_digest, str) or not re.fullmatch(r"[0-9a-f]{64}", row_digest):
                 raise ValueError(f"G7_{phase.upper()}_ROW_DIGEST_INVALID:{expected_id}")
             comparison = record.get("comparison", {})
             truth = record.get("truth", {})
+            roster = {comparison.get("baseline", {}).get("method_id")}
+            roster.update(item.get("method_id") for item in comparison.get("candidates", []))
+            expected_truth = g7._jsonable(g7._truth(spec, expected_id))
             if (
                 comparison.get("dataset_id") != expected_id
                 or comparison.get("family") != "F5"
                 or (comparison.get("input_m"), comparison.get("input_r")) != (spec.m, spec.r)
-                or truth.get("dataset_id") != expected_id
+                or (comparison.get("target_m"), comparison.get("target_r")) != (spec.m, spec.r)
+                or roster != set(g7.IMPLEMENTED_METHODS["F5"])
+                or truth != expected_truth
             ):
                 raise ValueError(f"G7_{phase.upper()}_COMPARISON_TRUTH_PAIRING_MISMATCH:{expected_id}")
         output[cell_id][key] = {
