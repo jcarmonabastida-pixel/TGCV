@@ -94,13 +94,49 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
     max_observed_dataset_seconds = max(
         cells[cell_id]["latency_seconds"]["max"] for cell_id in g7.EXPECTED_CELLS
     )
-    safe_sizes = [
-        size for size in CANDIDATE_SHARD_SIZES
-        if size * max_observed_dataset_seconds + JOB_SETUP_OVERHEAD_SECONDS <= JOB_BUDGET_SECONDS
+    candidate_projections = []
+    for size in CANDIDATE_SHARD_SIZES:
+        per_cell = {}
+        phase_upper = 0.0
+        safe = True
+        for cell_id in g7.EXPECTED_CELLS:
+            shard_count = math.ceil(g7.K_PER_CELL / size)
+            waves = math.ceil(shard_count / MAX_PARALLEL)
+            shard_runtime = (
+                size * cells[cell_id]["latency_seconds"]["max"]
+                + JOB_SETUP_OVERHEAD_SECONDS
+            )
+            safe = safe and shard_runtime <= JOB_BUDGET_SECONDS
+            phase_component = waves * shard_runtime
+            phase_upper += phase_component
+            per_cell[cell_id] = {
+                "shards": shard_count,
+                "waves": waves,
+                "max_observed_shard_runtime_seconds": shard_runtime,
+                "conservative_phase_wall_seconds": phase_component,
+            }
+        candidate_projections.append({
+            "datasets_per_shard": size,
+            "safe_under_150_minute_job_budget": safe,
+            "jobs_per_phase": sum(item["shards"] for item in per_cell.values()),
+            "conservative_primary_plus_replay_wall_seconds": 2 * phase_upper,
+            "per_cell": per_cell,
+        })
+    safe_projections = [
+        item for item in candidate_projections
+        if item["safe_under_150_minute_job_budget"]
     ]
-    if not safe_sizes:
+    if not safe_projections:
         raise ValueError("G7_NO_SHARD_SIZE_MEETS_150_MINUTE_JOB_BUDGET")
-    shard_size = max(safe_sizes)
+    # Minimize the conservative end-to-end wall estimate, not the number of jobs.
+    selected = min(
+        safe_projections,
+        key=lambda item: (
+            item["conservative_primary_plus_replay_wall_seconds"],
+            -item["datasets_per_shard"],
+        ),
+    )
+    shard_size = selected["datasets_per_shard"]
 
     shard_matrix = []
     for cell_id in g7.EXPECTED_CELLS:
@@ -111,17 +147,7 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
                 "replicate_count": min(shard_size, g7.K_PER_CELL - start),
             })
 
-    # Conservative upper bound: serialize the cell workloads, while allowing
-    # MAX_PARALLEL shards from a cell to run concurrently.
-    primary_phase_upper = 0.0
-    for cell_id in g7.EXPECTED_CELLS:
-        shard_count = math.ceil(g7.K_PER_CELL / shard_size)
-        waves = math.ceil(shard_count / MAX_PARALLEL)
-        primary_phase_upper += waves * (
-            shard_size * cells[cell_id]["latency_seconds"]["max"]
-            + JOB_SETUP_OVERHEAD_SECONDS
-        )
-    primary_replay_upper = 2 * primary_phase_upper
+    primary_replay_upper = selected["conservative_primary_plus_replay_wall_seconds"]
     resource_wall = float(profile["wall_elapsed_seconds"])
     aggregate_compute_hours = (
         2 * sum(
@@ -143,6 +169,8 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
         "job_setup_overhead_seconds": JOB_SETUP_OVERHEAD_SECONDS,
         "shard_matrix": shard_matrix,
         "shard_jobs_per_phase": len(shard_matrix),
+        "candidate_shard_projections": candidate_projections,
+        "selected_shard_projection": selected,
         "primary_plus_replay_conservative_wall_seconds": primary_replay_upper,
         "end_to_end_conservative_wall_seconds": resource_wall + primary_replay_upper,
         "primary_plus_replay_aggregate_compute_hours": aggregate_compute_hours,
