@@ -175,26 +175,51 @@ def compactify_concentration(poly: Poly) -> Poly:
     return {monomial: coefficient for monomial, coefficient in out.items() if coefficient}
 
 
-def bernstein_coefficients_on_box(
-    poly: Poly,
-    mu_bounds: tuple[object, object] = (0, 1),
-    t_bounds: tuple[object, object] = (0, 1),
-) -> list[list[object]]:
-    """Return exact tensor-product Bernstein coefficients on a rational box.
+from functools import lru_cache
 
-    The input is a sparse power-basis polynomial in (mu,t). Bounds must be
-    ordered rational values (int or Fraction). The returned matrix has shape
-    (degree_mu+1) x (degree_t+1). Its convex-hull property encloses the
-    polynomial range on the closed box. Consequently, coefficients all
-    strictly positive or all strictly negative certify that the polynomial
-    has no zero anywhere in that box.
 
-    This is a root-exclusion primitive only. Mixed-sign coefficients do not
-    prove that a root exists, and this function does not certify a root of a
-    two-polynomial system or handle open-domain boundary likelihoods.
-    """
+@lru_cache(maxsize=512)
+def _bernstein_integer_basis(degree: int, lower, upper):
+    """Return a power-to-Bernstein basis as integer numerators/common denominator."""
     from fractions import Fraction
-    from math import comb
+    from math import comb, lcm
+
+    width = upper - lower
+    basis = []
+    denominator = 1
+    fractions = []
+    for monomial_degree in range(degree + 1):
+        row = []
+        for bernstein_index in range(degree + 1):
+            value = Fraction(0)
+            for normalized_degree in range(min(monomial_degree, bernstein_index) + 1):
+                value += (
+                    Fraction(comb(monomial_degree, normalized_degree))
+                    * lower ** (monomial_degree - normalized_degree)
+                    * width ** normalized_degree
+                    * Fraction(
+                        comb(bernstein_index, normalized_degree),
+                        comb(degree, normalized_degree),
+                    )
+                )
+            row.append(value)
+            denominator = lcm(denominator, value.denominator)
+        fractions.append(row)
+    for row in fractions:
+        basis.append(tuple(
+            value.numerator * (denominator // value.denominator)
+            for value in row
+        ))
+    return tuple(basis), denominator
+
+
+def _bernstein_integer_matrix(
+    poly: Poly,
+    mu_bounds: tuple[object, object],
+    t_bounds: tuple[object, object],
+) -> tuple[list[list[int]], int]:
+    """Exact Bernstein coefficient numerators with one positive common denominator."""
+    from fractions import Fraction
 
     def rational_pair(bounds, code):
         if not isinstance(bounds, tuple) or len(bounds) != 2:
@@ -210,7 +235,7 @@ def bernstein_coefficients_on_box(
     mu_lo, mu_hi = rational_pair(mu_bounds, "INVALID_MU_BOUNDS")
     t_lo, t_hi = rational_pair(t_bounds, "INVALID_T_BOUNDS")
     if not poly:
-        return [[Fraction(0)]]
+        return [[0]], 1
     if any(
         type(i) is not int or i < 0 or type(j) is not int or j < 0
         or type(coefficient) is not int
@@ -219,48 +244,19 @@ def bernstein_coefficients_on_box(
         raise ValueError("POLYNOMIAL_MUST_HAVE_NONNEGATIVE_INTEGER_MONOMIALS")
     degree_mu = max(i for i, _ in poly)
     degree_t = max(j for _, j in poly)
+    mu_basis, mu_denominator = _bernstein_integer_basis(
+        degree_mu, mu_lo, mu_hi
+    )
+    t_basis, t_denominator = _bernstein_integer_basis(
+        degree_t, t_lo, t_hi
+    )
 
-    # Convert the sparse power basis to a dense coefficient matrix once.
-    # Then apply the two univariate power-to-Bernstein transforms separately.
-    # This reduces exact arithmetic from O(d_mu^2*d_t^2) to
-    # O(d_mu^2*d_t + d_mu*d_t^2), which matters for M30/R20 degrees.
-    power = [
-        [Fraction(0) for _ in range(degree_t + 1)]
-        for _ in range(degree_mu + 1)
-    ]
+    # Keep both tensor transforms in Z; only materialize Fractions at the API boundary.
+    power = [[0 for _ in range(degree_t + 1)] for _ in range(degree_mu + 1)]
     for (i, j), coefficient in poly.items():
-        power[i][j] += Fraction(coefficient)
+        power[i][j] += coefficient
 
-    def monomial_bernstein_basis(degree, lower, upper):
-        width = upper - lower
-        basis = [
-            [Fraction(0) for _ in range(degree + 1)]
-            for _ in range(degree + 1)
-        ]
-        for monomial_degree in range(degree + 1):
-            for bernstein_index in range(degree + 1):
-                value = Fraction(0)
-                for normalized_degree in range(min(monomial_degree, bernstein_index) + 1):
-                    value += (
-                        Fraction(comb(monomial_degree, normalized_degree))
-                        * lower ** (monomial_degree - normalized_degree)
-                        * width ** normalized_degree
-                        * Fraction(
-                            comb(bernstein_index, normalized_degree),
-                            comb(degree, normalized_degree),
-                        )
-                    )
-                basis[monomial_degree][bernstein_index] = value
-        return basis
-
-    mu_basis = monomial_bernstein_basis(degree_mu, mu_lo, mu_hi)
-    t_basis = monomial_bernstein_basis(degree_t, t_lo, t_hi)
-
-    # First transform the mu power axis.
-    intermediate = [
-        [Fraction(0) for _ in range(degree_t + 1)]
-        for _ in range(degree_mu + 1)
-    ]
+    intermediate = [[0 for _ in range(degree_t + 1)] for _ in range(degree_mu + 1)]
     for k in range(degree_mu + 1):
         for j in range(degree_t + 1):
             intermediate[k][j] = sum(
@@ -268,18 +264,37 @@ def bernstein_coefficients_on_box(
                 for i in range(degree_mu + 1)
             )
 
-    # Then transform the t power axis.
-    result = [
-        [Fraction(0) for _ in range(degree_t + 1)]
-        for _ in range(degree_mu + 1)
-    ]
+    result = [[0 for _ in range(degree_t + 1)] for _ in range(degree_mu + 1)]
     for k in range(degree_mu + 1):
         for ell in range(degree_t + 1):
             result[k][ell] = sum(
                 intermediate[k][j] * t_basis[j][ell]
                 for j in range(degree_t + 1)
             )
-    return result
+    return result, mu_denominator * t_denominator
+
+
+def bernstein_coefficients_on_box(
+    poly: Poly,
+    mu_bounds: tuple[object, object] = (0, 1),
+    t_bounds: tuple[object, object] = (0, 1),
+) -> list[list[object]]:
+    """Return exact tensor-product Bernstein coefficients on a rational box.
+
+    The sparse integer power-basis polynomial is transformed using integer
+    matrix products after clearing each axis' positive common denominator.
+    This is algebraically identical to the rational transform and avoids
+    repeated Fraction normalization in the inner tensor products.
+    """
+    from fractions import Fraction
+
+    numerators, denominator = _bernstein_integer_matrix(
+        poly, mu_bounds, t_bounds
+    )
+    return [
+        [Fraction(value, denominator) for value in row]
+        for row in numerators
+    ]
 
 
 def bernstein_sign_excludes_zero(coefficients: list[list[object]]) -> bool:
@@ -517,9 +532,12 @@ def _interval_abs_upper(interval):
 
 
 def _bernstein_range(poly: Poly, mu_bounds, t_bounds):
-    coefficients = bernstein_coefficients_on_box(poly, mu_bounds, t_bounds)
-    flat = [value for row in coefficients for value in row]
-    return (min(flat), max(flat))
+    from fractions import Fraction
+    numerators, denominator = _bernstein_integer_matrix(
+        poly, mu_bounds, t_bounds
+    )
+    flat = [value for row in numerators for value in row]
+    return (Fraction(min(flat), denominator), Fraction(max(flat), denominator))
 
 
 def krawczyk_certify_unique_root(
@@ -912,13 +930,68 @@ def _uni_divmod(dividend, divisor):
     return _uni_trim(quotient), _uni_trim(remainder)
 
 
+def _primitive_integer_polynomial(poly):
+    """Clear denominators and coefficient content without changing a Q-polynomial."""
+    from math import gcd, lcm
+
+    values = _uni_trim(poly)
+    denominator = 1
+    for value in values:
+        denominator = lcm(denominator, value.denominator)
+    integers = [
+        value.numerator * (denominator // value.denominator)
+        for value in values
+    ]
+    content = 0
+    for value in integers:
+        content = gcd(content, abs(value))
+    if content:
+        integers = [value // content for value in integers]
+    while len(integers) > 1 and integers[-1] == 0:
+        integers.pop()
+    if integers[-1] < 0:
+        integers = [-value for value in integers]
+    return integers
+
+
+def _primitive_pseudo_remainder(dividend, divisor):
+    """Primitive pseudo-remainder over Z; equivalent to Q-remainder up to a unit."""
+    from math import gcd
+
+    remainder = list(dividend)
+    leading = divisor[-1]
+    while len(remainder) >= len(divisor) and any(remainder):
+        shift = len(remainder) - len(divisor)
+        pivot = remainder[-1]
+        scaled = [leading * value for value in remainder]
+        for index, value in enumerate(divisor):
+            scaled[shift + index] -= pivot * value
+        while len(scaled) > 1 and scaled[-1] == 0:
+            scaled.pop()
+        content = 0
+        for value in scaled:
+            content = gcd(content, abs(value))
+        if content:
+            scaled = [value // content for value in scaled]
+        if scaled[-1] < 0:
+            scaled = [-value for value in scaled]
+        remainder = scaled
+    return remainder
+
+
 def _uni_gcd(left, right):
-    a = _uni_trim(left)
-    b = _uni_trim(right)
-    while not _uni_is_zero(b):
-        _, remainder = _uni_divmod(a, b)
+    """Monic gcd over Q using a primitive integer pseudo-remainder sequence."""
+    from fractions import Fraction
+
+    a = _primitive_integer_polynomial(left)
+    b = _primitive_integer_polynomial(right)
+    while b != [0]:
+        remainder = _primitive_pseudo_remainder(a, b)
         a, b = b, remainder
-    return _uni_monic(a)
+    if a == [0]:
+        return [Fraction(0)]
+    leading = a[-1]
+    return [Fraction(value, leading) for value in a]
 
 
 def _uni_derivative(poly):
@@ -2983,12 +3056,36 @@ def _divide_sparse_by_axis_factor(poly: Poly, axis: str, factor):
             grouped[other_degree].get(variable_degree, 0) + coefficient
         )
     output = {}
+    linear_root = None
+    if len(factor) == 2 and Fraction(factor[1]) == 1:
+        if Fraction(factor[0]) == 0:
+            linear_root = 0
+        elif Fraction(factor[0]) == -1:
+            linear_root = 1
     for other_degree, terms in grouped.items():
         degree = max(terms, default=0)
-        coefficients = [Fraction(terms.get(i, 0)) for i in range(degree + 1)]
-        quotient, remainder = _uni_divmod(coefficients, factor)
-        if not _uni_is_zero(remainder):
-            raise ArithmeticError("COMMON_AXIS_FACTOR_DIVISION_NOT_EXACT")
+        if linear_root == 0:
+            if terms.get(0, 0) != 0:
+                raise ArithmeticError("COMMON_AXIS_FACTOR_DIVISION_NOT_EXACT")
+            quotient = [terms.get(i + 1, 0) for i in range(degree)]
+        elif linear_root == 1:
+            quotient = [0] * degree
+            if degree:
+                quotient[degree - 1] = terms.get(degree, 0)
+                for index in range(degree - 1, 0, -1):
+                    quotient[index - 1] = terms.get(index, 0) + quotient[index]
+                if terms.get(0, 0) + quotient[0] != 0:
+                    raise ArithmeticError("COMMON_AXIS_FACTOR_DIVISION_NOT_EXACT")
+            elif terms.get(0, 0) != 0:
+                raise ArithmeticError("COMMON_AXIS_FACTOR_DIVISION_NOT_EXACT")
+        else:
+            coefficients = [Fraction(terms.get(i, 0)) for i in range(degree + 1)]
+            quotient, remainder = _uni_divmod(coefficients, factor)
+            if not _uni_is_zero(remainder):
+                raise ArithmeticError("COMMON_AXIS_FACTOR_DIVISION_NOT_EXACT")
+            if any(coefficient.denominator != 1 for coefficient in quotient):
+                raise ArithmeticError("INTEGER_POLYNOMIAL_QUOTIENT_NOT_INTEGRAL")
+            quotient = [int(coefficient) for coefficient in quotient]
         for variable_degree, coefficient in enumerate(quotient):
             if not coefficient:
                 continue
@@ -2996,8 +3093,6 @@ def _divide_sparse_by_axis_factor(poly: Poly, axis: str, factor):
                 (variable_degree, other_degree)
                 if axis == "mu" else (other_degree, variable_degree)
             )
-            if coefficient.denominator != 1:
-                raise ArithmeticError("INTEGER_POLYNOMIAL_QUOTIENT_NOT_INTEGRAL")
             output[monomial] = int(coefficient)
     return output
 
