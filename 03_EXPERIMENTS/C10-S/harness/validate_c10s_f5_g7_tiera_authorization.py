@@ -12,7 +12,18 @@ import subprocess
 AUTH_PATH = "00_GOVERNANCE/authorizations/C10S_F5_G7_TIERA_CALIBRATION_AUTHORIZATION.json"
 BRANCH_PREFIX = "research/c10s-f5-g7-auth-"
 PROTOCOL_PATH = "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_TIERA_PROSPECTIVE_PROTOCOL_001.md"
+RESOURCE_PROFILE_PATH = "03_EXPERIMENTS/C10-S/diagnostics/C10S_F5_G7_RESOURCE_PROFILE_001.json"
+RESOURCE_PROFILE_MANIFEST_PATH = "03_EXPERIMENTS/C10-S/diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_001.json"
 SOURCE_HASH_PATHS = {
+    "execution_architecture_sha256": "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_EXECUTION_ARCHITECTURE_001.md",
+    "resource_profile_sha256": RESOURCE_PROFILE_PATH,
+    "resource_profile_manifest_sha256": RESOURCE_PROFILE_MANIFEST_PATH,
+    "resource_profile_validator_sha256": "03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_resource_profile.py",
+    "resource_profile_script_sha256": "03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_resource_preflight_parallel.py",
+    "shard_execution_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_shard_execution.py",
+    "shard_cli_sha256": "03_EXPERIMENTS/C10-S/harness/execute_c10s_f5_g7_tiera_shard.py",
+    "shard_aggregator_sha256": "03_EXPERIMENTS/C10-S/harness/aggregate_c10s_f5_g7_tiera_shards.py",
+    "shard_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_shard_execution.py",
     "protocol_sha256": PROTOCOL_PATH,
     "runner_sha256": "03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_tiera_calibration.py",
     "fitter_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_fitted_beta_binomial_bootstrap.py",
@@ -39,7 +50,7 @@ SOURCE_HASH_PATHS = {
 }
 PROTOCOL_ID = "C10S-F5-G7-TIERA-PROSPECTIVE-001"
 PROTOCOL_VERSION = "1.0"
-AUTH_SCHEMA = "TGCV-C10S-F5-G7-TIERA-AUTH-001"
+AUTH_SCHEMA = "TGCV-C10S-F5-G7-TIERA-AUTH-002"
 EXPECTED_CELLS = ("F5_beta22_M10_R5", "F5_beta22_M30_R20")
 
 
@@ -93,6 +104,23 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
         raise ValueError("G7 frozen K/B mismatch")
     if auth.get("resource_preflight_k_per_cell") != 100:
         raise ValueError("G7 resource preflight K mismatch")
+    if auth.get("execution_architecture_id") != "C10S-F5-G7-EXECUTION-ARCHITECTURE-001":
+        raise ValueError("G7 staged execution architecture mismatch")
+    if (auth.get("max_job_minutes"), auth.get("max_parallel_jobs")) != (150, 20):
+        raise ValueError("G7 execution budget or parallelism mismatch")
+    profile_manifest = json.loads((root / RESOURCE_PROFILE_MANIFEST_PATH).read_text(encoding="utf-8"))
+    if profile_manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-001":
+        raise ValueError("G7 resource profile manifest schema mismatch")
+    if (
+        auth.get("resource_profile_run_id") != profile_manifest.get("profile_run_id")
+        or auth.get("resource_profile_artifact_id") != profile_manifest.get("profile_artifact_id")
+        or auth.get("resource_profile_source_commit") != profile_manifest.get("profile_source_commit")
+        or auth.get("resource_profile_artifact_archive_sha256") != profile_manifest.get("profile_artifact_archive_sha256")
+        or auth.get("resource_profile_sha256") != profile_manifest.get("profile_json_sha256")
+        or auth.get("resource_profile_scope") != "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_NO_COVERAGE_NO_HOLDOUT"
+        or auth.get("resource_profile_seed_namespace") != "c10s_f5_g7_resource_v1"
+    ):
+        raise ValueError("G7 resource profile provenance mismatch")
     if auth.get("seed_schedule_id") != "C10S_F5_G7_TIERA_SEEDS_1.0":
         raise ValueError("G7 seed schedule mismatch")
     if auth.get("holdout_seed_namespace") != "c10s_f5_g7_holdout_v1" or auth.get("resource_seed_namespace") != "c10s_f5_g7_resource_v1":
@@ -121,6 +149,14 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
         "c0_bootstrap_replicates": 1000,
         "c5_bootstrap_replicates": 1000,
         "resource_preflight_k_per_cell": 100,
+        "execution_architecture_id": "C10S-F5-G7-EXECUTION-ARCHITECTURE-001",
+        "resource_profile_run_id": auth["resource_profile_run_id"],
+        "resource_profile_artifact_id": auth["resource_profile_artifact_id"],
+        "resource_profile_source_commit": auth["resource_profile_source_commit"],
+        "resource_profile_sha256": auth["resource_profile_sha256"],
+        "resource_profile_artifact_archive_sha256": auth["resource_profile_artifact_archive_sha256"],
+        "max_job_minutes": 150,
+        "max_parallel_jobs": 20,
         "cells": list(EXPECTED_CELLS),
         "primary_replay_required": True,
     }
