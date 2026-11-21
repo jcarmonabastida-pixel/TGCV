@@ -492,3 +492,25 @@ Each compute job must have a hard timeout below three hours (target 150 minutes,
 The 81-hour sequential projection must be replaced by a measured parallel wall-time projection while also reporting total runner-compute hours. These are distinct quantities and neither may be hidden. K=1,000, C0/C5 B=1,000, the holdout namespace, primary/replay identity, exact certificate requirements, interval-emission threshold and coverage criteria remain frozen.
 
 No prospective G7 holdout has been run. The current G7 v1.0 one-use authorization is consumed and bound to the earlier monolithic executor; the staged/sharded executor requires a new protocol/source-hash snapshot and a fresh explicit one-use authorization before any holdout computation. The separate M10/R5 boundary/unresolved emission blocker in §9.20 remains open and is not solved by this performance work.
+
+
+### 9.22 Resumable G7 shard executor and workflow implementation — 2026-11-21
+
+The staged execution implementation is now present on the research branch:
+- `c10s_f5_g7_shard_execution.py`: global replicate-index shard generation, canonical per-shard record digest, and rehydration into the existing matched-dataset adjudicator.
+- `execute_c10s_f5_g7_tiera_shard.py`: independent primary/replay shard entry point.
+- `aggregate_c10s_f5_g7_tiera_shards.py`: gap/overlap, seed, truth, roster, row-digest, per-shard primary/replay and full-bank digest checks; reconstructs each full K=1,000 cell and invokes the unchanged adjudicator once.
+- `validate_c10s_f5_g7_resource_profile.py`: validates a reusable resource-only profile, verifies the compute-path source files are byte-identical to the profile source snapshot, and derives the shard matrix from the worst observed per-dataset latency (not the mean).
+- `C10S_F5_G7_EXECUTION_ARCHITECTURE_001.md`: records the execution-only design and no-repeat/recovery contract.
+
+The G7 workflow has been replaced by distinct authorization, resource-profile validation, primary matrix, replay matrix and final-adjudication jobs. Primary and replay are separate matrix stages (up to 20 concurrent jobs), with 165-minute job timeouts and a 150-minute measured-work budget. The preflight profile is reused; it is not recomputed on downstream retries. Completed shards are preserved as immutable artifacts and the workflow dependency graph prevents replay from starting before the entire primary matrix succeeds.
+
+Equivalence/integrity tests cover:
+- byte-equivalent shard-0 records against the former monolithic `run_cell` path;
+- global replicate indices and unchanged seed derivation for non-zero shards;
+- rehydrated shard adjudication matching the monolithic adjudicator;
+- complete primary/replay aggregation and profile-manifest integrity.
+
+The static workflow, staged G7 YAML syntax check, compilation and 188 deterministic tests passed on [run 44930084805](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44930084805). This is software validation only; it is not a G7 holdout result.
+
+The full 100-dataset-per-cell resource latency profile remains in progress as [run 44926453920](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44926453920). Its immutable JSON and artifact metadata must be persisted before the profile validator can derive and freeze the actual shard size. No holdout primary or replay computation has been started.
