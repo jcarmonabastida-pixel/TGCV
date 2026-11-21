@@ -12,6 +12,7 @@ from run_c10s_f5_g7_tiera_calibration import (
     adjudicate_g7_metrics,
     derive_seed,
     run_cell,
+    run_resource_preflight,
     validate_seed_separation,
 )
 
@@ -76,6 +77,24 @@ class F5G7CalibrationTests(unittest.TestCase):
         self.assertEqual(result["metrics"], [])
         self.assertEqual(result["coverage_adjudication"], "NOT_PERFORMED_RESOURCE_ONLY")
 
+
+    def test_resource_preflight_failure_returns_timing_evidence_before_stop(self):
+        with patch("run_c10s_f5_g7_tiera_calibration.validate_seed_separation"), patch(
+            "run_c10s_f5_g7_tiera_calibration.run_cell",
+            return_value={"records": [], "datasets_completed": 100},
+        ), patch(
+            "run_c10s_f5_g7_tiera_calibration.time.perf_counter",
+            side_effect=[0.0, 900.0],
+        ):
+            result = run_resource_preflight()
+        self.assertEqual(result["status"], "RESOURCE_PREFLIGHT_FAIL")
+        self.assertEqual(
+            result["failure_reason"],
+            "G7_RESOURCE_PREFLIGHT_PROJECTS_OVER_4_5_HOURS",
+        )
+        self.assertEqual(result["elapsed_seconds"], 900.0)
+        self.assertEqual(result["projected_primary_plus_replay_seconds"], 18000.0)
+        self.assertEqual(result["coverage_adjudication"], "NOT_PERFORMED")
 
     def test_g7_acceptance_is_no_pooling_and_requires_all_four_c5_components(self):
         summary = {}
