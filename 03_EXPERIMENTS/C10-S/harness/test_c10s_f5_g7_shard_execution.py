@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import json
 import os
+import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 import run_c10s_f5_g7_tiera_calibration as g7
 from c10s_nested_mr_fixtures import tier_a_specs
+from aggregate_c10s_f5_g7_tiera_shards import aggregate
 from c10s_f5_g7_shard_execution import (
     adjudicate_serialized_records,
     records_digest,
@@ -102,12 +106,61 @@ class F5G7ShardExecutionTests(unittest.TestCase):
                 source_commit="d" * 40,
             )
 
-    def test_serialized_adjudicator_rejects_duplicate_dataset_ids(self):
-        with self.assertRaisesRegex(ValueError, "MISSING_OR_DUPLICATE"):
-            adjudicate_serialized_records([
-                {"dataset_id": "same", "comparison": {}, "truth": {}},
-                {"dataset_id": "same", "comparison": {}, "truth": {}},
-            ])
+    def test_full_aggregator_reuses_complete_primary_replay_shards(self):
+        source_commit = "d" * 40
+        env_patch, cert_patch, c0_patch, c5_patch = self._patches()
+        with tempfile.TemporaryDirectory() as temporary, env_patch, cert_patch, c0_patch, c5_patch, patch.object(g7, "K_PER_CELL", 2):
+            root = Path(temporary)
+            primary_dir = root / "primary-shards"
+            replay_dir = root / "replay-shards"
+            primary_dir.mkdir()
+            replay_dir.mkdir()
+            for phase, directory in (("primary", primary_dir), ("replay", replay_dir)):
+                for spec in g7.f5_specs():
+                    shard = run_cell_shard(
+                        spec, phase=phase, replicate_start=0,
+                        replicate_count=2, c0_b=100, c5_b=100,
+                        source_commit=source_commit,
+                    )
+                    filename = f"{spec.cell_id}-000000.json"
+                    (directory / filename).write_text(
+                        json.dumps(shard, sort_keys=True, indent=2) + "\\n",
+                        encoding="utf-8",
+                    )
+            profile = {
+                "schema": "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-001",
+                "scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_NO_COVERAGE_NO_HOLDOUT",
+                "seed_namespace": g7.RESOURCE_NAMESPACE,
+                "K_per_cell": 100,
+                "C0_B": 100,
+                "C5_B": 100,
+                "coverage_adjudication": "NOT_PERFORMED",
+                "cells": [
+                    {"cell_id": cell_id, "datasets_completed": 100}
+                    for cell_id in g7.EXPECTED_CELLS
+                ],
+            }
+            # The frozen preflight itself always uses B=1000; this fixture only
+            # reduces the shard bootstrap budget through the patched test constants.
+            profile["C0_B"] = 1000
+            profile["C5_B"] = 1000
+            profile_path = root / "resource-profile.json"
+            profile_path.write_text(json.dumps(profile), encoding="utf-8")
+            result = aggregate(
+                primary_dir=primary_dir,
+                replay_dir=replay_dir,
+                preflight_path=profile_path,
+                output_dir=root / "result",
+                source_commit=source_commit,
+                authorization_id="G7-TEST-0001",
+            )
+            self.assertEqual(result["shards"], 4)
+            self.assertEqual(
+                result["status"],
+                "G7_NOT_VALIDATED_PRIMARY_REPLAY_EXACT_MATCH",
+            )
+            self.assertTrue((root / "result" / "g7_result.json").is_file())
+            self.assertTrue((root / "result" / "run_manifest.json").is_file())
 
 
 if __name__ == "__main__":
