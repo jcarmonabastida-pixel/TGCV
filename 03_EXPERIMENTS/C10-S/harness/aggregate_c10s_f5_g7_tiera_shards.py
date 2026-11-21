@@ -88,7 +88,8 @@ def _load_phase(directory: Path, phase: str, source_commit: str) -> dict[str, di
         if shard.get("records_digest") != records_digest(records):
             raise ValueError(f"G7_{phase.upper()}_SHARD_RECORD_DIGEST_MISMATCH:{path.name}")
         spec = next(item for item in g7.f5_specs() if item.cell_id == cell_id)
-        if shard.get("cell") != spec.manifest():
+        expected_cell_manifest = json.loads(json.dumps(spec.manifest(), sort_keys=True))
+        if shard.get("cell") != expected_cell_manifest:
             raise ValueError(f"G7_{phase.upper()}_SHARD_CELL_MANIFEST_MISMATCH:{path.name}")
         if shard.get("method_roster") != sorted(g7.IMPLEMENTED_METHODS["F5"]):
             raise ValueError(f"G7_{phase.upper()}_SHARD_METHOD_ROSTER_MISMATCH:{path.name}")
