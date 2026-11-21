@@ -28,7 +28,7 @@ on:
       - '03_EXPERIMENTS/C10-S/harness/run_c10s_post_holdout_f5_b2_b3_development_calibration.py'
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_post_holdout_f5_b2_b3_development_calibration.py'
       - '03_EXPERIMENTS/C10-S/harness/validate_c10s_post_holdout_f5_b2_b3_development_calibration_authorization.py'
-      - '03_EXPERIMENTS/C10-S/harness/test_c10s_post_holdout_f5_b2_b3_development_calibration_authorization.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_post_holdout_f5_b2_b3_development_calibration_authorization.py profile_c10s_f5_g7_certificate_internals.py'
       - '.github/workflows/c10-s-post-holdout-f5-b2-b3-development-calibration.yml'
       - '03_EXPERIMENTS/C10-S/diagnostics/C10S_POST_HOLDOUT_F5_B2_B3_DEVELOPMENT_CALIBRATION_AUTHORIZATION_TEMPLATE_001.json'
       - '03_EXPERIMENTS/C10-S/harness/validate_c10s_nested_mr_comparative_holdout_authorization.py'
@@ -51,7 +51,7 @@ on:
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_f1_between_profile_likelihood.py'
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_f1_near_degenerate_interval.py'
       - '03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock'
-      - '03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_optimizer_components.py'
+      - '03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_certificate_internals.py'
 
 permissions:
   contents: read
@@ -77,20 +77,20 @@ jobs:
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PYTHONDONTWRITEBYTECODE: '1'
-        run: python -m py_compile c10s_gaussian_variance_oracles.py test_c10s_gaussian_variance_oracles.py c10s_beta_binomial_variance_oracles.py test_c10s_beta_binomial_variance_oracles.py c10s_variance_comparison_interface.py test_c10s_variance_comparison_interface.py c10s_f1_exact_pivotal_candidate.py test_c10s_f1_exact_pivotal_candidate.py c10s_fitted_beta_binomial_bootstrap.py test_c10s_fitted_beta_binomial_bootstrap.py run_c10s_f5_g7_tiera_calibration.py test_c10s_f5_g7_tiera_calibration.py execute_c10s_f5_g7_tiera_calibration.py validate_c10s_f5_g7_tiera_authorization.py test_c10s_f5_g7_tiera_authorization.py c10s_f5_beta_binomial_likelihood_diagnostics.py test_c10s_f5_beta_binomial_likelihood_diagnostics.py c10s_f1_between_profile_likelihood.py test_c10s_f1_between_profile_likelihood.py test_c10s_f1_near_degenerate_interval.py c10s_nested_mr_comparative_inference_engine.py test_c10s_nested_mr_comparative_inference_engine.py run_c10s_nested_mr_comparative_holdout.py test_c10s_nested_mr_comparative_holdout.py run_c10s_nested_mr_comparative_resource_preflight.py test_c10s_nested_mr_comparative_resource_preflight.py validate_c10s_nested_mr_resource_preflight_authorization.py validate_c10s_nested_mr_comparative_holdout_authorization.py test_c10s_nested_mr_comparative_holdout_authorization.py execute_c10s_nested_mr_comparative_holdout.py run_c10s_post_holdout_f1_f5_resource_preflight.py test_c10s_post_holdout_f1_f5_resource_preflight.py validate_c10s_post_holdout_resource_preflight_authorization.py run_c10s_post_holdout_f5_b2_b3_development_calibration.py test_c10s_post_holdout_f5_b2_b3_development_calibration.py validate_c10s_post_holdout_f5_b2_b3_development_calibration_authorization.py test_c10s_post_holdout_f5_b2_b3_development_calibration_authorization.py profile_c10s_f5_g7_optimizer_components.py
+        run: python -m py_compile c10s_gaussian_variance_oracles.py test_c10s_gaussian_variance_oracles.py c10s_beta_binomial_variance_oracles.py test_c10s_beta_binomial_variance_oracles.py c10s_variance_comparison_interface.py test_c10s_variance_comparison_interface.py c10s_f1_exact_pivotal_candidate.py test_c10s_f1_exact_pivotal_candidate.py c10s_fitted_beta_binomial_bootstrap.py test_c10s_fitted_beta_binomial_bootstrap.py run_c10s_f5_g7_tiera_calibration.py test_c10s_f5_g7_tiera_calibration.py execute_c10s_f5_g7_tiera_calibration.py validate_c10s_f5_g7_tiera_authorization.py test_c10s_f5_g7_tiera_authorization.py c10s_f5_beta_binomial_likelihood_diagnostics.py test_c10s_f5_beta_binomial_likelihood_diagnostics.py c10s_f1_between_profile_likelihood.py test_c10s_f1_between_profile_likelihood.py test_c10s_f1_near_degenerate_interval.py c10s_nested_mr_comparative_inference_engine.py test_c10s_nested_mr_comparative_inference_engine.py run_c10s_nested_mr_comparative_holdout.py test_c10s_nested_mr_comparative_holdout.py run_c10s_nested_mr_comparative_resource_preflight.py test_c10s_nested_mr_comparative_resource_preflight.py validate_c10s_nested_mr_resource_preflight_authorization.py validate_c10s_nested_mr_comparative_holdout_authorization.py test_c10s_nested_mr_comparative_holdout_authorization.py execute_c10s_nested_mr_comparative_holdout.py run_c10s_post_holdout_f1_f5_resource_preflight.py test_c10s_post_holdout_f1_f5_resource_preflight.py validate_c10s_post_holdout_resource_preflight_authorization.py run_c10s_post_holdout_f5_b2_b3_development_calibration.py test_c10s_post_holdout_f5_b2_b3_development_calibration.py validate_c10s_post_holdout_f5_b2_b3_development_calibration_authorization.py test_c10s_post_holdout_f5_b2_b3_development_calibration_authorization.py
       - name: Run comparator oracle tests only
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PYTHONDONTWRITEBYTECODE: '1'
         run: python -B -m unittest -v test_c10s_gaussian_variance_oracles test_c10s_beta_binomial_variance_oracles test_c10s_variance_comparison_interface test_c10s_f1_exact_pivotal_candidate test_c10s_fitted_beta_binomial_bootstrap test_c10s_f5_g7_tiera_calibration test_c10s_f5_g7_tiera_authorization test_c10s_f5_beta_binomial_likelihood_diagnostics test_c10s_f1_between_profile_likelihood test_c10s_f1_near_degenerate_interval test_c10s_nested_mr_comparative_inference_engine test_c10s_nested_mr_comparative_holdout test_c10s_nested_mr_comparative_resource_preflight test_c10s_nested_mr_comparative_holdout_authorization test_c10s_post_holdout_f1_f5_resource_preflight test_c10s_post_holdout_f5_b2_b3_development_calibration test_c10s_post_holdout_f5_b2_b3_development_calibration_authorization
-      - name: Run bounded resource-only P/A/I component profile
+      - name: Run one-cell exact-certificate internal profile (resource namespace only)
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python profile_c10s_f5_g7_optimizer_components.py --output "$RUNNER_TEMP/c10s-f5-g7-optimizer-profile.json"
-      - name: Upload resource-only component profile
+        run: python profile_c10s_f5_g7_certificate_internals.py --output "$RUNNER_TEMP/c10s-f5-g7-certificate-internals.json"
+      - name: Upload exact-certificate internal profile
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
-          name: c10s-f5-g7-optimizer-component-profile-${{ github.sha }}
-          path: ${{ runner.temp }}/c10s-f5-g7-optimizer-profile.json
+          name: c10s-f5-g7-certificate-internal-profile-${{ github.sha }}
+          path: ${{ runner.temp }}/c10s-f5-g7-certificate-internals.json
           if-no-files-found: warn
           retention-days: 30
