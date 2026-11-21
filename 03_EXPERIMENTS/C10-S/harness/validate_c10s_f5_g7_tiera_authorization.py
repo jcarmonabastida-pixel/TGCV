@@ -17,6 +17,7 @@ SOURCE_HASH_PATHS = {
     "execution_architecture_sha256": "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_EXECUTION_ARCHITECTURE_001.md",
     "resource_profile_manifest_sha256": RESOURCE_PROFILE_MANIFEST_PATH,
     "resource_profile_validator_sha256": "03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_resource_profile.py",
+    "resource_profile_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_resource_profile.py",
     "resource_profile_script_sha256": "03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_resource_preflight_parallel.py",
     "shard_execution_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_shard_execution.py",
     "shard_cli_sha256": "03_EXPERIMENTS/C10-S/harness/execute_c10s_f5_g7_tiera_shard.py",
