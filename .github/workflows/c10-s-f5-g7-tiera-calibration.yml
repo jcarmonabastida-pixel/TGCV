@@ -47,7 +47,8 @@ jobs:
       - name: Install hash-locked dependencies for authorization validation
         if: steps.gate.outputs.approved == 'true'
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
       - name: Validate one-use G7 authorization and exact code parent
         if: steps.gate.outputs.approved == 'true'
         id: authorization
@@ -103,7 +104,8 @@ jobs:
           python-version: '3.12.10'
       - name: Install hash-locked dependencies
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
       - name: Validate immutable resource profile and derive safe shard matrix
         id: plan
         working-directory: 03_EXPERIMENTS/C10-S/harness
@@ -153,7 +155,8 @@ jobs:
           python-version: '3.12.10'
       - name: Install hash-locked dependencies
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
       - name: Execute one primary shard
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
@@ -196,7 +199,8 @@ jobs:
           python-version: '3.12.10'
       - name: Install hash-locked dependencies
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
       - name: Execute one clean-source replay shard
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
@@ -234,7 +238,8 @@ jobs:
           python-version: '3.12.10'
       - name: Install hash-locked dependencies
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
       - name: Download all completed primary shards
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
