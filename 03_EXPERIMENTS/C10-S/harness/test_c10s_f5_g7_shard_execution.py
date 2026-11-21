@@ -108,8 +108,10 @@ class F5G7ShardExecutionTests(unittest.TestCase):
 
     def test_full_aggregator_reuses_complete_primary_replay_shards(self):
         source_commit = "d" * 40
-        env_patch, cert_patch, c0_patch, c5_patch = self._patches()
-        with tempfile.TemporaryDirectory() as temporary, env_patch, cert_patch, c0_patch, c5_patch, patch.object(g7, "K_PER_CELL", 2):
+        with tempfile.TemporaryDirectory() as temporary, patch.dict(os.environ, {"GITHUB_SHA": "d" * 40}), patch(
+            "c10s_fitted_beta_binomial_bootstrap.beta_binomial_global_mle_certificate",
+            return_value=self.fake_certificate,
+        ), patch.object(g7, "K_PER_CELL", 2):
             root = Path(temporary)
             primary_dir = root / "primary-shards"
             replay_dir = root / "replay-shards"
@@ -119,7 +121,7 @@ class F5G7ShardExecutionTests(unittest.TestCase):
                 for spec in g7.f5_specs():
                     shard = run_cell_shard(
                         spec, phase=phase, replicate_start=0,
-                        replicate_count=2, c0_b=100, c5_b=100,
+                        replicate_count=2, c0_b=g7.C0_B, c5_b=g7.C5_B,
                         source_commit=source_commit,
                     )
                     filename = f"{spec.cell_id}-000000.json"
@@ -132,18 +134,14 @@ class F5G7ShardExecutionTests(unittest.TestCase):
                 "scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_NO_COVERAGE_NO_HOLDOUT",
                 "seed_namespace": g7.RESOURCE_NAMESPACE,
                 "K_per_cell": 100,
-                "C0_B": 100,
-                "C5_B": 100,
+                "C0_B": g7.C0_B,
+                "C5_B": g7.C5_B,
                 "coverage_adjudication": "NOT_PERFORMED",
                 "cells": [
                     {"cell_id": cell_id, "datasets_completed": 100}
                     for cell_id in g7.EXPECTED_CELLS
                 ],
             }
-            # The frozen preflight itself always uses B=1000; this fixture only
-            # reduces the shard bootstrap budget through the patched test constants.
-            profile["C0_B"] = 1000
-            profile["C5_B"] = 1000
             profile_path = root / "resource-profile.json"
             profile_path.write_text(json.dumps(profile), encoding="utf-8")
             result = aggregate(
