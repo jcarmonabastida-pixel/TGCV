@@ -405,3 +405,19 @@ Governed static validation:
 - Run [44843094528](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44843094528), commit `352a29da07879eb9d9ce6bc226a57af2540cc756`: **182 tests PASS**, including the persisted failed-preflight artifact regression; CPython 3.12.10, pinned dependencies and compile step passed.
 
 These are deterministic software tests, not a measured G7 speedup. The revised code has not yet been benchmarked against the 4.5-hour projection gate. The previous G7 authorization was one-use and is consumed; the revised code requires a fresh authorization branch hash-bound to this exact snapshot before any new preflight. No K/B, seed, coverage, replay or scientific-scope constraint is relaxed. G7 remains AUTHORIZED AT PROGRAMME LEVEL / NEW EXECUTION AUTHORIZATION PENDING; no prospective holdout or coverage result exists.
+
+
+### 9.19 Hash-bound retry authorization — current execution state (2026-11-21)
+
+The first replacement authorization attempt `C10S-F5-G7-20261121-003` failed closed at source-inventory validation because the `gaussian_oracle_sha256` field had been transcribed with two hexadecimal characters missing. No approved-code checkout or G7 computation occurred on that attempt. The digest was recomputed from the exact approved source file and its 64-character length checked.
+
+Corrected one-use authorization:
+- authorization ID: `C10S-F5-G7-20261121-004`;
+- authorization commit: `d7fd9ac32badcbee192364e3e7bbeb53a60045ca`;
+- sole parent / approved code commit: `b0d1f53198e6f56520f9a872e48f8a027cbe4fdf`;
+- workflow: [44843498295](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44843498295);
+- source-hash inventory, parent identity, authorization window, frozen protocol and scope validator: **PASS**;
+- exact approved research-code checkout and locked dependency installation: **PASS**;
+- latest observed job state: resource preflight / primary / replay executor step **IN_PROGRESS**.
+
+The corrected attempt is bound to the vectorized C5 bootstrap snapshot and the new preflight-evidence persistence behavior. It is the first execution that can measure whether that optimization brings the full primary-plus-replay projection below the unchanged 4.5-hour limit. Until the preflight artifact is available, no speedup or G7 calibration outcome is claimed.
