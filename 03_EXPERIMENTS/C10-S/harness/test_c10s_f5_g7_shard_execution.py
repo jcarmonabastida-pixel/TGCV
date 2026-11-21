@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import tempfile
@@ -150,7 +151,7 @@ class F5G7ShardExecutionTests(unittest.TestCase):
                 "profile_run_id": 44926453920,
                 "profile_artifact_id": 123456789,
                 "profile_source_commit": source_commit,
-                "profile_json_sha256": __import__("hashlib").sha256(profile_path.read_bytes()).hexdigest(),
+                "profile_json_sha256": hashlib.sha256(profile_path.read_bytes()).hexdigest(),
                 "profile_artifact_archive_sha256": "b" * 64,
             }), encoding="utf-8")
             result = aggregate(
