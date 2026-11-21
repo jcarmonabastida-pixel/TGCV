@@ -10,10 +10,36 @@ from c10s_fitted_beta_binomial_bootstrap import (
     BetaBinomialFitError,
     fit_beta_binomial_counts,
     fitted_beta_binomial_parametric_bootstrap,
+    _vectorized_bernoulli_bootstrap_components,
 )
+from c10s_variance_comparison_interface import observed_nested_mr_result
 
 
 class FittedBetaBinomialBootstrapTests(unittest.TestCase):
+    def test_vectorized_bootstrap_kernel_matches_scalar_nested_estimands(self):
+        rng = np.random.Generator(np.random.PCG64(20261121))
+        counts_star = rng.integers(0, 6, size=(257, 10), endpoint=False)
+        within, between, valid_mcse = _vectorized_bernoulli_bootstrap_components(
+            counts_star, 5, 10, 5,
+        )
+        scalar_within = []
+        scalar_between = []
+        scalar_valid = 0
+        for counts in counts_star:
+            rows = tuple(
+                tuple([1.0] * int(count) + [0.0] * (5 - int(count)))
+                for count in counts
+            )
+            result = observed_nested_mr_result(
+                rows, target_m=10, target_r=5,
+            )
+            scalar_within.append(result.within_estimate)
+            scalar_between.append(result.between_estimate_raw)
+            scalar_valid += int(result.mcse_estimate is not None)
+        np.testing.assert_allclose(within, scalar_within, rtol=1e-13, atol=1e-15)
+        np.testing.assert_allclose(between, scalar_between, rtol=1e-13, atol=1e-15)
+        self.assertEqual(valid_mcse, scalar_valid)
+
     def test_mle_recovers_finite_interior_fit_for_overdispersed_counts(self):
         fit = fit_beta_binomial_counts((0, 0, 1, 4, 5, 5, 2, 3, 0, 5), 5)
         self.assertTrue(fit.converged)
