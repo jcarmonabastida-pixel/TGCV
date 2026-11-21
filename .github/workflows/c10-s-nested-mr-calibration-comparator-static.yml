@@ -100,6 +100,8 @@ jobs:
       - name: Validate source compatibility and assert the measured shard plan
         if: contains(github.event.head_commit.message, 'validate persisted G7 resource profile')
         working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          PLAN_JSON: ${{ runner.temp }}/g7-resource-profile-validation.json
         run: |
           python validate_c10s_f5_g7_resource_profile.py \
             --profile "$RUNNER_TEMP/resource-profile/c10s-f5-g7-resource-parallel-profile.json" \
@@ -107,9 +109,9 @@ jobs:
             --root ../../.. \
             --output-json "$RUNNER_TEMP/g7-resource-profile-validation.json"
           python - <<'PY'
-          import json
+          import json, os
           from pathlib import Path
-          data = json.loads(Path("$RUNNER_TEMP/g7-resource-profile-validation.json").read_text())
+          data = json.loads(Path(os.environ["PLAN_JSON"]).read_text())
           assert data["datasets_per_shard"] == 50, data["datasets_per_shard"]
           assert data["end_to_end_conservative_wall_seconds"] < 10800
           print({
