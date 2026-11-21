@@ -63,7 +63,7 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-  resource-preflight-validation:
+  resource_preflight_validation:
     needs: authorization
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -114,15 +114,15 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-  primary-bank:
-    needs: [authorization, resource-preflight-validation]
+  primary_bank:
+    needs: [authorization, resource_preflight_validation]
     runs-on: ubuntu-24.04
     timeout-minutes: 165
     strategy:
       fail-fast: false
       max-parallel: 20
       matrix:
-        shard: ${{ fromJSON(needs.resource-preflight-validation.outputs.shard_matrix) }}
+        shard: ${{ fromJSON(needs.resource_preflight_validation.outputs.shard_matrix) }}
     steps:
       - name: Checkout exact approved research code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -157,15 +157,15 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-  replay-bank:
-    needs: [authorization, resource-preflight-validation, primary-bank]
+  replay_bank:
+    needs: [authorization, resource_preflight_validation, primary_bank]
     runs-on: ubuntu-24.04
     timeout-minutes: 165
     strategy:
       fail-fast: false
       max-parallel: 20
       matrix:
-        shard: ${{ fromJSON(needs.resource-preflight-validation.outputs.shard_matrix) }}
+        shard: ${{ fromJSON(needs.resource_preflight_validation.outputs.shard_matrix) }}
     steps:
       - name: Checkout exact approved research code (clean replay)
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -200,8 +200,8 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-  final-adjudication:
-    needs: [authorization, resource-preflight-validation, primary-bank, replay-bank]
+  final_adjudication:
+    needs: [authorization, resource_preflight_validation, primary_bank, replay_bank]
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
