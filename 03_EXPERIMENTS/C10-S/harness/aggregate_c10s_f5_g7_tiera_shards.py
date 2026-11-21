@@ -153,6 +153,7 @@ def aggregate(
     primary_dir: Path,
     replay_dir: Path,
     preflight_path: Path,
+    preflight_manifest_path: Path,
     output_dir: Path,
     source_commit: str,
     authorization_id: str,
@@ -161,6 +162,14 @@ def aggregate(
     if not re.fullmatch(r"[0-9a-f]{40}", source_commit):
         raise ValueError("G7_AGGREGATOR_SOURCE_COMMIT_INVALID")
     preflight = _load_profile(preflight_path, expected_preflight_sha256)
+    profile_manifest = json.loads(preflight_manifest_path.read_text(encoding="utf-8"))
+    if (
+        profile_manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-001"
+        or profile_manifest.get("profile_json_sha256") != preflight["sha256"]
+        or profile_manifest.get("profile_run_id") != 44926453920
+        or not re.fullmatch(r"[0-9a-f]{64}", profile_manifest.get("profile_artifact_archive_sha256", ""))
+    ):
+        raise ValueError("G7_RESOURCE_PROFILE_MANIFEST_MISMATCH")
     primary_shards = _load_phase(primary_dir, "primary", source_commit)
     replay_shards = _load_phase(replay_dir, "replay", source_commit)
 
@@ -273,10 +282,15 @@ def aggregate(
         "primary_replay_digest": primary_digest,
         "resource_preflight": preflight["profile"],
         "resource_preflight_sha256": preflight["sha256"],
+        "resource_preflight_manifest": profile_manifest,
         "primary": primary_summary,
         "replay": replay_summary,
     }
     result_bytes = json.dumps(final, sort_keys=True, indent=2, allow_nan=False) + "\n"
+    (output_dir / "resource_profile_manifest.json").write_text(
+        json.dumps(profile_manifest, sort_keys=True, indent=2, allow_nan=False) + "\\n",
+        encoding="utf-8",
+    )
     result_path = output_dir / "g7_result.json"
     result_path.write_text(result_bytes, encoding="utf-8")
     result_sha256 = hashlib.sha256(result_bytes.encode("utf-8")).hexdigest()
@@ -290,6 +304,10 @@ def aggregate(
         "primary_replay_digest": primary_digest,
         "result_sha256": result_sha256,
         "resource_preflight_sha256": preflight["sha256"],
+        "resource_profile_run_id": profile_manifest["profile_run_id"],
+        "resource_profile_artifact_id": profile_manifest["profile_artifact_id"],
+        "resource_profile_source_commit": profile_manifest["profile_source_commit"],
+        "resource_profile_artifact_archive_sha256": profile_manifest["profile_artifact_archive_sha256"],
         "shards": shard_manifest,
     }
     (output_dir / "run_manifest.json").write_text(
@@ -311,6 +329,7 @@ def main() -> int:
     parser.add_argument("--primary-dir", type=Path, required=True)
     parser.add_argument("--replay-dir", type=Path, required=True)
     parser.add_argument("--preflight", type=Path, required=True)
+    parser.add_argument("--preflight-manifest", type=Path, required=True)
     parser.add_argument("--expected-preflight-sha256")
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--source-commit", required=True)
@@ -320,6 +339,7 @@ def main() -> int:
         primary_dir=args.primary_dir,
         replay_dir=args.replay_dir,
         preflight_path=args.preflight,
+        preflight_manifest_path=args.preflight_manifest,
         output_dir=args.output_dir,
         source_commit=args.source_commit,
         authorization_id=args.authorization_id,
