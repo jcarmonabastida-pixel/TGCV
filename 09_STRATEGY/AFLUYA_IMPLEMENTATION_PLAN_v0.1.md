@@ -1,13 +1,13 @@
 # AFLUYA — Plan de implantación de la infraestructura abierta de crecimiento
 
-## Versión 0.6 — AWGI
+## Versión 0.7 — AWGI
 
 **Identificador:** AFLUYA-IMPL-001  
-**Fecha:** 2026-11-10  
+**Fecha:** 2026-11-21  
 **Estado:** DRAFT — plan operativo alineado con la arquitectura integrada AFLUYA v1.0; pendiente de aprobación de fases, herramientas y gastos.  
 **Rama:** `strategy/afluya-ecosystem-v0.2`  
-**Documento estratégico rector:** `09_STRATEGY/AFLUYA_ECOSYSTEM_ARCHITECTURE_v1.0.md` (arquitectura integrada v1.0). El documento histórico acumulativo se conserva en `09_STRATEGY/archive/AFLUYA_ECOSYSTEM_ARCHITECTURE_HISTORICAL_v0.7_to_v1.1_2026-11-10.md` y no es referencia vigente.  
-**Trazabilidad:** las formulaciones y decisiones históricas se conservan en `09_STRATEGY/archive/AFLUYA_ECOSYSTEM_ARCHITECTURE_HISTORICAL_v0.7_to_v1.1_2026-11-10.md`. Las decisiones vigentes se interpretan desde la arquitectura integrada v1.0, especialmente §§1–3 (identidad y límites científicos), §§5–7 (participación, AWGI e infraestructura), §§8–10 (actividad, sostenibilidad y gobernanza) y §§12–16 (éxito, alcance, evolución y pendientes).
+**Documento estratégico rector:** `09_STRATEGY/AFLUYA_ECOSYSTEM_ARCHITECTURE_v1.0.md` (arquitectura integrada v1.1). El documento histórico acumulativo se conserva en `09_STRATEGY/archive/AFLUYA_ECOSYSTEM_ARCHITECTURE_HISTORICAL_v0.7_to_v1.1_2026-11-10.md` y no es referencia vigente.  
+**Trazabilidad:** las formulaciones y decisiones históricas se conservan en `09_STRATEGY/archive/AFLUYA_ECOSYSTEM_ARCHITECTURE_HISTORICAL_v0.7_to_v1.1_2026-11-10.md`. Las decisiones vigentes se interpretan desde la arquitectura integrada v1.1, especialmente §§1–3 (identidad y límites científicos), §§5–7 (participación, AWGI e infraestructura), §§8–10 (actividad, sostenibilidad y gobernanza) y §§12–16 (éxito, alcance, evolución y pendientes).
 
 ---
 
@@ -70,7 +70,7 @@ Esta matriz evita que la arquitectura y el plan evolucionen como documentos inde
 
 | Arquitectura integrada v1.0 | Requisito que gobierna | Desarrollo en el plan | Evidencia / puerta |
 |---|---|---|---|
-| §0 y §§1–2 | Propósito, mensaje público y jerarquía de nombres | Fase 1; contenidos de Fase 2 | Texto Home y prueba de comprensión; G1 |
+| §0 y §§1–2 | Propósito, mensaje público, titular Home y jerarquía de nombres | Fase 1; contenidos de Fase 2 | Mensaje preferente «Tu organización… Hagamos que AFLUYA», tagline global y prueba de comprensión; G1 |
 | §3 | Independencia científica y afirmaciones proporcionadas | Fase 2 y revisión de Fase 7 | Contenido Research revisado; G2 y G7 |
 | §§4–5 | Espacios del ecosistema y participación abierta | Fases 2–3 | Community, oportunidades y guía de contribución; G2 y G3 |
 | §6 | AWGI, navegación, recorrido y Efecto Ajá | Fases 1–3 y construcción de Fase 5 | Recorrido Home → Explore → Community/Roadmap → propuesta; G1 y G3 |
@@ -106,21 +106,34 @@ Esta matriz evita que la arquitectura y el plan evolucionen como documentos inde
 
 ### Fase 1 — Mensaje y prueba del Efecto Ajá
 
-**Objetivo:** asegurar que AFLUYA se entiende antes de construir una web extensa.
+**Objetivo:** asegurar que AFLUYA se entiende antes de construir una web extensa y que el visitante se reconoce en la oportunidad que se le presenta.
+
+**Mensaje preferente de trabajo para prototipado**
+
+> **Tu organización tiene más potencial del que hoy consigue convertir en valor.**
+>
+> **Conectemos lo que sabe, lo que tiene y lo que puede llegar a hacer. Hagamos que AFLUYA.**
+
+La primera frase interpela al visitante y le permite reconocerse. La segunda establece un vínculo compartido e invita a explorar y construir posibilidades conjuntamente. «Hagamos que AFLUYA» funciona como llamada a la acción e identidad verbal.
+
+Se conserva la tagline global «El potencial está dentro. Las posibilidades emergen al conectarlo». La tagline expresa la identidad general del ecosistema; el nuevo mensaje concreta la propuesta de la Home y no la sustituye.
 
 **Tareas**
-1. Redactar el mensaje principal de Home en lenguaje no técnico.
-2. Explicar en pocos bloques qué es AFLUYA, qué oportunidad explora, qué ofrece ahora y cómo participar.
-3. Mantener la tagline: «El potencial está dentro. Las posibilidades emergen al conectarlo».
-4. Evitar abrir con siglas, productos futuros o catálogo de servicios.
-5. Preparar un prototipo navegable de baja fidelidad o una maqueta de páginas.
-6. Probarlo con un grupo pequeño de personas externas, no involucradas en el proyecto.
-7. Registrar qué entendieron, qué confundieron, qué les interesó y qué acción encontraron.
-8. Revisar el mensaje y repetir la prueba si persisten confusiones importantes.
+1. Utilizar el mensaje preferente anterior como hipótesis principal del prototipo de Home; no sustituirlo por una voz institucional centrada en «lo que hacemos».
+2. Explicar en pocos bloques qué puede reconocer, explorar y conseguir el visitante, qué ofrece AFLUYA ahora y cómo puede participar.
+3. Mantener la combinación editorial: segunda persona para reflejar la situación del visitante y primera persona del plural para invitar a una construcción compartida.
+4. Presentar la organización como arquitectura dinámica de capacidades conectadas mediante relaciones, evitando reducir el potencial al conocimiento o a la tecnología.
+5. Explicar que personas, conocimiento, tecnología, IA y datos pueden estar fragmentados y que conectarlos no garantiza automáticamente valor.
+6. Mantener la formulación contextual: el valor emerge de resultados que permiten realizar propósitos de forma sostenible en un contexto determinado.
+7. Evitar abrir con siglas, productos futuros o catálogo de servicios.
+8. Preparar un prototipo navegable de baja fidelidad o una maqueta de páginas.
+9. Probarlo con un grupo pequeño de personas externas, no involucradas en el proyecto.
+10. Registrar qué entendieron, si se reconocieron en el mensaje, qué confundieron, qué les interesó y qué acción encontraron.
+11. Revisar el mensaje y repetir la prueba si persisten confusiones importantes.
 
-**Entregables:** texto de Home, estructura de primer recorrido, guion de prueba de dos minutos y síntesis de observaciones.
+**Entregables:** texto de Home, estructura del primer recorrido, explicación breve de capacidades y relaciones, guion de prueba de dos minutos y síntesis de observaciones.
 
-**Puerta G1:** el usuario aprueba mensaje y experiencia mínima. El test no tiene que demostrar éxito estadístico; debe descubrir fallos evidentes de comprensión.
+**Puerta G1:** el usuario aprueba mensaje y experiencia mínima. El test no tiene que demostrar éxito estadístico; debe descubrir fallos evidentes de comprensión, resonancia y orientación.
 
 ### Fase 2 — Contenido que aporta valor y oportunidades reales
 
@@ -385,6 +398,15 @@ La decisión preferida será siempre la opción de menor coste total que cumpla 
 La siguiente operación es cerrar la Fase 0 mediante la validación de esta trazabilidad y preparar la Fase 1: **redactar y prototipar la Home de AFLUYA para probar el Efecto Ajá**, junto con el mapa del recorrido Home → Explore → Community/Roadmap → propuesta. No se necesita comprar dominio ni contratar una plataforma para realizar este trabajo.
 
 ## 11. Control de cambios
+
+### v0.7 — 2026-11-21
+- Se alinea el plan con la arquitectura AFLUYA v1.1.
+- Se incorpora en Fase 1 el mensaje preferente de Home: «Tu organización tiene más potencial del que hoy consigue convertir en valor. Conectemos lo que sabe, lo que tiene y lo que puede llegar a hacer. Hagamos que AFLUYA».
+- Se diferencia el papel del mensaje de Home respecto de la tagline global, que se conserva.
+- Se concreta la voz editorial como reconocimiento del visitante en segunda persona e invitación compartida en primera persona del plural.
+- Se incorpora la narrativa de la organización como arquitectura dinámica de capacidades y relaciones y la cautela sobre la emergencia contextual del valor.
+- Se añaden al test del Efecto Ajá señales de reconocimiento, resonancia y orientación del visitante.
+- No se autoriza compra de dominio, contratación, creación de cuentas ni publicación.
 
 ### v0.6 — 2026-11-10
 - Auditoría cruzada con la arquitectura integrada v1.0: se eliminan referencias heredadas a la sección §39 y a la versión AWGI v1.1.
