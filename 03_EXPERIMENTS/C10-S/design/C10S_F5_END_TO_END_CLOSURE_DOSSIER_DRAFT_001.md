@@ -367,3 +367,20 @@ This run is retained as an intermediate evidence point, not the final G1–G6 va
 
 The current consolidated disposition is therefore the one recorded in §10 and §9.15 above: **G1–G6 PASS for the declared bounded F5 target regime, with explicit typed abstention for unsupported singular/multiple-root, mixed-component and resource-exhaustion cases. G7 is authorized by the user and its successor protocol is frozen, but the one-use authorization-branch workflow has not yet executed.** The G1–G6 closure is not a universal multiplicity-aware solver, external review, prospective TierA coverage result or causal evidence for `ΔT_acc → Value`.
 
+
+
+### 9.17 G7 one-use execution attempt and resource gate — 2026-11-21
+
+The frozen G7 protocol v1.0 was activated using the previously recorded explicit user authorization. The one-use authorization record is committed on dedicated branch `research/c10s-f5-g7-auth-C10S-F5-G7-20261121-001`:
+- authorization commit: `3136b7f639808262a7120d6efda9e9d3b0b4b91f`;
+- sole parent / approved code commit: `fa1b2009304f5de8382632ff1d15470a79e52cf2`;
+- GitHub Actions run: [44842130930](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44842130930);
+- one-use authorization validator and exact source-hash / parent checks: PASS.
+
+Historical execution evidence must be considered before interpreting the current attempt. Earlier run [44803576150](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44803576150), on an authorization commit whose approved code parent differs only by documentation from the current approved code snapshot, passed authorization validation and dependency setup but failed during the resource-only preflight with `G7_RESOURCE_PREFLIGHT_PROJECTS_OVER_4_5_HOURS`. It stopped before generating the prospective primary bank; no coverage adjudication or G7 holdout data were produced. The failure is a frozen resource stop condition, not a coverage result and not a G7 NOT_VALIDATED finding.
+
+Run 44842130930 has passed the same authorization and dependency gates and is currently executing the same resource-preflight path against the approved code commit `fa1b2009304f5de8382632ff1d15470a79e52cf2`. Since the executable snapshot and frozen resource contract are materially unchanged from the earlier attempt, a repeated resource-gate failure is a material risk. Do not treat this run as a fresh performance improvement or as evidence of calibration until its preflight result is available.
+
+If the 4.5-hour projection gate fails again, the next action is an engineering optimization of the per-dataset certified-fit path under unchanged G7 K/B, seed separation, coverage thresholds and replay requirements, followed by a new governed static validation and a new hash-bound one-use authorization. Do not relax the resource threshold, reduce K/B, omit replay, inspect coverage early or reuse any consumed bank.
+
+Current scientific disposition: G1–G6 remain PASS for their declared bounded F5 target regime; G7 remains AUTHORIZED BUT NOT YET EXECUTED. Tier B and C10 Generator/Analyzer/Evaluator causal execution remain out of scope and unauthorized.
