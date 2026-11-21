@@ -1,4 +1,4 @@
-name: C10-S F5 G7 prospective Tier-A calibration — one-use authorization
+name: C10-S F5 G7 prospective Tier-A calibration — staged one-use authorization
 
 on:
   push:
@@ -9,12 +9,16 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
-  f5-g7-tiera-calibration:
+  authorization:
     if: startsWith(github.ref, 'refs/heads/research/c10s-f5-g7-auth-') && contains(github.event.head_commit.message, 'Approve one-use C10-S F5 G7 TierA calibration')
     runs-on: ubuntu-24.04
-    timeout-minutes: 360
+    timeout-minutes: 20
+    outputs:
+      authorization_id: ${{ steps.authorization.outputs.authorization_id }}
+      approved_code_commit: ${{ steps.authorization.outputs.approved_code_commit }}
     steps:
       - name: Checkout one-use authorization commit
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -26,9 +30,9 @@ jobs:
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
         with:
           python-version: '3.12.10'
-      - name: Install hash-locked dependencies for validator/executor
+      - name: Install hash-locked dependencies for authorization validation
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: 'python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock'
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
       - name: Validate one-use G7 authorization and exact code parent
         id: authorization
         env:
@@ -41,7 +45,6 @@ jobs:
             --workflow-commit "$WORKFLOW_COMMIT" \
             --branch "$WORKFLOW_BRANCH" \
             --output-json "$RUNNER_TEMP/validated-g7-authorization.json"
-          cp 00_GOVERNANCE/authorizations/C10S_F5_G7_TIERA_CALIBRATION_AUTHORIZATION.json "$RUNNER_TEMP/original-g7-authorization.json"
           python - <<'PY' >> "$GITHUB_OUTPUT"
           import json, os
           from pathlib import Path
@@ -49,32 +52,194 @@ jobs:
           print(f"authorization_id={data['authorization_id']}")
           print(f"approved_code_commit={data['approved_code_commit']}")
           PY
+
+  resource-preflight-validation:
+    needs: authorization
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      shard_matrix: ${{ steps.plan.outputs.shard_matrix }}
+      resource_profile_sha256: ${{ steps.plan.outputs.resource_profile_sha256 }}
+      datasets_per_shard: ${{ steps.plan.outputs.datasets_per_shard }}
+      estimated_end_to_end_wall_seconds: ${{ steps.plan.outputs.estimated_end_to_end_wall_seconds }}
+    steps:
+      - name: Checkout exact approved research code and history
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ needs.authorization.outputs.approved_code_commit }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+      - name: Validate immutable resource profile and derive safe shard matrix
+        id: plan
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: |
+          python validate_c10s_f5_g7_resource_profile.py \
+            --profile ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_001.json \
+            --manifest ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_001.json \
+            --root ../.. \
+            --output-json "$RUNNER_TEMP/g7-resource-profile-validation.json"
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          data = json.loads(Path("$RUNNER_TEMP/g7-resource-profile-validation.json").read_text())
+          print("shard_matrix=" + json.dumps(data["shard_matrix"], separators=(",", ":")))
+          print("resource_profile_sha256=" + data["profile_json_sha256"])
+          print("datasets_per_shard=" + str(data["datasets_per_shard"]))
+          print("estimated_end_to_end_wall_seconds=" + str(data["end_to_end_conservative_wall_seconds"]))
+          PY
+      - name: Upload validated resource plan (no recomputation)
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-resource-plan-${{ needs.authorization.outputs.authorization_id }}
+          path: ${{ runner.temp }}/g7-resource-profile-validation.json
+          if-no-files-found: error
+          retention-days: 90
+
+  primary-bank:
+    needs: [authorization, resource-preflight-validation]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 165
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: ${{ fromJSON(needs.resource-preflight-validation.outputs.shard_matrix) }}
+    steps:
       - name: Checkout exact approved research code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
-          ref: ${{ steps.authorization.outputs.approved_code_commit }}
-          path: source
+          ref: ${{ needs.authorization.outputs.approved_code_commit }}
           persist-credentials: false
-      - name: Install hash-locked dependencies for G7
-        working-directory: source/03_EXPERIMENTS/C10-S/harness
-        run: 'python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock'
-      - name: Execute resource preflight, primary G7 and clean-source replay
-        working-directory: source
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+      - name: Execute one primary shard
+        working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
-          GITHUB_SHA: ${{ steps.authorization.outputs.approved_code_commit }}
-          APPROVED_CODE_COMMIT: ${{ steps.authorization.outputs.approved_code_commit }}
+          GITHUB_SHA: ${{ needs.authorization.outputs.approved_code_commit }}
+          APPROVED_CODE_COMMIT: ${{ needs.authorization.outputs.approved_code_commit }}
         run: |
-          python 03_EXPERIMENTS/C10-S/harness/execute_c10s_f5_g7_tiera_calibration.py \
-            --validated-authorization "$RUNNER_TEMP/validated-g7-authorization.json" \
-            --original-authorization "$RUNNER_TEMP/original-g7-authorization.json" \
-            --code-commit "$APPROVED_CODE_COMMIT" \
+          python execute_c10s_f5_g7_tiera_shard.py \
+            --phase primary \
+            --cell-id "${{ matrix.shard.cell_id }}" \
+            --replicate-start "${{ matrix.shard.replicate_start }}" \
+            --replicate-count "${{ matrix.shard.replicate_count }}" \
+            --source-commit "$APPROVED_CODE_COMMIT" \
+            --output "$RUNNER_TEMP/${{ matrix.shard.cell_id }}-${{ matrix.shard.replicate_start }}.json"
+      - name: Upload immutable primary shard
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-primary-${{ needs.authorization.outputs.authorization_id }}-${{ matrix.shard.cell_id }}-${{ matrix.shard.replicate_start }}
+          path: ${{ runner.temp }}/${{ matrix.shard.cell_id }}-${{ matrix.shard.replicate_start }}.json
+          if-no-files-found: error
+          retention-days: 90
+
+  replay-bank:
+    needs: [authorization, resource-preflight-validation, primary-bank]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 165
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: ${{ fromJSON(needs.resource-preflight-validation.outputs.shard_matrix) }}
+    steps:
+      - name: Checkout exact approved research code (clean replay)
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ needs.authorization.outputs.approved_code_commit }}
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+      - name: Execute one clean-source replay shard
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          GITHUB_SHA: ${{ needs.authorization.outputs.approved_code_commit }}
+          APPROVED_CODE_COMMIT: ${{ needs.authorization.outputs.approved_code_commit }}
+        run: |
+          python execute_c10s_f5_g7_tiera_shard.py \
+            --phase replay \
+            --cell-id "${{ matrix.shard.cell_id }}" \
+            --replicate-start "${{ matrix.shard.replicate_start }}" \
+            --replicate-count "${{ matrix.shard.replicate_count }}" \
+            --source-commit "$APPROVED_CODE_COMMIT" \
+            --output "$RUNNER_TEMP/${{ matrix.shard.cell_id }}-${{ matrix.shard.replicate_start }}.json"
+      - name: Upload immutable replay shard
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-replay-${{ needs.authorization.outputs.authorization_id }}-${{ matrix.shard.cell_id }}-${{ matrix.shard.replicate_start }}
+          path: ${{ runner.temp }}/${{ matrix.shard.cell_id }}-${{ matrix.shard.replicate_start }}.json
+          if-no-files-found: error
+          retention-days: 90
+
+  final-adjudication:
+    needs: [authorization, resource-preflight-validation, primary-bank, replay-bank]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Checkout exact approved research code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ needs.authorization.outputs.approved_code_commit }}
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+      - name: Download all completed primary shards
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: c10s-f5-g7-primary-${{ needs.authorization.outputs.authorization_id }}-*
+          path: ${{ runner.temp }}/g7-shards/primary
+          merge-multiple: true
+      - name: Download all completed replay shards
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: c10s-f5-g7-replay-${{ needs.authorization.outputs.authorization_id }}-*
+          path: ${{ runner.temp }}/g7-shards/replay
+          merge-multiple: true
+      - name: Download validated resource profile plan
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: c10s-f5-g7-resource-plan-${{ needs.authorization.outputs.authorization_id }}
+          path: ${{ runner.temp }}/g7-resource-plan
+      - name: Aggregate, verify exact replay and adjudicate full denominators once
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          GITHUB_SHA: ${{ needs.authorization.outputs.approved_code_commit }}
+        run: |
+          python aggregate_c10s_f5_g7_tiera_shards.py \
+            --primary-dir "$RUNNER_TEMP/g7-shards/primary" \
+            --replay-dir "$RUNNER_TEMP/g7-shards/replay" \
+            --preflight ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_001.json \
+            --expected-preflight-sha256 "${{ needs.resource-preflight-validation.outputs.resource_profile_sha256 }}" \
             --output-dir "$RUNNER_TEMP/c10s-f5-g7-tiera" \
-            --root .
-      - name: Upload G7 resource, primary, replay and integrity artifacts
+            --source-commit "${{ needs.authorization.outputs.approved_code_commit }}" \
+            --authorization-id "${{ needs.authorization.outputs.authorization_id }}"
+      - name: Upload final G7 result and immutable bank artifacts
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
-          name: c10s-f5-g7-tiera-${{ steps.authorization.outputs.authorization_id }}-${{ steps.authorization.outputs.approved_code_commit }}
+          name: c10s-f5-g7-tiera-${{ needs.authorization.outputs.authorization_id }}-${{ needs.authorization.outputs.approved_code_commit }}
           path: ${{ runner.temp }}/c10s-f5-g7-tiera/
           if-no-files-found: warn
           retention-days: 90
