@@ -95,6 +95,7 @@ jobs:
           run-id: 44926453920
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/resource-profile
+          merge-multiple: true
       - name: Validate source compatibility and assert the measured shard plan
         if: contains(github.event.head_commit.message, 'validate persisted G7 resource profile')
         working-directory: 03_EXPERIMENTS/C10-S/harness
