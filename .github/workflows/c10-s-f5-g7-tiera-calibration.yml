@@ -258,8 +258,6 @@ jobs:
           name: c10s-f5-g7-authorization-${{ needs.authorization.outputs.authorization_id }}
           path: ${{ runner.temp }}/c10s-f5-g7-tiera/authorization
       - name: Aggregate, verify exact replay and adjudicate full denominators once
-        env:
-          GITHUB_SHA: ${{ needs.authorization.outputs.approved_code_commit }}
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           GITHUB_SHA: ${{ needs.authorization.outputs.approved_code_commit }}
