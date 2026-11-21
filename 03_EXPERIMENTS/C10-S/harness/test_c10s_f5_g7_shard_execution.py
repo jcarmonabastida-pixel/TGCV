@@ -126,7 +126,7 @@ class F5G7ShardExecutionTests(unittest.TestCase):
                     )
                     filename = f"{spec.cell_id}-000000.json"
                     (directory / filename).write_text(
-                        json.dumps(shard, sort_keys=True, indent=2) + "\\n",
+                        json.dumps(shard, sort_keys=True, indent=2) + "\n",
                         encoding="utf-8",
                     )
             profile = {
