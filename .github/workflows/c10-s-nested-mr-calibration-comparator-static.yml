@@ -58,11 +58,16 @@ on:
       - '03_EXPERIMENTS/C10-S/harness/aggregate_c10s_f5_g7_tiera_shards.py'
       - '03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_resource_profile.py'
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_resource_profile.py'
+      - '03_EXPERIMENTS/C10-S/diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_001.json'
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_shard_execution.py'
       - '03_EXPERIMENTS/C10-S/design/C10S_F5_G7_EXECUTION_ARCHITECTURE_001.md'
 
 permissions:
   contents: read
+
+permissions:
+  contents: read
+  actions: read
 
 jobs:
   gaussian-oracle-static-tests:
@@ -73,6 +78,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           ref: ${{ github.sha }}
+          fetch-depth: 0
           persist-credentials: false
       - name: Set up pinned Python
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
@@ -83,6 +89,37 @@ jobs:
         run: 'python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock'
       - name: Validate staged G7 workflow YAML syntax
         run: ruby -e 'require "yaml"; YAML.load_file(".github/workflows/c10-s-f5-g7-tiera-calibration.yml")'
+      - name: Download the immutable G7 resource profile (one-time compatibility validation)
+        if: contains(github.event.head_commit.message, 'validate persisted G7 resource profile')
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          artifact-ids: 14717426261
+          run-id: 44926453920
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/resource-profile
+      - name: Validate source compatibility and assert the measured shard plan
+        if: contains(github.event.head_commit.message, 'validate persisted G7 resource profile')
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: |
+          python validate_c10s_f5_g7_resource_profile.py \
+            --profile "$RUNNER_TEMP/resource-profile/c10s-f5-g7-resource-parallel-profile.json" \
+            --manifest ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_001.json \
+            --root ../../.. \
+            --output-json "$RUNNER_TEMP/g7-resource-profile-validation.json"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path("$RUNNER_TEMP/g7-resource-profile-validation.json").read_text())
+          assert data["datasets_per_shard"] == 50, data["datasets_per_shard"]
+          assert data["end_to_end_conservative_wall_seconds"] < 10800
+          print({
+              "datasets_per_shard": data["datasets_per_shard"],
+              "jobs_per_phase": data["shard_jobs_per_phase"],
+              "primary_plus_replay_wall_seconds": data["primary_plus_replay_conservative_wall_seconds"],
+              "end_to_end_wall_seconds": data["end_to_end_conservative_wall_seconds"],
+              "aggregate_compute_hours": data["primary_plus_replay_aggregate_compute_hours"],
+          })
+          PY
       - name: Compile comparator and tests
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
