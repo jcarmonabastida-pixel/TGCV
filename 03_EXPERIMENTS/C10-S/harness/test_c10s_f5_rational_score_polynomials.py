@@ -30,6 +30,8 @@ from c10s_f5_rational_score_polynomials import (
     beta_binomial_compactified_stationary_census,
     _beta_binomial_likelihood_enclosure,
     _f5_input_provenance,
+    _uni_gcd,
+    _divide_sparse_by_axis_factor,
     beta_binomial_global_mle_certificate,
 )
 
@@ -71,6 +73,25 @@ def _denominators(r, mu, kappa):
 
 
 class RationalScorePolynomialTests(unittest.TestCase):
+    def test_primitive_integer_gcd_matches_exact_fraction_gcd(self):
+        # Both polynomials contain x-1/2; their remaining factors differ.
+        left = [Fraction(1, 2), Fraction(-7, 4), Fraction(1), Fraction(1)]
+        right = [Fraction(3, 2), Fraction(-7, 2), Fraction(1)]
+        self.assertEqual(_uni_gcd(left, right), [Fraction(-1, 2), Fraction(1)])
+
+    def test_endpoint_axis_division_uses_exact_integer_synthetic_division(self):
+        # (t-1)^2 / (t-1) = t-1; (mu^2+2mu) / mu = mu+2.
+        by_t = _divide_sparse_by_axis_factor(
+            {(0, 2): 1, (0, 1): -2, (0, 0): 1},
+            "t", (Fraction(-1), Fraction(1)),
+        )
+        self.assertEqual(by_t, {(0, 1): 1, (0, 0): -1})
+        by_mu = _divide_sparse_by_axis_factor(
+            {(2, 0): 1, (1, 0): 2},
+            "mu", (Fraction(0), Fraction(1)),
+        )
+        self.assertEqual(by_mu, {(1, 0): 1, (0, 0): 2})
+
     def test_exact_score_identity_small_fixture(self):
         r = 5
         hist = {0: 2, 1: 3, 3: 4, 5: 1}
