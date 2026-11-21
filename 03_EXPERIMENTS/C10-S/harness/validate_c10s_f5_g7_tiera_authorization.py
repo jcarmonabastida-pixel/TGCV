@@ -12,11 +12,9 @@ import subprocess
 AUTH_PATH = "00_GOVERNANCE/authorizations/C10S_F5_G7_TIERA_CALIBRATION_AUTHORIZATION.json"
 BRANCH_PREFIX = "research/c10s-f5-g7-auth-"
 PROTOCOL_PATH = "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_TIERA_PROSPECTIVE_PROTOCOL_001.md"
-RESOURCE_PROFILE_PATH = "03_EXPERIMENTS/C10-S/diagnostics/C10S_F5_G7_RESOURCE_PROFILE_001.json"
 RESOURCE_PROFILE_MANIFEST_PATH = "03_EXPERIMENTS/C10-S/diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_001.json"
 SOURCE_HASH_PATHS = {
     "execution_architecture_sha256": "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_EXECUTION_ARCHITECTURE_001.md",
-    "resource_profile_sha256": RESOURCE_PROFILE_PATH,
     "resource_profile_manifest_sha256": RESOURCE_PROFILE_MANIFEST_PATH,
     "resource_profile_validator_sha256": "03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_resource_profile.py",
     "resource_profile_script_sha256": "03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_resource_preflight_parallel.py",
