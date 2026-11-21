@@ -13,27 +13,43 @@ permissions:
 
 jobs:
   authorization:
-    if: startsWith(github.ref, 'refs/heads/research/c10s-f5-g7-auth-') && contains(github.event.head_commit.message, 'Approve one-use C10-S F5 G7 TierA calibration')
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     outputs:
+      approved: ${{ steps.gate.outputs.approved }}
       authorization_id: ${{ steps.authorization.outputs.authorization_id }}
       approved_code_commit: ${{ steps.authorization.outputs.approved_code_commit }}
     steps:
+      - name: Gate branch and explicit authorization commit
+        id: gate
+        env:
+          WORKFLOW_BRANCH: ${{ github.ref_name }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          if [[ "$WORKFLOW_BRANCH" == research/c10s-f5-g7-auth-* && "$COMMIT_MESSAGE" == *"Approve one-use C10-S F5 G7 TierA calibration"* ]]; then
+            echo "approved=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "approved=false" >> "$GITHUB_OUTPUT"
+            echo "Non-authorization push; no G7 computation will be scheduled."
+          fi
       - name: Checkout one-use authorization commit
+        if: steps.gate.outputs.approved == 'true'
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           ref: ${{ github.sha }}
           fetch-depth: 2
           persist-credentials: false
       - name: Set up pinned Python
+        if: steps.gate.outputs.approved == 'true'
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
         with:
           python-version: '3.12.10'
       - name: Install hash-locked dependencies for authorization validation
+        if: steps.gate.outputs.approved == 'true'
         working-directory: 03_EXPERIMENTS/C10-S/harness
         run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
       - name: Validate one-use G7 authorization and exact code parent
+        if: steps.gate.outputs.approved == 'true'
         id: authorization
         env:
           WORKFLOW_COMMIT: ${{ github.sha }}
@@ -54,6 +70,7 @@ jobs:
           print(f"approved_code_commit={data['approved_code_commit']}")
           PY
       - name: Preserve original and validated one-use authorization evidence
+        if: steps.gate.outputs.approved == 'true'
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: c10s-f5-g7-authorization-${{ steps.authorization.outputs.authorization_id }}
@@ -65,6 +82,7 @@ jobs:
 
   resource_preflight_validation:
     needs: authorization
+    if: needs.authorization.outputs.approved == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     outputs:
