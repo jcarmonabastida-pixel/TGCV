@@ -64,9 +64,6 @@ on:
 
 permissions:
   contents: read
-
-permissions:
-  contents: read
   actions: read
 
 jobs:
