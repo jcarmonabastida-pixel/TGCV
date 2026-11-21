@@ -33,7 +33,7 @@ The former single sequential job (preflight → complete primary → complete re
 - Per-job target: at most 150 minutes at the measured p99 dataset latency.
 - Per-job hard workflow timeout: 165 minutes.
 - Maximum matrix parallelism: 20 jobs; this is a ceiling, not a promise of available hosted-runner capacity.
-- Candidate shard sizes are 25, 40, 50 and 100 datasets. The selected size is the largest candidate whose conservative p99 shard estimate is at most 150 minutes, after accounting for fixed runner setup overhead.
+- Candidate shard sizes are 25, 40, 50 and 100 datasets. A candidate is safe only when its worst-observed shard estimate plus 5 minutes of fixed runner setup overhead is at most 150 minutes. Among safe candidates, select the one with the lowest conservative end-to-end wall-time estimate.
 - If no candidate satisfies the ceiling, the preflight stage fails closed. No holdout shard starts.
 - Report both aggregate runner-compute hours and estimated wall-clock time at the configured parallelism. Never present one as the other.
 
@@ -58,3 +58,18 @@ The M10/R5 resource evidence previously showed only 67/100 global interior certi
 ## 8. Authorization status
 
 The earlier one-use G7 authorization is consumed and bound to the monolithic executor. This staged executor requires a fresh hash-bound authorization on a dedicated authorization branch. This document, the shard executor, aggregator, tests, profile evidence and new workflow must be included in that hash set. This draft does not authorize generation of holdout datasets.
+
+
+## 9. Measured resource profile and selected shard plan — run 44926453920
+
+The 100-dataset-per-cell resource-only preflight completed successfully in 2,469.19 s wall time (41.15 min) and 2,636.46 s process CPU. The artifact is `c10s-f5-g7-resource-parallel-profile-469ecdd6f17639d10b9142158c527727e9add303`, artifact ID `14717426261`, archive SHA-256 `90399529105bffbe50205a68fd7bad30809c3d328a8172a331740f1b417d71a4`. Source commit: `469ecdd6f17639d10b9142158c527727e9add303`.
+
+Observed per-dataset latency:
+- M10/R5: mean 0.444 s, p95 0.864 s, p99 0.961 s, max 1.005 s.
+- M30/R20: mean 24.246 s, p95 36.014 s, p99 40.423 s, max 42.551 s.
+
+The conservative planner selects **50 datasets per shard**, 20 jobs per cell and 40 jobs per phase, with `max-parallel=20`. Including 5 minutes setup per shard, the worst observed shard estimates are 40.46 min for M30/R20 and 5.84 min for M10/R5. The conservative serialized-by-cell upper bound is 46.30 min per phase, 92.59 min for primary plus replay, and 133.75 min (2.23 h) including the one-time 41.15-minute resource preflight. Estimated aggregate primary-plus-replay runner compute remains 13.72 hours; the distinction between compute-hours and wall time is retained.
+
+This projection assumes up to 20 concurrently scheduled GitHub jobs. If the repository's actual concurrency allowance is lower, wall time increases, but every shard remains independently below the 150-minute work budget and 165-minute hard timeout. The resource preflight is reused from its immutable artifact; it is not repeated by primary/replay retries.
+
+The same resource profile also confirms the separate M10/R5 scientific emission blocker: 67/100 interior certificates and emitted intervals, 18 boundary suprema, 14 unresolved global orderings and one missing certificate status. These are resource-sample diagnostics, not coverage estimates. The staged executor does not change this distribution or lower the 95% G7 emission criterion.
