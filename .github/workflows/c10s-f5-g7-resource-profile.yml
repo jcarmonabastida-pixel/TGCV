@@ -1,0 +1,131 @@
+name: C10-S F5 G7 resource-only component profile
+
+on:
+  push:
+    branches:
+      - research/c10s-f1-integrated-correction-20261119
+    paths:
+      - '.github/workflows/c10s-f5-g7-resource-profile.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  resource-only-profile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact research commit
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+
+      - name: Profile two resource-only datasets per cell
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          PROFILE_OUTPUT: ${{ runner.temp }}/c10s-f5-g7-resource-profile.json
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import resource
+          import statistics
+          import time
+          from collections import Counter, defaultdict
+          from pathlib import Path
+
+          import c10s_fitted_beta_binomial_bootstrap as c5
+          import c10s_nested_mr_comparative_inference_engine as engine
+          import run_c10s_f5_g7_tiera_calibration as g7
+
+          timings = defaultdict(list)
+
+          def instrument(module, name, key):
+              original = getattr(module, name)
+              def wrapped(*args, **kwargs):
+                  start = time.perf_counter()
+                  try:
+                      return original(*args, **kwargs)
+                  finally:
+                      timings[key].append(time.perf_counter() - start)
+              setattr(module, name, wrapped)
+
+          instrument(engine, "_frozen_v002_baseline", "C0_baseline_total")
+          instrument(engine, "fitted_beta_binomial_parametric_bootstrap", "C5_total")
+          instrument(g7, "generate_holdout_dataset", "dataset_generation")
+          instrument(g7, "compare_dataset", "comparison_total")
+          instrument(c5, "audit_beta_binomial_count_fit", "analytic_optimizer_audit")
+          instrument(c5, "fit_beta_binomial_counts", "production_multistart_fit")
+          instrument(c5, "beta_binomial_global_mle_certificate", "exact_global_certificate")
+          instrument(c5, "_vectorized_bernoulli_bootstrap_components", "C5_vectorized_bootstrap_kernel")
+
+          result_cells = []
+          wall_start = time.perf_counter()
+          cpu_start = time.process_time()
+          for spec in g7.f5_specs():
+              result = g7.run_cell(
+                  spec, k=2, c0_b=g7.C0_B, c5_b=g7.C5_B,
+                  seed_namespace=g7.RESOURCE_NAMESPACE, adjudicate=False,
+              )
+              statuses = Counter()
+              for record in result["records"]:
+                  candidate = record["comparison"]["candidates"][0]["comparison"]
+                  statuses[dict(candidate.get("provenance", [])).get(
+                      "global_mle_certificate_status", "MISSING"
+                  )] += 1
+              result_cells.append({
+                  "cell_id": spec.cell_id,
+                  "datasets": result["datasets_completed"],
+                  "global_mle_certificate_status_counts": dict(sorted(statuses.items())),
+              })
+          wall_elapsed = time.perf_counter() - wall_start
+          cpu_elapsed = time.process_time() - cpu_start
+
+          summary = {}
+          for key, values in sorted(timings.items()):
+              summary[key] = {
+                  "calls": len(values),
+                  "total_wall_seconds": sum(values),
+                  "mean_wall_seconds": statistics.fmean(values) if values else 0.0,
+                  "max_wall_seconds": max(values) if values else 0.0,
+              }
+
+          output = {
+              "schema": "C10S-F5-G7-RESOURCE-COMPONENT-PROFILE-001",
+              "profile_scope": "RESOURCE_ONLY_NO_COVERAGE_ADJUDICATION_NO_HOLDOUT",
+              "seed_namespace": g7.RESOURCE_NAMESPACE,
+              "datasets_per_cell": 2,
+              "c0_bootstrap_replicates_per_dataset": g7.C0_B,
+              "c5_bootstrap_replicates_per_dataset": g7.C5_B,
+              "wall_elapsed_seconds": wall_elapsed,
+              "process_cpu_seconds": cpu_elapsed,
+              "peak_rss_kib": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
+              "cells": result_cells,
+              "component_timings": summary,
+              "interpretation": "Diagnostic timing only; no coverage or calibration claim.",
+          }
+          Path(os.environ["PROFILE_OUTPUT"]).write_text(
+              json.dumps(output, sort_keys=True, indent=2) + "\\n", encoding="utf-8"
+          )
+          print(json.dumps(output, sort_keys=True, indent=2))
+          PY
+
+      - name: Upload component profile
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-resource-component-profile
+          path: ${{ runner.temp }}/c10s-f5-g7-resource-profile.json
+          if-no-files-found: warn
+          retention-days: 30
