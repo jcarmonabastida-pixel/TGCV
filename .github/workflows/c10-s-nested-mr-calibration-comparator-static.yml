@@ -52,6 +52,7 @@ on:
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_f1_near_degenerate_interval.py'
       - '03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock'
       - '03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_certificate_internals.py'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py'
 
 permissions:
   contents: read
