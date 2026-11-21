@@ -117,6 +117,7 @@ jobs:
           run-id: ${{ needs.authorization.outputs.resource_profile_run_id }}
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/resource-profile
+          merge-multiple: true
       - name: Validate immutable resource profile and derive safe shard matrix
         id: plan
         working-directory: 03_EXPERIMENTS/C10-S/harness
