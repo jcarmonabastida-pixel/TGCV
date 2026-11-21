@@ -191,10 +191,15 @@ def run_resource_preflight() -> dict[str, Any]:
     projected = elapsed * (2 * K_PER_CELL * len(EXPECTED_CELLS)) / (
         RESOURCE_K_PER_CELL * len(EXPECTED_CELLS)
     )
-    if projected > 16200:
-        raise F5G7Error("G7_RESOURCE_PREFLIGHT_PROJECTS_OVER_4_5_HOURS")
     return {
-        "status": "RESOURCE_PREFLIGHT_PASS",
+        "status": (
+            "RESOURCE_PREFLIGHT_PASS"
+            if projected <= 16200 else "RESOURCE_PREFLIGHT_FAIL"
+        ),
+        "failure_reason": (
+            "NONE" if projected <= 16200
+            else "G7_RESOURCE_PREFLIGHT_PROJECTS_OVER_4_5_HOURS"
+        ),
         "datasets": RESOURCE_K_PER_CELL * len(EXPECTED_CELLS),
         "elapsed_seconds": elapsed,
         "projected_primary_plus_replay_seconds": projected,
@@ -276,6 +281,8 @@ def execute_g7(output_dir: Path, *, code_commit: str) -> dict[str, Any]:
     (output_dir / "resource_preflight.json").write_text(
         json.dumps(preflight, sort_keys=True, indent=2) + "\n", encoding="utf-8"
     )
+    if preflight.get("status") != "RESOURCE_PREFLIGHT_PASS":
+        raise F5G7Error(str(preflight.get("failure_reason", "G7_RESOURCE_PREFLIGHT_FAILED")))
     primary = run_bank(seed_namespace=HOLDOUT_NAMESPACE)
     primary_digest = deterministic_result_digest(primary)
     primary_dir = output_dir / "primary"
