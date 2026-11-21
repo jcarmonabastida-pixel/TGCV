@@ -45,6 +45,7 @@ def adjudicate_serialized_records(records: list[dict[str, Any]]) -> list[dict[st
         if not isinstance(dataset_id, str) or dataset_id in seen:
             raise ValueError("G7_SERIALIZED_DATASET_ID_MISSING_OR_DUPLICATE")
         seen.add(dataset_id)
+    for record in records:
         raw = record["comparison"]
         candidates = tuple(
             CandidateOutput(
