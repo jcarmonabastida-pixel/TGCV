@@ -443,20 +443,31 @@ def fitted_beta_binomial_parametric_bootstrap(
     rng = np.random.Generator(np.random.PCG64(bootstrap_seed))
     p_world = rng.beta(fit.alpha, fit.beta, size=(bootstrap_replicates, m))
     counts_star = rng.binomial(r, p_world)
-    within_star = np.empty(bootstrap_replicates, dtype=float)
-    between_star = np.empty(bootstrap_replicates, dtype=float)
-    mcse_star: list[float] = []
-    for index in range(bootstrap_replicates):
-        replicate_rows = np.zeros((m, r), dtype=float)
-        for world_index, count in enumerate(counts_star[index]):
-            replicate_rows[world_index, :int(count)] = 1.0
-        result = observed_nested_mr_result(
-            replicate_rows, target_m=target_m, target_r=target_r,
-        )
-        within_star[index] = result.within_estimate
-        between_star[index] = result.between_estimate_raw
-        if result.mcse_estimate is not None:
-            mcse_star.append(result.mcse_estimate)
+    # The raw nested estimands for Bernoulli rows depend on each row only
+    # through its success count. Compute them in NumPy batches rather than
+    # rebuilding MxR matrices and calling the scalar validator 1,000 times.
+    # This is algebraically the same sample-variance definition used by
+    # observed_nested_mr_result:
+    #   S_w^2 = mean_i [x_i (R-x_i) / (R (R-1))]
+    #   S_world^2 = sample variance of x_i/R
+    #   S_b^2 = S_world^2 - S_w^2/R.
+    row_means = counts_star.astype(np.float64) / float(r)
+    within_by_world = (
+        counts_star.astype(np.float64) * (r - counts_star.astype(np.float64))
+        / float(r * (r - 1))
+    )
+    within_star = within_by_world.mean(axis=1)
+    grand_means = row_means.mean(axis=1, keepdims=True)
+    world_variance_star = np.sum(
+        (row_means - grand_means) ** 2, axis=1,
+    ) / float(m - 1)
+    between_star = world_variance_star - within_star / float(r)
+    projected_variance_star = (
+        between_star / float(target_m)
+        + within_star / float(target_m * target_r)
+    )
+    valid_mcse_mask = projected_variance_star >= 0.0
+    mcse_star_count = int(np.count_nonzero(valid_mcse_mask))
 
     alpha_tail = (1.0 - confidence_level) / 2.0
     within_interval = tuple(float(v) for v in np.quantile(
