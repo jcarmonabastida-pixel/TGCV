@@ -448,3 +448,47 @@ This exposes two independent blockers, not one:
 2. **Statistical/operational:** boundary-supremum and unresolved-census cases need a scientifically justified interval/abstention disposition compatible with the frozen >=0.95 emission requirement, or the current C5 candidate must be declared unsuitable for M10/R5. Do not relabel boundary suprema as interior maxima, silently drop cases, lower the emission threshold, or use the resource sample as a coverage estimate.
 
 The next engineering action is a bounded component-level resource profiler plus a review of the M10/R5 boundary/unresolved disposition. No new G7 holdout execution is authorized by this failure; no primary/replay bank or coverage result was produced. G7 remains NOT EXECUTED / RESOURCE GATE FAILED, and the Tier-A candidate is not yet validated.
+
+
+### 9.21 F5 exact-certificate performance optimization and G7 execution redesign — 2026-11-21
+
+The first component profile, [run 44913152875](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44913152875), passed the governed comparator tests and measured one resource-only dataset per G7 cell. For M30/R20, the exact global-MLE certificate consumed 164.32 s of a 164.60 s full comparison. P/A/I fitting, C0 and vectorized C5 bootstrap together were negligible by comparison. This corrects the earlier hypothesis that separating P/A/I would materially reduce the 81-hour projection: it would not.
+
+The certificate-internal profile, [run 44925170868](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44925170868), isolated the M30/R20 cost:
+- 94.00 s in tensor-product Bernstein coefficient construction;
+- 41.32 s in exact axis-content/common-component GCD;
+- 23.27 s in exact removal of non-interior axis factors;
+- 4.25 s in conditional-mean tube/exclusion;
+- 1.08 s in Krawczyk;
+- 0.92 s in exact likelihood enclosure.
+
+A semantics-preserving exact-arithmetic optimization was then implemented at commit `5d3174de14fe9f5a5a19ddc5a97a44d7a7da88d8`:
+- Bernstein basis matrices are represented by integer numerators and a positive common denominator; tensor transforms are performed over integers, with exact rational values materialized only at API boundaries;
+- univariate GCD uses primitive integer pseudo-remainder sequences over Q rather than repeated Fraction Euclidean divisions;
+- endpoint linear factors are divided by exact integer synthetic division.
+
+The same resource-only M30/R20 dataset, same resource seed, same K=1 and B=1,000 was profiled after the optimization in [run 44926034181](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44926034181), artifact ID `14716260010`, SHA-256 `6263ef767de7152429d0c2427aaba62c60d2fe5e5f83296545e0344445953518`:
+- full dataset comparison: 24.676 s versus 164.601 s before (6.67× faster);
+- certificate still returned `GLOBAL_INTERIOR_MAXIMUM_CERTIFIED`;
+- complete census unchanged: 21 concentration intervals processed, 10 excluded, 11 Krawczyk attempts, one simple root certified, zero unresolved intervals;
+- exclusive hot spots after optimization: 10.03 s Bernstein calls, 9.41 s Krawczyk (including derivative Bernstein ranges), 3.02 s mean-tube work, 0.22 s axis common-component checks, 0.12 s axis-factor stripping.
+
+Governed F5 tests passed on [run 44925771538](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44925771538), commit `5d3174de14fe9f5a5a19ddc5a97a44d7a7da88d8`; additional exact GCD and synthetic-division regressions passed on [run 44926090717](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44926090717), commit `186ce896fe264f47d3c379f05995f047b961ef7e`. No floating-point approximation, budget reduction, seed change, K/B reduction, or coverage relaxation was introduced.
+
+The single-dataset speedup is not yet a validated full-bank runtime projection. A full resource-only latency sample (K=100 per cell, C0/C5 B=1,000, disjoint resource namespace, no coverage adjudication) is now running as [run 44926453920](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44926453920). It records per-dataset timings and conservative shard-size projections; it is not a holdout or calibration run.
+
+#### G7 execution architecture correction (design requirement before any new prospective authorization)
+
+The current `execute_g7` bundles resource preflight, the full primary bank and the full replay in one sequential job. This repeats the resource preflight on every retry and does not provide shard-level checkpointing. The next executor/workflow revision must instead provide separate dependent stages in one hash-bound workflow run:
+
+1. **Resource preflight:** run once for the approved code/environment snapshot, upload its immutable timing/status artifact, and do not repeat it when later stages are retried.
+2. **Primary bank:** matrix-sharded by frozen cell and global replicate-index range. Each shard writes an atomic, hash-manifested result artifact. The full K=1,000 denominator and global seed schedule remain unchanged.
+3. **Clean-source replay:** start only after all primary shards pass integrity checks; rerun the same seeds and shard boundaries independently. Each replay shard is compared with its corresponding primary shard.
+4. **Adjudication:** start only after all primary/replay shard pairs are present, complete, and digest-equal. Reconstruct the full 1,000-dataset denominator per cell before applying the unchanged no-pooling metrics and G7 criteria.
+5. **Recovery:** rerun only failed or missing shards. Successful preflight, primary, and replay artifacts remain reusable within the workflow run; no completed 1,000-dataset bank is repeated because one later shard failed.
+
+Each compute job must have a hard timeout below three hours (target 150 minutes, workflow ceiling 165 minutes). Shard size and `max-parallel` are to be selected from the full resource-only p95/p99 timings, not guessed from one dataset. The expected hosted-runner parallelism is a scheduling parameter, not a scientific assumption; the design must remain correct if GitHub schedules fewer jobs concurrently.
+
+The 81-hour sequential projection must be replaced by a measured parallel wall-time projection while also reporting total runner-compute hours. These are distinct quantities and neither may be hidden. K=1,000, C0/C5 B=1,000, the holdout namespace, primary/replay identity, exact certificate requirements, interval-emission threshold and coverage criteria remain frozen.
+
+No prospective G7 holdout has been run. The current G7 v1.0 one-use authorization is consumed and bound to the earlier monolithic executor; the staged/sharded executor requires a new protocol/source-hash snapshot and a fresh explicit one-use authorization before any holdout computation. The separate M10/R5 boundary/unresolved emission blocker in §9.20 remains open and is not solved by this performance work.
