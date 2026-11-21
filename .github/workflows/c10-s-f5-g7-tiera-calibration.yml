@@ -19,6 +19,8 @@ jobs:
       approved: ${{ steps.gate.outputs.approved }}
       authorization_id: ${{ steps.authorization.outputs.authorization_id }}
       approved_code_commit: ${{ steps.authorization.outputs.approved_code_commit }}
+      resource_profile_run_id: ${{ steps.authorization.outputs.resource_profile_run_id }}
+      resource_profile_artifact_id: ${{ steps.authorization.outputs.resource_profile_artifact_id }}
     steps:
       - name: Gate branch and explicit authorization commit
         id: gate
@@ -69,6 +71,8 @@ jobs:
           data = json.loads(Path(os.environ["RUNNER_TEMP"], "validated-g7-authorization.json").read_text())
           print(f"authorization_id={data['authorization_id']}")
           print(f"approved_code_commit={data['approved_code_commit']}")
+          print(f"resource_profile_run_id={data['resource_profile_run_id']}")
+          print(f"resource_profile_artifact_id={data['resource_profile_artifact_id']}")
           PY
       - name: Preserve original and validated one-use authorization evidence
         if: steps.gate.outputs.approved == 'true'
@@ -106,14 +110,22 @@ jobs:
         working-directory: 03_EXPERIMENTS/C10-S/harness
         run: |
           python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+      - name: Download immutable resource-only profile artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          artifact-ids: ${{ needs.authorization.outputs.resource_profile_artifact_id }}
+          run-id: ${{ needs.authorization.outputs.resource_profile_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/resource-profile
       - name: Validate immutable resource profile and derive safe shard matrix
         id: plan
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PLAN_JSON: ${{ runner.temp }}/g7-resource-profile-validation.json
+          PROFILE_JSON: ${{ runner.temp }}/resource-profile/c10s-f5-g7-resource-parallel-profile.json
         run: |
           python validate_c10s_f5_g7_resource_profile.py \
-            --profile ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_001.json \
+            --profile "$PROFILE_JSON" \
             --manifest ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_001.json \
             --root ../../.. \
             --output-json "$RUNNER_TEMP/g7-resource-profile-validation.json"
@@ -126,11 +138,15 @@ jobs:
           print("datasets_per_shard=" + str(data["datasets_per_shard"]))
           print("estimated_end_to_end_wall_seconds=" + str(data["end_to_end_conservative_wall_seconds"]))
           PY
-      - name: Upload validated resource plan (no recomputation)
+          mkdir -p "$RUNNER_TEMP/g7-resource-plan"
+          cp "$RUNNER_TEMP/g7-resource-profile-validation.json" "$RUNNER_TEMP/g7-resource-plan/"
+          cp "$PROFILE_JSON" "$RUNNER_TEMP/g7-resource-plan/resource-profile.json"
+          cp ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_001.json "$RUNNER_TEMP/g7-resource-plan/resource-profile-manifest.json"
+      - name: Upload validated resource plan and immutable profile (no recomputation)
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: c10s-f5-g7-resource-plan-${{ needs.authorization.outputs.authorization_id }}
-          path: ${{ runner.temp }}/g7-resource-profile-validation.json
+          path: ${{ runner.temp }}/g7-resource-plan/
           if-no-files-found: error
           retention-days: 90
 
@@ -270,15 +286,15 @@ jobs:
           python aggregate_c10s_f5_g7_tiera_shards.py \
             --primary-dir "$RUNNER_TEMP/g7-shards/primary" \
             --replay-dir "$RUNNER_TEMP/g7-shards/replay" \
-            --preflight ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_001.json \
-            --preflight-manifest ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_001.json \
+            --preflight "$RUNNER_TEMP/g7-resource-plan/resource-profile.json" \
+            --preflight-manifest "$RUNNER_TEMP/g7-resource-plan/resource-profile-manifest.json" \
             --expected-preflight-sha256 "${{ needs.resource_preflight_validation.outputs.resource_profile_sha256 }}" \
             --output-dir "$RUNNER_TEMP/c10s-f5-g7-tiera" \
             --source-commit "${{ needs.authorization.outputs.approved_code_commit }}" \
             --authorization-id "${{ needs.authorization.outputs.authorization_id }}"
           mkdir -p "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-profile" "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-plan"
-          cp ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_001.json "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-profile/"
-          cp ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_001.json "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-profile/"
+          cp "$RUNNER_TEMP/g7-resource-plan/resource-profile.json" "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-profile/"
+          cp "$RUNNER_TEMP/g7-resource-plan/resource-profile-manifest.json" "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-profile/"
           cp "$RUNNER_TEMP/g7-resource-plan/g7-resource-profile-validation.json" "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-plan/"
       - name: Upload final G7 result and immutable bank artifacts
         if: always()
