@@ -421,3 +421,30 @@ Corrected one-use authorization:
 - latest observed job state: resource preflight / primary / replay executor step **IN_PROGRESS**.
 
 The corrected attempt is bound to the vectorized C5 bootstrap snapshot and the new preflight-evidence persistence behavior. It is the first execution that can measure whether that optimization brings the full primary-plus-replay projection below the unchanged 4.5-hour limit. Until the preflight artifact is available, no speedup or G7 calibration outcome is claimed.
+
+
+### 9.20 G7 retry #004: measured resource failure and preflight emission warning — 2026-11-21
+
+Run [44843498295](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44843498295), authorization ID `C10S-F5-G7-20261121-004`, completed with conclusion **FAILURE**. Authorization/hash validation, approved-code checkout, pinned dependencies and artifact upload all passed. The executor stopped only because the resource preflight returned `G7_RESOURCE_PREFLIGHT_PROJECTS_OVER_4_5_HOURS`; primary calibration and clean-source replay were not run.
+
+The uploaded artifact (ID `14692240291`, SHA-256 `24c4ee485b93961bbc6cd6d3c36c91410c0c36c62e8e7565edc2fc9f77526567`) records:
+- resource-only sample: 100 datasets per cell, 200 total;
+- elapsed preflight: 14,583.034 s (4 h 03 min 03 s);
+- projected primary plus replay: 291,660.689 s (81 h 01 min 01 s);
+- unchanged ceiling: 16,200 s (4 h 30 min);
+- peak RSS: 145,064 KiB;
+- coverage adjudication: `NOT_PERFORMED`.
+
+Thus the count-vector C5 vectorization and artifact-persistence fix are validated as software changes but have **not** made the end-to-end workload resource-feasible. The earlier claim that scalar C5 reconstruction was the dominant runtime bottleneck was not supported by component-level timings; the new measurement shows only that the aggregate optimization is insufficient. No further full G7 attempt should be made until a bounded profiler identifies the time distribution across C0 bootstrap, production/analytic fitting, exact global certification, C5 bootstrap and serialization. Any profiling must use resource-only synthetic seeds and leave K/B, the holdout namespace and coverage adjudication untouched.
+
+A second, scientifically material warning appears in the same resource-only sample:
+- `F5_beta22_M10_R5`: 67 `GLOBAL_INTERIOR_MAXIMUM_CERTIFIED`, 19 `GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED`, 14 `GLOBAL_MAXIMUM_ORDER_UNRESOLVED`;
+- `F5_beta22_M30_R20`: 100 `GLOBAL_INTERIOR_MAXIMUM_CERTIFIED`.
+
+This is not a coverage result: the resource namespace is not the prospective holdout and adjudication was explicitly not performed. However, the current C5 path requires `GLOBAL_INTERIOR_MAXIMUM_CERTIFIED`; both a certified boundary supremum and an unresolved global ordering return before interval construction. Therefore, for these 100 M10/R5 resource datasets, C5 interval emission is bounded above by 67/100 (and may be lower due to other abstention causes). The frozen G7 adjudicator requires interval emission >=0.95 separately for each C5 target and cell. If this pattern persists in the holdout, G7 cannot pass even if runtime is solved.
+
+This exposes two independent blockers, not one:
+1. **Computational:** the certified-fit pipeline must be profiled and materially accelerated without reducing K=1,000, C0/C5 B=1,000, replay, or the 4.5-hour gate.
+2. **Statistical/operational:** boundary-supremum and unresolved-census cases need a scientifically justified interval/abstention disposition compatible with the frozen >=0.95 emission requirement, or the current C5 candidate must be declared unsuitable for M10/R5. Do not relabel boundary suprema as interior maxima, silently drop cases, lower the emission threshold, or use the resource sample as a coverage estimate.
+
+The next engineering action is a bounded component-level resource profiler plus a review of the M10/R5 boundary/unresolved disposition. No new G7 holdout execution is authorized by this failure; no primary/replay bank or coverage result was produced. G7 remains NOT EXECUTED / RESOURCE GATE FAILED, and the Tier-A candidate is not yet validated.
