@@ -258,6 +258,8 @@ jobs:
           name: c10s-f5-g7-authorization-${{ needs.authorization.outputs.authorization_id }}
           path: ${{ runner.temp }}/c10s-f5-g7-tiera/authorization
       - name: Aggregate, verify exact replay and adjudicate full denominators once
+        env:
+          GITHUB_SHA: ${{ needs.authorization.outputs.approved_code_commit }}
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           GITHUB_SHA: ${{ needs.authorization.outputs.approved_code_commit }}
@@ -266,10 +268,15 @@ jobs:
             --primary-dir "$RUNNER_TEMP/g7-shards/primary" \
             --replay-dir "$RUNNER_TEMP/g7-shards/replay" \
             --preflight ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_001.json \
+            --preflight-manifest ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_001.json \
             --expected-preflight-sha256 "${{ needs.resource_preflight_validation.outputs.resource_profile_sha256 }}" \
             --output-dir "$RUNNER_TEMP/c10s-f5-g7-tiera" \
             --source-commit "${{ needs.authorization.outputs.approved_code_commit }}" \
             --authorization-id "${{ needs.authorization.outputs.authorization_id }}"
+          mkdir -p "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-profile" "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-plan"
+          cp ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_001.json "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-profile/"
+          cp ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_001.json "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-profile/"
+          cp "$RUNNER_TEMP/g7-resource-plan/g7-resource-profile-validation.json" "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-plan/"
       - name: Upload final G7 result and immutable bank artifacts
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
