@@ -288,7 +288,7 @@ def aggregate(
     }
     result_bytes = json.dumps(final, sort_keys=True, indent=2, allow_nan=False) + "\n"
     (output_dir / "resource_profile_manifest.json").write_text(
-        json.dumps(profile_manifest, sort_keys=True, indent=2, allow_nan=False) + "\\n",
+        json.dumps(profile_manifest, sort_keys=True, indent=2, allow_nan=False) + "\n",
         encoding="utf-8",
     )
     result_path = output_dir / "g7_result.json"
