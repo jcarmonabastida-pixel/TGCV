@@ -248,7 +248,7 @@ jobs:
             --primary-dir "$RUNNER_TEMP/g7-shards/primary" \
             --replay-dir "$RUNNER_TEMP/g7-shards/replay" \
             --preflight ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_001.json \
-            --expected-preflight-sha256 "${{ needs.resource-preflight-validation.outputs.resource_profile_sha256 }}" \
+            --expected-preflight-sha256 "${{ needs.resource_preflight_validation.outputs.resource_profile_sha256 }}" \
             --output-dir "$RUNNER_TEMP/c10s-f5-g7-tiera" \
             --source-commit "${{ needs.authorization.outputs.approved_code_commit }}" \
             --authorization-id "${{ needs.authorization.outputs.authorization_id }}"
