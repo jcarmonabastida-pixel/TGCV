@@ -384,3 +384,24 @@ Run 44842130930 has passed the same authorization and dependency gates and is cu
 If the 4.5-hour projection gate fails again, the next action is an engineering optimization of the per-dataset certified-fit path under unchanged G7 K/B, seed separation, coverage thresholds and replay requirements, followed by a new governed static validation and a new hash-bound one-use authorization. Do not relax the resource threshold, reduce K/B, omit replay, inspect coverage early or reuse any consumed bank.
 
 Current scientific disposition: G1–G6 remain PASS for their declared bounded F5 target regime; G7 remains AUTHORIZED BUT NOT YET EXECUTED. Tier B and C10 Generator/Analyzer/Evaluator causal execution remain out of scope and unauthorized.
+
+
+### 9.18 G7 resource bottleneck diagnosis and vectorized bootstrap correction — 2026-11-21
+
+The failed preflight in run [44803576150](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44803576150) is now localized more precisely. The workflow spent approximately 3 h 49 min in the resource-only preflight before raising `G7_RESOURCE_PREFLIGHT_PROJECTS_OVER_4_5_HOURS`. The preflight processes 100 datasets per cell (200 total), and each dataset called the full comparator with C0 bootstrap B=1,000 and C5 bootstrap B=1,000. Even with `adjudicate=False`, those bootstrap computations still ran; only coverage adjudication was skipped.
+
+The dominant avoidable Python overhead in C5 was rebuilding an M×R Bernoulli matrix and calling the scalar nested-estimand routine once per bootstrap replicate. For a Bernoulli row with success count `x_i`, the same point estimands are exactly expressible from counts:
+- within component: `mean_i[x_i(R-x_i)/(R(R-1))]`;
+- world-mean variance: sample variance of `x_i/R`;
+- raw between component: world-mean variance minus within/R;
+- projectable MCSE draw count: the same nonnegative projected-variance predicate.
+
+The implementation now computes those quantities in vectorized NumPy batches, without changing the beta-binomial DGP, PCG64 seed stream, bootstrap draws, target estimands, interval quantiles, or boundary/abstention rule. A regression compares 257 deterministic count-vector draws against the original scalar `observed_nested_mr_result` calculation at tight numerical tolerances.
+
+A second operational defect was corrected: a resource-gate failure previously raised before `resource_preflight.json` was written. The preflight now returns a typed PASS/FAIL record with elapsed time, projection, peak RSS, cell counts and an explicit no-adjudication marker; the executor writes that artifact before raising on FAIL. A deterministic regression exercises the over-4.5-hour branch and verifies the timing evidence is retained.
+
+Governed static validation:
+- Run [44843034684](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44843034684), commit `6a79cecaee6b60037c5203ec480f63a32ba237aa`: **181 tests PASS**, including vectorized-vs-scalar equivalence; CPython 3.12.10, pinned dependencies and compile step passed.
+- Run [44843094528](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44843094528), commit `352a29da07879eb9d9ce6bc226a57af2540cc756`: **182 tests PASS**, including the persisted failed-preflight artifact regression; CPython 3.12.10, pinned dependencies and compile step passed.
+
+These are deterministic software tests, not a measured G7 speedup. The revised code has not yet been benchmarked against the 4.5-hour projection gate. The previous G7 authorization was one-use and is consumed; the revised code requires a fresh authorization branch hash-bound to this exact snapshot before any new preflight. No K/B, seed, coverage, replay or scientific-scope constraint is relaxed. G7 remains AUTHORIZED AT PROGRAMME LEVEL / NEW EXECUTION AUTHORIZATION PENDING; no prospective holdout or coverage result exists.
