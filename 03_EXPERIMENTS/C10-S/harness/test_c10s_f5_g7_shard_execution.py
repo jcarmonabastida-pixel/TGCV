@@ -144,10 +144,20 @@ class F5G7ShardExecutionTests(unittest.TestCase):
             }
             profile_path = root / "resource-profile.json"
             profile_path.write_text(json.dumps(profile), encoding="utf-8")
+            profile_manifest_path = root / "resource-profile-manifest.json"
+            profile_manifest_path.write_text(json.dumps({
+                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-001",
+                "profile_run_id": 44926453920,
+                "profile_artifact_id": 123456789,
+                "profile_source_commit": source_commit,
+                "profile_json_sha256": __import__("hashlib").sha256(profile_path.read_bytes()).hexdigest(),
+                "profile_artifact_archive_sha256": "b" * 64,
+            }), encoding="utf-8")
             result = aggregate(
                 primary_dir=primary_dir,
                 replay_dir=replay_dir,
                 preflight_path=profile_path,
+                preflight_manifest_path=profile_manifest_path,
                 output_dir=root / "result",
                 source_commit=source_commit,
                 authorization_id="G7-TEST-0001",
