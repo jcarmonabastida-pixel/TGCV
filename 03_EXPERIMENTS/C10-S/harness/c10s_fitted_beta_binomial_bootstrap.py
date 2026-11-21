@@ -476,7 +476,7 @@ def fitted_beta_binomial_parametric_bootstrap(
     between_interval = tuple(float(v) for v in np.quantile(
         between_star, [alpha_tail, 1.0 - alpha_tail],
     ))
-    valid_rate = len(mcse_star) / bootstrap_replicates
+    valid_rate = mcse_star_count / bootstrap_replicates
 
     # F5 MCSE is a constrained joint functional. The current candidate has no
     # boundary-aware confidence construction; quantiling only positive raw
@@ -522,7 +522,7 @@ def fitted_beta_binomial_parametric_bootstrap(
     return FittedBetaBinomialBootstrapResult(
         comparison=comparison, fit=fit,
         bootstrap_replicates=bootstrap_replicates,
-        valid_mcse_replicates=len(mcse_star), valid_mcse_rate=valid_rate,
+        valid_mcse_replicates=mcse_star_count, valid_mcse_rate=valid_rate,
         confidence_level=confidence_level, bootstrap_seed=bootstrap_seed,
         failure_reason=abstention,
         optimizer_audit=optimizer_audit,
