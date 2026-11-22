@@ -86,9 +86,8 @@ jobs:
         run: 'python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock'
       - name: Validate staged G7 workflow YAML syntax
         run: ruby -e 'require "yaml"; YAML.load_file(".github/workflows/c10-s-f5-g7-tiera-calibration.yml")'
-      # One-time compatibility verification of the persisted G7 resource profile (flattened artifact).
+      # Verify the persisted immutable G7 resource profile and current source compatibility on every relevant static run (flattened artifact).
       - name: Download the immutable G7 resource profile (one-time compatibility validation)
-        if: contains(github.event.head_commit.message, 'validate persisted G7 resource profile')
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           artifact-ids: 14717426261
@@ -97,7 +96,6 @@ jobs:
           path: ${{ runner.temp }}/resource-profile
           merge-multiple: true
       - name: Validate source compatibility and assert the measured shard plan
-        if: contains(github.event.head_commit.message, 'validate persisted G7 resource profile')
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PLAN_JSON: ${{ runner.temp }}/g7-resource-profile-validation.json
