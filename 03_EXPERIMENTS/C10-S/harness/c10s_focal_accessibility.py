@@ -171,7 +171,12 @@ class FocalAccessibilityInput:
     global_block_state: TruthState
     observed_global_block_state: TruthState
     global_block_coverage: CoverageState
+    global_block_version: str
+    global_block_provenance_ref: str
     observed_route_catalog_complete: bool
+    route_catalog_version: str
+    route_catalog_provenance_ref: str
+    observed_route_catalog_provenance_ref: str
     global_block_scope: Literal["ALL_ADMISSIBLE_ROUTES"]
     contract_version: str
 
@@ -188,6 +193,10 @@ class FocalAccessibilityInput:
         _state(self.observed_global_block_state, "observed global BLOCK")
         if self.global_block_coverage not in ("COMPLETE", "INCOMPLETE"):
             raise FocalAccessibilityContractError("global BLOCK coverage must be COMPLETE or INCOMPLETE")
+        if not all((self.global_block_version, self.global_block_provenance_ref,
+                    self.route_catalog_version, self.route_catalog_provenance_ref,
+                    self.observed_route_catalog_provenance_ref)):
+            raise FocalAccessibilityContractError("global BLOCK and route-catalog versions/provenance are required")
         if type(self.observed_route_catalog_complete) is not bool or type(self.route_catalog_exhaustive) is not bool:
             raise FocalAccessibilityContractError("truth and observed route-catalog completeness must be explicit")
         roles = [p.role for p in self.predicates]
@@ -284,6 +293,11 @@ def adjudicate_focal_accessibility(
         "global_block_truth": global_block,
         "observed_route_truth": tuple(zip((r.route_id for r in source.routes), observed_route_states)),
         "observed_global_block": observed_global_block,
+        "global_block_version": source.global_block_version,
+        "global_block_provenance_ref": source.global_block_provenance_ref,
+        "route_catalog_version": source.route_catalog_version,
+        "route_catalog_provenance_ref": source.route_catalog_provenance_ref,
+        "observed_route_catalog_provenance_ref": source.observed_route_catalog_provenance_ref,
         "accessibility_truth": accessibility,
         "observed_accessibility": observed,
         "observed_coverage_complete": coverage_complete,
