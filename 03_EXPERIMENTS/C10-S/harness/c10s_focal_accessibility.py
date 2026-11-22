@@ -358,6 +358,8 @@ def derive_focal_opening(
         raise FocalAccessibilityContractError("baseline/post focal unit identity mismatch")
     if (baseline.boundary_id, baseline.context_id) != (post.boundary_id, post.context_id):
         raise FocalAccessibilityContractError("baseline/post boundary or context is not comparable")
+    if baseline.contract_version != post.contract_version:
+        raise FocalAccessibilityContractError("baseline/post focal predicate contracts are not version-comparable")
     if (baseline.boundary_id, baseline.context_id) != (identity.boundary_id, identity.context_id):
         raise FocalAccessibilityContractError("identity adjudication boundary/context mismatch")
     if baseline.snapshot_id == post.snapshot_id:
