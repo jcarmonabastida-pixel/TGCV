@@ -214,8 +214,8 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
             "winner": {
                 "kind": "INTERIOR_STATIONARY_ROOT",
                 "parameter_box": (
-                    (fit.mean_probability - 1e-4, fit.mean_probability + 1e-4),
-                    (fitted_t - 1e-4, fitted_t + 1e-4),
+                    (fit.mean_probability - 1e-12, fit.mean_probability + 1e-12),
+                    (fitted_t - 1e-12, fitted_t + 1e-12),
                 ),
             },
             "globality_basis": "COMPLETE_INTERIOR_STATIONARY_CENSUS_PLUS_ALL_BOUNDARY_PROFILES_AND_CORNER_LIMITS",
@@ -323,7 +323,7 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
             tuple([1.0] * count + [0.0] * (5 - count))
             for count in (0, 1, 2, 4, 5, 3, 1, 4, 2, 3)
         )
-        box = ((0.4, 0.4002), (0.6, 0.6002))
+        box = ((0.4, 0.4000000001), (0.6, 0.6000000001))
         certificate = {
             "status": "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED",
             "winner": {"kind": "INTERIOR_STATIONARY_ROOT", "parameter_box": box},
@@ -375,7 +375,7 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
         self.assertEqual(first.comparison.provenance, second.comparison.provenance)
         self.assertEqual(
             first.fit.mean_probability,
-            float((__import__("fractions").Fraction(0.4) + __import__("fractions").Fraction(0.4002)) / 2),
+            float((__import__("fractions").Fraction(0.4) + __import__("fractions").Fraction(0.4000000001)) / 2),
         )
         self.assertEqual(
             first.production_analytic_reconciliation["production_fit"]["fit_origin"],
