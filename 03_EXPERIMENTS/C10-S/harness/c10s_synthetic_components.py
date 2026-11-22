@@ -141,6 +141,12 @@ class D2Baseline:
 
 @dataclass(frozen=True)
 class D2PotentialStage:
+    """D2 policy-stage fixture; a_f_post/d_f_opening are legacy Booleans.
+
+    Current focal accessibility truth is carried separately by the optional
+    typed D2FocalPotentialTruth on D2PotentialBundle. Never treat these legacy
+    stage fields as validated A_f*/D_f* truth.
+    """
     unit_id: str
     z: int
     policy_id: str
