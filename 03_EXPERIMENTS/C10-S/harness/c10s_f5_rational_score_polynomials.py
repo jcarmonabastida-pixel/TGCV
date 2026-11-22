@@ -3014,18 +3014,23 @@ def beta_binomial_global_mle_certificate(
 
         competitors = []
         interior_index = 0
+        score_polynomials = None
         for lift_record in census.get("interior_stationary_candidates", []):
             lift = lift_record["lift_result"]
             for certified in lift["certified_simple_root_intervals"]:
                 # The Krawczyk image is a valid (usually tighter) enclosure
                 # of the unique root, unlike the full subdivision input box.
                 root_box = certified["root_certificate"]["krawczyk_box"]
-                raw_score_mu, raw_score_kappa = beta_binomial_score_numerators(
-                    r, count_histogram,
-                )
+                if score_polynomials is None:
+                    raw_score_mu, raw_score_kappa = beta_binomial_score_numerators(
+                        r, count_histogram,
+                    )
+                    score_polynomials = (
+                        compactify_concentration(raw_score_mu),
+                        compactify_concentration(raw_score_kappa),
+                    )
                 refined_root_box = refine_krawczyk_root_box(
-                    compactify_concentration(raw_score_mu),
-                    compactify_concentration(raw_score_kappa),
+                    score_polynomials[0], score_polynomials[1],
                     root_box,
                     max_iterations=64,
                     max_width=Fraction(1, 2 ** 32),
