@@ -125,7 +125,7 @@ class FocalAccessibilityTests(unittest.TestCase):
         post = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-POST"))
         identity = SemanticTransformationMatch(
             "UE-1", "BND-1", "CTX-1", "TAU2-v3", "TAU2-SEMVER-3",
-            "TAU2-v3", "TAU2-SEMVER-3", "SNAP-BASE", "SNAP-POST",
+            "TAU2-v3", "TAU2-SEMVER-3", "SNAP-BASE", "SNAPVER-1", "SNAP-POST", "SNAPVER-1",
             "MATCHED", "TID-MATCH-v1", "ADJUDICATION-001",
         )
         result = derive_focal_opening(baseline, post, identity)
@@ -140,7 +140,7 @@ class FocalAccessibilityTests(unittest.TestCase):
         ))
         identity = SemanticTransformationMatch(
             "UE-1", "BND-1", "CTX-1", "TAU2-v3", "TAU2-SEMVER-3",
-            "TAU2-v4", "TAU2-SEMVER-4", "SNAP-BASE", "SNAP-POST",
+            "TAU2-v4", "TAU2-SEMVER-4", "SNAP-BASE", "SNAPVER-1", "SNAP-POST", "SNAPVER-1",
             "MATCHED", "TID-MATCH-v1", "ADJUDICATION-005",
         )
         result = derive_focal_opening(baseline, post, identity)
@@ -151,7 +151,7 @@ class FocalAccessibilityTests(unittest.TestCase):
         post = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-POST", transformation_id="TAU2-v4", transformation_version="TAU2-SEMVER-4"))
         identity = SemanticTransformationMatch(
             "UE-1", "BND-1", "CTX-1", "TAU2-v3", "TAU2-SEMVER-3",
-            "TAU2-v4", "TAU2-SEMVER-4", "SNAP-BASE", "SNAP-POST",
+            "TAU2-v4", "TAU2-SEMVER-4", "SNAP-BASE", "SNAPVER-1", "SNAP-POST", "SNAPVER-1",
             "NOT_MATCHED", "TID-MATCH-v1", "ADJUDICATION-002",
         )
         result = derive_focal_opening(baseline, post, identity)
@@ -162,7 +162,7 @@ class FocalAccessibilityTests(unittest.TestCase):
         post = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-POST", transformation_id="TAU2-v4", transformation_version="TAU2-SEMVER-4"))
         identity = SemanticTransformationMatch(
             "UE-1", "BND-1", "CTX-1", "TAU2-v3", "TAU2-SEMVER-3",
-            "TAU2-v4", "TAU2-SEMVER-4", "SNAP-BASE", "SNAP-POST",
+            "TAU2-v4", "TAU2-SEMVER-4", "SNAP-BASE", "SNAPVER-1", "SNAP-POST", "SNAPVER-1",
             "UNRESOLVED", "TID-MATCH-v1", "ADJUDICATION-003",
         )
         result = derive_focal_opening(baseline, post, identity)
@@ -178,7 +178,7 @@ class FocalAccessibilityTests(unittest.TestCase):
         ))
         identity = SemanticTransformationMatch(
             "UE-1", "BND-1", "CTX-1", "TAU2-v3", "TAU2-SEMVER-3",
-            "TAU2-v3", "TAU2-SEMVER-3", "SNAP-BASE", "SNAP-POST",
+            "TAU2-v3", "TAU2-SEMVER-3", "SNAP-BASE", "SNAPVER-1", "SNAP-POST", "SNAPVER-1",
             "MATCHED", "TID-MATCH-v1", "ADJUDICATION-004",
         )
         result = derive_focal_opening(baseline, post, identity)
