@@ -298,11 +298,11 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
         fixture = self._configure_target_only_support_fixture(fixture, scenario)
         extra_ref = scenario.dgp_profile.target_unsupported_history_masses[0][0]
 
-        # enabled=False with ADMIT is non-compliant in both intervals.
-        # g_A0 changes admission to NO_ADMISSION; g_A1 leaves ADMIT unchanged.
+        # enabled=True with NO_ADMISSION is non-compliant in both intervals.
+        # g_A0 leaves NO_ADMISSION unchanged; g_A1 also leaves it unchanged.
         # Neither potential becomes compliant, so delta_target_only = 0.
         source_state = fixture["initial_by_history"][extra_ref]
-        target_state = replace(source_state, enabled=False)
+        target_state = replace(source_state, admission_behavior="NO_ADMISSION")
         fixture["initial_by_history"][extra_ref] = target_state
         target_materialization = fixture["target_materialization"]
         target_materialization = replace(
@@ -325,6 +325,19 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             + target_only_mass * target_only_history_contrast
         )
         self.assertAlmostEqual(independently_expected_truth, 0.25)
+        contributions_by_history = {
+            row.history_ref: row
+            for row in result.theta_a_truth.theta_a_truth.contributions
+        }
+        target_contribution = contributions_by_history[extra_ref]
+        self.assertAlmostEqual(target_contribution.mean_under_g_a0, 0.0)
+        self.assertAlmostEqual(target_contribution.mean_under_g_a1, 0.0)
+        self.assertAlmostEqual(target_contribution.contrast, target_only_history_contrast)
+        self.assertTrue(all(
+            abs(row.contrast - source_history_contrast) < 1e-12
+            for history_ref, row in contributions_by_history.items()
+            if history_ref != extra_ref
+        ))
         self.assertAlmostEqual(
             result.theta_a_truth.theta_a_truth.theta_a_truth,
             independently_expected_truth,
