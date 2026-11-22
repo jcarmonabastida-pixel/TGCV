@@ -192,6 +192,28 @@ class D2PotentialBundle:
             self.focal_accessibility_truth.validate()
             if self.focal_accessibility_truth.unit_id != self.unit_id:
                 raise ContractError("typed D2 focal truth unit differs from D2 potential bundle")
+            post_truth = dict(self.focal_accessibility_truth.post_by_z)
+            for stage in self.potentials_by_z:
+                result = post_truth[stage.z]
+                route_components = dict(result.route_component_truth)
+                if self.focal_accessibility_truth.focal_route_id not in route_components:
+                    raise ContractError("typed D2 focal result omits its declared focal route components")
+                component_truth = dict(route_components[self.focal_accessibility_truth.focal_route_id])
+                expected_components = {
+                    "C_install": "1" if stage.c_install else "0",
+                    "C_integrity": "1" if stage.c_integrity else "0",
+                    "C_compat": "1" if stage.c_compat else "0",
+                    "C_oper": "1" if stage.c_oper else "0",
+                }
+                if component_truth != expected_components:
+                    raise ContractError(
+                        f"typed focal DEP components do not reproduce D2 Z={stage.z} technical component truth"
+                    )
+                expected_dep = "1" if stage.c_dep_star else "0"
+                if result.dep_truth != expected_dep:
+                    raise ContractError(
+                        f"typed focal DEP truth does not reproduce D2 Z={stage.z} C_dep*"
+                    )
 
 
 def _draw_joint_component(distribution, u: float):
