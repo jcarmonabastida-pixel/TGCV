@@ -31,7 +31,7 @@ permissions:
 jobs:
   f5-tests:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - name: Checkout research snapshot
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -58,10 +58,7 @@ jobs:
             c10s_f5_beta_binomial_likelihood_diagnostics.py \
             test_c10s_f5_beta_binomial_likelihood_diagnostics.py \
             c10s_f5_beta_binomial_mcse_profile.py \
-            test_c10s_f5_beta_binomial_mcse_profile \
-            test_c10s_fitted_beta_binomial_bootstrap \
-            test_c10s_f5_g7_shard_execution \
-            test_c10s_f5_g7_tiera_shards.py \
+            test_c10s_f5_beta_binomial_mcse_profile.py \
             c10s_fitted_beta_binomial_bootstrap.py \
             test_c10s_fitted_beta_binomial_bootstrap.py \
             c10s_nested_mr_comparative_inference_engine.py \
@@ -71,10 +68,13 @@ jobs:
             aggregate_c10s_f5_g7_tiera_shards.py \
             test_c10s_f5_g7_tiera_shards.py
 
-      - name: Run deterministic F5 suites only
+      - name: Run deterministic F5 and G7 software suites only
         working-directory: 03_EXPERIMENTS/C10-S/harness
         run: |
           python -B -m unittest -v \
             test_c10s_f5_rational_score_polynomials \
             test_c10s_f5_beta_binomial_likelihood_diagnostics \
-            test_c10s_f5_beta_binomial_mcse_profile
+            test_c10s_f5_beta_binomial_mcse_profile \
+            test_c10s_fitted_beta_binomial_bootstrap \
+            test_c10s_f5_g7_shard_execution \
+            test_c10s_f5_g7_tiera_shards
