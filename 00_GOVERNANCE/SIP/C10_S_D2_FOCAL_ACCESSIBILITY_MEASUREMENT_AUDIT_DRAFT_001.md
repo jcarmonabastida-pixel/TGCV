@@ -464,7 +464,7 @@ The isolated module introduces:
 - strong-Kleene 1/0/? propagation without scores or compensation;
 - separate observed accessibility and coverage-completeness outputs.
 
-The initial adversarial test module contains 13 cases covering positive conjunction, alternative routes, local versus universal blocking, incomplete/exhaustive route catalogs (including empty), named dependency components, UNKNOWN propagation, C_info/C_other rejection, truth-versus-observation separation, route identity mismatch and invalid block scope.
+The initial adversarial test module contains 17 cases covering positive conjunction, alternative routes, local versus universal blocking, incomplete/exhaustive route catalogs (including empty), named dependency components, UNKNOWN propagation, C_info/C_other rejection, truth-versus-observation separation, route identity mismatch and invalid block scope.
 
 **Boundary:** this module does not modify `D2Baseline`, `D2PotentialStage`, `generate_d2_potentials`, EventHistory, the existing Reach engine, or the complete-world pipeline. It deliberately does not translate installation/receipt or any legacy Boolean into A_f*. It is a new candidate adjudication component only. Tests have been authored but not executed because the canonical bootstrap currently grants design/recovery only and no execution authorization. Static review does not establish test PASS or scientific validity.
 
@@ -477,3 +477,6 @@ Before the candidate can be relied upon by D2:
 4. Integrate the adjudicator into the D2 potential/world composition without changing legacy fields' historical meaning; expose legacy outputs as legacy until the migration is separately reviewed.
 5. Add end-to-end regressions for pre/post identity mismatch, D_f* derivation, alternative routes, universal blockers, evidence coverage, and downstream separation from ΔE_T, execution, Outcome and Value.
 6. Only after the source integration and governed review, decide whether a deterministic software-test authorization is appropriate. No scientific or Monte Carlo execution is authorized here.
+
+
+The isolated implementation now also carries semantic transformation and snapshot versions through its inputs/results and includes an identity-gated `D_f*) projection. `SemanticTransformationMatch` must bind the exact baseline/post IDs, versions and snapshot IDs with an adjudication evidence reference. An explicit semantic non-match yields `NOT_COMPARABLE`; unresolved matching yields `?`; no ID/hash heuristic is used. The comparator rejects boundary/context or focal predicate-contract-version mismatches. `D_f^{obs}) remains separate from D_f*.
