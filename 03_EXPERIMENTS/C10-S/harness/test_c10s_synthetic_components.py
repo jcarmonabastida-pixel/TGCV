@@ -804,6 +804,23 @@ class SyntheticComponentTests(unittest.TestCase):
         self.assertEqual(result.delta_state, 0)
         self.assertTrue(result.evidence_delta.changed)
 
+    def test_unknown_focal_atom_state_propagates_unknown_delta_not_modified(self):
+        before = (
+            StructuralAtom("U", "TAU-FOCAL", "TRANSFORMATION", "v1", 0, (("kind", "migration"),)),
+        )
+        after = (
+            StructuralAtom("U", "TAU-FOCAL", "TRANSFORMATION", "v1", "?", (("kind", "migration"),)),
+        )
+        result = TransformationalDeltaEngine().evaluate(
+            self.structural_state_snapshot("SNAP-UNKNOWN-B", "BASELINE", before),
+            self.structural_state_snapshot("SNAP-UNKNOWN-P", "POST", after),
+            evidence_baseline=self.evidence_state("E-UNKNOWN-B"),
+            evidence_post=self.evidence_state("E-UNKNOWN-P"),
+        )
+        focal = next(row for row in result.delta_u if row.baseline_id == "TAU-FOCAL")
+        self.assertEqual((focal.change_kind, focal.change_state), ("UNKNOWN", "?"))
+        self.assertEqual(result.delta_state, "?")
+
     def test_unknown_identity_correspondence_propagates_unknown_not_add_remove(self):
         before = (StructuralAtom("U", "TAU-OLD", "TRANSFORMATION", "v1", 1, (("kind", "convert"),)),)
         after = (StructuralAtom("U", "TAU-NEW", "TRANSFORMATION", "v2", 1, (("kind", "convert"),)),)
