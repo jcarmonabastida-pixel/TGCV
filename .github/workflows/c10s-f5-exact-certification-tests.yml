@@ -16,6 +16,7 @@ on:
       - 03_EXPERIMENTS/C10-S/harness/c10s_fitted_beta_binomial_bootstrap.py
       - 03_EXPERIMENTS/C10-S/harness/test_c10s_fitted_beta_binomial_bootstrap.py
       - 03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py
+      - 03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_inference_engine.py
       - 03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_tiera_calibration.py
       - 03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_shard_execution.py
       - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_shard_execution.py
@@ -65,6 +66,7 @@ jobs:
             c10s_fitted_beta_binomial_bootstrap.py \
             test_c10s_fitted_beta_binomial_bootstrap.py \
             c10s_nested_mr_comparative_inference_engine.py \
+            test_c10s_nested_mr_comparative_inference_engine.py \
             run_c10s_f5_g7_tiera_calibration.py \
             c10s_f5_g7_shard_execution.py \
             test_c10s_f5_g7_shard_execution.py \
@@ -83,5 +85,6 @@ jobs:
             test_c10s_fitted_beta_binomial_bootstrap \
             test_c10s_f5_g7_shard_execution \
             test_c10s_f5_g7_tiera_calibration \
+            test_c10s_nested_mr_comparative_inference_engine \
             test_c10s_f5_g7_tiera_authorization \
             test_c10s_f5_g7_resource_profile
