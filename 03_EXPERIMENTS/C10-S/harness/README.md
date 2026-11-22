@@ -1061,3 +1061,6 @@ The typed adjudicator is now connected to D2 synthetic-world composition through
 
 
 **D2 route-scope refinement:** the D2 specification now names the exact `focal_route_id`. Only that route's four technical dependency components may vary across Z potentials. Every non-focal alternative route must retain its component truth unchanged; route-local/global blockers and the exhaustive catalogue remain invariant. This prevents a nominal focal intervention from changing an alternative route and being misattributed to focal accessibility. A dedicated adversarial regression rejects such a change. The focal adjudicator suite now contains 25 authored tests; none has been executed.
+
+
+**Technical-component binding refinement:** `FocalAccessibilityResult` now retains each route's named component truth, not only the route-level conjunction. When a typed focal bundle is attached to a D2 potential bundle, validation cross-checks the declared focal route's `C_install/C_integrity/C_compat/C_oper` against the corresponding D2 potential-stage truth and checks typed `DEP) against `C_dep*`. A mismatch fails closed. This is a consistency check of the four named technical inputs; it does not derive the remaining accessibility predicates or A_f* from the legacy stage Boolean.
