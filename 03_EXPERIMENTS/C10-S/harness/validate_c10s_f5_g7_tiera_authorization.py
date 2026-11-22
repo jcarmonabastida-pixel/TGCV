@@ -116,7 +116,7 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
         or auth.get("resource_profile_source_commit") != profile_manifest.get("profile_source_commit")
         or auth.get("resource_profile_artifact_archive_sha256") != profile_manifest.get("profile_artifact_archive_sha256")
         or auth.get("resource_profile_sha256") != profile_manifest.get("profile_json_sha256")
-        or auth.get("resource_profile_scope") != "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_NO_COVERAGE_NO_HOLDOUT"
+        or auth.get("resource_profile_scope") != "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT"
         or auth.get("resource_profile_seed_namespace") != "c10s_f5_g7_resource_v1_1"
     ):
         raise ValueError("G7 resource profile provenance mismatch")
