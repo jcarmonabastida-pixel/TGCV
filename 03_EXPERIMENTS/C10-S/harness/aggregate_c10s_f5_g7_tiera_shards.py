@@ -10,7 +10,7 @@ from typing import Any
 
 import run_c10s_f5_g7_tiera_calibration as g7
 from c10s_nested_mr_fixtures import tier_a_specs
-from c10s_f5_g7_shard_execution import adjudicate_serialized_records, records_digest
+from c10s_f5_g7_shard_execution import adjudicate_serialized_records, diagnostics_digest, records_digest
 
 PROFILE_SCHEMA = "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-001"
 PROFILE_SCOPE = "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_NO_COVERAGE_NO_HOLDOUT"
@@ -62,7 +62,7 @@ def _load_phase(directory: Path, phase: str, source_commit: str) -> dict[str, di
     for path in files:
         shard = json.loads(path.read_text(encoding="utf-8"))
         if (
-            shard.get("schema") != "TGCV-C10S-F5-G7-SHARD-001"
+            shard.get("schema") != "TGCV-C10S-F5-G7-SHARD-002"
             or shard.get("phase") != phase
             or shard.get("protocol_id") != g7.PROTOCOL_ID
             or shard.get("protocol_version") != g7.PROTOCOL_VERSION
@@ -87,6 +87,12 @@ def _load_phase(directory: Path, phase: str, source_commit: str) -> dict[str, di
             raise ValueError(f"G7_{phase.upper()}_SHARD_DENOMINATOR_INVALID:{path.name}")
         if shard.get("records_digest") != records_digest(records):
             raise ValueError(f"G7_{phase.upper()}_SHARD_RECORD_DIGEST_MISMATCH:{path.name}")
+        optimizer_diagnostics = shard.get("optimizer_diagnostics")
+        if (
+            not isinstance(optimizer_diagnostics, list)
+            or shard.get("optimizer_diagnostics_digest") != diagnostics_digest(optimizer_diagnostics)
+        ):
+            raise ValueError(f"G7_{phase.upper()}_SHARD_DIAGNOSTICS_DIGEST_MISMATCH:{path.name}")
         spec = next(item for item in g7.f5_specs() if item.cell_id == cell_id)
         expected_cell_manifest = json.loads(json.dumps(spec.manifest(), sort_keys=True))
         if shard.get("cell") != expected_cell_manifest:
@@ -195,12 +201,14 @@ def aggregate(
                     "phase": "primary", "cell_id": cell_id,
                     "replicate_start": key[0], "replicate_count": key[1],
                     "records_digest": ps["records_digest"],
+                    "optimizer_diagnostics_digest": ps["optimizer_diagnostics_digest"],
                     "artifact_file_sha256": p["file_sha256"],
                 },
                 {
                     "phase": "replay", "cell_id": cell_id,
                     "replicate_start": key[0], "replicate_count": key[1],
                     "records_digest": rs["records_digest"],
+                    "optimizer_diagnostics_digest": rs["optimizer_diagnostics_digest"],
                     "artifact_file_sha256": r["file_sha256"],
                 },
             ])
