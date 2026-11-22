@@ -2,34 +2,35 @@ import unittest
 
 from c10s_focal_accessibility import (
     FocalAccessibilityContractError, FocalAccessibilityInput,
-    FocalDependencyRoute, FocalPredicateEvidence, adjudicate_focal_accessibility,
+    FocalDependencyRoute, FocalPredicateEvidence, SemanticTransformationMatch,
+    adjudicate_focal_accessibility, derive_focal_opening,
 )
 
 
 class FocalAccessibilityTests(unittest.TestCase):
-    def predicate(self, role, truth="1", observed="1", coverage="COMPLETE"):
+    def predicate(self, role, truth="1", observed="1", coverage="COMPLETE", snapshot_id="SNAP-1"):
         return FocalPredicateEvidence(
             role, truth, observed, coverage, "UE-1", "TAU2-v3", "TAU2-SEMVER-3", "BND-1",
-            "CTX-1", "SNAP-1", "SNAPVER-1", "PRED-v1", f"PROV-{role}",
+            "CTX-1", snapshot_id, "SNAPVER-1", "PRED-v1", f"PROV-{role}",
         )
 
-    def route(self, route_id, dep="1", local_block="0", components=None, coverage="COMPLETE"):
+    def route(self, route_id, dep="1", local_block="0", components=None, coverage="COMPLETE", snapshot_id="SNAP-1"):
         names = ("C_install", "C_integrity", "C_compat", "C_oper")
         values = tuple(components) if components is not None else (dep,) * 4
         observed = tuple((name, value) for name, value in zip(names, values))
         truth = tuple((name, value) for name, value in zip(names, values))
         return FocalDependencyRoute(
             route_id, "ROUTE-v1", "UE-1", "TAU2-v3", "TAU2-SEMVER-3",
-            "BND-1", "CTX-1", "SNAP-1", "SNAPVER-1",
+            "BND-1", "CTX-1", snapshot_id, "SNAPVER-1",
             truth, local_block, observed, local_block,
             coverage, f"PROV-{route_id}",
         )
 
-    def source(self, *, predicates=None, routes=None, exhaustive=True, global_block="0"):
+    def source(self, *, predicates=None, routes=None, exhaustive=True, global_block="0", snapshot_id="SNAP-1", truth="1"):
         return FocalAccessibilityInput(
-            "UE-1", "TAU2-v3", "TAU2-SEMVER-3", "BND-1", "CTX-1", "SNAP-1", "SNAPVER-1",
-            tuple(predicates or [self.predicate(x) for x in ("ID", "REL", "COND", "AUTH", "RES")]),
-            tuple(routes if routes is not None else [self.route("R1")]),
+            "UE-1", "TAU2-v3", "TAU2-SEMVER-3", "BND-1", "CTX-1", snapshot_id, "SNAPVER-1",
+            tuple(predicates or [self.predicate(x, truth=truth, snapshot_id=snapshot_id) for x in ("ID", "REL", "COND", "AUTH", "RES")]),
+            tuple(routes if routes is not None else [self.route("R1", dep=truth, snapshot_id=snapshot_id)]),
             exhaustive, global_block, global_block, "COMPLETE", True,
             "ALL_ADMISSIBLE_ROUTES", "C10S-AF-v0.1",
         )
@@ -115,6 +116,59 @@ class FocalAccessibilityTests(unittest.TestCase):
         self.assertEqual(result.accessibility_truth, "1")
         self.assertEqual(result.observed_accessibility, "?")
         self.assertFalse(result.observed_coverage_complete)
+
+    def test_focal_opening_requires_explicit_semantic_match(self):
+        baseline = adjudicate_focal_accessibility(self.source(
+            snapshot_id="SNAP-BASE", global_block="1"
+        ))
+        post = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-POST"))
+        identity = SemanticTransformationMatch(
+            "UE-1", "BND-1", "CTX-1", "TAU2-v3", "TAU2-SEMVER-3",
+            "TAU2-v3", "TAU2-SEMVER-3", "SNAP-BASE", "SNAP-POST",
+            "MATCHED", "TID-MATCH-v1", "ADJUDICATION-001",
+        )
+        result = derive_focal_opening(baseline, post, identity)
+        self.assertEqual(result.d_f_truth, "1")
+        self.assertEqual(result.d_f_observed, "1")
+
+    def test_unmatched_semantic_identity_is_not_comparable(self):
+        baseline = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-BASE", global_block="1"))
+        post = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-POST"))
+        identity = SemanticTransformationMatch(
+            "UE-1", "BND-1", "CTX-1", "TAU2-v3", "TAU2-SEMVER-3",
+            "TAU2-v4", "TAU2-SEMVER-4", "SNAP-BASE", "SNAP-POST",
+            "NOT_MATCHED", "TID-MATCH-v1", "ADJUDICATION-002",
+        )
+        result = derive_focal_opening(baseline, post, identity)
+        self.assertEqual(result.d_f_truth, "NOT_COMPARABLE")
+
+    def test_unresolved_semantic_identity_keeps_opening_unknown(self):
+        baseline = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-BASE", global_block="1"))
+        post = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-POST"))
+        identity = SemanticTransformationMatch(
+            "UE-1", "BND-1", "CTX-1", "TAU2-v3", "TAU2-SEMVER-3",
+            "TAU2-v4", "TAU2-SEMVER-4", "SNAP-BASE", "SNAP-POST",
+            "UNRESOLVED", "TID-MATCH-v1", "ADJUDICATION-003",
+        )
+        result = derive_focal_opening(baseline, post, identity)
+        self.assertEqual(result.d_f_truth, "?")
+
+    def test_opening_truth_is_separate_from_observed_opening(self):
+        baseline = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-BASE", global_block="1"))
+        observed_incomplete = [self.predicate(x, observed="?", coverage="INCOMPLETE", snapshot_id="SNAP-POST")
+                               if x == "AUTH" else self.predicate(x, snapshot_id="SNAP-POST")
+                               for x in ("ID", "REL", "COND", "AUTH", "RES")]
+        post = adjudicate_focal_accessibility(self.source(
+            snapshot_id="SNAP-POST", predicates=observed_incomplete
+        ))
+        identity = SemanticTransformationMatch(
+            "UE-1", "BND-1", "CTX-1", "TAU2-v3", "TAU2-SEMVER-3",
+            "TAU2-v3", "TAU2-SEMVER-3", "SNAP-BASE", "SNAP-POST",
+            "MATCHED", "TID-MATCH-v1", "ADJUDICATION-004",
+        )
+        result = derive_focal_opening(baseline, post, identity)
+        self.assertEqual(result.d_f_truth, "1")
+        self.assertEqual(result.d_f_observed, "?")
 
     def test_block_scope_must_be_universal(self):
         source = FocalAccessibilityInput(
