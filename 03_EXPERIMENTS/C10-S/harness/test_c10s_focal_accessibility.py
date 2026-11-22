@@ -13,11 +13,15 @@ class FocalAccessibilityTests(unittest.TestCase):
             "CTX-1", "SNAP-1", "PRED-v1", f"PROV-{role}",
         )
 
-    def route(self, route_id, dep="1", local_block="0"):
+    def route(self, route_id, dep="1", local_block="0", components=None, coverage="COMPLETE"):
+        names = ("C_install", "C_integrity", "C_compat", "C_oper")
+        values = tuple(components) if components is not None else (dep,) * 4
+        observed = tuple((name, value) for name, value in zip(names, values))
+        truth = tuple((name, value) for name, value in zip(names, values))
         return FocalDependencyRoute(
             route_id, "ROUTE-v1", "UE-1", "TAU2-v3", "BND-1",
-            "CTX-1", "SNAP-1", dep, local_block, dep, local_block,
-            "COMPLETE", f"PROV-{route_id}",
+            "CTX-1", "SNAP-1", truth, local_block, observed, local_block,
+            coverage, f"PROV-{route_id}",
         )
 
     def source(self, *, predicates=None, routes=None, exhaustive=True, global_block="0"):
@@ -84,10 +88,31 @@ class FocalAccessibilityTests(unittest.TestCase):
     def test_route_identity_mismatch_fails_closed(self):
         bad = FocalDependencyRoute(
             "R1", "ROUTE-v1", "UE-OTHER", "TAU2-v3", "BND-1",
-            "CTX-1", "SNAP-1", "1", "0", "1", "0", "COMPLETE", "PROV-R1",
+            "CTX-1", "SNAP-1", (("C_install", "1"),), "0",
+            (("C_install", "1"),), "0", "COMPLETE", "PROV-R1",
         )
         with self.assertRaises(FocalAccessibilityContractError):
             adjudicate_focal_accessibility(self.source(routes=[bad]))
+
+    def test_route_keeps_named_technical_dependencies_separate(self):
+        result = adjudicate_focal_accessibility(self.source(
+            routes=[self.route("R1", components=("1", "1", "0", "1"))]
+        ))
+        self.assertEqual(result.route_truth, (("R1", "0"),))
+        self.assertEqual(result.dep_truth, "0")
+
+    def test_empty_exhaustive_route_catalog_proves_no_dependency(self):
+        result = adjudicate_focal_accessibility(self.source(routes=[], exhaustive=True))
+        self.assertEqual(result.dep_truth, "0")
+        self.assertEqual(result.accessibility_truth, "0")
+
+    def test_incomplete_observed_route_coverage_does_not_change_truth(self):
+        result = adjudicate_focal_accessibility(self.source(
+            routes=[self.route("R1", coverage="INCOMPLETE")]
+        ))
+        self.assertEqual(result.accessibility_truth, "1")
+        self.assertEqual(result.observed_accessibility, "?")
+        self.assertFalse(result.observed_coverage_complete)
 
     def test_block_scope_must_be_universal(self):
         source = FocalAccessibilityInput(
