@@ -14,7 +14,7 @@ from c10s_nested_mr_comparative_inference_engine import (
 )
 from c10s_variance_comparison_interface import VarianceComparisonResult
 
-SHARD_SCHEMA = "TGCV-C10S-F5-G7-SHARD-001"
+SHARD_SCHEMA = "TGCV-C10S-F5-G7-SHARD-002"
 
 
 def _restore_comparison(raw: dict[str, Any]) -> VarianceComparisonResult:
@@ -91,6 +91,14 @@ def records_digest(records: list[dict[str, Any]]) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def diagnostics_digest(diagnostics: list[dict[str, Any]]) -> str:
+    """Hash raw optimizer/operational diagnostics independently of scientific records."""
+    payload = json.dumps(
+        diagnostics, sort_keys=True, separators=(",", ":"), allow_nan=False
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
 def run_cell_shard(
     spec,
     *,
@@ -118,6 +126,7 @@ def run_cell_shard(
         raise ValueError("G7_SHARD_SOURCE_COMMIT_MUST_BE_FULL_SHA")
 
     records = []
+    optimizer_diagnostics = []
     seen_seeds = {name: set() for name in ("dataset", "C0_bootstrap", "C5_bootstrap")}
     for replicate in range(replicate_start, replicate_start + replicate_count):
         dataset_id = (
@@ -159,6 +168,14 @@ def run_cell_shard(
         ):
             raise ValueError("G7_SHARD_DATASET_OR_DESIGN_IDENTITY_MISMATCH")
         truth = g7._truth(spec, dataset_id)
+        comparison_payload = g7._jsonable(comparison)
+        for candidate in comparison_payload["candidates"]:
+            optimizer_diagnostics.append({
+                "dataset_id": dataset_id,
+                "method_id": candidate["method_id"],
+                "items": candidate.get("diagnostics", []),
+            })
+            candidate["diagnostics"] = []
         records.append({
             "dataset_id": dataset_id,
             "dataset_seed": seeds["dataset"],
@@ -167,7 +184,7 @@ def run_cell_shard(
             "rows_sha256": hashlib.sha256(
                 json.dumps(rows, separators=(",", ":"), allow_nan=False).encode()
             ).hexdigest(),
-            "comparison": g7._jsonable(comparison),
+            "comparison": comparison_payload,
             "truth": g7._jsonable(truth),
         })
 
@@ -189,5 +206,7 @@ def run_cell_shard(
         "method_roster": sorted(g7.IMPLEMENTED_METHODS["F5"]),
         "records_digest": records_digest(records),
         "records": records,
+        "optimizer_diagnostics": optimizer_diagnostics,
+        "optimizer_diagnostics_digest": diagnostics_digest(optimizer_diagnostics),
         "coverage_adjudication": "NOT_PERFORMED_SHARD_LEVEL",
     }
