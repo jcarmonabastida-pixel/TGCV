@@ -84,7 +84,7 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
         self.assertIsNotNone(first.comparison.within_interval)
         self.assertIsNotNone(first.comparison.between_interval)
         self.assertGreaterEqual(first.valid_mcse_rate, 0.90)
-        self.assertEqual(first.comparison.method_id, "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0")
+        self.assertEqual(first.comparison.method_id, "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1")
 
     def test_production_fit_retains_all_starts_and_direct_analytic_reconciliation(self):
         from c10s_fitted_beta_binomial_bootstrap import build_production_analytic_reconciliation
@@ -273,6 +273,115 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
         fitted_t = fit.concentration / (1.0 + fit.concentration)
         self.assertTrue(float(bounds[0][0]) <= fit.mean_probability <= float(bounds[0][1]))
         self.assertTrue(float(bounds[1][0]) <= fitted_t <= float(bounds[1][1]))
+
+
+    def test_global_boundary_certificate_precedes_and_overrules_optimizer(self):
+        import os
+        from unittest.mock import patch
+
+        rows = tuple(
+            tuple([1.0] * count + [0.0] * (5 - count))
+            for count in (0, 1, 2, 4, 5, 3, 1, 4, 2, 3)
+        )
+        events = []
+        boundary = {
+            "status": "GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED",
+            "winner": {"kind": "BOUNDARY_SUPREMUM"},
+            "census": {"input_provenance": {"source_revision": "e" * 40}},
+        }
+        def certificate(*args, **kwargs):
+            events.append("certificate")
+            return boundary
+        def forbidden_optimizer(*args, **kwargs):
+            events.append("optimizer")
+            raise AssertionError("optimizer must not run before/against boundary certificate")
+        with patch.dict(os.environ, {"GITHUB_SHA": "e" * 40}), patch(
+            "c10s_fitted_beta_binomial_bootstrap.beta_binomial_global_mle_certificate",
+            side_effect=certificate,
+        ), patch(
+            "c10s_fitted_beta_binomial_bootstrap.minimize",
+            side_effect=forbidden_optimizer,
+        ), patch(
+            "c10s_fitted_beta_binomial_bootstrap.audit_beta_binomial_count_fit",
+            side_effect=forbidden_optimizer,
+        ):
+            result = fitted_beta_binomial_parametric_bootstrap(
+                rows, target_m=10, target_r=5, bootstrap_replicates=20,
+                bootstrap_seed=12345, require_global_mle_certificate=True,
+            )
+        self.assertEqual(events, ["certificate"])
+        self.assertIsNone(result.fit)
+        self.assertIn("GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED", result.failure_reason)
+        self.assertIsNone(result.comparison.within_interval)
+
+    def test_certified_midpoint_fit_is_independent_of_optimizer_termination(self):
+        import os
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        rows = tuple(
+            tuple([1.0] * count + [0.0] * (5 - count))
+            for count in (0, 1, 2, 4, 5, 3, 1, 4, 2, 3)
+        )
+        box = ((0.4, 0.4002), (0.6, 0.6002))
+        certificate = {
+            "status": "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED",
+            "winner": {"kind": "INTERIOR_STATIONARY_ROOT", "parameter_box": box},
+            "globality_basis": "EXACT_TEST_CERTIFICATE",
+            "census": {"input_provenance": {"source_revision": "f" * 40}},
+        }
+        failed = SimpleNamespace(
+            x=np.asarray([0.1, 0.2]), success=False, message="ABNORMAL_TERMINATION",
+            fun=12.5, jac=np.asarray([1e-7, -1e-7]),
+        )
+        succeeded = SimpleNamespace(
+            x=np.asarray([0.3, 0.4]), success=True, message="CONVERGENCE",
+            fun=11.5, jac=np.asarray([1e-9, -1e-9]),
+        )
+        kwargs = dict(
+            target_m=10, target_r=5, bootstrap_replicates=50,
+            bootstrap_seed=12345, require_global_mle_certificate=True,
+        )
+        with patch.dict(os.environ, {"GITHUB_SHA": "f" * 40}), patch(
+            "c10s_fitted_beta_binomial_bootstrap.beta_binomial_global_mle_certificate",
+            return_value=certificate,
+        ), patch(
+            "c10s_fitted_beta_binomial_bootstrap.audit_beta_binomial_count_fit",
+            return_value=None,
+        ), patch(
+            "c10s_fitted_beta_binomial_bootstrap.minimize",
+            side_effect=[failed, failed, failed],
+        ):
+            first = fitted_beta_binomial_parametric_bootstrap(rows, **kwargs)
+        with patch.dict(os.environ, {"GITHUB_SHA": "f" * 40}), patch(
+            "c10s_fitted_beta_binomial_bootstrap.beta_binomial_global_mle_certificate",
+            return_value=certificate,
+        ), patch(
+            "c10s_fitted_beta_binomial_bootstrap.audit_beta_binomial_count_fit",
+            return_value=None,
+        ), patch(
+            "c10s_fitted_beta_binomial_bootstrap.minimize",
+            side_effect=[succeeded, succeeded, succeeded],
+        ):
+            second = fitted_beta_binomial_parametric_bootstrap(rows, **kwargs)
+        self.assertIsNotNone(first.fit)
+        self.assertIsNotNone(second.fit)
+        self.assertEqual(first.fit.mean_probability, second.fit.mean_probability)
+        self.assertEqual(first.fit.concentration, second.fit.concentration)
+        self.assertEqual(first.fit.alpha, second.fit.alpha)
+        self.assertEqual(first.fit.beta, second.fit.beta)
+        self.assertEqual(first.comparison.within_interval, second.comparison.within_interval)
+        self.assertEqual(first.comparison.between_interval, second.comparison.between_interval)
+        self.assertEqual(first.comparison.provenance, second.comparison.provenance)
+        self.assertEqual(
+            first.fit.mean_probability,
+            float((__import__("fractions").Fraction(0.4) + __import__("fractions").Fraction(0.4002)) / 2),
+        )
+        self.assertEqual(
+            first.production_analytic_reconciliation["production_fit"]["fit_origin"],
+            "EXACT_GLOBAL_CERTIFICATE_KRAWCZYK_BOX_MIDPOINT",
+        )
+
 
 
 
