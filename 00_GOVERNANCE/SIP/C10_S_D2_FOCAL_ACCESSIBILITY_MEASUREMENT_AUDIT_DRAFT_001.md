@@ -480,3 +480,6 @@ Before the candidate can be relied upon by D2:
 
 
 The isolated implementation now also carries semantic transformation and snapshot versions through its inputs/results and includes an identity-gated `D_f*) projection. `SemanticTransformationMatch` must bind the exact baseline/post IDs, versions and snapshot IDs with an adjudication evidence reference. An explicit semantic non-match yields `NOT_COMPARABLE`; unresolved matching yields `?`; no ID/hash heuristic is used. The comparator rejects boundary/context or focal predicate-contract-version mismatches. `D_f^{obs}) remains separate from D_f*.
+
+
+The universal BLOCK and route-catalog exhaustiveness declarations are themselves versioned and provenance-bound. Route DEP components retain separate truth/observed states. A transformation version change can be treated as the same semantic τ2 only through an explicit evidenced `MATCHED` adjudication; the implementation does not infer continuity from IDs, hashes or naming.
