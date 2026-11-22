@@ -144,7 +144,7 @@ class FocalAccessibilityTests(unittest.TestCase):
 
     def test_unresolved_semantic_identity_keeps_opening_unknown(self):
         baseline = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-BASE", global_block="1"))
-        post = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-POST"))
+        post = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-POST", transformation_id="TAU2-v4", transformation_version="TAU2-SEMVER-4"))
         identity = SemanticTransformationMatch(
             "UE-1", "BND-1", "CTX-1", "TAU2-v3", "TAU2-SEMVER-3",
             "TAU2-v4", "TAU2-SEMVER-4", "SNAP-BASE", "SNAP-POST",
