@@ -3969,3 +3969,43 @@ La implementación y §389 permanecen en `research/c10-s-consolidation-draft`. `
 ### 389.8. Siguiente gate
 
 La pieza integrada está construida y supera PASS_STATIC. La siguiente operación es una revisión final del contrato de ejecución y de los artefactos de código, sin reabrir el diseño científico del protocolo v002. Después se podrá solicitar autorización explícita para un solo tier. Hasta entonces, el workflow numérico permanecerá inactivo.
+
+
+## 390. D2 focal accessibility source-contract reconciliation — 2026-11-22
+
+This section records a source-level mismatch found by tracing the implemented D2 generator against the current focal accessibility crosswalk. It does not create a new scientific decision or alter DEC-C10-066/067.
+
+### 390.1. Mismatch in current source
+
+In 03_EXPERIMENTS/C10-S/harness/c10s_synthetic_components.py, D2Baseline and SyntheticWorldConfig still represent c_auth_base, c_resource, c_capacity, c_info, c_domain and c_other as independent Boolean/Bernoulli baseline components. generate_d2_potentials computes a_f_post as the conjunction of C_dep*, C_auth,base, C_resource, C_capacity, C_info, C_domain and C_other; d_f_opening is a Boolean derived from the focal baseline flag and that conjunction.
+
+This is not the current conceptual crosswalk. The current candidate formula remains:
+A_f* = I(ID_f* AND REL_f* AND COND_f* AND AUTH_f* AND RES_f* AND DEP_f* AND NOT BLOCK_f*).
+
+The crosswalk already establishes:
+- C_info is not an autonomous structural predicate.
+- C_other is excluded as an unspecified residual.
+- C_domain/D_support maps to ID_f* or COND_f* by actual semantic referent.
+- C_resource/C_capacity contribute to RES_f* only when they establish necessary ex-ante availability without duplication.
+- C_auth,base maps to AUTH_f* and is distinct from technical provisioning ACLs/credentials/endpoints.
+- C_dep* is a constituent of DEP_f*, not a complete accessibility verdict.
+- A route-specific failure does not imply global inaccessibility when another admissible route exists.
+
+The source currently also stores a_f_post and d_f_opening as Booleans. This prevents UNKNOWN propagation when a predicate, mapping, snapshot or route catalogue is unresolved. The existing StructuralReachabilityEngine provides trivalent route aggregation and exhaustive-catalog guards, but its generic route predicate names are not yet bound to the complete typed focal predicate contract and its result is not used by generate_d2_potentials to adjudicate A_f*.
+
+### 390.2. Scientific consequence
+
+The current D2 a_f_post/d_f_opening outputs are legacy synthetic stage fixtures, not validated truth for the current focal accessibility estimand. They must not be used to claim a valid first stage, D_f*, LATE_f or ΔT_acc* contribution. This does not invalidate the distinct D2 stage-generation, direct-g_A, EventHistory, Reachability or theta_A oracle components; it identifies the missing integration boundary between those components.
+
+### 390.3. Next integrated implementation block
+
+The next source correction is to:
+1. Add a versioned typed bundle for ID_f*, REL_f*, COND_f*, AUTH_f*, RES_f*, DEP_f* and BLOCK_f*, bound to unit/transformation/boundary/context/snapshot/version/provenance.
+2. Connect typed predicates to the existing route engine, preserving local route failures, valid alternatives and universal blockers.
+3. Require exhaustive catalog and complete route enumeration before structural zero; propagate UNKNOWN otherwise.
+4. Derive A_f* trivalently; do not infer it from installation, C_dep*, C_info, C_other, attempt or receipt.
+5. Derive D_f* from comparable pre/post snapshots of the same semantic τ2 identity, preserving 1/0/?.
+6. Connect to the full ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*) and then Reach/trajectory; keep ΔE_T, execution, Outcome and Value separate.
+7. Add adversarial tests for information-only changes, residual removal, resource necessity, D_support mapping, route alternatives/local versus universal blocking, incomplete catalogs, UNKNOWN propagation and snapshot identity mismatch.
+
+The detailed code-to-contract audit and the same correction sequence are recorded in C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md §12. This work is implementation within the S-lane mandate; the candidate formula is not promoted to frozen status, no confirmatory parameters are selected, and no calibration or scientific execution is authorized by this section.
