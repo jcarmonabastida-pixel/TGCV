@@ -537,3 +537,18 @@ The 25-dataset plan stated in §9.23 was based on an incorrect denominator subst
 The validated plan uses the frozen holdout denominator K=1,000: 50 datasets per shard, 40 jobs per phase, max-parallel 20. The conservative projection is 5,555.57 s (92.59 min) for primary plus replay and 8,024.76 s (133.75 min; 2 h 13 min 45 s) including the one-time resource-only profile. Aggregate primary-plus-replay runner compute is 13.7167 hours. Every shard's worst-observed estimate plus setup is below the 150-minute measured-work budget; workflow hard timeout remains 165 minutes.
 
 The workflow YAML syntax check, source compatibility/profile validation, compilation and all 189 deterministic static tests passed. This establishes that the staged execution plan is internally consistent and under the requested three-hour wall-time ceiling **under the configured 20-job parallelism**. It is not a primary/replay run, coverage result, or scientific G7 PASS. No holdout data were generated.
+
+
+### 9.26 G7 v1.0 replay-integrity failure and same-runner execution correction — 2026-11-22
+
+This section supersedes the prior expectation that the v1.0 primary/replay matrix would yield an adjudicable bank. The one-use execution [run 44969714756](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44969714756) completed all primary and replay shards but failed the mandatory exact identity gate at F5_beta22_M10_R5:(300,50). The primary/replay digests differ, so the frozen protocol blocks coverage adjudication.
+
+The affected artifacts (primary 14733425693, replay 14734427042) were downloaded and recursively compared. Dataset identities, row hashes, seeds, truths, point estimates and bootstrap interval outputs match. Differences are in the fitted beta-binomial parameters/log-likelihood and optimizer/audit diagnostics, including solver termination status/messages. This is a floating-point optimizer reproducibility failure across separate hosted runner jobs, not a data-generation or seed mismatch. No tolerance or rounding exception has been introduced.
+
+**G7 v1.0 is INDETERMINATE.** The exact replay requirement in protocol v1.0 was not met. The v1.0 holdout is consumed and must not be regenerated or reused for another calibration attempt. No coverage claim is made.
+
+A future-run execution correction has been prepared on this research branch: each shard now executes primary and then a clean-source replay from a fresh tree of the same approved commit on the same ubuntu-24.04 runner, with numerical-library thread counts fixed to one. This preserves separate primary/replay artifacts and the exact equality gate. A new unit test checks same-runner primary/replay record identity on a disjoint test namespace.
+
+The revised workflow and test suite passed [run 45018483942](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45018483942): 190 deterministic tests, including the new paired replay test; G7 YAML syntax, immutable resource-profile compatibility and the frozen K=1,000 shard plan also passed. This is engineering validation only; it does not repair the consumed v1.0 bank or establish G7 calibration.
+
+Any future prospective attempt requires a new protocol/authorization snapshot and an independent seed namespace, with the v1.0 scientific estimands, M/R cells, K=1,000, B=1,000, method roster, thresholds and no-pooling rules frozen unless a separately justified change is preregistered. The consumed v1.0 holdout remains excluded. main and canonical scientific claims remain unchanged.
