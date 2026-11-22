@@ -31,7 +31,8 @@ class FocalAccessibilityTests(unittest.TestCase):
             "UE-1", transformation_id, transformation_version, "BND-1", "CTX-1", snapshot_id, "SNAPVER-1",
             tuple(predicates or [self.predicate(x, truth=truth, snapshot_id=snapshot_id, transformation_id=transformation_id, transformation_version=transformation_version) for x in ("ID", "REL", "COND", "AUTH", "RES")]),
             tuple(routes if routes is not None else [self.route("R1", dep=truth, snapshot_id=snapshot_id, transformation_id=transformation_id, transformation_version=transformation_version)]),
-            exhaustive, global_block, global_block, "COMPLETE", True,
+            exhaustive, global_block, global_block, "COMPLETE", "BLOCK-v1", "BLOCK-PROV",
+            True, "ROUTE-CATALOG-v1", "ROUTE-CATALOG-PROV", "ROUTE-CATALOG-OBS-PROV",
             "ALL_ADMISSIBLE_ROUTES", "C10S-AF-v0.1",
         )
 
@@ -174,7 +175,8 @@ class FocalAccessibilityTests(unittest.TestCase):
         source = FocalAccessibilityInput(
             "UE-1", "TAU2-v3", "TAU2-SEMVER-3", "BND-1", "CTX-1", "SNAP-1", "SNAPVER-1",
             tuple(self.predicate(x) for x in ("ID", "REL", "COND", "AUTH", "RES")),
-            (self.route("R1"),), True, "0", "0", "COMPLETE", True,
+            (self.route("R1"),), True, "0", "0", "COMPLETE", "BLOCK-v1", "BLOCK-PROV",
+            True, "ROUTE-CATALOG-v1", "ROUTE-CATALOG-PROV", "ROUTE-CATALOG-OBS-PROV",
             "LOCAL_ROUTE_ONLY", "C10S-AF-v0.1",
         )
         with self.assertRaises(FocalAccessibilityContractError):
