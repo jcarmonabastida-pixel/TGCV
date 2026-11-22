@@ -270,9 +270,50 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
             )
         self.assertEqual(certificate["status"], "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED")
         bounds = certificate["winner"]["parameter_box"]
+        self.assertLessEqual(bounds[0][1] - bounds[0][0], __import__("fractions").Fraction(1, 2 ** 32))
+        self.assertLessEqual(bounds[1][1] - bounds[1][0], __import__("fractions").Fraction(1, 2 ** 32))
         fitted_t = fit.concentration / (1.0 + fit.concentration)
         self.assertTrue(float(bounds[0][0]) <= fit.mean_probability <= float(bounds[0][1]))
         self.assertTrue(float(bounds[1][0]) <= fitted_t <= float(bounds[1][1]))
+
+
+
+    def test_certified_root_box_wider_than_precision_contract_abstains_before_optimizer(self):
+        import os
+        from unittest.mock import patch
+
+        rows = tuple(
+            tuple([1.0] * count + [0.0] * (5 - count))
+            for count in (0, 1, 2, 4, 5, 3, 1, 4, 2, 3)
+        )
+        fake = {
+            "status": "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED",
+            "winner": {
+                "kind": "INTERIOR_STATIONARY_ROOT",
+                "parameter_box": ((0.4, 0.5), (0.4, 0.5)),
+            },
+            "census": {"input_provenance": {"source_revision": "a" * 40}},
+        }
+        with patch.dict(os.environ, {"GITHUB_SHA": "a" * 40}), patch(
+            "c10s_fitted_beta_binomial_bootstrap.beta_binomial_global_mle_certificate",
+            return_value=fake,
+        ), patch(
+            "c10s_fitted_beta_binomial_bootstrap.minimize",
+            side_effect=AssertionError("optimizer must not run for an imprecise root enclosure"),
+        ), patch(
+            "c10s_fitted_beta_binomial_bootstrap.audit_beta_binomial_count_fit",
+            side_effect=AssertionError("diagnostic optimizer must not run for an imprecise root enclosure"),
+        ):
+            result = fitted_beta_binomial_parametric_bootstrap(
+                rows, target_m=10, target_r=5, bootstrap_replicates=20,
+                bootstrap_seed=12345, require_global_mle_certificate=True,
+            )
+        self.assertIsNone(result.fit)
+        self.assertEqual(
+            result.global_mle_certificate["status"],
+            "GLOBAL_MLE_ROOT_BOX_PRECISION_INSUFFICIENT",
+        )
+        self.assertIn("GLOBAL_MLE_ROOT_BOX_PRECISION_INSUFFICIENT", result.failure_reason)
 
 
     def test_global_boundary_certificate_precedes_and_overrules_optimizer(self):
