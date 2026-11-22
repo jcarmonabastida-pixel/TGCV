@@ -255,26 +255,34 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
         self.assertIn("F5_GLOBAL_MLE_NOT_CERTIFIED", result.comparison.abstention_reason)
 
 
-    def test_actual_global_certificate_contains_production_fit_on_m10_r5_fixture(self):
+    def test_actual_global_certificate_refines_m10_r5_root_for_canonical_fit(self):
         import os
         from collections import Counter
+        from fractions import Fraction
         from unittest.mock import patch
         from c10s_f5_rational_score_polynomials import beta_binomial_global_mle_certificate
-        from c10s_fitted_beta_binomial_bootstrap import fit_beta_binomial_counts
+        from c10s_fitted_beta_binomial_bootstrap import fit_beta_binomial_counts_from_certified_box
 
         counts = (0, 1, 2, 4, 5, 3, 1, 4, 2, 3)
-        fit = fit_beta_binomial_counts(counts, 5)
         with patch.dict(os.environ, {"GITHUB_SHA": "f" * 40}):
             certificate = beta_binomial_global_mle_certificate(
                 5, Counter(counts), source_revision="f" * 40,
             )
         self.assertEqual(certificate["status"], "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED")
-        bounds = certificate["winner"]["parameter_box"]
-        self.assertLessEqual(bounds[0][1] - bounds[0][0], __import__("fractions").Fraction(1, 2 ** 32))
-        self.assertLessEqual(bounds[1][1] - bounds[1][0], __import__("fractions").Fraction(1, 2 ** 32))
-        fitted_t = fit.concentration / (1.0 + fit.concentration)
-        self.assertTrue(float(bounds[0][0]) <= fit.mean_probability <= float(bounds[0][1]))
-        self.assertTrue(float(bounds[1][0]) <= fitted_t <= float(bounds[1][1]))
+        winner = certificate["winner"]
+        bounds = winner["parameter_box"]
+        self.assertEqual(winner["root_box_refinement"]["status"], "ROOT_BOX_PRECISION_CERTIFIED")
+        self.assertLessEqual(bounds[0][1] - bounds[0][0], Fraction(1, 2 ** 32))
+        self.assertLessEqual(bounds[1][1] - bounds[1][0], Fraction(1, 2 ** 32))
+        fit = fit_beta_binomial_counts_from_certified_box(counts, 5, bounds)
+        mean_midpoint = (bounds[0][0] + bounds[0][1]) / 2
+        t_midpoint = (bounds[1][0] + bounds[1][1]) / 2
+        self.assertEqual(fit.mean_probability, float(mean_midpoint))
+        self.assertEqual(fit.concentration, float(t_midpoint / (1 - t_midpoint)))
+        self.assertEqual(
+            fit.optimizer_message,
+            "EXACT_GLOBAL_CERTIFICATE_KRAWCZYK_BOX_RATIONAL_MIDPOINT",
+        )
 
 
 
