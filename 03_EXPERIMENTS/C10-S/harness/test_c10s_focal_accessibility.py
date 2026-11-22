@@ -16,7 +16,8 @@ class FocalAccessibilityTests(unittest.TestCase):
     def route(self, route_id, dep="1", local_block="0"):
         return FocalDependencyRoute(
             route_id, "ROUTE-v1", "UE-1", "TAU2-v3", "BND-1",
-            "CTX-1", "SNAP-1", dep, local_block, f"PROV-{route_id}",
+            "CTX-1", "SNAP-1", dep, local_block, dep, local_block,
+            "COMPLETE", f"PROV-{route_id}",
         )
 
     def source(self, *, predicates=None, routes=None, exhaustive=True, global_block="0"):
@@ -24,7 +25,8 @@ class FocalAccessibilityTests(unittest.TestCase):
             "UE-1", "TAU2-v3", "BND-1", "CTX-1", "SNAP-1",
             tuple(predicates or [self.predicate(x) for x in ("ID", "REL", "COND", "AUTH", "RES")]),
             tuple(routes if routes is not None else [self.route("R1")]),
-            exhaustive, global_block, "ALL_ADMISSIBLE_ROUTES", "C10S-AF-v0.1",
+            exhaustive, global_block, global_block, "COMPLETE", True,
+            "ALL_ADMISSIBLE_ROUTES", "C10S-AF-v0.1",
         )
 
     def test_all_constitutive_predicates_and_route_true(self):
@@ -82,7 +84,7 @@ class FocalAccessibilityTests(unittest.TestCase):
     def test_route_identity_mismatch_fails_closed(self):
         bad = FocalDependencyRoute(
             "R1", "ROUTE-v1", "UE-OTHER", "TAU2-v3", "BND-1",
-            "CTX-1", "SNAP-1", "1", "0", "PROV-R1",
+            "CTX-1", "SNAP-1", "1", "0", "1", "0", "COMPLETE", "PROV-R1",
         )
         with self.assertRaises(FocalAccessibilityContractError):
             adjudicate_focal_accessibility(self.source(routes=[bad]))
@@ -91,7 +93,8 @@ class FocalAccessibilityTests(unittest.TestCase):
         source = FocalAccessibilityInput(
             "UE-1", "TAU2-v3", "BND-1", "CTX-1", "SNAP-1",
             tuple(self.predicate(x) for x in ("ID", "REL", "COND", "AUTH", "RES")),
-            (self.route("R1"),), True, "0", "LOCAL_ROUTE_ONLY", "C10S-AF-v0.1",
+            (self.route("R1"),), True, "0", "0", "COMPLETE", True,
+            "LOCAL_ROUTE_ONLY", "C10S-AF-v0.1",
         )
         with self.assertRaises(FocalAccessibilityContractError):
             adjudicate_focal_accessibility(source)
