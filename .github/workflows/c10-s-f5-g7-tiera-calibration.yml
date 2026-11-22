@@ -215,12 +215,12 @@ jobs:
           GITHUB_SHA: ${{ needs.authorization.outputs.approved_code_commit }}
           APPROVED_CODE_COMMIT: ${{ needs.authorization.outputs.approved_code_commit }}
         run: |
-          python execute_c10s_f5_g7_tiera_shard.py \\
-            --phase replay \\
-            --cell-id "${{ matrix.shard.cell_id }}" \\
-            --replicate-start "${{ matrix.shard.replicate_start }}" \\
-            --replicate-count "${{ matrix.shard.replicate_count }}" \\
-            --source-commit "$APPROVED_CODE_COMMIT" \\
+          python execute_c10s_f5_g7_tiera_shard.py \
+            --phase replay \
+            --cell-id "${{ matrix.shard.cell_id }}" \
+            --replicate-start "${{ matrix.shard.replicate_start }}" \
+            --replicate-count "${{ matrix.shard.replicate_count }}" \
+            --source-commit "$APPROVED_CODE_COMMIT" \
             --output "$RUNNER_TEMP/${{ matrix.shard.cell_id }}-${{ matrix.shard.replicate_start }}-replay.json"
       - name: Upload immutable replay shard
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
