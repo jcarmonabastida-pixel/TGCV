@@ -490,7 +490,7 @@ The semantic-match record binds not only the baseline/post transformation IDs an
 
 ### 12.4. D2 potential/world integration — 2026-11-22
 
-**Status:** IMPLEMENTED IN RESEARCH BRANCH / 24 FOCAL TESTS + 2 WORLD-INTEGRATION TESTS AUTHORED / NOT EXECUTED / NOT CONFIRMATORY.
+**Status:** IMPLEMENTED IN RESEARCH BRANCH / 25 FOCAL TESTS + 2 WORLD-INTEGRATION TESTS AUTHORED / NOT EXECUTED / NOT CONFIRMATORY.
 
 The typed truth path is now connected to the D2 generator/world composition without translating the legacy Boolean fields:
 
@@ -505,3 +505,6 @@ The two post-potential worlds retain independent accessibility and opening resul
 **Remaining boundary:** the new typed focal result is now present in D2 potential/world composition, but it is not yet the source of the full structural snapshot diff `ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*)`. The current structural-delta/Reach/trajectory generator remains a separate contract. No inference is made from `D_f*) to the complete `ΔT_acc*), Reach or trajectory. The next integration must establish the focal transformation's exact membership and identity in the structural snapshots and reconcile the complete U/R/C/X diff, without reducing the full delta to the focal indicator.
 
 The new 24+2 regression cases are authored but not executed. No software-test authorization, simulation, calibration, Monte Carlo or scientific execution has been granted by this implementation record. No parameter, seed, estimand or DEC-C10-066/067 definition has been changed; `main` remains untouched.
+
+
+**D2 route-scope refinement:** the D2 specification now names the exact `focal_route_id`. Only that route's four technical dependency components may vary across Z potentials. Every non-focal alternative route must retain its component truth unchanged; route-local/global blockers and the exhaustive catalogue remain invariant. This prevents a nominal focal intervention from changing an alternative route and being misattributed to focal accessibility. A dedicated adversarial regression rejects such a change. The focal adjudicator suite now contains 25 authored tests; none has been executed.
