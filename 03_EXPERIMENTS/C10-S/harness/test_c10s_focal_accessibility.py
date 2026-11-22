@@ -238,7 +238,7 @@ class FocalAccessibilityTests(unittest.TestCase):
             )),
         )
         return D2FocalAccessibilitySpecification(
-            unit, baseline, ((0, post0), (1, post1)), matches,
+            unit, "R1", baseline, ((0, post0), (1, post1)), matches,
             "D2-AF-SPEC-v1", "D2-AF-SPEC-PROV",
         )
 
