@@ -1476,27 +1476,75 @@ def generate_d2_structural_potential_pairs(
         "world_id": world.world_id, "world_version": world.world_version,
         "dgp_id": world.dgp_id, "dgp_version": world.dgp_version,
         "structural_config": config,
+        "typed_focal_truth_by_unit": tuple(
+            (unit.unit_id,
+             None if unit.d2_potentials.focal_accessibility_truth is None
+             else unit.d2_potentials.focal_accessibility_truth.result_sha256)
+            for unit in world.units
+        ),
     })
     pairs: dict[tuple[str, int], D2StructuralPotentialPair] = {}
     for unit in world.units:
+        focal_truth = unit.d2_potentials.focal_accessibility_truth
+        if focal_truth is not None:
+            if (
+                focal_truth.baseline.transformation_id != config.focal_transformation_id
+                or focal_truth.baseline.transformation_version != config.focal_semantic_version
+                or focal_truth.baseline.boundary_id != config.boundary_id
+                or focal_truth.baseline.context_id != config.context_id
+            ):
+                raise ContractError(
+                    "D2 structural focal identity/boundary/context differs from typed baseline accessibility"
+                )
         for z in (0, 1):
             stage = unit.d2_potentials.potentials_by_z[z]
+            post_focal_truth = None if focal_truth is None else dict(focal_truth.post_by_z)[z]
+            opening_truth = None if focal_truth is None else dict(focal_truth.opening_by_z)[z]
+            if focal_truth is None:
+                focal_baseline_state = 1 if unit.d2_baseline.focal_accessible_pre else 0
+                focal_post_state = 1 if stage.a_f_post else 0
+            else:
+                if opening_truth.semantic_match_state != "MATCHED":
+                    raise ContractError(
+                        "D2 structural snapshot cannot map a focal transformation without confirmed semantic identity"
+                    )
+                if (
+                    post_focal_truth.boundary_id != config.boundary_id
+                    or post_focal_truth.context_id != config.context_id
+                ):
+                    raise ContractError("D2 post focal identity boundary/context differs from structural config")
+                focal_baseline_state = {"1": 1, "0": 0, "?": "?"}[
+                    focal_truth.baseline.accessibility_truth
+                ]
+                focal_post_state = {"1": 1, "0": 0, "?": "?"}[
+                    post_focal_truth.accessibility_truth
+                ]
             focal_baseline = StructuralAtom(
                 "U", config.focal_transformation_id, "TRANSFORMATION",
-                config.focal_semantic_version,
-                1 if unit.d2_baseline.focal_accessible_pre else 0,
+                config.focal_semantic_version, focal_baseline_state,
                 (("role", "D2_FOCAL"), ("boundary_id", config.boundary_id)),
             )
             focal_post = StructuralAtom(
                 "U", config.focal_transformation_id, "TRANSFORMATION",
-                config.focal_semantic_version,
-                1 if stage.a_f_post else 0,
+                config.focal_semantic_version, focal_post_state,
                 (("role", "D2_FOCAL"), ("boundary_id", config.boundary_id)),
             )
             baseline_atoms = (focal_baseline,) + invariant
             post_by_id = {atom.canonical_id: atom for atom in invariant}
             for rule in config.transition_rules:
-                triggered = getattr(stage, rule.trigger_stage) is rule.trigger_when
+                if focal_truth is not None and rule.trigger_stage in ("a_f_post", "d_f_opening"):
+                    trigger_truth = (
+                        post_focal_truth.accessibility_truth
+                        if rule.trigger_stage == "a_f_post"
+                        else opening_truth.d_f_truth
+                    )
+                    if trigger_truth not in ("1", "0"):
+                        raise ContractError(
+                            f"typed D2 {rule.trigger_stage} is UNKNOWN/NOT_COMPARABLE and cannot drive a deterministic structural rule"
+                        )
+                    triggered = (trigger_truth == "1") is rule.trigger_when
+                else:
+                    triggered = getattr(stage, rule.trigger_stage) is rule.trigger_when
                 if not triggered:
                     continue
                 if rule.action == "ADD":
@@ -1524,15 +1572,19 @@ def generate_d2_structural_potential_pairs(
             )
             baseline_snapshot.validate()
             post_snapshot.validate()
+            source_refs = [f"{unit.d2_baseline.baseline_history_ref}:STRUCTURAL-CATALOG"]
+            if focal_truth is not None:
+                source_refs.append(f"D2-FOCAL-TRUTH:{focal_truth.result_sha256}")
             evidence = EvidenceStateSnapshot(
                 f"{world.world_id}:{unit.unit_id}:Z{z}:STRUCTURAL-TRUTH",
-                (f"{unit.d2_baseline.baseline_history_ref}:STRUCTURAL-CATALOG",),
+                tuple(source_refs),
                 "COMPLETE" if all(value for _, value in config.component_complete) else "PARTIAL",
                 "VALID", evidence_hash, config.evidence_version, config.adjudication_version,
             )
             pairs[(unit.unit_id, z)] = D2StructuralPotentialPair(
                 unit.unit_id, z, config.focal_transformation_id,
-                baseline_snapshot, post_snapshot, evidence, evidence,
+                baseline_snapshot, post_snapshot, evidence, evidence, (),
+                None if focal_truth is None else focal_truth.result_sha256,
             )
     # The ordinary delta evaluator remains the single adjudication path.
     evaluate_d2_structural_deltas(world, pairs)
