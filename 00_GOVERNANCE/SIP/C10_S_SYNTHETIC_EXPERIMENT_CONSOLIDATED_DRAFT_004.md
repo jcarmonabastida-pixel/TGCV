@@ -4020,8 +4020,11 @@ The source-level discrepancy in §390 has been followed by a first isolated impl
 
 The module implements the §67.3 candidate decomposition as typed ID/REL/COND/AUTH/RES predicates, named route-specific DEP components, route-local blocking and an explicit universal BLOCK_f* predicate. It uses trivalent 1/0/? logic, allows a valid alternative route to preserve DEP=1, and requires an exhaustive route catalog before deriving DEP=0. An empty catalog is 0 only when declared exhaustive; otherwise it remains ?. DGP truth and observed/evidence states are kept separate, and incomplete measurement coverage cannot rewrite truth.
 
-The 13 authored adversarial tests cover conjunction, alternative routes, local/universal blockers, exhaustive/incomplete/empty route catalogs, named dependency components, unknown propagation, rejection of C_info/C_other as extra factors, observation coverage, identity mismatch and invalid block scope.
+The 17 authored adversarial tests cover conjunction, alternative routes, local/universal blockers, exhaustive/incomplete/empty route catalogs, named dependency components, unknown propagation, rejection of C_info/C_other as extra factors, observation coverage, identity mismatch and invalid block scope.
 
 **Status:** IMPLEMENTED IN RESEARCH BRANCH / TESTS NOT EXECUTED / NOT INTEGRATED INTO LEGACY D2 GENERATOR / NOT CONFIRMATORY. The module is intentionally isolated: no legacy D2 fields or generator semantics are silently changed, and no installation, attempt, receipt, C_dep*, C_info or C_other value is translated automatically into focal accessibility. The current canonical bootstrap grants design/recovery only, so no test or scientific execution has been launched. This implementation is not yet evidence that D2's A_f* or D_f* is valid.
 
 The detailed source-to-contract status and integration plan are in `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md` §§12.2–12.3.
+
+
+The isolated module now also carries semantic transformation and snapshot versions and includes an explicit identity-gated D_f* projection. A separately evidenced semantic match is required for the exact baseline/post identities and snapshots; non-match yields NOT_COMPARABLE and unresolved matching yields ?. The comparator rejects boundary/context and predicate-contract-version mismatches. D_f observed classification remains separate.
