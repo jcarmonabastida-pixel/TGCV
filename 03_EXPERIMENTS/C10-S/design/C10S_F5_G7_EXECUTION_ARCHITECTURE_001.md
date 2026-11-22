@@ -83,3 +83,15 @@ The resource-plan regression now asserts the true minimum among candidate sizes 
 ### Denominator clarification — 2026-11-22
 
 The planner uses the frozen holdout denominator `g7.K_PER_CELL=1,000` to calculate shard count and phase waves. The resource profile's `K_per_cell=100` is used only to estimate per-dataset latency and must not be substituted for the holdout denominator. With K=1,000, 25-row shards require 40 shards per cell and two waves per cell; 50-row shards require 20 shards per cell and one wave per cell. The latter minimizes the conservative serialized-by-cell primary/replay wall-time projection while every shard remains well below the 150-minute work budget. The prior 25-row note was an arithmetic interpretation error and is superseded.
+
+
+## 10. Live resource-profile validation and static gate — run 44968818184
+
+The corrected validation path completed on [run 44968818184](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44968818184):
+- Downloaded resource artifact ID `14717426261` from run `44926453920`; the downloaded archive SHA-256 matched the manifest digest `90399529105bffbe50205a68fd7bad30809c3d328a8172a331740f1b417d71a4`.
+- The profile JSON digest matched `f11d45b06ae75b0f03c80e5b7ac4d5e3572b5271bbe8f2be662224de79560e41`.
+- The profile source commit was an ancestor of the checked-out branch snapshot and all performance-critical source files were byte-identical.
+- The planner derived and asserted the frozen holdout plan: 50 datasets/shard, 40 jobs/phase, 20-way concurrency ceiling, 5,555.57 s (92.59 min) conservative primary+replay wall time, 8,024.76 s (133.75 min) including the already completed resource-only profile, and 13.7167 aggregate runner-compute hours.
+- Staged G7 workflow YAML syntax, Python compilation and all 189 deterministic comparator tests passed.
+
+This is a software/resource-plan validation PASS only. It does not contain primary/replay holdout observations and is not a G7 coverage result or authorization to generate holdout data.
