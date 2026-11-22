@@ -39,7 +39,7 @@ def _and(values: Sequence[TruthState]) -> TruthState:
 def _or(values: Sequence[TruthState], *, exhaustive: bool) -> TruthState:
     if "1" in values:
         return "1"
-    if not exhaustive or not values or "?" in values:
+    if not exhaustive or "?" in values:
         return "?"
     return "0"
 
@@ -99,9 +99,9 @@ class FocalDependencyRoute:
     boundary_id: str
     context_id: str
     snapshot_id: str
-    dependency_state: TruthState
+    dependency_predicates: tuple[tuple[str, TruthState], ...]
     local_block_state: TruthState
-    observed_dependency_state: TruthState
+    observed_dependency_predicates: tuple[tuple[str, TruthState], ...]
     observed_local_block_state: TruthState
     coverage: CoverageState
     provenance_ref: str
@@ -111,9 +111,19 @@ class FocalDependencyRoute:
                     self.transformation_id, self.boundary_id, self.context_id,
                     self.snapshot_id, self.provenance_ref)):
             raise FocalAccessibilityContractError("route identity/version/provenance is required")
-        _state(self.dependency_state, "route DEP")
+        if not self.dependency_predicates or not self.observed_dependency_predicates:
+            raise FocalAccessibilityContractError("route must expose named DEP components and observed states")
+        names = [name for name, _ in self.dependency_predicates]
+        observed_names = [name for name, _ in self.observed_dependency_predicates]
+        if any(not name for name in names) or len(names) != len(set(names)):
+            raise FocalAccessibilityContractError("route DEP component names must be nonempty and unique")
+        if observed_names != names:
+            raise FocalAccessibilityContractError("observed DEP components must match the truth component roster/order")
+        for name, value in self.dependency_predicates:
+            _state(value, f"route DEP component {name}")
+        for name, value in self.observed_dependency_predicates:
+            _state(value, f"observed route DEP component {name}")
         _state(self.local_block_state, "route-local BLOCK")
-        _state(self.observed_dependency_state, "observed route DEP")
         _state(self.observed_local_block_state, "observed route-local BLOCK")
         if self.coverage not in ("COMPLETE", "INCOMPLETE"):
             raise FocalAccessibilityContractError("route coverage must be COMPLETE or INCOMPLETE")
@@ -126,6 +136,7 @@ class FocalAccessibilityResult:
     snapshot_id: str
     predicate_truth: tuple[tuple[str, TruthState], ...]
     route_truth: tuple[tuple[str, TruthState], ...]
+    observed_route_truth: tuple[tuple[str, TruthState], ...]
     dep_truth: TruthState
     global_block_truth: TruthState
     accessibility_truth: TruthState
@@ -163,8 +174,8 @@ class FocalAccessibilityInput:
         _state(self.observed_global_block_state, "observed global BLOCK")
         if self.global_block_coverage not in ("COMPLETE", "INCOMPLETE"):
             raise FocalAccessibilityContractError("global BLOCK coverage must be COMPLETE or INCOMPLETE")
-        if type(self.observed_route_catalog_complete) is not bool:
-            raise FocalAccessibilityContractError("observed route-catalog completeness must be explicit")
+        if type(self.observed_route_catalog_complete) is not bool or type(self.route_catalog_exhaustive) is not bool:
+            raise FocalAccessibilityContractError("truth and observed route-catalog completeness must be explicit")
         roles = [p.role for p in self.predicates]
         if sorted(roles) != ["AUTH", "COND", "ID", "REL", "RES"]:
             raise FocalAccessibilityContractError(
@@ -207,7 +218,7 @@ def adjudicate_focal_accessibility(
     for route in source.routes:
         route_truth.append((
             route.route_id,
-            _and((route.dependency_state, _not(route.local_block_state))),
+            _and((*[value for _, value in route.dependency_predicates], _not(route.local_block_state))),
         ))
     dep_truth = _or([state for _, state in route_truth],
                     exhaustive=source.route_catalog_exhaustive)
@@ -226,7 +237,7 @@ def adjudicate_focal_accessibility(
     observed_predicates = [p.observed_state if p.coverage == "COMPLETE" else "?"
                            for p in source.predicates]
     observed_route_states = [
-        _and((r.observed_dependency_state, _not(r.observed_local_block_state)))
+        _and((*[value for _, value in r.observed_dependency_predicates], _not(r.observed_local_block_state)))
         if r.coverage == "COMPLETE" else "?"
         for r in source.routes
     ]
@@ -260,6 +271,7 @@ def adjudicate_focal_accessibility(
     }
     return FocalAccessibilityResult(
         source.unit_id, source.transformation_id, source.snapshot_id,
-        payload["predicate_truth"], tuple(route_truth), dep_truth, global_block,
-        accessibility, observed, coverage_complete, _digest(payload),
+        payload["predicate_truth"], tuple(route_truth),
+        tuple(zip((r.route_id for r in source.routes), observed_route_states)),
+        dep_truth, global_block, accessibility, observed, coverage_complete, _digest(payload),
     )
