@@ -1,7 +1,7 @@
 # Exploración de naming N1 — Territorios y primera colección
 
 **Identificador:** ECOSYSTEM-NAMING-N1-001  
-**Versión:** 0.2 — depuración lingüística y estratégica de la primera colección  
+**Versión:** 0.3 — segunda expansión creativa desde la idea de generar capacidad para generar  
 **Fecha:** 2026-11-22  
 **Estado:** EXPLORATORY — evaluación comparativa preliminar; ninguna propuesta seleccionada, sin clearance de marca ni verificación de dominios.  
 **Documentos rectores:** `ECOSYSTEM_MANIFESTO_v0.2.md`, `ECOSYSTEM_NAMING_BRIEF_v0.2.md`  
@@ -214,3 +214,90 @@ Si no se dispone de participantes externos en esta fase, se puede hacer una nuev
 ## Control de cambios
 
 - **v0.2 — 2026-11-22:** se incorpora evaluación comparativa ponderada de los diez candidatos, observaciones de riesgos semánticos y una clasificación provisional en grupos A/B/C. Se aclara que no es prueba externa, búsqueda marcaria ni verificación de dominios.
+
+
+---
+
+## 11. Segunda expansión creativa — generar capacidad para generar
+
+La primera colección se apoyaba principalmente en novedad, evolución y transformación. Esta segunda expansión explora un territorio más específico y más próximo a la pregunta fundacional: **la capacidad de un sistema para desarrollar capacidades que le permitan abrir y crear nuevas posibilidades**.
+
+Se amplía el espacio creativo en cuatro direcciones:
+- capacidad generativa y potencial que se desarrolla;
+- emergencia de posibilidades antes inaccesibles;
+- sistemas que se renuevan y amplían su propio horizonte;
+- inteligencia que descubre, diseña y orienta nuevas trayectorias.
+
+### 11.1 Nuevos candidatos
+
+| ID | Candidato | Territorio | Intención / observación inicial |
+|---|---|---|---|
+| N31 | **Genara** | Capacidad generativa | Breve y humana; sugiere generar sin ser descriptivo del todo. |
+| N32 | **Nuvora** | Potencial emergente | Evoca nuevo horizonte y apertura; sonido sencillo, significado por construir. |
+| N33 | **Evolvia** | Evolución recursiva | Sugiere evolución y vía; más dinámica que “Evoluma”. |
+| N34 | **Aptara** | Capacidad efectiva | Evoca aptitud y posibilidad de actuar; puede sonar a tecnología o consultoría. |
+| N35 | **Noventia** | Novedad y emergencia | Sugiere nuevas posibilidades; puede asociarse a novedad comercial o a una institución. |
+| N36 | **Genoria** | Generatividad | Variante ya incluida en la primera colección; se mantiene como referencia comparativa, no como novedad. |
+| N37 | **Creaura** | Creación y desarrollo | Evoca crear y dar forma; riesgo de asociación con criatura o creación artística. |
+| N38 | **Posentra** | Posibilidad que emerge | Sugiere posibilidad y entrada a nuevos espacios; construcción inventada que requiere prueba oral. |
+| N39 | **Virelia** | Renovación y vitalidad | Evoca vida y evolución; cálida, aunque puede desplazar el foco hacia bienestar o biología. |
+| N40 | **Enactia** | Capacidad de actuar | Sugiere convertir posibilidades en acción; pronunciación y asociaciones en inglés deben probarse. |
+| N41 | **Orienta** | Inteligencia y dirección | Transmite orientación; palabra común y probablemente poco distintiva. |
+| N42 | **Aptoria** | Capacidad y posibilidad | Evoca aptitud y espacio de desarrollo; puede sonar a institución o software. |
+| N43 | **Genovae** | Generación y devenir | Construcción más abstracta; riesgo de pronunciación ambigua y asociación geográfica con Génova. |
+| N44 | **Nexentia** | Conexión y emergencia | Evoca conexiones que abren posibilidades; raíz “nex” concurrida y sonido más tecnológico. |
+| N45 | **Avyra** | Apertura y trayectoria | Breve y abstracta; alta dependencia de construir significado y probar pronunciación. |
+| N46 | **Crescera** | Crecimiento generativo | Sugiere crecimiento y devenir; puede ser larga y confundirse con formas verbales o nombres existentes. |
+| N47 | **Orvía** | Horizonte y camino | Breve y abierta; acento y escritura internacional complican su uso digital. |
+| N48 | **Novaria** | Nuevas posibilidades | Sugiere renovación y amplitud; raíz “nov” previsible y posibles asociaciones geográficas/comerciales. |
+
+Los nombres de esta tabla son propuestas creativas, no resultados de búsquedas. La presencia de una palabra o construcción en la tabla no implica que sea original, registrable o esté libre.
+
+### 11.2 Candidatos que merecen contraste directo
+
+De esta expansión, cinco merecen compararse con el Grupo A anterior:
+
+- **Genara:** conecta de forma compacta con la capacidad de generar.
+- **Nuvora:** transmite apertura y potencial sin quedar ligada a una tecnología o sector.
+- **Evolvia:** incorpora evolución y trayectoria con una sonoridad relativamente natural.
+- **Posentra:** intenta expresar el paso hacia posibilidades que todavía no están al alcance.
+- **Aptara:** conecta capacidad y posibilidad efectiva, aunque puede sonar más funcional.
+
+No se elevan automáticamente al Grupo A: primero deben superar la comparación con Novera, Evoluma, Avenira, Mutara y Orvanta.
+
+### 11.3 Comparación conceptual de las dos familias
+
+| Familia | Qué transmite mejor | Riesgo |
+|---|---|---|
+| Novera / Evoluma / Avenira | Futuro, evolución, apertura y amplitud | Puede quedarse en novedad o desarrollo genérico. |
+| Genara / Nuvora / Evolvia / Posentra / Aptara | Capacidad generativa, potencial que se desarrolla y posibilidades realizables | Algunas construcciones pueden resultar artificiales o poco claras sin relato. |
+| Mutara / Orvanta | Transformación e identidad propia | Puede no expresar por sí sola la creación de valor ni la recursividad. |
+
+### 11.4 Hipótesis de posicionamiento verbal
+
+El nombre no tiene que cargar con toda la explicación. Puede acompañarse de un descriptor que haga inteligible el territorio:
+
+- **Generative Transformation & Value**
+- **Transformational Intelligence**
+- **From Potential to Value**
+- **Research · Frameworks · Applications · Community**
+
+Estas expresiones son territorios descriptivos para probar, no taglines aprobadas. La marca debe seguir funcionando si se amplía el campo de aplicación o cambia el estado de evidencia de una hipótesis concreta.
+
+### 11.5 Resultado provisional de N1
+
+La exploración deja ahora un universo de 47 entradas, con 36 construcciones distintas (Genoria aparece en ambas colecciones como referencia). No procede crear una shortlist por acumulación de nombres.
+
+El próximo filtro debe ser comparativo y más exigente:
+1. naturalidad real al pronunciar y escuchar;
+2. facilidad de escritura tras oír una sola vez;
+3. asociaciones espontáneas y connotaciones indeseadas;
+4. personalidad y recuerdo;
+5. capacidad de representar investigación, inteligencia transformacional, aplicación y construcción de valor;
+6. búsquedas de colisión evidentes solo después de que el filtro conceptual reduzca el conjunto.
+
+La preferencia interna no sustituye una prueba externa. No se ha realizado test con participantes ni screening de marcas o dominios.
+
+## Control de cambios
+
+- **v0.3 — 2026-11-22:** segunda expansión creativa, centrada en la capacidad de generar capacidades y nuevas posibilidades. Se añaden candidatos N31–N48 y se define una comparación entre familias semánticas. No se declara ningún nombre seleccionado ni disponible.
