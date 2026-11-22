@@ -65,9 +65,11 @@ class FocalPredicateEvidence:
     coverage: CoverageState
     unit_id: str
     transformation_id: str
+    transformation_version: str
     boundary_id: str
     context_id: str
     snapshot_id: str
+    snapshot_version: str
     predicate_version: str
     provenance_ref: str
 
@@ -79,7 +81,8 @@ class FocalPredicateEvidence:
         if self.coverage not in ("COMPLETE", "INCOMPLETE"):
             raise FocalAccessibilityContractError("coverage must be COMPLETE or INCOMPLETE")
         if not all((self.unit_id, self.transformation_id, self.boundary_id,
-                    self.context_id, self.snapshot_id, self.predicate_version,
+                    self.transformation_version, self.context_id, self.snapshot_id,
+                    self.snapshot_version, self.predicate_version,
                     self.provenance_ref)):
             raise FocalAccessibilityContractError("predicate identity, version and provenance are required")
 
@@ -96,9 +99,11 @@ class FocalDependencyRoute:
     route_version: str
     unit_id: str
     transformation_id: str
+    transformation_version: str
     boundary_id: str
     context_id: str
     snapshot_id: str
+    snapshot_version: str
     dependency_predicates: tuple[tuple[str, TruthState], ...]
     local_block_state: TruthState
     observed_dependency_predicates: tuple[tuple[str, TruthState], ...]
@@ -108,8 +113,9 @@ class FocalDependencyRoute:
 
     def validate(self) -> None:
         if not all((self.route_id, self.route_version, self.unit_id,
-                    self.transformation_id, self.boundary_id, self.context_id,
-                    self.snapshot_id, self.provenance_ref)):
+                    self.transformation_id, self.transformation_version,
+                    self.boundary_id, self.context_id, self.snapshot_id,
+                    self.snapshot_version, self.provenance_ref)):
             raise FocalAccessibilityContractError("route identity/version/provenance is required")
         if not self.dependency_predicates or not self.observed_dependency_predicates:
             raise FocalAccessibilityContractError("route must expose named DEP components and observed states")
@@ -133,7 +139,12 @@ class FocalDependencyRoute:
 class FocalAccessibilityResult:
     unit_id: str
     transformation_id: str
+    transformation_version: str
+    boundary_id: str
+    context_id: str
     snapshot_id: str
+    snapshot_version: str
+    contract_version: str
     predicate_truth: tuple[tuple[str, TruthState], ...]
     route_truth: tuple[tuple[str, TruthState], ...]
     observed_route_truth: tuple[tuple[str, TruthState], ...]
@@ -149,9 +160,11 @@ class FocalAccessibilityResult:
 class FocalAccessibilityInput:
     unit_id: str
     transformation_id: str
+    transformation_version: str
     boundary_id: str
     context_id: str
     snapshot_id: str
+    snapshot_version: str
     predicates: tuple[FocalPredicateEvidence, ...]
     routes: tuple[FocalDependencyRoute, ...]
     route_catalog_exhaustive: bool
@@ -163,8 +176,9 @@ class FocalAccessibilityInput:
     contract_version: str
 
     def validate(self) -> None:
-        if not all((self.unit_id, self.transformation_id, self.boundary_id,
-                    self.context_id, self.snapshot_id, self.contract_version)):
+        if not all((self.unit_id, self.transformation_id, self.transformation_version,
+                    self.boundary_id, self.context_id, self.snapshot_id,
+                    self.snapshot_version, self.contract_version)):
             raise FocalAccessibilityContractError("focal accessibility input identity/version is required")
         if self.global_block_scope != "ALL_ADMISSIBLE_ROUTES":
             raise FocalAccessibilityContractError(
@@ -183,10 +197,11 @@ class FocalAccessibilityInput:
             )
         for predicate in self.predicates:
             predicate.validate()
-            if (predicate.unit_id, predicate.transformation_id, predicate.boundary_id,
-                    predicate.context_id, predicate.snapshot_id) != (
-                self.unit_id, self.transformation_id, self.boundary_id,
-                self.context_id, self.snapshot_id
+            if (predicate.unit_id, predicate.transformation_id, predicate.transformation_version,
+                    predicate.boundary_id, predicate.context_id, predicate.snapshot_id,
+                    predicate.snapshot_version) != (
+                self.unit_id, self.transformation_id, self.transformation_version,
+                self.boundary_id, self.context_id, self.snapshot_id, self.snapshot_version
             ):
                 raise FocalAccessibilityContractError("predicate identity does not match focal snapshot")
         route_ids = [r.route_id for r in self.routes]
@@ -194,10 +209,11 @@ class FocalAccessibilityInput:
             raise FocalAccessibilityContractError("route IDs must be unique")
         for route in self.routes:
             route.validate()
-            if (route.unit_id, route.transformation_id, route.boundary_id,
-                    route.context_id, route.snapshot_id) != (
-                self.unit_id, self.transformation_id, self.boundary_id,
-                self.context_id, self.snapshot_id
+            if (route.unit_id, route.transformation_id, route.transformation_version,
+                    route.boundary_id, route.context_id, route.snapshot_id,
+                    route.snapshot_version) != (
+                self.unit_id, self.transformation_id, self.transformation_version,
+                self.boundary_id, self.context_id, self.snapshot_id, self.snapshot_version
             ):
                 raise FocalAccessibilityContractError("route identity does not match focal snapshot")
 
@@ -256,7 +272,11 @@ def adjudicate_focal_accessibility(
     payload = {
         "unit_id": source.unit_id,
         "transformation_id": source.transformation_id,
+        "transformation_version": source.transformation_version,
+        "boundary_id": source.boundary_id,
+        "context_id": source.context_id,
         "snapshot_id": source.snapshot_id,
+        "snapshot_version": source.snapshot_version,
         "predicate_truth": tuple((role, predicates[role].truth_state)
                                  for role in ("ID", "REL", "COND", "AUTH", "RES")),
         "route_truth": tuple(route_truth),
@@ -270,7 +290,9 @@ def adjudicate_focal_accessibility(
         "contract_version": source.contract_version,
     }
     return FocalAccessibilityResult(
-        source.unit_id, source.transformation_id, source.snapshot_id,
+        source.unit_id, source.transformation_id, source.transformation_version,
+        source.boundary_id, source.context_id, source.snapshot_id,
+        source.snapshot_version, source.contract_version,
         payload["predicate_truth"], tuple(route_truth),
         tuple(zip((r.route_id for r in source.routes), observed_route_states)),
         dep_truth, global_block, accessibility, observed, coverage_complete, _digest(payload),
