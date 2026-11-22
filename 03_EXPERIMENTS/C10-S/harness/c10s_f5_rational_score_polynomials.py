@@ -8,7 +8,6 @@ from __future__ import annotations
 
 from collections import defaultdict
 from collections.abc import Mapping
-from functools import lru_cache
 
 
 Poly = dict[tuple[int, int], int]
@@ -180,13 +179,8 @@ from functools import lru_cache
 
 
 @lru_cache(maxsize=512)
-@lru_cache(maxsize=16)
 def _bernstein_integer_basis(degree: int, lower, upper):
     """Return a power-to-Bernstein basis as integer numerators/common denominator."""
-
-    # Exact immutable basis matrices are reused across the four derivative
-    # enclosures in each Krawczyk box. A bounded cache prevents unbounded growth
-    # as the adaptive census visits distinct rational subintervals.
     from fractions import Fraction
     from math import comb, lcm
 
