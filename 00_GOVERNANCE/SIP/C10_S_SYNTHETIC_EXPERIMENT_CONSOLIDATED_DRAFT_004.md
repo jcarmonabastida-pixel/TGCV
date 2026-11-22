@@ -4009,3 +4009,19 @@ The next source correction is to:
 7. Add adversarial tests for information-only changes, residual removal, resource necessity, D_support mapping, route alternatives/local versus universal blocking, incomplete catalogs, UNKNOWN propagation and snapshot identity mismatch.
 
 The detailed code-to-contract audit and the same correction sequence are recorded in C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md §12. This work is implementation within the S-lane mandate; the candidate formula is not promoted to frozen status, no confirmatory parameters are selected, and no calibration or scientific execution is authorized by this section.
+
+
+## 391. First typed focal accessibility adjudicator implementation — 2026-11-22
+
+The source-level discrepancy in §390 has been followed by a first isolated implementation slice:
+
+- `03_EXPERIMENTS/C10-S/harness/c10s_focal_accessibility.py`
+- `03_EXPERIMENTS/C10-S/harness/test_c10s_focal_accessibility.py`
+
+The module implements the §67.3 candidate decomposition as typed ID/REL/COND/AUTH/RES predicates, named route-specific DEP components, route-local blocking and an explicit universal BLOCK_f* predicate. It uses trivalent 1/0/? logic, allows a valid alternative route to preserve DEP=1, and requires an exhaustive route catalog before deriving DEP=0. An empty catalog is 0 only when declared exhaustive; otherwise it remains ?. DGP truth and observed/evidence states are kept separate, and incomplete measurement coverage cannot rewrite truth.
+
+The 13 authored adversarial tests cover conjunction, alternative routes, local/universal blockers, exhaustive/incomplete/empty route catalogs, named dependency components, unknown propagation, rejection of C_info/C_other as extra factors, observation coverage, identity mismatch and invalid block scope.
+
+**Status:** IMPLEMENTED IN RESEARCH BRANCH / TESTS NOT EXECUTED / NOT INTEGRATED INTO LEGACY D2 GENERATOR / NOT CONFIRMATORY. The module is intentionally isolated: no legacy D2 fields or generator semantics are silently changed, and no installation, attempt, receipt, C_dep*, C_info or C_other value is translated automatically into focal accessibility. The current canonical bootstrap grants design/recovery only, so no test or scientific execution has been launched. This implementation is not yet evidence that D2's A_f* or D_f* is valid.
+
+The detailed source-to-contract status and integration plan are in `C10_S_D2_FOCAL_ACCESSIBILITY_MEASUREMENT_AUDIT_DRAFT_001.md` §§12.2–12.3.
