@@ -2,7 +2,7 @@
 
 **Record:** C10S-F5-G7-TIERA-PROSPECTIVE-001  
 **Version:** 1.0  
-**Status:** FROZEN RESEARCH PROTOCOL — EXECUTION AUTHORIZED BY USER ON 2026-11-20; ONE-USE WORKFLOW GATE REQUIRED  
+**Status:** FROZEN RESEARCH PROTOCOL — G7 HOLDOUT EXECUTION NOT YET AUTHORIZED; ONE-USE WORKFLOW GATE REQUIRED  
 **Scope:** F5 beta-binomial Tier-A relevance and coverage only  
 **Parent:** F5 end-to-end closure dossier G7; frozen Tier-A comparability criteria  
 **Branch:** `research/c10s-f1-integrated-correction-20261119`
@@ -75,3 +75,8 @@ Explicit exclusions: F1, Tier B, F2, B2/B3 development banks, the consumed v1.0 
 - **INDETERMINATE:** execution integrity, resource or replay requirements prevent valid adjudication.
 
 No result automatically changes C10 claims, Core, RMA, Evidence→Claim Matrix, STATUS or main.
+
+
+## 7. Authorization-state clarification — 2026-11-22
+
+The user's 2026-11-20 delegation authorized autonomous completion of deterministic F5 engineering and certification gates G1–G6. It did **not** authorize generation of the prospective G7 Tier-A holdout bank, primary/replay computation or scientific calibration. The protocol and its scientific criteria remain frozen; the staged execution implementation and resource plan may be validated deterministically. A new explicit user authorization is required before creating the one-use authorization commit/branch and starting any G7 holdout computation.
