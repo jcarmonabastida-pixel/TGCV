@@ -1,9 +1,9 @@
 # Exploración de naming N1 — Territorios y primera colección
 
 **Identificador:** ECOSYSTEM-NAMING-N1-001  
-**Versión:** 0.1  
+**Versión:** 0.2 — depuración lingüística y estratégica de la primera colección  
 **Fecha:** 2026-11-22  
-**Estado:** EXPLORATORY — ninguna propuesta está seleccionada, ni se ha verificado disponibilidad de marca o dominio.  
+**Estado:** EXPLORATORY — evaluación comparativa preliminar; ninguna propuesta seleccionada, sin clearance de marca ni verificación de dominios.  
 **Documentos rectores:** `ECOSYSTEM_MANIFESTO_v0.2.md`, `ECOSYSTEM_NAMING_BRIEF_v0.2.md`  
 **Rama:** `strategy/afluya-ecosystem-v0.2`
 
@@ -120,3 +120,97 @@ No se comprarán ni reservarán dominios sin aprobación expresa.
 ## Control de cambios
 
 - **v0.1 — 2026-11-22:** primera exploración creativa de seis territorios y treinta nombres; se identifica una preselección creativa de diez para pruebas lingüísticas, sin screening marcario ni registral.
+
+
+---
+
+## 8. Segunda depuración — evaluación comparativa de los diez candidatos
+
+Esta evaluación es un juicio estratégico-lingüístico interno, no una medición con público externo. Las puntuaciones no incorporan búsquedas de marcas, usos comerciales ni dominios.
+
+### 8.1 Criterios y pesos
+
+| Criterio | Peso | Qué se valora |
+|---|---:|---|
+| Encaje con el núcleo conceptual | 30% | Capacidad de evocar potencial generativo, transformación y nuevas posibilidades sin describir solo una actividad. |
+| Pronunciación y escritura | 20% | Facilidad de decir, oír y escribir en español e inglés. |
+| Memorabilidad | 15% | Brevedad, ritmo y facilidad de recuerdo potencial. |
+| Amplitud de marca | 20% | Capacidad de albergar ciencia, aplicación, VALUE, comunidad e impacto. |
+| Distintividad verbal percibida | 15% | Personalidad propia frente a palabras comunes; no equivale a distintividad jurídica. |
+
+Puntuación de 1 a 5. El total ponderado sirve para ordenar la conversación, no para elegir automáticamente.
+
+### 8.2 Matriz comparativa
+
+| Candidato | Encaje 30% | Pronunciación 20% | Recuerdo 15% | Amplitud 20% | Distintividad verbal 15% | Total / 5 |
+|---|---:|---:|---:|---:|---:|---:|
+| **Novera** | 4.0 | 4.5 | 4.0 | 4.5 | 3.0 | **4.03** |
+| **Evoluma** | 4.0 | 4.0 | 4.0 | 4.5 | 3.5 | **4.00** |
+| **Avenira** | 4.0 | 4.0 | 4.0 | 4.5 | 3.0 | **3.93** |
+| **Mutara** | 4.0 | 4.5 | 4.0 | 4.0 | 3.0 | **3.93** |
+| **Orvanta** | 3.5 | 4.0 | 3.5 | 4.5 | 4.0 | **3.88** |
+| **Genoria** | 4.0 | 4.0 | 3.5 | 4.5 | 3.0 | **3.83** |
+| **Genavia** | 4.0 | 4.0 | 3.5 | 4.5 | 2.5 | **3.75** |
+| **Entrelia** | 3.5 | 4.0 | 3.5 | 4.0 | 3.0 | **3.63** |
+| **Tramora** | 3.5 | 4.0 | 3.5 | 4.0 | 3.0 | **3.63** |
+| **Valnera** | 3.0 | 4.0 | 3.5 | 4.0 | 3.0 | **3.45** |
+
+### 8.3 Observaciones individuales
+
+- **Novera:** buen equilibrio, breve y con apertura semántica. Su raíz puede evocar “nuevo”, pero también es relativamente previsible y podría estar concurrida. Riesgo: quedarse en la idea de novedad, sin transmitir capacidad generativa.
+- **Evoluma:** comunica evolución y amplitud; admite una narrativa de desarrollo continuo. Riesgo: puede sonar a marca de producto o a combinación artificial; hay que probar su pronunciación espontánea.
+- **Avenira:** sugiere devenir y futuro, con tono humano y amplio. Riesgo: proximidad perceptiva a “avenir” y a términos de uso común; significado menos inmediato.
+- **Mutara:** clara y enérgica; transmite transformación sin quedar ligada a IA o consultoría. Riesgo: el concepto de mutación puede resultar demasiado biológico o sugerir cambio por el cambio, sin la dimensión de valor.
+- **Orvanta:** es la más abierta y menos descriptiva de las primeras opciones; puede permitir construir significado propio. Riesgo: no comunica por sí sola la misión y exige un descriptor o relato consistente.
+- **Genoria:** enlaza con generación, pero su sonoridad puede recordar a una institución, lugar o nombre propio. Riesgo: menor naturalidad y posible asociación sectorial no deseada.
+- **Genavia:** conecta generación y trayectoria, pero “gen-” puede acercarla a genética, generadores o tecnología; la raíz está bastante utilizada en construcciones de marca.
+- **Entrelia:** cálida y relacional; representa bien conexión y comunidad. Riesgo: desplaza el centro desde la transformación generativa hacia la conexión, que es solo uno de los mecanismos.
+- **Tramora:** sugiere trama y relaciones, pero no deja clara la capacidad de generar nuevas posibilidades. Riesgo: asociación con “trama” o “amor” puede desviar la interpretación.
+- **Valnera:** sonido equilibrado, pero la conexión con valor es tenue y no tiene una lectura conceptual espontánea suficientemente clara.
+
+### 8.4 Resultado de la depuración
+
+**Grupo A — merece continuar en N1:**
+1. **Novera**
+2. **Evoluma**
+3. **Avenira**
+4. **Mutara**
+5. **Orvanta**
+
+**Grupo B — reserva, no prioritaria:**
+- Genoria
+- Genavia
+- Entrelia
+
+**Grupo C — aparcar por ahora:**
+- Tramora
+- Valnera
+
+No es todavía la shortlist N2. El Grupo A representa cinco hipótesis creativas que merecen una prueba externa de asociación, pronunciación y recuerdo. Ninguna ha pasado un examen de marcas ni de dominios.
+
+## 9. Prueba conceptual de estrés
+
+Un buen nombre debe poder convivir con descriptores sin volverse extraño o limitado. Las siguientes son pruebas de arquitectura verbal, no propuestas de tagline definitivas:
+
+- **[Nombre] — Transformational Intelligence & Generative Value**
+- **[Nombre] Research — TGCV**
+- **[Nombre] Framework — VALUE**
+- **[Nombre] Lab — Explore, experiment, create**
+- **[Nombre] Community — Connect, learn, contribute**
+
+Prueba de amplitud: el nombre debe seguir funcionando si la investigación TGCV encuentra límites a una hipótesis concreta, si VALUE evoluciona o si el ecosistema incorpora nuevas áreas. Debe representar la misión general, no un resultado científico pendiente.
+
+## 10. Decisión de proceso
+
+No pasar aún a búsqueda registral exhaustiva. El siguiente paso adecuado es una prueba externa breve con personas que no conozcan el proyecto:
+- mostrar cada nombre sin explicación y preguntar qué les sugiere;
+- pedir que lo pronuncien y lo escriban después de oírlo;
+- comprobar qué nombres recuerdan tras una pausa;
+- presentar el descriptor común y medir qué nombre encaja mejor;
+- preguntar qué tipo de organización o actividad imaginan, sin inducir la respuesta.
+
+Si no se dispone de participantes externos en esta fase, se puede hacer una nueva iteración creativa antes de N2. No se debe presentar una valoración interna como validación de mercado.
+
+## Control de cambios
+
+- **v0.2 — 2026-11-22:** se incorpora evaluación comparativa ponderada de los diez candidatos, observaciones de riesgos semánticos y una clasificación provisional en grupos A/B/C. Se aclara que no es prueba externa, búsqueda marcaria ni verificación de dominios.
