@@ -2820,14 +2820,16 @@ def refine_krawczyk_root_box(
     poly_q: Poly,
     parameter_box,
     *,
-    max_iterations: int = 64,
+    max_iterations: int = 12,
     max_width=None,
 ) -> dict[str, object]:
-    """Repeatedly contract an already-certified Krawczyk box using exact rationals.
+    """Locate a certified root enclosure efficiently with exact rational Newton + Krawczyk.
 
-    Each iteration re-certifies strict Krawczyk inclusion on the current box.
-    The returned box is therefore a nested exact enclosure of the same unique
-    root, not a floating-point optimizer approximation.
+    Rational Newton steps only locate a small candidate box. They do not
+    establish existence or uniqueness. The final candidate is accepted only
+    when an exact Krawczyk inclusion/contraction certificate proves exactly
+    one common root in that box. The candidate is a subset of the original
+    already-certified enclosure, so it encloses the same unique root.
     """
     from fractions import Fraction
 
@@ -2839,86 +2841,118 @@ def refine_krawczyk_root_box(
     if not isinstance(parameter_box, (tuple, list)) or len(parameter_box) != 2:
         raise ValueError("ROOT_BOX_MALFORMED")
     try:
-        current = tuple(
+        original = tuple(
             tuple(_exact_fraction(value) for value in axis)
             for axis in parameter_box
         )
     except ValueError:
         raise ValueError("ROOT_BOX_NOT_EXACT_RATIONAL") from None
-    if any(len(axis) != 2 or axis[0] > axis[1] for axis in current):
+    if any(len(axis) != 2 or axis[0] > axis[1] for axis in original):
         raise ValueError("ROOT_BOX_INTERVAL_INVALID")
+    original_widths = tuple(axis[1] - axis[0] for axis in original)
+    if all(width <= target for width in original_widths):
+        return {
+            "status": "ROOT_BOX_PRECISION_CERTIFIED",
+            "parameter_box": original,
+            "iterations": 0,
+            "widths": original_widths,
+            "max_width": target,
+            "method": "EXISTING_EXACT_KRAWCZYK_ENCLOSURE",
+        }
+    if any(axis[0] == axis[1] for axis in original):
+        return {
+            "status": "ROOT_BOX_REFINEMENT_STALLED",
+            "parameter_box": original,
+            "iterations": 0,
+            "widths": original_widths,
+            "max_width": target,
+            "method": "EXACT_RATIONAL_NEWTON_SEED_PLUS_KRAWCZYK_CERTIFICATE",
+        }
 
-    history = []
-    for iteration in range(max_iterations + 1):
-        widths = tuple(axis[1] - axis[0] for axis in current)
-        history.append({
-            "iteration": iteration,
-            "widths": tuple(str(width) for width in widths),
-        })
-        if all(width <= target for width in widths):
+    derivatives = (
+        (_poly_derivative(poly_p, 0), _poly_derivative(poly_p, 1)),
+        (_poly_derivative(poly_q, 0), _poly_derivative(poly_q, 1)),
+    )
+    point = tuple((axis[0] + axis[1]) / 2 for axis in original)
+    newton_iterations = 0
+    for iteration in range(max_iterations):
+        values = (
+            _poly_evaluate_rational(poly_p, *point),
+            _poly_evaluate_rational(poly_q, *point),
+        )
+        jacobian = tuple(tuple(
+            _poly_evaluate_rational(derivatives[row][column], *point)
+            for column in range(2)
+        ) for row in range(2))
+        determinant = (
+            jacobian[0][0] * jacobian[1][1]
+            - jacobian[0][1] * jacobian[1][0]
+        )
+        if determinant == 0:
+            break
+        step = (
+            (jacobian[1][1] * values[0] - jacobian[0][1] * values[1]) / determinant,
+            (-jacobian[1][0] * values[0] + jacobian[0][0] * values[1]) / determinant,
+        )
+        next_point = (point[0] - step[0], point[1] - step[1])
+        if any(
+            next_point[axis] < original[axis][0]
+            or next_point[axis] > original[axis][1]
+            for axis in range(2)
+        ):
+            break
+        point = next_point
+        newton_iterations = iteration + 1
+        if max(abs(step[0]), abs(step[1])) <= target / 16:
+            break
+
+    # Candidate radii are exact powers of two and never exceed the declared
+    # per-axis width bound. A successful Krawczyk test is the only acceptance.
+    for radius_power in (40, 38, 36, 34, 33):
+        radius = Fraction(1, 2 ** radius_power)
+        candidate = tuple(
+            (
+                max(original[axis][0], point[axis] - radius),
+                min(original[axis][1], point[axis] + radius),
+            )
+            for axis in range(2)
+        )
+        widths = tuple(axis[1] - axis[0] for axis in candidate)
+        if (
+            any(axis[0] >= axis[1] for axis in candidate)
+            or any(width > target for width in widths)
+        ):
+            continue
+        certificate = krawczyk_certify_unique_root(
+            poly_p, poly_q,
+            mu_bounds=candidate[0],
+            t_bounds=candidate[1],
+        )
+        if certificate.get("status") == "CERTIFIED_UNIQUE_ROOT":
             return {
                 "status": "ROOT_BOX_PRECISION_CERTIFIED",
-                "parameter_box": current,
-                "iterations": iteration,
+                "parameter_box": candidate,
+                "iterations": newton_iterations,
                 "widths": widths,
-                "history": history,
                 "max_width": target,
+                "method": "EXACT_RATIONAL_NEWTON_SEED_PLUS_KRAWCZYK_CERTIFICATE",
+                "krawczyk_certificate": {
+                    "status": certificate["status"],
+                    "contraction_bound": str(certificate["contraction_bound"]),
+                    "krawczyk_box": tuple(
+                        tuple(str(value) for value in axis)
+                        for axis in certificate["krawczyk_box"]
+                    ),
+                },
             }
-        if iteration == max_iterations:
-            break
-        if any(axis[0] == axis[1] for axis in current):
-            return {
-                "status": "ROOT_BOX_REFINEMENT_STALLED",
-                "parameter_box": current,
-                "iterations": iteration,
-                "widths": widths,
-                "history": history,
-                "max_width": target,
-            }
-        result = krawczyk_certify_unique_root(
-            poly_p, poly_q,
-            mu_bounds=current[0],
-            t_bounds=current[1],
-        )
-        if result.get("status") != "CERTIFIED_UNIQUE_ROOT":
-            return {
-                "status": "ROOT_BOX_REFINEMENT_UNRESOLVED",
-                "parameter_box": current,
-                "iterations": iteration,
-                "widths": widths,
-                "history": history,
-                "last_certificate": result,
-                "max_width": target,
-            }
-        contracted = result["krawczyk_box"]
-        next_box = tuple(
-            tuple(_exact_fraction(value) for value in axis)
-            for axis in contracted
-        )
-        next_widths = tuple(axis[1] - axis[0] for axis in next_box)
-        if (
-            any(next_box[index][0] < current[index][0]
-                or next_box[index][1] > current[index][1] for index in range(2))
-            or not any(next_widths[index] < widths[index] for index in range(2))
-        ):
-            return {
-                "status": "ROOT_BOX_REFINEMENT_STALLED",
-                "parameter_box": current,
-                "iterations": iteration,
-                "widths": widths,
-                "history": history,
-                "last_certificate": result,
-                "max_width": target,
-            }
-        current = next_box
 
     return {
         "status": "ROOT_BOX_PRECISION_INSUFFICIENT",
-        "parameter_box": current,
-        "iterations": max_iterations,
-        "widths": tuple(axis[1] - axis[0] for axis in current),
-        "history": history,
+        "parameter_box": original,
+        "iterations": newton_iterations,
+        "widths": original_widths,
         "max_width": target,
+        "method": "EXACT_RATIONAL_NEWTON_SEED_PLUS_KRAWCZYK_CERTIFICATE",
     }
 
 
@@ -3048,7 +3082,7 @@ def beta_binomial_global_mle_certificate(
                 refined_root_box = refine_krawczyk_root_box(
                     score_polynomials[0], score_polynomials[1],
                     root_box,
-                    max_iterations=64,
+                    max_iterations=12,
                     max_width=Fraction(1, 2 ** 32),
                 )
                 if refined_root_box.get("status") != "ROOT_BOX_PRECISION_CERTIFIED":
