@@ -508,3 +508,10 @@ The new 24+2 regression cases are authored but not executed. No software-test au
 
 
 **D2 route-scope refinement:** the D2 specification now names the exact `focal_route_id`. Only that route's four technical dependency components may vary across Z potentials. Every non-focal alternative route must retain its component truth unchanged; route-local/global blockers and the exhaustive catalogue remain invariant. This prevents a nominal focal intervention from changing an alternative route and being misattributed to focal accessibility. A dedicated adversarial regression rejects such a change. The focal adjudicator suite now contains 25 authored tests; none has been executed.
+
+
+### 12.5. Exact technical-component binding to D2 potential stages — 2026-11-22
+
+`FocalAccessibilityResult` now retains the truth and observed states of each named dependency component for every route. `D2PotentialBundle.validate()` cross-checks the declared focal route's four typed truth components against the exact D2 potential-stage fields `c_install/c_integrity/c_compat/c_oper`, and cross-checks the resulting typed `DEP) against `c_dep_star` for each Z potential. This prevents the explicit typed specification from drifting away from the DGP's generated technical component truth. It does **not** use the legacy `a_f_post/d_f_opening` Booleans to derive accessibility.
+
+The world-integration regression now also corrupts one D2 technical component and requires the typed bundle validator to reject the mismatch. The D2 mechanism fixture is deterministic for this software contract only; it does not set or promote any scientific parameter. The suite remains 25 focal tests plus two world-integration tests, all authored and unexecuted.
