@@ -71,7 +71,7 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
         self.assertIsNotNone(first.fit)
         self.assertIsNotNone(first.optimizer_audit)
         self.assertEqual(len(first.optimizer_audit.starts), 3)
-        self.assertIn(dict(first.comparison.provenance)["optimizer_audit_status"], (
+        self.assertIn(first.optimizer_audit.status, (
             "OPTIMIZER_CONCORDANT", "OPTIMIZER_DISCORDANT",
             "INDEPENDENT_OPTIMIZER_UNRESOLVED",
             "LIKELIHOOD_CONCORDANT_PARAMETER_DISAGREEMENT",
