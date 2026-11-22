@@ -383,10 +383,12 @@ def derive_focal_opening(
         raise FocalAccessibilityContractError("D_f* requires distinct baseline and post snapshots")
     if (baseline.transformation_id, baseline.transformation_version,
             post.transformation_id, post.transformation_version,
-            baseline.snapshot_id, post.snapshot_id) != (
+            baseline.snapshot_id, baseline.snapshot_version,
+            post.snapshot_id, post.snapshot_version) != (
         identity.baseline_transformation_id, identity.baseline_transformation_version,
         identity.post_transformation_id, identity.post_transformation_version,
-        identity.baseline_snapshot_id, identity.post_snapshot_id
+        identity.baseline_snapshot_id, identity.baseline_snapshot_version,
+        identity.post_snapshot_id, identity.post_snapshot_version
     ):
         raise FocalAccessibilityContractError("semantic identity adjudication does not bind exact focal inputs")
 
@@ -413,7 +415,9 @@ def derive_focal_opening(
     payload = {
         "unit_id": baseline.unit_id,
         "baseline_snapshot_id": baseline.snapshot_id,
+        "baseline_snapshot_version": baseline.snapshot_version,
         "post_snapshot_id": post.snapshot_id,
+        "post_snapshot_version": post.snapshot_version,
         "semantic_match_state": identity.match_state,
         "d_f_truth": truth,
         "d_f_observed": observed,
