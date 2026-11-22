@@ -328,7 +328,9 @@ class SemanticTransformationMatch:
     post_transformation_id: str
     post_transformation_version: str
     baseline_snapshot_id: str
+    baseline_snapshot_version: str
     post_snapshot_id: str
+    post_snapshot_version: str
     match_state: IdentityMatchState
     matching_contract_version: str
     adjudication_evidence_ref: str
@@ -339,7 +341,8 @@ class SemanticTransformationMatch:
         if not all((self.unit_id, self.boundary_id, self.context_id,
                     self.baseline_transformation_id, self.baseline_transformation_version,
                     self.post_transformation_id, self.post_transformation_version,
-                    self.baseline_snapshot_id, self.post_snapshot_id,
+                    self.baseline_snapshot_id, self.baseline_snapshot_version,
+                    self.post_snapshot_id, self.post_snapshot_version,
                     self.matching_contract_version, self.adjudication_evidence_ref)):
             raise FocalAccessibilityContractError("semantic identity adjudication requires full provenance")
 
