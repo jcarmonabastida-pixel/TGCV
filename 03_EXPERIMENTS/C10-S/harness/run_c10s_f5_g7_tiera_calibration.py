@@ -252,7 +252,7 @@ def adjudicate_g7_metrics(primary_summary: dict[str, Any]) -> dict[str, Any]:
         for target in ("within", "between"):
             match = next((
                 item for item in metrics
-                if item.get("method_id") == "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"
+                if item.get("method_id") == "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1"
                 and item.get("target") == target
             ), None)
             if match is None:
