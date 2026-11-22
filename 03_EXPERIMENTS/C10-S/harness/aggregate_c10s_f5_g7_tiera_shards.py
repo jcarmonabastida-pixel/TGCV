@@ -12,8 +12,8 @@ import run_c10s_f5_g7_tiera_calibration as g7
 from c10s_nested_mr_fixtures import tier_a_specs
 from c10s_f5_g7_shard_execution import adjudicate_serialized_records, diagnostics_digest, records_digest
 
-PROFILE_SCHEMA = "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-001"
-PROFILE_SCOPE = "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_NO_COVERAGE_NO_HOLDOUT"
+PROFILE_SCHEMA = "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-002"
+PROFILE_SCOPE = "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT"
 
 
 def sha256_file(path: Path) -> str:
