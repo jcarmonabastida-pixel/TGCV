@@ -4031,3 +4031,6 @@ The isolated module now also carries semantic transformation and snapshot versio
 
 
 The universal BLOCK and route-catalog exhaustiveness declarations are themselves versioned and provenance-bound. Route DEP components retain separate truth/observed states. A transformation version change can be treated as the same semantic τ2 only through an explicit evidenced `MATCHED` adjudication; the implementation does not infer continuity from IDs, hashes or naming.
+
+
+The semantic-match record binds exact baseline/post transformation IDs and semantic versions, exact snapshot IDs and snapshot versions, unit/boundary/context, a matching-contract version and adjudication evidence. D_f* is not projected across an unbound snapshot version.
