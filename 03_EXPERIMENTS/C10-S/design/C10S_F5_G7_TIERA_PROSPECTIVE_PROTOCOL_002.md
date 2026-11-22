@@ -38,7 +38,7 @@ The v1.1 ordering is:
 2. Run `beta_binomial_global_mle_certificate` on that histogram before any floating-point optimizer.
 3. If the exact certificate proves a global boundary supremum, global co-maximizers, or an unresolved/incomplete ordering, emit the corresponding typed abstention. A numerical optimizer may not override or relabel that disposition.
 4. If the certificate proves one global interior maximum, use the rational Krawczyk root enclosure in `winner.parameter_box`. The canonical fit is the exact rational midpoint of that enclosure in compactified coordinates `(mu, t)`, with `t=kappa/(1+kappa)`. Convert this one deterministic representative to floating point only when constructing the beta-binomial bootstrap generator parameters.
-5. The root enclosure must have width no greater than (2^{-32}) on each of the `mu` and `t` axes. If that precision cannot be established, abstain with `GLOBAL_MLE_ROOT_BOX_PRECISION_INSUFFICIENT`; do not fall back to an optimizer-selected fit.
+5. The production certificate call uses the deterministic budgets `max_refinements=3`, `max_lift_depth=32` and `max_mu_depth=16`. The root enclosure must have width no greater than (2^{-32}) on each of the `mu` and `t` axes. If that precision cannot be established, abstain with `GLOBAL_MLE_ROOT_BOX_PRECISION_INSUFFICIENT`; do not fall back to an optimizer-selected fit.
 6. Only after the certificate has established an interior global maximum, run the three-start finite-difference L-BFGS-B fit and the independent analytic-gradient optimizer audit as diagnostics. Their parameters, success flags, messages and numerical diagnostics are retained but cannot select, veto or alter the canonical fit.
 
 The exact likelihood ordering remains based on the existing rational probability enclosures and complete interior stationary/boundary/corner census. The midpoint is a deterministic numerical representative of the certified root enclosure, not a claim that the midpoint itself is an exact algebraic root.
@@ -87,7 +87,7 @@ The resource profile uses K=100 per cell, C0/C5 B=1,000 and the disjoint v1.1 re
 - it must not perform coverage adjudication;
 - its datasets never enter the holdout denominator.
 
-The profile is bound to the exact source commit and all performance-critical source-file hashes. Any change to the fitter, certificate, engine, fixtures, dependency lock, runner or profile script invalidates it. The v1.0 profile is retained historically but cannot satisfy this v1.1 gate.
+The profile uses schema `C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-002` and scope `RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT`. It is bound to the exact source commit and all performance-critical source-file hashes. Any change to the fitter, certificate, engine, fixtures, dependency lock, runner or profile script invalidates it. The v1.0 profile is retained historically but cannot satisfy this v1.1 gate.
 
 ## 6. Metrics and acceptance
 
