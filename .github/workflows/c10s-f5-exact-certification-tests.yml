@@ -6,6 +6,7 @@ on:
       - research/c10s-f1-integrated-correction-20261119
       - research/c10s-f5-g7-canonical-mle-v1.1-20261122
     paths:
+      - .github/workflows/c10s-f5-exact-certification-tests.yml
       - 03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py
       - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_rational_score_polynomials.py
       - 03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py
