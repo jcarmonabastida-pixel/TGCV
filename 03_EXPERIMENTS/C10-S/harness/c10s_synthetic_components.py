@@ -1391,7 +1391,8 @@ def evaluate_d2_structural_deltas(
         delta = engine.evaluate(
             pair.baseline, pair.post, identity_matches=pair.identity_matches,
             evidence_baseline=pair.evidence_baseline, evidence_post=pair.evidence_post,
-        )        results.append(delta)
+        )
+        results.append(delta)
     return tuple(results)
 
 
