@@ -2815,6 +2815,113 @@ def _f5_input_provenance(
     }
 
 
+def refine_krawczyk_root_box(
+    poly_p: Poly,
+    poly_q: Poly,
+    parameter_box,
+    *,
+    max_iterations: int = 64,
+    max_width=None,
+) -> dict[str, object]:
+    """Repeatedly contract an already-certified Krawczyk box using exact rationals.
+
+    Each iteration re-certifies strict Krawczyk inclusion on the current box.
+    The returned box is therefore a nested exact enclosure of the same unique
+    root, not a floating-point optimizer approximation.
+    """
+    from fractions import Fraction
+
+    if type(max_iterations) is not int or max_iterations < 0:
+        raise ValueError("ROOT_BOX_MAX_ITERATIONS_INVALID")
+    target = Fraction(1, 2 ** 32) if max_width is None else _exact_fraction(max_width)
+    if target <= 0:
+        raise ValueError("ROOT_BOX_MAX_WIDTH_MUST_BE_POSITIVE")
+    if not isinstance(parameter_box, (tuple, list)) or len(parameter_box) != 2:
+        raise ValueError("ROOT_BOX_MALFORMED")
+    try:
+        current = tuple(
+            tuple(_exact_fraction(value) for value in axis)
+            for axis in parameter_box
+        )
+    except ValueError:
+        raise ValueError("ROOT_BOX_NOT_EXACT_RATIONAL") from None
+    if any(len(axis) != 2 or axis[0] > axis[1] for axis in current):
+        raise ValueError("ROOT_BOX_INTERVAL_INVALID")
+
+    history = []
+    for iteration in range(max_iterations + 1):
+        widths = tuple(axis[1] - axis[0] for axis in current)
+        history.append({
+            "iteration": iteration,
+            "widths": tuple(str(width) for width in widths),
+        })
+        if all(width <= target for width in widths):
+            return {
+                "status": "ROOT_BOX_PRECISION_CERTIFIED",
+                "parameter_box": current,
+                "iterations": iteration,
+                "widths": widths,
+                "history": history,
+                "max_width": target,
+            }
+        if iteration == max_iterations:
+            break
+        if any(axis[0] == axis[1] for axis in current):
+            return {
+                "status": "ROOT_BOX_REFINEMENT_STALLED",
+                "parameter_box": current,
+                "iterations": iteration,
+                "widths": widths,
+                "history": history,
+                "max_width": target,
+            }
+        result = krawczyk_certify_unique_root(
+            poly_p, poly_q,
+            mu_bounds=current[0],
+            t_bounds=current[1],
+        )
+        if result.get("status") != "CERTIFIED_UNIQUE_ROOT":
+            return {
+                "status": "ROOT_BOX_REFINEMENT_UNRESOLVED",
+                "parameter_box": current,
+                "iterations": iteration,
+                "widths": widths,
+                "history": history,
+                "last_certificate": result,
+                "max_width": target,
+            }
+        contracted = result["krawczyk_box"]
+        next_box = tuple(
+            tuple(_exact_fraction(value) for value in axis)
+            for axis in contracted
+        )
+        next_widths = tuple(axis[1] - axis[0] for axis in next_box)
+        if (
+            any(next_box[index][0] < current[index][0]
+                or next_box[index][1] > current[index][1] for index in range(2))
+            or not any(next_widths[index] < widths[index] for index in range(2))
+        ):
+            return {
+                "status": "ROOT_BOX_REFINEMENT_STALLED",
+                "parameter_box": current,
+                "iterations": iteration,
+                "widths": widths,
+                "history": history,
+                "last_certificate": result,
+                "max_width": target,
+            }
+        current = next_box
+
+    return {
+        "status": "ROOT_BOX_PRECISION_INSUFFICIENT",
+        "parameter_box": current,
+        "iterations": max_iterations,
+        "widths": tuple(axis[1] - axis[0] for axis in current),
+        "history": history,
+        "max_width": target,
+    }
+
+
 def beta_binomial_global_mle_certificate(
     r: int,
     count_histogram: Mapping[int, int],
@@ -2913,6 +3020,25 @@ def beta_binomial_global_mle_certificate(
                 # The Krawczyk image is a valid (usually tighter) enclosure
                 # of the unique root, unlike the full subdivision input box.
                 root_box = certified["root_certificate"]["krawczyk_box"]
+                raw_score_mu, raw_score_kappa = beta_binomial_score_numerators(
+                    r, count_histogram,
+                )
+                refined_root_box = refine_krawczyk_root_box(
+                    compactify_concentration(raw_score_mu),
+                    compactify_concentration(raw_score_kappa),
+                    root_box,
+                    max_iterations=64,
+                    max_width=Fraction(1, 2 ** 32),
+                )
+                if refined_root_box.get("status") != "ROOT_BOX_PRECISION_CERTIFIED":
+                    return {
+                        "status": "GLOBAL_MLE_ROOT_BOX_PRECISION_INSUFFICIENT",
+                        "census": census,
+                        "root_box_refinement": refined_root_box,
+                        "refinement_history": history,
+                        "likelihood_ordering": "NOT_CERTIFIED",
+                    }
+                root_box = refined_root_box["parameter_box"]
                 enclosure = _beta_binomial_likelihood_enclosure(
                     r, count_histogram,
                     mu_bounds=root_box[0],
@@ -2932,6 +3058,12 @@ def beta_binomial_global_mle_certificate(
                     "candidate_id": f"interior-{interior_index}",
                     "kind": "INTERIOR_STATIONARY_ROOT",
                     "parameter_box": root_box,
+                    "root_box_refinement": {
+                        "status": refined_root_box["status"],
+                        "iterations": refined_root_box["iterations"],
+                        "widths": tuple(str(value) for value in refined_root_box["widths"]),
+                        "max_width": str(refined_root_box["max_width"]),
+                    },
                     "likelihood_bounds": (lower, upper),
                     "attained_in_open_domain": True,
                 })
