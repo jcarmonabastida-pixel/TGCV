@@ -1367,6 +1367,15 @@ def evaluate_d2_structural_deltas(
                 raise ContractError("D2 structural delta requires confirmed semantic identity for the same focal tau2")
             if focal_truth.baseline.transformation_id != pair.focal_transformation_id:
                 raise ContractError("D2 structural focal ID differs from typed baseline semantic transformation")
+            if (
+                baseline_atoms[0].semantic_version != focal_truth.baseline.transformation_version
+                or post_atoms[0].semantic_version != focal_truth.baseline.transformation_version
+                or pair.baseline.boundary_id != focal_truth.baseline.boundary_id
+                or pair.post.boundary_id != focal_truth.baseline.boundary_id
+                or pair.baseline.context_id != focal_truth.baseline.context_id
+                or pair.post.context_id != focal_truth.baseline.context_id
+            ):
+                raise ContractError("D2 structural focal atom version/boundary/context differs from typed semantic identity")
             expected_pre = {"1": 1, "0": 0, "?": "?"}[focal_truth.baseline.accessibility_truth]
             expected_post = {"1": 1, "0": 0, "?": "?"}[post_truth.accessibility_truth]
             if "?" in (focal_truth.baseline.accessibility_truth, post_truth.accessibility_truth):
