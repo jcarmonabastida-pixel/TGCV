@@ -185,9 +185,13 @@ def aggregate(
     preflight = _load_profile(preflight_path, expected_preflight_sha256)
     profile_manifest = json.loads(preflight_manifest_path.read_text(encoding="utf-8"))
     if (
-        profile_manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-001"
+        profile_manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002"
         or profile_manifest.get("profile_json_sha256") != preflight["sha256"]
-        or profile_manifest.get("profile_run_id") != 44926453920
+        or type(profile_manifest.get("profile_run_id")) is not int
+        or profile_manifest.get("profile_run_id", 0) <= 0
+        or type(profile_manifest.get("profile_artifact_id")) is not int
+        or profile_manifest.get("profile_artifact_id", 0) <= 0
+        or not re.fullmatch(r"[0-9a-f]{40}", profile_manifest.get("profile_source_commit", ""))
         or not re.fullmatch(r"[0-9a-f]{64}", profile_manifest.get("profile_artifact_archive_sha256", ""))
     ):
         raise ValueError("G7_RESOURCE_PROFILE_MANIFEST_MISMATCH")
