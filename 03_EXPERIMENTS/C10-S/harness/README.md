@@ -1029,7 +1029,7 @@ Regression definitions assert registry exhaustiveness, denominator/applicability
 ## Typed focal accessibility adjudicator — isolated implementation slice
 
 - `c10s_focal_accessibility.py` implements a typed, trivalent adjudicator for the current candidate `A_f*) crosswalk: ID ∧ REL ∧ COND ∧ AUTH ∧ RES ∧ DEP ∧ ¬BLOCK.
-- `test_c10s_focal_accessibility.py` contains 17 authored adversarial contract tests.
+- `test_c10s_focal_accessibility.py` contains 18 authored adversarial contract tests.
 - Each base predicate binds unit, semantic transformation, boundary, context, snapshot, version and provenance. DGP truth and observed/evidence state are distinct.
 - Each dependency route retains named technical components; route-local blocking is distinct from a universal all-routes block. A valid alternative route can preserve DEP=1. DEP=0 requires an exhaustive route catalogue, including an explicitly exhaustive empty catalogue.
 - Measurement coverage is not included in structural truth. Unknowns propagate as `?`; no score or compensation is used.
