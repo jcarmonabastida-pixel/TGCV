@@ -95,3 +95,14 @@ The corrected validation path completed on [run 44968818184](https://github.com/
 - Staged G7 workflow YAML syntax, Python compilation and all 189 deterministic comparator tests passed.
 
 This is a software/resource-plan validation PASS only. It does not contain primary/replay holdout observations and is not a G7 coverage result or authorization to generate holdout data.
+
+
+## 8. Same-runner paired replay correction — 2026-11-22
+
+The v1.0 run 44969714756 showed that separate GitHub-hosted primary and replay jobs can produce different floating-point optimizer/audit telemetry even when their dataset rows, seeds, truths and bootstrap interval outputs match. Since protocol v1.0 requires exact per-shard record and digest equality, the mismatch blocks adjudication; no tolerance or rounding is permitted.
+
+For a future independently authorized prospective run, the workflow now pairs each primary shard with its clean-source replay sequentially on the same ubuntu-24.04 runner. The replay source tree is freshly materialized from the exact approved commit using git archive; the Python environment remains pinned by the same hash-locked dependency file, and BLAS/OpenMP thread counts are set to one. The two phases still write distinct immutable artifacts and the unchanged aggregator still requires exact digest equality.
+
+The workflow YAML, resource-profile compatibility, frozen K=1,000 shard plan and 190 deterministic tests passed in run 45018483942. The added unit test verifies exact primary/replay equality on a disjoint test namespace. This does not prove a full prospective bank replay and does not repair the consumed v1.0 holdout.
+
+The v1.0 holdout remains consumed and excluded. Any future prospective execution requires a new protocol/source-hash snapshot, an independent seed namespace and a fresh explicit one-use authorization. No scientific parameter, estimator, seed schedule, acceptance threshold or adjudication rule was relaxed.
