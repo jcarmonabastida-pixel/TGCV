@@ -93,6 +93,21 @@ def _load_phase(directory: Path, phase: str, source_commit: str) -> dict[str, di
             or shard.get("optimizer_diagnostics_digest") != diagnostics_digest(optimizer_diagnostics)
         ):
             raise ValueError(f"G7_{phase.upper()}_SHARD_DIAGNOSTICS_DIGEST_MISMATCH:{path.name}")
+        expected_diagnostic_keys = {
+            (record.get("dataset_id"), candidate.get("method_id"))
+            for record in records
+            for candidate in record.get("comparison", {}).get("candidates", [])
+        }
+        actual_diagnostic_keys = {
+            (item.get("dataset_id"), item.get("method_id"))
+            for item in optimizer_diagnostics
+            if isinstance(item, dict)
+        }
+        if (
+            len(actual_diagnostic_keys) != len(optimizer_diagnostics)
+            or actual_diagnostic_keys != expected_diagnostic_keys
+        ):
+            raise ValueError(f"G7_{phase.upper()}_SHARD_DIAGNOSTICS_ROSTER_MISMATCH:{path.name}")
         spec = next(item for item in g7.f5_specs() if item.cell_id == cell_id)
         expected_cell_manifest = json.loads(json.dumps(spec.manifest(), sort_keys=True))
         if shard.get("cell") != expected_cell_manifest:
