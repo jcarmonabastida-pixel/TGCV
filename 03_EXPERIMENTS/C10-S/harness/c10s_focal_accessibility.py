@@ -437,6 +437,7 @@ def derive_focal_opening(
 class D2FocalAccessibilitySpecification:
     """Explicit D2 truth inputs for one unit's baseline and both Z potentials."""
     unit_id: str
+    focal_route_id: str
     baseline: FocalAccessibilityInput
     post_by_z: tuple[tuple[int, FocalAccessibilityInput], ...]
     identity_matches_by_z: tuple[tuple[int, SemanticTransformationMatch], ...]
@@ -444,7 +445,7 @@ class D2FocalAccessibilitySpecification:
     provenance_ref: str
 
     def validate(self) -> None:
-        if not all((self.unit_id, self.specification_version, self.provenance_ref)):
+        if not all((self.unit_id, self.focal_route_id, self.specification_version, self.provenance_ref)):
             raise FocalAccessibilityContractError("D2 focal specification identity/version/provenance is required")
         if tuple(z for z, _ in self.post_by_z) != (0, 1):
             raise FocalAccessibilityContractError("D2 focal post inputs must preserve separate Z=0 and Z=1 potentials")
@@ -485,6 +486,7 @@ class D2FocalAccessibilitySpecification:
 class D2FocalPotentialTruth:
     """Typed A_f*/D_f* truth for baseline and both potential policy worlds."""
     unit_id: str
+    focal_route_id: str
     baseline: FocalAccessibilityResult
     post_by_z: tuple[tuple[int, FocalAccessibilityResult], ...]
     opening_by_z: tuple[tuple[int, FocalOpeningResult], ...]
@@ -493,7 +495,7 @@ class D2FocalPotentialTruth:
     result_sha256: str
 
     def validate(self) -> None:
-        if not all((self.unit_id, self.specification_version, self.provenance_ref)):
+        if not all((self.unit_id, self.focal_route_id, self.specification_version, self.provenance_ref)):
             raise FocalAccessibilityContractError("D2 focal truth identity/version/provenance is required")
         if self.baseline.unit_id != self.unit_id:
             raise FocalAccessibilityContractError("D2 focal truth baseline unit mismatch")
