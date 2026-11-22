@@ -19,8 +19,8 @@ class FocalAccessibilityTests(unittest.TestCase):
         observed = tuple((name, value) for name, value in zip(names, values))
         truth = tuple((name, value) for name, value in zip(names, values))
         return FocalDependencyRoute(
-            route_id, "ROUTE-v1", "UE-1", "TAU2-v3", "BND-1",
-            "TAU2-SEMVER-3", "BND-1", "CTX-1", "SNAP-1", "SNAPVER-1",
+            route_id, "ROUTE-v1", "UE-1", "TAU2-v3", "TAU2-SEMVER-3",
+            "BND-1", "CTX-1", "SNAP-1", "SNAPVER-1",
             truth, local_block, observed, local_block,
             coverage, f"PROV-{route_id}",
         )
