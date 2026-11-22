@@ -1,7 +1,7 @@
 # Exploración de naming N1 — Territorios y primera colección
 
 **Identificador:** ECOSYSTEM-NAMING-N1-001  
-**Versión:** 0.4 — comparación estratégica de los diez candidatos prioritarios  
+**Versión:** 0.5 — cribado preliminar de colisiones comerciales, marcarias y dominios  
 **Fecha:** 2026-11-22  
 **Estado:** EXPLORATORY — evaluación comparativa preliminar; ninguna propuesta seleccionada, sin clearance de marca ni verificación de dominios.  
 **Documentos rectores:** `ECOSYSTEM_MANIFESTO_v0.2.md`, `ECOSYSTEM_NAMING_BRIEF_v0.2.md`  
@@ -404,3 +404,92 @@ No se ha realizado en esta actualización búsqueda de marcas, consulta registra
 ## Control de cambios
 
 - **v0.4 — 2026-11-22:** comparación homogénea de diez candidatos prioritarios (cinco de la primera colección y cinco de la segunda), matriz ponderada, lectura crítica y clasificación creativa provisional. Se mantiene explícitamente la ausencia de validación externa y clearance registral.
+
+
+---
+
+## 13. Cribado preliminar de colisiones — cinco candidatos prioritarios
+
+**Fecha:** 2026-11-22  
+**Naturaleza:** búsqueda pública preliminar. No constituye dictamen jurídico ni certificado registral.
+
+### 13.1 Resultado ejecutivo
+
+Los cinco candidatos prioritarios no superan el filtro preliminar. Se recomienda retirarlos de la shortlist creativa y no invertir en sus dominios:
+
+| Candidato | Evidencia pública encontrada | Cercanía con AFLUYA/TGCV | Decisión |
+|---|---|---|---|
+| **Nuvora** | Solicitud española M-4333724 a nombre de NUVORA HEALTH SL; concesión publicada en clases 9, 42 y 44, incluyendo software, IA, consultoría e investigación tecnológica. También aparecen usos comerciales adicionales. | Muy alta: software, IA, servicios tecnológicos e investigación. | **DESCARTAR** |
+| **Orvanta** | Marca de la UE registrada en clase 5; solicitud/registro británico en clases 25, 35, 41 y 42, incluyendo consultoría empresarial, formación, SaaS e IA. Dominio .com registrado y en venta; .org registrado. | Muy alta: consultoría, educación, software e IA en el expediente británico. | **DESCARTAR** |
+| **Evolvia** | Consultora online en España con servicios de estrategia, operaciones, tecnología y RR. HH.; sociedad EVOLVIA SA en Madrid con actividad de consultoría de gestión; antecedentes de marca internacional EVOLVIA. Dominio .com registrado. | Alta: consultoría, estrategia y tecnología; además de usos comerciales y antecedentes marcarios. | **DESCARTAR** |
+| **Genara** | Plataforma Genara AI de estrategia para empresas y entidades sin ánimo de lucro; genara.io ofrece software para equipos backend; genara.com aparece como dominio premium/para uso por terceros. | Muy alta: IA estratégica, software, investigación/planificación y soporte a organizaciones. | **DESCARTAR** |
+| **Novera** | Uso comercial visible en España (novera.es y tiendanovera.es); solicitudes/expedientes marcarios recientes en distintos territorios y dominios .com registrados desde 2000. | Media-alta: marca concurrida y difícil de diferenciar; riesgo de colisión y baja apropiabilidad. | **DESCARTAR** |
+
+### 13.2 Evidencias públicas consultadas
+
+**Nuvora**
+- Publicación BOPI de solicitud M-4333724, titular NUVORA HEALTH SL, clases 9, 42 y 44.
+- Publicación de concesión total/parcial de esa marca en clases 9, 42 y 44.
+- Uso comercial en España bajo somosnuvora.com y otros comercios Nuvora.
+- Fuentes consultadas: Empresia/BOPI (solicitud y concesión), sitios comerciales y registros de marcas internacionales.
+
+**Orvanta**
+- Marca de la Unión Europea Orvanta, solicitud 019230464, registrada el 23-12-2025 en clase 5.
+- Publicación británica UK00004310983, clases 25, 35, 41 y 42, con consultoría empresarial, educación, SaaS e IA.
+- orvanta.com registrado el 13-12-2024 y anunciado en venta; orvanta.org registrado desde 2025.
+- Fuentes consultadas: registro/índice de marcas UE, UK IPO, Whois y registros de dominio.
+
+**Evolvia**
+- Evolvia Consulting, consultora online con presencia declarada en Santiago de Compostela, ofreciendo estrategia, operaciones, tecnología, RR. HH. y marketing.
+- EVOLVIA SA, sociedad activa domiciliada en Madrid, con actividad de consultoría de gestión empresarial.
+- Marca internacional EVOLVIA de SOMFY ACTIVITES SA, con antecedentes en sistemas y tecnología.
+- evolvia.com registrado desde 2002.
+- Fuentes consultadas: web de Evolvia Consulting, directorios empresariales y base de datos de marcas WIPO/USPTO.
+
+**Genara**
+- Genara.ai se presenta como plataforma de IA estratégica para empresas y organizaciones sin ánimo de lucro.
+- Genara.io se presenta como software para equipos backend.
+- Genara.com se ofrece como dominio premium/para uso por terceros.
+- Fuentes consultadas: web Genara, LinkedIn de Genara AI, Crunchbase y página de oferta del dominio.
+
+**Novera**
+- novera.es y tiendanovera.es muestran actividad comercial en España bajo la denominación Novera.
+- Hay expedientes y solicitudes marcarias recientes en la UE y otros territorios; la coincidencia exacta no se interpreta automáticamente como conflicto en todas las clases.
+- novera.com registrado desde 2000.
+- Fuentes consultadas: sitios comerciales, Whois y bases de datos públicas de marcas.
+
+### 13.3 Comprobación de dominios: alcance y límites
+
+Se han confirmado públicamente los siguientes registros:
+- `nuvora.com`: registrado; los datos WHOIS identifican a AbbVie Inc.
+- `orvanta.com`: registrado y anunciado en venta; `orvanta.org` registrado.
+- `evolvia.com`: registrado.
+- `genara.com`: ocupado/ofrecido como dominio premium.
+- `novera.com`: registrado; `novera.es` activo como tienda.
+
+No se ha obtenido una respuesta registral autoritativa y reproducible para todas las combinaciones exactas .com/.es/.org. Por tanto, **no se declara disponible ninguno de esos dominios**. La falta de resultados de búsqueda para una extensión no demuestra disponibilidad. Los dominios de estos cinco nombres no deben pasar a compra.
+
+### 13.4 Conclusión de la puerta de colisiones
+
+**Ninguno de los cinco candidatos debe avanzar a N2 ni a registro.** El resultado no es un fracaso de la exploración, sino un filtro útil: ha evitado invertir en nombres que ya están usados en ámbitos próximos o que tienen una concurrencia comercial excesiva.
+
+La próxima colección debe aumentar distintividad lingüística. Conviene abandonar temporalmente las raíces más concurridas:
+- `nov-` / `nu-` asociadas a nuevo/novedad;
+- `evol-` asociada a evolución y consultoría;
+- `gen-` asociada a generación, genética, IA y software;
+- `nex-` asociada a conexión y tecnología.
+
+Se recomienda crear nombres desde la idea relacional y recursiva del manifiesto, con construcciones menos previsibles y una búsqueda de colisiones temprana antes de desarrollar un candidato.
+
+### 13.5 Salvaguarda de decisión
+
+No comprar, reservar ni negociar ningún dominio. No adoptar un nombre ni presentar la búsqueda preliminar como clearance jurídico. Cualquier finalista deberá pasar:
+1. búsqueda denominativa y fonética en OEPM;
+2. búsqueda EUIPO/TMview y WIPO;
+3. revisión de clases Niza relevantes (al menos 35, 41 y 42, y otras según actividades);
+4. comprobación autoritativa de disponibilidad exacta de .com, .es y .org en registradores/registry;
+5. revisión profesional de riesgo de confusión y derechos anteriores.
+
+## Control de cambios
+
+- **v0.5 — 2026-11-22:** cribado público de los cinco candidatos prioritarios. Los cinco quedan descartados por usos comerciales, antecedentes marcarios o dominios ya registrados. Se aclara qué datos de dominio se han confirmado y cuáles siguen sin verificación autoritativa. Se define el siguiente giro creativo hacia mayor distintividad.
