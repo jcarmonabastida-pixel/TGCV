@@ -19,7 +19,7 @@ The G7 production path runs the exact global beta-binomial likelihood certificat
 - A certified global boundary supremum, co-maximum or unresolved global ordering is a typed abstention.
 - A certified global interior maximum supplies the exact Krawczyk root enclosure.
 - The canonical bootstrap fit is the rational midpoint of the enclosure in compactified `(mu,t)` coordinates, where `t=kappa/(1+kappa)`.
-- The production certificate call uses `max_refinements=3`, `max_lift_depth=32` and `max_mu_depth=16`. Each axis enclosure width must be no greater than (2^{-32}). Wider enclosures fail closed; optimizer-selected parameters are not a fallback.
+- The production certificate call uses `max_refinements=3`, `max_lift_depth=24` and `max_mu_depth=12`; each interior root box is then contracted with up to 64 exact Krawczyk iterations. Each axis enclosure width must be no greater than (2^{-32}). Wider enclosures fail closed; optimizer-selected parameters are not a fallback.
 - Three-start finite-difference L-BFGS-B and the independent analytic-gradient audit run after certification for diagnostics only. Their raw outputs cannot select or veto the canonical fit.
 
 The exact certificate remains responsible for global likelihood ordering. The floating-point midpoint is only the deterministic numerical representative used to parameterize the bootstrap generator.
