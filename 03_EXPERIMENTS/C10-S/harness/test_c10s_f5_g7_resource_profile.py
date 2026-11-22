@@ -19,10 +19,11 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             manifest = root / "manifest.json"
             profile.write_text(json.dumps({"schema": "not-the-profile"}), encoding="utf-8")
             manifest.write_text(json.dumps({
-                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-001",
+                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002",
                 "profile_json_sha256": "0" * 64,
                 "profile_source_commit": "a" * 40,
-                "profile_run_id": 44926453920,
+                "profile_run_id": 45000000001,
+                "profile_artifact_id": 14799999999,
                 "profile_artifact_archive_sha256": "b" * 64,
             }), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "JSON_DIGEST_MISMATCH"):
@@ -56,7 +57,7 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             profile = {
                 "schema": validator.PROFILE_SCHEMA,
                 "scope": validator.PROFILE_SCOPE,
-                "seed_namespace": "c10s_f5_g7_resource_v1",
+                "seed_namespace": "c10s_f5_g7_resource_v1_1",
                 "K_per_cell": 100,
                 "C0_B": 1000,
                 "C5_B": 1000,
@@ -71,7 +72,7 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             profile_bytes = profile_path.read_bytes()
             manifest_path = root / "manifest.json"
             manifest_path.write_text(json.dumps({
-                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-001",
+                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002",
                 "profile_run_id": 44926453920,
                 "profile_source_commit": "a" * 40,
                 "profile_json_sha256": hashlib.sha256(profile_bytes).hexdigest(),
@@ -100,7 +101,7 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             profile_bytes = json.dumps({"schema": "wrong"}).encode()
             profile.write_bytes(profile_bytes)
             manifest.write_text(json.dumps({
-                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-001",
+                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002",
                 "profile_json_sha256": hashlib.sha256(profile_bytes).hexdigest(),
                 "profile_source_commit": "a" * 40,
                 "profile_run_id": 44926453920,
