@@ -10,6 +10,7 @@ from c10s_f5_rational_score_polynomials import (
     beta_binomial_score_numerators,
     compactify_concentration,
     bernstein_coefficients_on_box,
+    _univariate_bernstein_numerators,
     bernstein_sign_excludes_zero,
     bernstein_subdivide,
     bernstein_exclusion_subdivision,
@@ -200,6 +201,24 @@ class RationalScorePolynomialTests(unittest.TestCase):
             [Fraction(1), Fraction(1, 2)],
         ])
         self.assertTrue(bernstein_sign_excludes_zero(coefficients))
+
+    def test_univariate_bernstein_cached_basis_matches_tensor_transform(self):
+        lower = Fraction(1, 7)
+        upper = Fraction(6, 7)
+        power = {0: 3, 1: -2, 2: 5}
+        numerators, denominator = _univariate_bernstein_numerators(
+            power, lower, upper
+        )
+        tensor = bernstein_coefficients_on_box(
+            {(0, degree): coefficient for degree, coefficient in power.items()},
+            mu_bounds=(Fraction(0), Fraction(1)),
+            t_bounds=(lower, upper),
+        )
+        self.assertEqual(
+            tuple(value / denominator for value in numerators),
+            tuple(tensor[0]),
+        )
+
 
     def test_bernstein_mixed_sign_does_not_claim_exclusion(self):
         coefficients = bernstein_coefficients_on_box({(1, 0): 1, (0, 0): -1})
