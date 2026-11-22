@@ -464,7 +464,7 @@ The isolated module introduces:
 - strong-Kleene 1/0/? propagation without scores or compensation;
 - separate observed accessibility and coverage-completeness outputs.
 
-The initial adversarial test module contains 17 cases covering positive conjunction, alternative routes, local versus universal blocking, incomplete/exhaustive route catalogs (including empty), named dependency components, UNKNOWN propagation, C_info/C_other rejection, truth-versus-observation separation, route identity mismatch and invalid block scope.
+The initial adversarial test module contains 18 cases covering positive conjunction, alternative routes, local versus universal blocking, incomplete/exhaustive route catalogs (including empty), named dependency components, UNKNOWN propagation, C_info/C_other rejection, truth-versus-observation separation, route identity mismatch and invalid block scope.
 
 **Boundary:** this module does not modify `D2Baseline`, `D2PotentialStage`, `generate_d2_potentials`, EventHistory, the existing Reach engine, or the complete-world pipeline. It deliberately does not translate installation/receipt or any legacy Boolean into A_f*. It is a new candidate adjudication component only. Tests have been authored but not executed because the canonical bootstrap currently grants design/recovery only and no execution authorization. Static review does not establish test PASS or scientific validity.
 
@@ -486,3 +486,22 @@ The universal BLOCK and route-catalog exhaustiveness declarations are themselves
 
 
 The semantic-match record binds not only the baseline/post transformation IDs and semantic versions, but also the exact baseline/post snapshot IDs **and snapshot versions**, with its own matching-contract version and adjudication evidence reference. No D_f* projection is emitted across an unbound snapshot version.
+
+
+### 12.4. D2 potential/world integration — 2026-11-22
+
+**Status:** IMPLEMENTED IN RESEARCH BRANCH / 24 FOCAL TESTS + 2 WORLD-INTEGRATION TESTS AUTHORED / NOT EXECUTED / NOT CONFIRMATORY.
+
+The typed truth path is now connected to the D2 generator/world composition without translating the legacy Boolean fields:
+
+- `D2FocalAccessibilitySpecification` supplies the exact baseline input, separate Z=0/Z=1 post inputs and a provenance-bearing semantic-identity adjudication for each potential world.
+- `adjudicate_d2_focal_potentials` requires the clean D2 baseline to be `A_f*=0` through exhaustive `DEP=0`, with `ID/REL/COND/AUTH/RES=1) and universal `BLOCK=0). This implements the accepted common basal authorization condition and prevents a baseline failure in an unrelated predicate from masquerading as the focal first stage.
+- The non-DEP predicates and their versions, universal/local blocks, route identities/versions, route component roster and exhaustive route-catalogue identity are invariant across baseline and both potential Z worlds. Only the four named technical components of `C_dep*` may vary. This is a fail-closed implementation of the D2 isolation boundary, not an empirical demonstration that the material system satisfies it.
+- `D2PotentialBundle` carries the resulting typed `A_f*)/`D_f*` truth when the explicit specification is supplied. `SyntheticWorldBuilder` requires exact full-roster coverage; the coordinated complete-world entrypoint exposes the same typed input.
+- Legacy `D2PotentialStage.a_f_post/d_f_opening` remain unchanged for historical compatibility and are explicitly documented as non-authoritative. They are not silently overwritten or mapped to typed truth.
+
+The two post-potential worlds retain independent accessibility and opening results. UNKNOWN and NOT_COMPARABLE are preserved. The typed result is included in the world roster fingerprint and validated against exact unit and snapshot identities.
+
+**Remaining boundary:** the new typed focal result is now present in D2 potential/world composition, but it is not yet the source of the full structural snapshot diff `ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*)`. The current structural-delta/Reach/trajectory generator remains a separate contract. No inference is made from `D_f*) to the complete `ΔT_acc*), Reach or trajectory. The next integration must establish the focal transformation's exact membership and identity in the structural snapshots and reconcile the complete U/R/C/X diff, without reducing the full delta to the focal indicator.
+
+The new 24+2 regression cases are authored but not executed. No software-test authorization, simulation, calibration, Monte Carlo or scientific execution has been granted by this implementation record. No parameter, seed, estimand or DEC-C10-066/067 definition has been changed; `main` remains untouched.
