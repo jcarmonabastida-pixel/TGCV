@@ -122,7 +122,7 @@ class ComparativeInferenceEngineTests(unittest.TestCase):
         self.assertEqual(result.family, "F5")
         self.assertEqual(result.baseline.method_id, C0_METHOD_ID)
         candidate = result.candidates[0]
-        self.assertEqual(candidate.method_id, "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0")
+        self.assertEqual(candidate.method_id, "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1")
         diagnostic_map = dict(candidate.diagnostics)
         audit = json.loads(diagnostic_map["likelihood_optimizer_audit_json"])
         reconciliation = json.loads(diagnostic_map["production_analytic_reconciliation_json"])
