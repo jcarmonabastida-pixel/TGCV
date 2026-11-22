@@ -210,6 +210,9 @@ def fit_beta_binomial_counts_from_certified_box(
         raise BetaBinomialFitError("CERTIFIED_ROOT_BOX_NOT_RATIONAL") from None
     if not (0 < mu_lo <= mu_hi < 1 and 0 < t_lo <= t_hi < 1):
         raise BetaBinomialFitError("CERTIFIED_ROOT_BOX_OUTSIDE_OPEN_DOMAIN")
+    max_width = Fraction(1, 2 ** 32)
+    if mu_hi - mu_lo > max_width or t_hi - t_lo > max_width:
+        raise BetaBinomialFitError("CERTIFIED_ROOT_BOX_PRECISION_INSUFFICIENT")
     mu_exact = (mu_lo + mu_hi) / 2
     t_exact = (t_lo + t_hi) / 2
     kappa_exact = t_exact / (1 - t_exact)
@@ -404,23 +407,48 @@ def fitted_beta_binomial_parametric_bootstrap(
         try:
             certificate = beta_binomial_global_mle_certificate(
                 r, Counter(int(value) for value in counts),
+                max_refinements=3, max_lift_depth=32, max_mu_depth=16,
                 source_revision=os.environ.get("GITHUB_SHA"),
             )
             certificate_status = certificate.get("status", "MISSING_STATUS")
             winner = certificate.get("winner", {})
             parameter_box = winner.get("parameter_box")
+            parameter_box_widths = None
+            precision_ok = False
+            if (
+                isinstance(parameter_box, (tuple, list))
+                and len(parameter_box) == 2
+                and all(isinstance(axis, (tuple, list)) and len(axis) == 2 for axis in parameter_box)
+            ):
+                from fractions import Fraction
+                parameter_box_widths = [
+                    Fraction(axis[1]) - Fraction(axis[0]) for axis in parameter_box
+                ]
+                precision_ok = all(
+                    width <= Fraction(1, 2 ** 32) for width in parameter_box_widths
+                )
+            disposition_status = (
+                "GLOBAL_MLE_ROOT_BOX_PRECISION_INSUFFICIENT"
+                if certificate_status == "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED" and not precision_ok
+                else certificate_status
+            )
             source_revision = (
                 certificate.get("census", {}).get("input_provenance", {}).get("source_revision")
             )
             valid_interior = (
-                certificate_status == "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED"
+                disposition_status == "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED"
                 and winner.get("kind") == "INTERIOR_STATIONARY_ROOT"
                 and isinstance(parameter_box, (tuple, list))
                 and len(parameter_box) == 2
             )
             global_certificate_summary = {
-                "status": certificate_status,
+                "status": disposition_status,
+                "certificate_status": certificate_status,
                 "winner_kind": winner.get("kind"),
+                "parameter_box_widths": (
+                    [str(value) for value in parameter_box_widths]
+                    if parameter_box_widths is not None else None
+                ),
                 "parameter_box": (
                     [[str(value) for value in bounds] for bounds in parameter_box]
                     if isinstance(parameter_box, (tuple, list)) and len(parameter_box) == 2
