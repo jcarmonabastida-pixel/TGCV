@@ -4028,3 +4028,6 @@ The detailed source-to-contract status and integration plan are in `C10_S_D2_FOC
 
 
 The isolated module now also carries semantic transformation and snapshot versions and includes an explicit identity-gated D_f* projection. A separately evidenced semantic match is required for the exact baseline/post identities and snapshots; non-match yields NOT_COMPARABLE and unresolved matching yields ?. The comparator rejects boundary/context and predicate-contract-version mismatches. D_f observed classification remains separate.
+
+
+The universal BLOCK and route-catalog exhaustiveness declarations are themselves versioned and provenance-bound. Route DEP components retain separate truth/observed states. A transformation version change can be treated as the same semantic τ2 only through an explicit evidenced `MATCHED` adjudication; the implementation does not infer continuity from IDs, hashes or naming.
