@@ -15,7 +15,6 @@ from pathlib import Path
 
 import run_c10s_f5_g7_tiera_calibration as g7
 
-METHOD_ID = "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1"
 MAX_PARALLEL = 20
 SHARD_SIZES = (25, 40, 50, 100)
 
