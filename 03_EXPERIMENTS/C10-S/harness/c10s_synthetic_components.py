@@ -16,6 +16,12 @@ import math
 import random
 from typing import Callable, Literal, Sequence
 
+from c10s_focal_accessibility import (
+    D2FocalAccessibilitySpecification,
+    D2FocalPotentialTruth,
+    adjudicate_d2_focal_potentials,
+)
+
 AdmissionBehavior = Literal["ADMIT", "NO_ADMISSION"]
 ProfileValue = Literal["STANDARD", "READ_ONLY", "DISABLED"]
 TriState = Literal[1, 0, "?"]
@@ -164,6 +170,7 @@ class D2PotentialBundle:
     baseline_history_ref: str
     potentials_by_z: tuple[D2PotentialStage, D2PotentialStage]
     exogenous_draws_sha256: str
+    focal_accessibility_truth: D2FocalPotentialTruth | None = None
 
     def validate(self) -> None:
         if tuple(x.z for x in self.potentials_by_z) != (0, 1):
@@ -174,7 +181,11 @@ class D2PotentialBundle:
             if p.c_dep_star != all((p.c_install, p.c_integrity, p.c_compat, p.c_oper)):
                 raise ContractError("C_dep* must be the conjunction of its four technical predicates")
             if p.a_f_post and not p.c_dep_star:
-                raise ContractError("A_f* cannot be true when C_dep* is false")
+                raise ContractError("legacy D2 a_f_post fixture cannot be true when C_dep* is false")
+        if self.focal_accessibility_truth is not None:
+            self.focal_accessibility_truth.validate()
+            if self.focal_accessibility_truth.unit_id != self.unit_id:
+                raise ContractError("typed D2 focal truth unit differs from D2 potential bundle")
 
 
 def _draw_joint_component(distribution, u: float):
@@ -2814,6 +2825,11 @@ class SyntheticWorldBundle:
             not math.isfinite(row.mass) or row.mass <= 0.0 for row in self.q_x
         ):
             raise ContractError("q_X* must bind one positive target mass per unit and sum to one")
+        focal_truth_presence = [
+            unit.d2_potentials.focal_accessibility_truth is not None for unit in self.units
+        ]
+        if any(focal_truth_presence) and not all(focal_truth_presence):
+            raise ContractError("typed D2 focal truth must cover the complete world roster or be absent")
         roster_payload = []
         for unit, qx in zip(self.units, self.q_x):
             unit.d2_baseline.validate()
@@ -2999,6 +3015,7 @@ class SyntheticWorldBuilder:
 
     def generate(
         self, config: SyntheticWorldConfig, d2_config: D2MechanismConfig,
+        focal_accessibility_specs_by_unit: dict[str, D2FocalAccessibilitySpecification] | None = None,
     ) -> SyntheticWorldBundle:
         config.validate()
         d2_config.validate()
@@ -3007,6 +3024,14 @@ class SyntheticWorldBuilder:
         rng = random.Random(config.seed)
         h0_labels = [label for label, _ in config.h0_distribution]
         h0_weights = [weight for _, weight in config.h0_distribution]
+        expected_unit_ids = {
+            f"{config.unit_id_prefix}-{index + 1:06d}" for index in range(config.n_units)
+        }
+        if focal_accessibility_specs_by_unit is not None:
+            if set(focal_accessibility_specs_by_unit) != expected_unit_ids:
+                raise ContractError(
+                    "typed D2 focal specifications must cover every and only generated world unit"
+                )
         units = []
         q_x = []
         for index in range(config.n_units):
@@ -3033,6 +3058,12 @@ class SyntheticWorldBuilder:
             potentials = generate_d2_potentials(
                 baseline, d2_config, exogenous_seed=d2_seed,
             )
+            if focal_accessibility_specs_by_unit is not None:
+                focal_spec = focal_accessibility_specs_by_unit[unit_id]
+                if focal_spec.unit_id != unit_id:
+                    raise ContractError("typed D2 focal specification key/unit identity mismatch")
+                focal_truth = adjudicate_d2_focal_potentials(focal_spec)
+                potentials = replace(potentials, focal_accessibility_truth=focal_truth)
             units.append(SyntheticWorldUnit(
                 unit_id, x_ref, h0_ref, c_c_ref, x, h0, c_c,
                 baseline, potentials,
@@ -3063,9 +3094,10 @@ class SyntheticWorldBuilder:
         config: SyntheticWorldConfig,
         d2_config: D2MechanismConfig,
         structural_config: D2StructuralGenerationConfig,
+        focal_accessibility_specs_by_unit: dict[str, D2FocalAccessibilitySpecification] | None = None,
     ) -> tuple[SyntheticWorldBundle, dict[tuple[str, int], D2StructuralPotentialPair]]:
         """One-call materialization of roster, D2 potentials and structural truth."""
-        world = self.generate(config, d2_config)
+        world = self.generate(config, d2_config, focal_accessibility_specs_by_unit)
         structural_pairs = generate_d2_structural_potential_pairs(world, structural_config)
         return world, structural_pairs
 
@@ -3076,6 +3108,7 @@ class SyntheticWorldBuilder:
         d2_config: D2MechanismConfig,
         structural_config: D2StructuralGenerationConfig,
         reach_config: D2ReachGenerationConfig,
+        focal_accessibility_specs_by_unit: dict[str, D2FocalAccessibilitySpecification] | None = None,
     ) -> tuple[
         SyntheticWorldBundle,
         dict[tuple[str, int], D2StructuralPotentialPair],
@@ -3083,7 +3116,7 @@ class SyntheticWorldBuilder:
     ]:
         """Materialize roster, D2/structural potentials and baseline/post Reach."""
         world, structural_pairs = self.generate_complete(
-            config, d2_config, structural_config,
+            config, d2_config, structural_config, focal_accessibility_specs_by_unit,
         )
         reach_contrast = evaluate_d2_structural_reachability(
             world, structural_pairs, reach_config,
@@ -3099,6 +3132,7 @@ class SyntheticWorldBuilder:
         structural_config: D2StructuralGenerationConfig,
         reach_config: D2ReachGenerationConfig,
         trajectory_config: D2TrajectoryGenerationConfig,
+        focal_accessibility_specs_by_unit: dict[str, D2FocalAccessibilitySpecification] | None = None,
     ) -> tuple[
         SyntheticWorldBundle,
         dict[tuple[str, int], D2StructuralPotentialPair],
@@ -3108,6 +3142,7 @@ class SyntheticWorldBuilder:
         """Materialize the full path through potential route execution and trajectories."""
         world, structural_pairs, reach = self.generate_complete_with_reachability(
             config, d2_config, structural_config, reach_config,
+            focal_accessibility_specs_by_unit,
         )
         trajectories = evaluate_d2_potential_trajectories(
             world, reach, reach_config, trajectory_config,
