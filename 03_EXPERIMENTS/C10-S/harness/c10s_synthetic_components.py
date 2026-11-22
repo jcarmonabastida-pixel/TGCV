@@ -1306,6 +1306,7 @@ class D2StructuralPotentialPair:
     evidence_baseline: EvidenceStateSnapshot
     evidence_post: EvidenceStateSnapshot
     identity_matches: tuple[StructuralIdentityMatch, ...] = ()
+    focal_truth_sha256: str | None = None
 
 
 def evaluate_d2_structural_deltas(
@@ -1345,18 +1346,41 @@ def evaluate_d2_structural_deltas(
                       if a.component == "U" and a.canonical_id == pair.focal_transformation_id]
         if len(baseline_atoms) != 1 or len(post_atoms) != 1:
             raise ContractError("D2 structural snapshots must contain exactly one focal U atom at baseline and post")
-        expected_pre = 1 if units[unit_id].d2_baseline.focal_accessible_pre else 0
-        expected_post = 1 if stage.a_f_post else 0
+        focal_truth = units[unit_id].d2_potentials.focal_accessibility_truth
+        expected_focal_hash = None if focal_truth is None else focal_truth.result_sha256
+        if pair.focal_truth_sha256 != expected_focal_hash:
+            raise ContractError("D2 structural pair is detached from its typed focal truth bundle")
+        if focal_truth is None:
+            expected_pre = 1 if units[unit_id].d2_baseline.focal_accessible_pre else 0
+            expected_post = 1 if stage.a_f_post else 0
+            expected_opening = "1" if (
+                not units[unit_id].d2_baseline.focal_accessible_pre and stage.a_f_post
+            ) else "0"
+            if stage.d_f_opening != (expected_opening == "1"):
+                raise ContractError("legacy D2 D_f_opening fixture is inconsistent with legacy A_f fields")
+        else:
+            post_truth = dict(focal_truth.post_by_z)[z]
+            opening = dict(focal_truth.opening_by_z)[z]
+            if opening.semantic_match_state != "MATCHED":
+                raise ContractError("D2 structural delta requires confirmed semantic identity for the same focal tau2")
+            if focal_truth.baseline.transformation_id != pair.focal_transformation_id:
+                raise ContractError("D2 structural focal ID differs from typed baseline semantic transformation")
+            expected_pre = {"1": 1, "0": 0, "?": "?"}[focal_truth.baseline.accessibility_truth]
+            expected_post = {"1": 1, "0": 0, "?": "?"}[post_truth.accessibility_truth]
+            if "?" in (focal_truth.baseline.accessibility_truth, post_truth.accessibility_truth):
+                expected_opening = "?"
+            else:
+                expected_opening = "1" if (
+                    focal_truth.baseline.accessibility_truth, post_truth.accessibility_truth
+                ) == ("0", "1") else "0"
+            if opening.d_f_truth != expected_opening:
+                raise ContractError("typed D2 D_f* is inconsistent with baseline/post A_f*")
         if baseline_atoms[0].state != expected_pre or post_atoms[0].state != expected_post:
             raise ContractError("focal U accessibility truth disagrees with D2 baseline/A_f* potential truth")
         delta = engine.evaluate(
             pair.baseline, pair.post, identity_matches=pair.identity_matches,
             evidence_baseline=pair.evidence_baseline, evidence_post=pair.evidence_post,
-        )
-        expected_opening = (not units[unit_id].d2_baseline.focal_accessible_pre) and stage.a_f_post
-        if stage.d_f_opening != expected_opening:
-            raise ContractError("D2 D_f* opening truth is inconsistent with its baseline and post A_f*")
-        results.append(delta)
+        )        results.append(delta)
     return tuple(results)
 
 
