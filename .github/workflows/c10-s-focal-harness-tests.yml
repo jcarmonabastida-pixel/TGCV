@@ -28,7 +28,7 @@ jobs:
   integrated-synthetic-contract-tests:
     if: >-
       ${{ (github.ref == 'refs/heads/research/c10s-f1-integrated-correction-20261119'
-          && ((github.event_name == 'push' && contains(github.event.head_commit.message, 'AUTHORIZE-C10S-D2-INTEGRATION-TESTS-20261122-01'))
+          && ((github.event_name == 'push' && contains(github.event.head_commit.message, 'AUTHORIZE-C10S-D2-INTEGRATION-TESTS-20261122-02'))
               || (github.event_name == 'workflow_dispatch' && inputs.confirm_synthetic_test_execution == true)))
           || (github.ref == 'refs/heads/research/c10-s-consolidation-draft'
               && github.event_name == 'workflow_dispatch' && inputs.confirm_synthetic_test_execution == true) }}
@@ -194,7 +194,7 @@ jobs:
         shell: bash
         env:
           JOB_STATUS: ${{ job.status }}
-          CONFIRM_SYNTHETIC_TEST_EXECUTION: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, 'AUTHORIZE-C10S-D2-INTEGRATION-TESTS-20261122-01') || inputs.confirm_synthetic_test_execution }}
+          CONFIRM_SYNTHETIC_TEST_EXECUTION: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, 'AUTHORIZE-C10S-D2-INTEGRATION-TESTS-20261122-02') || inputs.confirm_synthetic_test_execution }}
           PAYLOAD_ARTIFACT_ID: ${{ steps.payload.outputs.artifact-id }}
           PAYLOAD_ARTIFACT_DIGEST: ${{ steps.payload.outputs.artifact-digest }}
         run: |
