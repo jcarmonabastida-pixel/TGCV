@@ -81,4 +81,6 @@ jobs:
             test_c10s_f5_beta_binomial_mcse_profile \
             test_c10s_fitted_beta_binomial_bootstrap \
             test_c10s_f5_g7_shard_execution \
-            test_c10s_f5_g7_tiera_shards
+            test_c10s_f5_g7_tiera_calibration \
+            test_c10s_f5_g7_tiera_authorization \
+            test_c10s_f5_g7_resource_profile
