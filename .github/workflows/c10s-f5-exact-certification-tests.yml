@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - research/c10s-f1-integrated-correction-20261119
+      - research/c10s-f5-g7-canonical-mle-v1.1-20261122
     paths:
       - 03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py
       - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_rational_score_polynomials.py
@@ -11,6 +12,14 @@ on:
       - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_likelihood_diagnostics.py
       - 03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_mcse_profile.py
       - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_mcse_profile.py
+      - 03_EXPERIMENTS/C10-S/harness/c10s_fitted_beta_binomial_bootstrap.py
+      - 03_EXPERIMENTS/C10-S/harness/test_c10s_fitted_beta_binomial_bootstrap.py
+      - 03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py
+      - 03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_tiera_calibration.py
+      - 03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_shard_execution.py
+      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_shard_execution.py
+      - 03_EXPERIMENTS/C10-S/harness/aggregate_c10s_f5_g7_tiera_shards.py
+      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_tiera_shards.py
 
 concurrency:
   group: c10s-f5-deterministic-${{ github.ref }}
@@ -49,7 +58,18 @@ jobs:
             c10s_f5_beta_binomial_likelihood_diagnostics.py \
             test_c10s_f5_beta_binomial_likelihood_diagnostics.py \
             c10s_f5_beta_binomial_mcse_profile.py \
-            test_c10s_f5_beta_binomial_mcse_profile.py
+            test_c10s_f5_beta_binomial_mcse_profile \
+            test_c10s_fitted_beta_binomial_bootstrap \
+            test_c10s_f5_g7_shard_execution \
+            test_c10s_f5_g7_tiera_shards.py \
+            c10s_fitted_beta_binomial_bootstrap.py \
+            test_c10s_fitted_beta_binomial_bootstrap.py \
+            c10s_nested_mr_comparative_inference_engine.py \
+            run_c10s_f5_g7_tiera_calibration.py \
+            c10s_f5_g7_shard_execution.py \
+            test_c10s_f5_g7_shard_execution.py \
+            aggregate_c10s_f5_g7_tiera_shards.py \
+            test_c10s_f5_g7_tiera_shards.py
 
       - name: Run deterministic F5 suites only
         working-directory: 03_EXPERIMENTS/C10-S/harness
