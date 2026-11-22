@@ -213,6 +213,43 @@ def _bernstein_integer_basis(degree: int, lower, upper):
     return tuple(basis), denominator
 
 
+def _univariate_bernstein_numerators(
+    power_coefficients: Mapping[int, object],
+    lower,
+    upper,
+) -> tuple[tuple[object, ...], int]:
+    """Transform exact univariate power coefficients using the cached basis.
+
+    The common denominator is positive, so callers that only need a sign can
+    inspect the numerators directly. Reusing the cached integer basis avoids
+    rebuilding binomial/power expansions for every conditional-mean witness.
+    """
+    from fractions import Fraction
+
+    if not isinstance(power_coefficients, Mapping):
+        raise ValueError("UNIVARIATE_POWER_COEFFICIENT_MAPPING_REQUIRED")
+    if any(type(power) is not int or power < 0 for power in power_coefficients):
+        raise ValueError("NONNEGATIVE_INTEGER_POWER_INDICES_REQUIRED")
+    coefficients = {
+        power: _exact_fraction(value)
+        for power, value in power_coefficients.items()
+        if value != 0
+    }
+    if not coefficients:
+        return (), 1
+    degree = max(coefficients)
+    basis, denominator = _bernstein_integer_basis(degree, lower, upper)
+    numerators = tuple(
+        sum(
+            (coefficients.get(power, Fraction(0)) * basis[power][index]
+             for power in range(degree + 1)),
+            Fraction(0),
+        )
+        for index in range(degree + 1)
+    )
+    return numerators, denominator
+
+
 def _bernstein_integer_matrix(
     poly: Poly,
     mu_bounds: tuple[object, object],
@@ -1997,8 +2034,6 @@ def conditional_mean_tube_and_concentration_exclusion(
     is not valid for arbitrary unrelated polynomial pairs.
     """
     from fractions import Fraction
-    from math import comb
-
     if type(max_mu_depth) is not int or not 1 <= max_mu_depth <= 16:
         raise ValueError("MAX_MU_DEPTH_MUST_BE_INTEGER_1_TO_16")
     if not isinstance(t_bounds, tuple) or len(t_bounds) != 2:
@@ -2057,24 +2092,12 @@ def conditional_mean_tube_and_concentration_exclusion(
                 endpoint_multiplicity += 1
         if not coeffs:
             return 0
-        degree = max(coeffs)
-        # Substitute t=t_lo+(t_hi-t_lo)*u in the power basis.
-        transformed = [Fraction(0) for _ in range(degree + 1)]
-        for power, coefficient in coeffs.items():
-            for j in range(power + 1):
-                transformed[j] += (
-                    coefficient * comb(power, j) * t_lo**(power-j)
-                    * (t_hi-t_lo)**j
-                )
-        bernstein = []
-        for i in range(degree + 1):
-            value = Fraction(0)
-            for j in range(i + 1):
-                value += transformed[j] * Fraction(comb(i, j), comb(degree, j))
-            bernstein.append(value)
-        if all(value > 0 for value in bernstein):
+        bernstein_numerators, _ = _univariate_bernstein_numerators(
+            coeffs, t_lo, t_hi
+        )
+        if all(value > 0 for value in bernstein_numerators):
             sign = 1
-        elif all(value < 0 for value in bernstein):
+        elif all(value < 0 for value in bernstein_numerators):
             sign = -1
         else:
             return 0
