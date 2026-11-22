@@ -7,41 +7,38 @@ on:
       - research/c10s-f5-g7-canonical-mle-v1.1-20261122
     paths:
       - .github/workflows/c10s-f5-exact-certification-tests.yml
-      - 03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py
-      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_rational_score_polynomials.py
-      - 03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py
-      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_likelihood_diagnostics.py
-      - 03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_mcse_profile.py
-      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_mcse_profile.py
-      - 03_EXPERIMENTS/C10-S/harness/c10s_fitted_beta_binomial_bootstrap.py
-      - 03_EXPERIMENTS/C10-S/harness/test_c10s_fitted_beta_binomial_bootstrap.py
-      - 03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py
-      - 03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_inference_engine.py
-      - 03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_tiera_calibration.py
-      - 03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_shard_execution.py
-      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_shard_execution.py
-      - 03_EXPERIMENTS/C10-S/harness/aggregate_c10s_f5_g7_tiera_shards.py
-      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_tiera_calibration.py
-      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_tiera_authorization.py
-      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_resource_profile.py
-      - 03_EXPERIMENTS/C10-S/harness/execute_c10s_f5_g7_tiera_shard.py
-      - 03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_tiera_authorization.py
-      - 03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_resource_profile.py
-      - 03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_resource_preflight_parallel.py
+      - 03_EXPERIMENTS/C10-S/harness/**
 
+# Do not cancel an in-flight validation merely because another commit arrives.
+# Each run validates an immutable github.sha snapshot.
 concurrency:
   group: c10s-f5-deterministic-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: read
 
 jobs:
   f5-tests:
+    name: Deterministic suite — ${{ matrix.module }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 9
+      matrix:
+        module:
+          - test_c10s_f5_rational_score_polynomials
+          - test_c10s_f5_beta_binomial_likelihood_diagnostics
+          - test_c10s_f5_beta_binomial_mcse_profile
+          - test_c10s_fitted_beta_binomial_bootstrap
+          - test_c10s_f5_g7_shard_execution
+          - test_c10s_f5_g7_tiera_calibration
+          - test_c10s_nested_mr_comparative_inference_engine
+          - test_c10s_f5_g7_tiera_authorization
+          - test_c10s_f5_g7_resource_profile
     steps:
-      - name: Checkout research snapshot
+      - name: Checkout immutable research snapshot
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           ref: ${{ github.sha }}
@@ -54,10 +51,9 @@ jobs:
 
       - name: Install locked dependencies
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: |
-          python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
 
-      - name: Compile F5 modules
+      - name: Compile F5 and G7 modules
         working-directory: 03_EXPERIMENTS/C10-S/harness
         run: |
           python -m py_compile \
@@ -83,16 +79,6 @@ jobs:
             execute_c10s_f5_g7_tiera_shard.py \
             test_c10s_f5_g7_resource_profile.py
 
-      - name: Run deterministic F5 and G7 software suites only
+      - name: Run isolated deterministic module
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: |
-          python -B -m unittest -v \
-            test_c10s_f5_rational_score_polynomials \
-            test_c10s_f5_beta_binomial_likelihood_diagnostics \
-            test_c10s_f5_beta_binomial_mcse_profile \
-            test_c10s_fitted_beta_binomial_bootstrap \
-            test_c10s_f5_g7_shard_execution \
-            test_c10s_f5_g7_tiera_calibration \
-            test_c10s_nested_mr_comparative_inference_engine \
-            test_c10s_f5_g7_tiera_authorization \
-            test_c10s_f5_g7_resource_profile
+        run: python -B -m unittest -v ${{ matrix.module }}
