@@ -1219,6 +1219,8 @@ class TransformationalDeltaEngine:
                 kind, state = ("REMOVED", 1) if complete else ("UNKNOWN", "?")
             elif left.semantic_type != right.semantic_type:
                 raise ContractError("semantic type mismatch cannot be silently matched across identities")
+            elif left.state == "?" or right.state == "?":
+                kind, state = "UNKNOWN", "?"
             elif (left.state, left.attributes) != (right.state, right.attributes):
                 kind, state = "MODIFIED", 1
             else:
