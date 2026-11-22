@@ -83,8 +83,8 @@ class F5G7ResourceProfileTests(unittest.TestCase):
                 validator.subprocess, "check_output", return_value=b"frozen-compute-path"
             ):
                 result = validator.validate(profile_path, manifest_path, root)
-            self.assertEqual(result["datasets_per_shard"], 25)
-            self.assertEqual(result["shard_jobs_per_phase"], 8)
+            self.assertEqual(result["datasets_per_shard"], 50)
+            self.assertEqual(result["shard_jobs_per_phase"], 40)
             self.assertEqual(result["max_parallel_jobs"], 20)
             self.assertLess(result["end_to_end_conservative_wall_seconds"], 3 * 3600)
             self.assertLessEqual(
