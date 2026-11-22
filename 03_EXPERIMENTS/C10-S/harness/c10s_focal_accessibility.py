@@ -148,6 +148,8 @@ class FocalAccessibilityResult:
     predicate_truth: tuple[tuple[str, TruthState], ...]
     route_truth: tuple[tuple[str, TruthState], ...]
     observed_route_truth: tuple[tuple[str, TruthState], ...]
+    route_component_truth: tuple[tuple[str, tuple[tuple[str, TruthState], ...]], ...]
+    observed_route_component_truth: tuple[tuple[str, tuple[tuple[str, TruthState], ...]], ...]
     dep_truth: TruthState
     global_block_truth: TruthState
     accessibility_truth: TruthState
@@ -266,6 +268,17 @@ def adjudicate_focal_accessibility(
         if r.coverage == "COMPLETE" else "?"
         for r in source.routes
     ]
+    route_component_truth = tuple(
+        (route.route_id, route.dependency_predicates) for route in source.routes
+    )
+    observed_route_component_truth = tuple(
+        (
+            route.route_id,
+            route.observed_dependency_predicates if route.coverage == "COMPLETE"
+            else tuple((name, "?") for name, _ in route.dependency_predicates),
+        )
+        for route in source.routes
+    )
     observed_dep = _or(observed_route_states, exhaustive=source.observed_route_catalog_complete)
     observed_global_block = (
         source.observed_global_block_state
@@ -289,6 +302,8 @@ def adjudicate_focal_accessibility(
         "predicate_truth": tuple((role, predicates[role].truth_state)
                                  for role in ("ID", "REL", "COND", "AUTH", "RES")),
         "route_truth": tuple(route_truth),
+        "route_component_truth": route_component_truth,
+        "observed_route_component_truth": observed_route_component_truth,
         "dep_truth": dep_truth,
         "global_block_truth": global_block,
         "observed_route_truth": tuple(zip((r.route_id for r in source.routes), observed_route_states)),
@@ -309,6 +324,7 @@ def adjudicate_focal_accessibility(
         source.snapshot_version, source.contract_version,
         payload["predicate_truth"], tuple(route_truth),
         tuple(zip((r.route_id for r in source.routes), observed_route_states)),
+        route_component_truth, observed_route_component_truth,
         dep_truth, global_block, accessibility, observed, coverage_complete, _digest(payload),
     )
 
