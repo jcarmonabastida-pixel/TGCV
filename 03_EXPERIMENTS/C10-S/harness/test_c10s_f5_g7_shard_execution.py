@@ -61,7 +61,7 @@ class F5G7ShardExecutionTests(unittest.TestCase):
             )
         expected_records = json.loads(json.dumps(monolithic["records"]))
         for record in expected_records:
-            for candidate in record["candidates"]:
+            for candidate in record["comparison"]["candidates"]:
                 candidate["diagnostics"] = []
         self.assertEqual(shard["records"], expected_records)
         self.assertEqual(shard["records_digest"], records_digest(expected_records))
