@@ -552,6 +552,16 @@ def adjudicate_d2_focal_potentials(
         )
 
     reference_signature = _d2_non_dependency_signature(baseline)
+    for source in sources:
+        if not source.routes:
+            raise FocalAccessibilityContractError("D2 focal route catalogue must include the declared focal route")
+        for route in source.routes:
+            if tuple(name for name, _ in route.dependency_predicates) != (
+                "C_install", "C_integrity", "C_compat", "C_oper",
+            ):
+                raise FocalAccessibilityContractError(
+                    "D2 DEP route must preserve the four named C_dep* components exactly"
+                )
     for source in sources[1:]:
         if source.contract_version != baseline.contract_version:
             raise FocalAccessibilityContractError("D2 focal contract version changes across baseline/Z potentials")
