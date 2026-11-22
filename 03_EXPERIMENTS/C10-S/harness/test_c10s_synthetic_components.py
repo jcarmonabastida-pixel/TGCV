@@ -522,7 +522,7 @@ class SyntheticComponentTests(unittest.TestCase):
         d2_config = D2MechanismConfig(
             "D2-TYPED-AF", "001", ("B0", "B1"), ("001", "001"),
             ("ART0", "ART1"), ("ACTOR0", "ACTOR1"),
-            (0.0, 1.0), (0.8, 0.8), (0.0, 0.0), (0.9, 0.9), (0.8, 0.8),
+            (0.0, 1.0), (1.0, 1.0), (0.0, 0.0), (1.0, 1.0), (1.0, 1.0),
             (((True, True, True, True), 1.0),), "MECH-001",
         )
         world = SyntheticWorldBuilder().generate(
