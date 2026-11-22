@@ -1483,6 +1483,11 @@ def generate_d2_structural_potential_pairs(
     world.validate()
     config.validate()
     invariant = tuple(config.invariant_atoms)
+    if any(unit.d2_potentials.focal_accessibility_truth is not None for unit in world.units):
+        if config.transition_rules:
+            raise ContractError(
+                "typed D2 clean-nucleus structural projection forbids additional non-focal transition rules"
+            )
     evidence_hash = digest({
         "world_id": world.world_id, "world_version": world.world_version,
         "dgp_id": world.dgp_id, "dgp_version": world.dgp_version,
