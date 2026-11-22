@@ -19,7 +19,9 @@ on:
       - 03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_shard_execution.py
       - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_shard_execution.py
       - 03_EXPERIMENTS/C10-S/harness/aggregate_c10s_f5_g7_tiera_shards.py
-      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_tiera_shards.py
+      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_tiera_calibration.py
+      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_tiera_authorization.py
+      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_resource_profile.py
 
 concurrency:
   group: c10s-f5-deterministic-${{ github.ref }}
@@ -66,7 +68,9 @@ jobs:
             c10s_f5_g7_shard_execution.py \
             test_c10s_f5_g7_shard_execution.py \
             aggregate_c10s_f5_g7_tiera_shards.py \
-            test_c10s_f5_g7_tiera_shards.py
+            test_c10s_f5_g7_tiera_calibration.py \
+            test_c10s_f5_g7_tiera_authorization.py \
+            test_c10s_f5_g7_resource_profile.py
 
       - name: Run deterministic F5 and G7 software suites only
         working-directory: 03_EXPERIMENTS/C10-S/harness
