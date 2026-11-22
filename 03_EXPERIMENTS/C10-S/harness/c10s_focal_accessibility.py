@@ -520,12 +520,22 @@ class D2FocalPotentialTruth:
             raise FocalAccessibilityContractError("D2 focal truth identity/version/provenance is required")
         if self.baseline.unit_id != self.unit_id:
             raise FocalAccessibilityContractError("D2 focal truth baseline unit mismatch")
+        if self.baseline.accessibility_truth != "0" or self.baseline.dep_truth != "0":
+            raise FocalAccessibilityContractError("D2 focal truth must retain the clean inaccessible baseline")
         if tuple(z for z, _ in self.post_by_z) != (0, 1):
             raise FocalAccessibilityContractError("D2 focal truth must preserve Z=0 and Z=1 post states")
         if tuple(z for z, _ in self.opening_by_z) != (0, 1):
             raise FocalAccessibilityContractError("D2 focal truth must preserve Z=0 and Z=1 opening states")
         if any(result.unit_id != self.unit_id for _, result in self.post_by_z):
             raise FocalAccessibilityContractError("D2 focal post-state unit mismatch")
+        for state in (self.baseline, *(row for _, row in self.post_by_z)):
+            component_map = dict(state.route_component_truth)
+            if self.focal_route_id not in component_map:
+                raise FocalAccessibilityContractError("D2 focal truth omits its declared focal route")
+            if tuple(name for name, _ in component_map[self.focal_route_id]) != (
+                "C_install", "C_integrity", "C_compat", "C_oper",
+            ):
+                raise FocalAccessibilityContractError("D2 focal truth has an invalid technical DEP component roster")
         if any(result.unit_id != self.unit_id for _, result in self.opening_by_z):
             raise FocalAccessibilityContractError("D2 focal opening unit mismatch")
         post_map = dict(self.post_by_z)
