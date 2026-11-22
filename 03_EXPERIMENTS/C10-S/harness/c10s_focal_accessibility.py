@@ -368,10 +368,15 @@ class FocalOpeningResult:
     unit_id: str
     baseline_snapshot_id: str
     post_snapshot_id: str
+    baseline_transformation_id: str
+    baseline_transformation_version: str
+    post_transformation_id: str
+    post_transformation_version: str
     semantic_match_state: IdentityMatchState
     d_f_truth: OpeningState
     d_f_observed: OpeningState
     matching_contract_version: str
+    adjudication_evidence_ref: str
     result_sha256: str
 
 
@@ -434,6 +439,10 @@ def derive_focal_opening(
         "baseline_snapshot_version": baseline.snapshot_version,
         "post_snapshot_id": post.snapshot_id,
         "post_snapshot_version": post.snapshot_version,
+        "baseline_transformation_id": baseline.transformation_id,
+        "baseline_transformation_version": baseline.transformation_version,
+        "post_transformation_id": post.transformation_id,
+        "post_transformation_version": post.transformation_version,
         "semantic_match_state": identity.match_state,
         "d_f_truth": truth,
         "d_f_observed": observed,
@@ -444,8 +453,11 @@ def derive_focal_opening(
     }
     return FocalOpeningResult(
         baseline.unit_id, baseline.snapshot_id, post.snapshot_id,
+        baseline.transformation_id, baseline.transformation_version,
+        post.transformation_id, post.transformation_version,
         identity.match_state, truth, observed,
-        identity.matching_contract_version, _digest(payload),
+        identity.matching_contract_version, identity.adjudication_evidence_ref,
+        _digest(payload),
     )
 
 
@@ -542,6 +554,10 @@ class D2FocalPotentialTruth:
         for z, opening in self.opening_by_z:
             if (opening.baseline_snapshot_id != self.baseline.snapshot_id
                     or opening.post_snapshot_id != post_map[z].snapshot_id
+                    or opening.baseline_transformation_id != self.baseline.transformation_id
+                    or opening.baseline_transformation_version != self.baseline.transformation_version
+                    or opening.post_transformation_id != post_map[z].transformation_id
+                    or opening.post_transformation_version != post_map[z].transformation_version
                     or opening.d_f_truth not in ("1", "0", "?", "NOT_COMPARABLE")):
                 raise FocalAccessibilityContractError(
                     f"D2 focal opening Z={z} is detached from its exact baseline/post snapshots"
