@@ -4071,3 +4071,15 @@ The branch now contains 24 authored focal-adjudicator tests and two additional w
 This integration does not yet make typed `A_f*/D_f*` the source of the complete structural snapshot difference `ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*)). The structural-delta, Reach and trajectory engine remains a separate contract. The next source correction must bind the focal semantic identity to exact structural snapshot membership, then reconcile the complete U/R/C/X delta. It must not equate `D_f*=1` with the whole `ΔT_acc*) or infer downstream Reach/trajectory from the focal indicator.
 
 **Status:** IMPLEMENTED IN RESEARCH BRANCH / TESTS AUTHORED BUT NOT EXECUTED / NOT CONFIRMATORY. No design freeze, software-test authorization, simulation, calibration, Monte Carlo or scientific execution is implied. DEC-C10-066/067, estimands, parameters and seeds are unchanged; `main` is untouched.
+
+
+## 393. D2 focal-route-only variation and alternative-path exclusion — 2026-11-22
+
+A further isolation guard has been added to §392. The D2 specification now names the exact `focal_route_id`. Across baseline, Z=0 and Z=1:
+- only the declared focal route may change its four technical DEP component states;
+- every non-focal alternative route must retain its component truth unchanged;
+- route IDs/versions, route-component roster, local blockers, universal BLOCK, non-DEP predicates and the exhaustive route catalogue remain invariant.
+
+This prevents an intervention-induced change in an alternative route from being misattributed to the focal dependency. The focal route identity is carried into the typed result digest and checked against all three potential snapshots. A new adversarial regression rejects a policy-induced change to a non-focal alternative route.
+
+**Evidence status:** 25 focal-adjudicator tests and two world-integration tests are authored, not executed. No software or scientific execution authorization is implied. The full `ΔT_acc*) snapshot-diff/Reach/trajectory linkage remains open as recorded in §392.3.
