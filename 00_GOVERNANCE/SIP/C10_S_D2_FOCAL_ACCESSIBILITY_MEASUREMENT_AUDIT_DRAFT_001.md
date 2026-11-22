@@ -404,3 +404,44 @@ La fórmula candidata A_f* se considera conceptualmente reconciliada según §67
 La secuencia de snapshots es t−1 basal, t0 Z, t1 provisión/intento, t2 instalación/verificación, t3 snapshot post antes de K/Consider/Sel/Exec y t4 Reach/Π. S_T* y E_T permanecen separados; ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*) y ΔE_T se informa aparte. La oportunidad estandarizada B1 se presenta después de t3/t4 y no se mapea a t5/t6/t7.
 
 Bloqueos: IAM/C_SRC y snapshots materiales ausentes; UG-SCH-10 abierto; catálogo/cobertura de rutas, mapping, protocolo de adjudicación/cegamiento, error diferencial y missingness sin validar; aislamiento/no interferencia no verificados; B-M01…15 no inventariados. Wald/LATE bloqueado. No implementación ni ejecución.
+
+
+## 12. Source-level conformance audit of the D2 focal accessibility implementation — 2026-11-22
+
+**Status: MATERIAL CONTRACT MISMATCH FOUND / SCIENTIFIC USE BLOCKED.** This is a code-to-contract audit, not a new scientific decision.
+
+The current source in 03_EXPERIMENTS/C10-S/harness/c10s_synthetic_components.py still implements the superseded historical decomposition:
+
+- D2Baseline contains focal_accessible_pre, c_auth_base, c_resource, c_capacity, c_info, c_domain and c_other as independent Booleans.
+- SyntheticWorldConfig independently parameterizes their Bernoulli probabilities, including c_info_probability and c_other_probability.
+- generate_d2_potentials computes a_f_post as the conjunction of c_dep_star, c_auth_base, c_resource, c_capacity, c_info, c_domain and c_other; d_f_opening is then derived as not focal_accessible_pre AND a_f_post.
+- D2PotentialStage stores a_f_post and d_f_opening as Booleans, so the implementation cannot preserve UNKNOWN when a predicate or route inventory is incomplete.
+
+This does not conform to the current conceptual crosswalk in C10_S_D2_AF_PREDICATE_CAUSAL_CROSSWALK_DRAFT_001.md §8 or this audit's MEAS-01 correction:
+
+A_f* = I(ID_f* AND REL_f* AND COND_f* AND AUTH_f* AND RES_f* AND DEP_f* AND NOT BLOCK_f*).
+
+Specifically:
+- C_info is not an autonomous structural conjunct; information/observation belongs to the information regime and evidence layer.
+- C_other is excluded as an unspecified residual.
+- C_domain / D_support* must be mapped to ID_f* or COND_f* according to their actual referent, not retained as an independent conjunct.
+- C_resource / C_capacity may contribute to RES_f* only when they establish necessary ex-ante availability and are not duplicated; the current code treats both as unconditional independent gates.
+- C_auth,base maps to AUTH_f* and remains distinct from technical ACL/credential/endpoint provisioning.
+- C_dep* belongs within DEP_f*; it is not by itself a complete focal accessibility adjudication.
+- The current D2PotentialBundle invariant that A_f* cannot be true when this single C_dep* is false assumes one route and does not accommodate a separately certified alternative route.
+
+The StructuralReachabilityEngine already has useful trivalent route aggregation and exhaustive-catalog guards, but StructuralRouteStep.predicate_states are generic names. The engine does not yet bind a complete, typed ID/REL/COND/AUTH/RES/DEP/BLOCK contract to each transformation and route, nor does the D2 potential generator use its result to adjudicate A_f*.
+
+**Consequence:** the present D2 source may be used as a legacy stage-generation fixture, but its a_f_post/d_f_opening fields must not be treated as validated truth for the current focal accessibility estimand. No causal estimate, first stage or LATE may be inferred from them.
+
+### 12.1. Integrated correction required
+
+1. Introduce a versioned typed predicate bundle for ID_f*, REL_f*, COND_f*, AUTH_f*, RES_f*, DEP_f* and BLOCK_f*, with unit, transformation, boundary, context, snapshot, version, provenance and evidence-coverage identity.
+2. Reuse the existing route engine, but enforce typed predicate roles and route scope. Distinguish local route failure from a universal blocker; a valid alternative route preserves accessibility.
+3. Require exhaustive universe/relations/conditions/resources and complete route enumeration before assigning structural zero. Incomplete inventories or unresolved predicates propagate UNKNOWN.
+4. Derive A_f* with the trivalent contract; do not infer it from C_dep*, installation, attempt, receipt, C_info or C_other.
+5. Derive D_f* only from comparable pre/post A_f* snapshots with the same semantic transformation identity τ2. Preserve 1/0/? and the separate observed-measurement classification.
+6. Connect the result to the complete ΔT_acc* vector and then Reach/trajectory without collapsing ΔE_T, execution success, Outcome or Value into accessibility.
+7. Add adversarial regressions: C_info changes alone; C_other absent; resource/capacity non-necessary versus necessary; D_support identity versus compatibility; local block with valid alternative; universal block; incomplete route catalogue; UNKNOWN propagation; pre/post identity mismatch; and D_f* with an unresolved baseline or post state.
+
+This correction is implementation work under the existing S-lane mandate; it does not approve or freeze the candidate formula, select confirmatory probabilities, change DEC-C10-066/067, authorize calibration/scientific execution, or promote main. Existing conceptual decisions are not reopened.
