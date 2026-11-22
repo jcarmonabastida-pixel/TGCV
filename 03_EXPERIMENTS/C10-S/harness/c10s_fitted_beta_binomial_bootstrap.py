@@ -584,7 +584,7 @@ def fitted_beta_binomial_parametric_bootstrap(
     )
     comparison = replace(
         observed,
-        method_id="F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0",
+        method_id="F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1",
         within_interval=within_interval,
         between_interval=between_interval,
         mcse_interval=mcse_interval,
