@@ -1029,9 +1029,12 @@ Regression definitions assert registry exhaustiveness, denominator/applicability
 ## Typed focal accessibility adjudicator — isolated implementation slice
 
 - `c10s_focal_accessibility.py` implements a typed, trivalent adjudicator for the current candidate `A_f*) crosswalk: ID ∧ REL ∧ COND ∧ AUTH ∧ RES ∧ DEP ∧ ¬BLOCK.
-- `test_c10s_focal_accessibility.py` contains 13 authored adversarial contract tests.
+- `test_c10s_focal_accessibility.py` contains 17 authored adversarial contract tests.
 - Each base predicate binds unit, semantic transformation, boundary, context, snapshot, version and provenance. DGP truth and observed/evidence state are distinct.
 - Each dependency route retains named technical components; route-local blocking is distinct from a universal all-routes block. A valid alternative route can preserve DEP=1. DEP=0 requires an exhaustive route catalogue, including an explicitly exhaustive empty catalogue.
 - Measurement coverage is not included in structural truth. Unknowns propagate as `?`; no score or compensation is used.
 
 **Status:** IMPLEMENTED IN RESEARCH BRANCH / NOT EXECUTED / NOT INTEGRATED INTO LEGACY D2 GENERATOR / NOT CONFIRMATORY. The existing `D2Baseline`, `D2PotentialStage` and `generate_d2_potentials` remain unchanged and must still be treated as legacy stage-generation fixtures for focal accessibility. The new module is not yet wired into `c10s_world_pipeline.py`; no D2 first-stage or causal estimate may use it as validated truth. The current canonical bootstrap grants design/recovery only, so the 13 tests have been authored but not executed.
+
+
+The same module now defines `SemanticTransformationMatch` and `derive_focal_opening(...)` for `D_f*=I(A_f^*(t0)=0 ∧ A_f^*(t1)=1)`. It requires an explicit, provenance-bearing semantic-identity adjudication bound to the exact baseline/post transformation IDs, versions and snapshots. An explicit non-match returns `NOT_COMPARABLE`; unresolved matching returns `?`; no automatic fuzzy match or hash-based semantic inference is permitted. Baseline/post boundary, context and focal predicate-contract version must also agree. Observed opening is derived separately from observed accessibility.
