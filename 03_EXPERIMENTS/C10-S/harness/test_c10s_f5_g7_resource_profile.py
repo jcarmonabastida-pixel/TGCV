@@ -105,7 +105,8 @@ class F5G7ResourceProfileTests(unittest.TestCase):
                 "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002",
                 "profile_json_sha256": hashlib.sha256(profile_bytes).hexdigest(),
                 "profile_source_commit": "a" * 40,
-                "profile_run_id": 44926453920,
+                "profile_run_id": 45000000001,
+                "profile_artifact_id": 14799999999,
                 "profile_artifact_archive_sha256": "b" * 64,
             }), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "PROTOCOL_MISMATCH"):
