@@ -558,6 +558,8 @@ class D2FocalPotentialTruth:
                     or opening.baseline_transformation_version != self.baseline.transformation_version
                     or opening.post_transformation_id != post_map[z].transformation_id
                     or opening.post_transformation_version != post_map[z].transformation_version
+                    or opening.semantic_match_state not in ("MATCHED", "NOT_MATCHED", "UNRESOLVED")
+                    or not opening.matching_contract_version or not opening.adjudication_evidence_ref
                     or opening.d_f_truth not in ("1", "0", "?", "NOT_COMPARABLE")):
                 raise FocalAccessibilityContractError(
                     f"D2 focal opening Z={z} is detached from its exact baseline/post snapshots"
