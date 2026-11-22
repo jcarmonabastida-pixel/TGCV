@@ -535,6 +535,19 @@ class SyntheticComponentTests(unittest.TestCase):
         self.assertEqual(focal_truth.opening_by_z[0][1].d_f_truth, "0")
         self.assertEqual(focal_truth.opening_by_z[1][1].d_f_truth, "1")
 
+        from dataclasses import replace
+        stage0, stage1 = world.units[0].d2_potentials.potentials_by_z
+        mismatched_stage1 = replace(
+            stage1, c_oper=False, c_dep_star=False,
+            a_f_post=False, d_f_opening=False,
+        )
+        mismatched_bundle = replace(
+            world.units[0].d2_potentials,
+            potentials_by_z=(stage0, mismatched_stage1),
+        )
+        with self.assertRaisesRegex(ContractError, "do not reproduce"):
+            mismatched_bundle.validate()
+
     def test_world_builder_rejects_partial_typed_d2_focal_roster(self):
         from c10s_synthetic_components import SyntheticWorldBuilder, SyntheticWorldConfig
         config = SyntheticWorldConfig(
