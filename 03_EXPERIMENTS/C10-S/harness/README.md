@@ -1041,3 +1041,6 @@ The same module now defines `SemanticTransformationMatch` and `derive_focal_open
 
 
 The universal BLOCK and route-catalog exhaustiveness declarations also carry explicit versions and provenance references. Each route keeps named DEP components plus separate observed states/coverage. Semantic version changes are not auto-rejected or auto-accepted: only a separately evidenced `MATCHED` adjudication can establish continuity across versions; `NOT_MATCHED` yields `NOT_COMPARABLE`, and `UNRESOLVED` yields `?`.
+
+
+The semantic-match record binds not only the baseline/post transformation IDs and semantic versions, but also the exact baseline/post snapshot IDs **and snapshot versions**, with its own matching-contract version and adjudication evidence reference. No D_f* projection is emitted across an unbound snapshot version.
