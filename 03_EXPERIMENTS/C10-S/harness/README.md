@@ -1044,3 +1044,17 @@ The universal BLOCK and route-catalog exhaustiveness declarations also carry exp
 
 
 The semantic-match record binds not only the baseline/post transformation IDs and semantic versions, but also the exact baseline/post snapshot IDs **and snapshot versions**, with its own matching-contract version and adjudication evidence reference. No D_f* projection is emitted across an unbound snapshot version.
+
+
+### D2 typed focal accessibility — generator/world integration (2026-11-22)
+
+The typed adjudicator is now connected to D2 synthetic-world composition through explicit, versioned per-unit inputs:
+
+- `D2FocalAccessibilitySpecification` binds one baseline focal input, separate post-potential inputs for Z=0 and Z=1, and a separately evidenced semantic-identity adjudication for each potential world.
+- `adjudicate_d2_focal_potentials(...)` enforces the clean D2 nucleus: baseline `A_f*=0` specifically through exhaustive `DEP=0`, while `ID/REL/COND/AUTH/RES=1` and universal `BLOCK=0`. Basal authorization is explicit.
+- Across baseline and both Z potentials, non-DEP predicate truths and versions, global/local block states, route identities/versions and exhaustive route-catalogue identity must remain invariant. Only the four named technical dependency components (`C_install`, `C_integrity`, `C_compat`, `C_oper`) may vary by policy. Differential resources, authorization, conditions, relationships, route catalogues or blockers fail closed.
+- The two post-potential worlds retain separate `A_f*` and `D_f*` results. UNKNOWN and non-comparable semantic identity remain UNKNOWN / NOT_COMPARABLE; they are not inferred from attempt, receipt or installation.
+- `D2PotentialBundle` can carry the typed result. `SyntheticWorldBuilder.generate(..., focal_accessibility_specs_by_unit=...)` requires exact complete-roster coverage when supplied; `materialize_c10s_complete_world(..., d2_focal_accessibility_specs_by_unit=...)` exposes the same input boundary through the coordinated world pipeline.
+- The old `D2PotentialStage.a_f_post/d_f_opening` Booleans remain for historical compatibility and are explicitly marked legacy. They are not current focal truth. Omitting the typed specification leaves the world on the legacy, non-confirmatory path.
+
+**Status:** IMPLEMENTED IN RESEARCH BRANCH / 24 FOCAL ADJUDICATOR TESTS AND 2 WORLD-INTEGRATION TESTS AUTHORED / NOT EXECUTED / NOT CONFIRMATORY. This integration does not yet bind the typed focal result into the full `ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*)` snapshot-diff engine or prove downstream Reach/trajectory correspondence. It does not authorize software-test execution, calibration, Monte Carlo or scientific execution. Typed inputs still have to be supplied by a versioned DGP materializer; no source values are inferred from legacy Boolean fields.
