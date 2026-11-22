@@ -515,3 +515,18 @@ The new 24+2 regression cases are authored but not executed. No software-test au
 `FocalAccessibilityResult` now retains the truth and observed states of each named dependency component for every route. `D2PotentialBundle.validate()` cross-checks the declared focal route's four typed truth components against the exact D2 potential-stage fields `c_install/c_integrity/c_compat/c_oper`, and cross-checks the resulting typed `DEP) against `c_dep_star` for each Z potential. This prevents the explicit typed specification from drifting away from the DGP's generated technical component truth. It does **not** use the legacy `a_f_post/d_f_opening` Booleans to derive accessibility.
 
 The world-integration regression now also corrupts one D2 technical component and requires the typed bundle validator to reject the mismatch. The D2 mechanism fixture is deterministic for this software contract only; it does not set or promote any scientific parameter. The suite remains 25 focal tests plus two world-integration tests, all authored and unexecuted.
+
+
+### 12.6. Deterministic integration test execution — 2026-11-22
+
+**Status:** PASS — PRIMARY AND CLEAN REPLAY. This supersedes the earlier `NOT EXECUTED` status for the software tests described in §§12.4–12.5; it does not supersede their design or scientific limitations.
+
+The current research-branch implementation was tested as part of the exact 17-module integrated suite. The suite includes the 25 focal-adjudicator cases, the D2 world-integration adversarial checks, and the complete-world regression connecting typed focal truth to structural \u0394T, Reach and trajectory, including UNKNOWN propagation.
+
+- GitHub Actions [run 45044946102](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45044946102), tested commit `78c2b17c6305f2a77c2f48695cae5a73f0f1de83`.
+- Primary: 356/356 PASS (12.436 s).
+- Clean replay: 356/356 PASS (12.408 s).
+- Compilation, source closure, primary/replay byte identity and bytecode-cache checks: PASS.
+- Payload artifact ID `14762722989`; manifest artifact ID `14762538366`.
+
+The run was a deterministic software-contract suite. It did not execute calibration, Monte Carlo, DGP bank generation, scientific estimation or confirmatory execution. It does not establish empirical identification or causal contribution. The typed result remains distinct from the full \u0394T vector, Reach, trajectory, execution, Outcome and Value; the legacy D2 Booleans remain non-authoritative for focal truth. No scientific parameters, seeds, estimands or design decisions were changed, and `main` remains untouched.
