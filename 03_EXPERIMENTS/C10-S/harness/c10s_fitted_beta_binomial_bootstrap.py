@@ -459,13 +459,13 @@ def fitted_beta_binomial_parametric_bootstrap(
                 "globality_basis": certificate.get("globality_basis"),
             }
             if not valid_interior:
-                reason = "F5_GLOBAL_MLE_NOT_CERTIFIED:" + str(certificate_status)
+                reason = "F5_GLOBAL_MLE_NOT_CERTIFIED:" + str(disposition_status)
                 comparison = replace(
                     observed, method_id="F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1",
                     abstention_reason=reason,
                     provenance=observed.provenance + (
                         ("fit_status", "GLOBAL_MLE_CERTIFICATION_ABSTENTION"),
-                        ("global_mle_certificate_status", str(certificate_status)),
+                        ("global_mle_certificate_status", str(disposition_status)),
                     ),
                 )
                 return FittedBetaBinomialBootstrapResult(
