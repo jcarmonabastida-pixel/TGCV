@@ -1,7 +1,7 @@
 # Exploración de naming N1 — Territorios y primera colección
 
 **Identificador:** ECOSYSTEM-NAMING-N1-001  
-**Versión:** 0.3 — segunda expansión creativa desde la idea de generar capacidad para generar  
+**Versión:** 0.4 — comparación estratégica de los diez candidatos prioritarios  
 **Fecha:** 2026-11-22  
 **Estado:** EXPLORATORY — evaluación comparativa preliminar; ninguna propuesta seleccionada, sin clearance de marca ni verificación de dominios.  
 **Documentos rectores:** `ECOSYSTEM_MANIFESTO_v0.2.md`, `ECOSYSTEM_NAMING_BRIEF_v0.2.md`  
@@ -301,3 +301,106 @@ La preferencia interna no sustituye una prueba externa. No se ha realizado test 
 ## Control de cambios
 
 - **v0.3 — 2026-11-22:** segunda expansión creativa, centrada en la capacidad de generar capacidades y nuevas posibilidades. Se añaden candidatos N31–N48 y se define una comparación entre familias semánticas. No se declara ningún nombre seleccionado ni disponible.
+
+
+---
+
+## 12. Comparación estratégica — cinco candidatos iniciales frente a cinco nuevos
+
+Esta comparación aplica los mismos criterios a los diez candidatos prioritarios. Es una evaluación editorial interna, no una prueba con público ni un análisis lingüístico profesional de todos los mercados.
+
+### 12.1 Criterios y ponderación
+
+| Criterio | Peso |
+|---|---:|
+| Coherencia con la idea fundacional: generar capacidad para generar posibilidades | 25% |
+| Naturalidad y pronunciación en español e inglés | 20% |
+| Memorabilidad y facilidad de escritura | 15% |
+| Amplitud para ciencia, aplicación, VALUE, comunidad e impacto | 20% |
+| Personalidad verbal y capacidad de apropiarse de un significado | 20% |
+
+Escala 1–5. Las puntuaciones son juicios comparativos, no probabilidades de éxito ni medidas objetivas.
+
+### 12.2 Matriz
+
+| Candidato | Núcleo 25% | Naturalidad 20% | Recuerdo 15% | Amplitud 20% | Personalidad 20% | Total / 5 |
+|---|---:|---:|---:|---:|---:|---:|
+| **Nuvora** | 4.0 | 4.5 | 4.5 | 4.5 | 4.0 | **4.30** |
+| **Novera** | 3.8 | 4.5 | 4.5 | 4.5 | 3.5 | **4.15** |
+| **Evolvia** | 4.0 | 4.0 | 4.0 | 4.5 | 4.0 | **4.10** |
+| **Orvanta** | 3.8 | 4.0 | 4.0 | 4.5 | 4.5 | **4.13** |
+| **Evoluma** | 3.8 | 4.0 | 4.0 | 4.5 | 3.5 | **3.95** |
+| **Genara** | 4.3 | 4.0 | 4.0 | 4.0 | 3.5 | **3.98** |
+| **Avenira** | 3.7 | 4.0 | 4.0 | 4.5 | 3.5 | **3.93** |
+| **Mutara** | 3.8 | 4.5 | 4.0 | 4.0 | 3.5 | **3.93** |
+| **Posentra** | 4.2 | 3.5 | 3.5 | 4.0 | 4.0 | **3.88** |
+| **Aptara** | 3.8 | 4.0 | 4.0 | 4.0 | 3.5 | **3.85** |
+
+*Nota de cálculo: total ponderado = suma de cada puntuación multiplicada por su peso.*
+
+### 12.3 Lectura crítica
+
+**Nuvora** obtiene la mejor valoración interna porque combina amplitud, sonoridad y una evocación de horizonte/potencial. Su debilidad es que la raíz “nuevo” es frecuente y no expresa por sí misma la dimensión generativa. Puede ser una buena marca paraguas si un descriptor comunica la misión.
+
+**Novera** es sencilla y equilibrada. Sin embargo, se acerca semánticamente a novedad y renovación; no contiene por sí sola la idea distintiva de desarrollar capacidad generativa.
+
+**Evolvia** es una de las que mejor representa proceso y trayectoria. Tiene un vínculo conceptual más directo con evolución, pero podría interpretarse como una marca de sostenibilidad, biología o transformación organizativa genérica.
+
+**Orvanta** destaca por personalidad y amplitud. No explica el proyecto, pero puede adquirir significado propio. Su coste es que exige un descriptor claro y una narrativa consistente desde el primer contacto.
+
+**Evoluma** comunica desarrollo y amplitud, aunque su construcción puede parecer una marca de producto o una combinación artificial.
+
+**Genara** es la más directamente conectada con generar. Precisamente por ello debe probarse si resulta demasiado cercana a nombres personales, raíces comerciales o asociaciones de genética/generación. Tiene una ventaja conceptual, pero no es todavía la más diferenciada.
+
+**Avenira** es abierta y humana, aunque su relación con el núcleo fundacional resulta menos inmediata.
+
+**Mutara** expresa transformación con fuerza, pero la mutación puede sugerir cambio biológico, disrupción o alteración sin propósito; el valor contextual y la creación de capacidades no aparecen espontáneamente.
+
+**Posentra** se acerca a la idea de posibilidades que emergen y se hacen alcanzables. No obstante, su pronunciación y escritura son menos naturales, y puede requerir demasiado esfuerzo para ser recordada.
+
+**Aptara** conecta aptitud y capacidad de actuar, pero tiende a una lectura funcional/tecnológica y pierde la recursividad de generar nuevas capacidades.
+
+### 12.4 Nueva clasificación provisional
+
+**Prioridad creativa para una última depuración:**
+1. **Nuvora** — mejor equilibrio general en esta evaluación.
+2. **Orvanta** — mayor espacio para construir una identidad distintiva.
+3. **Evolvia** — mejor expresión de evolución y trayectorias.
+4. **Genara** — vínculo más directo con la capacidad generativa.
+5. **Novera** — claridad y accesibilidad.
+
+**Reserva:**
+- Evoluma
+- Avenira
+- Mutara
+- Posentra
+- Aptara
+
+Esta prioridad no constituye una shortlist N2. Antes de elevar candidatos, conviene contrastar si alguno tiene colisiones evidentes y realizar una prueba externa. Una puntuación interna alta no compensa un conflicto marcario.
+
+### 12.5 Prueba de arquitectura verbal
+
+Los cinco prioritarios se someten a la misma estructura para comprobar su capacidad de albergar el ecosistema:
+
+- **Nuvora Research** — TGCV and generative systems research
+- **Nuvora Intelligence** — Transformational Intelligence
+- **Nuvora Framework** — VALUE
+- **Nuvora Lab** — exploration and experimentation
+- **Nuvora Community** — learning and collaboration
+
+Repetir la misma estructura con Orvanta, Evolvia, Genara y Novera. Ninguna combinación es nombre de producto aprobado ni tagline final. La prueba sirve para detectar si el nombre paraguas soporta una arquitectura amplia.
+
+### 12.6 Decisión de proceso
+
+No declarar ganador por ranking. La siguiente puerta debe incluir:
+1. revisión de usos comerciales y colisiones evidentes para los cinco prioritarios;
+2. evaluación fonética/semántica en español e inglés;
+3. test externo breve y no inducido;
+4. solo después, shortlist N2 y verificación de los tres dominios .com, .es y .org;
+5. clearance marcario profesional antes de adoptar o registrar.
+
+No se ha realizado en esta actualización búsqueda de marcas, consulta registral ni verificación de dominios.
+
+## Control de cambios
+
+- **v0.4 — 2026-11-22:** comparación homogénea de diez candidatos prioritarios (cinco de la primera colección y cinco de la segunda), matriz ponderada, lectura crítica y clasificación creativa provisional. Se mantiene explícitamente la ausencia de validación externa y clearance registral.
