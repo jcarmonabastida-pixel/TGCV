@@ -459,6 +459,99 @@ class SyntheticComponentTests(unittest.TestCase):
             for unit, qx in zip(world.units, world.q_x)
         ))
 
+
+    def test_world_builder_attaches_typed_d2_focal_truth_without_legacy_translation(self):
+        from c10s_focal_accessibility import (
+            D2FocalAccessibilitySpecification, FocalAccessibilityInput,
+            FocalDependencyRoute, FocalPredicateEvidence, SemanticTransformationMatch,
+        )
+        from c10s_synthetic_components import SyntheticWorldBuilder, SyntheticWorldConfig
+
+        unit_id = "UE-000001"
+
+        def focal_input(snapshot_id, component_state):
+            predicates = tuple(
+                FocalPredicateEvidence(
+                    role, "1", "1", "COMPLETE", unit_id, "TAU2", "TAU2-v1",
+                    "BOUNDARY-1", "CONTEXT-1", snapshot_id, "SNAP-v1",
+                    "PRED-v1", f"PRED-PROV-{role}-{snapshot_id}",
+                )
+                for role in ("ID", "REL", "COND", "AUTH", "RES")
+            )
+            names = ("C_install", "C_integrity", "C_compat", "C_oper")
+            components = tuple((name, component_state) for name in names)
+            route = FocalDependencyRoute(
+                "ROUTE-FOCAL", "ROUTE-v1", unit_id, "TAU2", "TAU2-v1",
+                "BOUNDARY-1", "CONTEXT-1", snapshot_id, "SNAP-v1",
+                components, "0", components, "0", "COMPLETE",
+                f"ROUTE-PROV-{snapshot_id}",
+            )
+            return FocalAccessibilityInput(
+                unit_id, "TAU2", "TAU2-v1", "BOUNDARY-1", "CONTEXT-1",
+                snapshot_id, "SNAP-v1", predicates, (route,), True,
+                "0", "0", "COMPLETE", "BLOCK-v1", f"BLOCK-PROV-{snapshot_id}",
+                True, "ROUTE-CATALOG-v1", f"CAT-PROV-{snapshot_id}",
+                f"CAT-OBS-PROV-{snapshot_id}", "ALL_ADMISSIBLE_ROUTES", "AF-v1",
+            )
+
+        baseline = focal_input("SNAP-BASE", "0")
+        post0 = focal_input("SNAP-Z0", "0")
+        post1 = focal_input("SNAP-Z1", "1")
+        matches = (
+            (0, SemanticTransformationMatch(
+                unit_id, "BOUNDARY-1", "CONTEXT-1", "TAU2", "TAU2-v1",
+                "TAU2", "TAU2-v1", "SNAP-BASE", "SNAP-v1",
+                "SNAP-Z0", "SNAP-v1", "MATCHED", "MATCH-v1", "MATCH-Z0",
+            )),
+            (1, SemanticTransformationMatch(
+                unit_id, "BOUNDARY-1", "CONTEXT-1", "TAU2", "TAU2-v1",
+                "TAU2", "TAU2-v1", "SNAP-BASE", "SNAP-v1",
+                "SNAP-Z1", "SNAP-v1", "MATCHED", "MATCH-v1", "MATCH-Z1",
+            )),
+        )
+        spec = D2FocalAccessibilitySpecification(
+            unit_id, baseline, ((0, post0), (1, post1)), matches,
+            "D2-AF-SPEC-v1", "D2-AF-SPEC-PROV",
+        )
+        world_config = SyntheticWorldConfig(
+            "WORLD-TYPED-AF", "001", "D2-TYPED-AF", "001",
+            "ROSTER-TYPED-AF", "001", "UE", 1, 17, 1,
+            (("H0", 1.0),), 1, 1.0, 0.0, 1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0, (1.0,),
+        )
+        d2_config = D2MechanismConfig(
+            "D2-TYPED-AF", "001", ("B0", "B1"), ("001", "001"),
+            ("ART0", "ART1"), ("ACTOR0", "ACTOR1"),
+            (0.0, 1.0), (0.8, 0.8), (0.0, 0.0), (0.9, 0.9), (0.8, 0.8),
+            (((True, True, True, True), 1.0),), "MECH-001",
+        )
+        world = SyntheticWorldBuilder().generate(
+            world_config, d2_config, {unit_id: spec},
+        )
+        world.validate()
+        focal_truth = world.units[0].d2_potentials.focal_accessibility_truth
+        self.assertIsNotNone(focal_truth)
+        self.assertEqual(focal_truth.baseline.accessibility_truth, "0")
+        self.assertEqual(focal_truth.opening_by_z[0][1].d_f_truth, "0")
+        self.assertEqual(focal_truth.opening_by_z[1][1].d_f_truth, "1")
+
+    def test_world_builder_rejects_partial_typed_d2_focal_roster(self):
+        from c10s_synthetic_components import SyntheticWorldBuilder, SyntheticWorldConfig
+        config = SyntheticWorldConfig(
+            "WORLD-PARTIAL-AF", "001", "D2-PARTIAL-AF", "001",
+            "ROSTER-PARTIAL-AF", "001", "UE", 2, 19, 1,
+            (("H0", 1.0),), 1, 1.0, 0.0, 1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0, (0.5, 0.5),
+        )
+        d2_config = D2MechanismConfig(
+            "D2-PARTIAL-AF", "001", ("B0", "B1"), ("001", "001"),
+            ("ART0", "ART1"), ("ACTOR0", "ACTOR1"),
+            (0.0, 1.0), (0.8, 0.8), (0.0, 0.0), (0.9, 0.9), (0.8, 0.8),
+            (((True, True, True, True), 1.0),), "MECH-001",
+        )
+        with self.assertRaisesRegex(ContractError, "every and only"):
+            SyntheticWorldBuilder().generate(config, d2_config, {})
+
     def test_world_builder_rejects_qx_masses_that_are_not_explicitly_normalized(self):
         from c10s_synthetic_components import SyntheticWorldBuilder, SyntheticWorldConfig
         config = SyntheticWorldConfig(
