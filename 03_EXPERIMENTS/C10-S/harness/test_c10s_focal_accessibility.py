@@ -132,6 +132,20 @@ class FocalAccessibilityTests(unittest.TestCase):
         self.assertEqual(result.d_f_truth, "1")
         self.assertEqual(result.d_f_observed, "1")
 
+    def test_explicit_adjudication_can_match_semantic_identity_across_versions(self):
+        baseline = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-BASE", global_block="1"))
+        post = adjudicate_focal_accessibility(self.source(
+            snapshot_id="SNAP-POST", transformation_id="TAU2-v4",
+            transformation_version="TAU2-SEMVER-4",
+        ))
+        identity = SemanticTransformationMatch(
+            "UE-1", "BND-1", "CTX-1", "TAU2-v3", "TAU2-SEMVER-3",
+            "TAU2-v4", "TAU2-SEMVER-4", "SNAP-BASE", "SNAP-POST",
+            "MATCHED", "TID-MATCH-v1", "ADJUDICATION-005",
+        )
+        result = derive_focal_opening(baseline, post, identity)
+        self.assertEqual(result.d_f_truth, "1")
+
     def test_unmatched_semantic_identity_is_not_comparable(self):
         baseline = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-BASE", global_block="1"))
         post = adjudicate_focal_accessibility(self.source(snapshot_id="SNAP-POST", transformation_id="TAU2-v4", transformation_version="TAU2-SEMVER-4"))
