@@ -846,6 +846,144 @@ class SyntheticComponentTests(unittest.TestCase):
         with self.assertRaises(ContractError):
             StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("Outcome", "post"),)).validate()
 
+
+    def test_typed_d2_focal_truth_drives_full_delta_reach_and_trajectory(self):
+        from c10s_focal_accessibility import (
+            D2FocalAccessibilitySpecification, FocalAccessibilityInput,
+            FocalDependencyRoute, FocalPredicateEvidence, SemanticTransformationMatch,
+        )
+        from c10s_synthetic_components import SyntheticWorldBuilder, SyntheticWorldConfig
+
+        unit_id = "UE-000001"
+
+        def focal_input(snapshot_id, component_state):
+            predicates = tuple(
+                FocalPredicateEvidence(
+                    role, "1", "1", "COMPLETE", unit_id, "TAU-FOCAL", "v1",
+                    "BOUNDARY-1", "CONTEXT-1", snapshot_id, "SNAP-v1",
+                    "AF-PRED-v1", f"AF-PROV-{role}-{snapshot_id}",
+                )
+                for role in ("ID", "REL", "COND", "AUTH", "RES")
+            )
+            components = tuple(
+                (name, component_state)
+                for name in ("C_install", "C_integrity", "C_compat", "C_oper")
+            )
+            route = FocalDependencyRoute(
+                "ROUTE-FOCAL", "ROUTE-v1", unit_id, "TAU-FOCAL", "v1",
+                "BOUNDARY-1", "CONTEXT-1", snapshot_id, "SNAP-v1",
+                components, "0", components, "0", "COMPLETE",
+                f"ROUTE-PROV-{snapshot_id}",
+            )
+            return FocalAccessibilityInput(
+                unit_id, "TAU-FOCAL", "v1", "BOUNDARY-1", "CONTEXT-1",
+                snapshot_id, "SNAP-v1", predicates, (route,), True,
+                "0", "0", "COMPLETE", "BLOCK-v1", f"BLOCK-PROV-{snapshot_id}",
+                True, "ROUTE-CATALOG-v1", f"CAT-PROV-{snapshot_id}",
+                f"CAT-OBS-PROV-{snapshot_id}", "ALL_ADMISSIBLE_ROUTES", "AF-v1",
+            )
+
+        baseline = focal_input("SNAP-BASE", "0")
+        post0 = focal_input("SNAP-Z0", "0")
+        post1 = focal_input("SNAP-Z1", "1")
+        matches = (
+            (0, SemanticTransformationMatch(
+                unit_id, "BOUNDARY-1", "CONTEXT-1", "TAU-FOCAL", "v1",
+                "TAU-FOCAL", "v1", "SNAP-BASE", "SNAP-v1",
+                "SNAP-Z0", "SNAP-v1", "MATCHED", "MATCH-v1", "MATCH-Z0",
+            )),
+            (1, SemanticTransformationMatch(
+                unit_id, "BOUNDARY-1", "CONTEXT-1", "TAU-FOCAL", "v1",
+                "TAU-FOCAL", "v1", "SNAP-BASE", "SNAP-v1",
+                "SNAP-Z1", "SNAP-v1", "MATCHED", "MATCH-v1", "MATCH-Z1",
+            )),
+        )
+        spec = D2FocalAccessibilitySpecification(
+            unit_id, "ROUTE-FOCAL", baseline, ((0, post0), (1, post1)),
+            matches, "D2-AF-SPEC-v1", "D2-AF-SPEC-PROV",
+        )
+        world_config = SyntheticWorldConfig(
+            "WORLD-TYPED-FULL", "001", "D2-TYPED-FULL", "001",
+            "ROSTER-TYPED-FULL", "001", "UE", 1, 23, 1,
+            (("H0", 1.0),), 1, 1.0, 1.0, 1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0, (1.0,),
+        )
+        d2_config = D2MechanismConfig(
+            "D2-TYPED-FULL", "001", ("B0", "B1"), ("001", "001"),
+            ("ART0", "ART1"), ("ACT0", "ACT1"),
+            (0.0, 1.0), (1.0, 1.0), (0.0, 0.0), (1.0, 1.0), (1.0, 1.0),
+            (((True, True, True, True), 1.0),), "MECH-001",
+        )
+        structural_config = D2StructuralGenerationConfig(
+            "STRUCT-TYPED-FULL", "001", "TAU-FOCAL", "v1",
+            "BOUNDARY-1", "CONTEXT-1", "CATALOG-1",
+            (
+                StructuralAtom("U", "TAU-ALT", "TRANSFORMATION", "v1", 1, (("kind", "alternative"),)),
+                StructuralAtom("R", "REL-1", "RELATION", "v1", 1, (("edge", "focal-route"),)),
+                StructuralAtom("C", "COND-1", "CONDITION", "v1", 1, (("authorization", "true"),)),
+                StructuralAtom("X", "CTX-1", "CONTEXT", "v1", 1, (("environment", "A"),)),
+            ),
+        )
+        reach_config = D2ReachGenerationConfig(
+            "REACH-TYPED-FULL", "001", 5.0,
+            ("TAU-FOCAL", "TAU-ALT"), ("TARGET-FOCAL",),
+            (D2ReachRouteTemplate(
+                "ROUTE-FOCAL", "TARGET-FOCAL",
+                (
+                    D2ReachStepTemplate(
+                        "TAU-FOCAL", "S0", "S1", 1,
+                        predicate_atom_bindings=(("AUTH", "C", "COND-1"),),
+                    ),
+                    D2ReachStepTemplate("TAU-ALT", "S1", "S2", 1),
+                ),
+                (("R", "REL-1"),), 1, "FOCAL",
+            ),),
+            True, True, True, True, True, False,
+        )
+        trajectory_config = D2TrajectoryGenerationConfig(
+            "TRAJECTORY-TYPED-FULL", "001",
+            (("TARGET-FOCAL", 1.0),),
+            (("ROUTE-FOCAL", 1.0),),
+            (("ROUTE-FOCAL", 1.0),),
+            (("TAU-FOCAL", 1.0), ("TAU-ALT", 1.0)),
+            "TYPED-FULL-SEED",
+        )
+        world, pairs, reach, trajectories = SyntheticWorldBuilder().generate_complete_with_trajectories(
+            world_config, d2_config, structural_config, reach_config,
+            trajectory_config, {unit_id: spec},
+        )
+        # The old Boolean fixture deliberately says baseline-accessible; typed truth is authoritative.
+        self.assertTrue(world.units[0].d2_baseline.focal_accessible_pre)
+        typed = world.units[0].d2_potentials.focal_accessibility_truth
+        self.assertEqual(typed.baseline.accessibility_truth, "0")
+        self.assertEqual(typed.opening_by_z[1][1].d_f_truth, "1")
+        self.assertEqual(pairs[(unit_id, 1)].baseline.atoms[0].state, 0)
+        self.assertEqual(pairs[(unit_id, 1)].post.atoms[0].state, 1)
+
+        deltas = {(row.unit_id, row.potential_z): row for row in evaluate_d2_structural_deltas(world, pairs)}
+        self.assertEqual(deltas[(unit_id, 0)].delta_state, 0)
+        self.assertEqual(deltas[(unit_id, 1)].delta_state, 1)
+        self.assertTrue(any(
+            row.baseline_id == "TAU-FOCAL" and row.change_kind == "MODIFIED"
+            for row in deltas[(unit_id, 1)].delta_u
+        ))
+        self.assertFalse(any(
+            row.change_kind in ("ADDED", "REMOVED", "MODIFIED")
+            for component in (deltas[(unit_id, 1)].delta_r,
+                              deltas[(unit_id, 1)].delta_c,
+                              deltas[(unit_id, 1)].delta_x)
+            for row in component
+        ))
+        reach_row = next(row for row in reach.contrasts if row.unit_id == unit_id and row.z == 1)
+        self.assertEqual(dict(reach_row.baseline.target_states)["TARGET-FOCAL"], 0)
+        self.assertEqual(dict(reach_row.post.target_states)["TARGET-FOCAL"], 1)
+        trajectory = next(
+            row for row in trajectories.trajectories
+            if row.unit_id == unit_id and row.z == 1 and row.target_state == "TARGET-FOCAL"
+        )
+        self.assertEqual(trajectory.trajectory_status, "COMPLETED")
+        self.assertEqual(trajectory.terminal_state, "S2")
+
     def test_d2_world_generator_materializes_structural_snapshots_for_every_potential(self):
         from c10s_synthetic_components import SyntheticWorldBuilder, SyntheticWorldConfig
         d2_config = D2MechanismConfig(
