@@ -431,3 +431,167 @@ def derive_focal_opening(
         identity.match_state, truth, observed,
         identity.matching_contract_version, _digest(payload),
     )
+
+
+@dataclass(frozen=True)
+class D2FocalAccessibilitySpecification:
+    """Explicit D2 truth inputs for one unit's baseline and both Z potentials."""
+    unit_id: str
+    baseline: FocalAccessibilityInput
+    post_by_z: tuple[tuple[int, FocalAccessibilityInput], ...]
+    identity_matches_by_z: tuple[tuple[int, SemanticTransformationMatch], ...]
+    specification_version: str
+    provenance_ref: str
+
+    def validate(self) -> None:
+        if not all((self.unit_id, self.specification_version, self.provenance_ref)):
+            raise FocalAccessibilityContractError("D2 focal specification identity/version/provenance is required")
+        if tuple(z for z, _ in self.post_by_z) != (0, 1):
+            raise FocalAccessibilityContractError("D2 focal post inputs must preserve separate Z=0 and Z=1 potentials")
+        if tuple(z for z, _ in self.identity_matches_by_z) != (0, 1):
+            raise FocalAccessibilityContractError("D2 semantic identity adjudications must cover Z=0 and Z=1 exactly")
+        if self.baseline.unit_id != self.unit_id:
+            raise FocalAccessibilityContractError("D2 baseline focal input unit mismatch")
+        self.baseline.validate()
+        for z, source in self.post_by_z:
+            if source.unit_id != self.unit_id:
+                raise FocalAccessibilityContractError(f"D2 post-Z={z} focal input unit mismatch")
+            source.validate()
+
+
+@dataclass(frozen=True)
+class D2FocalPotentialTruth:
+    """Typed A_f*/D_f* truth for baseline and both potential policy worlds."""
+    unit_id: str
+    baseline: FocalAccessibilityResult
+    post_by_z: tuple[tuple[int, FocalAccessibilityResult], ...]
+    opening_by_z: tuple[tuple[int, FocalOpeningResult], ...]
+    specification_version: str
+    provenance_ref: str
+    result_sha256: str
+
+    def validate(self) -> None:
+        if not all((self.unit_id, self.specification_version, self.provenance_ref)):
+            raise FocalAccessibilityContractError("D2 focal truth identity/version/provenance is required")
+        if self.baseline.unit_id != self.unit_id:
+            raise FocalAccessibilityContractError("D2 focal truth baseline unit mismatch")
+        if tuple(z for z, _ in self.post_by_z) != (0, 1):
+            raise FocalAccessibilityContractError("D2 focal truth must preserve Z=0 and Z=1 post states")
+        if tuple(z for z, _ in self.opening_by_z) != (0, 1):
+            raise FocalAccessibilityContractError("D2 focal truth must preserve Z=0 and Z=1 opening states")
+        if any(result.unit_id != self.unit_id for _, result in self.post_by_z):
+            raise FocalAccessibilityContractError("D2 focal post-state unit mismatch")
+        if any(result.unit_id != self.unit_id for _, result in self.opening_by_z):
+            raise FocalAccessibilityContractError("D2 focal opening unit mismatch")
+        if len(self.result_sha256) != 64 or any(c not in "0123456789abcdef" for c in self.result_sha256):
+            raise FocalAccessibilityContractError("D2 focal truth result digest must be lowercase SHA-256")
+
+
+def _d2_non_dependency_signature(source: FocalAccessibilityInput) -> tuple:
+    predicates = tuple(sorted(
+        (row.role, row.truth_state, row.predicate_version)
+        for row in source.predicates
+    ))
+    routes = tuple(sorted(
+        (
+            row.route_id,
+            row.route_version,
+            tuple(name for name, _ in row.dependency_predicates),
+            row.local_block_state,
+        )
+        for row in source.routes
+    ))
+    return (
+        predicates,
+        source.global_block_state,
+        source.global_block_version,
+        source.global_block_scope,
+        source.route_catalog_version,
+        source.route_catalog_exhaustive,
+        routes,
+    )
+
+
+def adjudicate_d2_focal_potentials(
+    specification: D2FocalAccessibilitySpecification,
+) -> D2FocalPotentialTruth:
+    """Adjudicate D2 A_f*/D_f* without translating legacy stage fields.
+
+    The clean D2 nucleus requires a structurally inaccessible baseline caused
+    by DEP=0, with the other focal predicates true and basal authorization=1.
+    Across baseline and both Z worlds, ID/REL/COND/AUTH/RES, universal/local
+    blocks and the exhaustive route catalogue remain invariant. Only the
+    named technical DEP components may differ by policy. Unknown post states
+    remain unknown; they are never imputed from attempt, receipt or install.
+    """
+    specification.validate()
+    sources = (
+        specification.baseline,
+        specification.post_by_z[0][1],
+        specification.post_by_z[1][1],
+    )
+    baseline = specification.baseline
+    baseline_result = adjudicate_focal_accessibility(baseline)
+    baseline_predicates = {row.role: row.truth_state for row in baseline.predicates}
+
+    if baseline_result.accessibility_truth != "0" or baseline_result.dep_truth != "0":
+        raise FocalAccessibilityContractError(
+            "D2 clean nucleus requires baseline A_f*=0 specifically through exhaustive DEP=0"
+        )
+    if not baseline.route_catalog_exhaustive:
+        raise FocalAccessibilityContractError(
+            "D2 clean baseline requires an exhaustive admissible-route catalogue"
+        )
+    if any(baseline_predicates.get(role) != "1" for role in ("ID", "REL", "COND", "AUTH", "RES")):
+        raise FocalAccessibilityContractError(
+            "D2 clean baseline requires ID/REL/COND/AUTH/RES=1, including C_auth,base=1"
+        )
+    if baseline.global_block_state != "0":
+        raise FocalAccessibilityContractError(
+            "D2 clean baseline requires no universal BLOCK; focal inaccessibility must arise through DEP"
+        )
+
+    reference_signature = _d2_non_dependency_signature(baseline)
+    for source in sources[1:]:
+        if source.contract_version != baseline.contract_version:
+            raise FocalAccessibilityContractError("D2 focal contract version changes across baseline/Z potentials")
+        if (source.boundary_id, source.context_id) != (baseline.boundary_id, baseline.context_id):
+            raise FocalAccessibilityContractError("D2 focal boundary/context changes across potential worlds")
+        if _d2_non_dependency_signature(source) != reference_signature:
+            raise FocalAccessibilityContractError(
+                "D2 isolation violation: non-DEP predicates, blocks or route catalogue differ across potential worlds"
+            )
+        values = {row.role: row.truth_state for row in source.predicates}
+        if any(values.get(role) != "1" for role in ("ID", "REL", "COND", "AUTH", "RES")):
+            raise FocalAccessibilityContractError(
+                "D2 isolated policy contrast requires ID/REL/COND/AUTH/RES=1 in both potential worlds"
+            )
+        if source.global_block_state != "0":
+            raise FocalAccessibilityContractError("D2 isolated policy contrast cannot introduce a universal BLOCK")
+
+    post_results = []
+    opening_results = []
+    matches = dict(specification.identity_matches_by_z)
+    for z, source in specification.post_by_z:
+        post_result = adjudicate_focal_accessibility(source)
+        opening = derive_focal_opening(
+            baseline_result, post_result, matches[z],
+        )
+        post_results.append((z, post_result))
+        opening_results.append((z, opening))
+
+    payload = {
+        "unit_id": specification.unit_id,
+        "specification_version": specification.specification_version,
+        "provenance_ref": specification.provenance_ref,
+        "baseline_result_sha256": baseline_result.result_sha256,
+        "post_result_sha256_by_z": tuple((z, row.result_sha256) for z, row in post_results),
+        "opening_result_sha256_by_z": tuple((z, row.result_sha256) for z, row in opening_results),
+    }
+    result = D2FocalPotentialTruth(
+        specification.unit_id, baseline_result, tuple(post_results),
+        tuple(opening_results), specification.specification_version,
+        specification.provenance_ref, _digest(payload),
+    )
+    result.validate()
+    return result
