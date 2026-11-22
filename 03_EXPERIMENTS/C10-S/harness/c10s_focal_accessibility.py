@@ -91,8 +91,8 @@ class FocalPredicateEvidence:
 class FocalDependencyRoute:
     """One admissible technical route for the same semantic transformation.
 
-    dependency_state is the conjunction of named technical requirements for
-    this route. local_block_state means 1=route blocked, 0=not blocked, ?=unknown.
+    Named dependency predicates are retained separately. local_block_state means
+    1=route blocked, 0=not blocked, ?=unknown.
     A local block does not imply a universal BLOCK_f*.
     """
     route_id: str
@@ -296,4 +296,115 @@ def adjudicate_focal_accessibility(
         payload["predicate_truth"], tuple(route_truth),
         tuple(zip((r.route_id for r in source.routes), observed_route_states)),
         dep_truth, global_block, accessibility, observed, coverage_complete, _digest(payload),
+    )
+
+
+IdentityMatchState = Literal["MATCHED", "NOT_MATCHED", "UNRESOLVED"]
+OpeningState = Literal["1", "0", "?", "NOT_COMPARABLE"]
+
+
+@dataclass(frozen=True)
+class SemanticTransformationMatch:
+    """Independent semantic-identity adjudication for the same focal tau2."""
+    unit_id: str
+    boundary_id: str
+    context_id: str
+    baseline_transformation_id: str
+    baseline_transformation_version: str
+    post_transformation_id: str
+    post_transformation_version: str
+    baseline_snapshot_id: str
+    post_snapshot_id: str
+    match_state: IdentityMatchState
+    matching_contract_version: str
+    adjudication_evidence_ref: str
+
+    def validate(self) -> None:
+        if self.match_state not in ("MATCHED", "NOT_MATCHED", "UNRESOLVED"):
+            raise FocalAccessibilityContractError("semantic identity match state is invalid")
+        if not all((self.unit_id, self.boundary_id, self.context_id,
+                    self.baseline_transformation_id, self.baseline_transformation_version,
+                    self.post_transformation_id, self.post_transformation_version,
+                    self.baseline_snapshot_id, self.post_snapshot_id,
+                    self.matching_contract_version, self.adjudication_evidence_ref)):
+            raise FocalAccessibilityContractError("semantic identity adjudication requires full provenance")
+
+
+@dataclass(frozen=True)
+class FocalOpeningResult:
+    unit_id: str
+    baseline_snapshot_id: str
+    post_snapshot_id: str
+    semantic_match_state: IdentityMatchState
+    d_f_truth: OpeningState
+    d_f_observed: OpeningState
+    matching_contract_version: str
+    result_sha256: str
+
+
+def derive_focal_opening(
+    baseline: FocalAccessibilityResult,
+    post: FocalAccessibilityResult,
+    identity: SemanticTransformationMatch,
+) -> FocalOpeningResult:
+    """Derive D_f*=I(A_f*(t0)=0 AND A_f*(t1)=1) only for the same matched tau2.
+
+    Semantic matching is an explicit independently evidenced input. Different
+    identifiers/versions are never auto-merged, and a changed evidence hash is
+    not used as a semantic identity decision.
+    """
+    identity.validate()
+    if baseline.unit_id != post.unit_id or baseline.unit_id != identity.unit_id:
+        raise FocalAccessibilityContractError("baseline/post focal unit identity mismatch")
+    if (baseline.boundary_id, baseline.context_id) != (post.boundary_id, post.context_id):
+        raise FocalAccessibilityContractError("baseline/post boundary or context is not comparable")
+    if (baseline.boundary_id, baseline.context_id) != (identity.boundary_id, identity.context_id):
+        raise FocalAccessibilityContractError("identity adjudication boundary/context mismatch")
+    if baseline.snapshot_id == post.snapshot_id:
+        raise FocalAccessibilityContractError("D_f* requires distinct baseline and post snapshots")
+    if (baseline.transformation_id, baseline.transformation_version,
+            post.transformation_id, post.transformation_version,
+            baseline.snapshot_id, post.snapshot_id) != (
+        identity.baseline_transformation_id, identity.baseline_transformation_version,
+        identity.post_transformation_id, identity.post_transformation_version,
+        identity.baseline_snapshot_id, identity.post_snapshot_id
+    ):
+        raise FocalAccessibilityContractError("semantic identity adjudication does not bind exact focal inputs")
+
+    if identity.match_state == "NOT_MATCHED":
+        truth: OpeningState = "NOT_COMPARABLE"
+        observed: OpeningState = "NOT_COMPARABLE"
+    elif identity.match_state == "UNRESOLVED":
+        truth = "?"
+        observed = "?"
+    else:
+        before, after = baseline.accessibility_truth, post.accessibility_truth
+        if "?" in (before, after):
+            truth = "?"
+        else:
+            truth = "1" if (before, after) == ("0", "1") else "0"
+        observed_before, observed_after = (
+            baseline.observed_accessibility, post.observed_accessibility
+        )
+        if "?" in (observed_before, observed_after):
+            observed = "?"
+        else:
+            observed = "1" if (observed_before, observed_after) == ("0", "1") else "0"
+
+    payload = {
+        "unit_id": baseline.unit_id,
+        "baseline_snapshot_id": baseline.snapshot_id,
+        "post_snapshot_id": post.snapshot_id,
+        "semantic_match_state": identity.match_state,
+        "d_f_truth": truth,
+        "d_f_observed": observed,
+        "matching_contract_version": identity.matching_contract_version,
+        "adjudication_evidence_ref": identity.adjudication_evidence_ref,
+        "baseline_accessibility_sha256": baseline.result_sha256,
+        "post_accessibility_sha256": post.result_sha256,
+    }
+    return FocalOpeningResult(
+        baseline.unit_id, baseline.snapshot_id, post.snapshot_id,
+        identity.match_state, truth, observed,
+        identity.matching_contract_version, _digest(payload),
     )
