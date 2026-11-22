@@ -445,3 +445,35 @@ The StructuralReachabilityEngine already has useful trivalent route aggregation 
 7. Add adversarial regressions: C_info changes alone; C_other absent; resource/capacity non-necessary versus necessary; D_support identity versus compatibility; local block with valid alternative; universal block; incomplete route catalogue; UNKNOWN propagation; pre/post identity mismatch; and D_f* with an unresolved baseline or post state.
 
 This correction is implementation work under the existing S-lane mandate; it does not approve or freeze the candidate formula, select confirmatory probabilities, change DEC-C10-066/067, authorize calibration/scientific execution, or promote main. Existing conceptual decisions are not reopened.
+
+
+### 12.2. First isolated typed adjudicator implementation — 2026-11-22
+
+**Status:** IMPLEMENTED IN RESEARCH BRANCH / NOT EXECUTED / NOT INTEGRATED INTO LEGACY D2 GENERATOR / NOT CONFIRMATORY.
+
+New files:
+- `03_EXPERIMENTS/C10-S/harness/c10s_focal_accessibility.py`
+- `03_EXPERIMENTS/C10-S/harness/test_c10s_focal_accessibility.py`
+
+The isolated module introduces:
+- explicit typed roles ID, REL, COND, AUTH and RES, each bound to unit, semantic transformation, boundary, context, snapshot, predicate version and provenance;
+- separate DGP `truth_state` and observed/evidence state, so incomplete measurement coverage cannot rewrite structural truth;
+- named technical DEP components per route, retaining separate C_install/C_integrity/C_compat/C_oper evidence rather than a single opaque Boolean;
+- route-local BLOCK distinct from the explicit universal BLOCK_f* scoped to all admissible routes;
+- existential DEP aggregation across alternative routes, with structural zero permitted only under an exhaustive route catalog; an empty but exhaustive catalog yields DEP=0, while an incomplete catalog yields ?;
+- strong-Kleene 1/0/? propagation without scores or compensation;
+- separate observed accessibility and coverage-completeness outputs.
+
+The initial adversarial test module contains 13 cases covering positive conjunction, alternative routes, local versus universal blocking, incomplete/exhaustive route catalogs (including empty), named dependency components, UNKNOWN propagation, C_info/C_other rejection, truth-versus-observation separation, route identity mismatch and invalid block scope.
+
+**Boundary:** this module does not modify `D2Baseline`, `D2PotentialStage`, `generate_d2_potentials`, EventHistory, the existing Reach engine, or the complete-world pipeline. It deliberately does not translate installation/receipt or any legacy Boolean into A_f*. It is a new candidate adjudication component only. Tests have been authored but not executed because the canonical bootstrap currently grants design/recovery only and no execution authorization. Static review does not establish test PASS or scientific validity.
+
+### 12.3. Remaining integration work
+
+Before the candidate can be relied upon by D2:
+1. Reconcile predicate sources and material invariants against the path/temporal evidence matrix and the existing route/instance identity contracts.
+2. Define a typed mapping from the DGP's actual material evidence into the five base predicates and route-specific dependency components; no values may be inferred from labels or downstream events.
+3. Define comparable baseline/post snapshots for the same semantic `τ2`, then derive `D_f*` preserving 1/0/?.
+4. Integrate the adjudicator into the D2 potential/world composition without changing legacy fields' historical meaning; expose legacy outputs as legacy until the migration is separately reviewed.
+5. Add end-to-end regressions for pre/post identity mismatch, D_f* derivation, alternative routes, universal blockers, evidence coverage, and downstream separation from ΔE_T, execution, Outcome and Value.
+6. Only after the source integration and governed review, decide whether a deterministic software-test authorization is appropriate. No scientific or Monte Carlo execution is authorized here.
