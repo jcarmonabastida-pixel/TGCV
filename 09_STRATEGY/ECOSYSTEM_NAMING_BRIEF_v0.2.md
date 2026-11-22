@@ -1,8 +1,8 @@
 # Strategic Naming Brief — Identidad del ecosistema de potencial, transformación generativa e inteligencia transformacional
 
 **Identificador:** ECOSYSTEM-NAMING-BRIEF-002  
-**Versión:** 0.3 — criterio semántico vinculante para la búsqueda de identidad  
-**Fecha:** 2026-11-21  
+**Versión:** 0.4 — integración conceptual y naming de identidad propia  
+**Fecha:** 2026-11-23  
 **Estado:** DRAFT — criterios para investigación de nombres; no hay marca seleccionada ni autorización de registro.  
 **Documento rector:** `ECOSYSTEM_MANIFESTO_v0.2.md`  
 **Rama:** `strategy/afluya-ecosystem-v0.2`
@@ -223,3 +223,75 @@ Las cuatro primeras son filtros semánticos eliminatorios. Si un nombre no las s
 
 ### Control de cambios
 - **v0.3 — 2026-11-22:** se incorpora como regla vinculante la búsqueda semántica desde «desarrollar la capacidad de hacer posibles nuevas cosas». Se priorizan palabras y expresiones reales con conexión directa; se excluyen neologismos arbitrarios, metáforas genéricas y justificaciones retrospectivas. Se añaden filtros eliminatorios y disciplina para las rondas.
+
+
+## 16. Evolución del método: concepto integrado e identidad de marca acuñada
+
+La exploración reciente confirma que la búsqueda no debe limitarse a palabras comunes del diccionario ni a términos descriptivos del proceso. Se admite explorar **una palabra de marca acuñada**, siempre que su construcción sea natural, su significado pueda defenderse y su conexión con el proyecto no dependa de una explicación inventada a posteriori.
+
+### 16.1 Concepto que debe integrar
+
+La identidad debe evocar conjuntamente:
+
+- **Generative Systems:** sistemas con capacidad para generar nuevas configuraciones, capacidades y posibilidades.
+- **Intelligent Transformation:** transformación comprendida, orientada y capaz de modificar lo que un sistema puede hacer.
+- **Value:** construcción de valor a partir de las nuevas posibilidades y resultados, evaluados en su contexto.
+
+La relación conceptual puede expresarse como:
+
+**Generative Systems → Intelligent Transformation → Value**
+
+Esta secuencia es una guía de posicionamiento, no una afirmación de causalidad científica ya demostrada. La marca debe poder representar los tres pilares como una unidad, sin limitarse a nombrar uno y añadir los otros mediante un relato explicativo.
+
+### 16.2 Libertad formal con exigencia semántica
+
+Se permiten:
+- palabras existentes con significado pertinente;
+- raíces reconocibles combinadas de manera natural;
+- contracciones o fusiones breves;
+- neologismos de marca, si son pronunciables, memorables y semánticamente defendibles;
+- una palabra de marca acompañada de un descriptor que haga explícitos los tres pilares.
+
+No se permite:
+- atribuir a una raíz significados que no tiene;
+- inventar expansiones de letras o sílabas para justificar el nombre;
+- acumular fragmentos de «Gen», «Trans», «Value» u otros términos sin una construcción lingüística convincente;
+- presentar una asociación sonora o una metáfora genérica como si fuera integración conceptual;
+- sacrificar naturalidad y personalidad para comprimir literalmente los tres pilares.
+
+**Principio rector actualizado: tres pilares obligatorios en el significado; libertad absoluta en la forma del nombre.**
+
+### 16.3 Referencia de tipo de construcción
+
+La propuesta externa **GenValis** se incorpora únicamente como referencia del tipo de operación creativa que merece explorarse: una palabra breve, con apariencia de nombre propio, pronunciable y construida para sugerir una identidad de marca, en lugar de una palabra descriptiva del diccionario.
+
+No se considera candidato aprobado ni recomendado. La explicación etimológica ofrecida para GenValis no se acepta como demostrada por el mero hecho de que sus sílabas puedan asociarse retrospectivamente a varios conceptos. Además, se ha identificado al menos un uso empresarial del nombre, por lo que no debe tratarse como una oportunidad de identidad libre.
+
+Otras propuestas recibidas en la misma exploración —Syntheva, Nexora, Veltrix y Valenis— tampoco se incorporan como candidatas aprobadas. Las referencias preliminares de uso comercial o dominio asociadas a ellas deben servir como advertencia metodológica, no como dictamen registral.
+
+### 16.4 Filtro integrado de admisión
+
+Todo candidato, sea palabra existente o acuñada, debe superar estos filtros en este orden:
+
+1. **Integración conceptual:** explicar de forma directa cómo evoca Generative Systems, Intelligent Transformation y Value. Si uno de los pilares solo aparece por asociación forzada, descartar.
+2. **Calidad lingüística:** naturalidad, pronunciación y escritura sencillas en español e inglés; evitar apariencia artificial, ambigüedad o connotaciones no deseadas.
+3. **Personalidad de marca:** debe sonar y funcionar como identidad propia, no como descriptor genérico de una actividad, categoría o servicio.
+4. **Distintividad preliminar:** investigar coincidencias exactas y cercanas, usos empresariales, productos, proyectos y marcas antes de elevarlo a shortlist.
+5. **Viabilidad digital:** comprobar en tiempo real los dominios exactos `.com`, `.es` y `.org` mediante RDAP/registro y registrador fiable, conforme al protocolo de §8. Si alguno está registrado, reservado o no puede verificarse, no presentar el candidato como viable para avanzar.
+6. **Riesgo marcario:** aplicar el protocolo de §9. La disponibilidad de dominio no equivale a disponibilidad jurídica.
+
+La búsqueda web general puede detectar señales y usos, pero no sustituye las consultas oficiales ni la comprobación registral de dominios. Deben distinguirse expresamente los estados CONFIRMADO, INDICIO y NO VERIFICADO.
+
+### 16.5 Disciplina de selección
+
+- No entregar listas largas de palabras comunes o nombres inventados sin fundamento.
+- No presentar una propuesta como candidata destacada antes de revisar su distintividad y señales de ocupación digital.
+- No confundir una explicación creativa plausible con una etimología real.
+- No declarar que un dominio está disponible sin evidencia registral actual.
+- Priorizar pocas propuestas que superen los filtros, aunque la ronda quede vacía.
+- Cuando no haya evidencia suficiente para verificar un requisito, marcarlo como NO VERIFICADO y no convertirlo en una afirmación positiva.
+
+**Criterio de salida:** una palabra con personalidad y potencial de identidad propia, cuyo significado integre de forma defendible Generative Systems, Intelligent Transformation y Value, y que no quede descartada por señales claras de ocupación comercial, digital o marcaria.
+
+### Control de cambios
+- **v0.4 — 2026-11-23:** se amplía el método para admitir palabras de marca acuñadas, manteniendo la exigencia de integración semántica real. Se fijan los tres pilares como obligatorios en el significado y se da libertad a la forma. GenValis se registra solo como referencia de tipo de construcción, no como candidato aprobado; se incorporan filtros secuenciales de integración conceptual, calidad lingüística, distintividad, dominios y riesgo marcario.
