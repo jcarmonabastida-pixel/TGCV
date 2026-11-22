@@ -457,6 +457,28 @@ class D2FocalAccessibilitySpecification:
             if source.unit_id != self.unit_id:
                 raise FocalAccessibilityContractError(f"D2 post-Z={z} focal input unit mismatch")
             source.validate()
+        snapshot_ids = (
+            self.baseline.snapshot_id,
+            self.post_by_z[0][1].snapshot_id,
+            self.post_by_z[1][1].snapshot_id,
+        )
+        if len(set(snapshot_ids)) != 3:
+            raise FocalAccessibilityContractError(
+                "D2 baseline, Z=0 and Z=1 require distinct potential snapshot identities"
+            )
+        for z, identity in self.identity_matches_by_z:
+            identity.validate()
+            post = self.post_by_z[z][1]
+            if (
+                identity.unit_id != self.unit_id
+                or identity.baseline_snapshot_id != self.baseline.snapshot_id
+                or identity.baseline_snapshot_version != self.baseline.snapshot_version
+                or identity.post_snapshot_id != post.snapshot_id
+                or identity.post_snapshot_version != post.snapshot_version
+            ):
+                raise FocalAccessibilityContractError(
+                    f"D2 semantic identity adjudication does not bind exact baseline/Z={z} snapshots"
+                )
 
 
 @dataclass(frozen=True)
@@ -483,6 +505,24 @@ class D2FocalPotentialTruth:
             raise FocalAccessibilityContractError("D2 focal post-state unit mismatch")
         if any(result.unit_id != self.unit_id for _, result in self.opening_by_z):
             raise FocalAccessibilityContractError("D2 focal opening unit mismatch")
+        post_map = dict(self.post_by_z)
+        for z, opening in self.opening_by_z:
+            if (opening.baseline_snapshot_id != self.baseline.snapshot_id
+                    or opening.post_snapshot_id != post_map[z].snapshot_id
+                    or opening.d_f_truth not in ("1", "0", "?", "NOT_COMPARABLE")):
+                raise FocalAccessibilityContractError(
+                    f"D2 focal opening Z={z} is detached from its exact baseline/post snapshots"
+                )
+        payload = {
+            "unit_id": self.unit_id,
+            "specification_version": self.specification_version,
+            "provenance_ref": self.provenance_ref,
+            "baseline_result_sha256": self.baseline.result_sha256,
+            "post_result_sha256_by_z": tuple((z, row.result_sha256) for z, row in self.post_by_z),
+            "opening_result_sha256_by_z": tuple((z, row.result_sha256) for z, row in self.opening_by_z),
+        }
+        if _digest(payload) != self.result_sha256:
+            raise FocalAccessibilityContractError("D2 focal truth digest does not bind its component results")
         if len(self.result_sha256) != 64 or any(c not in "0123456789abcdef" for c in self.result_sha256):
             raise FocalAccessibilityContractError("D2 focal truth result digest must be lowercase SHA-256")
 
