@@ -110,8 +110,8 @@ def profile(output: Path) -> dict:
         })
 
     payload = {
-        "schema": "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-001",
-        "scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_NO_COVERAGE_NO_HOLDOUT",
+        "schema": "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-002",
+        "scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT",
         "seed_namespace": g7.RESOURCE_NAMESPACE,
         "K_per_cell": g7.RESOURCE_K_PER_CELL,
         "C0_B": g7.C0_B,
