@@ -19,7 +19,7 @@ The G7 production path runs the exact global beta-binomial likelihood certificat
 - A certified global boundary supremum, co-maximum or unresolved global ordering is a typed abstention.
 - A certified global interior maximum supplies the exact Krawczyk root enclosure.
 - The canonical bootstrap fit is the rational midpoint of the enclosure in compactified `(mu,t)` coordinates, where `t=kappa/(1+kappa)`.
-- Each axis enclosure width must be no greater than (2^{-32}). Wider enclosures fail closed; optimizer-selected parameters are not a fallback.
+- The production certificate call uses `max_refinements=3`, `max_lift_depth=32` and `max_mu_depth=16`. Each axis enclosure width must be no greater than (2^{-32}). Wider enclosures fail closed; optimizer-selected parameters are not a fallback.
 - Three-start finite-difference L-BFGS-B and the independent analytic-gradient audit run after certification for diagnostics only. Their raw outputs cannot select or veto the canonical fit.
 
 The exact certificate remains responsible for global likelihood ordering. The floating-point midpoint is only the deterministic numerical representative used to parameterize the bootstrap generator.
@@ -60,7 +60,7 @@ A fresh profile is required from the final v1.1 compute snapshot:
 - no certificate-status counts, interval-emission counts, abstention outcomes, coverage or method-selection results;
 - no coverage adjudication and no mixing with the holdout bank.
 
-The profile manifest schema is `C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002`. Its source commit must be an ancestor of the authorized source snapshot and every performance-critical source file must be byte-identical. A change to the fitter, certificate, engine, fixtures, dependency lock, runner or profile script invalidates the profile.
+The profile schema is `C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-002`; its scope is `RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT`. The profile manifest schema is `C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002`. Its source commit must be an ancestor of the authorized source snapshot and every performance-critical source file must be byte-identical. A change to the fitter, certificate, engine, fixtures, dependency lock, runner or profile script invalidates the profile.
 
 The validator chooses the shard size from the measured v1.1 latency profile using the frozen 150-minute per-job work budget, 165-minute workflow timeout and 20-job concurrency ceiling. It reports aggregate runner-compute hours separately from wall-clock estimates. No prior v1.0 projection is silently carried forward.
 
