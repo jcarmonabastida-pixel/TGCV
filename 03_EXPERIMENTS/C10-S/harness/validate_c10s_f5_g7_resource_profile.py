@@ -39,15 +39,17 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
     profile_sha = sha256_bytes(profile_bytes)
     profile = json.loads(profile_bytes)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    if manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-001":
+    if manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002":
         raise ValueError("G7_RESOURCE_PROFILE_MANIFEST_SCHEMA_MISMATCH")
     if manifest.get("profile_json_sha256") != profile_sha:
         raise ValueError("G7_RESOURCE_PROFILE_JSON_DIGEST_MISMATCH")
     source_commit = manifest.get("profile_source_commit")
     if not isinstance(source_commit, str) or not re.fullmatch(r"[0-9a-f]{40}", source_commit):
         raise ValueError("G7_RESOURCE_PROFILE_SOURCE_COMMIT_INVALID")
-    if manifest.get("profile_run_id") != 44926453920:
-        raise ValueError("G7_RESOURCE_PROFILE_RUN_ID_MISMATCH")
+    if type(manifest.get("profile_run_id")) is not int or manifest["profile_run_id"] <= 0:
+        raise ValueError("G7_RESOURCE_PROFILE_RUN_ID_INVALID")
+    if type(manifest.get("profile_artifact_id")) is not int or manifest["profile_artifact_id"] <= 0:
+        raise ValueError("G7_RESOURCE_PROFILE_ARTIFACT_ID_INVALID")
     if not re.fullmatch(r"[0-9a-f]{64}", manifest.get("profile_artifact_archive_sha256", "")):
         raise ValueError("G7_RESOURCE_PROFILE_ARCHIVE_DIGEST_INVALID")
     if not re.fullmatch(r"[0-9a-f]{64}", manifest.get("profile_json_sha256", "")):
