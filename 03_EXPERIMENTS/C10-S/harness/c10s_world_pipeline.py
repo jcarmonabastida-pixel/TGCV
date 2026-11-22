@@ -14,6 +14,7 @@ from typing import Sequence
 
 from c10s_synthetic_components import (
     ContractError,
+    D2FocalAccessibilitySpecification,
     D2MechanismConfig,
     D2ReachGenerationConfig,
     D2StructuralGenerationConfig,
@@ -239,6 +240,7 @@ def materialize_c10s_complete_world(
     theta_a_q_x: Sequence[QXHistoryMass] | None = None,
     theta_a_unit_id_by_history: dict[str, str] | None = None,
     theta_a_structural_support_contract: ThetaAStructuralSupportContract | None = None,
+    d2_focal_accessibility_specs_by_unit: dict[str, D2FocalAccessibilitySpecification] | None = None,
 ) -> C10SCompleteWorldResult:
     """Materialize one coherent world through D2/ΔT_acc*/Reach/trajectory and
     the direct-g_A → EventHistory → S3 → Sealer → Analyzer → Evaluator path.
@@ -254,7 +256,7 @@ def materialize_c10s_complete_world(
     world, structural_pairs, reachability, trajectories = (
         builder.generate_complete_with_trajectories(
             world_config, d2_config, structural_config,
-            reach_config, trajectory_config,
+            reach_config, trajectory_config, d2_focal_accessibility_specs_by_unit,
         )
     )
     need_truth = materialize_need_prez_truth(world, need_pre_z_stipulations)
