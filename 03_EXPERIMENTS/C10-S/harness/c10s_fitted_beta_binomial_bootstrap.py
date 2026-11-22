@@ -407,7 +407,7 @@ def fitted_beta_binomial_parametric_bootstrap(
         try:
             certificate = beta_binomial_global_mle_certificate(
                 r, Counter(int(value) for value in counts),
-                max_refinements=3, max_lift_depth=32, max_mu_depth=16,
+                max_refinements=3,
                 source_revision=os.environ.get("GITHUB_SHA"),
             )
             certificate_status = certificate.get("status", "MISSING_STATUS")
