@@ -67,6 +67,24 @@ class F5G7ShardExecutionTests(unittest.TestCase):
         )
         self.assertEqual(shard["coverage_adjudication"], "NOT_PERFORMED_SHARD_LEVEL")
 
+    def test_primary_replay_pair_is_exact_on_same_runner(self):
+        env_patch, cert_patch, c0_patch, c5_patch = self._patches()
+        with env_patch, cert_patch, c0_patch, c5_patch, patch.object(
+            g7, "HOLDOUT_NAMESPACE", "c10s_f5_g7_determinism_test_v1",
+        ):
+            primary = run_cell_shard(
+                self.spec, phase="primary", replicate_start=0,
+                replicate_count=2, c0_b=100, c5_b=100,
+                source_commit="d" * 40,
+            )
+            replay = run_cell_shard(
+                self.spec, phase="replay", replicate_start=0,
+                replicate_count=2, c0_b=100, c5_b=100,
+                source_commit="d" * 40,
+            )
+        self.assertEqual(primary["records"], replay["records"])
+        self.assertEqual(primary["records_digest"], replay["records_digest"])
+
     def test_nonzero_shard_uses_global_replicate_ids_and_seed_schedule(self):
         env_patch, cert_patch, c0_patch, c5_patch = self._patches()
         with env_patch, cert_patch, c0_patch, c5_patch:
