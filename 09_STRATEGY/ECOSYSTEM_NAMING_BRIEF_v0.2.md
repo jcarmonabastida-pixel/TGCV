@@ -295,3 +295,37 @@ La búsqueda web general puede detectar señales y usos, pero no sustituye las c
 
 ### Control de cambios
 - **v0.4 — 2026-11-23:** se amplía el método para admitir palabras de marca acuñadas, manteniendo la exigencia de integración semántica real. Se fijan los tres pilares como obligatorios en el significado y se da libertad a la forma. GenValis se registra solo como referencia de tipo de construcción, no como candidato aprobado; se incorporan filtros secuenciales de integración conceptual, calidad lingüística, distintividad, dominios y riesgo marcario.
+
+
+## 17. Principio de emergencia del nombre: transformar sistemas para generar valor
+
+La formulación conceptual acordada para orientar la siguiente fase de naming es:
+
+**Transformar sistemas para generar valor.**
+
+Se adopta expresamente la segunda interpretación: no se trata de transformar sistemas que ya generan valor, sino de transformar sistemas **mediante un proceso del que emerge la generación de valor**.
+
+### 17.1 Sentido de la formulación
+
+La transformación inteligente modifica las capacidades de un sistema, amplía lo que puede hacer y abre nuevas posibilidades. A partir de esas posibilidades pueden construirse resultados y valor en su contexto.
+
+La secuencia orientativa queda expresada así:
+
+**Sistemas generativos → Transformación inteligente → Nuevas posibilidades → Valor.**
+
+Esta secuencia orienta el posicionamiento y la búsqueda de identidad; no debe presentarse como una relación causal científicamente demostrada. La cuestión causal específica de TGCV permanece abierta a investigación y falsación.
+
+### 17.2 El nombre debe emerger
+
+El nombre no debe imponerse desde fuera, ni obtenerse pegando fragmentos de los tres pilares, ni ser una abreviatura descriptiva. Debe **emerger del significado esencial del proyecto**.
+
+La búsqueda partirá de la idea de que una transformación inteligente puede hacer emerger nuevas posibilidades y, con ellas, valor. El nombre debe expresar esa idea de forma propia, natural y memorable, sin tener que describir literalmente cada componente.
+
+Pregunta generadora para la exploración:
+
+*¿Qué llega a existir y qué se vuelve posible cuando un sistema se transforma y amplía su capacidad de generar?*
+
+Esta pregunta debe orientar la búsqueda de la raíz conceptual y verbal. No constituye una autorización para recurrir a metáforas genéricas ni a etimologías retrospectivas: toda propuesta seguirá sometida a los filtros semánticos, lingüísticos, comerciales, digitales y marcarios de este briefing.
+
+### Control de cambios
+- **v0.5 — 2026-11-23:** se incorpora la formulación «Transformar sistemas para generar valor», se fija que el valor emerge mediante la transformación (segunda interpretación) y se establece como principio creativo que el nombre debe emerger del significado esencial del proyecto, no imponerse ni construirse por concatenación literal.
