@@ -1064,3 +1064,27 @@ The typed adjudicator is now connected to D2 synthetic-world composition through
 
 
 **Technical-component binding refinement:** `FocalAccessibilityResult` now retains each route's named component truth, not only the route-level conjunction. When a typed focal bundle is attached to a D2 potential bundle, validation cross-checks the declared focal route's `C_install/C_integrity/C_compat/C_oper` against the corresponding D2 potential-stage truth and checks typed `DEP) against `C_dep*`. A mismatch fails closed. This is a consistency check of the four named technical inputs; it does not derive the remaining accessibility predicates or A_f* from the legacy stage Boolean.
+
+
+### Typed D2 focal accessibility → structural delta → Reach/trajectory — deterministic integration validation (2026-11-22)
+
+**Status:** SOFTWARE CONTRACT SUITE PASS / PRIMARY + CLEAN REPLAY / NOT SCIENTIFIC EXECUTION.
+
+The current research-branch source was validated without reverting to the legacy Boolean path. The 17-module integrated suite explicitly includes both `test_c10s_focal_accessibility` and `test_c10s_world_pipeline_integration`; the latter includes the typed D2 focal-truth → structural-potential/\u0394T → Reach → trajectory end-to-end regression and UNKNOWN propagation checks.
+
+- **Commit tested:** `78c2b17c6305f2a77c2f48695cae5a73f0f1de83`
+- **GitHub Actions:** [Run 45044946102 — SUCCESS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45044946102)
+- Runtime: Ubuntu 24.04 / CPython 3.12.10; hash-locked dependencies.
+- Compilation and exact source-closure materialization: PASS.
+- Primary suite: **356/356 PASS** (12.436 s).
+- Clean replay from a separately materialized, byte-identical source tree: **356/356 PASS** (12.408 s).
+- Primary/replay source equality and bytecode-cache cleanliness: PASS.
+- Payload artifact ID `14762722989`, SHA-256 `4cd5124a9ada55cead18cfefdfa63c6b631ad122ddb449a3030370d164a0c2e5`.
+- Manifest artifact ID `14762538366`, SHA-256 `266236ea7332d69f71b9a9d3876cc997965b217df38f95a39a5a4e76f910c78b`.
+
+The validation surfaced and resolved three engineering/test-harness issues before PASS:
+1. A malformed newline in the structural-delta loop in `c10s_synthetic_components.py` caused a syntax error; the statement boundary was corrected.
+2. The workflow's source allowlist omitted `theta_a_nested_mc_precision.py`, which is imported by the calibration-protocol test module; the exact dependency was added to materialization, compilation and provenance inventory.
+3. The target-specific truth adversarial fixture had an incorrect state description: `enabled=False` with `ADMIT` becomes compliant when the g_A0 rule changes admission to `NO_ADMISSION`. The fixture now uses `enabled=True` with `NO_ADMISSION`, so both policy potentials remain non-compliant and the target-only contrast is genuinely zero. The test now asserts the target history's two potential means and contrast separately, while source-history contrasts remain +0.5. This corrects the fixture, not the estimand, DGP roster or scientific parameters.
+
+This is deterministic software-contract evidence only. It does not generate calibration/evaluation banks, run Monte Carlo, estimate scientific effects, or authorize confirmatory/scientific execution. The legacy `a_f_post/d_f_opening` fields remain non-authoritative for typed focal truth; no change to `main`.
