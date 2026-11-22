@@ -1038,3 +1038,6 @@ Regression definitions assert registry exhaustiveness, denominator/applicability
 
 
 The same module now defines `SemanticTransformationMatch` and `derive_focal_opening(...)` for `D_f*=I(A_f^*(t0)=0 ∧ A_f^*(t1)=1)`. It requires an explicit, provenance-bearing semantic-identity adjudication bound to the exact baseline/post transformation IDs, versions and snapshots. An explicit non-match returns `NOT_COMPARABLE`; unresolved matching returns `?`; no automatic fuzzy match or hash-based semantic inference is permitted. Baseline/post boundary, context and focal predicate-contract version must also agree. Observed opening is derived separately from observed accessibility.
+
+
+The universal BLOCK and route-catalog exhaustiveness declarations also carry explicit versions and provenance references. Each route keeps named DEP components plus separate observed states/coverage. Semantic version changes are not auto-rejected or auto-accepted: only a separately evidenced `MATCHED` adjudication can establish continuity across versions; `NOT_MATCHED` yields `NOT_COMPARABLE`, and `UNRESOLVED` yields `?`.
