@@ -514,3 +514,12 @@ Equivalence/integrity tests cover:
 The static workflow, staged G7 YAML syntax check, compilation and 188 deterministic tests passed on [run 44930084805](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44930084805). This is software validation only; it is not a G7 holdout result.
 
 The full 100-dataset-per-cell resource latency profile remains in progress as [run 44926453920](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44926453920). Its immutable JSON and artifact metadata must be persisted before the profile validator can derive and freeze the actual shard size. No holdout primary or replay computation has been started.
+
+
+### 9.23 Resource-profile completion and corrected shard plan — 2026-11-22
+
+This section supersedes the earlier statement in §9.22 that the 100-dataset resource profile was still running. It completed successfully on [run 44926453920](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44926453920); the immutable artifact and JSON/archive digests are recorded in `C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_001.json` and `C10S_F5_G7_EXECUTION_ARCHITECTURE_001.md`.
+
+A full comparison of candidate shard sizes (25, 40, 50, 100) found that the earlier 50-row choice was not optimal. The regression test has been corrected to require the actual minimum-wall-time candidate: **25 datasets per shard**, 4 shards per cell, 8 jobs per phase. At the configured 20-job parallelism ceiling, the conservative serialized-by-cell projection is 28.15 minutes per phase and 56.30 minutes for primary plus replay. Adding the already completed 41.15-minute resource-only profile gives **97.45 minutes (1.62 hours)** end-to-end. The worst observed shard estimate, including 5-minute setup, is 22.73 minutes. Aggregate runner-compute projection remains 13.72 hours; it is distinct from elapsed wall time.
+
+This is an execution-plan correction only. It does not change the frozen G7 protocol, K=1,000 per cell, C0/C5 B=1,000, seed namespaces, method roster, coverage/emission criteria, replay equality or adjudication. It does not start the holdout bank. The plan still requires a successful live validation of the downloaded immutable profile and a fresh one-use authorization bound to the exact staged executor before any primary/replay computation.
