@@ -9,6 +9,8 @@ from unittest.mock import patch
 from pathlib import Path
 
 import validate_c10s_f5_g7_resource_profile as validator
+import profile_c10s_f5_g7_resource_preflight_parallel as profiler
+import run_c10s_f5_g7_tiera_calibration as g7
 
 
 class F5G7ResourceProfileTests(unittest.TestCase):
@@ -111,6 +113,49 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             }), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "PROTOCOL_MISMATCH"):
                 validator.validate(profile, manifest, root)
+
+
+    def test_v1_1_resource_profile_records_timing_only_and_never_inspects_outcomes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            output = root / "profile.json"
+            specs = [
+                SimpleNamespace(cell_id="F5_beta22_M10_R5"),
+                SimpleNamespace(cell_id="F5_beta22_M30_R20"),
+            ]
+
+            def fake_run_cell(spec, *, k, c0_b, c5_b, seed_namespace, adjudicate):
+                for replicate in range(k):
+                    g7.compare_dataset(
+                        ((0.0, 1.0),),
+                        dataset_id=f"{seed_namespace}:{spec.cell_id}:{replicate}",
+                    )
+                return {
+                    "datasets_completed": k,
+                    "coverage_adjudication": "NOT_PERFORMED_RESOURCE_ONLY",
+                }
+
+            with patch.object(g7, "f5_specs", return_value=specs), patch.object(
+                g7, "RESOURCE_K_PER_CELL", 2
+            ), patch.object(g7, "K_PER_CELL", 10), patch.object(
+                g7, "validate_seed_separation"
+            ), patch.object(g7, "run_cell", side_effect=fake_run_cell), patch.object(
+                g7, "compare_dataset", return_value=object()
+            ):
+                result = profiler.profile(output)
+
+            self.assertEqual(result["coverage_adjudication"], "NOT_PERFORMED")
+            self.assertEqual(result["scope"], validator.PROFILE_SCOPE)
+            for cell in result["cells"]:
+                self.assertNotIn("certificate_status_counts", cell)
+                self.assertNotIn("interval_emission_counts", cell)
+                self.assertEqual(cell["datasets_completed"], 2)
+            for rows in result["dataset_timings"].values():
+                self.assertEqual(len(rows), 2)
+                self.assertTrue(all(set(row) == {"dataset_id", "wall_seconds"} for row in rows))
+            self.assertIn("No certificate status", result["interpretation"])
+            self.assertNotIn("interval_emission_counts", json.dumps(result))
+
 
 
 if __name__ == "__main__":
