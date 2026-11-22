@@ -60,6 +60,21 @@ def f5_specs():
 
 
 def validate_seed_separation(k: int = K_PER_CELL) -> None:
+    legacy_g7_seen: set[int] = set()
+    for cell_id in EXPECTED_CELLS:
+        for replicate in range(k):
+            for stream in ("dataset", "C0_bootstrap", "C5_bootstrap"):
+                legacy_payload = (
+                    f"C10S_F5_G7_TIERA_SEEDS_1.0|c10s_f5_g7_holdout_v1|"
+                    f"{stream}|{cell_id}|{replicate}"
+                ).encode("utf-8")
+                legacy_value = int.from_bytes(
+                    hashlib.sha256(legacy_payload).digest()[:8], "big"
+                )
+                if legacy_value in legacy_g7_seen:
+                    raise F5G7Error("G7_LEGACY_V1_SEED_COLLISION")
+                legacy_g7_seen.add(legacy_value)
+
     seen: set[int] = set()
     for cell_id in EXPECTED_CELLS:
         for replicate in range(k):
@@ -67,20 +82,22 @@ def validate_seed_separation(k: int = K_PER_CELL) -> None:
                 value = derive_seed(HOLDOUT_NAMESPACE, stream, cell_id, replicate)
                 if value in seen:
                     raise F5G7Error("G7_SEED_COLLISION_WITHIN_HOLDOUT_NAMESPACE")
+                if value in legacy_g7_seen:
+                    raise F5G7Error("G7_SEED_COLLISION_WITH_CONSUMED_G7_V1_HOLDOUT")
                 seen.add(value)
-                legacy_stream = stream
-                legacy = derive_holdout_seed(legacy_stream, cell_id, replicate)
+                legacy = derive_holdout_seed(stream, cell_id, replicate)
                 if value == legacy:
                     raise F5G7Error("G7_SEED_COLLISION_WITH_CONSUMED_V1_HOLDOUT")
                 v002_stream = "fixture_dataset" if stream == "dataset" else "bootstrap"
                 if value == derive_v002_seed(v002_stream, cell_id, replicate):
                     raise F5G7Error("G7_SEED_COLLISION_WITH_ORIGINAL_V002_TIERA")
+
     resource_seen: set[int] = set()
     for cell_id in EXPECTED_CELLS:
         for replicate in range(RESOURCE_K_PER_CELL):
             for stream in ("dataset", "C0_bootstrap", "C5_bootstrap"):
                 value = derive_seed(RESOURCE_NAMESPACE, stream, cell_id, replicate)
-                if value in resource_seen or value in seen:
+                if value in resource_seen or value in seen or value in legacy_g7_seen:
                     raise F5G7Error("G7_RESOURCE_SEED_COLLISION")
                 v002_stream = "fixture_dataset" if stream == "dataset" else "bootstrap"
                 if value == derive_v002_seed(v002_stream, cell_id, replicate):
