@@ -163,8 +163,8 @@ class F5G7ShardExecutionTests(unittest.TestCase):
                         encoding="utf-8",
                     )
             profile = {
-                "schema": "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-001",
-                "scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_NO_COVERAGE_NO_HOLDOUT",
+                "schema": "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-002",
+                "scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT",
                 "seed_namespace": g7.RESOURCE_NAMESPACE,
                 "K_per_cell": 100,
                 "C0_B": g7.C0_B,
