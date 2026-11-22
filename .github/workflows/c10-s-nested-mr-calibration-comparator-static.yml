@@ -111,8 +111,8 @@ jobs:
           import json, os
           from pathlib import Path
           data = json.loads(Path(os.environ["PLAN_JSON"]).read_text())
-          assert data["datasets_per_shard"] == 25, data["datasets_per_shard"]
-          assert data["shard_jobs_per_phase"] == 8, data["shard_jobs_per_phase"]
+          assert data["datasets_per_shard"] == 50, data["datasets_per_shard"]
+          assert data["shard_jobs_per_phase"] == 40, data["shard_jobs_per_phase"]
           assert data["end_to_end_conservative_wall_seconds"] < 10800
           print({
               "datasets_per_shard": data["datasets_per_shard"],
