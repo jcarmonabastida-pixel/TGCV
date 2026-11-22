@@ -120,9 +120,9 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
         or auth.get("resource_profile_seed_namespace") != "c10s_f5_g7_resource_v1_1"
     ):
         raise ValueError("G7 resource profile provenance mismatch")
-    if auth.get("seed_schedule_id") != "C10S_F5_G7_TIERA_SEEDS_1.0":
+    if auth.get("seed_schedule_id") != "C10S_F5_G7_TIERA_SEEDS_1.1":
         raise ValueError("G7 seed schedule mismatch")
-    if auth.get("holdout_seed_namespace") != "c10s_f5_g7_holdout_v1" or auth.get("resource_seed_namespace") != "c10s_f5_g7_resource_v1_1":
+    if auth.get("holdout_seed_namespace") != "c10s_f5_g7_holdout_v1_1" or auth.get("resource_seed_namespace") != "c10s_f5_g7_resource_v1_1":
         raise ValueError("G7 seed namespace mismatch")
     code_commit = auth.get("approved_code_commit")
     if not isinstance(code_commit, str) or not re.fullmatch(r"[0-9a-f]{40}", code_commit):
