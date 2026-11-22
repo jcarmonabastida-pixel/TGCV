@@ -3025,9 +3025,25 @@ def beta_binomial_global_mle_certificate(
                     raw_score_mu, raw_score_kappa = beta_binomial_score_numerators(
                         r, count_histogram,
                     )
+                    compactified_mu = compactify_concentration(raw_score_mu)
+                    compactified_kappa = compactify_concentration(raw_score_kappa)
+                    stripped_scores = _strip_axis_content_factors_outside_open_unit_domain(
+                        compactified_mu, compactified_kappa,
+                    )
+                    if stripped_scores.get("status") != "NO_REAL_INTERIOR_AXIS_CONTENT_FACTORS":
+                        return {
+                            "status": "GLOBAL_MLE_ROOT_BOX_PRECISION_INSUFFICIENT",
+                            "census": census,
+                            "root_box_refinement": {
+                                "status": "ROOT_SCORE_POLYNOMIAL_RECONSTRUCTION_FAILED",
+                                "disposition": stripped_scores,
+                            },
+                            "refinement_history": history,
+                            "likelihood_ordering": "NOT_CERTIFIED",
+                        }
                     score_polynomials = (
-                        compactify_concentration(raw_score_mu),
-                        compactify_concentration(raw_score_kappa),
+                        stripped_scores["poly_p"],
+                        stripped_scores["poly_q"],
                     )
                 refined_root_box = refine_krawczyk_root_box(
                     score_polynomials[0], score_polynomials[1],
