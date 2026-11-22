@@ -510,7 +510,7 @@ class SyntheticComponentTests(unittest.TestCase):
             )),
         )
         spec = D2FocalAccessibilitySpecification(
-            unit_id, baseline, ((0, post0), (1, post1)), matches,
+            unit_id, "ROUTE-FOCAL", baseline, ((0, post0), (1, post1)), matches,
             "D2-AF-SPEC-v1", "D2-AF-SPEC-PROV",
         )
         world_config = SyntheticWorldConfig(
