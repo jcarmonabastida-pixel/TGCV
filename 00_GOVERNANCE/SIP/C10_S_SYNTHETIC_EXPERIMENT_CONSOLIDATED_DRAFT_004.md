@@ -4114,7 +4114,7 @@ The end-to-end regression `test_typed_d2_focal_truth_drives_full_delta_reach_and
 
 ### 395.2. Deterministic test execution
 
-**<badge color="success">PASS</badge>** GitHub Actions [run 45044946102](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45044946102), tested commit `78c2b17c6305f2a77c2f48695cae5a73f0f1de83`.
+**Status: PASS.** GitHub Actions [run 45044946102](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45044946102), tested commit `78c2b17c6305f2a77c2f48695cae5a73f0f1de83`.
 
 - Ubuntu 24.04; CPython 3.12.10; hash-locked dependencies.
 - Exact 17-module software-contract suite: **356/356 PASS** in the primary materialization (12.436 s).
