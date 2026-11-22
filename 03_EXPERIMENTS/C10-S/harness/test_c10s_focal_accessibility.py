@@ -190,11 +190,16 @@ class FocalAccessibilityTests(unittest.TestCase):
 
     def d2_spec(self, *, post_z1_components=None, post_z1_res="1",
                 exhaustive=True, auth="1", post_z1_transformation=("TAU2-v3", "TAU2-SEMVER-3"),
-                match_z1="MATCHED"):
+                match_z1="MATCHED", alternative_z1_state=None):
         unit = "UE-1"
+        baseline_routes = [self.route("R1", dep="0", snapshot_id="SNAP-BASE")]
+        post0_routes = [self.route("R1", dep="0", snapshot_id="SNAP-Z0")]
+        if alternative_z1_state is not None:
+            baseline_routes.append(self.route("R2", dep="0", snapshot_id="SNAP-BASE"))
+            post0_routes.append(self.route("R2", dep="0", snapshot_id="SNAP-Z0"))
         baseline = self.source(
             snapshot_id="SNAP-BASE",
-            routes=[self.route("R1", dep="0", snapshot_id="SNAP-BASE")],
+            routes=baseline_routes,
             exhaustive=exhaustive,
             predicates=[self.predicate(
                 role, truth=auth if role == "AUTH" else "1",
@@ -203,7 +208,7 @@ class FocalAccessibilityTests(unittest.TestCase):
         )
         post0 = self.source(
             snapshot_id="SNAP-Z0",
-            routes=[self.route("R1", dep="0", snapshot_id="SNAP-Z0")],
+            routes=post0_routes,
         )
         post1_predicates = [
             self.predicate(
@@ -214,14 +219,20 @@ class FocalAccessibilityTests(unittest.TestCase):
                 transformation_version=post_z1_transformation[1],
             ) for role in ("ID", "REL", "COND", "AUTH", "RES")
         ]
-        post1_route = self.route(
+        post1_routes = [self.route(
             "R1", components=post_z1_components, snapshot_id="SNAP-Z1",
             transformation_id=post_z1_transformation[0],
             transformation_version=post_z1_transformation[1],
-        )
+        )]
+        if alternative_z1_state is not None:
+            post1_routes.append(self.route(
+                "R2", dep=alternative_z1_state, snapshot_id="SNAP-Z1",
+                transformation_id=post_z1_transformation[0],
+                transformation_version=post_z1_transformation[1],
+            ))
         post1 = self.source(
             snapshot_id="SNAP-Z1", predicates=post1_predicates,
-            routes=[post1_route], transformation_id=post_z1_transformation[0],
+            routes=post1_routes, transformation_id=post_z1_transformation[0],
             transformation_version=post_z1_transformation[1],
         )
         matches = (
@@ -259,6 +270,12 @@ class FocalAccessibilityTests(unittest.TestCase):
     def test_d2_focal_rejects_differential_nonfocal_resource_predicate(self):
         with self.assertRaisesRegex(FocalAccessibilityContractError, "isolation violation"):
             adjudicate_d2_focal_potentials(self.d2_spec(post_z1_res="0"))
+
+    def test_d2_focal_rejects_policy_change_to_nonfocal_alternative_route(self):
+        with self.assertRaisesRegex(FocalAccessibilityContractError, "non-focal alternative route changed"):
+            adjudicate_d2_focal_potentials(
+                self.d2_spec(alternative_z1_state="1")
+            )
 
     def test_d2_focal_requires_basal_authorization_one(self):
         with self.assertRaisesRegex(FocalAccessibilityContractError, "C_auth,base=1"):
