@@ -33,7 +33,7 @@ class F5G7CalibrationTests(unittest.TestCase):
             "status": "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED",
             "winner": {
                 "kind": "INTERIOR_STATIONARY_ROOT",
-                "parameter_box": ((0, 1), (0, 1)),
+                "parameter_box": ((0.4, 0.5), (0.4, 0.5)),
             },
             "globality_basis": "COMPLETE_INTERIOR_STATIONARY_CENSUS_PLUS_ALL_BOUNDARY_PROFILES_AND_CORNER_LIMITS",
             "census": {"input_provenance": {"source_revision": "d" * 40}},
