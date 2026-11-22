@@ -230,7 +230,7 @@ class FittedBetaBinomialBootstrapTests(unittest.TestCase):
                 bootstrap_seed=12345, require_global_mle_certificate=True,
             )
         self.assertEqual(result.global_mle_certificate["status"], "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED")
-        self.assertTrue(result.global_mle_certificate["optimizer_inside_certified_root_box"])
+        self.assertEqual(result.global_mle_certificate["canonical_fit_rule"], "RATIONAL_MIDPOINT_OF_EXACT_KRAWCZYK_ROOT_BOX")
         self.assertEqual(dict(result.comparison.provenance)["global_mle_certificate_status"], "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED")
 
     def test_global_mle_certificate_unresolved_forces_typed_abstention(self):
