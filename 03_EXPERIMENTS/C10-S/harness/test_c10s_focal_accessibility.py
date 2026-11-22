@@ -9,8 +9,8 @@ from c10s_focal_accessibility import (
 class FocalAccessibilityTests(unittest.TestCase):
     def predicate(self, role, truth="1", observed="1", coverage="COMPLETE"):
         return FocalPredicateEvidence(
-            role, truth, observed, coverage, "UE-1", "TAU2-v3", "BND-1",
-            "CTX-1", "SNAP-1", "PRED-v1", f"PROV-{role}",
+            role, truth, observed, coverage, "UE-1", "TAU2-v3", "TAU2-SEMVER-3", "BND-1",
+            "CTX-1", "SNAP-1", "SNAPVER-1", "PRED-v1", f"PROV-{role}",
         )
 
     def route(self, route_id, dep="1", local_block="0", components=None, coverage="COMPLETE"):
@@ -20,13 +20,14 @@ class FocalAccessibilityTests(unittest.TestCase):
         truth = tuple((name, value) for name, value in zip(names, values))
         return FocalDependencyRoute(
             route_id, "ROUTE-v1", "UE-1", "TAU2-v3", "BND-1",
-            "CTX-1", "SNAP-1", truth, local_block, observed, local_block,
+            "TAU2-SEMVER-3", "BND-1", "CTX-1", "SNAP-1", "SNAPVER-1",
+            truth, local_block, observed, local_block,
             coverage, f"PROV-{route_id}",
         )
 
     def source(self, *, predicates=None, routes=None, exhaustive=True, global_block="0"):
         return FocalAccessibilityInput(
-            "UE-1", "TAU2-v3", "BND-1", "CTX-1", "SNAP-1",
+            "UE-1", "TAU2-v3", "TAU2-SEMVER-3", "BND-1", "CTX-1", "SNAP-1", "SNAPVER-1",
             tuple(predicates or [self.predicate(x) for x in ("ID", "REL", "COND", "AUTH", "RES")]),
             tuple(routes if routes is not None else [self.route("R1")]),
             exhaustive, global_block, global_block, "COMPLETE", True,
@@ -88,7 +89,8 @@ class FocalAccessibilityTests(unittest.TestCase):
     def test_route_identity_mismatch_fails_closed(self):
         bad = FocalDependencyRoute(
             "R1", "ROUTE-v1", "UE-OTHER", "TAU2-v3", "BND-1",
-            "CTX-1", "SNAP-1", (("C_install", "1"),), "0",
+            "TAU2-SEMVER-3", "BND-1", "CTX-1", "SNAP-1", "SNAPVER-1",
+            (("C_install", "1"),), "0",
             (("C_install", "1"),), "0", "COMPLETE", "PROV-R1",
         )
         with self.assertRaises(FocalAccessibilityContractError):
@@ -116,7 +118,7 @@ class FocalAccessibilityTests(unittest.TestCase):
 
     def test_block_scope_must_be_universal(self):
         source = FocalAccessibilityInput(
-            "UE-1", "TAU2-v3", "BND-1", "CTX-1", "SNAP-1",
+            "UE-1", "TAU2-v3", "TAU2-SEMVER-3", "BND-1", "CTX-1", "SNAP-1", "SNAPVER-1",
             tuple(self.predicate(x) for x in ("ID", "REL", "COND", "AUTH", "RES")),
             (self.route("R1"),), True, "0", "0", "COMPLETE", True,
             "LOCAL_ROUTE_ONLY", "C10S-AF-v0.1",
