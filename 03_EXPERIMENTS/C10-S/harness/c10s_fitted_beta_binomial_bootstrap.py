@@ -208,7 +208,7 @@ def fit_beta_binomial_counts_from_certified_box(
         t_lo, t_hi = (Fraction(value) for value in parameter_box[1])
     except (TypeError, ValueError, ZeroDivisionError):
         raise BetaBinomialFitError("CERTIFIED_ROOT_BOX_NOT_RATIONAL") from None
-    if not (0 < mu_lo < mu_hi < 1 and 0 < t_lo < t_hi < 1):
+    if not (0 < mu_lo <= mu_hi < 1 and 0 < t_lo <= t_hi < 1):
         raise BetaBinomialFitError("CERTIFIED_ROOT_BOX_OUTSIDE_OPEN_DOMAIN")
     mu_exact = (mu_lo + mu_hi) / 2
     t_exact = (t_lo + t_hi) / 2
