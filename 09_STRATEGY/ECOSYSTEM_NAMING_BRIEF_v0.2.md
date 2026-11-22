@@ -1,7 +1,7 @@
 # Strategic Naming Brief — Identidad del ecosistema de potencial, transformación generativa e inteligencia transformacional
 
 **Identificador:** ECOSYSTEM-NAMING-BRIEF-002  
-**Versión:** 0.2 — alineado con el manifiesto integrado tras contraste fundacional  
+**Versión:** 0.3 — criterio semántico vinculante para la búsqueda de identidad  
 **Fecha:** 2026-11-21  
 **Estado:** DRAFT — criterios para investigación de nombres; no hay marca seleccionada ni autorización de registro.  
 **Documento rector:** `ECOSYSTEM_MANIFESTO_v0.2.md`  
@@ -130,7 +130,7 @@ Puntuar de 1 a 5 y justificar:
 - trayectorias y futuros realizables;
 - construcción de valor con propósito.
 
-Explorar palabras existentes resignificadas, nombres inventados pronunciables y combinaciones breves distintivas. Las raíces clásicas solo se usarán si producen nombres naturales y fáciles de recordar.
+Priorizar palabras y expresiones reales cuyo significado ya nombre de forma natural el desarrollo de la capacidad de hacer posibles nuevas acciones, transformaciones o resultados que antes no estaban al alcance. No generar neologismos arbitrarios ni deformaciones de palabras para conseguir apariencia de marca. Una combinación o creación verbal solo podrá considerarse si su relación semántica con el núcleo es directa, transparente y explicable sin etimologías ni relatos inventados.
 
 No favorecer de antemano AFLUYA, AFLUIR JUNTOS ni ningún otro candidato previo.
 
@@ -159,3 +159,67 @@ Ningún candidato se considera seleccionado antes de completar los gates.
 
 ### Control de cambios
 - **v0.2 — 2026-11-21:** revisión alineada con el documento fundacional histórico. El brief incorpora explícitamente la recursividad y la capacidad de generar nuevas capacidades, la transformación generativa, la renovación y exploración, junto con la pregunta causal actual y la separación entre programa científico y marca paraguas.
+
+
+## 15. Regla vinculante de búsqueda: desarrollar la capacidad de hacer posibles nuevas cosas
+
+Esta regla prevalece sobre cualquier instrucción creativa más genérica de este brief y debe aplicarse en todas las rondas futuras.
+
+### 15.1 Núcleo que debe originar el nombre
+
+La marca debe nacer de esta idea:
+
+**Desarrollar la capacidad de hacer posibles nuevas cosas y construir valor a partir de ellas.**
+
+No buscamos nombrar simplemente la innovación, el cambio, el crecimiento, la conexión, la creatividad o la producción de cosas nuevas. El rasgo diferencial es que un sistema pueda ampliar lo que está en condiciones de hacer y desarrollar capacidad para seguir ampliando sus posibilidades futuras.
+
+La dimensión prioritaria para la marca paraguas es **la ampliación de lo posible**. Debe conservar profundidad para albergar:
+- la capacidad generativa y recursiva estudiada por TGCV;
+- la comprensión y orientación de transformaciones propia de la Inteligencia Transformacional;
+- la aplicación práctica de VALUE para explorar, diseñar, decidir, actuar y aprender;
+- la creación continuada de valor y el ecosistema abierto que conecta investigación y aplicación.
+
+### 15.2 Orden de búsqueda obligatorio
+
+1. Identificar palabras o expresiones existentes que nombren de manera natural la capacidad de hacer posible algo antes fuera del alcance, ampliar lo que se puede hacer o desarrollar nuevas capacidades de acción.
+2. Comprobar su significado real y su uso en español e inglés; no inferir sentidos por semejanza sonora.
+3. Explicar su conexión directa con TGCV + Inteligencia Transformacional + VALUE en una o dos frases, sin relato de marca añadido.
+4. Descartar de inmediato las opciones cuya conexión dependa de una metáfora genérica, una asociación ornamental o una etimología construida.
+5. Solo después de superar el filtro semántico, investigar usos comerciales, marcas y dominios.
+
+No empezar por raíces como «potencial», «transformación» o «generación» para producir variantes. Tampoco volver a territorios genéricos de movimiento, naturaleza, luz, comienzo, encuentro, colaboración o crecimiento salvo que exista una relación semántica directa y demostrable con el núcleo.
+
+### 15.3 Tres formulaciones que no deben confundirse
+
+| Formulación | Alcance | Tratamiento |
+|---|---|---|
+| Hacer cosas nuevas | Crear resultados o innovar. | Insuficiente por sí sola. |
+| Hacer posibles nuevas cosas | Ampliar el conjunto de acciones y transformaciones que un sistema puede realizar. | Territorio semántico prioritario. |
+| Desarrollar la capacidad de hacer posibles nuevas cosas | Permitir que el sistema amplíe recursivamente sus posibilidades futuras. | Núcleo diferencial que debe sostener la marca. |
+
+### 15.4 Prueba de admisión de cada candidato
+
+Cada candidato debe responder afirmativamente, con justificación concreta, a estas preguntas:
+
+1. ¿Su significado real tiene relación directa con hacer posible lo que antes no estaba al alcance o ampliar lo que un sistema puede hacer?
+2. ¿Puede representar conjuntamente TGCV, Inteligencia Transformacional, VALUE y la comunidad, sin reducirse a uno de ellos?
+3. ¿Conserva sentido aunque cambien las aplicaciones y evolucionen o se refuten hipótesis científicas concretas?
+4. ¿Puede explicarse su relación con el proyecto sin inventar etimología, metáfora o historia posterior?
+5. ¿Tiene potencial de identidad comercial propia y funcionamiento internacional?
+
+Las cuatro primeras son filtros semánticos eliminatorios. Si un nombre no las supera, no se le asignará puntuación ni se investigarán dominios. Si la búsqueda no produce candidatos suficientes, se informará con claridad; no se rellenará la ronda con nombres débiles.
+
+### 15.5 Disciplina de las rondas
+
+- Presentar pocos candidatos y solo cuando exista una relación semántica defendible.
+- No repetir candidatos, familias de raíces ni territorios ya descartados, salvo nueva evidencia concreta que justifique reabrirlos.
+- Para cada opción, mostrar significado verificable, relación con el proyecto y objeción principal.
+- Separar siempre calidad semántica, distintividad comercial, disponibilidad de dominios y riesgo marcario.
+- No llamar «finalista» a una opción que solo ha superado una exploración conceptual.
+- No declarar disponibilidad ni registrabilidad sin comprobaciones verificables.
+- No registrar, reservar ni comprar dominios o marcas sin aprobación expresa.
+
+**Criterio rector:** no buscar una palabra bonita para justificarla después con TGCV. Encontrar una identidad cuyo significado esté conectado desde el origen con la ampliación de lo posible y con el desarrollo de la capacidad de seguir creando valor.
+
+### Control de cambios
+- **v0.3 — 2026-11-22:** se incorpora como regla vinculante la búsqueda semántica desde «desarrollar la capacidad de hacer posibles nuevas cosas». Se priorizan palabras y expresiones reales con conexión directa; se excluyen neologismos arbitrarios, metáforas genéricas y justificaciones retrospectivas. Se añaden filtros eliminatorios y disciplina para las rondas.
