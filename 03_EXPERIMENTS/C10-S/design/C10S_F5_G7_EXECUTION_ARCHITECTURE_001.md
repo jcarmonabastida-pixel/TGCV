@@ -68,8 +68,13 @@ Observed per-dataset latency:
 - M10/R5: mean 0.444 s, p95 0.864 s, p99 0.961 s, max 1.005 s.
 - M30/R20: mean 24.246 s, p95 36.014 s, p99 40.423 s, max 42.551 s.
 
-The conservative planner selects **50 datasets per shard**, 20 jobs per cell and 40 jobs per phase, with `max-parallel=20`. Including 5 minutes setup per shard, the worst observed shard estimates are 40.46 min for M30/R20 and 5.84 min for M10/R5. The conservative serialized-by-cell upper bound is 46.30 min per phase, 92.59 min for primary plus replay, and 133.75 min (2.23 h) including the one-time 41.15-minute resource preflight. Estimated aggregate primary-plus-replay runner compute remains 13.72 hours; the distinction between compute-hours and wall time is retained.
+A correction to the first planner test exposed that the previous 50-row choice was not the minimum-wall-time candidate: it optimized a conservative estimate but was not the argmin across all frozen candidate sizes. The correct plan is **25 datasets per shard**, 4 jobs per cell and 8 jobs per phase, with `max-parallel=20`. Including 5 minutes setup per shard, worst-observed shard estimates are 22.73 min for M30/R20 and 5.42 min for M10/R5. The conservative serialized-by-cell upper bound is 28.15 min per phase, 56.30 min for primary plus replay, and 97.45 min (1.62 h) including the one-time 41.15-minute resource preflight. Estimated aggregate primary-plus-replay runner compute remains 13.72 hours; the distinction between compute-hours and wall time is retained.
 
 This projection assumes up to 20 concurrently scheduled GitHub jobs. If the repository's actual concurrency allowance is lower, wall time increases, but every shard remains independently below the 150-minute work budget and 165-minute hard timeout. The resource preflight is reused from its immutable artifact; it is not repeated by primary/replay retries.
 
 The same resource profile also confirms the separate M10/R5 scientific emission blocker: 67/100 interior certificates and emitted intervals, 18 boundary suprema, 14 unresolved global orderings and one missing certificate status. These are resource-sample diagnostics, not coverage estimates. The staged executor does not change this distribution or lower the 95% G7 emission criterion.
+
+
+### Planner correction — 2026-11-22
+
+The resource-plan regression now asserts the true minimum among candidate sizes (25, 40, 50, 100). The former test expected 50 despite the candidate projection making 25 faster. The corrected deterministic plan is 25 datasets/shard, 8 shard jobs per phase, 20-way concurrency ceiling, 56.30 minutes conservative primary+replay wall time and 97.45 minutes including the one-time resource profile. This is a planning correction only: no G7 holdout data, seeds, estimands, thresholds or adjudication rules change.
