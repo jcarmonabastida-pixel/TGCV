@@ -4083,3 +4083,20 @@ A further isolation guard has been added to §392. The D2 specification now name
 This prevents an intervention-induced change in an alternative route from being misattributed to the focal dependency. The focal route identity is carried into the typed result digest and checked against all three potential snapshots. A new adversarial regression rejects a policy-induced change to a non-focal alternative route.
 
 **Evidence status:** 25 focal-adjudicator tests and two world-integration tests are authored, not executed. No software or scientific execution authorization is implied. The full `ΔT_acc*) snapshot-diff/Reach/trajectory linkage remains open as recorded in §392.3.
+
+
+## 394. Typed DEP component-to-D2 stage consistency binding — 2026-11-22
+
+The typed focal result now retains named truth and observed states for every route component, not only the route-level conjunction. When attached to a `D2PotentialBundle`, validation cross-checks the declared focal route's `C_install`, `C_integrity`, `C_compat` and `C_oper` truth against the corresponding D2 potential-stage component truth for each Z potential. It also requires typed `DEP) to reproduce the D2 `C_dep*` conjunction. Any mismatch fails closed.
+
+This is a consistency binding between explicit typed route evidence and the DGP's four generated technical components. It does not infer ID/REL/COND/AUTH/RES/BLOCK or A_f*/D_f* from `C_dep*`, attempt, receipt, installation or legacy Booleans. The legacy `a_f_post/d_f_opening` fields remain non-authoritative.
+
+The world-integration regression now includes an adversarial mutation of a D2 technical component and requires rejection by the typed bundle validator. Current source blob identities:
+
+- `c10s_focal_accessibility.py`: `6987bf61b742269c4b9205fd9b6c4a1660ba0f4a`
+- `test_c10s_focal_accessibility.py`: `a68c31426ce30fb42c4a7a25392f5724d754e611` (25 tests)
+- `c10s_synthetic_components.py`: `ba1b038cc780e3efd6d0bf4e51fbe22091b16ea1`
+- `test_c10s_synthetic_components.py`: `f45606a8e9d8ae5e80f0543680cd4d1a0497cd21` (31 tests; two new world-integration cases)
+- `c10s_world_pipeline.py`: `192086604283d38930de75284cb8aedbf85515a8`
+
+All 25 focal and 2 world-integration tests remain authored but unexecuted. The deterministic world fixture is solely a software-contract fixture and does not select confirmatory scientific parameters. No test workflow, calibration, Monte Carlo or scientific execution has been run or authorized.
