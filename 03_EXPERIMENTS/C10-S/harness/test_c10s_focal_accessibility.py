@@ -88,8 +88,8 @@ class FocalAccessibilityTests(unittest.TestCase):
 
     def test_route_identity_mismatch_fails_closed(self):
         bad = FocalDependencyRoute(
-            "R1", "ROUTE-v1", "UE-OTHER", "TAU2-v3", "BND-1",
-            "TAU2-SEMVER-3", "BND-1", "CTX-1", "SNAP-1", "SNAPVER-1",
+            "R1", "ROUTE-v1", "UE-OTHER", "TAU2-v3", "TAU2-SEMVER-3",
+            "BND-1", "CTX-1", "SNAP-1", "SNAPVER-1",
             (("C_install", "1"),), "0",
             (("C_install", "1"),), "0", "COMPLETE", "PROV-R1",
         )
