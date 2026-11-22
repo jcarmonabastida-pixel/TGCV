@@ -2940,6 +2940,15 @@ class SyntheticWorldBundle:
         for unit, qx in zip(self.units, self.q_x):
             unit.d2_baseline.validate()
             unit.d2_potentials.validate()
+            if unit.d2_potentials.focal_accessibility_truth is not None:
+                typed_auth = dict(
+                    unit.d2_potentials.focal_accessibility_truth.baseline.predicate_truth
+                ).get("AUTH")
+                expected_auth = "1" if unit.d2_baseline.c_auth_base else "0"
+                if typed_auth != expected_auth:
+                    raise ContractError(
+                        "typed focal AUTH predicate must bind exactly to the D2 basal C_auth_base truth"
+                    )
             if unit.d2_baseline.unit_id != unit.unit_id or unit.d2_potentials.unit_id != unit.unit_id:
                 raise ContractError("synthetic world unit, D2 baseline and potential identities differ")
             if (qx.history_ref != unit.d2_baseline.baseline_history_ref
