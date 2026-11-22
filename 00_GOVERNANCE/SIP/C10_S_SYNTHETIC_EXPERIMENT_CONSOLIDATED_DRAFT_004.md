@@ -4034,3 +4034,40 @@ The universal BLOCK and route-catalog exhaustiveness declarations are themselves
 
 
 The semantic-match record binds exact baseline/post transformation IDs and semantic versions, exact snapshot IDs and snapshot versions, unit/boundary/context, a matching-contract version and adjudication evidence. D_f* is not projected across an unbound snapshot version.
+
+
+## 392. D2 typed focal truth connected to potential/world generation — 2026-11-22
+
+The isolated adjudicator of §391 has been connected to the D2 potential/world composition through explicit, versioned, per-unit inputs.
+
+### 392.1. Typed D2 potential contract
+
+`D2FocalAccessibilitySpecification` binds:
+- one baseline `FocalAccessibilityInput`;
+- distinct post-potential inputs for Z=0 and Z=1;
+- one provenance-bearing `SemanticTransformationMatch` per Z potential, binding exact transformation IDs/versions and snapshot IDs/versions;
+- a specification version and provenance reference.
+
+`adjudicate_d2_focal_potentials(...)` enforces the clean D2 nucleus. Baseline accessibility must be structurally 0 specifically because exhaustive `DEP=0`; the remaining `ID/REL/COND/AUTH/RES` predicates must be 1, including the common basal authorization `AUTH=1), and universal `BLOCK=0). A baseline failure in another predicate cannot be misclassified as the intended focal first stage.
+
+Across baseline and both potential Z worlds, non-DEP predicate truth/version, global and local blockers, route identity/version, the four-component DEP roster and exhaustive route-catalogue identity remain invariant. Only `C_install`, `C_integrity`, `C_compat` and `C_oper` may vary by policy. The guard fails closed on differential authorization, resources, conditions, relationships, route catalogs or blockers. UNKNOWN and NOT_COMPARABLE remain explicit.
+
+### 392.2. Generator/world integration
+
+The typed result is carried by optional `D2PotentialBundle.focal_accessibility_truth`. `SyntheticWorldBuilder.generate(..., focal_accessibility_specs_by_unit=...)` requires the supplied specifications to cover every and only generated unit. The same input is exposed through `materialize_c10s_complete_world(..., d2_focal_accessibility_specs_by_unit=...)`. Partial typed rosters are rejected, and the typed result participates in the world roster fingerprint.
+
+Legacy `D2PotentialStage.a_f_post/d_f_opening` fields are preserved unchanged for historical compatibility and explicitly marked non-authoritative. They are not translated into, or overwritten by, the typed truth. Omitting the typed specification leaves the old non-confirmatory fixture path intact.
+
+### 392.3. Regression and remaining boundary
+
+The branch now contains 24 authored focal-adjudicator tests and two additional world-generator integration tests. They have **not** been executed. Current source identities:
+
+- `c10s_focal_accessibility.py`: `91ca07d7c28bfb8d4529aba09bd36723b2b18425`
+- `test_c10s_focal_accessibility.py`: `1339b497f2d85454cfa3f1185e14cd65c0a5a975`
+- `c10s_synthetic_components.py`: `509f9ce6706e47e90ada4c36cc30d3f6650e7ccf`
+- `test_c10s_synthetic_components.py`: `6b00e3c43aa00e3303cd767039da52b704744566`
+- `c10s_world_pipeline.py`: `192086604283d38930de75284cb8aedbf85515a8`
+
+This integration does not yet make typed `A_f*/D_f*` the source of the complete structural snapshot difference `ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*)). The structural-delta, Reach and trajectory engine remains a separate contract. The next source correction must bind the focal semantic identity to exact structural snapshot membership, then reconcile the complete U/R/C/X delta. It must not equate `D_f*=1` with the whole `ΔT_acc*) or infer downstream Reach/trajectory from the focal indicator.
+
+**Status:** IMPLEMENTED IN RESEARCH BRANCH / TESTS AUTHORED BUT NOT EXECUTED / NOT CONFIRMATORY. No design freeze, software-test authorization, simulation, calibration, Monte Carlo or scientific execution is implied. DEC-C10-066/067, estimands, parameters and seeds are unchanged; `main` is untouched.
