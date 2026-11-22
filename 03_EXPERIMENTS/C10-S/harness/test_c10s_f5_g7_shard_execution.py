@@ -179,7 +179,7 @@ class F5G7ShardExecutionTests(unittest.TestCase):
             profile_path.write_text(json.dumps(profile), encoding="utf-8")
             profile_manifest_path = root / "resource-profile-manifest.json"
             profile_manifest_path.write_text(json.dumps({
-                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-001",
+                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002",
                 "profile_run_id": 44926453920,
                 "profile_artifact_id": 123456789,
                 "profile_source_commit": source_commit,
