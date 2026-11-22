@@ -1,7 +1,7 @@
 # C10-S F5 — End-to-end closure dossier (research draft)
 
 **Date:** 2026-11-20  
-**Status:** OPEN — G1–G6 PASS / G7 AUTHORIZED, EXECUTION PENDING  
+**Status:** OPEN — G1–G6 PASS / G7 protocol frozen; staged execution plan and software gate PASS; fresh one-use authorization for the staged executor pending  
 **Branch:** research/c10s-f1-integrated-correction-20261119  
 **Purpose:** consolidate the definitive F5 closure sequence into one auditable contract. This dossier does not authorize execution, change frozen F1/F5 semantics, or upgrade any scientific claim.
 
