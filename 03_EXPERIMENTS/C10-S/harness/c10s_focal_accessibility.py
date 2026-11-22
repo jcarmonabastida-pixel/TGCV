@@ -458,6 +458,11 @@ class D2FocalAccessibilitySpecification:
             if source.unit_id != self.unit_id:
                 raise FocalAccessibilityContractError(f"D2 post-Z={z} focal input unit mismatch")
             source.validate()
+        for source in (self.baseline, self.post_by_z[0][1], self.post_by_z[1][1]):
+            if self.focal_route_id not in {route.route_id for route in source.routes}:
+                raise FocalAccessibilityContractError(
+                    f"declared focal route {self.focal_route_id} is absent from a D2 potential catalogue"
+                )
         snapshot_ids = (
             self.baseline.snapshot_id,
             self.post_by_z[0][1].snapshot_id,
@@ -517,6 +522,7 @@ class D2FocalPotentialTruth:
                 )
         payload = {
             "unit_id": self.unit_id,
+            "focal_route_id": self.focal_route_id,
             "specification_version": self.specification_version,
             "provenance_ref": self.provenance_ref,
             "baseline_result_sha256": self.baseline.result_sha256,
@@ -594,6 +600,7 @@ def adjudicate_d2_focal_potentials(
         )
 
     reference_signature = _d2_non_dependency_signature(baseline)
+    baseline_routes = {route.route_id: route for route in baseline.routes}
     for source in sources:
         if not source.routes:
             raise FocalAccessibilityContractError("D2 focal route catalogue must include the declared focal route")
@@ -613,6 +620,12 @@ def adjudicate_d2_focal_potentials(
             raise FocalAccessibilityContractError(
                 "D2 isolation violation: non-DEP predicates, blocks or route catalogue differ across potential worlds"
             )
+        for route in source.routes:
+            if route.route_id != specification.focal_route_id:
+                if route.dependency_predicates != baseline_routes[route.route_id].dependency_predicates:
+                    raise FocalAccessibilityContractError(
+                        "D2 isolation violation: a non-focal alternative route changed across policy potentials"
+                    )
         values = {row.role: row.truth_state for row in source.predicates}
         if any(values.get(role) != "1" for role in ("ID", "REL", "COND", "AUTH", "RES")):
             raise FocalAccessibilityContractError(
@@ -634,6 +647,7 @@ def adjudicate_d2_focal_potentials(
 
     payload = {
         "unit_id": specification.unit_id,
+        "focal_route_id": specification.focal_route_id,
         "specification_version": specification.specification_version,
         "provenance_ref": specification.provenance_ref,
         "baseline_result_sha256": baseline_result.result_sha256,
@@ -641,7 +655,7 @@ def adjudicate_d2_focal_potentials(
         "opening_result_sha256_by_z": tuple((z, row.result_sha256) for z, row in opening_results),
     }
     result = D2FocalPotentialTruth(
-        specification.unit_id, baseline_result, tuple(post_results),
+        specification.unit_id, specification.focal_route_id, baseline_result, tuple(post_results),
         tuple(opening_results), specification.specification_version,
         specification.provenance_ref, _digest(payload),
     )
