@@ -6,6 +6,7 @@ import hashlib
 import json
 import math
 import statistics
+from datetime import datetime
 from pathlib import Path
 
 import run_c10s_f5_g7_tiera_calibration as g7
@@ -25,6 +26,11 @@ def aggregate(shard_dir: Path, output: Path) -> dict:
     observed = set()
     all_timings = {cell: [] for cell in g7.EXPECTED_CELLS}
     shard_hashes = []
+    source_commits = set()
+    shard_starts = []
+    shard_completions = []
+    cpu_seconds = []
+    peak_rss_values = []
     for path in files:
         raw = path.read_bytes()
         item = json.loads(raw)
@@ -42,8 +48,18 @@ def aggregate(shard_dir: Path, output: Path) -> dict:
             or item.get("seed_namespace") != g7.RESOURCE_NAMESPACE
             or item.get("datasets_completed") != item.get("replicate_count")
             or item.get("coverage_adjudication") != "NOT_PERFORMED"
+            or item.get("retained_scope") != "TIMING_AND_REPLICA_IDENTITY_ONLY"
         ):
             raise ValueError(f"RESOURCE_SHARD_CONTRACT_MISMATCH:{path.name}")
+        source_commits.add(item.get("source_commit"))
+        shard_starts.append(datetime.fromisoformat(item["shard_started_at_utc"]))
+        shard_completions.append(datetime.fromisoformat(item["shard_completed_at_utc"]))
+        cpu = item.get("process_cpu_seconds")
+        rss = item.get("peak_rss_kib")
+        if not isinstance(cpu, (int, float)) or cpu <= 0 or not isinstance(rss, int) or rss <= 0:
+            raise ValueError(f"RESOURCE_SHARD_TELEMETRY_INVALID:{path.name}")
+        cpu_seconds.append(cpu)
+        peak_rss_values.append(rss)
         timings = item.get("dataset_timings", [])
         if len(timings) != item["replicate_count"]:
             raise ValueError(f"RESOURCE_SHARD_TIMING_DENOMINATOR_MISMATCH:{path.name}")
@@ -64,7 +80,16 @@ def aggregate(shard_dir: Path, output: Path) -> dict:
     if observed != expected:
         missing = sorted(expected - observed)
         raise ValueError(f"RESOURCE_SHARD_ROSTER_INCOMPLETE:{missing}")
+    if len(source_commits) != 1 or not next(iter(source_commits)) or len(shard_starts) != len(expected):
+        raise ValueError("RESOURCE_SHARD_SOURCE_COMMIT_MISMATCH")
+    source_commit = next(iter(source_commits))
+    if len(source_commit) != 40 or any(ch not in "0123456789abcdef" for ch in source_commit):
+        raise ValueError("RESOURCE_SHARD_SOURCE_COMMIT_INVALID")
+    wall_elapsed = (max(shard_completions) - min(shard_starts)).total_seconds()
+    if wall_elapsed <= 0:
+        raise ValueError("RESOURCE_PROFILE_WALL_TIME_INVALID")
     cells = []
+    dataset_timings = {}
     for cell, values in all_timings.items():
         if len(values) != g7.RESOURCE_K_PER_CELL:
             raise ValueError(f"RESOURCE_CELL_DENOMINATOR_MISMATCH:{cell}")
@@ -77,22 +102,33 @@ def aggregate(shard_dir: Path, output: Path) -> dict:
             "latency_seconds": {
                 "mean": statistics.fmean(values),
                 "median": statistics.median(values),
+                "p90": pct(.90),
                 "p95": pct(.95),
                 "p99": pct(.99),
                 "max": max(values),
                 "total": sum(values),
             },
         })
+        dataset_timings[cell] = [
+            row for shard_path in files
+            for row in json.loads(shard_path.read_text(encoding="utf-8")).get("dataset_timings", [])
+            if row.get("dataset_id", "").split(":")[-2] == cell
+        ]
     payload = {
         "schema": "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-002",
         "scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT",
         "seed_namespace": g7.RESOURCE_NAMESPACE,
+        "source_commit": source_commit,
+        "wall_elapsed_seconds": wall_elapsed,
+        "process_cpu_seconds": sum(cpu_seconds),
+        "peak_rss_kib": max(peak_rss_values),
         "K_per_cell": g7.RESOURCE_K_PER_CELL,
         "C0_B": g7.C0_B,
         "C5_B": g7.C5_B,
         "shards_verified": len(observed),
         "dataset_count": sum(len(values) for values in all_timings.values()),
         "cells": cells,
+        "dataset_timings": dataset_timings,
         "shard_hashes": sorted(shard_hashes, key=lambda x: x["file"]),
         "coverage_adjudication": "NOT_PERFORMED",
     }
