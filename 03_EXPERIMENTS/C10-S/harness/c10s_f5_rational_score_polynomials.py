@@ -236,7 +236,10 @@ def _univariate_bernstein_numerators(
         if value != 0
     }
     if not coefficients:
-        return (), 1
+        # Preserve the zero polynomial as an explicit zero Bernstein
+        # coefficient. An empty tuple would make all(...) vacuously true and
+        # incorrectly certify both strict signs at an exact root witness.
+        return (Fraction(0),), 1
     degree = max(coefficients)
     basis, denominator = _bernstein_integer_basis(degree, lower, upper)
     numerators = tuple(
