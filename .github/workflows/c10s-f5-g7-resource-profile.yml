@@ -14,12 +14,42 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: c10s-f5-g7-resource-profile-v1-1
+  cancel-in-progress: false
+
+env:
+  OPENBLAS_NUM_THREADS: '1'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  NUMEXPR_NUM_THREADS: '1'
+  VECLIB_MAXIMUM_THREADS: '1'
+
 jobs:
-  workflow-smoke-check:
+  resource-only-profile:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 120
     steps:
-      - name: Confirm workflow is parsed and scheduled
+      - name: Checkout immutable profiling source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+      - name: Execute resource-only timing profile
+        working-directory: .
         run: |
-          echo "G7 v1.1 resource workflow parsed successfully"
-          echo "Commit: ${GITHUB_SHA}"
+          python 03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_resource_preflight_parallel.py --output "$RUNNER_TEMP/c10s-f5-g7-resource-parallel-profile.json"
+      - name: Upload immutable resource-only profile
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-resource-profile-v1-1
+          path: ${{ runner.temp }}/c10s-f5-g7-resource-parallel-profile.json
+          if-no-files-found: error
+          retention-days: 90
