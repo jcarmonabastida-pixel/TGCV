@@ -1,7 +1,7 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 0.1  
-**Fecha:** 2026-11-23  
+**Versión:** 0.2  
+**Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
 **Base de referencia:** GitHub `main`, estado consultado el 23-11-2026  
@@ -723,3 +723,139 @@ El hilo conductor es:
 Los outcomes y el valor forman parte de las consecuencias y evaluaciones posteriores, no de una promesa automática ni de la definición primaria del sistema.
 
 **Orientación maestra:** comprender y diseñar cómo los sistemas se transforman, qué nuevas posibilidades se vuelven accesibles y cómo esas posibilidades configuran trayectorias futuras.
+
+---
+## 17. Principios de experiencia y crecimiento web reutilizados de AWGI
+
+### 17.1 Alcance de la transferencia
+
+Se revisó la arquitectura integrada AFLUYA v1.1 (09_STRATEGY/AFLUYA_ECOSYSTEM_ARCHITECTURE_v1.0.md, rama strategy/afluya-ecosystem-v0.2) y su plan de implantación AWGI v0.7. Se recuperan principios de diseño y operación de la web, no la identidad, el posicionamiento, la oferta comercial ni la arquitectura de marca de AFLUYA.
+
+La transferencia se adapta al carácter de TGCV: un ecosistema de investigación, pensamiento sistémico, ingeniería de sistemas, inteligencia transformacional, modelado, simulación y aplicaciones. No se trasladan como mensajes rectores las formulaciones dirigidas a organizaciones, la tagline de AFLUYA, sus servicios ni su estructura de negocio.
+
+### 17.2 AWGI adaptado: la web como infraestructura activa del ecosistema
+
+La web de TGCV no debe ser únicamente un escaparate que describe una iniciativa. Debe funcionar progresivamente como infraestructura que:
+- hace comprensible el objeto de investigación;
+- ofrece conocimiento, recursos y experiencias útiles;
+- permite explorar conceptos y modelos;
+- muestra qué está disponible, qué está en desarrollo y qué permanece abierto;
+- facilita preguntas, feedback, propuestas y contribuciones;
+- conecta personas, disciplinas, capacidades, proyectos y oportunidades;
+- hace visible el aprendizaje y la evolución del ecosistema.
+
+La web puede empezar con una infraestructura pequeña. No necesita una comunidad previa, una plataforma compleja ni todos los módulos terminados. Debe crecer a partir de utilidad real, preguntas recibidas, contribuciones y capacidad de mantenimiento.
+
+**Principio rector:** la web debe demostrar su propósito mediante la experiencia que ofrece, no limitarse a proclamarlo.
+
+### 17.3 Efecto Ajá: comprensión rápida y verificable
+
+Se adopta el Efecto Ajá como criterio de diseño y prueba, adaptado al objeto de TGCV.
+
+Una persona que no conozca TGCV debería poder explicar, tras una visita breve (objetivo orientativo: menos de dos minutos):
+1. qué pregunta investiga el ecosistema;
+2. qué significa que cambien las posibilidades de un sistema cuando cambian sus condiciones;
+3. por qué esto es relevante para comprender, modelar o diseñar sistemas;
+4. qué puede explorar o consultar a continuación.
+
+La prueba no debe limitarse a preguntar «¿te ha gustado?» ni validar únicamente la interpretación del equipo. Se pedirá a personas externas que expliquen con sus propias palabras qué han entendido, qué les resulta relevante, qué han confundido y qué harían después. Se registrarán comprensión, conceptos erróneos, tiempo aproximado, preguntas y orientación. Si aparecen confusiones persistentes, se revisarán narrativa, ejemplos, jerarquía y vocabulario.
+
+El objetivo temporal es una heurística de diseño, no una garantía ni un umbral científico. La comprensión se comprobará con visitantes de perfiles distintos: sistemas/ingeniería, investigación, software/IA y público interdisciplinar.
+
+### 17.4 Secuencia de experiencia: reconocimiento, insight, exploración e invitación
+
+Se conserva la lógica de AWGI de poner al visitante en el centro y ofrecer una invitación compartida, pero se traduce al contexto científico y de ingeniería:
+1. **Reconocimiento:** presentar una situación o pregunta que el visitante pueda reconocer: un sistema cambia, pero también pueden cambiar las transformaciones que tiene disponibles.
+2. **Insight:** hacer visible la idea distintiva: las condiciones, relaciones, recursos y restricciones afectan a lo que el sistema puede hacer después.
+3. **Comprensión:** explicar la secuencia analítica sin colapsar accesibilidad, ejecución, trayectoria, outcome y valor.
+4. **Exploración:** ofrecer una ruta concreta hacia conceptos, modelos, casos, métodos o demostradores disponibles.
+5. **Participación:** invitar a preguntar, contrastar, proponer, contribuir o conectar con otras personas.
+
+La voz debe hablar desde la pregunta y la experiencia del visitante, no desde una institución que se describe continuamente a sí misma. La invitación compartida («exploremos», «contrastemos», «construyamos conocimiento») es adecuada cuando existe una vía real para hacerlo. No se simulará una comunidad activa ni una oportunidad de contribución inexistente.
+
+### 17.5 Efecto red y apertura distribuida
+
+La web debe facilitar que las primeras personas visitantes puedan aportar algo significativo y percibir que sus preguntas o contribuciones pueden mejorar el ecosistema. Esto no equivale a maximizar registros, seguidores o tráfico.
+
+Se priorizan:
+- feedback sobre conceptos y explicaciones;
+- preguntas de investigación y sugerencias de casos;
+- contribuciones documentales, metodológicas o técnicas delimitadas;
+- conexiones entre disciplinas y dominios;
+- colaboración en experimentos, simulaciones o aplicaciones cuando haya alcance y capacidad definidos.
+
+La participación no dependerá exclusivamente de GitHub ni de conocimientos técnicos. Debe existir al menos una vía comprensible para enviar una pregunta, corrección o propuesta. Las aportaciones se revisan antes de incorporarse; enviar una propuesta no concede permiso de publicación ni autoridad sobre el contenido.
+
+### 17.6 Valor antes de pedir datos y fricción mínima
+
+Se adopta el principio de ofrecer valor antes de solicitar participación o información personal:
+- lectura y exploración abiertas sin registro;
+- recursos sustantivos accesibles directamente;
+- formularios solo cuando exista una finalidad clara;
+- datos mínimos y explicados;
+- alternativas de contacto para personas no técnicas;
+- ausencia de barreras de pago para conocer el programa científico y sus contenidos publicables.
+
+La web debe minimizar fricción, coste anticipado y riesgo operativo. Se preferirán herramientas sencillas, portables y reversibles; no se construirá infraestructura propia si una solución gestionada resuelve adecuadamente la necesidad. La selección tecnológica queda abierta y requiere evaluación específica. No se autoriza por esta sección contratar servicios, comprar dominios ni activar cuentas o planes.
+
+### 17.7 Transparencia de estados y roadmap público
+
+Cuando exista contenido suficiente, la web podrá mostrar un roadmap o registro público de líneas, recursos y oportunidades con estados inequívocos:
+- **Disponible:** existe y puede consultarse o utilizarse.
+- **En desarrollo:** hay trabajo activo y un alcance identificable.
+- **Abierto a contribución:** existe una necesidad concreta y una vía de participación.
+- **Exploratorio:** posibilidad en consideración, sin compromiso de ejecución.
+- **Aplazado:** no es prioridad en este momento.
+- **Cerrado:** completado o descartado.
+
+Estos estados describen el desarrollo del ecosistema y sus activos; no sustituyen los estados científicos de evidencia ni los estados canónicos de TGCV. Un recurso «disponible» no implica validación científica. Los experimentos, demostradores y casos deben conservar sus propias etiquetas de evidencia.
+
+### 17.8 Crecimiento acompasado y autonomía
+
+La evolución de la web seguirá un ciclo de aprendizaje:
+**descubrir → comprender → explorar → preguntar/contribuir → conectar → desarrollar → compartir lo aprendido**
+
+Cada etapa debe aportar valor por sí misma. No se exigirá conversión comercial, registro ni compromiso continuado.
+
+La web debe reducir progresivamente la dependencia de intervenciones manuales mediante contenidos claros, procesos documentados, contribuciones asíncronas y responsabilidades explícitas. Sin embargo, no se abrirán más frentes de los que puedan mantenerse. Una oportunidad sin responsable, alcance o capacidad no debe presentarse como compromiso activo.
+
+### 17.9 Principios transferidos y límites
+
+| Principio AWGI | Aplicación en la nueva web TGCV | Límite de adaptación |
+|---|---|---|
+| Efecto Ajá | Prueba externa de comprensión de la pregunta y del objeto de TGCV | No convertir el test en validación científica |
+| Efecto red | Conectar disciplinas, preguntas, capacidades y contribuciones | No fingir comunidad ni actividad |
+| Apertura distribuida | Vías accesibles de feedback y contribución | Revisión, autoría, seguridad y gobernanza permanecen |
+| Valor antes de captación | Recursos y conocimiento abiertos antes de pedir datos | No implica que todo activo técnico o dato deba ser público |
+| Coste y riesgo mínimos | Primera web ligera, modular y reversible | No comprometer calidad, privacidad o accesibilidad |
+| Roadmap transparente | Mostrar disponibilidad y madurez de contenidos y experiencias | Separar estados de producto de estados de evidencia |
+| Crecimiento acompasado | Evolucionar según utilidad, contribuciones y capacidad | No crear obligaciones ni promesas sin recursos |
+| Autonomía progresiva | Documentar procesos y reducir dependencia operativa | No sustituye responsables ni revisión humana |
+
+### 17.10 Criterios de aceptación derivados
+
+Antes de considerar lista la web germen para publicación, comprobar que:
+1. visitantes externos pueden explicar la pregunta central de TGCV sin repetir jerga;
+2. comprenden que cambian tanto los estados como las posibilidades de transformación;
+3. distinguen, al menos en términos básicos, accesibilidad, ejecución y resultados;
+4. encuentran contenido útil sin registrarse;
+5. identifican una ruta clara para profundizar o participar;
+6. las contribuciones posibles tienen canal, alcance y revisión;
+7. los estados de los recursos y las afirmaciones científicas son honestos;
+8. la experiencia funciona con fricción razonable en móvil y escritorio;
+9. la recogida de datos es mínima y proporcionada;
+10. el alcance publicado puede mantenerse con la capacidad realmente disponible.
+
+## 18. Referencias de transferencia y control de cambios
+
+### Referencias revisadas
+- 09_STRATEGY/AFLUYA_ECOSYSTEM_ARCHITECTURE_v1.0.md, versión integrada v1.1, §§5–7, 11–14, rama strategy/afluya-ecosystem-v0.2.
+- 09_STRATEGY/AFLUYA_IMPLEMENTATION_PLAN_v0.1.md, versión 0.7 — AWGI, especialmente §2, Fase 1, puertas de aprobación y criterios de estado, misma rama.
+- Esta reutilización es estratégica y editorial. No transfiere a TGCV la marca AFLUYA, su tagline, su mensaje comercial ni sus compromisos de implantación.
+
+### v0.2 — 2026-11-24
+- Se integran en el maestro los principios AWGI transferibles: web como infraestructura activa, Efecto Ajá, efecto red, apertura distribuida, valor antes de pedir datos, fricción/coste mínimos, roadmap transparente, crecimiento acompasado y autonomía progresiva.
+- Se adapta el Efecto Ajá a la comprensión de TGCV y se define una prueba externa cualitativa.
+- Se establece una secuencia de experiencia centrada en el visitante: reconocimiento, insight, comprensión, exploración y participación.
+- Se excluyen expresamente elementos propios de la identidad y del modelo comercial de AFLUYA.
+- Se preservan la separación entre estados de desarrollo y estados de evidencia, y la gobernanza científica de TGCV.
