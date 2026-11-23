@@ -1,7 +1,7 @@
 # Strategic Naming Brief — Identidad del ecosistema de potencial, transformación generativa e inteligencia transformacional
 
 **Identificador:** ECOSYSTEM-NAMING-BRIEF-002  
-**Versión:** 1.7 — TRANSFORMATIONAL VALUE INTELLIGENCE (TVI) como candidato conceptual prioritario  
+**Versión:** 1.8 — SYS2VALUE como candidato prioritario de marca, pendiente de screening  
 **Fecha:** 2026-11-23  
 **Estado:** DRAFT — criterios para investigación de nombres; no hay marca seleccionada ni autorización de registro.  
 **Documento rector:** `ECOSYSTEM_MANIFESTO_v0.2.md`  
@@ -905,3 +905,85 @@ La preferencia por TVI es conceptual y provisional; no se afirma que sea lingü�
 ### Control de cambios
 
 - **v1.7 — 2026-11-23:** se incorpora **TRANSFORMATIONAL VALUE INTELLIGENCE (TVI)** como candidato conceptual prioritario por decisión del usuario. Se define su alcance de trabajo, se diferencia de TGCV y de los componentes VALUE/ValueLabOS, se documenta la razón de preferencia frente a GVC, GSI y TVC y se mantienen explícitas las cautelas científicas, lingüísticas y marcarias. No se modifica `main`.
+
+
+## 30. Candidato prioritario de marca: SYS2VALUE
+
+Se incorpora **SYS2VALUE** como candidato prioritario de marca paraguas, por decisión expresa del usuario del 2026-11-23. Esta prioridad corresponde a la exploración de identidad comercial del ecosistema; no sustituye ni renombra TVI, TGCV, VALUE o ValueLabOS.
+
+### 30.1 Denominación y lectura
+
+**SYS2VALUE**
+
+Lectura de trabajo:
+- **SYS:** abreviatura reconocible de *systems*.
+- **2:** recurso gráfico y verbal que puede leerse como *to*, indicando dirección o tránsito.
+- **VALUE:** orientación explícita hacia la construcción de valor.
+
+Promesa implícita:
+
+**From systems to value.**
+
+La lectura es breve y visualmente compacta. Debe comprobarse mediante pruebas de comprensión si el público interpreta espontáneamente SYS2 como *systems to* y si la grafía con el número 2 se recuerda y escribe correctamente.
+
+### 30.2 Posicionamiento propuesto
+
+**SYS2VALUE — From systems to new possibilities.**
+
+*Developing new capabilities. Creating value.*
+
+Promesa de trabajo:
+
+**Ayudamos a las organizaciones a desarrollar capacidades que amplían lo que pueden hacer y a convertir esas nuevas posibilidades en valor.**
+
+El descriptor hace explícita la dimensión diferencial que el nombre por sí solo no comunica necesariamente: no se trata solo de llevar sistemas hacia el valor, sino de desarrollar nuevas capacidades y ampliar sus posibilidades de acción.
+
+### 30.3 Encaje con el ecosistema
+
+SYS2VALUE se evalúa como posible identidad paraguas capaz de albergar:
+- **TGCV:** programa científico y fundamento de investigación.
+- **TVI:** capacidad/perspectiva conceptual de inteligencia transformacional de valor.
+- **Transformación Generativa de Sistemas:** proceso conceptual.
+- **VALUE:** framework aplicado.
+- **ValueLabOS:** ecosistema digital y experimental.
+- **Community, Research, Explore, Lab, Learning e Impact:** dimensiones del ecosistema abierto.
+- **Value Discovery Sprint** y **AI Opportunity Assessment:** servicios profesionales iniciales, sin reducir la marca a consultoría ni a inteligencia artificial.
+
+La arquitectura de contenidos, comunidad abierta y servicios profesionales se conserva como referencia. SYS2VALUE es un candidato de nombre, no una decisión para eliminar o sustituir componentes existentes.
+
+### 30.4 Evaluación conceptual preliminar
+
+| Criterio | Evaluación de trabajo |
+|---|---|
+| Brevedad y personalidad visual | Favorable |
+| Evocación de sistemas | Favorable |
+| Orientación a valor | Explícita |
+| Evocación de nuevas posibilidades | Parcial; depende del descriptor |
+| Naturalidad oral y escritura al dictado | Pendiente de prueba |
+| Amplitud para ecosistema abierto y servicios | Favorable |
+| Distintividad comercial | No determinada |
+| Riesgo de colisión | No determinado |
+
+**Objeción principal:** SYS2VALUE puede interpretarse como una firma que convierte sistemas en valor, sin comunicar por sí solo el desarrollo de nuevas capacidades. El posicionamiento *From systems to new possibilities. Developing new capabilities. Creating value.* debe acompañar las pruebas de marca para evaluar si resuelve esa ambigüedad sin sobrecargar la identidad.
+
+### 30.5 Screening pendiente y límites de la decisión
+
+Antes de elevar SYS2VALUE a finalista o recomendarlo como marca:
+1. Buscar coincidencias exactas y similares —incluidas variantes SYS TO VALUE, SYS-2-VALUE, SYSTEMS2VALUE y semejanzas fonéticas/visuales— en OEPM, EUIPO/TMview y WIPO.
+2. Examinar usos comerciales, empresas, productos, dominios, redes y resultados de búsqueda, con atención a consultoría, investigación, formación, software, tecnología y servicios profesionales.
+3. Evaluar las clases de Niza pertinentes según el alcance real del ecosistema; las clases 35, 41 y 42 son puntos de partida, no una lista cerrada.
+4. Verificar en tiempo real los dominios exactos .com, .es y .org mediante RDAP y registradores fiables, documentando estado y costes.
+5. Probar pronunciación, comprensión espontánea, recuerdo y escritura en español e inglés.
+6. Evaluar similitud y riesgo de confusión y solicitar revisión profesional antes de cualquier registro.
+
+Una búsqueda web exacta sin resultados no acredita disponibilidad marcaria ni de dominios. No se declara SYS2VALUE libre, registrable o jurídicamente despejado.
+
+### 30.6 Estado
+
+**SYS2VALUE — candidato prioritario de marca para la siguiente fase de screening; no seleccionado definitivamente ni autorizado para registro.**
+
+La prioridad es de exploración y no implica aprobación de compra, reserva o registro de dominios o marcas. La rama de trabajo continúa separada de `main`; no se modifica `main`.
+
+### Control de cambios
+
+- **v1.8 — 2026-11-23:** se incorpora **SYS2VALUE** como candidato prioritario de marca paraguas por decisión expresa del usuario. Se documentan su lectura, posicionamiento, encaje con el ecosistema abierto y los servicios iniciales, objeción semántica principal y screening comercial, marcario, lingüístico y de dominios pendiente. TVI y los demás componentes conservan sus funciones. No se modifica `main`.
