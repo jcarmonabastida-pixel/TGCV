@@ -1,7 +1,7 @@
 # Strategic Naming Brief — Identidad del ecosistema de potencial, transformación generativa e inteligencia transformacional
 
 **Identificador:** ECOSYSTEM-NAMING-BRIEF-002  
-**Versión:** 1.8 — SYS2VALUE como candidato prioritario de marca, pendiente de screening  
+**Versión:** 1.9 — SYS2VALUE: screening comercial y de dominios preliminar  
 **Fecha:** 2026-11-23  
 **Estado:** DRAFT — criterios para investigación de nombres; no hay marca seleccionada ni autorización de registro.  
 **Documento rector:** `ECOSYSTEM_MANIFESTO_v0.2.md`  
@@ -987,3 +987,82 @@ La prioridad es de exploración y no implica aprobación de compra, reserva o re
 ### Control de cambios
 
 - **v1.8 — 2026-11-23:** se incorpora **SYS2VALUE** como candidato prioritario de marca paraguas por decisión expresa del usuario. Se documentan su lectura, posicionamiento, encaje con el ecosistema abierto y los servicios iniciales, objeción semántica principal y screening comercial, marcario, lingüístico y de dominios pendiente. TVI y los demás componentes conservan sus funciones. No se modifica `main`.
+
+
+## 31. Screening preliminar de SYS2VALUE: usos comerciales, dominios y marcas
+
+Se documenta el primer screening público de **SYS2VALUE**, realizado el 2026-11-23. Esta sección amplía §30 sin convertir el candidato en marca seleccionada ni en nombre jurídicamente despejado.
+
+### 31.1 Búsqueda de usos exactos y variantes
+
+Se realizaron búsquedas web para:
+- `SYS2VALUE`, `SYS 2 VALUE` y `SYS-2-VALUE`;
+- `SYS TO VALUE` y `SYSTEMS2VALUE`;
+- combinaciones con empresa, consultoría, tecnología, software y marcas.
+
+**Resultado observado:** no se identificó en los resultados públicos consultados una organización o producto que utilice exactamente **SYS2VALUE** como identidad comercial. La ausencia de resultados indexados no demuestra que no existan usos, solicitudes o registros no indexados.
+
+### 31.2 Proximidad comercial relevante: SYVALUE
+
+Se identificó **SYVALUE, S.L.**, empresa con presencia en Madrid y actividad en infraestructura IT, integración de sistemas, consultoría, gestión de proyectos, servicios cloud y ciberseguridad. Su web describe también servicios de transformación digital e implementación de sistemas BPMS.
+
+Fuentes consultadas:
+- Web corporativa: https://syvalue.com/
+- Catálogo de servicios: https://syvalue.com/catalogo-de-servicios
+- Transformación digital: https://syvalue.com/transformacion-digital
+- Perfil de partner HPE: https://partnerconnect.hpe.com/partner/syvalue-sl121708604
+- Perfil empresarial: https://infomsp.com/managed/details/company/syvalue
+
+**Evaluación:** SYVALUE no es idéntico a SYS2VALUE, pero la semejanza visual, fonética y conceptual es apreciable: ambos comienzan por SYS/SY y terminan en VALUE. La coincidencia sectorial es especialmente relevante porque SYVALUE opera en España en servicios IT, integración de sistemas, consultoría y transformación digital, ámbitos próximos a parte de la oferta potencial de SYS2VALUE. El número «2» introduce una diferencia gráfica y de lectura, pero no elimina automáticamente el riesgo de asociación o confusión.
+
+**Riesgo comercial preliminar por proximidad a SYVALUE: MEDIO-ALTO.** Esta calificación es una valoración estratégica inicial, no un dictamen jurídico ni una conclusión sobre derechos anteriores. Deben verificarse titularidad, actividad actual, territorios, signos registrados y servicios protegidos.
+
+### 31.3 Comprobación de dominios
+
+Consulta realizada en la interfaz de búsqueda de dominios de Namecheap el 2026-11-23. La interfaz mostró los tres dominios exactos como disponibles para registro y no premium:
+
+| Dominio | Estado mostrado | Precio mostrado en la consulta |
+|---|---|---:|
+| `sys2value.com` | AVAILABLE | USD 12.08/año (precio retail mostrado: USD 15.98) |
+| `sys2value.es` | AVAILABLE | USD 18.98/año |
+| `sys2value.org` | AVAILABLE | USD 8.48/año (precio retail mostrado: USD 14.48) |
+
+Los precios son los mostrados en la sesión de consulta y pueden variar por promociones, impuestos, divisa, renovación o registrador. No se verificaron todavía precios de renovación, transferencia ni condiciones completas. No se compró, reservó ni registró ningún dominio.
+
+**Resultado de dominios:** los tres TLD requeridos por §8 superaron el primer chequeo comercial de disponibilidad en Namecheap en la fecha indicada. La disponibilidad puede cambiar en cualquier momento y debe reconfirmarse antes de cualquier decisión.
+
+### 31.4 Búsqueda marcaria: estado incompleto
+
+Se abrió TMview y se introdujo el término exacto `SYS2VALUE`. La interfaz mostró sugerencias de términos próximos —entre ellos `SYSVALUE`, `VALUESYS`, `VALUESYSTEM`, `2VALUE` y `E2VALUE`—, pero la automatización no llegó a ejecutar la consulta completa ni a aplicar filtros territoriales para la UE y España antes de agotar el tiempo disponible.
+
+Por tanto:
+- no se ha confirmado la inexistencia de marcas idénticas;
+- no se ha completado el análisis de marcas similares;
+- no se han verificado titulares, estados, territorios ni clases;
+- no se puede afirmar que SYS2VALUE esté libre o sea registrable.
+
+La ausencia del término exacto en el autocompletado de TMview no constituye evidencia suficiente de ausencia de registros.
+
+### 31.5 Balance de la primera ronda
+
+| Dimensión | Resultado |
+|---|---|
+| Uso comercial exacto SYS2VALUE localizado en web | No localizado en las búsquedas realizadas |
+| Proximidad sectorial relevante | Sí: SYVALUE, S.L. |
+| Dominios .com / .es / .org | Los tres aparecieron disponibles en Namecheap en la fecha de consulta |
+| Búsqueda marcaria OEPM / EUIPO / TMview / WIPO | Incompleta; sin conclusión |
+| Riesgo comercial global | **MEDIO-ALTO, pendiente de clearance** |
+
+**Conclusión de trabajo:** SYS2VALUE conserva interés como construcción de marca y los tres dominios requeridos aparecieron disponibles. Sin embargo, la proximidad con **SYVALUE** en el mismo mercado español de servicios IT y consultoría es una objeción sustantiva. No debe recomendarse todavía como finalista ni avanzar a inversión de identidad sin completar el análisis de similitud marcaria y, preferiblemente, una revisión profesional de riesgo de confusión.
+
+### 31.6 Próximas comprobaciones necesarias
+
+1. Completar búsquedas exactas y por similitud en TMview, EUIPO eSearch, OEPM y WIPO Global Brand Database.
+2. Revisar específicamente `SYVALUE`, `SYSVALUE`, `SYS VALUE`, `SYS2VALUE`, `SYSTEMS2VALUE` y variantes fonéticas, en particular clases 35, 41 y 42 y otras que correspondan a los servicios reales.
+3. Verificar la situación registral y comercial de SYVALUE, S.L., sus marcas y su ámbito territorial.
+4. Reconfirmar los tres dominios mediante RDAP/registro y consultar renovación, transferencia e impuestos.
+5. Someter el conjunto a revisión profesional antes de cualquier solicitud de registro.
+
+### Control de cambios
+
+- **v1.9 — 2026-11-23:** se documenta el primer screening público de SYS2VALUE. No se localiza uso exacto en las búsquedas web realizadas; se identifica SYVALUE, S.L. como proximidad comercial relevante en servicios IT y consultoría en España; Namecheap muestra disponibles `.com`, `.es` y `.org`; la consulta TMview queda incompleta. Se asigna riesgo comercial preliminar MEDIO-ALTO y se mantiene SYS2VALUE como candidato pendiente de clearance, sin declararlo disponible ni registrable.
