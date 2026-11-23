@@ -1,7 +1,7 @@
 # Strategic Naming Brief — Identidad del ecosistema de potencial, transformación generativa e inteligencia transformacional
 
 **Identificador:** ECOSYSTEM-NAMING-BRIEF-002  
-**Versión:** 1.0 — Value-Oriented Generative Enabling  
+**Versión:** 1.1 — Value-Oriented Generative Enabling / Enablement  
 **Fecha:** 2026-11-23  
 **Estado:** DRAFT — criterios para investigación de nombres; no hay marca seleccionada ni autorización de registro.  
 **Documento rector:** `ECOSYSTEM_MANIFESTO_v0.2.md`  
@@ -536,3 +536,48 @@ El siguiente análisis debe comprobar la naturalidad y precisión de la expresi�
 ### Control de cambios
 
 - **v1.0 — 2026-11-23:** se incorpora **VALUE-ORIENTED GENERATIVE ENABLING** como formulación conceptual integrada y **GENERATIVE ENABLING** como núcleo conceptual breve. Se conserva la orientación a valor como condición esencial, se vincula explícitamente con la formulación explicativa de §20 y se deja pendiente la validación lingüística del sintagma inglés. No se selecciona nombre de marca.
+
+
+## 23. Validación lingüística preliminar: ENABLING frente a ENABLEMENT
+
+La primera comprobación en diccionarios de referencia permite distinguir precisión semántica y naturalidad de construcción.
+
+### 23.1 Hallazgos
+
+- **Enable** es un verbo inglés natural y preciso para «hacer posible» o «dar a alguien/algo la capacidad o los medios para hacer algo». Cambridge lo recoge con ese significado. 
+- **Enabling** funciona de forma natural como forma verbal y como adjetivo. Cambridge define el adjetivo como «making something possible or easier» y ofrece usos como *enabling environment* y *enabling technologies*.
+- **Enablement** es un sustantivo incontable establecido. Cambridge y Oxford lo definen como el proceso o acto de hacer posible algo o capacitar a alguien para hacerlo. Oxford incluye el ejemplo *the enablement of innovation*.
+
+Fuentes de referencia:
+- Cambridge Dictionary, *enable*: https://dictionary.cambridge.org/dictionary/english/enable
+- Cambridge Dictionary, *enabling*: https://dictionary.cambridge.org/dictionary/english/enabling
+- Cambridge Dictionary, *enablement*: https://dictionary.cambridge.org/dictionary/english/enablement
+- Oxford Advanced Learner's Dictionary, *enablement*: https://www.oxfordlearnersdictionaries.com/definition/english/enablement
+
+### 23.2 Evaluación de GENERATIVE ENABLING
+
+**GENERATIVE ENABLING** es comprensible y conserva la intención conceptual: una actividad generativa que hace posibles nuevas capacidades y posibilidades. Sin embargo, como sintagma nominal autónomo, no es la construcción más natural del inglés general. *Enabling* suele aparecer como participio o adjetivo que modifica otro sustantivo (*enabling conditions*, *enabling technology*); usado directamente como núcleo de una etiqueta conceptual abstracta, suena más marcado y técnico.
+
+No se ha encontrado evidencia suficiente en esta comprobación para afirmar que *generative enabling* sea una expresión asentada o una colocación reconocible. La ausencia de resultados concluyentes no demuestra que nunca se use, pero impide presentarla como expresión idiomática establecida.
+
+### 23.3 Alternativa lingüística que merece comparación
+
+**GENERATIVE ENABLEMENT** tiene una estructura nominal más natural: *enablement* nombra precisamente el proceso de hacer posible o desarrollar la capacidad de hacer algo, y *generative* caracteriza ese proceso.
+
+La diferencia es pequeña pero relevante:
+- **Generative Enabling:** pone el foco en la acción o proceso en curso de hacer posible.
+- **Generative Enablement:** nombra el proceso o principio de posibilitación generativa como concepto.
+
+La segunda forma parece lingüísticamente más sólida para designar un concepto abstracto. No obstante, su adecuación conceptual debe conservar exactamente el significado acordado y no reducirse a habilitación técnica, capacitación o provisión de herramientas.
+
+### 23.4 Dictamen provisional
+
+- **VALUE-ORIENTED GENERATIVE ENABLING:** conceptualmente fiel y comprensible, pero lingüísticamente marcado; no validado aún como expresión inglesa natural.
+- **GENERATIVE ENABLING:** conservar como formulación de origen y referencia conceptual, no elevar todavía a denominación recomendada.
+- **VALUE-ORIENTED GENERATIVE ENABLEMENT:** alternativa nominal que merece evaluación comparativa; no queda aprobada ni sustituye la formulación anterior.
+
+La siguiente comprobación debe evaluar si *Generative Enablement* mantiene la idea de desarrollar capacidades que generan nuevas posibilidades —y no solo hacer accesibles recursos o facilitar capacidades existentes— y cómo se integra *Value-Oriented* sin producir una expresión excesivamente técnica o corporativa.
+
+### Control de cambios
+
+- **v1.1 — 2026-11-23:** se incorpora una validación lingüística preliminar basada en Cambridge y Oxford. Se distingue *enabling* (forma verbal/adjetival) de *enablement* (sustantivo de proceso). *Generative Enabling* permanece como formulación conceptual de origen, mientras *Generative Enablement* pasa a comparación; no se aprueba todavía ninguna como identidad de marca.
