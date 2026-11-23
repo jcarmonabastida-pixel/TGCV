@@ -1,0 +1,481 @@
+# TGCV — Web Information Architecture
+**Identifier:** TGCV-WEB-IA-001  
+**Version:** 0.1  
+**Date:** 2026-11-23  
+**Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
+**Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
+**Branch:** `strategy/tgcv-web-master`  
+**Purpose:** Convert the approved working orientation of the TGCV Web Master Brief into a coherent information architecture, navigation model, page system and staged publication plan.  
+**Authority:** This is a web-design artifact. It does not modify TGCV scientific governance, canonical definitions, evidence status or execution authorization.
+
+---
+
+## 0. Executive decision
+
+The website should be designed as the public interface of an interdisciplinary research, systems-engineering and experimentation ecosystem focused on systems and their transformation spaces.
+
+It must not be structured as a conventional consultancy website, an AI agency website, or a product landing page.
+
+The information architecture follows this editorial progression:
+
+`SYSTEMS → TRANSFORMATIONS → TRANSFORMATION-SPACE DYNAMICS → TRANSFORMATIONAL INTELLIGENCE → SYSTEMS ENGINEERING & EXPERIMENTATION → APPLIED SYSTEMS`
+
+The website has two simultaneous jobs:
+
+1. **Explain:** make the intellectual object, research programme and engineering orientation understandable.
+2. **Enable exploration:** let visitors inspect research, methods, demonstrators, application contexts, tools and opportunities to participate.
+
+The website should reveal the system behind the ecosystem, not merely list its departments.
+
+## 1. Primary audiences and their questions
+
+Audience definitions are provisional working hypotheses. They should be validated through interviews and usage evidence before being treated as established market segments.
+
+| Audience | Primary question | Content they need | Desired next step |
+|---|---|---|---|
+| Systems researchers and academics | What is the research object and what is scientifically established? | TGCV, concepts, formal models, evidence, limitations, publications | Examine research and evidence |
+| Systems engineers and architects | How can this perspective help model or reason about a system? | System boundaries, transformations, dependencies, constraints, engineering methods | Explore methods or a technical demonstrator |
+| AI and software systems practitioners | How do tools, permissions, resources and environments alter what agents/systems can do? | Agentic systems, infrastructure, access conditions, trajectory examples | Inspect a case or experiment |
+| Complex-systems and interdisciplinary researchers | How does the approach transfer across domains? | Application-Fit, cross-domain patterns, case comparisons | Explore an application domain |
+| Developers and technical collaborators | What can be tested, reused, integrated or contributed? | Open Playground, tools, connectors, specifications, repositories | Try, inspect or contribute |
+| Institutions and organisations with complex systems | Is there a relevant problem that can be represented and explored? | Applied Systems, case method, boundaries and evidence limits | Propose a scoped exploration |
+| Students and wider curious audience | What does this mean, and can I see it working? | Clear introduction, visual explanations, glossary, interactive examples | Learn and explore |
+
+Do not assume all audiences need the same entry point. The site should support both a conceptual route and a practical route.
+
+## 2. Navigation model
+
+### 2.1 Recommended top-level navigation
+
+Keep the primary navigation compact. Use six principal destinations:
+
+1. **Explore** — a guided entry into the core ideas and interactive explanations.
+2. **Research** — TGCV, transformation-space dynamics, scientific programme and evidence.
+3. **Engineering** — systems thinking, systems engineering, modelling and methods.
+4. **Intelligence** — Transformational Intelligence: concepts, capabilities and technical work.
+5. **Labs & Applications** — simulation, demonstrators, Application-Fit and applied systems.
+6. **Community** — learning, participation, collaboration and open resources.
+
+A persistent **About** destination may sit at the end of the navigation or in the footer, depending on visual design. Search can be added when content volume justifies it.
+
+### 2.2 Sitemap
+
+```text
+/
+├── Explore
+│   ├── The central question
+│   ├── How systems transform
+│   ├── Transformation spaces
+│   ├── A guided example
+│   └── Glossary
+│
+├── Research
+│   ├── TGCV
+│   ├── Transformation-space dynamics
+│   ├── Concepts and definitions
+│   ├── Research programme
+│   ├── Experiments and evidence
+│   └── Publications and working papers
+│
+├── Engineering
+│   ├── Systems thinking
+│   ├── Systems engineering
+│   ├── System modelling
+│   ├── Cross-domain architecture
+│   └── Methods and specifications
+│
+├── Intelligence
+│   ├── Transformational Intelligence
+│   ├── Reasoning over transformation spaces
+│   ├── Navigation
+│   ├── Adaptation
+│   ├── Trajectory orientation
+│   └── Technical explorations
+│
+├── Labs & Applications
+│   ├── Labs and simulation
+│   ├── Demonstrators
+│   ├── Open Playground
+│   ├── Application-Fit
+│   │   ├── Cross-domain patterns
+│   │   └── Candidate cases
+│   └── Applied Systems
+│       ├── Distributed networks
+│       ├── Agentic AI systems
+│       ├── Industrial and cyber-physical systems
+│       ├── Energy and mobility
+│       └── Socio-technical and public systems
+│
+├── Community
+│   ├── Learning resources
+│   ├── Participate
+│   ├── Collaborate
+│   └── Events / updates (when available)
+│
+└── About
+    ├── Ecosystem
+    ├── Relationship with TGCV
+    ├── Principles and governance
+    └── Contact
+```
+
+This is a target content model, not a commitment to publish every page in the first release. Empty or speculative pages should not be published merely to fill the menu.
+
+## 3. Page roles and content briefs
+
+### 3.1 Home
+
+**Role:** communicate the identity, central question and routes into the ecosystem within the first screen and first scroll.
+
+**Working headline:**  
+*Understanding and engineering how systems transform.*
+
+**Working subheading:**  
+*Research, systems engineering and transformational intelligence for exploring how systems change, what becomes possible, and how future trajectories unfold.*
+
+**Required content blocks:**
+1. The central question: systems change, and so does what they can do.
+2. A simple visual of the transformation sequence.
+3. Three entry routes: Research, Engineering, Explore.
+4. A current featured experiment or demonstrator, with evidence status.
+5. Selected application domains as examples, not as a sector catalogue.
+6. Invitation to explore, collaborate or follow the work.
+
+**Avoid:** generic claims such as “unlock your potential”, “revolutionise your business”, “create value through AI”, or claims of universal predictive capability.
+
+### 3.2 Explore
+
+**Role:** teach the central idea without requiring prior knowledge of TGCV.
+
+A guided narrative should distinguish:
+- system and system boundary;
+- state and context;
+- candidate transformations;
+- accessibility conditions;
+- transformations actually performed;
+- successor states and trajectories;
+- outcomes and contextual value.
+
+Use one carefully bounded example, ideally an interactive synthetic system. Make clear what is illustrative and what is evidence.
+
+### 3.3 Research
+
+**Role:** provide the scientifically disciplined account.
+
+Core pages:
+- TGCV: research programme, object and scope.
+- Transformation-space dynamics: concepts and current formalisation status.
+- Research programme: questions, hypotheses and experimental lines.
+- Evidence: claims, supporting evidence, limitations and open questions.
+- Publications and working papers: versioned artefacts with status labels.
+
+Every research page must identify whether content is canonical, a working proposal, a hypothesis, a synthetic demonstration, an empirical result or a superseded item. Link to canonical repository artefacts where possible.
+
+### 3.4 Engineering
+
+**Role:** show how the conceptual perspective connects with systems-engineering practice.
+
+Content should cover:
+- system-of-interest and boundary definition;
+- states, interfaces and subsystems;
+- dependencies and constraints;
+- transformation and admissibility modelling;
+- domain connectors and semantic translation;
+- scenario design, verification and validation;
+- comparison against conventional domain baselines.
+
+Do not imply TGCV replaces established systems-engineering standards, methods or domain models.
+
+### 3.5 Intelligence
+
+**Role:** explain Transformational Intelligence as a functional capability, not as a synonym for AI.
+
+Present the four working capabilities:
+1. Reasoning over transformation spaces.
+2. Navigation among accessible transformations.
+3. Adaptation as states and accessible spaces change.
+4. Trajectory orientation under an independently specified outcome/value model.
+
+Show how AI may support or instantiate parts of this capability, while remaining only one possible enabling technology.
+
+### 3.6 Labs & Simulation
+
+**Role:** make the work inspectable through experiments, models and demonstrators.
+
+Each item must have a visible status:
+- Concept
+- Design
+- Synthetic prototype
+- Executed
+- Audited
+- Empirical pilot
+- Deployed
+
+A status must not be inferred from visual polish or a successful software run. Each demonstrator page should include purpose, system boundary, assumptions, inputs, method, output, baseline, limitations, provenance and reproducibility information.
+
+TSTC v004 may be presented as a bounded synthetic methodological demonstrator. It must not be presented as empirical validation, proof of causal propagation in real systems or evidence of universal applicability.
+
+### 3.7 Application-Fit and Applied Systems
+
+**Role:** show where the analytical perspective may be useful and how fit is assessed.
+
+Organise content by transformation mechanism and system architecture, not only by industry.
+
+The eight candidate cases from the Application-Fit register can be browsed as a research portfolio. The five deep-screened cases (C01, C03, C04, C05 and C08) may receive fuller pages, subject to source and evidence review.
+
+A case page should state:
+- problem context and system boundary;
+- domains and subsystems involved;
+- transformation mechanism;
+- cross-domain coupling pattern;
+- accessibility conditions and constraints;
+- downstream trajectory implications;
+- conventional baseline;
+- what TGCV representation adds or does not add;
+- evidence status and unresolved questions.
+
+Candidate cases must be labelled as candidates. A case's presence on the website is not proof of application fit.
+
+### 3.8 Open Playground
+
+**Role:** provide a safe, understandable environment to inspect transformation-space behaviour.
+
+Initial experience should be narrow and guided rather than a broad, unbounded platform. A first demonstrator could let visitors:
+1. inspect a small synthetic system;
+2. view candidate transformations;
+3. toggle a declared condition or constraint;
+4. compare accessible transformations before and after;
+5. execute an admissible transformation;
+6. inspect the successor state and changed possibilities;
+7. trace a simple multi-domain dependency;
+8. inspect assumptions and limitations.
+
+The playground must distinguish simulation rules from empirical observations and must not imply that synthetic outcomes predict real-world behaviour.
+
+### 3.9 Community
+
+**Role:** invite participation in an interdisciplinary research and engineering ecosystem.
+
+Possible elements:
+- learning paths and introductory materials;
+- technical documentation;
+- contribution opportunities;
+- calls for collaboration;
+- events or seminars when they exist;
+- community code of conduct and contribution principles.
+
+Do not claim an active community, events programme or open contribution process before these exist.
+
+### 3.10 About and governance
+
+**Role:** establish identity, transparency and boundaries.
+
+Explain:
+- the ecosystem's purpose;
+- its relationship to TGCV;
+- scientific independence and evidence discipline;
+- how methods, prototypes and applications are governed;
+- collaboration and contact routes.
+
+The ecosystem may develop applications around TGCV but cannot redefine scientific claims through marketing or deployment activity.
+
+## 4. Two primary visitor journeys
+
+### Journey A — Understand the research
+
+`Home → Explore → Research / TGCV → Transformation-space dynamics → Evidence → Research artefacts`
+
+Success means the visitor understands the central research question, knows what is and is not established, and can inspect the underlying work.
+
+### Journey B — Explore a technical application
+
+`Home → Engineering or Labs → Application-Fit case → Demonstrator → Method / baseline → Collaboration`
+
+Success means the visitor understands a bounded system problem, sees how transformations and dependencies are represented, and can judge whether a deeper technical exploration is warranted.
+
+Additional journeys can be developed for developers, students and institutions after initial usability testing.
+
+## 5. Content types and metadata
+
+Use a small number of reusable content types rather than designing every page independently.
+
+| Content type | Required metadata |
+|---|---|
+| Research concept | Title, definition, scope, status, related concepts, canonical source, last reviewed |
+| Research question / hypothesis | Question, hypothesis, assumptions, falsifiers, evidence status, related experiment |
+| Experiment | ID, objective, system boundary, design, inputs, execution state, audit, limitations, artefacts |
+| Demonstrator | Name, version, synthetic/empirical designation, capabilities, baseline, reproducibility, limitations |
+| Application case | Case ID, domain(s), system boundary, mechanism, coupling pattern, candidate/qualified status, sources |
+| Method / specification | Version, intended use, inputs, outputs, assumptions, constraints, status |
+| Tool / component | Version, function, interfaces, dependencies, availability, documentation |
+| Learning resource | Level, prerequisites, topic, format, related concepts |
+| News / update | Date, change, affected artefact, status, source link |
+
+Recommended universal metadata:
+- unique identifier;
+- title and short summary;
+- content owner or responsible role (when defined);
+- status;
+- version;
+- publication/review date;
+- provenance/source links;
+- related pages and concepts;
+- scientific/evidence caveat where applicable.
+
+## 6. Evidence and publication labels
+
+Use explicit, text-based labels consistently. Do not rely on colour alone.
+
+| Label | Meaning |
+|---|---|
+| **Concept** | Explanatory concept; not itself an empirical result |
+| **Hypothesis** | Proposition to be tested |
+| **Proposed** | Design or method not yet demonstrated |
+| **Synthetic** | Generated or simulated data/system |
+| **Executed** | A defined run completed |
+| **Audited** | A specified audit was performed; scope must be named |
+| **Empirical** | Data or observations from a real-world system; study design must be described |
+| **Pilot** | Bounded real-world trial; not automatically generalisable |
+| **Deployed** | Operating in a real environment; does not by itself establish effectiveness |
+| **Open question** | Unresolved issue or evidence gap |
+
+A label must always be accompanied by a short explanation. “Audited” must identify what was audited. “Empirical” must identify the empirical basis. “Deployed” must not be treated as “validated”.
+
+## 7. Editorial principles and vocabulary
+
+### Prefer
+- systems and subsystems;
+- transformation spaces;
+- accessible transformations;
+- admissibility and constraints;
+- transformation-space dynamics;
+- trajectories and successor states;
+- cross-domain dependencies;
+- systems engineering;
+- modelling, simulation and experimentation;
+- evidence, baselines and limitations.
+
+### Use carefully
+- intelligence (define the functional meaning);
+- generative (specify what is generated);
+- emergence (state the system and conditions);
+- value (specify whose value, under which model and context);
+- optimisation (state objective, constraints and trade-offs);
+- prediction (state target, horizon and validation).
+
+### Avoid as identity-defining language
+- business transformation consultancy;
+- generic AI transformation;
+- guaranteed value creation;
+- universal systems intelligence;
+- autonomous optimisation of any system;
+- “revolutionary”, “breakthrough” or “proven” without evidence.
+
+## 8. Visual and interaction principles
+
+The visual system should feel like a serious, contemporary systems research and engineering environment: clear, precise, exploratory and technically literate.
+
+Recommended visual language:
+- diagrams of systems, boundaries, interfaces and dependencies;
+- transformation graphs and state-transition sequences;
+- before/after accessible-space comparisons;
+- layered architecture views;
+- cross-domain propagation maps;
+- timelines and trajectories;
+- interactive model inspection.
+
+Avoid stock imagery of generic business meetings, abstract glowing brains, humanoid robots used as decoration, or generic “AI network” backgrounds that do not explain the work.
+
+Every diagram should answer a question. Every interaction should reveal a model, distinction or consequence. Motion and visual effects should never obscure evidence status or system boundaries.
+
+Accessibility requirements:
+- responsive layouts;
+- keyboard-operable interactions;
+- readable contrast and type;
+- text alternatives for diagrams;
+- reduced-motion support;
+- no colour-only encoding;
+- clear focus states and descriptive labels.
+
+## 9. Release plan
+
+### Phase 0 — Foundation and content integrity
+- confirm identity language and core definitions;
+- validate source links and evidence labels;
+- approve navigation and page templates;
+- establish visual principles and editorial workflow.
+
+### Phase 1 — Credible minimum website
+Publish:
+- Home;
+- Explore;
+- Research / TGCV;
+- Transformational Intelligence;
+- Engineering;
+- Labs & Simulation with one carefully bounded demonstrator;
+- Application-Fit overview with clearly labelled candidate cases;
+- About / governance;
+- contact route.
+
+Do not publish empty pages or imply a complete product ecosystem.
+
+### Phase 2 — Technical depth
+Add:
+- detailed research and evidence pages;
+- full Application-Fit case pages;
+- methods and specifications;
+- technical documentation;
+- reproducibility artefacts;
+- learning resources.
+
+### Phase 3 — Interactive exploration
+Add:
+- Open Playground;
+- interactive transformation-space explorer;
+- cross-domain scenario;
+- model and experiment comparison;
+- contributor workflows.
+
+### Phase 4 — Ecosystem growth
+Add only when operationally real:
+- community programmes;
+- events;
+- external collaborations;
+- reusable tools and connectors;
+- applied pilots and deployment cases.
+
+## 10. Acceptance criteria for the web architecture
+
+The information architecture is ready for visual design when:
+
+1. A first-time visitor can explain in their own words what TGCV investigates.
+2. A researcher can distinguish concepts, hypotheses, synthetic demonstrations and empirical evidence.
+3. A systems engineer can find the modelling, architecture and experimentation material.
+4. An AI practitioner can understand why Transformational Intelligence is not simply another name for AI.
+5. A visitor can trace at least one example from system conditions to accessible transformations and subsequent trajectory.
+6. Candidate application cases are not mistaken for validated applications.
+7. Value and outcomes are not conflated with accessibility or transformation.
+8. The website's structure reflects the ecosystem rather than a consultancy sales funnel.
+9. Every published claim has an identifiable source and appropriate status.
+10. The site can grow without requiring a redesign of its core navigation.
+
+## 11. Decisions intentionally left open
+
+This document does not decide:
+- final ecosystem or brand name;
+- logo, typography, colour palette or visual identity;
+- final technology stack or CMS;
+- hosting, analytics or privacy tooling;
+- exact public/private split of repositories and artefacts;
+- whether all candidate cases should be public;
+- community platform or contribution model;
+- commercial or advisory offerings;
+- final copy and scientific wording for every page.
+
+These decisions should follow the approved Web Master Brief and this information architecture, not precede them.
+
+## 12. Relationship to the master brief
+
+This document operationalises `TGCV_WEB_MASTER_BRIEF_v0.1.md`. If a web-design choice conflicts with the master brief's scientific boundaries or identity orientation, revise the web-design choice or raise the conflict explicitly. Do not silently reinterpret TGCV.
+
+**Master orientation:** build a website where people can understand, inspect and explore how systems transform, how accessible transformation spaces change, and how systems engineering and transformational intelligence can help reason about those dynamics.
