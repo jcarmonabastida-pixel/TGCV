@@ -22,6 +22,9 @@ PROFILE_SOURCE_PATHS = (
     "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py",
     "03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_tiera_calibration.py",
     "03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_resource_preflight_parallel.py",
+    "03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_resource_shard.py",
+    "03_EXPERIMENTS/C10-S/harness/aggregate_c10s_f5_g7_resource_shards.py",
+    "03_EXPERIMENTS/C10-S/harness/create_c10s_f5_g7_resource_profile_manifest.py",
     "03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock",
 )
 MAX_PARALLEL = 20
