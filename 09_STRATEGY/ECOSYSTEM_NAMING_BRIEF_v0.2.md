@@ -1066,3 +1066,108 @@ La ausencia del término exacto en el autocompletado de TMview no constituye evi
 ### Control de cambios
 
 - **v1.9 — 2026-11-23:** se documenta el primer screening público de SYS2VALUE. No se localiza uso exacto en las búsquedas web realizadas; se identifica SYVALUE, S.L. como proximidad comercial relevante en servicios IT y consultoría en España; Namecheap muestra disponibles `.com`, `.es` y `.org`; la consulta TMview queda incompleta. Se asigna riesgo comercial preliminar MEDIO-ALTO y se mantiene SYS2VALUE como candidato pendiente de clearance, sin declararlo disponible ni registrable.
+
+
+## 32. Capacidad de Construcción de Valor (CCV): definición y operaciones generativas
+
+Se incorpora la formulación aportada por el usuario el 2026-11-23 como nuevo fundamento conceptual para la evolución del briefing y de la exploración de identidad. Esta sección amplía los criterios semánticos anteriores; no selecciona ni sustituye por sí sola la marca paraguas, TVI, TGCV, VALUE o ValueLabOS.
+
+### 32.1 Definición de CCV
+
+**La Capacidad de Construcción de Valor es la propiedad emergente de un sistema que expresa su aptitud para desarrollar, integrar, amplificar y renovar una red de capacidades con el fin de producir transformaciones valiosas de forma sostenible.**
+
+La CCV se entiende como una propiedad emergente del sistema, no como una actividad aislada, una herramienta concreta ni una suma mecánica de cuatro funciones. Expresa la aptitud del sistema para desarrollar y mantener una red de capacidades que le permita generar transformaciones valiosas de manera sostenible.
+
+### 32.2 Las cuatro operaciones fundamentales
+
+La CCV comprende cuatro operaciones interdependientes:
+
+| Operación | Verbo | Significado en el marco CCV |
+|---|---|---|
+| Creación | **CREATE** | Generar nuevas capacidades que amplían lo que el sistema puede hacer. |
+| Integración | **INTEGRATE** | Combinar capacidades existentes o nuevas y articularlas en configuraciones y redes funcionales. |
+| Amplificación | **AMPLIFY** | Extender el alcance, potencia o disponibilidad de las capacidades mediante tecnología, IA, conocimiento, colaboración o redes. |
+| Renovación | **RENEW** | Aprender, adaptar, recombinar y regenerar la red de capacidades para sostener su evolución y su capacidad generativa. |
+
+Estas operaciones no deben presentarse como cuatro fases rígidas ni necesariamente lineales. Pueden interactuar, retroalimentarse y operar simultáneamente. Su unidad reside en contribuir al desarrollo y renovación de la red de capacidades del sistema.
+
+### 32.3 Relación con el núcleo de TGCV y con el valor
+
+La CCV proporciona una formulación integradora de la aptitud del sistema para desarrollar su capacidad generativa. Se conecta con el núcleo conceptual de TGCV —la ampliación de las transformaciones que un sistema puede realizar y de las posibilidades que tiene a su alcance—, pero no debe confundirse con una conclusión científica ya demostrada.
+
+La articulación de trabajo es:
+
+**CREATE + INTEGRATE + AMPLIFY + RENEW → desarrollo y renovación de la red de capacidades → ampliación de transformaciones y posibilidades de actuación → transformaciones valiosas → valor contextual emergente.**
+
+Esta secuencia es una representación conceptual para orientar el posicionamiento y la investigación. No afirma que cada operación sea necesaria o suficiente en todos los sistemas, ni que la relación causal entre accesibilidad de transformaciones y valor esté validada. La hipótesis causal de TGCV permanece abierta a investigación y falsación.
+
+El valor no es una quinta operación equivalente a CREATE, INTEGRATE, AMPLIFY y RENEW: es el resultado contextual que puede emerger de las transformaciones producidas.
+
+### 32.4 Implicaciones para la búsqueda de nombre
+
+La búsqueda de identidad debe evaluar si un nombre puede representar la propiedad generativa integrada que expresa la CCV, y no limitarse a nombrar una sola de sus operaciones.
+
+Un candidato conceptualmente adecuado debe poder albergar, de forma natural y coherente:
+
+- la creación de nuevas capacidades;
+- la integración de capacidades en redes y configuraciones;
+- la amplificación de su alcance y potencia;
+- la renovación y evolución continua de la red;
+- la ampliación de lo que el sistema puede hacer;
+- la producción de transformaciones valiosas y la posible emergencia de valor contextual.
+
+La prueba no exige que el nombre enumere literalmente los cuatro verbos. Exige que su significado central pueda contener el ciclo integrado sin depender de asociaciones arbitrarias o de una explicación añadida a posteriori.
+
+### 32.5 Territorio conceptual prioritario: GENERATIVITY
+
+**GENERATIVITY / GENERATIVIDAD** se incorpora como territorio conceptual de referencia para la siguiente exploración, por su capacidad potencial para integrar creación, recombinación, amplificación, retroalimentación y renovación de capacidades.
+
+Su correspondencia de trabajo con las cuatro operaciones es:
+
+- **CREATE:** generación de capacidades nuevas.
+- **INTEGRATE:** combinación y articulación de capacidades en configuraciones nuevas.
+- **AMPLIFY:** expansión de lo que la red de capacidades permite realizar.
+- **RENEW:** aprendizaje y retroalimentación que regeneran la capacidad de seguir generando.
+
+La generatividad ofrece, por tanto, un encaje conceptual prometedor con la CCV. Sin embargo, **no se adopta todavía como nombre de marca**: «generativity» y «generatividad» no son la misma forma lingüística en inglés y español; tampoco se ha completado su evaluación de naturalidad, distintividad, usos comerciales, marcas ni dominios. Debe tratarse como hipótesis conceptual prioritaria, no como candidato despejado ni decisión de naming.
+
+Otros territorios —metabolism/metabolismo, regeneration/regeneración, synergy/sinergia y evolution/evolución— podrán contrastarse únicamente si explican con suficiente precisión las cuatro operaciones integradas. No deben incorporarse por atractivo metafórico si dejan fuera dimensiones esenciales de la CCV.
+
+### 32.6 Arquitectura provisional del ecosistema
+
+La CCV puede actuar como fundamento conceptual transversal para las distintas áreas del ecosistema, sin convertirlas en cuatro departamentos ni imponerles una estructura organizativa definitiva:
+
+- **Research:** investigar la CCV, sus mecanismos, condiciones, límites y relación con transformaciones accesibles, trayectorias y valor.
+- **Frameworks:** traducir el conocimiento en marcos y métodos para comprender y desarrollar capacidades.
+- **Lab:** experimentar con intervenciones, combinaciones y configuraciones de capacidades.
+- **Playground / Explore:** permitir explorar escenarios y nuevas posibilidades de actuación.
+- **Advisory:** ayudar a organizaciones a descubrir oportunidades, evaluar capacidades, diseñar transformaciones y desarrollar trayectorias.
+- **Learning & Community:** facilitar aprendizaje, intercambio, colaboración y renovación colectiva de capacidades.
+- **Products & Services:** materializar herramientas y aplicaciones que apoyen una o varias operaciones de la CCV.
+
+La arquitectura es conceptual y abierta. No implica que todas las áreas deban usar los cuatro verbos como etiquetas ni que la marca paraguas tenga que llamarse CCV o GENERATIVITY.
+
+### 32.7 Criterios actualizados para evaluar nombres
+
+A partir de esta incorporación, todo candidato de marca paraguas deberá someterse también a estas preguntas:
+
+1. ¿Puede representar una propiedad generativa del sistema y no solo una acción, herramienta o resultado?
+2. ¿Puede contener CREATE, INTEGRATE, AMPLIFY y RENEW como operaciones interdependientes de una misma capacidad?
+3. ¿Conecta esa capacidad con la ampliación de las posibilidades de actuación del sistema?
+4. ¿Permite entender el valor como consecuencia contextual de las transformaciones, sin reducir la identidad a «producir valor»?
+5. ¿Puede albergar investigación, frameworks, experimentación, advisory, aprendizaje, comunidad y futuras aplicaciones sin quedar limitado a una sola actividad?
+6. ¿Su significado es natural y defendible en español e inglés, sin forzar equivalencias lingüísticas?
+
+Estos criterios complementan los filtros eliminatorios de §15 y §16. No anulan las cautelas de screening comercial, marcario y de dominios establecidas en el brief.
+
+### 32.8 Estado de decisión
+
+- La definición de **Capacidad de Construcción de Valor (CCV)** y sus cuatro operaciones **CREATE, INTEGRATE, AMPLIFY y RENEW** quedan incorporadas como fundamento conceptual de esta línea de trabajo.
+- **GENERATIVITY / GENERATIVIDAD** queda registrada como territorio conceptual prioritario para explorar, no como marca seleccionada.
+- No se renombra ni sustituye TGCV, TVI, VALUE, ValueLabOS ni la marca paraguas todavía no decidida.
+- No se declara validada empíricamente la CCV como constructo ni demostrada la relación causal entre accesibilidad de transformaciones y valor.
+- No se autoriza compra, reserva o registro de dominios o marcas.
+
+### Control de cambios
+
+- **v2.0 — 2026-11-23:** se incorpora la definición de Capacidad de Construcción de Valor (CCV), sus cuatro operaciones interdependientes —CREATE, INTEGRATE, AMPLIFY y RENEW—, su relación conceptual con la ampliación de posibilidades y el valor contextual, y sus implicaciones para la arquitectura del ecosistema. Se registra GENERATIVITY/GENERATIVIDAD como territorio conceptual prioritario, sin seleccionarlo como marca ni alterar decisiones anteriores.
