@@ -1,7 +1,7 @@
 # Strategic Naming Brief — Identidad del ecosistema de potencial, transformación generativa e inteligencia transformacional
 
 **Identificador:** ECOSYSTEM-NAMING-BRIEF-002  
-**Versión:** 1.3 — Intelligent Transformation for Value-Oriented Generative Enablement  
+**Versión:** 1.4 — IVOGE  
 **Fecha:** 2026-11-23  
 **Estado:** DRAFT — criterios para investigación de nombres; no hay marca seleccionada ni autorización de registro.  
 **Documento rector:** `ECOSYSTEM_MANIFESTO_v0.2.md`  
@@ -660,3 +660,53 @@ Hasta completar estas comprobaciones, la formulación se considera una **propues
 ### Control de cambios
 
 - **v1.3 — 2026-11-23:** se incorpora **INTELLIGENT TRANSFORMATION FOR VALUE-ORIENTED GENERATIVE ENABLEMENT** como propuesta de posicionamiento; se registra VOGE como abreviatura exploratoria y se define su arquitectura conceptual y validaciones pendientes. Se corrige la grafía *Geberative* a *Generative*. No se selecciona marca ni descriptor definitivo.
+
+
+## 26. Nuevo candidato de identidad: IVOGE
+
+Se incorpora **IVOGE** como candidato exploratorio derivado de la arquitectura conceptual de §25.
+
+### 26.1 Expansión conceptual
+
+**IVOGE** se propone como:
+
+**I**ntelligent — **V**alue-**O**riented — **G**enerative — **E**nablement.
+
+La expansión representa los componentes de la propuesta:
+
+- **Intelligent:** remite a **Intelligent Transformation**, no a inteligencia artificial como tecnología o sector.
+- **Value-Oriented:** mantiene la orientación constitutiva hacia la construcción de valor.
+- **Generative:** expresa el desarrollo de nuevas capacidades y posibilidades.
+- **Enablement:** nombra el proceso de hacer posible aquello que antes no estaba al alcance.
+
+La formulación conceptual completa que debe preservar es **INTELLIGENT TRANSFORMATION FOR VALUE-ORIENTED GENERATIVE ENABLEMENT**. IVOGE funciona como una síntesis de identidad de sus componentes, no como sustituto de la explicación conceptual.
+
+### 26.2 Relación con VOGE
+
+- **VOGE:** abreviatura exploratoria de *Value-Oriented Generative Enablement*.
+- **IVOGE:** propuesta que incorpora explícitamente la dimensión *Intelligent* asociada a *Intelligent Transformation*.
+
+IVOGE se añade como candidato a evaluar junto a VOGE. Ninguno queda seleccionado ni aprobado.
+
+### 26.3 Evaluación pendiente
+
+Antes de avanzar, comprobar:
+
+1. Pronunciación espontánea y facilidad de recuerdo en español e inglés.
+2. Si la secuencia de letras se percibe como una identidad pronunciable o como un acrónimo técnico.
+3. Si la expansión resulta clara y lingüísticamente defendible, en particular la relación entre **Intelligent** y **Intelligent Transformation**.
+4. Distintividad preliminar frente a usos empresariales, productos, proyectos y marcas existentes.
+5. Disponibilidad exacta de dominios .com, .es y .org mediante comprobación registral/RDAP.
+6. Riesgo marcario preliminar en OEPM, EUIPO/TMview y WIPO, sin confundir una búsqueda inicial con un dictamen jurídico.
+
+La evaluación debe separar calidad conceptual, naturalidad lingüística, distintividad comercial, disponibilidad digital y riesgo marcario. No se afirmará disponibilidad ni registrabilidad sin evidencia.
+
+### 26.4 Estado
+
+**IVOGE — candidato exploratorio; no seleccionado.**
+
+No se autoriza compra, reserva ni registro de dominios o marcas. La rama de trabajo permanece separada de `main`.
+
+### Control de cambios
+
+- **v1.4 — 2026-11-23:** se incorpora IVOGE como candidato exploratorio, con expansión *Intelligent Value-Oriented Generative Enablement*, diferenciación respecto a VOGE y criterios de validación pendientes. No se selecciona identidad definitiva.
