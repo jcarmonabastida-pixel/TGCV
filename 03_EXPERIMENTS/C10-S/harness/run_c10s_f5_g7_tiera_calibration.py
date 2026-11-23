@@ -106,16 +106,21 @@ def validate_seed_separation(k: int = K_PER_CELL) -> None:
 
 
 def run_cell(spec, *, k: int, c0_b: int, c5_b: int,
-             seed_namespace: str, adjudicate: bool) -> dict[str, Any]:
+             seed_namespace: str, adjudicate: bool,
+             replicate_start: int = 0) -> dict[str, Any]:
     if spec.family != "F5" or spec.cell_id not in EXPECTED_CELLS:
         raise F5G7Error("G7_ACCEPTS_ONLY_FROZEN_F5_BETA22_CELLS")
     if type(k) is not int or k < 1 or type(c0_b) is not int or c0_b < 100:
         raise F5G7Error("INVALID_G7_K_OR_C0_B")
     if type(c5_b) is not int or c5_b < 100:
         raise F5G7Error("INVALID_G7_C5_B")
+    if type(replicate_start) is not int or replicate_start < 0:
+        raise F5G7Error("INVALID_G7_REPLICATE_START")
+    if replicate_start + k > (RESOURCE_K_PER_CELL if seed_namespace == RESOURCE_NAMESPACE else K_PER_CELL):
+        raise F5G7Error("G7_REPLICATE_RANGE_OUT_OF_BOUNDS")
     comparisons, truths, records = [], [], []
     seed_sets = {name: set() for name in ("dataset", "C0_bootstrap", "C5_bootstrap")}
-    for replicate in range(k):
+    for replicate in range(replicate_start, replicate_start + k):
         dataset_id = f"{PROTOCOL_VERSION}:{seed_namespace}:{spec.cell_id}:{replicate:06d}"
         seeds = {
             name: derive_seed(seed_namespace, name, spec.cell_id, replicate)
