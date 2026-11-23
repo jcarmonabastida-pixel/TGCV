@@ -710,3 +710,56 @@ No se autoriza compra, reserva ni registro de dominios o marcas. La rama de trab
 ### Control de cambios
 
 - **v1.4 — 2026-11-23:** se incorpora IVOGE como candidato exploratorio, con expansión *Intelligent Value-Oriented Generative Enablement*, diferenciación respecto a VOGE y criterios de validación pendientes. No se selecciona identidad definitiva.
+
+## 27. Cambio de dirección conceptual: TRANSFORMACIÓN GENERATIVA DE SISTEMAS
+
+Se registra el cambio de dirección expresamente planteado por el usuario el 2026-11-23. La exploración de identidad deja de priorizar derivaciones de *Enablement* y pasa a situar en el centro el concepto:
+
+**TRANSFORMACIÓN GENERATIVA DE SISTEMAS**
+
+Su formulación inglesa de referencia es:
+
+**GENERATIVE SYSTEMS TRANSFORMATION**
+
+### 27.1 Sentido del concepto
+
+La expresión nombra el proceso central del proyecto sin intentar comprimir en la denominación todos los componentes del manifiesto:
+
+- **Transformación:** cambio en la configuración, estructura, relaciones o capacidades de un sistema.
+- **Generativa:** transformación que puede generar nuevas capacidades y posibilidades, y no se limita a adaptar o optimizar lo existente.
+- **De sistemas:** establece un objeto de alcance amplio; no restringe el proyecto a personas, organizaciones o tecnología.
+
+### 27.2 Relación con el valor y el manifiesto
+
+La construcción de valor no necesita figurar literalmente en el nombre conceptual para conservar su centralidad. Se mantiene como propósito y orientación del proyecto: desarrollar nuevas capacidades y posibilidades de los sistemas y explorar cómo pueden convertirse en valor en su contexto.
+
+El manifiesto fundacional explica el alcance, los principios y la aspiración del ecosistema. La expresión «Transformación Generativa de Sistemas» nombra su proceso central; no sustituye al manifiesto ni pretende resumir por sí sola todas sus tesis.
+
+Esta formulación es una arquitectura conceptual y de identidad en evaluación, no una afirmación de que la relación causal entre transformación, accesibilidad y valor esté científicamente demostrada.
+
+### 27.3 Arquitectura de identidad de trabajo
+
+| Elemento | Formulación |
+|---|---|
+| Nombre conceptual | **Transformación Generativa de Sistemas** |
+| Nombre en inglés | **Generative Systems Transformation** |
+| Núcleo científico | **TGCV** |
+| Propósito | Desarrollar nuevas capacidades y posibilidades de los sistemas y convertirlas en valor contextual |
+| Manifiesto | Explicar el alcance, los principios y la aspiración del ecosistema |
+
+### 27.4 Cambio en la búsqueda de marca
+
+- Se detiene la búsqueda de nombres derivados de *Enablement* como línea prioritaria.
+- La exploración futura de identidad verbal debe partir de **Transformación Generativa de Sistemas / Generative Systems Transformation**.
+- No se selecciona todavía una marca paraguas ni se declara que la expresión descriptiva sea distintiva o registrable.
+- IVOGE, VOGE y las formulaciones de *Generative Enablement* permanecen como antecedentes históricos de exploración; no son candidatos preferentes ni quedan promovidos por esta decisión.
+- No se autoriza compra, reserva ni registro de dominios o marcas.
+- La rama de trabajo continúa separada de `main`.
+
+### Estado
+
+**Dirección conceptual prioritaria adoptada para la siguiente fase de identidad; marca definitiva no seleccionada.**
+
+### Control de cambios
+
+- **v1.5 — 2026-11-23:** se registra el giro hacia «Transformación Generativa de Sistemas» como centro conceptual y «Generative Systems Transformation» como formulación inglesa de referencia. Se detiene la prioridad de búsqueda derivada de *Enablement*, se conserva el valor como propósito y orientación, y se mantiene TGCV como núcleo científico. No se selecciona ni registra marca.
