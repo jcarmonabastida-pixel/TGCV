@@ -1,7 +1,7 @@
 # Strategic Naming Brief — Identidad del ecosistema de potencial, transformación generativa e inteligencia transformacional
 
 **Identificador:** ECOSYSTEM-NAMING-BRIEF-002  
-**Versión:** 0.8 — capacidad de posibilitar y construir valor  
+**Versión:** 0.9 — posibilitación generativa orientada a valor  
 **Fecha:** 2026-11-23  
 **Estado:** DRAFT — criterios para investigación de nombres; no hay marca seleccionada ni autorización de registro.  
 **Documento rector:** `ECOSYSTEM_MANIFESTO_v0.2.md`  
@@ -447,3 +447,43 @@ Esta formulación es la referencia inmediata y obligatoria para la siguiente ite
 ### Control de cambios
 
 - **v0.8 — 2026-11-23:** se fija la formulación central exacta «desarrollar la capacidad de un sistema para hacer posibles cosas que antes no podía hacer, y convertir esas nuevas posibilidades en valor». Se establece como referencia prioritaria y se incorporan restricciones explícitas contra la deriva semántica, las propuestas genéricas y los neologismos artificiales. No se selecciona candidato de marca.
+
+
+## 21. Concepto rector de naming: posibilitación generativa orientada a valor
+
+La formulación fijada por el usuario para orientar la búsqueda de identidad de marca es:
+
+**POSIBILITACIÓN GENERATIVA ORIENTADA A VALOR.**
+
+Esta expresión nombra el concepto integrado que debe guiar las siguientes rondas. No constituye todavía un nombre de marca ni autoriza a seleccionar, registrar o reservar ninguna denominación.
+
+### 21.1 Significado integrado
+
+- **Posibilitación:** desarrollar la capacidad de un sistema para hacer posibles cosas que antes no podía hacer.
+- **Generativa:** esas capacidades abren nuevas posibilidades; no se limitan a activar o aprovechar posibilidades ya disponibles.
+- **Orientada a valor:** las nuevas posibilidades se convierten en valor en su contexto.
+
+La expresión debe entenderse como una unidad conceptual. No se debe descomponer para buscar nombres que representen solo uno de sus términos, ni sustituirla por conceptos próximos que alteren su significado.
+
+### 21.2 Formulación explicativa prioritaria
+
+**Desarrollar la capacidad de un sistema para hacer posibles cosas que antes no podía hacer, y convertir esas nuevas posibilidades en valor.**
+
+Esta formulación explicativa mantiene el contenido operativo fijado en §20 y queda integrada bajo el rótulo conceptual «posibilitación generativa orientada a valor».
+
+### 21.3 Instrucción vinculante para la búsqueda
+
+La búsqueda debe encontrar una identidad verbal natural, reconocible y con personalidad cuyo significado emerja de **POSIBILITACIÓN GENERATIVA ORIENTADA A VALOR** como concepto completo.
+
+No desviarse hacia:
+- posibilitación genérica sin dimensión generativa ni orientación a valor;
+- generación de novedades sin desarrollo de capacidad;
+- creación de valor desligada de las nuevas posibilidades;
+- metáforas, hipérboles o territorios semánticos añadidos que no estén contenidos en la formulación;
+- sinónimos genéricos o neologismos artificiales.
+
+Toda propuesta deberá conservar los tres componentes integrados y poder explicarse directamente desde ellos, sin asociaciones ornamentales ni justificaciones retrospectivas.
+
+### Control de cambios
+
+- **v0.9 — 2026-11-23:** se fija «POSIBILITACIÓN GENERATIVA ORIENTADA A VALOR» como concepto rector integrado de la búsqueda de naming. Se explicitan sus tres componentes y se conserva como formulación explicativa prioritaria el enunciado validado en §20. No se selecciona todavía nombre de marca.
