@@ -1,7 +1,7 @@
 # Strategic Naming Brief — Identidad del ecosistema de potencial, transformación generativa e inteligencia transformacional
 
 **Identificador:** ECOSYSTEM-NAMING-BRIEF-002  
-**Versión:** 1.4 — IVOGE  
+**Versión:** 1.6 — territorio Transformational Value / Inteligencia Transformacional de Sistemas  
 **Fecha:** 2026-11-23  
 **Estado:** DRAFT — criterios para investigación de nombres; no hay marca seleccionada ni autorización de registro.  
 **Documento rector:** `ECOSYSTEM_MANIFESTO_v0.2.md`  
@@ -763,3 +763,80 @@ Esta formulación es una arquitectura conceptual y de identidad en evaluación, 
 ### Control de cambios
 
 - **v1.5 — 2026-11-23:** se registra el giro hacia «Transformación Generativa de Sistemas» como centro conceptual y «Generative Systems Transformation» como formulación inglesa de referencia. Se detiene la prioridad de búsqueda derivada de *Enablement*, se conserva el valor como propósito y orientación, y se mantiene TGCV como núcleo científico. No se selecciona ni registra marca.
+
+## 28. Ampliación del territorio conceptual: TRANSFORMATIONAL VALUE E INTELIGENCIA TRANSFORMACIONAL DE SISTEMAS
+
+Se registra la nueva dirección de exploración planteada el 2026-11-23: reconsiderar el territorio conceptual desde el título del libro fundacional **TRANSFORMATIONAL VALUE** y explorar su conexión con **INTELIGENCIA TRANSFORMACIONAL DE SISTEMAS**. Esta ampliación no elimina ni revoca §27; conserva «Transformación Generativa de Sistemas» como formulación conceptual previamente priorizada y abre una articulación más amplia entre transformación, inteligencia y valor.
+
+### 28.1 Punto de partida editorial
+
+El libro tiene como título registrado:
+
+**TRANSFORMATIONAL VALUE**
+
+Subtítulo:
+
+*Understanding, Designing and Realizing Value in Changing Systems*
+
+El título ofrece un marco integrador: no nombra únicamente el cambio de los sistemas, sino la comprensión, el diseño y la realización de valor en sistemas que cambian. «Transformational Value» debe tratarse como el territorio editorial y de posicionamiento ya documentado, no como una marca comercial seleccionada ni como sustituto del nombre científico TGCV.
+
+### 28.2 Territorio conceptual que se abre
+
+**INTELIGENCIA TRANSFORMACIONAL DE SISTEMAS** se incorpora como formulación candidata para explorar la capacidad de comprender, diseñar y orientar transformaciones que desarrollen nuevas posibilidades de acción en los sistemas y permitan construir valor en contexto.
+
+La formulación debe conservar el núcleo fundacional:
+
+**Desarrollar la capacidad de un sistema para hacer posibles cosas que antes no podía hacer, y convertir esas nuevas posibilidades en valor.**
+
+En esta lectura:
+- **Sistemas** delimita el objeto de comprensión e intervención, sin restringirlo a organizaciones o tecnología.
+- **Inteligencia transformacional** designa la capacidad de comprender y orientar transformaciones que alteran lo que un sistema puede hacer; no equivale a inteligencia artificial ni a una mera técnica de gestión del cambio.
+- **Transformational Value** expresa el horizonte de comprensión, diseño y realización de valor en sistemas cambiantes.
+- **Transformación generativa** conserva la idea de que la transformación puede desarrollar nuevas capacidades y abrir posibilidades antes inaccesibles.
+
+### 28.3 Relación entre las formulaciones
+
+Se propone explorar la siguiente arquitectura semántica, todavía no aprobada como arquitectura definitiva:
+
+| Nivel | Formulación | Función provisional |
+|---|---|---|
+| Territorio editorial y de propósito | **TRANSFORMATIONAL VALUE** | Enmarca la comprensión, el diseño y la realización de valor en sistemas cambiantes; título del libro ya registrado. |
+| Capacidad o perspectiva integradora | **INTELIGENCIA TRANSFORMACIONAL DE SISTEMAS** | Comprender, diseñar y orientar transformaciones que amplían las capacidades y posibilidades de los sistemas. |
+| Proceso generativo | **TRANSFORMACIÓN GENERATIVA DE SISTEMAS** | Nombra el proceso por el que los sistemas desarrollan nuevas capacidades y posibilidades. |
+| Programa científico | **TGCV** | Investiga los fundamentos, mecanismos, condiciones y relaciones entre transformaciones accesibles, trayectorias y valor. |
+| Aplicación | **VALUE** | Estructura la exploración, el diseño, la decisión, la acción y el aprendizaje orientados a valor. |
+| Ecosistema | **ValueLabOS** | Facilita la aplicación, experimentación, documentación, colaboración y evolución. |
+
+Esta tabla es una hipótesis de organización conceptual, no una decisión de renombrado ni una afirmación de que las relaciones científicas estén demostradas.
+
+### 28.4 Pregunta de delimitación
+
+La siguiente fase debe determinar si «Inteligencia Transformacional de Sistemas» nombra:
+
+1. la capacidad de comprender y orientar transformaciones de sistemas; o
+2. de forma más específica, la capacidad de desarrollar en los sistemas nuevas posibilidades de acción y convertirlas en valor.
+
+La segunda formulación parece más próxima al núcleo fundacional y debe usarse como hipótesis prioritaria de contraste, sin excluir el examen crítico de la primera.
+
+### 28.5 Criterios de evaluación y cautelas
+
+- Comprobar si «Inteligencia Transformacional» tiene usos previos en literatura, organizaciones, consultoría y otros sectores, y delimitar con precisión cualquier posible solapamiento.
+- Distinguirla de «Systems Intelligence» y de la inteligencia artificial; no atribuirle novedad terminológica sin investigación.
+- Evaluar si «Inteligencia Transformacional de Sistemas» es natural, clara y suficientemente precisa en español, y contrastar su equivalente inglés antes de fijarlo.
+- Comprobar si «Transformational Value» puede sostener el territorio integrador sin diluir el papel de las nuevas capacidades y posibilidades.
+- Evitar que «transformación» se interprete como cambio genérico, optimización, transformación digital o gestión del cambio.
+- Mantener el valor como propósito central, sin presentar como demostrada la relación causal entre accesibilidad de transformaciones y valor.
+- Separar nombre de libro, concepto científico, capacidad o disciplina, descriptor institucional y marca comercial.
+
+### 28.6 Estado de decisión
+
+- **TRANSFORMATIONAL VALUE:** título del libro ya registrado en la arquitectura editorial; se adopta como punto de partida para explorar el territorio integrador, no como nueva decisión de marca.
+- **INTELIGENCIA TRANSFORMACIONAL DE SISTEMAS:** territorio conceptual incorporado para evaluación; no aprobado como nombre definitivo.
+- **TRANSFORMACIÓN GENERATIVA DE SISTEMAS:** formulación priorizada en §27, que permanece vigente como antecedente y componente del territorio.
+- **TGCV, VALUE y ValueLabOS:** conservan sus funciones documentadas; esta exploración no los renombra.
+- No se selecciona marca paraguas ni se autoriza compra, reserva o registro de dominios o marcas.
+- La rama de trabajo permanece separada de `main`.
+
+### Control de cambios
+
+- **v1.6 — 2026-11-23:** se amplía el territorio conceptual desde el título del libro **TRANSFORMATIONAL VALUE** y se incorpora **INTELIGENCIA TRANSFORMACIONAL DE SISTEMAS** como formulación candidata. Se articula provisionalmente con Transformación Generativa de Sistemas, TGCV, VALUE y ValueLabOS; se explicita la pregunta de delimitación entre inteligencia transformacional general y desarrollo de nuevas posibilidades de acción orientadas a valor. No se selecciona marca ni se modifica la identidad científica.
