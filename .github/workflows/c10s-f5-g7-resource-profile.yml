@@ -1,6 +1,7 @@
 name: C10-S F5/G7 v1.1 resource-only preflight
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - research/c10s-f5-g7-canonical-mle-v1.1-20261122
@@ -66,7 +67,7 @@ jobs:
               "profile_json_sha256": hashlib.sha256(profile.read_bytes()).hexdigest(),
           }
           target = Path("03_EXPERIMENTS/C10-S/diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_002.json")
-          target.write_text(json.dumps(payload, sort_keys=True, indent=2) + "\\n", encoding="utf-8")
+          target.write_text(json.dumps(payload, sort_keys=True, indent=2) + "\n", encoding="utf-8")
           PY
       - name: Persist exact artifact provenance manifest on research branch
         env:
