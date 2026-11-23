@@ -1,7 +1,7 @@
 # Strategic Naming Brief — Identidad del ecosistema de potencial, transformación generativa e inteligencia transformacional
 
 **Identificador:** ECOSYSTEM-NAMING-BRIEF-002  
-**Versión:** 1.2 — Value-Oriented Generative Enablement  
+**Versión:** 1.3 — Intelligent Transformation for Value-Oriented Generative Enablement  
 **Fecha:** 2026-11-23  
 **Estado:** DRAFT — criterios para investigación de nombres; no hay marca seleccionada ni autorización de registro.  
 **Documento rector:** `ECOSYSTEM_MANIFESTO_v0.2.md`  
@@ -617,3 +617,46 @@ Comprobar si *Generative Enablement* comunica por sí mismo el desarrollo genera
 ### Control de cambios
 
 - **v1.2 — 2026-11-23:** se establece *VALUE-ORIENTED GENERATIVE ENABLEMENT* como formulación prioritaria para evaluación, a partir de la mayor naturalidad nominal de *enablement*. Se preserva el significado integrado, se explicitan las interpretaciones que deben excluirse y se mantiene el estado provisional, sin seleccionar marca ni afirmar viabilidad comercial o jurídica.
+
+
+## 25. Formulación de posicionamiento: INTELLIGENT TRANSFORMATION FOR VALUE-ORIENTED GENERATIVE ENABLEMENT
+
+Se incorpora la formulación propuesta para expresar conjuntamente el mecanismo transformacional y el propósito del ecosistema:
+
+**INTELLIGENT TRANSFORMATION FOR VALUE-ORIENTED GENERATIVE ENABLEMENT**
+
+La escritura correcta del término es **GENERATIVE** (no *Geberative*).
+
+### 25.1 Arquitectura conceptual
+
+- **INTELLIGENT TRANSFORMATION:** expresa el proceso de transformación comprendida, diseñada y orientada inteligentemente.
+- **VALUE-ORIENTED:** establece la orientación constitutiva hacia la construcción de valor; no es un añadido opcional.
+- **GENERATIVE ENABLEMENT:** expresa el desarrollo de capacidades que hacen posibles nuevas capacidades y posibilidades.
+
+La relación entre los componentes es funcional: la transformación inteligente se orienta a desarrollar posibilitación generativa dirigida a valor. La formulación explicativa que debe seguir gobernando su interpretación es:
+
+**Desarrollar la capacidad de un sistema para hacer posibles cosas que antes no podía hacer, y convertir esas nuevas posibilidades en valor.**
+
+### 25.2 Relación con VOGE
+
+Se registra **VOGE** como abreviatura exploratoria de **Value-Oriented Generative Enablement**. La expresión completa puede utilizarse provisionalmente como descriptor de posicionamiento:
+
+**Intelligent Transformation for VOGE — Value-Oriented Generative Enablement.**
+
+VOGE no queda seleccionado como marca ni se presupone su distintividad, disponibilidad digital o viabilidad jurídica. Tampoco se da por aprobada la formulación larga como tagline definitivo.
+
+### 25.3 Validación pendiente
+
+Antes de elevar esta formulación a descriptor estable, comprobar:
+
+1. Si **Intelligent Transformation for …** resulta idiomático y natural en inglés como expresión institucional, no solo comprensible.
+2. Si la preposición **for** comunica correctamente la relación entre transformación inteligente y posibilitación generativa orientada a valor.
+3. Si **Generative Enablement** conserva el significado de desarrollo de nuevas capacidades y no se interpreta principalmente como capacitación, soporte o habilitación técnica.
+4. Si la frase completa es clara, pronunciable y suficientemente concisa para representar un ecosistema científico, aplicado y comunitario.
+5. Si **VOGE** funciona como abreviatura pronunciable y distintiva en los contextos lingüísticos y comerciales relevantes.
+
+Hasta completar estas comprobaciones, la formulación se considera una **propuesta de posicionamiento en evaluación**, no una identidad aprobada. No se selecciona marca, no se autoriza registro o reserva y no se afirma disponibilidad de dominios.
+
+### Control de cambios
+
+- **v1.3 — 2026-11-23:** se incorpora **INTELLIGENT TRANSFORMATION FOR VALUE-ORIENTED GENERATIVE ENABLEMENT** como propuesta de posicionamiento; se registra VOGE como abreviatura exploratoria y se define su arquitectura conceptual y validaciones pendientes. Se corrige la grafía *Geberative* a *Generative*. No se selecciona marca ni descriptor definitivo.
