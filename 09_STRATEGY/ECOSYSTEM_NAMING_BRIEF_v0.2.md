@@ -1,7 +1,7 @@
 # Strategic Naming Brief — Identidad del ecosistema de potencial, transformación generativa e inteligencia transformacional
 
 **Identificador:** ECOSYSTEM-NAMING-BRIEF-002  
-**Versión:** 0.9 — posibilitación generativa orientada a valor  
+**Versión:** 1.0 — Value-Oriented Generative Enabling  
 **Fecha:** 2026-11-23  
 **Estado:** DRAFT — criterios para investigación de nombres; no hay marca seleccionada ni autorización de registro.  
 **Documento rector:** `ECOSYSTEM_MANIFESTO_v0.2.md`  
@@ -487,3 +487,52 @@ Toda propuesta deberá conservar los tres componentes integrados y poder explica
 ### Control de cambios
 
 - **v0.9 — 2026-11-23:** se fija «POSIBILITACIÓN GENERATIVA ORIENTADA A VALOR» como concepto rector integrado de la búsqueda de naming. Se explicitan sus tres componentes y se conserva como formulación explicativa prioritaria el enunciado validado en §20. No se selecciona todavía nombre de marca.
+
+
+## 22. Nueva formulación integrada: VALUE-ORIENTED GENERATIVE ENABLING
+
+La exploración conceptual ha dado un paso adicional. Se incorpora como formulación central de trabajo:
+
+**VALUE-ORIENTED GENERATIVE ENABLING**
+
+La expresión reúne en una sola unidad los tres componentes esenciales del proyecto:
+
+- **Value-oriented:** orientado a la construcción de valor. La generación de posibilidades no es un fin en sí mismo; está dirigida a convertir las nuevas posibilidades en valor en su contexto.
+- **Generative:** capaz de generar nuevas capacidades y posibilidades. No se limita a utilizar capacidades existentes ni a producir novedades aisladas.
+- **Enabling:** hacer posible aquello que antes no lo era. Sitúa en primer plano el desarrollo de la capacidad de un sistema para ampliar lo que puede hacer.
+
+### 22.1 Concepto central: GENERATIVE ENABLING
+
+**GENERATIVE ENABLING** se incorpora como núcleo conceptual breve: desarrollar capacidades que hacen posibles nuevas capacidades y posibilidades.
+
+El término **Enabling** aporta explícitamente la dimensión de posibilitación —hacer posible lo que antes no estaba al alcance—, mientras que **Generative** precisa que esa posibilitación desarrolla nuevas capacidades y abre nuevas posibilidades. No son dos ideas independientes ni una suma de atributos: describen conjuntamente el proceso central.
+
+### 22.2 Condición rectora: VALUE-ORIENTED
+
+**VALUE-ORIENTED** no es un añadido decorativo ni un área de aplicación opcional. Es la condición que orienta el proceso generativo hacia la construcción de valor.
+
+Por tanto, la expresión completa **VALUE-ORIENTED GENERATIVE ENABLING** conserva el significado integrado:
+
+**Desarrollar la capacidad de un sistema para hacer posibles cosas que antes no podía hacer, y convertir esas nuevas posibilidades en valor.**
+
+### 22.3 Continuidad y límites
+
+Esta formulación desarrolla el concepto registrado en §21 —«posibilitación generativa orientada a valor»— y no lo contradice: propone una expresión inglesa que articula sus componentes de forma más directa para explorar su potencial como identidad conceptual y, posteriormente, como origen de una marca.
+
+Se mantiene la siguiente distinción:
+
+- **VALUE-ORIENTED GENERATIVE ENABLING:** formulación conceptual integrada.
+- **GENERATIVE ENABLING:** núcleo conceptual breve.
+- **VALUE-ORIENTED:** principio rector que debe permanecer unido al concepto.
+
+La naturalidad, idiomaticidad y reconocimiento de *Generative Enabling* en inglés quedan **pendientes de validación lingüística**. La solidez conceptual de la expresión no demuestra por sí sola que sea una construcción asentada o una marca comercial distintiva. Tampoco se selecciona todavía un nombre de marca ni se afirma disponibilidad comercial, digital o marcaria.
+
+### 22.4 Instrucción vinculante para la siguiente fase
+
+La exploración debe partir de **GENERATIVE ENABLING**, manteniendo **VALUE-ORIENTED** como condición esencial. No debe desviarse hacia generación genérica, habilitación técnica aislada, creatividad, innovación o expansión indiscriminada.
+
+El siguiente análisis debe comprobar la naturalidad y precisión de la expresión inglesa como unidad, antes de derivar de ella propuestas de identidad verbal. Cualquier nombre futuro deberá conservar el sentido completo de **VALUE-ORIENTED GENERATIVE ENABLING**, sin depender de explicaciones retrospectivas.
+
+### Control de cambios
+
+- **v1.0 — 2026-11-23:** se incorpora **VALUE-ORIENTED GENERATIVE ENABLING** como formulación conceptual integrada y **GENERATIVE ENABLING** como núcleo conceptual breve. Se conserva la orientación a valor como condición esencial, se vincula explícitamente con la formulación explicativa de §20 y se deja pendiente la validación lingüística del sintagma inglés. No se selecciona nombre de marca.
