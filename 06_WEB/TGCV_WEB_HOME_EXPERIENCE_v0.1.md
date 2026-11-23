@@ -1,7 +1,7 @@
 # TGCV — Home Experience Concept
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 0.1  
-**Date:** 2026-11-23  
+**Version:** 0.2  
+**Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING CONCEPT  
 **Parent documents:**  
 - `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -316,3 +316,65 @@ This concept implements the Home page role in `TGCV_WEB_INFORMATION_ARCHITECTURE
 If the design becomes more product-led, consultancy-led or value-marketing-led than the master brief permits, revise the design. The governing idea is:
 
 **Make the visitor see that a system's future depends not only on its current state, but also on which transformations its structure and conditions make accessible.**
+
+
+## 11. AWGI adaptation: Home as the start of an active visitor journey
+
+The Home page must do more than describe TGCV. It should help visitors recognise a meaningful question, grasp the central insight, find useful depth and identify a real next step. Apply the sequence:
+**Recognition → Insight → Understanding → Exploration → Participation.**
+
+### 11.1 Efecto Ajá test for Home
+
+The Home experience should be tested with people unfamiliar with TGCV. After a short visit (two minutes as a design target), ask them to explain:
+1. what question the ecosystem investigates;
+2. what changes when a system's conditions change;
+3. why the distinction between current state and accessible future transformations matters;
+4. where they would go next.
+
+Record their own words, misunderstandings, relevant questions and whether they found a meaningful next step. Do not coach them during the test. A positive reaction is not enough if the central idea was not understood. Repeat the test after material changes to headline, visual explanation or page hierarchy.
+
+### 11.2 Visitor-centred narrative and honest invitation
+
+Lead with the visitor's question, not a long institutional self-description. Use a shared invitation such as explore, inspect, compare or contribute only where the destination and activity exist. The Home page should offer value before requesting data: no registration wall for core explanations or public resources, and no contact form as the primary call to action.
+
+### 11.3 Home as a gateway, not a miniature Playground
+
+The first web release will not include a bespoke micro-simulator or an isolated interactive widget on Home. This avoids duplicating the existing Juguete Colectivo and avoids creating a second, disconnected demonstrator. The Playground is a later, separate application line, planned after the germinal website has a stable identity and substantive content.
+
+For the initial Home:
+- use a clear static diagram or carefully designed sequence to explain the change in accessible transformations;
+- provide text explanations and a guided route to Explore;
+- link to a demonstrator only if one is genuinely available and its status and scope are explicit;
+- do not show a non-functional “Enter the Playground” action or imply that a professional Playground already exists.
+
+The future Playground may be deployed separately (for example, on an app subdomain), subject to its own technical and product specification. It is not a prerequisite for publishing the germinal website.
+
+### 11.4 Useful content before participation
+
+The visitor should be able to understand the core idea, inspect available research and access public resources without registering. Offer a low-friction way to send a question or correction, including for people who do not use GitHub. Contributions must be reviewed; no public contribution mechanism should be advertised until its process and ownership are defined.
+
+### 11.5 Honest maturity signals
+
+Where relevant, distinguish:
+- available content or resource;
+- work in development;
+- exploratory candidate;
+- open contribution with a defined task and route;
+- deferred capability.
+
+Keep these operational states separate from scientific labels such as synthetic, executed, audited, empirical or pilot. The Home page must not make a visually polished diagram or demonstrator look like empirical validation.
+
+## 12. Revised first-release Home acceptance criteria
+
+The Home experience is ready for the germinal website when:
+1. external visitors can explain the central question without repeating project jargon;
+2. the first screen identifies the subject and offers a clear route into Explore;
+3. the central visual explains a change in what is possible next, not merely a before/after state;
+4. accessible transformations are not confused with executed transformations or outcomes;
+5. the visitor finds useful content without registering;
+6. every call to action leads to an existing destination or is clearly marked as forthcoming;
+7. application contexts and demonstrators carry honest maturity/evidence labels;
+8. there is a real, low-friction route for questions or corrections, or the absence of one is clearly disclosed;
+9. the page is accessible, responsive and maintainable;
+10. no Playground or custom simulator is required for launch.
+
