@@ -1,11 +1,6 @@
 name: C10-S F5/G7 v1.1 resource-only preflight
 
 on:
-  push:
-    branches:
-      - research/c10s-f5-g7-canonical-mle-v1.1-20261122
-    paths:
-      - .github/workflows/c10s-f5-g7-resource-profile.yml
   workflow_dispatch:
 
 permissions:
