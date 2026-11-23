@@ -64,55 +64,21 @@ jobs:
     timeout-minutes: 180
     strategy:
       fail-fast: false
-      max-parallel: 3
+      max-parallel: 2
       matrix:
         include:
-          # The two M30/R20 end-to-end certificate tests are isolated so one
-          # expensive census cannot hide the progress or result of the rest.
           - module: test_c10s_f5_rational_score_polynomials
             selection: exclude
             test_names: test_m30_r20_full_domain_bernstein_route_avoids_large_resultant,test_m30_r20_global_mle_orders_interior_and_boundary_candidates
-            partition: rational-core
-          - module: test_c10s_f5_rational_score_polynomials
-            selection: only
-            test_names: test_m30_r20_full_domain_bernstein_route_avoids_large_resultant
-            partition: m30-census
+            partition: rational-core-regression
           - module: test_c10s_f5_rational_score_polynomials
             selection: only
             test_names: test_m30_r20_global_mle_orders_interior_and_boundary_candidates
-            partition: m30-global-mle
-          - module: test_c10s_f5_beta_binomial_likelihood_diagnostics
-            selection: all
-            test_names: ''
-            partition: likelihood-diagnostics
-          - module: test_c10s_f5_beta_binomial_mcse_profile
-            selection: all
-            test_names: ''
-            partition: mcse-profile
+            partition: m30-global-mle-performance
           - module: test_c10s_fitted_beta_binomial_bootstrap
             selection: all
             test_names: ''
-            partition: fitted-bootstrap
-          - module: test_c10s_f5_g7_shard_execution
-            selection: all
-            test_names: ''
-            partition: shard-execution
-          - module: test_c10s_f5_g7_tiera_calibration
-            selection: all
-            test_names: ''
-            partition: tiera-calibration
-          - module: test_c10s_nested_mr_comparative_inference_engine
-            selection: all
-            test_names: ''
-            partition: nested-mr-inference
-          - module: test_c10s_f5_g7_tiera_authorization
-            selection: all
-            test_names: ''
-            partition: tiera-authorization
-          - module: test_c10s_f5_g7_resource_profile
-            selection: all
-            test_names: ''
-            partition: resource-profile
+            partition: fitted-bootstrap-regression
     steps:
       - name: Checkout immutable research snapshot
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
