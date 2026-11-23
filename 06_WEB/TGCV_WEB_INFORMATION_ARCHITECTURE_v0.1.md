@@ -1,7 +1,7 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 0.1  
-**Date:** 2026-11-23  
+**Version:** 0.2  
+**Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
 **Branch:** `strategy/tgcv-web-master`  
@@ -479,3 +479,53 @@ These decisions should follow the approved Web Master Brief and this information
 This document operationalises `TGCV_WEB_MASTER_BRIEF_v0.1.md`. If a web-design choice conflicts with the master brief's scientific boundaries or identity orientation, revise the web-design choice or raise the conflict explicitly. Do not silently reinterpret TGCV.
 
 **Master orientation:** build a website where people can understand, inspect and explore how systems transform, how accessible transformation spaces change, and how systems engineering and transformational intelligence can help reason about those dynamics.
+
+
+## 13. AWGI principles and visitor-experience requirements
+
+This information architecture applies the transferable web principles recorded in the Web Master Brief §17. They are adapted to TGCV's research and engineering ecosystem, not copied as AFLUYA's identity or commercial model.
+
+### 13.1 Web as active ecosystem infrastructure
+The site must progressively support discovery, understanding, exploration, learning, connection and contribution. It is not merely a descriptive catalogue. Each published section should provide a useful next step and should correspond to content, resources or participation routes that actually exist.
+
+### 13.2 Efecto Ajá as an acceptance test
+A first-time visitor should be able to explain, in their own words and after a short visit (two minutes as a design target, not a scientific threshold):
+- the central question TGCV investigates;
+- why a system's conditions can change what it can do next;
+- why this matters to systems thinking, modelling or engineering;
+- where they can go next to explore the topic.
+
+Test with people outside the project and from more than one background. Ask what they understood, what they found relevant, what remained confusing and what they would do next. Do not substitute internal approval or a satisfaction score for comprehension evidence.
+
+### 13.3 Experience sequence
+Page hierarchy and cross-links should support this sequence:
+**Recognition → Insight → Understanding → Exploration → Participation.**
+
+Recognition begins with a problem or question familiar to the visitor. Insight reveals the distinctive transformation-space perspective. Understanding explains the analytical distinctions. Exploration offers substantive content. Participation offers a real, bounded next step.
+
+### 13.4 Value before data; participation without forced registration
+Public explanatory content and available learning resources should be accessible without registration. Forms should be used only for a clear purpose, collect the minimum data necessary and explain its use. GitHub may be the canonical source for technical artefacts but must not be the only route for questions or contributions from non-technical visitors.
+
+### 13.5 Transparent maturity and evidence
+Show operational content states only when useful: Available, In development, Open to contribution, Exploratory, Deferred and Closed. Keep these separate from scientific evidence labels (Concept, Hypothesis, Synthetic, Executed, Audited, Empirical, Pilot, Deployed). A page being available does not make its claims scientifically validated.
+
+### 13.6 Network effects without simulated community
+Create pathways between related concepts, cases, methods, people and contribution opportunities. Do not imply that a community, events programme, collaboration offer or contribution workflow is active until it exists and can be maintained.
+
+### 13.7 Progressive, maintainable growth
+Publish a small coherent site before attempting the full sitemap. Add pages and functions according to visitor needs, evidence, contributions and maintenance capacity. Prefer portable, reversible and low-friction choices; no technology, domain purchase, paid service or external account is authorized by this architecture.
+
+## 14. First-release visitor journeys and acceptance
+
+The first release must support at least three realistic journeys:
+
+1. **Understand:** Home → Explore → Research / TGCV → evidence and limitations.
+2. **Apply the perspective:** Home → Engineering → a candidate application context → method or demonstrator (only if available).
+3. **Connect or contribute:** Home / relevant content → participation information → an actual contact or proposal route.
+
+The third journey must not end in a dead link or a promise of an unavailable process. If a contribution mechanism is not ready, offer a truthful contact route and label the status accordingly.
+
+For the Efecto Ajá test, record whether visitors can explain the central question, distinguish accessibility from execution at a basic level, locate a relevant next step and identify uncertainties without being coached.
+
+The first-release architecture is accepted only if it remains useful without the Playground, has no empty menu destinations, offers content before requesting personal data, and accurately labels the maturity of every featured asset.
+
