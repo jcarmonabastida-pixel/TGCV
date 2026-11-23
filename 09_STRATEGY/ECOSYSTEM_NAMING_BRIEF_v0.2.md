@@ -1,7 +1,7 @@
 # Strategic Naming Brief — Identidad del ecosistema de potencial, transformación generativa e inteligencia transformacional
 
 **Identificador:** ECOSYSTEM-NAMING-BRIEF-002  
-**Versión:** 0.7 — capacidad generativa orientada a valor  
+**Versión:** 0.8 — capacidad de posibilitar y construir valor  
 **Fecha:** 2026-11-23  
 **Estado:** DRAFT — criterios para investigación de nombres; no hay marca seleccionada ni autorización de registro.  
 **Documento rector:** `ECOSYSTEM_MANIFESTO_v0.2.md`  
@@ -409,3 +409,41 @@ Esta formulación es un principio conceptual para el posicionamiento y el naming
 
 ### Control de cambios
 - **v0.7 — 2026-11-23:** se incorpora la formulación «ampliar inteligentemente la capacidad de un sistema para hacer posibles nuevas formas de valor». Se prioriza el desarrollo recursivo de capacidades generativas, con orientación selectiva hacia posibilidades valiosas y no expansión indiscriminada. Se registran las cuatro dimensiones inseparables y la distinción entre generar valor, generar capacidad y generar capacidad generativa. No se selecciona candidato de marca.
+
+
+## 20. Formulación central fijada: desarrollar la capacidad de un sistema para hacer posibles cosas que antes no podía hacer y convertirlas en valor
+
+La formulación expresamente validada por el usuario y prioritaria para todas las rondas futuras de naming es:
+
+**«Desarrollar la capacidad de un sistema para hacer posibles cosas que antes no podía hacer, y convertir esas nuevas posibilidades en valor».**
+
+Esta formulación concreta y sustituye cualquier lectura más vaga del núcleo, sin borrar las dimensiones ya recogidas en las secciones anteriores.
+
+### 20.1 Significado operativo para la búsqueda de marca
+
+El concepto integra una secuencia inseparable:
+
+1. **Desarrollo de capacidad:** el sistema adquiere o desarrolla capacidades que no tenía.
+2. **Nuevas posibilidades:** esas capacidades hacen realizables acciones, transformaciones o resultados que antes no estaban a su alcance.
+3. **Construcción de valor:** las nuevas posibilidades se orientan y convierten en valor en su contexto.
+
+La marca debe apuntar a esta capacidad de posibilitar y a la conversión de las nuevas posibilidades en valor. No basta con aludir a cambio, creatividad, innovación, iniciativa, crecimiento, movimiento, conexión o generación de novedades.
+
+### 20.2 Restricción contra la deriva semántica
+
+No alejar la exploración de nombres de la formulación central. En particular:
+
+- No sustituir el concepto por sinónimos genéricos ni por cualidades personales como ingenio o inventiva.
+- No proponer palabras solo porque suenen atractivas o guarden una asociación metafórica débil.
+- No fabricar neologismos artificiales para aparentar distintividad.
+- No volver a asociaciones de bienestar, yoga, pilates o movimiento corporal.
+- No presentar un nombre como candidato sin explicar su vínculo directo con desarrollar capacidad, hacer posible lo antes imposible y construir valor.
+- Si no aparece una opción que supere el filtro semántico y de naturalidad, decirlo y continuar explorando; no rellenar la ronda.
+
+### 20.3 Regla de continuidad
+
+Esta formulación es la referencia inmediata y obligatoria para la siguiente iteración. Las propuestas anteriores (incluidas AFLUYA, FORJA, HABILIA, FACIBILIA, FACIENZA, AFORDIA, APTORA, INGENIO, INVENTIVA e INICIATIVA) no quedan aprobadas por su mención y no deben reintroducirse como si fueran candidatas seleccionadas.
+
+### Control de cambios
+
+- **v0.8 — 2026-11-23:** se fija la formulación central exacta «desarrollar la capacidad de un sistema para hacer posibles cosas que antes no podía hacer, y convertir esas nuevas posibilidades en valor». Se establece como referencia prioritaria y se incorporan restricciones explícitas contra la deriva semántica, las propuestas genéricas y los neologismos artificiales. No se selecciona candidato de marca.
