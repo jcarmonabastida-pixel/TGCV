@@ -48,7 +48,7 @@ SOURCE_HASH_PATHS = {
     "legacy_runner_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_holdout.py",
 }
 PROTOCOL_ID = "C10S-F5-G7-TIERA-PROSPECTIVE-001"
-PROTOCOL_VERSION = "1.0"
+PROTOCOL_VERSION = "1.1"
 AUTH_SCHEMA = "TGCV-C10S-F5-G7-TIERA-AUTH-002"
 EXPECTED_CELLS = ("F5_beta22_M10_R5", "F5_beta22_M30_R20")
 
