@@ -5,6 +5,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: c10s-f5-g7-resource-profile-v1-1
@@ -18,9 +19,75 @@ env:
   VECLIB_MAXIMUM_THREADS: '1'
 
 jobs:
-  resource-only-profile:
+  resource-shards:
+    name: Resource shard ${{ matrix.cell_id }} / ${{ matrix.replicate_start }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        include:
+          - cell_id: F5_beta22_M10_R5
+            replicate_start: 0
+            replicate_count: 10
+          - cell_id: F5_beta22_M10_R5
+            replicate_start: 10
+            replicate_count: 10
+          - cell_id: F5_beta22_M10_R5
+            replicate_start: 20
+            replicate_count: 10
+          - cell_id: F5_beta22_M10_R5
+            replicate_start: 30
+            replicate_count: 10
+          - cell_id: F5_beta22_M10_R5
+            replicate_start: 40
+            replicate_count: 10
+          - cell_id: F5_beta22_M10_R5
+            replicate_start: 50
+            replicate_count: 10
+          - cell_id: F5_beta22_M10_R5
+            replicate_start: 60
+            replicate_count: 10
+          - cell_id: F5_beta22_M10_R5
+            replicate_start: 70
+            replicate_count: 10
+          - cell_id: F5_beta22_M10_R5
+            replicate_start: 80
+            replicate_count: 10
+          - cell_id: F5_beta22_M10_R5
+            replicate_start: 90
+            replicate_count: 10
+          - cell_id: F5_beta22_M30_R20
+            replicate_start: 0
+            replicate_count: 10
+          - cell_id: F5_beta22_M30_R20
+            replicate_start: 10
+            replicate_count: 10
+          - cell_id: F5_beta22_M30_R20
+            replicate_start: 20
+            replicate_count: 10
+          - cell_id: F5_beta22_M30_R20
+            replicate_start: 30
+            replicate_count: 10
+          - cell_id: F5_beta22_M30_R20
+            replicate_start: 40
+            replicate_count: 10
+          - cell_id: F5_beta22_M30_R20
+            replicate_start: 50
+            replicate_count: 10
+          - cell_id: F5_beta22_M30_R20
+            replicate_start: 60
+            replicate_count: 10
+          - cell_id: F5_beta22_M30_R20
+            replicate_start: 70
+            replicate_count: 10
+          - cell_id: F5_beta22_M30_R20
+            replicate_start: 80
+            replicate_count: 10
+          - cell_id: F5_beta22_M30_R20
+            replicate_start: 90
+            replicate_count: 10
     steps:
       - name: Checkout immutable profiling source
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -34,14 +101,53 @@ jobs:
       - name: Install hash-locked dependencies
         working-directory: 03_EXPERIMENTS/C10-S/harness
         run: "python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock"
-      - name: Execute resource-only timing profile
+      - name: Execute deterministic timing-only shard
         working-directory: .
         run: |
-          python 03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_resource_preflight_parallel.py --output "$RUNNER_TEMP/c10s-f5-g7-resource-parallel-profile.json"
-      - name: Upload immutable resource-only profile
+          python 03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_resource_shard.py \
+            --cell-id "${{ matrix.cell_id }}" \
+            --replicate-start "${{ matrix.replicate_start }}" \
+            --replicate-count "${{ matrix.replicate_count }}" \
+            --output "$RUNNER_TEMP/resource-shard.json"
+      - name: Upload immutable shard result
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-resource-shard-${{ matrix.cell_id }}-${{ matrix.replicate_start }}
+          path: ${{ runner.temp }}/resource-shard.json
+          if-no-files-found: error
+          retention-days: 90
+
+  aggregate-resource-profile:
+    name: Verify and aggregate all resource shards
+    needs: resource-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout immutable profiling source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Download shard artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: c10s-f5-g7-resource-shard-*
+          path: ${{ runner.temp }}/resource-shards
+          merge-multiple: true
+      - name: Verify roster, replica identities and hashes; aggregate
+        working-directory: .
+        run: |
+          python 03_EXPERIMENTS/C10-S/harness/aggregate_c10s_f5_g7_resource_shards.py \
+            --shard-dir "$RUNNER_TEMP/resource-shards" \
+            --output "$RUNNER_TEMP/c10s-f5-g7-resource-profile.json"
+      - name: Upload consolidated resource-only profile
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: c10s-f5-g7-resource-profile-v1-1
-          path: ${{ runner.temp }}/c10s-f5-g7-resource-parallel-profile.json
+          path: ${{ runner.temp }}/c10s-f5-g7-resource-profile.json
           if-no-files-found: error
           retention-days: 90
