@@ -840,3 +840,68 @@ La segunda formulación parece más próxima al núcleo fundacional y debe usars
 ### Control de cambios
 
 - **v1.6 — 2026-11-23:** se amplía el territorio conceptual desde el título del libro **TRANSFORMATIONAL VALUE** y se incorpora **INTELIGENCIA TRANSFORMACIONAL DE SISTEMAS** como formulación candidata. Se articula provisionalmente con Transformación Generativa de Sistemas, TGCV, VALUE y ValueLabOS; se explicita la pregunta de delimitación entre inteligencia transformacional general y desarrollo de nuevas posibilidades de acción orientadas a valor. No se selecciona marca ni se modifica la identidad científica.
+
+
+## 29. Candidato conceptual prioritario: TRANSFORMATIONAL VALUE INTELLIGENCE (TVI)
+
+Se registra la decisión del usuario del 2026-11-23 de persistir **TRANSFORMATIONAL VALUE INTELLIGENCE (TVI)** como candidato conceptual prioritario para nombrar la capacidad integradora asociada al territorio de TGCV, Transformación Generativa de Sistemas y Transformational Value.
+
+### 29.1 Denominación
+
+**TRANSFORMATIONAL VALUE INTELLIGENCE**
+
+Abreviatura de trabajo: **TVI**.
+
+La denominación se conserva en inglés como formulación principal de exploración. «Inteligencia de Valor Transformacional» puede utilizarse como traducción explicativa provisional en español, sin considerarla todavía una equivalencia terminológica cerrada.
+
+### 29.2 Definición de trabajo
+
+**Capacidad de comprender, desarrollar y orientar los espacios de transformación de los sistemas para ampliar sus posibilidades de acción y contribuir a convertir esas nuevas posibilidades en valor contextual.**
+
+La definición debe preservar el núcleo fundacional:
+
+**Desarrollar la capacidad de un sistema para hacer posibles cosas que antes no podía hacer, y convertir esas nuevas posibilidades en valor.**
+
+TVI no debe reducirse a análisis o medición del valor, inteligencia artificial, gestión del cambio, innovación genérica ni optimización de capacidades existentes.
+
+### 29.3 Correspondencia con TGCV
+
+TVI se considera la formulación integradora que mejor conecta, en el estado actual de la exploración, las dimensiones de transformación, sistemas, ampliación de posibilidades y valor.
+
+La correspondencia no implica identidad entre TVI y TGCV:
+
+- **TGCV** permanece como programa científico que investiga los fundamentos, mecanismos, condiciones y relaciones entre transformaciones accesibles, trayectorias y valor.
+- **TVI** nombra la capacidad que se busca comprender y desarrollar a la luz de ese fundamento científico.
+- **Transformación Generativa de Sistemas** nombra el proceso por el que pueden desarrollarse nuevas capacidades y posibilidades.
+- **VALUE** conserva su función de framework aplicado.
+- **ValueLabOS** conserva su función de ecosistema para aplicar, experimentar, documentar y evolucionar.
+
+La articulación es conceptual y programática; no constituye evidencia de que la relación causal entre accesibilidad de transformaciones y valor esté demostrada. La hipótesis C10 permanece abierta a investigación y falsación.
+
+### 29.4 Razón de preferencia y alternativas
+
+TVI se prioriza frente a las alternativas examinadas porque integra en una sola expresión:
+- **Transformational:** la transformación de los sistemas como dimensión central.
+- **Value:** la orientación hacia la construcción de valor, no la transformación por sí misma.
+- **Intelligence:** una capacidad de comprensión, diseño y orientación, y no solamente un proceso.
+
+Se mantienen como alternativas examinadas, no prioritarias:
+- **GENERATIVE VALUE CAPABILITY (GVC):** expresa generación y valor, pero no explicita suficientemente el ámbito sistémico ni la transformación.
+- **GENERATIVE SYSTEMS INTELLIGENCE (GSI):** expresa sistemas y generación, pero deja el valor fuera de la denominación.
+- **TRANSFORMATIONAL VALUE CAPABILITY (TVC):** expresa capacidad y valor, pero comunica menos claramente la dimensión generativa e inteligente.
+
+La preferencia por TVI es conceptual y provisional; no se afirma que sea lingüísticamente óptimo, distintivo o jurídicamente disponible.
+
+### 29.5 Estado y cautelas
+
+- **TRANSFORMATIONAL VALUE INTELLIGENCE (TVI): candidato conceptual prioritario adoptado para la siguiente fase de delimitación.**
+- No se declara definición científica cerrada ni se afirma que TVI sea una capacidad empíricamente validada.
+- No se selecciona todavía como marca comercial, nombre paraguas ni denominación registrable.
+- Quedan pendientes la delimitación precisa del constructo, su relación con capacidades propias del sistema frente a capacidades para desarrollar otros sistemas, la validación lingüística en español e inglés y la investigación de usos, marcas y dominios.
+- No se autoriza compra, reserva ni registro de dominios o marcas.
+- TGCV conserva su identidad científica y documental.
+- La rama de trabajo permanece separada de `main`; no se modifica `main`.
+
+### Control de cambios
+
+- **v1.7 — 2026-11-23:** se incorpora **TRANSFORMATIONAL VALUE INTELLIGENCE (TVI)** como candidato conceptual prioritario por decisión del usuario. Se define su alcance de trabajo, se diferencia de TGCV y de los componentes VALUE/ValueLabOS, se documenta la razón de preferencia frente a GVC, GSI y TVC y se mantienen explícitas las cautelas científicas, lingüísticas y marcarias. No se modifica `main`.
