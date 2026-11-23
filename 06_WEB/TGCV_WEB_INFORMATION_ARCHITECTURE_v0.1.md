@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -529,3 +529,18 @@ For the Efecto Ajá test, record whether visitors can explain the central questi
 
 The first-release architecture is accepted only if it remains useful without the Playground, has no empty menu destinations, offers content before requesting personal data, and accurately labels the maturity of every featured asset.
 
+
+## 15. Content implementation reference
+
+The first-release page inventory, content specifications, reusable source-asset register, evidence controls, publication clearance and editorial gates are defined in `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`.
+
+The content blueprint is the operational content plan under this information architecture. If a page or navigation destination cannot be populated with accurate, useful and maintainable content, omit or defer it rather than publish an empty destination.
+
+### First-release rule
+
+The germinal website must provide coherent journeys through Home, Explore, Research, the systems-engineering/TI identity areas, bounded Labs & Applications, About/Governance and a real contact route. It must remain useful without the future Playground, a new simulator or a community platform.
+
+### v0.3 — 2026-11-24
+
+- Added the first-release Content Blueprint as the operational content-planning reference.
+- Clarified the rule against empty or premature navigation destinations.
