@@ -329,3 +329,36 @@ Esta pregunta debe orientar la búsqueda de la raíz conceptual y verbal. No con
 
 ### Control de cambios
 - **v0.5 — 2026-11-23:** se incorpora la formulación «Transformar sistemas para generar valor», se fija que el valor emerge mediante la transformación (segunda interpretación) y se establece como principio creativo que el nombre debe emerger del significado esencial del proyecto, no imponerse ni construirse por concatenación literal.
+
+
+## 18. Núcleo generativo de la identidad: hacer emerger valor
+
+La exploración conceptual ha alcanzado una formulación más precisa, que pasa a ser el núcleo rector de las siguientes rondas de naming:
+
+**La capacidad generativa de hacer emerger valor.**
+
+Esta expresión integra los dos movimientos que deben permanecer unidos en la identidad:
+
+- **Revelar valor latente:** reconocer y hacer realizable valor que ya estaba subyacente en el sistema, aunque no pudiera manifestarse con las capacidades, relaciones o condiciones anteriores.
+- **Generar valor nuevo:** mediante la transformación, configurar capacidades, relaciones y posibilidades que permiten construir formas de valor que antes no existían.
+
+Por tanto, «hacer emerger valor» no equivale únicamente a descubrir algo oculto ni únicamente a crear algo nuevo. Comprende ambos procesos: revelar lo que estaba latente y generar lo que todavía no existía.
+
+### 18.1 Papel de la transformación
+
+La transformación de sistemas es el proceso mediante el cual pueden cambiar las capacidades y condiciones de actuación, haciendo posible que el valor latente se manifieste y que surjan nuevas formas de valor. La capacidad generativa no se reduce a producir novedades: consiste en hacer emerger valor de manera potencialmente continuada y recursiva.
+
+Esta formulación es un principio conceptual y de posicionamiento para la marca; no afirma que la relación causal entre accesibilidad de transformaciones y valor haya quedado demostrada científicamente. La investigación TGCV mantiene esa cuestión abierta a contraste y falsación.
+
+### 18.2 Consecuencia para el naming
+
+La búsqueda debe partir de **la capacidad generativa de hacer emerger valor**, no de las palabras aisladas «generación», «transformación», «potencial» o «valor». El nombre debe poder evocar esa capacidad como una identidad unitaria, con personalidad propia, naturalidad lingüística y amplitud para el ecosistema.
+
+La pregunta generadora se afina así:
+
+*¿Qué concepto expresa la capacidad de hacer emerger valor, revelando lo que estaba latente y generando lo que aún no existía?*
+
+No se selecciona todavía ningún nombre ni raíz verbal. Esta formulación establece el origen conceptual desde el que deben emerger las propuestas y no relaja ninguno de los filtros de admisión anteriores.
+
+### Control de cambios
+- **v0.6 — 2026-11-23:** se incorpora como núcleo conceptual de naming «la capacidad generativa de hacer emerger valor», distinguiendo expresamente revelar valor latente y generar valor nuevo. Se precisa el papel de la transformación y se actualiza la pregunta generadora, sin seleccionar candidato ni afirmar causalidad científica demostrada.
