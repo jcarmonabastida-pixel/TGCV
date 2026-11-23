@@ -12,8 +12,8 @@ on:
 # snapshots are superseded because they test obsolete code and can block the
 # targeted regression run indefinitely.
 concurrency:
-  group: c10s-f5-deterministic-${{ github.run_id }}
-  cancel-in-progress: true
+  group: c10s-f5-deterministic-${{ github.ref }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
