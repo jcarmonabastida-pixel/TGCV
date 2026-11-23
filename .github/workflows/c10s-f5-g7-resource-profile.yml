@@ -108,12 +108,12 @@ jobs:
             --cell-id "${{ matrix.cell_id }}" \
             --replicate-start "${{ matrix.replicate_start }}" \
             --replicate-count "${{ matrix.replicate_count }}" \
-            --output "$RUNNER_TEMP/resource-shard.json"
+            --output "$RUNNER_TEMP/resource-shard-${{ matrix.cell_id }}-${{ matrix.replicate_start }}.json"
       - name: Upload immutable shard result
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: c10s-f5-g7-resource-shard-${{ matrix.cell_id }}-${{ matrix.replicate_start }}
-          path: ${{ runner.temp }}/resource-shard.json
+          path: ${{ runner.temp }}/resource-shard-${{ matrix.cell_id }}-${{ matrix.replicate_start }}.json
           if-no-files-found: error
           retention-days: 90
 
