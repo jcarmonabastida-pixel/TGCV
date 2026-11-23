@@ -2892,7 +2892,7 @@ def refine_krawczyk_root_box(
             "iterations": 0,
             "widths": original_widths,
             "max_width": target,
-            "method": "EXACT_RATIONAL_NEWTON_SEED_PLUS_KRAWCZYK_CERTIFICATE",
+            "method": "EXACT_RATIONAL_DYADIC_NEWTON_LOCATOR_PLUS_KRAWCZYK_CERTIFICATE",
         }
 
     derivatives = (
@@ -2901,6 +2901,19 @@ def refine_krawczyk_root_box(
     )
     point = tuple((axis[0] + axis[1]) / 2 for axis in original)
     newton_iterations = 0
+    # Newton is only a locator; its iterates need not retain unbounded rational
+    # denominator growth. Round each exact iterate to a fixed dyadic grid, then
+    # let the final Krawczyk inclusion/contraction proof decide acceptance.
+    # 2^-64 locator resolution is comfortably finer than the 2^-32 box contract.
+    locator_scale = 1 << 64
+
+    def dyadic_locator(value):
+        scaled_numerator = value.numerator * locator_scale
+        quotient, remainder = divmod(scaled_numerator, value.denominator)
+        if 2 * remainder >= value.denominator:
+            quotient += 1
+        return Fraction(quotient, locator_scale)
+
     for iteration in range(max_iterations):
         values = (
             _poly_evaluate_rational(poly_p, *point),
@@ -2920,16 +2933,24 @@ def refine_krawczyk_root_box(
             (jacobian[1][1] * values[0] - jacobian[0][1] * values[1]) / determinant,
             (-jacobian[1][0] * values[0] + jacobian[0][0] * values[1]) / determinant,
         )
-        next_point = (point[0] - step[0], point[1] - step[1])
+        exact_next_point = (point[0] - step[0], point[1] - step[1])
+        if any(
+            exact_next_point[axis] < original[axis][0]
+            or exact_next_point[axis] > original[axis][1]
+            for axis in range(2)
+        ):
+            break
+        next_point = tuple(dyadic_locator(value) for value in exact_next_point)
         if any(
             next_point[axis] < original[axis][0]
             or next_point[axis] > original[axis][1]
             for axis in range(2)
         ):
             break
+        unchanged = next_point == point
         point = next_point
         newton_iterations = iteration + 1
-        if max(abs(step[0]), abs(step[1])) <= target / 16:
+        if unchanged or max(abs(step[0]), abs(step[1])) <= target / 16:
             break
 
     # Candidate radii are exact powers of two and never exceed the declared
