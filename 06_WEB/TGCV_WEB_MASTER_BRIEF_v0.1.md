@@ -1,0 +1,725 @@
+# TGCV — Web Master Brief
+**Identificador:** TGCV-WEB-MASTER-001  
+**Versión:** 0.1  
+**Fecha:** 2026-11-23  
+**Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
+**Rama:** `strategy/tgcv-web-master`  
+**Base de referencia:** GitHub `main`, estado consultado el 23-11-2026  
+**Propósito:** documento maestro de orientación conceptual, científica, tecnológica y de ecosistema para diseñar la futura web de TGCV y su entorno de investigación y aplicación.
+
+> Este documento consolida hallazgos y orientaciones estratégicas. No sustituye la gobernanza científica, no modifica TGCV Core, RMA, Evidence→Claim Matrix ni los estados de evidencia, y no convierte hipótesis de aplicación en resultados demostrados.
+
+---
+
+## 0. Síntesis ejecutiva
+
+La identidad que mejor representa el núcleo actual de TGCV no es la consultoría de negocio ni una oferta genérica de creación de valor. Es un programa de investigación y desarrollo interdisciplinar situado en la intersección de:
+
+- pensamiento sistémico;
+- dinámica de espacios de transformación;
+- inteligencia transformacional;
+- ingeniería de sistemas;
+- sistemas complejos, adaptativos, distribuidos y sociotécnicos;
+- modelado, simulación y experimentación;
+- traducción analítica entre dominios heterogéneos.
+
+TGCV investiga cómo los sistemas evolucionan no solo en sus estados, sino también en el conjunto de transformaciones que tienen disponibles, en las condiciones que hacen esas transformaciones accesibles, y en las trayectorias que se abren, cierran o reconfiguran como consecuencia.
+
+La pregunta central puede formularse así:
+
+**¿Cómo cambia lo que un sistema puede hacer, bajo qué condiciones, mediante qué transformaciones, cómo se modifica después su espacio de posibilidades y qué consecuencias tiene esto para sus trayectorias?**
+
+La orientación de ecosistema más fiel es desarrollar conocimiento, modelos, métodos, herramientas y entornos experimentales para comprender, representar, comparar y —cuando la evidencia y el diseño lo permitan— orientar transformaciones en sistemas reales o sintéticos.
+
+El valor sigue siendo una dimensión importante, pero no define el objeto primario ni debe convertirse en una promesa automática. Es una evaluación contextual posterior, sustentada en resultados y en un modelo de valoración independiente.
+
+---
+
+## 1. Identidad y propósito
+
+### 1.1 Qué es TGCV
+
+TGCV significa **Teoría de Construcción de Valor de Sistemas Generativos**. Se mantiene como un programa de investigación integrador, con una arquitectura conceptual estabilizada y un programa experimental falsable. No debe presentarse como una teoría consolidada ni como una validación universal ya alcanzada.
+
+Su objeto actual se entiende mejor desde la dinámica de los espacios de transformación y la capacidad de los sistemas para razonar y actuar sobre esos espacios.
+
+TGCV no se limita a estudiar qué estado tiene un sistema. Investiga qué transformaciones son posibles o accesibles desde ese estado, qué condiciones determinan su accesibilidad, qué transformaciones se realizan y cómo estas alteran las posibilidades futuras.
+
+### 1.2 Propósito del ecosistema
+
+Construir un entorno de investigación, ingeniería y experimentación que permita:
+
+1. comprender sistemas y sus dinámicas de transformación;
+2. representar estados, contextos, transformaciones, restricciones y relaciones;
+3. reconstruir y analizar espacios de transformación accesibles;
+4. estudiar cómo las transformaciones realizadas reconfiguran las posibilidades futuras;
+5. explorar trayectorias posibles y sus consecuencias;
+6. desarrollar inteligencia transformacional como capacidad de razonamiento, navegación y adaptación en espacios de transformación;
+7. diseñar y probar modelos, conectores, simuladores y herramientas;
+8. explorar aplicaciones híbridas donde los cambios se propagan entre dominios;
+9. estudiar resultados y valor sin confundirlos con los mecanismos que los preceden.
+
+### 1.3 Qué no es el ecosistema
+
+No debe definirse primordialmente como:
+
+- consultora de transformación empresarial;
+- firma de innovación o estrategia corporativa;
+- agencia de inteligencia artificial;
+- proveedor genérico de automatización;
+- metodología universal de mejora de negocio;
+- plataforma que promete crear valor por el mero hecho de ampliar posibilidades.
+
+Estas actividades podrían aparecer como aplicaciones o líneas de transferencia, pero no son el centro identitario.
+
+---
+
+## 2. Núcleo conceptual: sistemas y dinámica transformacional
+
+### 2.1 El objeto dinámico
+
+La secuencia de referencia del manifiesto de dinámica transformacional es:
+
+`S_t → T_{acc,t} → T_{real,t} → S_{t+1} → T_{acc,t+1} → …`
+
+Donde:
+
+- `S_t`: estado del sistema en el tiempo `t`;
+- `T_{acc,t}`: transformaciones accesibles bajo el estado, contexto, restricciones, recursos, relaciones y semántica del dominio;
+- `T_{real,t}`: transformación efectivamente realizada;
+- `S_{t+1}`: estado sucesor.
+
+Una trayectoria puede representarse como una secuencia de estados y transformaciones realizadas:
+
+`H_n = (S_0, T_{real,0}, S_1, …, T_{real,n-1}, S_n)`
+
+La dinámica del espacio de transformación puede expresarse, de forma general, como:
+
+`ΔT_{acc,t} = D(T_{acc,t}, T_{acc,t+1})`
+
+Esta expresión no presupone que el espacio se amplíe siempre. Puede expandirse, contraerse, reconfigurarse, persistir o experimentar sustituciones, pérdidas, novedades y cambios de accesibilidad.
+
+### 2.2 Qué significa accesibilidad
+
+La accesibilidad no equivale simplemente a que una acción exista en abstracto, a que un agente la conozca, a que haya sido ejecutada o a que el resultado haya sido exitoso.
+
+Una transformación es accesible en un momento dado bajo condiciones declaradas del sistema: estado, contexto, recursos, restricciones, permisos, relaciones y reglas relevantes.
+
+El análisis debe preservar las distinciones entre:
+
+- universo de transformaciones candidatas;
+- admisibilidad o accesibilidad;
+- transformaciones realizadas;
+- estados sucesores;
+- trayectorias;
+- outcomes;
+- valoración.
+
+La semántica concreta de cada dominio sigue siendo autoritativa. TGCV aporta una gramática analítica transversal, no una sustitución indiscriminada de los modelos especializados.
+
+### 2.3 Dinámicas del espacio de transformación
+
+Entre los cambios relevantes se encuentran:
+
+- apertura de nuevas transformaciones;
+- cierre o pérdida de transformaciones;
+- reordenación de alternativas;
+- incompatibilidad entre opciones;
+- creación o desaparición de capacidades;
+- cambios de coste o tiempo;
+- modificación de restricciones y condiciones de admisibilidad;
+- persistencia y reversibilidad;
+- dependencia histórica;
+- ramificación y reconfiguración;
+- efectos de una transformación realizada sobre las posibilidades futuras.
+
+La pregunta no es solo cuánto mide un espacio, sino cómo cambia, por qué cambia, qué transformaciones se vuelven accesibles o inaccesibles y qué consecuencias tiene ese cambio para las trayectorias posteriores.
+
+### 2.4 La capa estructural en desarrollo
+
+La propuesta de formalización de dinámica transformacional v0.3 plantea como objeto estructural:
+
+`Ω_{T,t} = (U_t, ≡_t, R_t)`
+
+Donde `U_t` es el universo de transformaciones candidatas, `≡_t` la relación de identidad/equivalencia y `R_t` el sistema de relaciones tipadas. La accesibilidad se trata en esa propuesta como una capa derivada cuando puede identificarse independientemente.
+
+**Límite de estado:** la propuesta v0.3 está marcada como DEVELOPMENT DRAFT — NON-CANONICAL. No debe presentarse en la web como ontología formal congelada ni como sustitución del Core vigente.
+
+---
+
+## 3. Transformational Intelligence
+
+### 3.1 Definición de trabajo
+
+El *Manifesto of Transformation-Space Dynamics and Transformational Intelligence* define Transformational Intelligence (TI) como:
+
+> La capacidad de razonar sobre, navegar y adaptarse al espacio de transformaciones accesibles de un sistema para orientar sus trayectorias futuras hacia resultados deseados, bajo un modelo de valor especificado independientemente.
+
+TI no es un resultado, una puntuación de éxito ni un sinónimo de inteligencia artificial. Es una capacidad funcional relacionada con la representación y el uso del conocimiento sobre espacios de transformación.
+
+### 3.2 Cuatro capacidades funcionales
+
+1. **Reasoning over transformation space:** representar, inspeccionar, comparar y razonar sobre transformaciones accesibles.
+2. **Navigation:** discriminar y seleccionar entre transformaciones accesibles.
+3. **Adaptation:** considerar que las transformaciones realizadas modifican estados y espacios de transformación futuros.
+4. **Trajectory orientation:** utilizar resultados deseados como contexto de orientación, manteniendo independiente el modelo de valoración.
+
+### 3.3 Relación entre TGCV y TI
+
+- TGCV proporciona el programa conceptual y científico para investigar sistemas y dinámicas de transformación.
+- Transformational Intelligence expresa una capacidad de razonamiento, navegación y adaptación sobre esos espacios.
+- La ingeniería de sistemas aporta prácticas y herramientas para modelar, analizar, diseñar e integrar sistemas.
+- La IA puede ser una tecnología habilitadora o un componente de sistemas que incorporen capacidades de TI; no agota ni define TI.
+
+No debe afirmarse que TI está científicamente validada en general, que es equivalente a un modelo de IA, ni que produce valor necesariamente.
+
+---
+
+## 4. Arquitectura analítica de extremo a extremo
+
+La síntesis transversal independiente conservada en el repositorio organiza la cadena:
+
+`State / conditions → candidate transformations → admissibility Pτ → T_acc → ΔT_acc / execution → subsequent state / trajectory → outcome → ΔV / Value`
+
+Esta cadena debe ayudar a explicar cómo se conectan los niveles sin colapsarlos.
+
+| Capa | Pregunta analítica |
+|---|---|
+| Estado y condiciones | ¿Cómo está configurado el sistema y bajo qué contexto opera? |
+| Transformaciones candidatas | ¿Qué cambios o acciones pueden considerarse? |
+| Admisibilidad `Pτ` | ¿Qué reglas y condiciones determinan cuáles son accesibles? |
+| `T_acc` | ¿Qué transformaciones están accesibles en el límite de decisión definido? |
+| `ΔT_acc` | ¿Qué cambia en el espacio accesible tras una transición o intervención? |
+| Ejecución / transformación realizada | ¿Qué transformación se realiza efectivamente? |
+| Estado sucesor y trayectoria | ¿Cómo cambia el sistema y qué secuencia posterior se hace posible? |
+| Outcome | ¿Qué resultado se observa? |
+| Valor | ¿Cómo se evalúa ese resultado bajo un modelo de valoración independiente? |
+
+### 4.1 Regla de independencia
+
+No se debe inferir automáticamente:
+
+- accesibilidad a partir de adopción, ejecución o éxito;
+- causalidad a partir de una asociación descriptiva;
+- valor a partir de una ampliación de posibilidades;
+- superioridad a partir de la posibilidad de representar un caso;
+- validez transversal a partir de un ejemplo en un dominio;
+- inteligencia transformacional a partir de un outcome positivo.
+
+### 4.2 Estado actual de la evidencia que debe reflejar la web
+
+Según el STATUS.md de GitHub consultado el 23-11-2026:
+
+- el Core científico permanece sin cambios;
+- C09 mantiene un resultado de apoyo causal empírico acotado;
+- KGFS está cerrado como contribución identificada D5-A con auditoría de reproducibilidad 74/74;
+- la conexión entre accesibilidad y trayectoria tiene evidencia acotada en C09;
+- el enlace posterior `ΔT_acc → ΔV / Value` permanece abierto;
+- el mapa transversal de accesibilidad → ejecución → outcome/valor se conserva como síntesis analítica independiente, no como metodología normativa;
+- el resultado TI-001 V012_NEXT2 es evidencia inferencial primaria no confirmatoria y no establece una afirmación general sobre Transformational Intelligence;
+- la evidencia TSTC es metodológica y sintética, no una validación empírica transversal.
+
+La web pública no necesita exponer todo el detalle de gobernanza, pero cualquier afirmación científica debe respetar estos límites y enlazar a los documentos de evidencia pertinentes.
+
+---
+
+## 5. Pensamiento sistémico e ingeniería de sistemas como orientación
+
+### 5.1 Pensamiento sistémico
+
+El pensamiento sistémico permite estudiar:
+
+- elementos y subsistemas;
+- relaciones y dependencias;
+- límites y condiciones de contorno;
+- retroalimentaciones;
+- restricciones;
+- interacciones;
+- comportamiento emergente;
+- evolución y adaptación;
+- efectos no locales y consecuencias no previstas.
+
+TGCV añade una pregunta específica: cómo estas estructuras y dinámicas condicionan las transformaciones que un sistema puede realizar y las trayectorias que quedan disponibles después.
+
+### 5.2 Ingeniería de sistemas
+
+La orientación de ingeniería de sistemas debe reflejarse en el trabajo del ecosistema:
+
+- definición de problemas y límites del sistema;
+- análisis de requisitos, estados y condiciones;
+- modelado de sistemas y subsistemas;
+- arquitectura y análisis de dependencias;
+- ingeniería de interfaces y conectores;
+- análisis de restricciones y admisibilidad;
+- simulación y experimentación;
+- diseño de escenarios y pruebas;
+- verificación, validación y trazabilidad;
+- integración de sistemas heterogéneos;
+- evaluación de comportamiento y trayectorias.
+
+La ingeniería de sistemas es una orientación disciplinar y práctica. No debe confundirse con afirmar que TGCV ya constituye un estándar de ingeniería, una norma o un método industrial validado.
+
+### 5.3 Sistemas de interés
+
+El ecosistema debe poder explorar sistemas:
+
+- físicos y ciberfísicos;
+- digitales y distribuidos;
+- software y plataformas;
+- redes e infraestructuras;
+- agentes de IA y sistemas sociotécnicos;
+- industriales y productivos;
+- energéticos y de movilidad;
+- institucionales e interorganizativos;
+- adaptativos, complejos y multidominio.
+
+El criterio de inclusión no es el sector, sino que exista un problema transformacional que pueda representarse y estudiarse con claridad.
+
+---
+
+## 6. Application-Fit: hallazgos del brainstorming
+
+### 6.1 Principio de búsqueda por mecanismo
+
+Los registros de brainstorming de Application-Fit (17-09-2026) establecieron que la búsqueda debe comenzar por mecanismos transformacionales, no por sectores o por una oferta comercial predefinida.
+
+Ocho mecanismos de descubrimiento:
+
+1. abrir opciones;
+2. cerrar opciones;
+3. reordenar opciones;
+4. hacer alternativas mutuamente incompatibles;
+5. crear capacidades;
+6. eliminar capacidades;
+7. cambiar coste o tiempo de transformación;
+8. cambiar restricciones que determinan `Pτ`.
+
+La pregunta de búsqueda:
+
+**¿Dónde existe un problema operativo real en el que un cambio modifica las transformaciones que serán accesibles después, y dónde sería útil representar ese cambio antes de observar los resultados posteriores?**
+
+### 6.2 Dos dimensiones de Application-Fit
+
+**Dimensión 1 — Dominio o contexto sectorial:** dónde está situado el problema.
+
+**Dimensión 2 — Grado de acoplamiento transformacional:**
+
+- **D0 — Single-domain:** un dominio principal.
+- **D1 — Adjacent-domain involvement:** dominios adyacentes participan.
+- **D2 — Cross-domain dependency:** una transformación depende de condiciones generadas o mantenidas en otro dominio.
+- **D3 — Coupled transformation spaces:** los espacios de transformación de varios dominios se condicionan mutuamente.
+- **D4 — Emergent multidomain transformation:** el problema compuesto no puede representarse adecuadamente desde un único dominio.
+
+Estos niveles son clasificaciones exploratorias de descubrimiento. No son puntuaciones, rankings ni niveles de validez científica.
+
+### 6.3 Ocho patrones de hibridación transformacional
+
+1. **Capability propagation:** una capacidad creada o modificada en A habilita transformaciones en B.
+2. **Capability blocking:** una restricción o pérdida de capacidad en A elimina transformaciones disponibles en B.
+3. **Cross-domain dependency:** una transformación en A requiere condiciones generadas o mantenidas en B.
+4. **Cascading reconfiguration:** una transformación desencadena cambios sucesivos en los espacios accesibles de varios dominios.
+5. **Resource coupling:** dos o más dominios compiten por recursos o dependen de recursos compartidos que determinan accesibilidad.
+6. **Constraint propagation:** reglas, políticas, límites técnicos o restricciones de seguridad en un dominio modifican la admisibilidad en otro.
+7. **Trajectory coupling:** la trayectoria posterior de A modifica la trayectoria disponible en B, y viceversa.
+8. **Emergent system transformation:** la transformación del sistema compuesto no se representa adecuadamente desde un dominio aislado.
+
+Son instrumentos de búsqueda y análisis, no mecanismos científicos ya establecidos para todos los dominios.
+
+### 6.4 Hipótesis de contribución transversal
+
+La forma más fuerte de la hipótesis es:
+
+`Domain A transformation → change in Domain B accessibility/admissibility → coupled trajectory → consequential outcome/value`
+
+La mera presencia de varios dominios no basta. Debe demostrarse que existe acoplamiento transformacional real y que la representación transversal añade algo relevante.
+
+---
+
+## 7. Casos de Application-Fit recuperados de GitHub
+
+El registro inicial identificó ocho candidatos. Ninguno fue declarado aplicación cualificada por el mero hecho de entrar en el registro. Cinco fueron seleccionados para un análisis comparativo profundo por diversidad estructural, no por ranking.
+
+### 7.1 Registro inicial de ocho candidatos
+
+| ID | Caso | Estructura de sistema a investigar |
+|---|---|---|
+| C01 | ACROSS — orquestación multidominio 5G zero-touch | Red, cloud/edge, seguridad, IA y gemelo digital de red |
+| C02 | Self-defending network / Cisco | Ciberseguridad, identidad, infraestructura, telemetría y operaciones agénticas |
+| C03 | Producción de agentes IA / Coupa Sentinel en AWS | Agentes, herramientas de ingeniería, bases de datos, autenticación, infraestructura y seguridad |
+| C04 | Gemelo digital y mantenimiento predictivo | Activo físico, sensórica, datos, edge ML/LLM, operador y mantenimiento |
+| C05 | Coordinación energía–movilidad / EV-grid | Red eléctrica, demanda, cargadores, vehículos, movilidad y restricciones compartidas |
+| C06 | SociALMAdrid — servicios sociales integrados | Organizaciones, datos, flujos administrativos, prestaciones y trayectoria de cada caso |
+| C07 | Integración salud–servicios sociales en España | Sistemas sanitarios, sociales, información, derivaciones y continuidad asistencial |
+| C08 | Transformación interinstitucional de servicios públicos / justicia penal | Policía, fiscalía, tribunales, autoridad institucional, expedientes y sistemas de información |
+
+Las descripciones iniciales proceden de registros y fuentes públicas capturadas en los documentos de Application-Fit. Son contextos candidatos, no validaciones independientes de utilidad TGCV.
+
+### 7.2 Cinco casos seleccionados para deep screening
+
+La selección de C01, C03, C04, C05 y C08 buscó diversidad de arquitecturas:
+
+| Caso | Acoplamiento principal | Determinante de accesibilidad | Trayectoria posterior | Baseline convencional relevante |
+|---|---|---|---|---|
+| C01 — ACROSS | Orquestación técnica entre dominios | Recursos, políticas, seguridad/confianza y estado de servicio | Reconfiguración de red y servicios | Orquestación, control y automatización de políticas |
+| C03 — Agentes IA | Agente–herramienta–permiso | Herramientas disponibles, autorización y estado backend | Trayectoria de ejecución de tareas del agente | Control de acceso, capacidades y workflow |
+| C04 — Gemelo digital | Acoplamiento físico–digital–mantenimiento | Estado del activo, conocimiento, recursos y seguridad | Trayectoria de mantenimiento y operación | Mantenimiento predictivo, reglas y scheduling |
+| C05 — EV-grid | Recursos y restricciones energía–movilidad | Capacidad de red, demanda, cargadores y restricciones de movilidad | Trayectorias de carga y movilidad | Optimización restringida y control |
+| C08 — Justicia interinstitucional | Autoridad y trayectoria interorganizativa | Autoridad, estado procesal, artefactos e interoperabilidad | Trayectoria del expediente entre agencias | BPM, case management, workflow y autorización |
+
+### 7.3 Qué enseñan los casos
+
+Los cinco casos permiten preguntar por una misma estructura analítica sin suponer que sus entidades o semánticas sean idénticas:
+
+`decision-time boundary → S_t/C_t → candidate transformations Uτ → admissibility Pτ → T_acc,t → controlled transition → T_acc,t+1 → downstream trajectory`
+
+La pregunta común es:
+
+**¿Una transición de estado, contexto o condiciones de gobierno cambia las transformaciones accesibles después, y ese cambio importa para la trayectoria posterior?**
+
+La síntesis encontró que:
+
+- la accesibilidad puede representarse en los cinco tipos de arquitectura mediante una reconstrucción acotada;
+- la distinción entre estado y contexto es útil;
+- `T_acc` es analíticamente portable como capa de traducción;
+- la relación con la trayectoria es el punto más exigente;
+- los modelos convencionales de cada dominio ya representan partes importantes de la misma información.
+
+No sobrevive como conclusión la inferencia «TGCV puede representar `T_acc`, por tanto TGCV aporta valor diferencial».
+
+### 7.4 Qué debe probarse para demostrar contribución diferencial
+
+La comparación debe enfrentar la representación TGCV con el baseline convencional más fuerte del dominio, usando información y supuestos comparables.
+
+La pregunta discriminante TSTC (*Transformation-Space Transition Comparison*) es:
+
+> Dado el mismo sistema y límite de decisión congelados, ¿puede una representación TGCV identificar una transición que cambia el espacio de transformaciones accesibles y sus implicaciones para la trayectoria posterior de una forma que no pueda recuperarse de manera equivalente con información y supuestos comparables desde la representación convencional del dominio?
+
+Si ambos enfoques reconstruyen lo mismo con igual información y supuestos, no hay contribución diferencial demostrada para ese caso.
+
+---
+
+## 8. El demostrador transversal TSTC
+
+### 8.1 Propósito
+
+El *TGCV Cross-Domain Transformation Mapper / TSTC* se diseñó como un demostrador sintético y acotado para comprobar si un contrato analítico común puede instanciarse en dominios heterogéneos y representar explícitamente:
+
+- estado y contexto;
+- universo de transformaciones candidatas;
+- admisibilidad y `T_acc`;
+- intervención o transición;
+- `ΔT_acc`;
+- trayectoria admisible;
+- propagación entre dominios;
+- reconstrucción del baseline convencional;
+- información omitida y límites.
+
+### 8.2 Resultado ejecutado y auditado
+
+La ejecución TSTC v004, sobre fixtures sintéticos C01, C03 y C05, fue auditada como PASS en cuanto a completitud del contrato de ejecución y salida.
+
+El resultado mostró que:
+
+- los tres conectores sintéticos ejecutaron el contrato congelado;
+- se reconstruyeron sets de transformaciones accesibles antes y después de intervenciones;
+- los controles negativos no produjeron cambios espurios en `ΔT_acc`;
+- se reconstruyeron baselines convencionales independientes;
+- se representó propagación sintética C01 → C03 y C03 → C05;
+- las trayectorias se limitaron a transformaciones admisibles;
+- las tres comparaciones locales se clasificaron como **EQUIVALENT_REPRESENTATION**.
+
+### 8.3 Interpretación correcta
+
+El TSTC v004 aporta evidencia metodológica acotada de que un contrato de traducción analítica puede ejecutarse en tres fixtures sintéticos heterogéneos y explicitar cambios locales y propagación entre dominios.
+
+No demuestra:
+
+- causalidad empírica;
+- superioridad explicativa de TGCV;
+- validez transversal en sistemas reales;
+- generalidad;
+- valor o ROI;
+- preparación para despliegue industrial.
+
+La propagación fue producida por reglas sintéticas declaradas, no por causalidad empírica.
+
+La evidencia se registró como contribución metodológica acotada, principalmente relacionada con C16. No se actualizó ningún estado de claim. La web puede presentar el demostrador como artefacto experimental de método, explicando claramente que es sintético.
+
+---
+
+## 9. Casos de uso y activos en 05_ASSETS/Business_Translation
+
+### 9.1 Ubicación y naturaleza
+
+La carpeta existente en GitHub se denomina exactamente:
+
+`05_ASSETS/Business_Translation/`
+
+No existe en la estructura consultada una subcarpeta llamada simplemente `business`. La carpeta contiene una línea de traducción hacia aplicaciones y contextos ejecutivos. No debe confundirse con el núcleo ni con la identidad general del ecosistema.
+
+### 9.2 Activos principales recuperados
+
+**TGCV Executive Business Bridge 001**
+
+Traduce TGCV a contextos de transformación organizativa, innovación de productos y servicios, operaciones, evolución tecnológica/IA y decisiones de inversión. Es un puente de transferencia a lenguaje ejecutivo, no la definición del ecosistema.
+
+**VALUE Fictional Case Clinic 001 v1.1**
+
+Caso enteramente ficticio de una clínica ambulatoria y su proceso de acceso a citas. Modela pacientes, recepción, administración, profesionales sanitarios, coordinación, sistemas de información y dirección. Ilustra cómo una decisión operativa puede explorarse con actores, recursos, reglas, dependencias, hipótesis, alternativas y evidencia.
+
+Las cifras y resultados del caso son simulados. El documento declara explícitamente que no representan datos reales, no prueban causalidad y no validan TGCV ni VALUE en una clínica real.
+
+**VALUE Discovery Sprint v0.1**
+
+Diseño de servicio piloto para convertir una oportunidad inicialmente difusa en una comprensión compartida del sistema, hipótesis y opciones explícitas, evidencia suficiente para una decisión proporcionada y un siguiente paso trazable. El propio documento lo mantiene pendiente de prueba en un caso real. No promete implantar una solución ni demostrar valor realizado en cinco jornadas.
+
+**Otros activos de la carpeta**
+
+La carpeta contiene también artefactos VALUE A1–A8, revisiones de coherencia y usabilidad, especificaciones de artefactos, lifecycle y documentos de revisión del caso de clínica. Son materiales de metodología y traducción de valor, con estados y límites propios.
+
+### 9.3 Cómo integrar esta línea en la web
+
+Debe quedar disponible como una aplicación o línea de transferencia posible, no como el centro del relato.
+
+La clínica es un caso pedagógico ficticio. VALUE Discovery Sprint es un diseño piloto pendiente de prueba real. Ninguno demuestra por sí mismo la validez científica de TGCV ni debe dominar la arquitectura web.
+
+---
+
+## 10. Arquitectura de sistema más fiel para el ecosistema
+
+La arquitectura recomendada organiza el ecosistema alrededor de la investigación y la ingeniería de sistemas transformacionales.
+
+### 10.1 Capas de identidad y actividad
+
+1. **Research**  
+   TGCV, dinámica de espacios de transformación, pensamiento sistémico, sistemas complejos y adaptativos, fundamentos y programa experimental.
+
+2. **Systems Engineering**  
+   Modelado, arquitectura, análisis de requisitos y dependencias, representación de restricciones, integración de dominios y diseño de sistemas.
+
+3. **Transformational Intelligence**  
+   Métodos y capacidades para razonar sobre espacios de transformación, navegar alternativas, adaptarse a cambios y orientar trayectorias.
+
+4. **Labs & Simulation**  
+   Simuladores, gemelos digitales, bancos de prueba, escenarios, prototipos, experimentos sintéticos y demostradores controlados.
+
+5. **Applied Systems**  
+   Aplicaciones híbridas en sistemas distribuidos, redes, IA agéntica, industria, energía, movilidad, salud, servicios públicos y sistemas sociotécnicos.
+
+6. **Technology & Tools**  
+   Software, conectores, motores de análisis, visualización, componentes reutilizables y herramientas experimentales.
+
+7. **Open Playground**  
+   Entornos abiertos para explorar sistemas, transformaciones, escenarios y trayectorias, con límites y procedencia visibles.
+
+8. **Community & Learning**  
+   Comunidad interdisciplinar, aprendizaje, documentación, intercambio de modelos, prácticas y resultados.
+
+### 10.2 Relación entre capas
+
+No son ocho negocios separados ni una secuencia comercial. Forman un sistema de capacidades:
+
+- Research genera y contrasta fundamentos.
+- Systems Engineering traduce problemas a representaciones y arquitecturas tratables.
+- Transformational Intelligence desarrolla el razonamiento sobre posibilidades y trayectorias.
+- Labs & Simulation permite construir y probar artefactos.
+- Applied Systems conecta los métodos con problemas concretos.
+- Technology & Tools convierte aprendizajes y métodos en componentes reutilizables cuando resulta justificado.
+- Open Playground hace explorables y compartibles ciertos artefactos.
+- Community & Learning amplía la participación, el conocimiento y la capacidad colectiva.
+
+Las áreas pueden retroalimentarse, pero cada afirmación mantiene su estado: hipótesis, diseño, prototipo, ejecución, auditoría, evidencia o despliegue.
+
+### 10.3 Arquitectura técnica de referencia — hipótesis de transferencia
+
+La estrategia Application-Fit mantuvo dos hipótesis de implementación, ninguna establecida como producto:
+
+**A. TGCV Foundations Core + domain connectors**
+
+`Domain system → domain connector → TGCV Foundations → analysis / decision interface → domain system`
+
+El núcleo reutilizable preservaría distinciones entre estado, transformaciones candidatas, accesibilidad, `T_acc`, `ΔT_acc`, Reach, Trajectory, Outcome y Value. Los conectores traducirían representaciones propias de cada dominio sin borrar su semántica nativa.
+
+**B. Bespoke implementation**
+
+`Client/system context → setup + domain/multidomain translation protocol → domain-specific implementation → controlled deployment`
+
+Esta vía puede ser más adecuada cuando una arquitectura reutilizable todavía no está justificada o cuando los dominios requieren traducciones muy distintas.
+
+Ambas son hipótesis de arquitectura y transferencia; no deben describirse como productos ya disponibles.
+
+---
+
+## 11. Arquitectura de la futura web
+
+La web debe expresar el ecosistema y facilitar la exploración. No debe parecer una web de consultoría de negocio ni una página de venta de IA genérica.
+
+### 11.1 Principio editorial
+
+La narrativa debe ir de lo fundamental a lo aplicado:
+
+**Systems → Transformations → Transformation-Space Dynamics → Transformational Intelligence → Engineering & Experimentation → Applications → Community**
+
+El valor puede aparecer como capa posterior de evaluación y orientación, no como promesa inicial.
+
+### 11.2 Estructura de navegación recomendada
+
+| Sección web | Contenido y función |
+|---|---|
+| **Home** | Qué investigamos, por qué importa y cómo se organiza el ecosistema |
+| **Research** | TGCV, transformación, accesibilidad, dinámica, sistemas complejos y programa experimental |
+| **Systems Engineering** | Modelado, arquitectura, sistemas distribuidos, integración y diseño |
+| **Transformational Intelligence** | Concepto, capacidades funcionales, métodos y límites actuales |
+| **Labs & Simulation** | TSTC, simuladores, gemelos digitales, demostradores y experimentos |
+| **Applied Systems** | Casos multidominio, fichas de aplicación y Application-Fit |
+| **Technology & Tools** | Componentes, conectores, software, visualizaciones y herramientas |
+| **Open Playground** | Experiencias interactivas y escenarios explorables |
+| **Community & Learning** | Participación, documentación, recursos y aprendizaje |
+| **About / Governance** | Propósito, principios, equipo/colaboración, transparencia y relación con TGCV |
+
+### 11.3 Relato recomendado para Home
+
+**Titular de trabajo:**
+
+*Understanding and engineering how systems transform.*
+
+**Subtítulo de trabajo:**
+
+*Research, systems engineering and transformational intelligence for exploring how systems change, what becomes possible, and how future trajectories unfold.*
+
+**Explicación breve:**
+
+Los sistemas no solo cambian de estado. También cambia lo que pueden hacer. Investigamos cómo se forman, restringen y transforman esos espacios de posibilidades, y desarrollamos modelos, métodos y herramientas para comprender y explorar sus consecuencias.
+
+Estos textos son propuestas editoriales iniciales, no naming ni claims científicos definitivos.
+
+### 11.4 Experiencia de exploración
+
+La web debería permitir comprender el enfoque mediante ejemplos y artefactos:
+
+- visualizar un sistema y sus subsistemas;
+- inspeccionar transformaciones candidatas;
+- observar condiciones de admisibilidad;
+- comparar `T_acc` antes y después de una transición;
+- recorrer trayectorias admisibles;
+- observar propagación entre dominios;
+- comparar una representación TGCV con el baseline del dominio;
+- consultar supuestos, datos, límites y procedencia.
+
+El Open Playground puede evolucionar hacia un espacio de simulación y exploración de sistemas. Cada demostración debe declarar si es sintética, ilustrativa, experimental o empírica.
+
+---
+
+## 12. Principios de diseño y gobernanza del ecosistema
+
+1. **Scientific integrity:** no presentar hipótesis como hechos ni prototipos como validación.
+2. **Domain respect:** conservar la semántica y los modelos nativos de cada disciplina.
+3. **Explicit boundaries:** definir sistema, contexto, unidad y límite temporal de cada análisis.
+4. **Traceability:** mantener procedencia de datos, reglas, modelos, versiones y resultados.
+5. **Reproducibility:** favorecer especificaciones y artefactos que puedan ser examinados y reproducidos.
+6. **Comparative discipline:** contrastar con baselines convencionales fuertes y con información comparable.
+7. **Modularity:** desarrollar conectores y componentes reutilizables sin forzar una ontología común donde no corresponda.
+8. **Open exploration:** compartir conocimiento y artefactos con límites claros de uso y evidencia.
+9. **Evidence separation:** distinguir evidencia científica, aplicabilidad, despliegue y evaluación de valor.
+10. **No automatic value claim:** una transformación accesible o una trayectoria nueva no implica automáticamente valor.
+
+### 12.1 Cuatro rutas de maduración independientes
+
+La estrategia de transferencia distingue cuatro preguntas:
+
+- **Scientific:** ¿está apoyada una afirmación TGCV por evidencia identificable y reproducible? Ruta SIP y gobernanza científica.
+- **Applicability:** ¿puede instanciarse y utilizarse de manera significativa en el problema concreto? Ruta Applied Demonstration.
+- **Deployment / Transfer:** ¿puede operar en un entorno técnico u organizativo real? Ruta piloto e integración.
+- **Value:** ¿produce valor medible bajo un marco de valoración especificado independientemente? Ruta de evaluación de valor.
+
+Una demo no es evidencia científica automáticamente; evidencia científica no es despliegue; despliegue no es valor; valor no redefine retrospectivamente el Core.
+
+---
+
+## 13. Qué debe evitar la web
+
+- Reducir TGCV a consultoría, innovación empresarial o creación de valor económico.
+- Presentar Transformational Intelligence como sinónimo de IA.
+- Presentar la capacidad transversal como universalmente demostrada.
+- Afirmar superioridad frente a modelos de ingeniería existentes.
+- Presentar el TSTC sintético como experimento empírico.
+- Usar el caso ficticio de clínica como caso real o como prueba de eficacia.
+- Presentar VALUE Discovery Sprint como servicio validado o como corazón del ecosistema.
+- Confundir posibilidad, accesibilidad, ejecución, outcome y valor.
+- Convertir la arquitectura provisional de producto en una plataforma ya existente.
+- Presentar la propuesta de formalización ΩT v0.3 como Core congelado.
+- Usar claims comerciales que excedan los estados de evidencia de GitHub.
+
+---
+
+## 14. Fuentes internas y trazabilidad
+
+Este documento consolida principalmente los siguientes artefactos de GitHub `main`, consultados el 23-11-2026.
+
+### Gobernanza y estado
+
+- [00_GOVERNANCE/README.md](../00_GOVERNANCE/README.md)
+- [STATUS.md](../STATUS.md)
+- [TGCV Transformational Dynamics & Intelligence Manifesto 001](../00_GOVERNANCE/TGCV_TRANSFORMATIONAL_DYNAMICS_INTELLIGENCE_MANIFESTO_001.md)
+- [Cross-Domain End-to-End Accessibility → Execution → Outcome / Value Map 001](../00_GOVERNANCE/SIP/TGCV_CROSS_DOMAIN_END_TO_END_ACCESSIBILITY_OUTCOME_VALUE_MAP_001.md)
+- [Cross-Domain Map Evaluation and Persistence Decision 001](../00_GOVERNANCE/SIP/TGCV_CROSS_DOMAIN_MAP_EVALUATION_AND_PERSISTENCE_DECISION_001.md)
+
+### Application-Fit y transferencia
+
+- [Application-Fit Brainstorming Record 001](../00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_BRAINSTORMING_RECORD_001.md)
+- [Application-Fit Brainstorming Record 002](../00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_BRAINSTORMING_RECORD_002.md)
+- [Application-Fit Brainstorming Record 003](../00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_BRAINSTORMING_RECORD_003.md)
+- [Application-Fit and Transfer Strategy 003](../00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_TRANSFER_STRATEGY_003.md)
+- [WP2 Candidate Register 001](../00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_CANDIDATE_REGISTER_001.md)
+- [WP2 Deep-Screening 001](../00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_DEEP_SCREENING_001.md)
+- [WP2 Cross-Case Synthesis C01/C03/C04/C05/C08 001](../00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_CROSS_CASE_SYNTHESIS_C01_C03_C04_C05_C08_001.md)
+- [WP2 Cross-Case Discrimination Matrix 001](../00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_CROSS_CASE_DISCRIMINATION_MATRIX_001.md)
+- [WP2 TSTC Evidence-to-Claim Propagation 001](../00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_TSTC_EVIDENCE_TO_CLAIM_PROPAGATION_001.md)
+- [WP2 TSTC Post-Execution Audit 002](../00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_TSTC_POST_EXECUTION_AUDIT_002.md)
+
+### Arquitectura y activos de transferencia
+
+- [Transformational Dynamics Formalization Proposal v0.3](../01_CORE/architecture/TGCV_TRANSFORMATIONAL_DYNAMICS_FORMALIZATION_PROPOSAL_v0.3.md) — borrador no canónico.
+- [05_ASSETS README](../05_ASSETS/README.md)
+- [TGCV Executive Business Bridge 001](../05_ASSETS/Business_Translation/TGCV_EXECUTIVE_BUSINESS_BRIDGE_001.md)
+- [VALUE Fictional Case Clinic 001 v1.1](../05_ASSETS/Business_Translation/VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md)
+- [VALUE Discovery Sprint v0.1](../05_ASSETS/Business_Translation/VALUE_DISCOVERY_SPRINT_v0.1.md)
+
+---
+
+## 15. Decisiones y cuestiones abiertas para el desarrollo web
+
+Este documento fija una orientación estratégica de trabajo, no todas las decisiones de diseño.
+
+Quedan por desarrollar:
+
+1. identidad de marca y naming compatibles con el territorio de systems thinking, systems engineering y transformational intelligence;
+2. definición de audiencias prioritarias: investigadores, ingenieros, desarrolladores, organizaciones técnicas, instituciones, comunidades interdisciplinarias;
+3. arquitectura de contenidos y profundidad de cada sección;
+4. diseño de la Home y narrativa visual;
+5. política de publicación de experimentos, prototipos y resultados;
+6. selección de demostradores aptos para Open Playground;
+7. definición de qué software o herramientas son públicos, experimentales o internos;
+8. condiciones de participación y contribución comunitaria;
+9. relación entre TGCV como programa de investigación y la identidad del ecosistema que lo impulsa;
+10. estrategia de despliegue y evolución técnica de la web.
+
+### 15.1 Criterio para futuras decisiones de naming
+
+El nombre paraguas debe poder alojar naturalmente investigación, ingeniería de sistemas, inteligencia transformacional, laboratorios, simulación, herramientas, aplicaciones híbridas, playground y comunidad.
+
+No debe quedar semánticamente restringido a VALUE, consultoría o una industria concreta. Los candidatos VALCIAR, VALEME y VALCON proceden de exploraciones anteriores centradas en construcción/emergencia de valor; no son finalistas del territorio estratégico aquí definido. VROTAR y GENERATIVITY tampoco se adoptan por este documento como marca final.
+
+---
+
+## 16. Disposición final
+
+La web debe presentar TGCV y su ecosistema como un espacio interdisciplinar de **investigación, pensamiento sistémico, ingeniería de sistemas e inteligencia transformacional**, dedicado a comprender y explorar cómo cambian los sistemas y cómo evolucionan sus espacios de transformación.
+
+El hilo conductor es:
+
+`Systems → Transformation Spaces → Transformation-Space Dynamics → Transformational Intelligence → Systems Engineering & Experimentation → Applied Systems`
+
+Los outcomes y el valor forman parte de las consecuencias y evaluaciones posteriores, no de una promesa automática ni de la definición primaria del sistema.
+
+**Orientación maestra:** comprender y diseñar cómo los sistemas se transforman, qué nuevas posibilidades se vuelven accesibles y cómo esas posibilidades configuran trayectorias futuras.
