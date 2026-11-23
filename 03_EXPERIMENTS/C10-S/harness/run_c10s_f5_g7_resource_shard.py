@@ -5,6 +5,8 @@ import argparse
 import hashlib
 import json
 import time
+from datetime import datetime, timezone
+import resource
 from pathlib import Path
 
 import run_c10s_f5_g7_tiera_calibration as g7
@@ -20,6 +22,9 @@ def execute(cell_id: str, replicate_start: int, replicate_count: int, output: Pa
 
     spec = next(item for item in g7.f5_specs() if item.cell_id == cell_id)
     observations = []
+    shard_started_at = datetime.now(timezone.utc).isoformat()
+    cpu_started = time.process_time()
+    rss_before = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     original = g7.compare_dataset
 
     def timed_compare(*args, **kwargs):
@@ -43,6 +48,9 @@ def execute(cell_id: str, replicate_start: int, replicate_count: int, output: Pa
     finally:
         g7.compare_dataset = original
     elapsed = time.perf_counter() - started
+    cpu_elapsed = time.process_time() - cpu_started
+    peak_rss = max(rss_before, resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+    shard_completed_at = datetime.now(timezone.utc).isoformat()
 
     expected_ids = [
         f"{g7.PROTOCOL_VERSION}:{g7.RESOURCE_NAMESPACE}:{cell_id}:{i:06d}"
@@ -64,6 +72,11 @@ def execute(cell_id: str, replicate_start: int, replicate_count: int, output: Pa
         "replicate_count": replicate_count,
         "datasets_completed": result["datasets_completed"],
         "wall_elapsed_seconds": elapsed,
+        "process_cpu_seconds": cpu_elapsed,
+        "peak_rss_kib": peak_rss,
+        "shard_started_at_utc": shard_started_at,
+        "shard_completed_at_utc": shard_completed_at,
+        "source_commit": __import__("os").environ.get("GITHUB_SHA", "LOCAL_UNBOUND"),
         "dataset_timings": observations,
         "coverage_adjudication": "NOT_PERFORMED",
         "retained_scope": "TIMING_AND_REPLICA_IDENTITY_ONLY",
