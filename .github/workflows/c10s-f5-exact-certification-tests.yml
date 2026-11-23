@@ -51,10 +51,10 @@ jobs:
             c10s_f5_beta_binomial_mcse_profile.py test_c10s_f5_beta_binomial_mcse_profile.py \
             c10s_fitted_beta_binomial_bootstrap.py test_c10s_fitted_beta_binomial_bootstrap.py \
             c10s_nested_mr_comparative_inference_engine.py test_c10s_nested_mr_comparative_inference_engine.py \
-            run_c10s_f5_g7_tiera_calibration.py run_c10s_f5_g7_resource_shard.py aggregate_c10s_f5_g7_resource_shards.py test_c10s_f5_g7_resource_shards.py c10s_f5_g7_shard_execution.py \
+            run_c10s_f5_g7_tiera_calibration.py run_c10s_f5_g7_resource_shard.py aggregate_c10s_f5_g7_resource_shards.py create_c10s_f5_g7_resource_profile_manifest.py test_c10s_f5_g7_resource_shards.py c10s_f5_g7_shard_execution.py \
             test_c10s_f5_g7_shard_execution.py aggregate_c10s_f5_g7_tiera_shards.py \
             test_c10s_f5_g7_tiera_calibration.py test_c10s_f5_g7_tiera_authorization.py \
-            profile_c10s_f5_g7_resource_preflight_parallel.py validate_c10s_f5_g7_resource_profile.py \
+            profile_c10s_f5_g7_resource_preflight_parallel.py validate_c10s_f5_g7_resource_profile.py create_c10s_f5_g7_resource_profile_manifest.py \
             validate_c10s_f5_g7_tiera_authorization.py execute_c10s_f5_g7_tiera_shard.py \
             test_c10s_f5_g7_resource_profile.py
 
