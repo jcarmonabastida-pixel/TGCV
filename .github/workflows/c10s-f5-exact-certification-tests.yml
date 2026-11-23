@@ -80,6 +80,14 @@ jobs:
             selection: all
             test_names: ''
             partition: fitted-bootstrap-regression
+          - module: test_c10s_f5_g7_resource_profile
+            selection: all
+            test_names: ''
+            partition: g7-resource-profile-regression
+          - module: test_c10s_f5_g7_tiera_authorization
+            selection: all
+            test_names: ''
+            partition: g7-authorization-regression
     steps:
       - name: Checkout immutable research snapshot
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
