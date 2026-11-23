@@ -150,7 +150,7 @@ Label these as **candidate application contexts** unless a case has been qualifi
 
 **Section title:** Explore the transformation space
 
-Primary invitation: enter the guided interactive example.
+Primary invitation: enter the guided Explore narrative, supported by a clear static explanatory diagram.
 
 Secondary invitations:
 - Explore the research.
@@ -193,8 +193,8 @@ Avoid leading with “Book a consultation”, “Get a business assessment” or
 │ Candidate cases with mechanism-led explanations         │
 ├──────────────────────────────────────────────────────────┤
 │ EXPLORE                                                  │
-│ Guided interactive example / current demonstrator        │
-│ [Enter the Playground]                                   │
+│ Guided explanation / available demonstrator (if ready)   │
+│ [Explore the transformation space]                       │
 ├──────────────────────────────────────────────────────────┤
 │ FOOTER                                                   │
 │ Research sources | Governance | Community | Contact      │
@@ -203,41 +203,21 @@ Avoid leading with “Book a consultation”, “Get a business assessment” or
 
 This is a content wireframe, not a final visual layout. The actual composition should be responsive and tested on mobile and desktop.
 
-## 4. The first interactive experience
+## 4. First-release explanatory visual
 
-The Home page should offer a small interaction that makes the central idea tangible without requiring a full simulator.
+The initial Home page should use a carefully designed static diagram or a sequence of annotated visual states. Its purpose is to make the central idea tangible without creating a separate miniature simulator.
 
-### 4.1 Proposed interaction: Change the conditions, change what is possible
+The visual should show:
+- a bounded system and its relevant conditions;
+- candidate transformations;
+- which transformations are accessible under the initial conditions;
+- a change in one or more declared conditions;
+- the resulting change in accessible transformations;
+- at least two possible subsequent trajectories.
 
-Use a bounded synthetic system with:
-- a small number of components;
-- explicit resources or capabilities;
-- a few candidate transformations;
-- one or two conditions that can be changed;
-- a visible accessible/not-accessible distinction;
-- a simple successor-state and trajectory view.
+The visitor should be able to understand the visual without interacting with it. An accessible text explanation must accompany it. The visual must not imply that accessibility guarantees execution, a favourable outcome or value.
 
-Visitor flow:
-1. Inspect the initial system.
-2. See which transformations are accessible and why.
-3. Change one declared condition (for example, add a connection, resource, tool or permission).
-4. Observe which transformations become accessible, cease to be accessible or remain unchanged.
-5. Select an accessible transformation.
-6. Observe the successor state and the new set of possibilities.
-7. Compare the resulting trajectory with the initial scenario.
-
-### 4.2 Interaction safeguards
-
-- Use a synthetic model with transparent rules.
-- Make system boundaries and assumptions visible.
-- Distinguish candidate, accessible and executed transformations.
-- Show that accessibility can expand, contract or reorganise.
-- Do not equate accessibility with execution.
-- Do not infer outcome or value automatically.
-- Provide a reset and a static explanation for users who do not interact.
-- Make controls keyboard accessible and provide text alternatives.
-
-The Home interaction is an educational illustration, not a scientific experiment or validated prediction engine.
+A link to an existing demonstrator may be included only when that demonstrator is available, bounded and accurately labelled. The future Playground is a separate application and is not part of this Home implementation.
 
 ## 5. Copy principles
 
