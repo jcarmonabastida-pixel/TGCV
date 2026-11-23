@@ -1,7 +1,7 @@
 # Strategic Naming Brief — Identidad del ecosistema de potencial, transformación generativa e inteligencia transformacional
 
 **Identificador:** ECOSYSTEM-NAMING-BRIEF-002  
-**Versión:** 1.1 — Value-Oriented Generative Enabling / Enablement  
+**Versión:** 1.2 — Value-Oriented Generative Enablement  
 **Fecha:** 2026-11-23  
 **Estado:** DRAFT — criterios para investigación de nombres; no hay marca seleccionada ni autorización de registro.  
 **Documento rector:** `ECOSYSTEM_MANIFESTO_v0.2.md`  
@@ -581,3 +581,39 @@ La siguiente comprobación debe evaluar si *Generative Enablement* mantiene la i
 ### Control de cambios
 
 - **v1.1 — 2026-11-23:** se incorpora una validación lingüística preliminar basada en Cambridge y Oxford. Se distingue *enabling* (forma verbal/adjetival) de *enablement* (sustantivo de proceso). *Generative Enabling* permanece como formulación conceptual de origen, mientras *Generative Enablement* pasa a comparación; no se aprueba todavía ninguna como identidad de marca.
+
+
+## 24. Prioridad de evaluación: VALUE-ORIENTED GENERATIVE ENABLEMENT
+
+A partir de la comparación lingüística de §23, se establece como **formulación prioritaria para la siguiente evaluación conceptual**:
+
+**VALUE-ORIENTED GENERATIVE ENABLEMENT**
+
+La prioridad se debe a que *enablement* es un sustantivo inglés establecido que designa el proceso de hacer posible algo o desarrollar la capacidad para hacerlo. Como núcleo nominal, resulta más natural para nombrar un principio o proceso conceptual que *enabling* usado de forma autónoma.
+
+### 24.1 Significado que debe preservar
+
+La expresión solo será adecuada si mantiene íntegramente el significado acordado:
+
+**Desarrollar la capacidad de un sistema para hacer posibles cosas que antes no podía hacer, y convertir esas nuevas posibilidades en valor.**
+
+- **Generative Enablement:** proceso de desarrollar capacidades que hacen posibles nuevas capacidades y posibilidades.
+- **Value-Oriented:** orientación constitutiva hacia la conversión de esas nuevas posibilidades en valor contextual.
+
+No debe interpretarse como mera capacitación de personas, soporte comercial, provisión de herramientas, activación de recursos existentes o habilitación técnica de sistemas.
+
+### 24.2 Estado de decisión
+
+- **VALUE-ORIENTED GENERATIVE ENABLEMENT:** formulación prioritaria para evaluación; no aprobada definitivamente.
+- **GENERATIVE ENABLEMENT:** núcleo nominal preferente para la siguiente comprobación conceptual y lingüística.
+- **VALUE-ORIENTED GENERATIVE ENABLING:** formulación de origen conservada como antecedente conceptual; su estructura es menos natural como sintagma nominal autónomo.
+
+Esta prioridad no implica selección de marca, distintividad comercial, disponibilidad de dominios ni clearance marcario. Esos filtros permanecen pendientes.
+
+### 24.3 Próxima comprobación
+
+Comprobar si *Generative Enablement* comunica por sí mismo el desarrollo generativo de capacidades —y no solo la facilitación de capacidades preexistentes— y si la expresión completa *Value-Oriented Generative Enablement* conserva naturalidad, claridad y amplitud para un ecosistema científico, aplicado y comunitario.
+
+### Control de cambios
+
+- **v1.2 — 2026-11-23:** se establece *VALUE-ORIENTED GENERATIVE ENABLEMENT* como formulación prioritaria para evaluación, a partir de la mayor naturalidad nominal de *enablement*. Se preserva el significado integrado, se explicitan las interpretaciones que deben excluirse y se mantiene el estado provisional, sin seleccionar marca ni afirmar viabilidad comercial o jurídica.
