@@ -114,6 +114,33 @@ def aggregate(shard_dir: Path, output: Path) -> dict:
             for row in json.loads(shard_path.read_text(encoding="utf-8")).get("dataset_timings", [])
             if row.get("dataset_id", "").split(":")[-2] == cell
         ]
+    p95_max = max(
+        sorted(all_timings[cell])[max(0, math.ceil(0.95 * len(all_timings[cell])) - 1)]
+        for cell in g7.EXPECTED_CELLS
+    )
+    p99_max = max(
+        sorted(all_timings[cell])[max(0, math.ceil(0.99 * len(all_timings[cell])) - 1)]
+        for cell in g7.EXPECTED_CELLS
+    )
+    projections = []
+    for shard_size in (25, 40, 50, 100):
+        shards_per_cell = math.ceil(g7.K_PER_CELL / shard_size)
+        jobs_per_phase = len(g7.EXPECTED_CELLS) * shards_per_cell
+        waves = math.ceil(jobs_per_phase / 20)
+        p95_job = shard_size * p95_max
+        p99_job = shard_size * p99_max
+        projections.append({
+            "datasets_per_shard": shard_size,
+            "shards_per_cell": shards_per_cell,
+            "jobs_per_phase": jobs_per_phase,
+            "max_parallel_jobs": 20,
+            "conservative_waves_per_phase": waves,
+            "p95_shard_runtime_seconds": p95_job,
+            "p99_shard_runtime_seconds": p99_job,
+            "primary_plus_replay_p95_wall_seconds": 2 * waves * p95_job,
+            "primary_plus_replay_p99_wall_seconds": 2 * waves * p99_job,
+            "single_shard_under_150_minutes_at_p99": p99_job <= 9000,
+        })
     payload = {
         "schema": "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-002",
         "scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT",
@@ -130,7 +157,10 @@ def aggregate(shard_dir: Path, output: Path) -> dict:
         "cells": cells,
         "dataset_timings": dataset_timings,
         "shard_hashes": sorted(shard_hashes, key=lambda x: x["file"]),
+        "conservative_shard_projections": projections,
+        "seed_separation_validation": "PASS",
         "coverage_adjudication": "NOT_PERFORMED",
+        "interpretation": "Resource-only timing and shard scheduling evidence. No certificate status, interval emission, coverage outcome or method-selection result is inspected or retained. No holdout or calibration claim.",
     }
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(payload, sort_keys=True, indent=2, allow_nan=False)+"\n", encoding="utf-8")
