@@ -151,3 +151,42 @@ jobs:
           path: ${{ runner.temp }}/c10s-f5-g7-resource-profile.json
           if-no-files-found: error
           retention-days: 90
+
+  finalize-profile-manifest:
+    name: Bind profile to immutable run and artifact
+    needs: aggregate-resource-profile
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout immutable profiling source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Download consolidated resource profile
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: c10s-f5-g7-resource-profile-v1-1
+          path: ${{ runner.temp }}/resource-profile
+      - name: Create schema-002 manifest with archive and source digests
+        working-directory: .
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python 03_EXPERIMENTS/C10-S/harness/create_c10s_f5_g7_resource_profile_manifest.py \
+            --profile "$RUNNER_TEMP/resource-profile/c10s-f5-g7-resource-profile.json" \
+            --output "$RUNNER_TEMP/resource-profile/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_002.json"
+      - name: Upload immutable profile and manifest bundle
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-resource-profile-v1-1-validated-bundle
+          path: ${{ runner.temp }}/resource-profile/
+          if-no-files-found: error
+          retention-days: 90
