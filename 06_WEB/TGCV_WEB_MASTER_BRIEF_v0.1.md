@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 0.2  
+**Versión:** 0.3  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -859,3 +859,25 @@ Antes de considerar lista la web germen para publicación, comprobar que:
 - Se establece una secuencia de experiencia centrada en el visitante: reconocimiento, insight, comprensión, exploración y participación.
 - Se excluyen expresamente elementos propios de la identidad y del modelo comercial de AFLUYA.
 - Se preservan la separación entre estados de desarrollo y estados de evidencia, y la gobernanza científica de TGCV.
+
+## 19. Primera versión publicable: Content Blueprint
+
+El documento `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md` operacionaliza la arquitectura y la experiencia Home para definir el contenido mínimo de la web germen.
+
+Establece:
+- ocho destinos iniciales, con prioridades y condiciones de publicación;
+- contenido requerido y pregunta del visitante para cada página;
+- inventario de activos TGCV reutilizables y jerarquía de fuentes;
+- controles de publicación y de afirmaciones científicas;
+- backlog P0/P1/P2;
+- puertas editoriales de fidelidad científica, evidencia/procedencia, comprensión, publicación y disciplina de alcance;
+- prueba cualitativa del Efecto Ajá;
+- definición de aceptación de Germinal Website v1.
+
+La primera publicación debe ser útil sin Playground, sin simulador interactivo nuevo, sin plataforma comunitaria y sin oferta comercial. Juguete Colectivo solo podrá enlazarse tras verificar versión, distribución, límites y publicación. Los casos de Application-Fit seguirán identificados como candidatos exploratorios.
+
+El Blueprint es un plan editorial estratégico; no autoriza publicar automáticamente los activos fuente ni altera la gobernanza científica.
+
+### v0.3 — 2026-11-24
+- Se incorpora la referencia normativa de planificación editorial al Content Blueprint v0.1.
+- Se fija el alcance mínimo de la web germen y sus controles de publicación.
