@@ -202,6 +202,16 @@ class RationalScorePolynomialTests(unittest.TestCase):
         ])
         self.assertTrue(bernstein_sign_excludes_zero(coefficients))
 
+    def test_zero_univariate_restriction_is_not_a_strict_sign_certificate(self):
+        numerators, denominator = _univariate_bernstein_numerators(
+            {0: Fraction(0), 1: Fraction(0)},
+            Fraction(1, 4), Fraction(3, 4),
+        )
+        self.assertEqual(numerators, (Fraction(0),))
+        self.assertEqual(denominator, 1)
+        self.assertFalse(all(value > 0 for value in numerators))
+        self.assertFalse(all(value < 0 for value in numerators))
+
     def test_univariate_bernstein_cached_basis_matches_tensor_transform(self):
         lower = Fraction(1, 7)
         upper = Fraction(6, 7)
