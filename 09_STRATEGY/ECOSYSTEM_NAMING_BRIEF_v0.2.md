@@ -1,7 +1,7 @@
 # Strategic Naming Brief — Identidad del ecosistema de potencial, transformación generativa e inteligencia transformacional
 
 **Identificador:** ECOSYSTEM-NAMING-BRIEF-002  
-**Versión:** 0.4 — integración conceptual y naming de identidad propia  
+**Versión:** 0.7 — capacidad generativa orientada a valor  
 **Fecha:** 2026-11-23  
 **Estado:** DRAFT — criterios para investigación de nombres; no hay marca seleccionada ni autorización de registro.  
 **Documento rector:** `ECOSYSTEM_MANIFESTO_v0.2.md`  
@@ -362,3 +362,50 @@ No se selecciona todavía ningún nombre ni raíz verbal. Esta formulación esta
 
 ### Control de cambios
 - **v0.6 — 2026-11-23:** se incorpora como núcleo conceptual de naming «la capacidad generativa de hacer emerger valor», distinguiendo expresamente revelar valor latente y generar valor nuevo. Se precisa el papel de la transformación y se actualiza la pregunta generadora, sin seleccionar candidato ni afirmar causalidad científica demostrada.
+
+
+## 19. Capacidad generativa orientada a valor: ampliar lo que un sistema puede llegar a hacer
+
+La conversación de naming ha precisado el núcleo conceptual más allá de la formulación «hacer emerger valor». La identidad debe expresar no solo la generación de valor, sino el desarrollo de las capacidades que permiten generar nuevas posibilidades valiosas en el futuro.
+
+### 19.1 Formulación acordada
+
+**Ampliar inteligentemente la capacidad de un sistema para hacer posibles nuevas formas de valor.**
+
+La dirección conceptual validada por el usuario es la segunda de estas alternativas: no basta con generar valor continuamente; lo distintivo es **desarrollar y multiplicar las condiciones que permiten generar valor**.
+
+Esto implica que un sistema puede transformarse y adquirir capacidades nuevas; esas capacidades amplían las posibilidades que puede realizar y, a su vez, pueden habilitar el desarrollo de capacidades posteriores. La recursividad describe esta realimentación generativa, sin presuponer que sea ilimitada ni automática.
+
+### 19.2 Cuatro dimensiones inseparables
+
+1. **Transformación:** modificar las capacidades del sistema y lo que está en condiciones de hacer.
+2. **Generatividad:** abrir posibilidades que antes no existían o no eran realizables.
+3. **Orientación:** distinguir y desarrollar posibilidades pertinentes para la construcción de valor, no multiplicar posibilidades indiscriminadamente.
+4. **Recursividad:** desarrollar nuevas capacidades que permitan continuar generando posibilidades valiosas.
+
+La expansión buscada es, por tanto, **orientada y selectiva hacia posibilidades que puedan construir valor**, no expansión por expansión.
+
+### 19.3 Distinción conceptual
+
+- **Generar valor:** producir algo valioso.
+- **Generar capacidad:** hacer posible algo que antes no lo era.
+- **Generar capacidad generativa:** ampliar lo que el sistema podrá llegar a hacer posible en el futuro.
+
+El rasgo diferencial del proyecto se sitúa en este tercer nivel: desarrollar la capacidad de ampliar las posibilidades futuras, con orientación a valor.
+
+### 19.4 Territorio verbal de exploración
+
+Se incorpora como pista conceptual —no como nombre aprobado— la expresión **«potenciación generativa orientada a valor»**.
+
+La pregunta generadora para la siguiente fase queda formulada así:
+
+*¿Qué concepto nombra la capacidad de transformarse para ampliar inteligentemente lo que un sistema puede llegar a hacer, orientándolo hacia nuevas formas de valor?*
+
+No se selecciona todavía ningún nombre ni raíz verbal. Las propuestas futuras deberán conservar la integración de transformación, generatividad, orientación y recursividad, y seguir sometidas a los filtros lingüísticos, comerciales, digitales y marcarios de este briefing.
+
+### 19.5 Límite de interpretación
+
+Esta formulación es un principio conceptual para el posicionamiento y el naming. No afirma que la expansión de capacidades produzca necesariamente valor ni que la relación causal investigada por TGCV esté demostrada. La construcción de valor es contextual y la contribución causal permanece abierta a contraste y falsación.
+
+### Control de cambios
+- **v0.7 — 2026-11-23:** se incorpora la formulación «ampliar inteligentemente la capacidad de un sistema para hacer posibles nuevas formas de valor». Se prioriza el desarrollo recursivo de capacidades generativas, con orientación selectiva hacia posibilidades valiosas y no expansión indiscriminada. Se registran las cuatro dimensiones inseparables y la distinción entre generar valor, generar capacidad y generar capacidad generativa. No se selecciona candidato de marca.
