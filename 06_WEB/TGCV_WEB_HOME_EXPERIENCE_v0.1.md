@@ -1,0 +1,318 @@
+# TGCV — Home Experience Concept
+**Identifier:** TGCV-WEB-HOME-001  
+**Version:** 0.1  
+**Date:** 2026-11-23  
+**Status:** STRATEGIC DESIGN — WORKING CONCEPT  
+**Parent documents:**  
+- `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
+- `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`  
+**Branch:** `strategy/tgcv-web-master`  
+**Purpose:** Define the Home page's conceptual narrative, visitor experience, content hierarchy and first interactive model before visual identity and detailed UI design.  
+**Authority:** This document governs only the proposed web experience. It does not alter TGCV's scientific Core, canonical definitions, evidence status or execution authorization.
+
+---
+
+## 0. Strategic decision
+
+The Home page should introduce TGCV's intellectual and engineering territory through one compelling question:
+
+> **How does a change in a system alter what that system can do next?**
+
+This question is more distinctive and more faithful to the current research orientation than a generic promise about transformation, innovation, AI or value creation.
+
+The Home page should make the visitor intuitively understand that systems do not only change state. Their available transformations can also change. When that happens, the system's future possibilities and trajectories may change as well.
+
+The page is not a consultancy sales funnel, product launch page or institutional brochure. It is the front door to a research and systems-engineering ecosystem.
+
+## 1. First-screen experience
+
+### 1.1 Working headline
+
+**Understanding and engineering how systems transform.**
+
+### 1.2 Supporting statement
+
+**Research, systems engineering and transformational intelligence for exploring how systems change, what becomes possible, and how future trajectories unfold.**
+
+This is a working proposition, not final brand copy. It should be tested for comprehension with people from systems engineering, AI/software, complex-systems research and adjacent disciplines.
+
+### 1.3 Primary action
+
+**Explore how systems transform**
+
+This leads to the guided Explore experience, not to a sales contact form.
+
+### 1.4 Secondary actions
+
+- **Discover the research** → Research / TGCV.
+- **Explore the engineering** → Systems Engineering.
+- **See it in action** → Labs & Simulation, but only when a demonstrator is ready and its status is explicit.
+
+### 1.5 First-screen visual
+
+Use a simple, legible transformation-space illustration rather than stock photography or decorative AI imagery.
+
+The visual should show:
+- a system represented as a set of connected components or states;
+- a set of candidate transformations;
+- a boundary or condition that determines which transformations are accessible;
+- a change in conditions or system configuration;
+- a visibly altered set of accessible transformations;
+- at least two possible subsequent trajectories.
+
+The diagram must communicate a change in *what is possible next*, not merely a before/after state change.
+
+Avoid suggesting that every candidate transformation is always accessible, that every accessible transformation is executed, or that every new possibility produces value.
+
+## 2. The Home narrative
+
+The page should unfold in six narrative movements.
+
+### Movement 1 — The question
+
+**Section title:** What changes when a system changes?
+
+Short copy:
+
+A system is more than its current state. Its structure, resources, relationships, rules and environment shape the transformations it can perform. When these conditions change, the system's possibilities can change too.
+
+Purpose: introduce the distinctive question without overloading the visitor with notation.
+
+### Movement 2 — The central insight
+
+**Section title:** Systems change. Their possibilities change too.
+
+Short copy:
+
+A new resource, capability, connection, permission or constraint can open some transformations, close others or alter the paths available afterwards. Understanding these changes requires looking beyond isolated actions and states to the system's transformation space.
+
+Visual: a two-stage diagram:
+1. Initial system configuration and accessible transformations.
+2. Modified conditions and a changed accessible transformation space.
+
+The visual should include one opened path and one constrained or closed path to show that transformation-space change is not always expansion.
+
+### Movement 3 — The analytical sequence
+
+**Section title:** From conditions to future trajectories
+
+Present a simplified, explorable sequence:
+
+`SYSTEM & CONDITIONS → CANDIDATE TRANSFORMATIONS → ACCESSIBILITY → TRANSITION → NEW STATE & POSSIBILITIES → TRAJECTORY → OUTCOME`
+
+Value may be shown as a later contextual evaluation, not as an automatic result of accessibility or transformation.
+
+Each stage should reveal a concise explanation on interaction:
+- **System & conditions:** the system boundary, current configuration and context.
+- **Candidate transformations:** changes that can be considered.
+- **Accessibility:** which transformations are available under the specified conditions and decision boundary.
+- **Transition:** which transformation is actually performed.
+- **New state & possibilities:** how the system and its subsequent options change.
+- **Trajectory:** the sequence of possible or realised transitions.
+- **Outcome:** what happens and how it is evaluated.
+
+The detailed scientific chain and notation belong in Explore and Research. Home should use plain language first.
+
+### Movement 4 — The ecosystem
+
+**Section title:** Researching, modelling and engineering transformation
+
+Introduce four mutually connected pillars:
+
+1. **Research** — investigate systems, transformation spaces and their dynamics.
+2. **Systems Engineering** — model boundaries, subsystems, interfaces, dependencies and constraints.
+3. **Transformational Intelligence** — reason about, navigate and adapt to accessible transformation spaces and orient trajectories under independently specified objectives.
+4. **Labs & Applications** — build models, simulations and bounded demonstrators; explore application fit across real system domains.
+
+Do not present these as four unrelated business units. Show them as connected modes of work around a shared research object.
+
+### Movement 5 — Across domains
+
+**Section title:** One analytical question. Many kinds of systems.
+
+Show a small selection of candidate application contexts:
+- distributed networks and cloud-edge systems;
+- AI agents and tool-enabled software systems;
+- industrial and cyber-physical systems;
+- energy and mobility infrastructures;
+- socio-technical and interinstitutional systems.
+
+For each, state the transformation problem in one sentence. Examples:
+- How does a change in network configuration alter the services and paths available to dependent systems?
+- How do tools, permissions and environment state change the actions an AI agent can actually perform?
+- How do physical condition, information, resources and operator interventions reshape maintenance options?
+- How do energy constraints and mobility demand alter each other's feasible trajectories?
+- How does a transition in one institution change the next actions available to another?
+
+Label these as **candidate application contexts** unless a case has been qualified by appropriate evidence. Do not imply validated performance or generality.
+
+### Movement 6 — Invitation
+
+**Section title:** Explore the transformation space
+
+Primary invitation: enter the guided interactive example.
+
+Secondary invitations:
+- Explore the research.
+- Inspect methods and demonstrators.
+- Follow or contribute to the work.
+
+Avoid leading with “Book a consultation”, “Get a business assessment” or other consultancy-first calls to action.
+
+## 3. Recommended page wireframe
+
+```text
+┌──────────────────────────────────────────────────────────┐
+│ TGCV / identity             Explore Research Engineering  │
+│                              Intelligence Labs Community  │
+├──────────────────────────────────────────────────────────┤
+│ HERO                                                     │
+│ Understanding and engineering how systems transform.    │
+│ Supporting statement                                     │
+│ [Explore how systems transform] [Discover the research]  │
+│                                                          │
+│       Interactive transformation-space illustration    │
+├──────────────────────────────────────────────────────────┤
+│ THE QUESTION                                             │
+│ What changes when a system changes?                      │
+├──────────────────────────────────────────────────────────┤
+│ THE CENTRAL INSIGHT                                      │
+│ Systems change. Their possibilities change too.         │
+│ Initial configuration → changed accessible space         │
+├──────────────────────────────────────────────────────────┤
+│ THE ANALYTICAL SEQUENCE                                  │
+│ Conditions → Accessibility → Transition → Trajectory     │
+│ Expandable explanation of each stage                     │
+├──────────────────────────────────────────────────────────┤
+│ THE ECOSYSTEM                                            │
+│ Research | Systems Engineering                           │
+│ Transformational Intelligence | Labs & Applications     │
+├──────────────────────────────────────────────────────────┤
+│ ACROSS DOMAINS                                           │
+│ Networks | Agentic AI | Industry | Energy | Socio-technical│
+│ Candidate cases with mechanism-led explanations         │
+├──────────────────────────────────────────────────────────┤
+│ EXPLORE                                                  │
+│ Guided interactive example / current demonstrator        │
+│ [Enter the Playground]                                   │
+├──────────────────────────────────────────────────────────┤
+│ FOOTER                                                   │
+│ Research sources | Governance | Community | Contact      │
+└──────────────────────────────────────────────────────────┘
+```
+
+This is a content wireframe, not a final visual layout. The actual composition should be responsive and tested on mobile and desktop.
+
+## 4. The first interactive experience
+
+The Home page should offer a small interaction that makes the central idea tangible without requiring a full simulator.
+
+### 4.1 Proposed interaction: Change the conditions, change what is possible
+
+Use a bounded synthetic system with:
+- a small number of components;
+- explicit resources or capabilities;
+- a few candidate transformations;
+- one or two conditions that can be changed;
+- a visible accessible/not-accessible distinction;
+- a simple successor-state and trajectory view.
+
+Visitor flow:
+1. Inspect the initial system.
+2. See which transformations are accessible and why.
+3. Change one declared condition (for example, add a connection, resource, tool or permission).
+4. Observe which transformations become accessible, cease to be accessible or remain unchanged.
+5. Select an accessible transformation.
+6. Observe the successor state and the new set of possibilities.
+7. Compare the resulting trajectory with the initial scenario.
+
+### 4.2 Interaction safeguards
+
+- Use a synthetic model with transparent rules.
+- Make system boundaries and assumptions visible.
+- Distinguish candidate, accessible and executed transformations.
+- Show that accessibility can expand, contract or reorganise.
+- Do not equate accessibility with execution.
+- Do not infer outcome or value automatically.
+- Provide a reset and a static explanation for users who do not interact.
+- Make controls keyboard accessible and provide text alternatives.
+
+The Home interaction is an educational illustration, not a scientific experiment or validated prediction engine.
+
+## 5. Copy principles
+
+The Home page should:
+- start from a question about systems, not from a product or service;
+- explain the distinctive object in ordinary language;
+- introduce formal terms only after intuitive understanding;
+- use active, precise verbs: model, represent, inspect, compare, explore, simulate, engineer;
+- state uncertainty and evidence status honestly;
+- distinguish TGCV, Transformational Intelligence, systems engineering and AI.
+
+Avoid:
+- “Unlock limitless potential”;
+- “Transform your business”;
+- “Create value with AI”;
+- “The future of intelligence”;
+- “A universal engine for transformation”;
+- claims that the approach predicts or optimises all systems.
+
+## 6. Visual direction before visual identity
+
+The visual direction should be derived from the research object.
+
+Potential visual primitives:
+- nodes, components and subsystem boundaries;
+- transformation edges and admissibility conditions;
+- branching trajectories;
+- changing topology or connectivity;
+- layered system architecture;
+- coupled domains and propagation paths;
+- state and condition comparisons.
+
+The visual system should feel like a blend of systems research, engineering instrumentation and exploratory scientific software. It should not imitate a generic corporate consultancy or a generic AI startup.
+
+No final colour palette, typography, logo or brand name is selected here.
+
+## 7. Scientific and editorial controls
+
+Before publication:
+1. Verify every scientific statement against current canonical sources.
+2. Keep the current TGCV Core distinct from non-canonical proposals and adjacent frameworks.
+3. Identify synthetic material as synthetic.
+4. Do not elevate a completed technical run into scientific validation.
+5. Do not imply the candidate Application-Fit cases have been validated.
+6. Keep outcome and value models independent from accessibility measures.
+7. Link detailed definitions and evidence to versioned source artefacts.
+8. Mark working copy and provisional concepts as such during internal review.
+
+The Home page may simplify the explanation, but it must not simplify away distinctions that change the scientific meaning.
+
+## 8. Success criteria
+
+The Home experience is successful when:
+- a first-time visitor can explain the central question after a short visit;
+- a systems engineer recognises the relevance to modelling and engineering systems;
+- an AI practitioner understands that Transformational Intelligence is not simply another term for AI;
+- a researcher can find the research programme and evidence boundaries;
+- the visitor can see how changing conditions can change accessible transformations;
+- no visitor is led to believe that every newly accessible transformation is executed or valuable;
+- the site communicates an interdisciplinary research and engineering ecosystem, not a business consultancy.
+
+## 9. Open decisions
+
+The following remain open:
+- final headline and supporting copy after comprehension testing;
+- whether the Home interaction is embedded or linked to Explore;
+- which synthetic example best explains the concept;
+- exact navigation labels after user testing;
+- final visual identity, brand name and design system;
+- public display level for technical notation and formal models.
+
+## 10. Relationship to the master architecture
+
+This concept implements the Home page role in `TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md` and the identity orientation in `TGCV_WEB_MASTER_BRIEF_v0.1.md`.
+
+If the design becomes more product-led, consultancy-led or value-marketing-led than the master brief permits, revise the design. The governing idea is:
+
+**Make the visitor see that a system's future depends not only on its current state, but also on which transformations its structure and conditions make accessible.**
