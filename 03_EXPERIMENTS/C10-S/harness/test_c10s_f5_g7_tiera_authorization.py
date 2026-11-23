@@ -9,6 +9,9 @@ import validate_c10s_f5_g7_tiera_authorization as validator
 
 
 class F5G7AuthorizationTests(unittest.TestCase):
+    def test_validator_targets_v1_1_protocol(self):
+        self.assertEqual(validator.PROTOCOL_VERSION, "1.1")
+
     def test_validator_rejects_draft_authorization(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "auth.json"
