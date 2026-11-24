@@ -987,7 +987,7 @@ Controles conceptuales obligatorios:
 - ejecución no garantiza un resultado favorable;
 - resultado y valor requieren evaluación contextual;
 - trayectoria describe evolución a través de estados y transformaciones, no una etapa adicional de una cadena lineal universal;
-- en el bloque 5 debe aparecer destacada la pregunta «¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?» y su equivalente inglés;
+- en el bloque 5 debe aparecer destacada la pregunta «¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?» y su equivalente inglés «What new options become available when a system can do something that was previously beyond its reach?»;
 - TI es una capacidad/concepto integrador en desarrollo, no una disciplina consolidada ni una capacidad generalmente validada.
 
 La versión inglesa introduce el término **accessibility of transformations** para evitar confundir el concepto TGCV con accesibilidad digital o de interfaces. “Outcome” se utiliza como equivalente editorial de “resultado” en este contexto.
