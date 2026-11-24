@@ -1,7 +1,7 @@
 # TGCV — Explore Experience Specification
 
 **Identifier:** TGCV-WEB-EXPLORE-001  
-**Version:** 0.6  
+**Version:** 0.7  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21–22  
@@ -62,7 +62,7 @@ Answering this requires more than listing what a system might do. We must identi
 
 ### 3.2 Candidate does not mean accessible
 
-Return briefly to the software-configuration migration introduced on Home. The operation being considered is the same in both environments. The relevant difference is specific: the required dependency is available in environment A and missing in environment B.
+Return briefly to the software-configuration migration introduced on Home. The operation being considered is the same in both environments. For this illustrative comparison, keep the system/configuration, operation, boundary assumptions and all other specified relevant prerequisites constant; the single difference being examined is that the required dependency is available in environment A and missing in environment B. This isolates the dependency's availability as the condition associated with the accessibility contrast; it does not establish that dependency availability is the only factor that could matter in a real migration.
 
 The operation can therefore be considered a candidate transformation in both environments, while being accessible only in A under the conditions shown.
 
@@ -74,7 +74,7 @@ A **candidate transformation** is a change considered as a possibility for a sys
 
 ### 3.3 Accessibility depends on conditions and boundaries
 
-The missing dependency in environment B illustrates one way accessibility can change. When that dependency is made available in the target environment, the transformation may become accessible under the revised conditions.
+The missing dependency in environment B illustrates one way accessibility can change. When that dependency is made available in the target environment, while the other specified conditions remain as assumed in the illustration, the transformation may become accessible under the revised conditions.
 
 This conclusion is bounded: it concerns the specified system, transformation, boundary and conditions. It does not establish that the transformation has been executed, that it will succeed, or that its outcome will have value.
 
@@ -244,3 +244,5 @@ Before publication:
 
 
 - **0.6 — 2026-11-25:** Refreshes Home and Explore Copy references to their current versions after the integrated bilingual identity review.
+
+- **0.7 — 2026-11-25:** Makes the illustrative comparison's control assumptions explicit: the same operation and stated boundary/prerequisites are held constant while one dependency-availability condition differs; limits the inference to that bounded illustration.
