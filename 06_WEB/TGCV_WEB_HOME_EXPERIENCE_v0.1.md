@@ -276,7 +276,7 @@ The conceptual decisions are approved. Final design, current evidence review, as
 
 ## 16. Public identity decision (2026-11-24)
 
-The Home presents the initiative as **TGCV — Transformaciones Generativas y Construcción de Valor**, a research programme.
+The Home presents the initiative as **TGCV — Transformaciones Generativas y Construcción de Valor**, a programme of applied research and innovation.
 
 Approved Spanish descriptor:
 *Un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
@@ -285,7 +285,7 @@ Approved English rendering:
 **TGCV — Generative Transformations and Value Construction**.
 *A programme of applied research and innovation exploring how expanding the transformations available to systems may contribute to value construction.*
 
-Use “research programme” / “programa de investigación”, not “theory” / “teoría”, as the public description of TGCV. The Spanish expansion is canonical; TGCV remains the proper name in English. The identity must not imply that expanded accessibility or possibilities automatically produce execution, outcomes or value.
+Use “programme of applied research and innovation” / “programa de investigación aplicada e innovación”, not “theory” / “teoría”, as the public description of TGCV. The Spanish expansion is canonical; TGCV remains the proper name in English. The identity must not imply that expanded accessibility or possibilities automatically produce execution, outcomes or value.
 
 This is a public editorial decision only. It does not alter scientific definitions, evidence status or repository identifiers.
 
@@ -295,7 +295,7 @@ This is a public editorial decision only. It does not alter scientific definitio
 
 ## 17. Integrated Home identity review (2026-11-24)
 
-The Home uses the approved site-wide brand lockup **TGCV — Transformaciones Generativas y Construcción de Valor**. English rendering: **TGCV — Generative Transformations and Value Construction**. The full approved research-programme descriptor remains in the footer and relevant About/Research identity blocks; it must not displace the opening question or create a long institutional preamble.
+The Home uses the approved site-wide brand lockup **TGCV — Transformaciones Generativas y Construcción de Valor**. English rendering: **TGCV — Generative Transformations and Value Construction**. The full approved applied-research-and-innovation programme descriptor remains in the footer and relevant About/Research identity blocks; it must not displace the opening question or create a long institutional preamble.
 
 The required narrative order is: opening question → discovery → second question and concise answer → tangible software-configuration example → conceptual explanation → ecosystem → exploration. This corrects the earlier ordering in §4 and aligns the specification with the approved Home Copy.
 
@@ -311,3 +311,4 @@ The identity and copy are directionally coherent. Publication remains blocked pe
 ### v1.3 — 2026-11-24
 - Adopts the public descriptor “investigación aplicada e innovación” and its English equivalent.
 - Clarifies that Home's concise discovery answer should describe newly accessible transformations, not imply that accessibility means execution.
+- Updates the public positioning from research programme to applied research and innovation programme.
