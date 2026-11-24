@@ -1,7 +1,7 @@
 # TGCV — Explore Copy
 
 **Identifier:** TGCV-WEB-EXPLORE-COPY-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`  
@@ -74,16 +74,18 @@ No son afirmaciones equivalentes. Para comprender qué sucede cuando cambian las
 | Concepto | Qué significa |
 | --- | --- |
 | Transformación candidata | Una transformación contemplada como posible en el modelo o contexto de análisis. |
-| Transformación accesible | Una transformación que el sistema puede realizar bajo las condiciones consideradas. |
+| Transformación accesible | Una transformación que está al alcance del sistema bajo los límites y las condiciones consideradas; que sea accesible no significa que se haya realizado. |
 | Ejecución | La realización efectiva de esa transformación. |
 | Resultado | El estado o efecto que se produce como consecuencia de la ejecución. |
 | Valor | La relevancia o contribución de ese resultado, evaluada según un contexto y unos criterios determinados. |
 
-Una transformación puede estar disponible y no ejecutarse. Puede ejecutarse y no producir el resultado esperado. Y un resultado, incluso cuando es satisfactorio, no tiene por qué representar el mismo valor para todos los sistemas o contextos.
+Una transformación puede estar a nuestro alcance y no ejecutarse. Puede ejecutarse y no producir el resultado esperado. Y un resultado, incluso cuando es satisfactorio, no tiene por qué representar el mismo valor para todos los sistemas o contextos.
 
-Además, las transformaciones no ocurren de manera aislada. Se encadenan y condicionan lo que el sistema podrá hacer después. La trayectoria describe esa evolución a través de estados y transformaciones.
+Cuando cambia la accesibilidad, también cambia el conjunto de opciones que están al alcance del sistema en ese contexto. Esto puede abrir nuevas formas de actuar o de diseñar una intervención. Decidir si esas opciones son útiles o deseables requiere objetivos y criterios adicionales.
 
-**Ampliar las posibilidades no garantiza por sí mismo un resultado favorable ni la generación de valor.**
+Las transformaciones pueden relacionarse y condicionar lo que el sistema podrá hacer después. La trayectoria describe la evolución del sistema a través de estados y transformaciones; no presupone que todas formen una única cadena ni constituye una etapa adicional después del valor.
+
+**Que cambie lo que un sistema puede hacer no garantiza, por sí mismo, un resultado favorable ni la generación de valor.**
 
 *Orientación visual:* Cinco conceptos diferenciados y conectados: transformación candidata, accesibilidad, ejecución, resultado y valor. La trayectoria representa la evolución del sistema a través de sus estados y transformaciones, no una etapa adicional de la secuencia.
 
@@ -207,16 +209,18 @@ These are not equivalent claims. To understand what happens when a system's poss
 | Concept | Meaning |
 | --- | --- |
 | Candidate transformation | A transformation considered possible within a model or analytical context. |
-| Accessible transformation | A transformation the system can perform under the conditions being considered. |
+| Accessible transformation | A transformation within the system's reach under the boundary and conditions being considered; accessibility does not mean it has been performed. |
 | Execution | The actual performance of that transformation. |
 | Outcome | The state or effect produced as a consequence of execution. |
 | Value | The relevance or contribution of that outcome, assessed against a particular context and set of criteria. |
 
-A transformation can be accessible without being executed. It can be executed without producing the expected outcome. And even a satisfactory outcome does not necessarily represent the same value for every system or context.
+A transformation can be within a system's reach without being executed. It can be executed without producing the expected outcome. And even a satisfactory outcome does not necessarily represent the same value for every system or context.
 
-Transformations also do not occur in isolation. They can be connected, shaping what the system will be able to do next. A trajectory describes this evolution through states and transformations.
+When accessibility changes, the set of options within the system's reach in that context changes too. This may open new ways to act or design an intervention. Deciding whether those options are useful or desirable requires additional objectives and contextual criteria.
 
-**Expanding possibilities does not, by itself, guarantee a favourable outcome or the creation of value.**
+Transformations may relate to one another and shape what the system can do next. A trajectory describes the system's evolution through states and transformations; it does not assume that all transformations form one chain, nor is it an additional stage after value.
+
+**A change in what a system can do does not, by itself, guarantee a favourable outcome or the creation of value.**
 
 *Visual guidance:* Five distinct but connected concepts: candidate transformation, accessibility of transformations, execution, outcome and value. A trajectory represents the system's evolution through states and transformations, not an additional stage in the sequence.
 
@@ -299,3 +303,4 @@ The Theory of Value Construction in Generative Systems (TGCV) is part of this ec
 ## 5. Version history
 - **0.1 — 2026-11-24:** Initial bilingual Explore copy.
 - **0.2 — 2026-11-24:** Integrates the Home-to-Explore editorial hand-off, the single-dependency example, a broader candidate-transformation definition and an explicit English definition of accessibility of transformations.
+- **0.3 — 2026-11-24:** Makes the practical implication of changed accessibility explicit in both languages, clarifies accessible as “within reach” rather than performed, and refines trajectory wording so it does not imply one inevitable chain of transformations.
