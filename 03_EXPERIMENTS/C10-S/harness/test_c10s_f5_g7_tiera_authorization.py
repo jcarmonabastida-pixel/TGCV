@@ -12,6 +12,12 @@ class F5G7AuthorizationTests(unittest.TestCase):
     def test_validator_targets_v1_1_protocol(self):
         self.assertEqual(validator.PROTOCOL_VERSION, "1.1")
 
+    def test_authorization_manifest_path_matches_pinned_fixture(self):
+        self.assertEqual(
+            validator.RESOURCE_PROFILE_MANIFEST_PATH,
+            "03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json",
+        )
+
     def test_validator_rejects_draft_authorization(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "auth.json"
