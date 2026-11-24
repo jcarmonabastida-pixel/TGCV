@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 0.6  
+**Version:** 0.7  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v0.9; Information Architecture v0.8; Home Experience v0.9; Home Copy v0.6; Explore Experience v0.3.
+**Parent documents:** Web Master Brief v1.0; Information Architecture v0.9; Home Experience v0.9; Home Copy v0.6; Explore Experience v0.4; Explore Copy v0.3.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -525,10 +525,11 @@ Mandatory gates are identity coherence, clear visitor-facing message, useful and
 
 **Required conceptual controls:**
 - candidate transformation is not a synonym for accessible or feasible transformation;
-- accessibility does not imply execution;
+- accessibility means that a transformation is within reach under specified system boundaries and conditions; it does not imply execution;
+- a change in accessibility changes the options within reach, but does not determine whether an option is useful or desirable;
 - execution does not guarantee a favourable outcome;
 - value requires contextual criteria and independent evaluation;
-- trajectory describes evolution through states and transformations, not a stage appended to a universal linear chain;
+- trajectory describes evolution through states and transformations; it does not imply one inevitable chain or a stage appended to a universal linear chain;
 - factors influencing accessibility are illustrative, relational and not an exhaustive independent checklist;
 - changes in possibilities need not be initiated autonomously by the system;
 - TI remains a working capability concept under development.
@@ -556,3 +557,8 @@ Mandatory gates are identity coherence, clear visitor-facing message, useful and
 
 ### v0.6 — 2026-11-24
 - Refreshes parent references to the reconciled Home, Explore and Information Architecture versions.
+
+### v0.7 — 2026-11-24
+- Updates Explore's required content and conceptual controls following the final bilingual editorial refinement.
+- Clarifies the practical implication of changed accessibility and prevents accessibility from being read as execution or trajectory as one inevitable transformation chain.
+- Refreshes parent document versions.
