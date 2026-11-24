@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 1.0  
+**Version:** 1.1  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -593,9 +593,6 @@ Mandatory release requirements remain: coherent identity, clear message, visitor
 
 Use **Existing**, **In development** and **Exploratory** as operational content labels where useful; keep them distinct from scientific evidence labels. The Content Blueprint remains the operational content inventory. The Home Experience defines the visitor sequence; Home Copy supplies editable language. All must conform to this decision lock.
 
-### v1.0 — 2026-11-24
-- Adds the second visitor question and its concise value-oriented answer to the mandatory Home narrative, preserving Explore as the deeper conceptual destination.
-
 ### v0.4 — 2026-11-24
 - Reconciles navigation and page roles with the approved identity architecture.
 - Removes Community from first-release top-level navigation and gives Systems Thinking a transversal role.
@@ -659,3 +656,8 @@ The visitor-facing explanation should also make the practical implication clear:
 - Makes the block-5 question about newly available options an explicit content requirement in Spanish and English.
 - Requires the visible Accessibility → Execution → Outcome → Value sequence, with candidate transformation placed before it and trajectory represented across states and transformations.
 - Updates the authoritative Explore Experience and Copy versions.
+
+
+### v1.1 — 2026-11-24
+- Adds the second visitor question and its concise value-oriented answer to the mandatory Home narrative, positioned immediately after the initial discovery and before the tangible example.
+- Preserves the existing Explore block-5 question as the deeper conceptual development rather than replacing or duplicating its explanatory role.
