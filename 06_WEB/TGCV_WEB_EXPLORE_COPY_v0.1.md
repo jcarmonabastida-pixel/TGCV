@@ -1,7 +1,7 @@
 # TGCV — Explore Copy
 
 **Identifier:** TGCV-WEB-EXPLORE-COPY-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`  
@@ -13,7 +13,7 @@
 
 This document contains the Spanish and English working copy for the first Explore release. Both versions express the same concepts, claims, caveats and visitor routes. They are editorial adaptations, not line-by-line translations.
 
-Explore develops the Home insight into a guided conceptual explanation. It is written primarily for people who research, design, develop or engineer systems, while remaining understandable to interested visitors outside those fields.
+Explore starts where Home leaves off. Home introduces the idea that a system's possibilities can change; Explore deepens the explanation by examining how candidate transformations are assessed for accessibility, how that assessment depends on system boundaries and conditions, and what accessibility does—and does not—tell us. It is written primarily for people who research, design, develop or engineer systems, while remaining understandable to interested visitors outside those fields.
 
 The software-migration scenario is an illustrative editorial example. It is not an existing execution, validated application, Juguete Colectivo feature or C10-S result.
 
@@ -27,61 +27,43 @@ Comprender esta dimensión permite mirar los sistemas desde una perspectiva dife
 
 ---
 
-## 2.1 Un sistema es más que su estado actual
+## 2.1 De la intuición a una pregunta más precisa
 
-Imagina un sistema de software que funciona correctamente en su entorno actual.
+Home introduce una idea: las posibilidades de un sistema pueden cambiar cuando cambian determinadas condiciones. Explore da un paso más y plantea una pregunta:
 
-Conocemos sus componentes, sus configuraciones y las operaciones que realiza. Pero esa descripción no nos dice necesariamente todo lo que el sistema podría llegar a hacer.
+**¿Cómo sabemos si una transformación está realmente al alcance de un sistema?**
 
-Puede haber operaciones que todavía no realiza, pero que están a su alcance. Otras pueden ser técnicamente concebibles, aunque las condiciones actuales impidan llevarlas a cabo.
+Para responder, no basta con enumerar lo que un sistema podría hacer. Necesitamos identificar qué sistema estamos considerando, dónde establecemos sus límites, bajo qué condiciones lo analizamos y qué transformaciones contemplamos en ese contexto.
 
-Por eso conviene distinguir entre el estado de un sistema y el conjunto de transformaciones que puede realizar desde ese estado y bajo unas condiciones determinadas.
-
-**Mirar un sistema también significa mirar sus posibilidades.**
-
-*Orientación visual:* Un estado actual conectado con distintas transformaciones posibles: algunas accesibles, otras todavía fuera de su alcance.
+*Orientación visual:* Un esquema sencillo que muestre el sistema y sus límites, las condiciones relevantes y varias transformaciones candidatas.
 
 ---
 
-## 2.2 Una misma operación, dos entornos
+## 2.2 Ser candidata no significa ser accesible
 
-Consideremos un ejemplo sencillo: trasladar una configuración de software de un entorno a otro.
+Retomemos brevemente el ejemplo de migración de configuración presentado en Home. La operación considerada es la misma en ambos entornos. La diferencia relevante es concreta: la dependencia necesaria está disponible en el entorno A y falta en el entorno B.
 
-En el entorno A, la operación puede realizarse porque están disponibles las dependencias y los permisos necesarios.
+Por tanto, la operación puede considerarse una transformación candidata en ambos entornos, pero solo es accesible en A bajo las condiciones representadas.
 
-En el entorno B, la misma operación es técnicamente concebible, pero falta una dependencia imprescindible. En las condiciones actuales, no está realmente al alcance del sistema.
+Una **transformación candidata** es un cambio que se contempla como posibilidad para un sistema dentro de un contexto de análisis. Que se considere candidata no significa que el sistema reúna las condiciones necesarias para realizarla.
 
-La operación puede considerarse una transformación candidata en ambos entornos, pero solo es accesible en uno de ellos.
+**Una transformación puede ser candidata sin ser accesible.**
 
-Una transformación candidata es una operación que se contempla como posibilidad para un sistema. Que se considere candidata no significa que el sistema reúna todavía las condiciones necesarias para realizarla.
-
-La diferencia no está necesariamente en lo que queremos hacer, sino en las condiciones que determinan si podemos hacerlo.
-
-**Que una transformación sea concebible no significa que sea accesible.**
-
-*Orientación visual:*
-- Entorno A: transformación candidata → accesible.
-- Entorno B: transformación candidata → no accesible en las condiciones actuales.
+*Orientación visual:* Comparación breve de ambos entornos. La transformación candidata se mantiene idéntica; solo cambia la disponibilidad de la dependencia y, con ella, su condición de accesibilidad.
 
 ---
 
-## 2.3 Cambian las condiciones, cambian las posibilidades
+## 2.3 La accesibilidad depende de las condiciones y de los límites considerados
 
-¿Qué tendría que cambiar para que la operación también estuviera al alcance del entorno B?
+La dependencia ausente en el entorno B ilustra una de las formas en que puede cambiar la accesibilidad. Cuando esa dependencia se hace disponible en el entorno de destino, la transformación puede pasar a ser accesible bajo las nuevas condiciones.
 
-Podríamos incorporar la dependencia que falta, adaptar un componente o modificar una condición de configuración.
+Esta conclusión tiene un alcance delimitado: se refiere al sistema, la transformación, los límites y las condiciones que se han especificado. No demuestra que la transformación se haya ejecutado, que vaya a tener éxito ni que su resultado tenga valor.
 
-Si el cambio resuelve efectivamente la condición que impedía la operación, esta puede pasar a ser accesible.
+La accesibilidad no es una propiedad que deba interpretarse al margen del sistema y de su contexto. Se evalúa respecto de los límites y las condiciones que estamos considerando.
 
-El sistema dispone entonces de una nueva posibilidad: puede realizar una transformación que antes estaba fuera de su alcance.
+**La accesibilidad depende del sistema, de sus límites y de las condiciones consideradas.**
 
-Pero hay algo importante: que la operación sea accesible no significa que ya se haya ejecutado.
-
-**Cambiar las condiciones de un sistema puede cambiar lo que está a su alcance.**
-
-*Orientación visual:* El entorno B antes y después de incorporar la dependencia. La transformación pasa de no accesible a accesible, sin representar todavía su ejecución.
-
----
+*Orientación visual:* Estado del entorno B antes y después de hacer disponible la dependencia. Se modifica únicamente el estado de accesibilidad; no se representa ejecución ni éxito.
 
 ## 2.4 Posibilidad, ejecución, resultado y valor
 
@@ -178,61 +160,43 @@ Understanding this dimension offers a different way of looking at systems: inste
 
 ---
 
-## 3.1 A system is more than its current state
+## 3.1 From the Home insight to a more precise question
 
-Imagine a software system that works properly in its current environment.
+Home introduces the idea that a system's possibilities can change when relevant conditions change. Explore takes the next step:
 
-We know its components, configurations and operations. But that description does not necessarily tell us everything the system could potentially do.
+**How do we determine whether a transformation is actually within a system's reach?**
 
-Some operations may not be performed yet, even though they are within the system's reach. Others may be technically conceivable, while current conditions prevent the system from carrying them out.
+Answering this requires more than listing what a system might do. We need to identify the system being considered, where its boundaries are drawn, the conditions under which it is analysed, and the transformations considered within that analytical context.
 
-This is why we need to distinguish between a system's state and the set of transformations it can perform from that state under given conditions.
-
-**Understanding a system also means understanding its possibilities.**
-
-*Visual guidance:* A current state connected to several possible transformations: some accessible, others still beyond the system's reach.
+*Visual guidance:* A simple frame showing the system and its boundaries, relevant conditions and several candidate transformations.
 
 ---
 
-## 3.2 The same operation, two environments
+## 3.2 Candidate does not mean accessible
 
-Consider a simple example: transferring a software configuration from one environment to another.
+Briefly return to the software-configuration migration introduced on Home. The operation being considered is the same in both environments. The relevant difference is specific: the required dependency is available in environment A and missing in environment B.
 
-In environment A, the operation can be performed because the required dependencies and permissions are available.
+The operation can therefore be considered a candidate transformation in both environments, but it is accessible only in A under the conditions shown.
 
-In environment B, the same operation is technically conceivable, but an essential dependency is missing. Under the current conditions, the operation is not actually within the system's reach.
+A **candidate transformation** is a change considered as a possibility for a system within an analytical context. Being considered a candidate does not mean that the system meets the conditions required to carry it out.
 
-The operation can be considered a candidate transformation in both environments, but it is accessible in only one of them.
+**A transformation may be a candidate without being accessible.**
 
-A candidate transformation is an operation considered as a possibility for a system. Being considered a candidate does not mean that the system already meets the conditions required to perform it.
-
-The difference is not necessarily what we want to do, but the conditions that determine whether we can do it.
-
-**A transformation being conceivable does not mean it is accessible.**
-
-*Visual guidance:*
-- Environment A: candidate transformation → accessible.
-- Environment B: candidate transformation → not accessible under current conditions.
+*Visual guidance:* A concise comparison of the two environments. Keep the candidate transformation identical; show only the dependency condition and resulting accessibility status as different.
 
 ---
 
-## 3.3 Change the conditions, change the possibilities
+## 3.3 Accessibility depends on conditions and boundaries
 
-What would need to change for the operation to become accessible in environment B as well?
+The missing dependency in environment B illustrates one way accessibility can change. When that dependency is made available in the target environment, the transformation may become accessible under the revised conditions.
 
-We could add the missing dependency, adapt a component or modify a configuration condition.
+This conclusion is bounded: it concerns the specified system, transformation, boundary and conditions. It does not establish that the transformation has been executed, that it will succeed, or that its outcome will have value.
 
-If the change effectively resolves the condition that was preventing the operation, the transformation may become accessible.
+Here, **accessibility of transformations** refers to whether a transformation is within a system's reach under the system boundary and conditions being considered. It is not the same as digital or interface accessibility.
 
-The system then has a new possibility: it can perform a transformation that was previously beyond its reach.
+**Accessibility is assessed relative to a system, its boundary and the conditions being considered.**
 
-But one distinction is essential: an accessible operation has not necessarily been executed.
-
-**Changing a system's conditions can change what is within its reach.**
-
-*Visual guidance:* Environment B before and after the missing dependency is added. The transformation changes from inaccessible to accessible, without depicting its execution.
-
----
+*Visual guidance:* Show the target environment before and after the dependency becomes available. Mark only the accessibility status as changed; do not depict execution or success.
 
 ## 3.4 Possibility, execution, outcome and value
 
@@ -330,3 +294,8 @@ The Theory of Value Construction in Generative Systems (TGCV) is part of this ec
 - “Transformational Intelligence” remains a working capability concept under development.
 - The software-migration example is illustrative in both languages and must not be represented as an executed or validated case.
 - Any future edit to one language must trigger a corresponding conceptual check of the other.
+
+
+## 5. Version history
+- **0.1 — 2026-11-24:** Initial bilingual Explore copy.
+- **0.2 — 2026-11-24:** Integrates the Home-to-Explore editorial hand-off, the single-dependency example, a broader candidate-transformation definition and an explicit English definition of accessibility of transformations.
