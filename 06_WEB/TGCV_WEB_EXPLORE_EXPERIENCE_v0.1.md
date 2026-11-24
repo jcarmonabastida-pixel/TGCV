@@ -1,11 +1,11 @@
 # TGCV — Explore Experience Specification
 
 **Identifier:** TGCV-WEB-EXPLORE-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21–22  
-**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`, §12–13; Home Experience v0.6  
+**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`, §12–13; Home Experience v0.8; Home Copy v0.5  
 **Copy:** `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md`  
 **Branch:** `strategy/tgcv-web-master`
 
@@ -50,33 +50,39 @@ Keep the approved six-part progression. The page should move from an intuitive o
 
 Opening copy should explain that a system is defined by more than its current state: its accessible transformations and the conditions shaping them also matter.
 
-### 3.1 A system is more than its current state
+### 3.1 From the Home insight to a more precise question
 
-Explain that knowing a system's components, configuration and current operations does not fully describe what it could do. Some transformations may not be performed yet but remain accessible; others may be conceivable while current conditions prevent them.
+Home introduces the central intuition: a system's possibilities can change when relevant conditions change. Explore should not repeat that discovery. It begins one step further:
 
-**Key message:** Understanding a system also means understanding its possibilities.
+**How do we determine whether a transformation is actually within a system's reach?**
 
-**Visual direction:** One current system state connected to several candidate transformations, distinguishing those accessible under current conditions from those that are not.
+Answering this requires more than listing what a system might do. We must identify the system and its boundary, the conditions being considered, and the transformations that are candidates within that analytical context.
 
-### 3.2 The same operation, two environments
+**Visual direction:** Reuse the Home system illustration only as a small point of reference. Introduce a clearer analytical frame around system boundary, conditions and candidate transformations.
 
-Use a bounded software-configuration migration example. In environment A, required dependencies and permissions are available, so the operation is accessible. In environment B, an essential dependency is missing, so the same candidate transformation is not accessible under the current conditions.
+### 3.2 Candidate does not mean accessible
 
-Define a candidate transformation in plain language: an operation considered as a possibility for a system. Being a candidate does not mean the system already meets the conditions required to perform it.
+Return briefly to the software-configuration migration introduced on Home. The operation being considered is the same in both environments. The relevant difference is specific: the required dependency is available in environment A and missing in environment B.
 
-**Key message:** A transformation being conceivable does not mean it is accessible.
+The operation can therefore be considered a candidate transformation in both environments, while being accessible only in A under the conditions shown.
 
-**Visual direction:** A side-by-side comparison of environment A and environment B. Show the same candidate operation in both and make the different accessibility status legible.
+A **candidate transformation** is a change considered as a possibility for a system within an analytical context. Being considered a candidate does not mean that the system meets the conditions required to carry it out.
 
-### 3.3 Change the conditions, change the possibilities
+**Key message:** A transformation may be a candidate without being accessible.
 
-Show a bounded change in environment B: add the missing dependency, adapt a component or modify a relevant configuration condition. If this resolves the condition preventing the operation, the transformation may become accessible.
+**Visual direction:** A concise side-by-side comparison, not a retelling of the full migration story. Keep the candidate transformation identical; show only the dependency condition and resulting accessibility status as different.
 
-Do not depict execution. The change establishes accessibility under the revised conditions; it does not establish that the operation was performed, that it will work successfully or that it creates value.
+### 3.3 Accessibility depends on conditions and boundaries
 
-**Key message:** Changing a system's conditions can change what is within its reach.
+The missing dependency in environment B illustrates one way accessibility can change. When that dependency is made available in the target environment, the transformation may become accessible under the revised conditions.
 
-**Visual direction:** Before/after states for environment B. Highlight the changed condition and the transition from inaccessible to accessible. Do not animate or imply execution.
+This conclusion is bounded: it concerns the specified system, transformation, boundary and conditions. It does not establish that the transformation has been executed, that it will succeed, or that its outcome will have value.
+
+In English, introduce the analytical term **accessibility of transformations**. It refers to whether a transformation is within a system's reach under the system boundary and conditions being considered; it does not refer to digital or interface accessibility.
+
+**Key message:** Accessibility is assessed relative to a system, its boundary and the conditions being considered.
+
+**Visual direction:** Show the target environment before and after the dependency becomes available. Mark only the accessibility status as changed; do not depict execution or success.
 
 ### 3.4 Possibility, execution, outcome and value
 
@@ -218,4 +224,5 @@ Before publication:
 
 ### Version history
 
-- **0.1 — 2026-11-24:** Initial Explore experience specification. Establishes the six-part narrative, bounded software-migration example, accessibility/execution/outcome/value distinctions, trajectory treatment, TI ecosystem relationship, bilingual terminology and editorial acceptance checks.
+- **0.1 — 2026-11-24:** Initial Explore experience specification.
+- **0.2 — 2026-11-24:** Repositions Explore as a conceptual deepening of Home, fixes the example to one missing dependency, broadens the candidate-transformation definition beyond software operations, and clarifies the bounded meaning of accessibility.
