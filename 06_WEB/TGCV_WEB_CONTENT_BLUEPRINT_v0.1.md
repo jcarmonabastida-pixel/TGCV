@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 1.5  
+**Version:** 1.6  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.5; Information Architecture v1.4; Home Experience v1.4; Home Copy v1.1; Explore Experience v0.8; Explore Copy v0.7.
+**Parent documents:** Web Master Brief v1.5; Information Architecture v1.4; Home Experience v1.4; Home Copy v1.1; Explore Experience v0.9; Explore Copy v0.8.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -486,7 +486,7 @@ The tangible example is migration of a software configuration between two differ
 - **Explore:** use the current TGCV distinctions and build the bounded migration example; explain candidate vs accessible transformations and distinguish accessibility, execution, trajectory, outcome and value.
 - **Research:** source from current Core and controlled research assets, but refresh evidence claims against current STATUS, RMA and Evidence→Claim Matrix immediately before publication. Current public status must not be copied from stale snapshots.
 - **Systems Engineering:** produce a concise page grounded in established systems-engineering practice and accurately describe the relationship to TGCV; do not invent a proprietary TGCV lifecycle or validated engineering method.
-- **Transformational Intelligence:** present TI as a working capability concept, not a generally validated capability or a synonym for AI.
+- **Transformational Intelligence:** present TI as an integrative capability concept under development, not an operationally established or generally validated capability, a consolidated academic discipline, or a synonym for AI, Systems Thinking or Systems Engineering. Explain its intended integration of system understanding, reasoning about accessible transformations and trajectories, and guidance of change. Distinguish TI from TGCV: TGCV is the applied research and innovation programme contributing to its foundations.
 - **Labs & Applications:** distinguish Juguete Colectivo, TSTC v004 and exploratory Application-Fit contexts. Verify the actual distributable package/version and scope before linking the Collective Toy. TSTC is bounded synthetic methodological evidence, not empirical causal or industrial validation. Application-Fit contexts remain exploratory unless stronger evidence is independently established.
 - **About:** describe the programme, purpose and governance without implying a staffed institute, external board, consortium or formal community unless established.
 - **Contact:** publish only after confirming a real monitored channel, ownership/monitoring capacity and proportionate privacy wording. Do not invent an address or response-time promise.
@@ -622,3 +622,8 @@ The Home remains a working draft, not publication approval. Complete the visual 
 ### v1.5 — 2026-11-25
 - Updates Explore parent references to Experience v0.8 and Copy v0.7.
 - Adds a content requirement explaining the space of possibilities relationally, through elements, dependencies/relationships and operating conditions.
+
+
+### v1.6 — 2026-11-25
+- Updates Explore parent references to Experience v0.9 and Copy v0.8.
+- Strengthens maturity and category distinctions for Transformational Intelligence and clarifies its relationship to the TGCV research programme.
