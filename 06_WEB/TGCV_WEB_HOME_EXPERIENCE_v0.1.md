@@ -1,7 +1,7 @@
 # TGCV — Home Experience Specification
 
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 1.0  
+**Version:** 1.1  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21  
@@ -266,3 +266,22 @@ The conceptual decisions are approved. Final design, current evidence review, as
 - **0.6 — 2026-11-24:** Clarifies that changes in a system's possibilities need not be autonomous; corrects the TI/Systems Thinking/Systems Engineering hierarchy; specifies the source-to-target example as a change in accessibility, not automatic capability transfer.
 - **0.5 — 2026-11-24:** Rewritten as a clean experience specification; removes superseded four-pillar narrative and earlier navigation assumptions; integrates the approved audience, identity, example, routes, bilingual requirement and non-blocking Efecto Ajá review.
 - **0.4 — 2026-11-24:** Decision-lock layer added to the prior working concept.
+
+
+## 16. Public identity decision (2026-11-24)
+
+The Home presents the initiative as **TGCV — Transformaciones Generativas y Construcción de Valor**, a research programme.
+
+Approved Spanish descriptor:
+*Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
+
+Approved English rendering:
+**TGCV — Generative Transformations and Value Construction**.
+*A research programme exploring how expanding the transformations available to systems may contribute to value construction.*
+
+Use “research programme” / “programa de investigación”, not “theory” / “teoría”, as the public description of TGCV. The Spanish expansion is canonical; TGCV remains the proper name in English. The identity must not imply that expanded accessibility or possibilities automatically produce execution, outcomes or value.
+
+This is a public editorial decision only. It does not alter scientific definitions, evidence status or repository identifiers.
+
+### v1.1 — 2026-11-24
+- Aligns the Home experience identity and first-mention description with the approved TGCV public name and research-programme positioning.
