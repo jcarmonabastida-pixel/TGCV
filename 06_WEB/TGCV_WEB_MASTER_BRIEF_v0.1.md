@@ -1096,6 +1096,9 @@ Spanish master form:
 English public rendering:
 **TGCV — Generative Transformations and Value Construction**
 
+English descriptor:
+*A programme of applied research and innovation exploring how expanding the transformations available to systems may contribute to value construction.*
+
 TGCV remains the proper name in both languages. The English rendering is a translation of the public name, not a new acronym derived from English initials. Keep the approved Spanish name as the canonical expansion of the letters.
 
 ### 22.3 Application across the website
@@ -1122,7 +1125,7 @@ This is a public identity/editorial decision only. It does not rename the reposi
 - The approved descriptor remains: *Un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
 - Do not add a long institutional self-description ahead of the opening question. The brand identifies the initiative; the visitor-facing question leads the Home narrative.
 - Keep the full descriptor in the footer and the relevant About/Research identity blocks. The hero may retain its concise supporting copy rather than repeat the descriptor verbatim.
-- English identity: **TGCV — Generative Transformations and Value Construction**. The English version is an editorial rendering; TGCV remains the proper name.
+- English identity: **TGCV — Generative Transformations and Value Construction**. Descriptor: *A programme of applied research and innovation exploring how expanding the transformations available to systems may contribute to value construction.* The English version is an editorial rendering; TGCV remains the proper name.
 
 ### 24.2 Corrected Home sequence
 The controlling sequence, in both languages, is:
@@ -1147,7 +1150,7 @@ The second question must precede the tangible example. Home Copy already follows
 - The Home's public identity is a research programme, not a claim that a consolidated theory or general validation already exists.
 
 ### 24.5 Review disposition
-The current Home concept and copy are directionally coherent with the approved TGCV identity. The required corrections are the explicit site-wide brand lockup, the corrected narrative-order specification, and synchronized document references. The Home remains a bilingual working draft pending visual design, asset verification, evidence review, accessibility/responsive QA, working destination/contact checks and publication approval.
+The current Home concept and copy are directionally coherent with the approved TGCV identity and applied-research-and-innovation positioning. The required corrections are the explicit site-wide brand lockup, the corrected narrative-order specification, the refined concise answer, and synchronized document references. The Home remains a bilingual working draft pending visual design, asset verification, evidence review, accessibility/responsive QA, working destination/contact checks and publication approval.
 
 ### v1.3 — 2026-11-24
 - Records the integrated Home review following approval of the public TGCV identity.
@@ -1158,3 +1161,4 @@ The current Home concept and copy are directionally coherent with the approved T
 ### v1.4 — 2026-11-24
 - Adopts the public descriptor “investigación aplicada e innovación” and its English equivalent.
 - Clarifies the complementary roles of applied research (investigation and testing) and innovation (developing methods, tools and applications) without implying validated deployment.
+- Adds the complete English descriptor to the identity decision lock and Home review.
