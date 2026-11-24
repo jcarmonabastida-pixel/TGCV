@@ -1,7 +1,7 @@
 # TGCV — Explore Copy
 
 **Identifier:** TGCV-WEB-EXPLORE-COPY-001  
-**Version:** 0.4  
+**Version:** 0.5  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`  
@@ -141,7 +141,7 @@ No se trata únicamente de comprender un sistema o de intervenir sobre él, sino
 
 Transformational Intelligence es un concepto y una capacidad en desarrollo. Su alcance, fundamentos y aplicaciones forman parte de una línea de investigación y desarrollo; no se presenta aquí como una capacidad generalmente validada.
 
-La Teoría de Construcción de Valor de Sistemas Generativos (TGCV) forma parte de los fundamentos de investigación de este ecosistema. Su propósito es estudiar cómo las condiciones y relaciones de un sistema influyen en las transformaciones que tiene a su alcance y cómo estas se relacionan con sus trayectorias y la construcción de valor.
+TGCV — Transformaciones Generativas y Construcción de Valor es un programa de investigación aplicada e innovación. Estudia cómo las condiciones y relaciones de un sistema influyen en las transformaciones que tiene a su alcance y cómo estas se relacionan con sus trayectorias y la construcción de valor.
 
 **La cuestión no es solamente cómo cambiar un sistema, sino cómo comprender y orientar el cambio de sus posibilidades.**
 
@@ -279,7 +279,7 @@ The aim is not simply to understand a system or intervene in it, but to bring th
 
 Transformational Intelligence is a concept and capability under development. Its scope, foundations and applications are part of an ongoing research and development effort; it is not presented here as a generally validated capability.
 
-The Theory of Value Construction in Generative Systems (TGCV) is part of this ecosystem's research foundations. Its purpose is to study how a system's conditions and relationships influence the transformations within its reach, and how these relate to its trajectories and the construction of value.
+TGCV — Generative Transformations and Value Construction is a programme of applied research and innovation. It explores how a system's conditions and relationships influence the transformations within its reach, and how these relate to its trajectories and the construction of value.
 
 **The question is not only how to change a system, but how to understand and guide changes in what it can do.**
 
@@ -312,3 +312,6 @@ The Theory of Value Construction in Generative Systems (TGCV) is part of this ec
 - **0.2 — 2026-11-24:** Integrates the Home-to-Explore editorial hand-off, the single-dependency example, a broader candidate-transformation definition and an explicit English definition of accessibility of transformations.
 - **0.3 — 2026-11-24:** Makes the practical implication of changed accessibility explicit in both languages, clarifies accessible as “within reach” rather than performed, and refines trajectory wording so it does not imply one inevitable chain of transformations.
 - **0.4 — 2026-11-24:** Adds the explicit block-5 question about newly available options in Spanish and English; makes **Accessibility → Execution → Outcome → Value** a persistent visual anchor; places candidate transformation before that sequence and trajectory across states and transformations.
+
+
+- **0.5 — 2026-11-25:** Aligns the Spanish and English TGCV identity statements with the approved public name and applied-research-and-innovation programme description; removes the superseded public-facing “Theory” wording.
