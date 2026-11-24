@@ -30,7 +30,7 @@ PROFILE_SOURCE_PATHS = (
 MAX_PARALLEL = 20
 JOB_SETUP_OVERHEAD_SECONDS = 300
 JOB_BUDGET_SECONDS = 9000  # 150 minutes; workflow hard timeout is 165 minutes.
-CANDIDATE_SHARD_SIZES = (20, 25, 40, 50, 100)
+CANDIDATE_SHARD_SIZES = (10, 20, 25, 40, 50, 100)
 
 
 def sha256_bytes(value: bytes) -> str:
@@ -107,24 +107,29 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
         for cell_id in g7.EXPECTED_CELLS:
             shard_count = math.ceil(g7.K_PER_CELL / size)
             waves = math.ceil(shard_count / MAX_PARALLEL)
-            shard_runtime = (
+            phase_shard_runtime = (
                 size * cells[cell_id]["latency_seconds"]["max"]
                 + JOB_SETUP_OVERHEAD_SECONDS
             )
-            safe = safe and shard_runtime <= JOB_BUDGET_SECONDS
-            phase_component = waves * shard_runtime
-            phase_upper += phase_component
+            # The workflow executes primary and clean-source replay sequentially
+            # inside the same matrix job. The 150-minute work budget therefore
+            # applies to the pair, not to either half in isolation.
+            paired_job_runtime = 2 * phase_shard_runtime
+            safe = safe and paired_job_runtime <= JOB_BUDGET_SECONDS
+            paired_cell_component = waves * paired_job_runtime
+            phase_upper += paired_cell_component
             per_cell[cell_id] = {
                 "shards": shard_count,
                 "waves": waves,
-                "max_observed_shard_runtime_seconds": shard_runtime,
-                "conservative_phase_wall_seconds": phase_component,
+                "max_observed_phase_shard_runtime_seconds": phase_shard_runtime,
+                "max_observed_primary_replay_job_runtime_seconds": paired_job_runtime,
+                "conservative_primary_replay_wall_seconds": paired_cell_component,
             }
         candidate_projections.append({
             "datasets_per_shard": size,
             "safe_under_150_minute_job_budget": safe,
             "jobs_per_phase": sum(item["shards"] for item in per_cell.values()),
-            "conservative_primary_plus_replay_wall_seconds": 2 * phase_upper,
+            "conservative_primary_plus_replay_wall_seconds": phase_upper,
             "per_cell": per_cell,
         })
     safe_projections = [
@@ -132,7 +137,7 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
         if item["safe_under_150_minute_job_budget"]
     ]
     if not safe_projections:
-        raise ValueError("G7_NO_SHARD_SIZE_MEETS_150_MINUTE_JOB_BUDGET")
+        raise ValueError("G7_NO_PRIMARY_REPLAY_SHARD_PAIR_MEETS_150_MINUTE_JOB_BUDGET")
     # Minimize the conservative end-to-end wall estimate, not the number of jobs.
     selected = min(
         safe_projections,
