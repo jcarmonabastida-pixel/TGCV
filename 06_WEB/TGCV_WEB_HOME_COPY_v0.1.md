@@ -1,7 +1,7 @@
 # TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 0.7  
+**Version:** 0.8  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md`  
@@ -154,9 +154,9 @@ Puedes acercarte a esta investigación desde sus ideas fundamentales, desde las 
 
 ## 2.8 Pie de página
 
-**TGCV — Teoría de Construcción de Valor de Sistemas Generativos**
+**TGCV — Transformaciones Generativas y Construcción de Valor**
 
-Un programa de investigación integrador sobre sistemas, espacios de transformación y las condiciones que determinan qué transformaciones tienen a su alcance.
+Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.
 
 Explore · Research · Systems Engineering · Transformational Intelligence · Labs & Applications · About · Contact
 
@@ -299,9 +299,9 @@ You can approach this work through its core ideas, its research questions or the
 
 ## 3.8 Footer
 
-**TGCV — Theory of Value Construction in Generative Systems**
+**TGCV — Generative Transformations and Value Construction**
 
-An integrative research programme exploring systems, transformation spaces and the conditions that determine which transformations are within their reach.
+A research programme exploring how expanding the transformations available to systems may contribute to value construction.
 
 Explore · Research · Systems Engineering · Transformational Intelligence · Labs & Applications · About · Contact
 
@@ -348,3 +348,16 @@ Efecto Ajá is a desired quality objective, not a mandatory publication conditio
 - **0.4 — 2026-11-24:** Corrects the conceptual hierarchy of TI, Systems Thinking and Systems Engineering; removes autonomous-system wording; specifies the migration illustration as a source/target accessibility change without implying execution or automatic capability transfer.
 - **0.3 — 2026-11-24:** Rewritten as a clean bilingual Home draft aligned with the approved visitor question, identity architecture, software-environment illustration, navigation and publication controls.
 - **0.2 — 2026-11-24:** Approved editorial direction and Spanish working copy added.
+
+
+## 5. Public identity decision (2026-11-24)
+
+Use **TGCV — Transformaciones Generativas y Construcción de Valor** as the public name in Spanish. The approved descriptor is: *Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
+
+Use **TGCV — Generative Transformations and Value Construction** in English, followed by: *A research programme exploring how expanding the transformations available to systems may contribute to value construction.*
+
+TGCV is the proper name in both languages; the Spanish expansion is canonical. Do not describe TGCV publicly as an established theory. Preserve the conditional relationship: expanded possibilities may contribute to value construction but do not guarantee execution, outcomes or value.
+
+### v0.8 — 2026-11-24
+- Replaces the previous public footer identity in Spanish and English.
+- Uses “research programme” as the public positioning and adds the approved concise descriptor.
