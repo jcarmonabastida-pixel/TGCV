@@ -35,10 +35,9 @@ def create(profile: Path, output: Path) -> dict:
     if len(matches) != 1:
         raise ValueError("RESOURCE_PROFILE_ARTIFACT_NOT_UNIQUE")
     artifact = matches[0]
-    archive = request(
-        f"https://api.github.com/repos/{repository}/actions/artifacts/{artifact['id']}/zip",
-        token,
-    )
+    archive_digest = artifact.get("digest")
+    if not isinstance(archive_digest, str) or not archive_digest.startswith("sha256:"):
+        raise ValueError("RESOURCE_PROFILE_ARTIFACT_DIGEST_MISSING")
     profile_bytes = profile.read_bytes()
     profile_data = json.loads(profile_bytes)
     source_commit = profile_data.get("source_commit")
@@ -50,7 +49,7 @@ def create(profile: Path, output: Path) -> dict:
         "profile_run_url": run_url,
         "profile_artifact_id": int(artifact["id"]),
         "profile_artifact_name": artifact["name"],
-        "profile_artifact_archive_sha256": hashlib.sha256(archive).hexdigest(),
+        "profile_artifact_archive_sha256": archive_digest.removeprefix("sha256:"),
         "profile_artifact_expires_at": artifact.get("expires_at"),
         "profile_source_commit": source_commit,
         "profile_json_sha256": hashlib.sha256(profile_bytes).hexdigest(),
