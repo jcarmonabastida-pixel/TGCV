@@ -1,7 +1,7 @@
 # TGCV — Explore Experience Specification
 
 **Identifier:** TGCV-WEB-EXPLORE-001  
-**Version:** 0.7  
+**Version:** 0.8  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21–22  
@@ -111,21 +111,29 @@ Introduce **trajectory** separately: transformations may be connected and may sh
 
 ### 3.5 A system's space of possibilities
 
-Open this section with the highlighted question:
+Open with the highlighted question:
 
 **What new options become available when a system can do something that was previously beyond its reach?**
 
 The Spanish equivalent is: **«¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?»**
 
-Explain that a change in accessibility changes the options within reach, without implying that those options are necessarily useful or desirable. Then explain that transformation accessibility can depend on multiple elements and their relationships. Examples may include component capabilities, resources, dependencies, internal/external relationships and interactions, rules and permissions, constraints and environmental conditions.
+Build the explanation around one central idea: a system's possibilities cannot be understood by adding up the capabilities of its components in isolation. What matters is also how those elements are connected, what they depend on, how they interact, and under which internal and external conditions they can work together.
 
-Do not present this as a closed or universal list, nor imply that these factors operate independently. A local change may enable one transformation, block another or reconfigure several dependencies.
+Use three visitor-friendly lenses, not a closed checklist:
 
-Introduce Systems Thinking as the perspective that helps understand system boundaries, relationships, dependencies, conditions and dynamics.
+1. **What is present and what can each element do?** Components may have different capabilities; resources and dependencies may or may not be available.
+2. **How are the elements connected?** Interfaces, relationships and interactions can allow elements to work together, or prevent a transformation even when the individual components exist.
+3. **Under what conditions can they operate?** Rules, permissions, constraints and environmental conditions can enable, limit or block particular transformations.
 
-**Key message:** A system's possibilities depend both on its elements and on the relationships and conditions that connect them.
+Return briefly to the migration illustration without changing its controlled premise: the same operation and stated assumptions, with the required dependency available in A and missing in B. The example shows why the presence of individual components is not enough if a required dependency is absent. It remains a bounded illustration, not a general model of every migration.
 
-**Visual direction:** A system represented through components, resources, relationships and external conditions. Show that relationships can enable, constrain or block transformations. Avoid depicting expansion as inherently positive.
+Explain that these dimensions are relational rather than independent. A change in one condition can alter a dependency, make a connection usable or unavailable, and consequently enable one transformation while constraining another. Possibilities can therefore open, close or be reorganised; their expansion is not automatically beneficial.
+
+Introduce **Systems Thinking** as the perspective that helps examine system boundaries, relationships, dependencies, conditions and dynamics together. Avoid implying that the visitor must master a formal method to understand the point.
+
+**Key message:** A system's possibilities depend not only on what its elements can do individually, but also on how they are related and on the conditions under which they can work together.
+
+**Visual direction:** Show a small system with components, a dependency between two of them and one external condition. Make the relationship legible: the components may be present, but the transformation remains out of reach while the required dependency is unavailable. Show that changing a condition can alter the relationship and the accessibility of a transformation. Do not use a dense network, a universal factor checklist or a diagram suggesting every connection is beneficial.
 
 ### 3.6 A new way to understand and guide transformations
 
@@ -246,3 +254,5 @@ Before publication:
 - **0.6 — 2026-11-25:** Refreshes Home and Explore Copy references to their current versions after the integrated bilingual identity review.
 
 - **0.7 — 2026-11-25:** Makes the illustrative comparison's control assumptions explicit: the same operation and stated boundary/prerequisites are held constant while one dependency-availability condition differs; limits the inference to that bounded illustration.
+
+- **0.8 — 2026-11-25:** Reframes the space-of-possibilities explanation around component capabilities, relationships/dependencies and operating conditions; uses three visitor questions and reconnects the controlled migration example without implying a universal checklist.
