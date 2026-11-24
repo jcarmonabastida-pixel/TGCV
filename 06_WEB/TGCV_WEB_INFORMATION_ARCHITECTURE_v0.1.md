@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 0.9  
+**Version:** 1.0  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -603,8 +603,8 @@ Use **Existing**, **In development** and **Exploratory** as operational content 
 
 The detailed visitor experience and bilingual copy for Explore are defined in:
 
-- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 0.4.
-- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 0.3.
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 0.5.
+- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 0.4.
 
 Explore is the conceptual deepening after Home, not a second presentation of the same discovery. Home introduces that a system's possibilities can change; Explore asks how we determine whether a candidate transformation is accessible, relative to a defined system, boundary and set of conditions. Home's numbered conceptual sequence is a reading aid, not a universal causal chain; trajectory must be visualised as the path across states and transitions, not as a discrete stage.
 
@@ -613,8 +613,9 @@ Its working progression is:
 2. Distinguish a candidate transformation from an accessible transformation.
 3. Use the same migration transformation in two environments, with one explicit difference: the required dependency is available in A and missing in B.
 4. Explain that making the dependency available may change accessibility, without implying execution, success or value.
-5. Distinguish candidate, accessibility, execution, outcome and value; represent trajectory as evolution through states and transformations, not as an additional linear stage.
-6. Explain how system elements, relationships, boundaries and conditions shape accessibility.
+5. Keep the visible sequence **Accessibility → Execution → Outcome → Value** (Spanish: **Accesibilidad → Ejecución → Resultado → Valor**) as a persistent visual anchor. Place candidate transformation before it as the object whose accessibility is assessed; represent trajectory across states and transformations, not as another stage.
+6. Open the space-of-possibilities section with the question: “¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?” / “What new options become available when a system can do something that was previously beyond its reach?”
+7. Explain how system elements, relationships, boundaries and conditions shape accessibility.
 7. Connect Systems Thinking and Systems Engineering as complementary foundations to Transformational Intelligence as the ecosystem's integrative capability concept.
 
 The migration example is illustrative only. It is not an existing execution, validated application, Juguete Colectivo feature or C10-S result. Keep the single missing-dependency condition consistent across Home, Explore and both languages.
@@ -622,10 +623,11 @@ The migration example is illustrative only. It is not an existing execution, val
 The Spanish and English versions must be complete and conceptually equivalent. In English, introduce “accessibility of transformations” and clarify that it refers to whether a transformation is within a system's reach under the system boundary and conditions being considered—not to digital/interface accessibility. “Outcome” remains the consistent equivalent of “resultado” in this explanatory context.
 
 The page must preserve these distinctions:
-- candidate transformation ≠ accessible transformation;
+- candidate transformation is the object assessed before accessibility; candidate does not mean accessible;
+- keep the visible sequence **Accessibility → Execution → Outcome → Value** (Spanish: **Accesibilidad → Ejecución → Resultado → Valor**);
 - accessibility means being within reach under specified boundaries and conditions; it does not mean execution;
-- execution ≠ favourable outcome;
-- outcome ≠ value;
+- execution does not guarantee a favourable outcome;
+- outcome is not equivalent to value;
 - trajectory describes evolution through states and transformations and does not imply one inevitable chain or an additional universal linear stage.
 
 The visitor-facing explanation should also make the practical implication clear: changed accessibility changes the options within reach, while deciding whether those options are useful or desirable requires additional objectives and contextual criteria. The detailed specification and copy remain working drafts, not publication clearance. Apply the non-blocking Efecto Ajá policy and all scientific, accessibility, bilingual, privacy and maintainability release checks already established in this architecture.
@@ -649,3 +651,8 @@ The visitor-facing explanation should also make the practical implication clear:
 ### v0.9 — 2026-11-24
 - Incorporates the final editorial refinement of Explore: accessibility as being within reach rather than execution, practical implications of changed accessibility, and trajectory as an evolution that need not form one chain.
 - Updates the current bilingual copy and experience references.
+
+### v1.0 — 2026-11-24
+- Makes the block-5 question about newly available options an explicit content requirement in Spanish and English.
+- Requires the visible Accessibility → Execution → Outcome → Value sequence, with candidate transformation placed before it and trajectory represented across states and transformations.
+- Updates the authoritative Explore Experience and Copy versions.
