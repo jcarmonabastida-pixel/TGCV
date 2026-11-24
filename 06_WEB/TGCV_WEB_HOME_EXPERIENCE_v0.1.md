@@ -1,7 +1,7 @@
 # TGCV — Home Experience Specification
 
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 0.8  
+**Version:** 0.9  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21  
@@ -144,6 +144,8 @@ Use plain language and a compact visual sequence:
 6. **Trajectory** — What sequence of transitions is possible or has occurred?
 7. **Outcome and value** — What happens, and how is it evaluated under independently specified criteria?
 
+This numbered sequence is an explanatory reading aid, not a universal linear causal chain. **Trajectory** must be represented as the path formed by states and transitions (including possible and realised transitions), spanning the sequence rather than as a separate box or stage between the new state and outcome/value.
+
 The central guardrail is:
 
 **Possible, accessible, realised and valuable do not mean the same thing.**
@@ -253,6 +255,7 @@ Do not imply that the future Playground is available. Do not duplicate Juguete C
 The conceptual decisions are approved. Final design, current evidence review, asset verification, bilingual editorial QA, contact readiness and accessibility/responsive checks remain publication work.
 
 ### Version history
+- **0.9 — 2026-11-24:** Clarifies that the Home sequence is a reading aid and specifies trajectory as a path across states and transitions, not a discrete sequential stage.
 - **0.8 — 2026-11-24:** Fixes the Home migration example to one missing dependency in the target environment and clarifies the distinct deepening role of Explore.
 
 - **0.6 — 2026-11-24:** Clarifies that changes in a system's possibilities need not be autonomous; corrects the TI/Systems Thinking/Systems Engineering hierarchy; specifies the source-to-target example as a change in accessibility, not automatic capability transfer.
