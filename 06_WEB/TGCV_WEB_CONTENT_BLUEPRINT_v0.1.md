@@ -1,7 +1,7 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 0.9  
+**Version:** 1.0  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
@@ -571,3 +571,19 @@ Mandatory gates are identity coherence, clear visitor-facing message, useful and
 - Adds the explicit bilingual block-5 question about newly available options.
 - Requires a persistent visual distinction: Accessibility → Execution → Outcome → Value; candidate transformation precedes it and trajectory spans states and transformations.
 - Updates the current Explore and parent-document references.
+
+
+## 14. Public identity decision (2026-11-24)
+
+**Public name (Spanish):** TGCV — Transformaciones Generativas y Construcción de Valor.
+
+**Public descriptor (Spanish):** *Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
+
+**English rendering:** TGCV — Generative Transformations and Value Construction. *A research programme exploring how expanding the transformations available to systems may contribute to value construction.*
+
+All first-release pages must use this identity consistently. Introduce TGCV as a research programme, not an established theory. The Spanish expansion is canonical; the English name is a translation while TGCV remains the proper name. Keep claims conditional: newly available possibilities may contribute to value construction but do not guarantee execution, outcomes or value.
+
+This is a public editorial decision only; it does not rename or modify scientific artefacts, definitions, evidence or governance.
+
+### v1.0 — 2026-11-24
+- Aligns the content blueprint with the approved TGCV public identity and Spanish/English research-programme description.
