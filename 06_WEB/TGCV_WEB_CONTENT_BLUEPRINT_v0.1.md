@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 1.1  
+**Version:** 1.2  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.3; Information Architecture v1.3; Home Experience v1.2; Home Copy v0.9; Explore Experience v0.5; Explore Copy v0.4.
+**Parent documents:** Web Master Brief v1.4; Information Architecture v1.4; Home Experience v1.3; Home Copy v1.0; Explore Experience v0.5; Explore Copy v0.4.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -577,9 +577,9 @@ Mandatory gates are identity coherence, clear visitor-facing message, useful and
 
 **Public name (Spanish):** TGCV — Transformaciones Generativas y Construcción de Valor.
 
-**Public descriptor (Spanish):** *Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
+**Public descriptor (Spanish):** *Un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
 
-**English rendering:** TGCV — Generative Transformations and Value Construction. *A research programme exploring how expanding the transformations available to systems may contribute to value construction.*
+**English rendering:** TGCV — Generative Transformations and Value Construction. *A programme of applied research and innovation exploring how expanding the transformations available to systems may contribute to value construction.*
 
 All first-release pages must use this identity consistently. Introduce TGCV as a research programme, not an established theory. The Spanish expansion is canonical; the English name is a translation while TGCV remains the proper name. Keep claims conditional: newly available possibilities may contribute to value construction but do not guarantee execution, outcomes or value.
 
@@ -603,3 +603,7 @@ The Home remains a working draft, not publication approval. Complete the visual 
 - Refreshes parent-document versions after the integrated Home review.
 - Adds the header identity and preserves the visitor-first opening.
 - Aligns the Home content contract and narrative order with the corrected experience specification.
+
+### v1.2 — 2026-11-24
+- Adopts the updated public descriptor “investigación aplicada e innovación” and its English equivalent.
+- Clarifies that the applied and innovation orientation does not imply that applications or deployments are already validated.
