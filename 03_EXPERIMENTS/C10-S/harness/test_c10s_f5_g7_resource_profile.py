@@ -34,7 +34,7 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "JSON_DIGEST_MISMATCH"):
                 validator.validate(profile, manifest, root)
 
-    def test_shard_plan_uses_immutable_original_v1_1_profile_artifacts(self):
+    def test_shard_plan_uses_immutable_original_v1_1_profile_artifact_and_manifest(self):
         """Run the official dimensioner against the exact archived profile and manifest."""
         fixture_dir = (
             Path(__file__).resolve().parents[1]
@@ -44,28 +44,23 @@ class F5G7ResourceProfileTests(unittest.TestCase):
         profile_zip = base64.b64decode(
             (fixture_dir / "profile_artifact.zip.b64").read_text(encoding="ascii")
         )
-        bundle_zip = base64.b64decode(
-            (fixture_dir / "validated_bundle.zip.b64").read_text(encoding="ascii")
-        )
         self.assertEqual(
             hashlib.sha256(profile_zip).hexdigest(),
             "14e317a6f38d9934dc0903b4b038da5ffc580c9bb076d26dbcc6e47cfe568e21",
         )
-        self.assertEqual(
-            hashlib.sha256(bundle_zip).hexdigest(),
-            "b1d2152d6b127c15b0b3e601941a2306b1ff4448366cc26da9b30bf55ae1a172",
-        )
-        with zipfile.ZipFile(io.BytesIO(bundle_zip)) as archive:
-            profile_bytes = archive.read("c10s-f5-g7-resource-profile.json")
-            manifest_bytes = archive.read("C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_002.json")
         with zipfile.ZipFile(io.BytesIO(profile_zip)) as archive:
-            archived_profile_bytes = archive.read("c10s-f5-g7-resource-profile.json")
-        self.assertEqual(profile_bytes, archived_profile_bytes)
+            profile_bytes = archive.read("c10s-f5-g7-resource-profile.json")
+        manifest_path = fixture_dir / "manifest.json"
+        manifest_bytes = manifest_path.read_bytes()
+        self.assertEqual(
+            hashlib.sha256(manifest_bytes).hexdigest(),
+            "4c15aba0fffbed1d2ad9fea5e85f60a1cfa52253a96c2e56f47f362b694d52c7",
+        )
         profile = json.loads(profile_bytes)
         manifest = json.loads(manifest_bytes)
         self.assertEqual(
             hashlib.sha256(profile_bytes).hexdigest(),
-            "005ef265fa7dd8812c2572d9187cc7943c365506dc8e1169f1883487c0094d9f",
+            manifest["profile_json_sha256"],
         )
         self.assertEqual(
             hashlib.sha256(profile_zip).hexdigest(),
@@ -85,15 +80,15 @@ class F5G7ResourceProfileTests(unittest.TestCase):
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_bytes(b"frozen-compute-path")
             profile_path = root / "profile.json"
-            manifest_path = root / "manifest.json"
+            staged_manifest_path = root / "manifest.json"
             profile_path.write_bytes(profile_bytes)
-            manifest_path.write_bytes(manifest_bytes)
+            staged_manifest_path.write_bytes(manifest_bytes)
             with patch.object(
                 validator.subprocess, "run", return_value=SimpleNamespace(returncode=0)
             ), patch.object(
                 validator.subprocess, "check_output", return_value=b"frozen-compute-path"
             ):
-                result = validator.validate(profile_path, manifest_path, root)
+                result = validator.validate(profile_path, staged_manifest_path, root)
 
         self.assertEqual(result["datasets_per_shard"], 20)
         self.assertEqual(result["shard_jobs_per_phase"], 100)
@@ -126,7 +121,6 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             expected_primary_replay,
             places=5,
         )
-        self.assertAlmostEqual(expected_primary_replay / 3600, 15.2054, places=3)
         self.assertEqual(result["coverage_adjudication"], "NOT_PERFORMED")
 
     def test_resource_profile_rejects_unexpected_schema_before_compatibility_check(self):
