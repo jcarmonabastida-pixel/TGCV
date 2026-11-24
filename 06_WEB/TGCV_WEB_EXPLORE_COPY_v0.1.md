@@ -2,7 +2,7 @@
 
 **Identifier:** TGCV-WEB-EXPLORE-COPY-001  
 **Version:** 0.5  
-**Date:** 2026-11-24  
+**Date:** 2026-11-25  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`  
 **Branch:** `strategy/tgcv-web-master`
