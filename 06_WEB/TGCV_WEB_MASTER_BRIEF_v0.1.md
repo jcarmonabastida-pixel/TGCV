@@ -961,7 +961,7 @@ El Juguete Colectivo y TSTC v004 pueden presentarse como activos diferenciados s
 
 ### 21.7 Idioma editorial y control
 
-Los cinco documentos web subordinados deben mantener esta especificación común. Si persiste texto histórico incompatible, esta sección y el registro de decisión de Home de fecha 24-11-2026 prevalecen hasta que el texto se reescriba en la siguiente revisión editorial. No se altera TGCV Core, RMA, Evidence→Claim Matrix ni STATUS.
+Los documentos web subordinados deben mantener esta especificación común. Si persiste texto histórico incompatible, esta sección y el registro de decisión de Home de fecha 24-11-2026 prevalecen hasta que el texto se reescriba en la siguiente revisión editorial. No se altera TGCV Core, RMA, Evidence→Claim Matrix ni STATUS.
 
 ### v0.5 — 2026-11-24
 - Consolida decisiones aprobadas sobre audiencia, identidad, relación TI/Systems Thinking/Systems Engineering, Research/Labs & Applications, narrativa, ejemplo, navegación, bilingüismo y Efecto Ajá.
