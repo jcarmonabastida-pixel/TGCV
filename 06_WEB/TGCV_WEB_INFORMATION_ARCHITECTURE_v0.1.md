@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 1.7  
+**Version:** 1.8  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -713,3 +713,21 @@ The required Home sequence is opening question → discovery → second question
 ### v1.7 — 2026-11-25
 - Updates Explore Experience and Copy references to v0.9 and v0.8.
 - Clarifies the distinct roles and maturity of Systems Thinking, Systems Engineering, Transformational Intelligence and TGCV.
+
+
+## 20. Research page experience authority
+
+The Research visitor experience is specified in:
+
+- `06_WEB/TGCV_WEB_RESEARCH_EXPERIENCE_v0.1.md` — current content version 0.1.
+
+Research follows Home and Explore. Home introduces the central question; Explore explains candidate transformations and accessibility under stated system boundaries and conditions; Research presents the scientific programme, current Core, research questions, methodological logic, evidence status, open questions and traceable research materials.
+
+The page must distinguish canonical conceptual definitions, analytical representations, working proposals, synthetic methodological evidence, bounded empirical evidence and unresolved claims. The evidence snapshot must be reconciled against the then-current RMA, Evidence→Claim Matrix, traceability and source audit records before final copy or publication. A controlled source asset is not automatically cleared for public release.
+
+The visitor experience is progressive: accessible explanation first, research architecture and questions next, methods and dated evidence status thereafter, then open questions and curated source materials. The detailed experience document is a working draft, not publication approval.
+
+### v1.8 — 2026-11-25
+- Adds the Research page experience authority and its current working specification.
+- Defines Research as the scientific deepening after Home and Explore.
+- Adds explicit evidence-status and public-source publication controls.
