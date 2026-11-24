@@ -932,9 +932,9 @@ Systems Thinking y Systems Engineering son perspectivas complementarias que cont
 La secuencia obligatoria de diseño es:
 1. Pregunta de apertura: «¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?»
 2. Descubrimiento: los sistemas pueden cambiar sus propias posibilidades.
-3. Ejemplo tangible: migración de una configuración de software entre dos entornos distintos.
-4. Explicación conceptual: condiciones, transformaciones candidatas, accesibilidad, transición, nuevas posibilidades y trayectorias; mantener separados accesibilidad, ejecución, resultado y valor.
-5. Segunda pregunta de descubrimiento: «¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?» / “What new options become available when a system can do something that was previously beyond its reach?” Debe acompañarse de una respuesta breve: cuando se hacen accesibles nuevas transformaciones, aparecen nuevas opciones y caminos posibles que pueden abrir oportunidades para generar valor, sin garantizar su realización ni que el resultado sea valioso.
+3. Segunda pregunta de descubrimiento: «¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?» / “What new options become available when a system can do something that was previously beyond its reach?” Debe acompañarse de una respuesta breve: cuando se hacen accesibles nuevas transformaciones, aparecen nuevas opciones y caminos posibles que pueden abrir oportunidades para generar valor, sin garantizar su realización ni que el resultado sea valioso.
+4. Ejemplo tangible: migración de una configuración de software entre dos entornos distintos.
+5. Explicación conceptual: condiciones, transformaciones candidatas, accesibilidad, transición, nuevas posibilidades y trayectorias; mantener separados accesibilidad, ejecución, resultado y valor.
 6. Ecosistema: TI como eje articulador; Systems Thinking y Systems Engineering como perspectivas complementarias.
 7. Exploración: Research, Systems Engineering, Transformational Intelligence y Labs & Applications, con rutas claras.
 
