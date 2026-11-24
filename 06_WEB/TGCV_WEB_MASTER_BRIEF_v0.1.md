@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 0.3  
+**Versión:** 0.4  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -881,3 +881,25 @@ El Blueprint es un plan editorial estratégico; no autoriza publicar automática
 ### v0.3 — 2026-11-24
 - Se incorpora la referencia normativa de planificación editorial al Content Blueprint v0.1.
 - Se fija el alcance mínimo de la web germen y sus controles de publicación.
+
+
+## 20. Home Copy v0.1
+
+The detailed first-release Home editorial draft is `06_WEB/TGCV_WEB_HOME_COPY_v0.1.md`.
+
+It includes:
+- proposed hero headline, supporting statement and calls to action;
+- visitor-facing explanation of the central question and insight;
+- plain-language analytical sequence, keeping accessibility, execution, trajectory, outcome and value distinct;
+- the four connected ecosystem pillars;
+- three exploratory application contexts;
+- invitation and footer copy;
+- alternatives for comprehension testing;
+- an Efecto Ajá checklist and scientific/editorial publication gates.
+
+The copy is a Spanish working draft for conceptual validation. The public language strategy (Spanish, English or bilingual) remains open. It is NOT approved for publication. The Home Experience document has been aligned to use a static explanatory visual, not a bespoke Home simulator.
+
+### v0.4 — 2026-11-24
+
+- Added the Home Copy v0.1 as the detailed editorial reference for the first public-facing page.
+- Clarified that copy is a Spanish working draft pending conceptual review, language strategy and evidence checks.
