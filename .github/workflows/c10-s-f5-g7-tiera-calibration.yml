@@ -136,7 +136,7 @@ jobs:
           test -n "$PROFILE_JSON"
           python validate_c10s_f5_g7_resource_profile.py \
             --profile "$PROFILE_JSON" \
-            --manifest ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_002.json \
+            --manifest ../fixtures/g7_resource_profile_v1_1/manifest.json \
             --root ../../.. \
             --output-json "$RUNNER_TEMP/g7-resource-profile-validation.json"
           python - <<'PY' >> "$GITHUB_OUTPUT"
@@ -151,7 +151,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/g7-resource-plan"
           cp "$RUNNER_TEMP/g7-resource-profile-validation.json" "$RUNNER_TEMP/g7-resource-plan/"
           cp "$PROFILE_JSON" "$RUNNER_TEMP/g7-resource-plan/resource-profile.json"
-          cp ../diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_002.json "$RUNNER_TEMP/g7-resource-plan/resource-profile-manifest.json"
+          cp ../fixtures/g7_resource_profile_v1_1/manifest.json "$RUNNER_TEMP/g7-resource-plan/resource-profile-manifest.json"
       - name: Upload validated resource plan and immutable profile (no recomputation)
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
