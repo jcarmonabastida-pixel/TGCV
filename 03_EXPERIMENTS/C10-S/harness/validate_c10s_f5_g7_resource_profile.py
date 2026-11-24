@@ -30,7 +30,7 @@ PROFILE_SOURCE_PATHS = (
 MAX_PARALLEL = 20
 JOB_SETUP_OVERHEAD_SECONDS = 300
 JOB_BUDGET_SECONDS = 9000  # 150 minutes; workflow hard timeout is 165 minutes.
-CANDIDATE_SHARD_SIZES = (25, 40, 50, 100)
+CANDIDATE_SHARD_SIZES = (20, 25, 40, 50, 100)
 
 
 def sha256_bytes(value: bytes) -> str:
