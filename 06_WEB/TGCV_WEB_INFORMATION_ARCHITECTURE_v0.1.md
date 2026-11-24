@@ -1,7 +1,7 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 1.4  
-**Date:** 2026-11-24  
+**Version:** 1.5  
+**Date:** 2026-11-25  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
 **Branch:** `strategy/tgcv-web-master`  
@@ -603,15 +603,15 @@ Use **Existing**, **In development** and **Exploratory** as operational content 
 
 The detailed visitor experience and bilingual copy for Explore are defined in:
 
-- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 0.5.
-- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 0.4.
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 0.7.
+- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 0.6.
 
 Explore is the conceptual deepening after Home, not a second presentation of the same discovery. Home introduces that a system's possibilities can change; Explore asks how we determine whether a candidate transformation is accessible, relative to a defined system, boundary and set of conditions. Home's numbered conceptual sequence is a reading aid, not a universal causal chain; trajectory must be visualised as the path across states and transitions, not as a discrete stage.
 
 Its working progression is:
 1. Move from the Home insight to the question of how accessibility is assessed.
 2. Distinguish a candidate transformation from an accessible transformation.
-3. Use the same migration transformation in two environments, with one explicit difference: the required dependency is available in A and missing in B.
+3. Use the same migration transformation in two environments, with one explicit difference: the required dependency is available in A and missing in B. State that the comparison holds the same operation, stated boundary assumptions and other specified prerequisites constant, and does not imply that this dependency is the only factor in a real migration.
 4. Explain that making the dependency available may change accessibility, without implying execution, success or value.
 5. Keep the visible sequence **Accessibility → Execution → Outcome → Value** (Spanish: **Accesibilidad → Ejecución → Resultado → Valor**) as a persistent visual anchor. Place candidate transformation before it as the object whose accessibility is assessed; represent trajectory across states and transformations, not as another stage.
 6. Open the space-of-possibilities section with the question: “¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?” / “What new options become available when a system can do something that was previously beyond its reach?”
@@ -698,3 +698,8 @@ The required Home sequence is opening question → discovery → second question
 ### v1.4 — 2026-11-24
 - Updates the canonical bilingual public descriptor to “applied research and innovation”.
 - Preserves the existing visitor-first Home sequence and the distinction between accessibility, execution, outcome and value.
+
+
+### v1.5 — 2026-11-25
+- Refreshes the authoritative Explore Experience and Copy references to v0.7 and v0.6.
+- Makes the single-variable illustrative contrast explicit without generalising it into a complete account of real migration feasibility.
