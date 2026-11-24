@@ -1,11 +1,11 @@
 # TGCV — Explore Experience Specification
 
 **Identifier:** TGCV-WEB-EXPLORE-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21–22  
-**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`, §12–13; Home Experience v0.8; Home Copy v0.5  
+**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`, §12–13; Home Experience v0.9; Home Copy v0.6  
 **Copy:** `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md`  
 **Branch:** `strategy/tgcv-web-master`
 
@@ -226,3 +226,4 @@ Before publication:
 
 - **0.1 — 2026-11-24:** Initial Explore experience specification.
 - **0.2 — 2026-11-24:** Repositions Explore as a conceptual deepening of Home, fixes the example to one missing dependency, broadens the candidate-transformation definition beyond software operations, and clarifies the bounded meaning of accessibility.
+- **0.3 — 2026-11-24:** Refreshes related Home document versions after the trajectory-visual reconciliation.
