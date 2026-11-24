@@ -1,7 +1,7 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
@@ -462,3 +462,48 @@ These decisions must be made explicitly. This blueprint does not authorize purch
 - Added explicit distinctions between scientific evidence, synthetic demonstrations, exploratory application fit and software prototypes.
 - Deferred Playground, community platform, product/service pages and full application library.
 - Added content production backlog, editorial gates and Efecto Ajá test protocol.
+
+
+## 12. Integrated editorial decision lock (2026-11-24)
+
+This section reconciles the Content Blueprint with the approved Home and ecosystem decisions. It supersedes incompatible first-release assumptions elsewhere in this document. Parent: Web Master Brief §21; page architecture: Information Architecture §16; Home experience: Home Experience §14.
+
+### 12.1 Approved page set and navigation
+
+First-release navigation: **Explore, Research, Systems Engineering, Transformational Intelligence, Labs & Applications, About, Contact**. Systems Thinking is transversal (Home, Explore and Research), not a separate first-release page. Do not publish Community as a top-level destination. No empty or placeholder page is permitted.
+
+### 12.2 Home content contract
+
+The Home sequence is question → discovery → tangible example → conceptual explanation → ecosystem → exploration. Use the approved opening question «¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?», working headline «Comprende cómo cambian las posibilidades de un sistema» and the approved explanatory direction in Home Experience §14.3.
+
+The tangible example is migration of a software configuration between two different environments. It must be newly specified as an illustrative bounded scenario. It is not to be represented as an existing execution, a validated application, a feature of Juguete Colectivo or evidence from C10-S.
+
+### 12.3 Page readiness and evidence controls
+
+- **Home:** ready for editorial rewrite; new illustration and bilingual adaptation required.
+- **Explore:** use the current TGCV distinctions and build the bounded migration example; explain candidate vs accessible transformations and distinguish accessibility, execution, trajectory, outcome and value.
+- **Research:** source from current Core and controlled research assets, but refresh evidence claims against current STATUS, RMA and Evidence→Claim Matrix immediately before publication. Current public status must not be copied from stale snapshots.
+- **Systems Engineering:** produce a concise page grounded in established systems-engineering practice and accurately describe the relationship to TGCV; do not invent a proprietary TGCV lifecycle or validated engineering method.
+- **Transformational Intelligence:** present TI as a working capability concept, not a generally validated capability or a synonym for AI.
+- **Labs & Applications:** distinguish Juguete Colectivo, TSTC v004 and exploratory Application-Fit contexts. Verify the actual distributable package/version and scope before linking the Collective Toy. TSTC is bounded synthetic methodological evidence, not empirical causal or industrial validation. Application-Fit contexts remain exploratory unless stronger evidence is independently established.
+- **About:** describe the programme, purpose and governance without implying a staffed institute, external board, consortium or formal community unless established.
+- **Contact:** publish only after confirming a real monitored channel, ownership/monitoring capacity and proportionate privacy wording. Do not invent an address or response-time promise.
+
+### 12.4 Maturity and evidence labels
+
+Operational content maturity labels: **Existing**, **In development**, **Exploratory**. Keep these separate from scientific evidence descriptors such as conceptual, hypothesis, synthetic, executed, audited, empirical, pilot or deployed. A published page or available demonstrator does not establish scientific validation.
+
+### 12.5 Bilingual editorial production
+
+The first public release is Spanish and English. Produce complete, equivalent content for every published destination. Adapt idiom and terminology naturally; do not publish one language as a partial placeholder. Keep shared concepts, claims, evidence caveats and navigation destinations equivalent.
+
+### 12.6 Efecto Ajá and publication gates
+
+Efecto Ajá is a desired quality objective, not a mandatory gate. Before publication, conduct an integral review of concept, narrative, journey and examples and simulate representative visitor profiles. Real visitor testing should be added when an external group is viable; its absence alone does not block launch.
+
+Mandatory gates are identity coherence, clear visitor-facing message, useful and complete content, scientific credibility, truthful maturity/evidence labels, working destinations/contact route, accessibility/responsiveness, privacy and maintainable scope. The external Efecto Ajá test is not a stopper.
+
+### v0.2 — 2026-11-24
+- Aligns the content inventory and publication gates with the approved first-release navigation and Home sequence.
+- Separates the illustrative software-migration example from existing demonstrators and synthetic evidence.
+- Makes bilingual completeness mandatory and external Efecto Ajá testing desirable but non-blocking.
