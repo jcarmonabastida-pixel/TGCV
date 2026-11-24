@@ -1,7 +1,7 @@
 # TGCV — Home Page Copy v0.1
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-24  
 **Status:** EDITORIAL DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** strategy/tgcv-web-master  
@@ -338,3 +338,96 @@ This is a qualitative editorial test, not a representative survey or scientific 
 9. Decide the public language strategy before translation and final copy editing.
 
 **Publication status:** NOT APPROVED. This draft is ready for conceptual review and visitor testing, not for direct publication.
+
+
+## 12. Home Copy v0.2 — approved editorial direction
+
+**Status:** WORKING COPY — NOT APPROVED FOR PUBLICATION. This section is the current Spanish editorial draft and supersedes v0.1 where wording or sequence conflicts. The English adaptation must be authored as an equivalent version, not a literal translation.
+
+### 12.1 Hero
+
+**Pregunta de apertura**
+
+¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?
+
+**Titular**
+
+# Comprende cómo cambian las posibilidades de un sistema.
+
+**Texto de apoyo**
+
+Un sistema no solo cambia cuando pasa de un estado a otro. También puede adquirir nuevas capacidades, acceder a transformaciones que antes no estaban a su alcance y abrir trayectorias diferentes.
+
+**Línea de ecosistema**
+
+Tres perspectivas. Una ambición compartida: comprender, diseñar y orientar cómo evolucionan las posibilidades de los sistemas.
+
+**CTA principal:** Explora el enfoque → Explore.
+
+**Enlaces secundarios:** Descubre la investigación → Research; Explora la ingeniería de sistemas → Systems Engineering.
+
+### 12.2 Descubrimiento
+
+**Los sistemas pueden cambiar sus propias posibilidades.**
+
+Los recursos, las capacidades, las conexiones, las reglas, los permisos y las restricciones influyen en las transformaciones que un sistema tiene a su alcance. Cuando cambian esas condiciones, algunas transformaciones pueden hacerse accesibles, otras dejar de estarlo y otras reorganizarse.
+
+Eso no significa que el sistema vaya a ejecutar automáticamente una transformación. Accesibilidad y ejecución son cuestiones distintas.
+
+### 12.3 Ejemplo tangible — migración entre entornos
+
+**Una configuración que funciona en un entorno no necesariamente puede operar en otro.**
+
+Imagina un sistema de software que funciona en su entorno de origen. Al trasladarlo a un segundo entorno, encuentra diferencias de configuración, dependencias, recursos o permisos. En esas condiciones, algunas operaciones que eran posibles dejan de estar disponibles.
+
+Al modificar y adaptar las condiciones pertinentes, una operación que antes no era accesible puede pasar a estarlo. El sistema habrá ampliado o reconfigurado sus posibilidades, aunque todavía habrá que distinguir si esa operación se ejecuta, qué resultado produce y cómo se evalúa.
+
+**Pie de ilustración:** Cambiar las condiciones puede cambiar qué transformaciones están al alcance del sistema. Que una transformación sea accesible no significa que se ejecute ni que produzca un resultado favorable.
+
+**Nota editorial:** este caso se construirá como ilustración explicativa acotada. No es una ejecución ya realizada, una aplicación validada ni una función del Juguete Colectivo.
+
+### 12.4 Explicación conceptual
+
+**De las condiciones a las trayectorias**
+
+1. **Sistema y condiciones:** delimitamos el sistema y el contexto en que opera.
+2. **Transformaciones candidatas:** identificamos los cambios que podrían considerarse.
+3. **Accesibilidad:** determinamos cuáles están disponibles bajo las condiciones y el límite de decisión definidos.
+4. **Transición:** distinguimos cuál llega efectivamente a realizarse.
+5. **Nuevas posibilidades:** observamos cómo cambia el conjunto de transformaciones disponibles desde el estado resultante.
+6. **Trayectorias:** exploramos qué secuencias futuras pueden abrirse o cerrarse.
+7. **Resultados y valor:** requieren evaluación y criterios propios; no se deducen automáticamente de la accesibilidad.
+
+### 12.5 El ecosistema
+
+**Una capacidad integradora, dos perspectivas complementarias.**
+
+- **Transformational Intelligence:** capacidad integradora para comprender, razonar y orientar transformaciones en los sistemas. Es el eje articulador del ecosistema y un concepto/capacidad en desarrollo, no una disciplina académica ya consolidada.
+- **Systems Thinking:** perspectiva para comprender sistemas, condiciones, relaciones, dinámicas y posibilidades.
+- **Systems Engineering:** disciplina para modelar, diseñar, desarrollar e intervenir en sistemas y sus transformaciones.
+
+Research desarrolla conocimiento, métodos, modelos y evidencia. Labs & Applications explora experimentos, demostradores y contextos de aplicación. Ambos espacios se retroalimentan.
+
+### 12.6 Explora según tu interés
+
+- **Explore:** comprende las ideas y distinciones fundamentales.
+- **Research:** conoce TGCV, sus preguntas, métodos, experimentos y límites.
+- **Systems Engineering:** explora la relación con el modelado, diseño e intervención en sistemas.
+- **Transformational Intelligence:** profundiza en la capacidad de razonar sobre transformaciones posibles y orientar trayectorias.
+- **Labs & Applications:** consulta demostradores y contextos exploratorios con su estado claramente indicado.
+
+**CTA final:** Encuentra por dónde empezar → Explore.
+
+**About** y **Contact** permanecen disponibles en la navegación y el pie de página. Contact solo se activará cuando exista un canal real y monitorizado.
+
+### 12.7 Control de publicación
+
+La Home se publicará en español e inglés con equivalencia conceptual y editorial. El Efecto Ajá se evaluará sobre la experiencia completa como objetivo de calidad deseable: revisión conceptual y narrativa, comprobación del ejemplo y simulación de perfiles; pruebas reales cuando sean viables. La validación externa no es un requisito obligatorio de lanzamiento.
+
+Antes de publicar, verificar el lenguaje científico con el Core y la evidencia canónica vigente, comprobar todos los enlaces y activos, y asegurar accesibilidad, respuesta móvil, privacidad y mantenimiento. No presentar como disponibles el Playground futuro, la migración ilustrativa, aplicaciones exploratorias ni funcionalidades no verificadas.
+
+### v0.2 — 2026-11-24
+- Introduce la pregunta de apertura, titular y secuencia aprobados.
+- Incorpora la migración de configuración entre entornos como ejemplo ilustrativo, separado de los demostradores existentes.
+- Reestructura el ecosistema alrededor de TI, Systems Thinking y Systems Engineering, y separa las áreas de actividad Research y Labs & Applications.
+- Alinea navegación, bilingüismo y Efecto Ajá con las decisiones aprobadas.
