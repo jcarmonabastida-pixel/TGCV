@@ -1,7 +1,7 @@
 # TGCV — Home Experience Specification
 
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 1.3  
+**Version:** 1.4  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21  
@@ -104,11 +104,11 @@ English equivalent:
 
 Spanish:
 
-Un sistema no solo cambia cuando pasa de un estado a otro. También puede adquirir nuevas capacidades, acceder a transformaciones que antes no estaban a su alcance y abrir trayectorias diferentes.
+Un sistema no solo cambia cuando pasa de un estado a otro. También puede cambiar qué transformaciones tiene a su alcance y abrir trayectorias diferentes.
 
 English:
 
-A system does not only change when it moves from one state to another. It can also develop new capabilities, gain access to transformations that were previously out of reach, and open up different trajectories.
+A system does not only change when it moves from one state to another. The transformations within its reach can also change, opening up different trajectories.
 
 ### 5.4 Primary action
 
@@ -312,3 +312,7 @@ The identity and copy are directionally coherent. Publication remains blocked pe
 - Adopts the public descriptor “investigación aplicada e innovación” and its English equivalent.
 - Clarifies that Home's concise discovery answer should describe newly accessible transformations, not imply that accessibility means execution.
 - Updates the public positioning from research programme to applied research and innovation programme.
+
+### v1.4 — 2026-11-24
+- Refines the Home supporting copy to foreground changes in accessible transformations rather than capability acquisition.
+- Updates the current Home Copy reference to v1.1.
