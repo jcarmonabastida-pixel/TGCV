@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 1.5  
+**Version:** 1.6  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -603,8 +603,8 @@ Use **Existing**, **In development** and **Exploratory** as operational content 
 
 The detailed visitor experience and bilingual copy for Explore are defined in:
 
-- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 0.7.
-- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 0.6.
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 0.8.
+- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 0.7.
 
 Explore is the conceptual deepening after Home, not a second presentation of the same discovery. Home introduces that a system's possibilities can change; Explore asks how we determine whether a candidate transformation is accessible, relative to a defined system, boundary and set of conditions. Home's numbered conceptual sequence is a reading aid, not a universal causal chain; trajectory must be visualised as the path across states and transitions, not as a discrete stage.
 
@@ -615,7 +615,7 @@ Its working progression is:
 4. Explain that making the dependency available may change accessibility, without implying execution, success or value.
 5. Keep the visible sequence **Accessibility → Execution → Outcome → Value** (Spanish: **Accesibilidad → Ejecución → Resultado → Valor**) as a persistent visual anchor. Place candidate transformation before it as the object whose accessibility is assessed; represent trajectory across states and transformations, not as another stage.
 6. Open the space-of-possibilities section with the question: “¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?” / “What new options become available when a system can do something that was previously beyond its reach?”
-7. Explain how system elements, relationships, boundaries and conditions shape accessibility.
+7. Explain the space of possibilities through three visitor questions: what elements are present and what can each do; how are they related; and under what conditions can they act together. Make clear that component capabilities alone do not determine accessibility.
 7. Connect Systems Thinking and Systems Engineering as complementary foundations to Transformational Intelligence as the ecosystem's integrative capability concept.
 
 The migration example is illustrative only. It is not an existing execution, validated application, Juguete Colectivo feature or C10-S result. Keep the single missing-dependency condition consistent across Home, Explore and both languages.
@@ -703,3 +703,8 @@ The required Home sequence is opening question → discovery → second question
 ### v1.5 — 2026-11-25
 - Refreshes the authoritative Explore Experience and Copy references to v0.7 and v0.6.
 - Makes the single-variable illustrative contrast explicit without generalising it into a complete account of real migration feasibility.
+
+
+### v1.6 — 2026-11-25
+- Updates Explore Experience and Copy references to v0.8 and v0.7.
+- Clarifies the visitor-facing explanation of system possibilities through elements, relationships/dependencies and operating conditions, avoiding a disconnected factor checklist.
