@@ -31,7 +31,8 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "JSON_DIGEST_MISMATCH"):
                 validator.validate(profile, manifest, root)
 
-    def test_shard_plan_minimizes_conservative_wall_time_without_budget_reduction(self):
+    def test_shard_plan_uses_real_profile_maxima_and_global_denominators(self):
+        """Exercise the official dimensioner with the immutable v1.1 profile timings."""
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             for relative in validator.PROFILE_SOURCE_PATHS:
@@ -43,16 +44,20 @@ class F5G7ResourceProfileTests(unittest.TestCase):
                     "cell_id": "F5_beta22_M10_R5",
                     "datasets_completed": 100,
                     "latency_seconds": {
-                        "mean": 0.373, "p95": 0.413,
-                        "p99": 0.961, "max": 7.967,
+                        "mean": 0.372552760719999,
+                        "p95": 0.41342600800000184,
+                        "p99": 7.6749692370000275,
+                        "max": 7.966771501000004,
                     },
                 },
                 {
                     "cell_id": "F5_beta22_M30_R20",
                     "datasets_completed": 100,
                     "latency_seconds": {
-                        "mean": 208.420, "p95": 285.521,
-                        "p99": 400.000, "max": 418.195,
+                        "mean": 208.42004155971,
+                        "p95": 285.5205215279998,
+                        "p99": 356.9617618740001,
+                        "max": 418.194637585,
                     },
                 },
             ]
@@ -75,8 +80,8 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             manifest_path = root / "manifest.json"
             manifest_path.write_text(json.dumps({
                 "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002",
-                "profile_run_id": 45000000001,
-                "profile_artifact_id": 14799999999,
+                "profile_run_id": 45365559253,
+                "profile_artifact_id": 14908914198,
                 "profile_source_commit": "a" * 40,
                 "profile_json_sha256": hashlib.sha256(profile_bytes).hexdigest(),
                 "profile_artifact_archive_sha256": "b" * 64,
@@ -87,16 +92,40 @@ class F5G7ResourceProfileTests(unittest.TestCase):
                 validator.subprocess, "check_output", return_value=b"frozen-compute-path"
             ):
                 result = validator.validate(profile_path, manifest_path, root)
+
             self.assertEqual(result["datasets_per_shard"], 20)
             self.assertEqual(result["shard_jobs_per_phase"], 100)
             self.assertEqual(result["max_parallel_jobs"], 20)
-            self.assertLess(result["end_to_end_conservative_wall_seconds"], 30 * 3600)
-            self.assertLessEqual(
-                result["selected_shard_projection"]["per_cell"]["F5_beta22_M30_R20"]["max_observed_shard_runtime_seconds"],
-                9000,
+            self.assertEqual(len(result["shard_matrix"]), 100)
+            self.assertEqual(
+                sum(1 for item in result["shard_matrix"] if item["cell_id"] == "F5_beta22_M10_R5"),
+                50,
             )
-            self.assertEqual(result["selected_shard_projection"]["per_cell"]["F5_beta22_M30_R20"]["shards"], 50)
-            self.assertFalse(next(item for item in result["candidate_shard_projections"] if item["datasets_per_shard"] == 25)["safe_under_150_minute_job_budget"])
+            self.assertEqual(
+                sum(1 for item in result["shard_matrix"] if item["cell_id"] == "F5_beta22_M30_R20"),
+                50,
+            )
+            slow = result["selected_shard_projection"]["per_cell"]["F5_beta22_M30_R20"]
+            self.assertAlmostEqual(slow["max_observed_shard_runtime_seconds"], 8663.8927517, places=5)
+            self.assertEqual(slow["shards"], 50)
+            self.assertEqual(slow["waves"], 3)
+            by_size = {item["datasets_per_shard"]: item for item in result["candidate_shard_projections"]}
+            self.assertTrue(by_size[20]["safe_under_150_minute_job_budget"])
+            self.assertFalse(by_size[25]["safe_under_150_minute_job_budget"])
+            self.assertFalse(by_size[40]["safe_under_150_minute_job_budget"])
+            self.assertFalse(by_size[50]["safe_under_150_minute_job_budget"])
+            self.assertFalse(by_size[100]["safe_under_150_minute_job_budget"])
+            # Current validator conservatively sums the two cell-specific wave bounds:
+            # 3 waves for each cell, then repeats the full bound for primary and replay.
+            self.assertAlmostEqual(
+                result["primary_plus_replay_conservative_wall_seconds"],
+                2 * (
+                    3 * (20 * 7.966771501000004 + 300)
+                    + 3 * (20 * 418.194637585 + 300)
+                ),
+                places=5,
+            )
+            self.assertEqual(result["coverage_adjudication"], "NOT_PERFORMED")
 
     def test_resource_profile_rejects_unexpected_schema_before_compatibility_check(self):
         with tempfile.TemporaryDirectory() as directory:
