@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 0.6  
+**Version:** 0.7  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -606,7 +606,7 @@ The detailed visitor experience and bilingual copy for Explore are defined in:
 - `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 0.2.
 - `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 0.2.
 
-Explore is the conceptual deepening after Home, not a second presentation of the same discovery. Home introduces that a system's possibilities can change; Explore asks how we determine whether a candidate transformation is accessible, relative to a defined system, boundary and set of conditions.
+Explore is the conceptual deepening after Home, not a second presentation of the same discovery. Home introduces that a system's possibilities can change; Explore asks how we determine whether a candidate transformation is accessible, relative to a defined system, boundary and set of conditions. Home's numbered conceptual sequence is a reading aid, not a universal causal chain; trajectory must be visualised as the path across states and transitions, not as a discrete stage.
 
 Its working progression is:
 1. Move from the Home insight to the question of how accessibility is assessed.
@@ -637,3 +637,7 @@ The detailed specification and copy remain working drafts, not publication clear
 ### v0.6 — 2026-11-24
 - Clarifies the Home-to-Explore hand-off so Explore deepens rather than repeats the Home discovery.
 - Fixes the migration illustration to one missing dependency and updates the conceptual progression and terminology.
+
+
+### v0.7 — 2026-11-24
+- Aligns the Home visual treatment of trajectory with the Explore conceptual guardrail: trajectory spans states and transitions and is not a discrete linear stage.
