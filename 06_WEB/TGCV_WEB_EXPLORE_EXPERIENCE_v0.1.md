@@ -1,12 +1,12 @@
 # TGCV — Explore Experience Specification
 
 **Identifier:** TGCV-WEB-EXPLORE-001  
-**Version:** 0.5  
+**Version:** 0.6  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21–22  
-**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`, §12–13; Home Experience v0.9; Home Copy v0.6  
-**Copy:** `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — v0.4  
+**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`, §12–13; Home Experience v1.4; Home Copy v1.1  
+**Copy:** `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — v0.5  
 **Branch:** `strategy/tgcv-web-master`
 
 ---
@@ -241,3 +241,6 @@ Before publication:
 - **0.3 — 2026-11-24:** Refreshes related Home document versions after the trajectory-visual reconciliation.
 - **0.4 — 2026-11-24:** Adds a visitor-facing explanation of the practical implication of changed accessibility, clarifies that accessibility means being within reach rather than execution, and refines trajectory wording to avoid implying that transformations always form a chain.
 - **0.5 — 2026-11-24:** Requires the block-5 question in both languages and a persistent visual anchor for Accessibility → Execution → Outcome → Value, with candidate transformation before the sequence and trajectory across states and transformations.
+
+
+- **0.6 — 2026-11-25:** Refreshes Home and Explore Copy references to their current versions after the integrated bilingual identity review.
