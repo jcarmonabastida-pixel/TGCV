@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 1.4  
+**Versión:** 1.5  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -1162,3 +1162,6 @@ The current Home concept and copy are directionally coherent with the approved T
 - Adopts the public descriptor “investigación aplicada e innovación” and its English equivalent.
 - Clarifies the complementary roles of applied research (investigation and testing) and innovation (developing methods, tools and applications) without implying validated deployment.
 - Adds the complete English descriptor to the identity decision lock and Home review.
+
+### v1.5 — 2026-11-24
+- Completes the Home editorial review: sharpens the hero supporting copy around changes in transformations within reach and records the revised bilingual Home Copy/Experience versions.
