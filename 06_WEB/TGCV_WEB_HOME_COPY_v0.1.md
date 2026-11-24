@@ -1,7 +1,7 @@
 # TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 1.0  
+**Version:** 1.1  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md`  
@@ -31,7 +31,7 @@ Do not publish until the scientific language, evidence labels, links, assets, co
 
 **Texto de apoyo**
 
-Un sistema no solo cambia cuando pasa de un estado a otro. También puede adquirir nuevas capacidades, acceder a transformaciones que antes no estaban a su alcance y abrir trayectorias diferentes.
+Un sistema no solo cambia cuando pasa de un estado a otro. También puede cambiar qué transformaciones tiene a su alcance y abrir trayectorias diferentes.
 
 **Acción principal:** Explora el enfoque → Explore.
 
@@ -178,7 +178,7 @@ What would need to change for a system to do something it cannot do today?
 
 **Supporting copy**
 
-A system does not only change when it moves from one state to another. It can also develop new capabilities, gain access to transformations that were previously out of reach, and open up different trajectories.
+A system does not only change when it moves from one state to another. The transformations within its reach can also change, opening up different trajectories.
 
 **Primary action:** Explore the approach → Explore.
 
@@ -385,3 +385,5 @@ The approved narrative order is opening question → discovery → second questi
 - Clarifies the meaning of “Generative” and aligns the Home identity with the approved programme descriptor.
 
 - **1.0 — 2026-11-24:** Adopts the public descriptor “applied research and innovation” in both languages; refines the second answer to foreground newly accessible transformations rather than imply execution.
+
+- **1.1 — 2026-11-24:** Refines the hero supporting copy to focus directly on changes in the transformations within a system's reach, avoiding possible conflation with capability acquisition.
