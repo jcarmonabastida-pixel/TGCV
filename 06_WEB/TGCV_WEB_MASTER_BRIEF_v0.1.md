@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 0.4  
+**Versión:** 0.5  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -903,3 +903,64 @@ The copy is a Spanish working draft for conceptual validation. The public langua
 
 - Added the Home Copy v0.1 as the detailed editorial reference for the first public-facing page.
 - Clarified that copy is a Spanish working draft pending conceptual review, language strategy and evidence checks.
+
+
+## 21. Decisiones editoriales integradas de Home y primera publicación
+
+**Estado:** DECISION LOCK — aprobado en revisión conceptual del 24-11-2026. Esta sección prevalece sobre formulaciones anteriores incompatibles en este documento y en documentos subordinados.
+
+### 21.1 Identidad y audiencia
+
+La Home se dirige prioritariamente a personas que investigan, diseñan, desarrollan o ingenierizan sistemas, manteniendo una puerta de entrada comprensible para otros públicos.
+
+La identidad pública es un ecosistema de investigación, pensamiento sistémico e ingeniería de sistemas articulado alrededor de Transformational Intelligence (TI). No es una consultora, una empresa de IA, una plataforma tecnológica ni una teoría académica aislada.
+
+- **Transformational Intelligence:** capacidad integradora para comprender, razonar y orientar transformaciones en los sistemas. Es el eje articulador del ecosistema; se presenta como concepto/capacidad en desarrollo, no como disciplina académica consolidada ni capacidad generalmente validada.
+- **Systems Thinking:** perspectiva para comprender sistemas, condiciones, relaciones, dinámicas y posibilidades.
+- **Systems Engineering:** disciplina para modelar, diseñar, desarrollar e intervenir en sistemas y sus transformaciones.
+
+Systems Thinking y Systems Engineering son perspectivas complementarias que contribuyen al desarrollo y aplicación de TI; no son departamentos ni disciplinas equivalentes a TI dentro de una taxonomía artificial.
+
+### 21.2 Actividad del ecosistema
+
+**Research** desarrolla conocimiento, fundamentos, métodos, modelos, experimentos y evidencia. **Labs & Applications** reúne experimentación, demostradores y exploración de contextos de aplicación. Son espacios de actividad relacionados mediante retroalimentación bidireccional; no fases lineales ni promesas de laboratorios físicos o aplicaciones desplegadas.
+
+### 21.3 Narrativa aprobada de Home
+
+La secuencia obligatoria de diseño es:
+1. Pregunta de apertura: «¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?»
+2. Descubrimiento: los sistemas pueden cambiar sus propias posibilidades.
+3. Ejemplo tangible: migración de una configuración de software entre dos entornos distintos.
+4. Explicación conceptual: condiciones, transformaciones candidatas, accesibilidad, transición, nuevas posibilidades y trayectorias; mantener separados accesibilidad, ejecución, resultado y valor.
+5. Ecosistema: TI como eje articulador; Systems Thinking y Systems Engineering como perspectivas complementarias.
+6. Exploración: Research, Systems Engineering, Transformational Intelligence y Labs & Applications, con rutas claras.
+
+Titular de trabajo aprobado: **«Comprende cómo cambian las posibilidades de un sistema.»** Subtítulo explicativo de trabajo: «Un sistema no solo cambia cuando pasa de un estado a otro. También puede adquirir nuevas capacidades, acceder a transformaciones que antes no estaban a su alcance y abrir trayectorias diferentes.» La frase de ecosistema que acompaña la presentación es: «Tres perspectivas. Una ambición compartida: comprender, diseñar y orientar cómo evolucionan las posibilidades de los sistemas.» Estas formulaciones quedan aprobadas como dirección editorial, sujetas a edición ES/EN y revisión de fidelidad científica.
+
+El ejemplo de migración es una ilustración editorial nueva, no un resultado experimental ni una función ya disponible del Juguete Colectivo. No afirmar que el demostrador existente simula esa migración.
+
+### 21.4 Navegación y rutas
+
+Navegación pública de primera versión: **Explore, Research, Systems Engineering, Transformational Intelligence, Labs & Applications, About, Contact**. Systems Thinking tendrá tratamiento transversal: Home, explicación conceptual en Explore y desarrollo metodológico en Research; no tendrá página independiente en la primera versión.
+
+Explore debe aportar explicación conceptual y ejemplo, no repetir la Home. About presenta propósito, alcance y gobernanza de forma sobria. Contact solo se publica cuando exista un canal real y monitorizado, con tratamiento de privacidad adecuado. No anunciar comunidad, eventos, contribución o colaboración organizada si no existe una vía operativa mantenible.
+
+### 21.5 Idiomas y Efecto Ajá
+
+La primera publicación será bilingüe español/inglés, con equivalencia conceptual y editorial, no traducción literal. El español puede seguir siendo idioma de trabajo interno.
+
+El Efecto Ajá es un objetivo de calidad deseable, no una condición obligatoria ni stopper de publicación. Antes de publicar se realizará una revisión integral conceptual, narrativa y de ejemplos, incluyendo simulación de perfiles de visitante. Cuando exista un grupo externo viable, se incorporarán pruebas con visitantes reales. La falta de validación externa no bloquea por sí sola la publicación. Los requisitos fundamentales siguen siendo identidad coherente, claridad, orientación al visitante y credibilidad científica.
+
+### 21.6 Credibilidad, activos y estados
+
+Distinguir explícitamente contenido **Existing**, **In development** y **Exploratory**. No confundir estos estados operativos con estados de evidencia científica. Los activos sintéticos, prototipos y contextos Application-Fit deben conservar sus límites y no convertirse en evidencia empírica, causalidad, generalidad, despliegue o valor demostrado.
+
+El Juguete Colectivo y TSTC v004 pueden presentarse como activos diferenciados solo después de verificar paquete, versión, alcance y estado actuales. El futuro Playground no es requisito de lanzamiento. La evidencia y los enlaces públicos deben contrastarse con el estado canónico vigente justo antes de publicar.
+
+### 21.7 Idioma editorial y control
+
+Los cinco documentos web subordinados deben mantener esta especificación común. Si persiste texto histórico incompatible, esta sección y el registro de decisión de Home de fecha 24-11-2026 prevalecen hasta que el texto se reescriba en la siguiente revisión editorial. No se altera TGCV Core, RMA, Evidence→Claim Matrix ni STATUS.
+
+### v0.5 — 2026-11-24
+- Consolida decisiones aprobadas sobre audiencia, identidad, relación TI/Systems Thinking/Systems Engineering, Research/Labs & Applications, narrativa, ejemplo, navegación, bilingüismo y Efecto Ajá.
+- Establece un bloque de control editorial común para reconciliar los documentos subordinados.
