@@ -1,129 +1,75 @@
-# TGCV — Home Page Copy v0.1
+# TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-24  
-**Status:** EDITORIAL DRAFT — NOT APPROVED FOR PUBLICATION  
-**Branch:** strategy/tgcv-web-master  
-**Parent:** TGCV Web Master Brief v0.3; Information Architecture v0.3; Home Experience v0.2; Content Blueprint v0.1.
-
-**Language note:** This is a Spanish working draft to validate meaning and narrative. The public website language strategy (Spanish, English or bilingual) remains open. Translation should follow conceptual approval, not precede it.
-
-**Authority boundary:** This is proposed public-facing copy. It does not modify scientific definitions, evidence status, publication permissions or repository governance. All claims remain subject to current-source review before release.
+**Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
+**Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md`  
+**Branch:** `strategy/tgcv-web-master`
 
 ---
 
-> **Current editorial authority (2026-11-24):** the approved decision-lock section at the end of this document is authoritative for the first public web release. It supersedes any earlier working text that conflicts with the approved audience, identity architecture, Home narrative, software-migration illustration, first-release navigation, Spanish/English requirement or non-blocking Efecto Ajá status. Earlier material is retained as design history until the next full editorial rewrite; it must not be treated as current instruction where it conflicts with the decision lock.
+## 1. Editorial purpose
 
-## 0. Editorial intent
+This document contains the Spanish and English working copy for the first Home release. Both language versions express the same concepts, claims, caveats and visitor routes. They are editorial adaptations, not line-by-line translations.
 
-The Home page must make one idea understandable:
+The copy is written first for people who research, design, develop or engineer systems, while remaining understandable to interested visitors outside those fields.
 
-**Cuando cambian las condiciones de un sistema, también puede cambiar lo que ese sistema es capaz de hacer a continuación.**
+Do not publish until the scientific language, evidence labels, links, assets, contact route, accessibility and bilingual equivalence have been checked.
 
-It should not attempt to explain the whole TGCV formalism. It should create recognition, deliver the central insight, offer a simple mental model and guide visitors to deeper content.
+# 2. Spanish version
 
-The voice is clear, intellectually curious, precise and accessible. Avoid promotional superlatives, generic innovation language and claims of universal applicability.
+## 2.1 Hero
 
----
+**Pregunta**
 
-## 1. Hero — first screen
+¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?
 
-### Eyebrow
-**Sistemas · Transformación · Ingeniería**
+**Titular**
 
-### Headline — recommended working version
-# Comprender y diseñar cómo se transforman los sistemas.
+# Comprende cómo cambian las posibilidades de un sistema.
 
-### Supporting statement
-Investigamos cómo las condiciones, capacidades y relaciones de un sistema determinan qué transformaciones tiene a su alcance, cómo cambian sus posibilidades y qué trayectorias pueden abrirse después.
+**Texto de apoyo**
 
-### Primary action
-**Explora cómo se transforman los sistemas**
+Un sistema no solo cambia cuando pasa de un estado a otro. También puede adquirir nuevas capacidades, acceder a transformaciones que antes no estaban a su alcance y abrir trayectorias diferentes.
 
-Destination: Explore.
+**Acción principal:** Explora el enfoque → Explore.
 
-### Secondary action
-**Conoce la investigación**
+**Enlaces secundarios:** Conoce la investigación → Research · Explora la ingeniería de sistemas → Systems Engineering.
 
-Destination: Research / TGCV.
+## 2.2 Descubrimiento
 
-### Optional tertiary text link
-**Explora el enfoque de ingeniería**
+### Los sistemas pueden cambiar sus propias posibilidades.
 
-Destination: Systems Engineering.
+Los recursos, las capacidades, las conexiones, las reglas, los permisos y las restricciones influyen en las transformaciones que un sistema tiene a su alcance.
 
-### Hero visual caption
-No cambia únicamente el estado de un sistema. También puede cambiar el conjunto de transformaciones que tiene disponibles.
+Cuando cambian esas condiciones, algunas transformaciones pueden hacerse accesibles, otras pueden dejar de estarlo y otras pueden reorganizarse.
 
-**Editorial note:** The headline deliberately uses “comprender y diseñar” as an ecosystem ambition. It must not imply that TGCV already provides a validated general-purpose design method.
+Eso no significa que el sistema vaya a ejecutar automáticamente una transformación. Que algo esté a su alcance y que llegue a realizarlo son cuestiones distintas.
 
----
+## 2.3 Ejemplo: una configuración entre dos entornos
 
-## 2. Section — the question
+### Una configuración que funciona en un entorno no necesariamente puede operar en otro.
 
-### Heading
-## ¿Qué cambia cuando cambia un sistema?
+Imagina un sistema de software que funciona en su entorno de origen. Al trasladar su configuración a un segundo entorno, encuentra diferencias en dependencias, recursos, permisos o parámetros.
 
-### Copy
-Solemos describir los sistemas por su estado: qué componentes tienen, cómo funcionan o qué resultado producen.
+En las nuevas condiciones, una operación que estaba disponible puede dejar de estar a su alcance. Si se adapta una dependencia, se habilita un permiso o se modifica una condición relevante, esa operación puede volver a ser accesible.
 
-Pero hay otra pregunta decisiva: **¿qué pueden hacer desde ese estado y bajo esas condiciones?**
+El cambio no garantiza que la operación se ejecute ni que funcione correctamente. Lo que ha cambiado, en primer lugar, es lo que el sistema puede hacer bajo esas condiciones.
 
-Los recursos, las capacidades, las conexiones, las reglas, los permisos y las restricciones influyen en las transformaciones que un sistema puede realizar. Cuando esas condiciones cambian, algunas posibilidades pueden abrirse, otras cerrarse y otras reorganizarse.
+**Pie de ilustración:** Cambiar las condiciones puede cambiar qué transformaciones están al alcance de un sistema. Accesibilidad no significa ejecución ni éxito.
 
-Comprender un sistema exige observar tanto su estado como las transformaciones que tiene a su alcance.
+**Nota de producción:** Este escenario es una ilustración explicativa creada para la Home. No es una ejecución ya realizada, una aplicación validada ni una función del Juguete Colectivo.
 
-### Optional pull quote
-**La cuestión no es solo cómo cambia un sistema, sino cómo cambia lo que puede hacer después.**
+## 2.4 De las condiciones a las trayectorias
 
----
-
-## 3. Section — the central insight
-
-### Heading
-## Los sistemas cambian. Sus posibilidades también.
-
-### Copy
-Imagina un sistema con varias transformaciones candidatas. En su configuración inicial, solo algunas son accesibles: quizá faltan recursos, una conexión, una autorización o una capacidad.
-
-Si una de esas condiciones cambia, el conjunto de transformaciones accesibles puede cambiar también.
-
-No significa necesariamente que el sistema vaya a ejecutar esas transformaciones. Significa que su espacio de posibilidades ha cambiado.
-
-Y cuando una transformación se realiza, el sistema puede alcanzar un nuevo estado desde el que otras posibilidades quedan abiertas, cerradas o modificadas.
-
-### Diagram labels
-- **Configuración inicial**
-- Transformaciones candidatas
-- Transformaciones accesibles
-- **Cambio de condiciones**
-- Nuevas posibilidades
-- Posibilidades que se restringen
-- **Transformación realizada**
-- Estado sucesor
-- Trayectorias posteriores
-
-### Diagram caption
-Un cambio en las condiciones puede ampliar, reducir o reorganizar las transformaciones accesibles. La accesibilidad no garantiza ejecución ni un resultado favorable.
-
----
-
-## 4. Section — the analytical sequence
-
-### Heading
-## De las condiciones a las trayectorias futuras
-
-### Introductory copy
-Para estudiar esa dinámica distinguimos varios momentos. Cada uno plantea una pregunta diferente y evita confundir lo que un sistema podría hacer con lo que realmente hace y con las consecuencias que obtiene.
-
-### Sequence
+Para comprender cómo cambian las posibilidades de un sistema, distinguimos varias cuestiones:
 
 **01 — Sistema y condiciones**  
 ¿Qué sistema estamos observando, dónde fijamos sus límites y bajo qué condiciones opera?
 
 **02 — Transformaciones candidatas**  
-¿Qué cambios, acciones o transiciones podemos considerar dentro de ese sistema y su contexto?
+¿Qué cambios o transiciones podemos considerar dentro de ese sistema y su contexto?
 
 **03 — Accesibilidad**  
 ¿Cuáles de esas transformaciones están disponibles bajo las condiciones y el límite de decisión definidos?
@@ -138,298 +84,242 @@ Para estudiar esa dinámica distinguimos varios momentos. Cada uno plantea una p
 ¿Qué secuencia de transiciones puede seguir o ha seguido el sistema?
 
 **07 — Resultado y valor**  
-¿Qué ocurre y cómo se evalúa ese resultado bajo criterios y modelos de valoración definidos de forma independiente?
+¿Qué ocurre y cómo se evalúa ese resultado mediante criterios y modelos de valoración definidos de forma independiente?
 
-### Closing line
-**Posible, accesible, realizado y valioso no significan lo mismo.** Mantener esas distinciones es esencial para estudiar los sistemas con rigor.
+**Posible, accesible, realizado y valioso no significan lo mismo.**
 
-### Link
-**Profundiza en el enfoque →** Explore.
+## 2.5 El ecosistema
 
----
+### Una capacidad integradora. Dos perspectivas complementarias.
 
-## 5. Section — the ecosystem
+**Transformational Intelligence**
 
-### Heading
-## Investigar, modelar e ingenierizar la transformación de sistemas
+La capacidad integradora que exploramos para comprender, razonar y orientar transformaciones en los sistemas. Es el eje conceptual del ecosistema y un concepto en desarrollo, no una disciplina académica consolidada ni una capacidad cuya validez general se dé por demostrada.
 
-### Introductory copy
-TGCV articula un programa de investigación y un ecosistema de trabajo interdisciplinar. Conecta preguntas científicas, prácticas de ingeniería, capacidades de razonamiento y entornos de experimentación alrededor de un mismo objeto: cómo cambian las transformaciones disponibles para los sistemas.
+**Systems Thinking**
 
-### Pillar 1 — Research
-**Investigar la dinámica de los sistemas**
+La perspectiva que permite comprender los sistemas, sus límites, condiciones, relaciones, dinámicas y posibilidades.
 
-Estudiamos los estados, las condiciones y los espacios de transformación de los sistemas; cómo cambian y qué relación pueden tener esos cambios con la alcanzabilidad, las trayectorias y los resultados.
+**Systems Engineering**
 
-Link: **Explorar la investigación**
+La disciplina que aporta prácticas para modelar, diseñar, desarrollar e intervenir en sistemas y sus transformaciones.
 
-### Pillar 2 — Systems Engineering
-**Representar y trabajar con sistemas reales**
+**Tres perspectivas. Una ambición compartida: comprender, diseñar y orientar cómo evolucionan las posibilidades de los sistemas.**
 
-La ingeniería de sistemas aporta prácticas para definir límites, arquitecturas, componentes, interfaces, dependencias, recursos y restricciones, y para modelar e integrar sistemas complejos.
+El trabajo se desarrolla en dos espacios relacionados:
 
-Link: **Conocer la perspectiva de ingeniería**
+- **Research** desarrolla preguntas, fundamentos, modelos, métodos, experimentos y evidencia.
+- **Labs & Applications** reúne experimentación, demostradores acotados y exploración de contextos de aplicación.
 
-### Pillar 3 — Transformational Intelligence
-**Razonar sobre lo que un sistema puede hacer**
+Lo que se aprende mediante la investigación puede orientar la experimentación y el trabajo aplicado; lo que se observa en esos entornos puede, a su vez, abrir nuevas preguntas de investigación.
 
-Exploramos la capacidad de representar, analizar, navegar y adaptar espacios de transformación accesibles, teniendo en cuenta cómo las decisiones y transiciones modifican las posibilidades futuras.
+## 2.6 Explora según tu interés
 
-Link: **Descubrir Transformational Intelligence**
+**Explore**  
+Comprende las ideas fundamentales y cómo se relacionan las condiciones de un sistema con sus transformaciones accesibles.
 
-### Pillar 4 — Labs & Applications
-**Modelar, experimentar y explorar aplicaciones**
+**Research**  
+Conoce el programa de investigación, sus preguntas, modelos, métodos, experimentos y límites de evidencia.
 
-Desarrollamos modelos, simulaciones y demostradores acotados, y estudiamos cómo trasladar preguntas transformacionales a distintos dominios sin borrar sus particularidades.
+**Systems Engineering**  
+Explora cómo el modelado, el diseño y la intervención en sistemas se relacionan con la perspectiva transformacional.
 
-Link: **Explorar laboratorios y aplicaciones**
+**Transformational Intelligence**  
+Profundiza en la capacidad de razonar sobre transformaciones posibles, accesibilidad y trayectorias futuras.
 
-### Relationship line
-No son cuatro promesas independientes ni cuatro unidades comerciales. Son perspectivas conectadas para investigar, comprender y trabajar con la transformación de sistemas.
+**Labs & Applications**  
+Consulta demostradores, experimentos y contextos exploratorios, con su alcance y estado claramente indicados.
 
----
+## 2.7 Cierre e invitación
 
-## 6. Section — across domains
+### Empieza por explorar lo que un sistema puede llegar a hacer.
 
-### Heading
-## Una pregunta común. Sistemas muy diferentes.
+Puedes acercarte a esta investigación desde sus ideas fundamentales, desde las preguntas científicas o desde los problemas que plantea la ingeniería de sistemas.
 
-### Introductory copy
-La pregunta sobre qué transformaciones tiene disponibles un sistema puede plantearse en muchos dominios. La respuesta, sin embargo, depende de la estructura, las reglas y el conocimiento propio de cada uno.
+**Acción principal:** Explora el enfoque → Explore.
 
-Los siguientes son contextos de aplicación en exploración, no resultados de implantaciones validadas.
+**Acción secundaria:** Conoce la investigación → Research.
 
-### Candidate context A — AI agents and tools
-**Agentes de IA y herramientas**
+**Contacto:** Contacta con el proyecto, cuando el canal público de comunicación esté habilitado.
 
-¿Cómo cambian las acciones que un agente puede realizar cuando varían sus herramientas, permisos, recursos o condiciones de ejecución?
-
-Label: **Contexto candidato · exploratorio**
-
-### Candidate context B — industrial and cyber-physical systems
-**Industria y sistemas ciberfísicos**
-
-¿Cómo modifican el estado físico, la información disponible y los recursos las opciones de mantenimiento e intervención?
-
-Label: **Contexto candidato · exploratorio**
-
-### Candidate context C — energy and mobility
-**Energía y movilidad**
-
-¿Cómo alteran las restricciones de red, la demanda y la disponibilidad de recursos las trayectorias posibles de los sistemas energéticos y de movilidad?
-
-Label: **Contexto candidato · exploratorio**
-
-### Closing line
-En cada dominio, la pregunta analítica debe traducirse a sus propias entidades, restricciones, mecanismos y criterios. La comparación no exige que todos los sistemas sean iguales.
-
-### Link
-**Ver los ámbitos que estamos explorando →** Labs & Applications.
-
----
-
-## 7. Section — invitation
-
-### Heading
-## Empieza por explorar lo que puede cambiar
-
-### Copy
-Puedes acercarte a esta investigación desde la idea central, desde sus fundamentos científicos o desde los problemas de ingeniería que plantea.
-
-La explicación esencial y los recursos públicos estarán disponibles sin necesidad de registrarte. Si detectas una pregunta relevante, una dificultad conceptual o un posible contexto de aplicación, queremos facilitar que puedas compartirlo.
-
-### Primary action
-**Explora el espacio de transformación**
-
-Destination: Explore.
-
-### Secondary action
-**Consulta el programa de investigación**
-
-Destination: Research / TGCV.
-
-### Tertiary action
-**Contacta o plantea una pregunta**
-
-Destination: Contact / Participate, only once a monitored route exists.
-
-No use “Join the community” until a real community and contribution process are operating.
-
----
-
-## 8. Footer copy
+## 2.8 Pie de página
 
 **TGCV — Teoría de Construcción de Valor de Sistemas Generativos**
 
-Un programa de investigación integrador sobre sistemas, espacios de transformación y las condiciones que determinan lo que los sistemas pueden hacer.
+Un programa de investigación integrador sobre sistemas, espacios de transformación y las condiciones que determinan qué transformaciones tienen a su alcance.
 
-Footer links:
-- Explore
-- Research
-- Systems Engineering
-- Transformational Intelligence
-- Labs & Applications
-- About / Governance
-- Contact
-- Research repository
+Explore · Research · Systems Engineering · Transformational Intelligence · Labs & Applications · About · Contact
 
-**Evidence note:** Concepts, hypotheses, synthetic demonstrations and empirical evidence are identified separately throughout the site. A technical demonstration is not, by itself, scientific validation.
+Los conceptos, hipótesis, demostraciones sintéticas y evidencias empíricas se identifican por separado. Una demostración técnica no constituye por sí sola una validación científica.
 
----
+# 3. English version
 
-## 9. Short alternatives for testing
+## 3.1 Hero
 
-### Headline alternatives
-A. **Comprender y diseñar cómo se transforman los sistemas.**  
-B. **Cómo cambian los sistemas y lo que pueden hacer.**  
-C. **Explorar cómo cambian las posibilidades de un sistema.**
+**Opening question**
 
-Recommended first test: A as ecosystem-level positioning; B as the clearest plain-language alternative; C as the closest to the distinctive research question.
+What would need to change for a system to do something it cannot do today?
 
-### Supporting statement alternatives
-A. “Investigamos cómo las condiciones de un sistema cambian las transformaciones que tiene a su alcance y las trayectorias que pueden abrirse después.”
-B. “Estudiamos cómo cambian las posibilidades de los sistemas, qué transformaciones se vuelven accesibles y qué ocurre a continuación.”
-C. “Conectamos investigación, ingeniería y experimentación para comprender cómo las condiciones de un sistema determinan lo que puede hacer.”
+**Headline**
 
-### Primary CTA alternatives
-- Explora cómo se transforman los sistemas.
-- Comprende cómo cambian las posibilidades.
-- Explora el espacio de transformación.
+# Understand how a system's possibilities can change.
 
-Do not select by preference alone. Test comprehension and whether visitors infer the intended distinction.
+**Supporting copy**
 
----
+A system does not only change when it moves from one state to another. It can also develop new capabilities, gain access to transformations that were previously out of reach, and open up different trajectories.
 
-## 10. Efecto Ajá — validation checklist for this copy
+**Primary action:** Explore the approach → Explore.
 
-Test this draft with people unfamiliar with TGCV. Do not explain the concept before they read it.
+**Secondary links:** Discover the research → Research · Explore systems engineering → Systems Engineering.
 
-After they read the first screen and the central-insight section, ask:
-1. In your own words, what is this project trying to understand?
-2. What is the difference between a system's current state and what it can do next?
-3. What might cause some possibilities to open or close?
-4. Does the page suggest that every accessible transformation is carried out? Why?
-5. What would you click next, and what do you expect to find there?
+## 3.2 Discovery
 
-**Evidence of comprehension:**
-- The visitor spontaneously refers to changes in available actions/transformations, not only state changes.
-- The visitor understands that conditions shape accessibility.
-- The visitor does not equate accessibility with execution or value.
-- The visitor can identify at least one useful next step.
+### Systems can change their own possibilities.
 
-**Failure signals:**
-- The page is interpreted as generic change management, innovation consulting or AI automation.
-- “Transformation space” is understood only as a metaphorical possibility space without system conditions.
-- Visitors assume that more accessible transformations always mean better outcomes.
-- Visitors cannot distinguish TGCV, systems engineering and AI.
+Resources, capabilities, connections, rules, permissions and constraints all influence which transformations are within a system's reach.
 
-This is a qualitative editorial test, not a representative survey or scientific experiment.
+When those conditions change, some transformations may become accessible, others may cease to be accessible, and the available set may be reorganised.
 
----
+This does not mean the system will automatically carry out a transformation. What is within reach and what is actually performed are two different questions.
 
-## 11. Scientific and editorial review before publication
+## 3.3 Example: a configuration across two environments
 
-1. Verify the plain-language description against the current canonical Core and current governance/evidence state.
-2. Confirm that the phrase “accessible transformations” is explained with the applicable decision boundary and domain semantics on Explore.
-3. Ensure the visual represents both opening and restriction/reconfiguration, not only expansion.
-4. Do not imply that TI is generally validated or that AI is required to implement it.
-5. Do not label the three application contexts as validated cases.
-6. Verify the current demonstrator state before adding a demonstrator link.
-7. Confirm that the contact route is monitored and privacy wording is ready.
-8. Run accessibility, mobile and comprehension reviews.
-9. Decide the public language strategy before translation and final copy editing.
+### A configuration that works in one environment may not work in another.
 
-**Publication status:** NOT APPROVED. This draft is ready for conceptual review and visitor testing, not for direct publication.
+Imagine a software system operating in its original environment. When its configuration is moved to a second environment, it encounters differences in dependencies, resources, permissions or parameters.
 
+Under the new conditions, an operation that was previously available may no longer be within the system's reach. Adapting a dependency, granting a permission or changing a relevant condition may make that operation accessible again.
 
-## 12. Home Copy v0.2 — approved editorial direction
+This change does not guarantee that the operation will be performed or that it will work correctly. What has changed, first of all, is what the system can do under those conditions.
 
-**Status:** WORKING COPY — NOT APPROVED FOR PUBLICATION. This section is the current Spanish editorial draft and supersedes v0.1 where wording or sequence conflicts. The English adaptation must be authored as an equivalent version, not a literal translation.
+**Illustration caption:** Changing conditions can change which transformations are within a system's reach. Accessibility does not mean execution or success.
 
-### 12.1 Hero
+**Production note:** This scenario is an explanatory illustration created for the Home page. It is not an existing execution, a validated application or a feature of the Collective Toy.
 
-**Pregunta de apertura**
+## 3.4 From conditions to trajectories
 
-¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?
+To understand how a system's possibilities change, we distinguish several questions:
 
-**Titular**
+**01 — System and conditions**  
+Which system are we considering, where do we set its boundaries, and under what conditions does it operate?
 
-# Comprende cómo cambian las posibilidades de un sistema.
+**02 — Candidate transformations**  
+Which changes or transitions can be considered within that system and its context?
 
-**Texto de apoyo**
+**03 — Accessibility**  
+Which of those transformations are available under the stated conditions and decision boundary?
 
-Un sistema no solo cambia cuando pasa de un estado a otro. También puede adquirir nuevas capacidades, acceder a transformaciones que antes no estaban a su alcance y abrir trayectorias diferentes.
+**04 — Realised transition**  
+Which transformation is actually carried out?
 
-**Línea de ecosistema**
+**05 — New state and new possibilities**  
+How does the system change, and which transformations are now within its reach?
 
-Tres perspectivas. Una ambición compartida: comprender, diseñar y orientar cómo evolucionan las posibilidades de los sistemas.
+**06 — Trajectory**  
+Which sequence of transitions can the system follow, or has it followed?
 
-**CTA principal:** Explora el enfoque → Explore.
+**07 — Outcome and value**  
+What happens, and how is that outcome assessed using independently defined criteria and value models?
 
-**Enlaces secundarios:** Descubre la investigación → Research; Explora la ingeniería de sistemas → Systems Engineering.
+**Possible, accessible, realised and valuable do not mean the same thing.**
 
-### 12.2 Descubrimiento
+## 3.5 The ecosystem
 
-**Los sistemas pueden cambiar sus propias posibilidades.**
+### An integrative capability. Two complementary perspectives.
 
-Los recursos, las capacidades, las conexiones, las reglas, los permisos y las restricciones influyen en las transformaciones que un sistema tiene a su alcance. Cuando cambian esas condiciones, algunas transformaciones pueden hacerse accesibles, otras dejar de estarlo y otras reorganizarse.
+**Transformational Intelligence**
 
-Eso no significa que el sistema vaya a ejecutar automáticamente una transformación. Accesibilidad y ejecución son cuestiones distintas.
+The integrative capability we are exploring to understand, reason about and guide transformations in systems. It is the ecosystem's conceptual axis and a developing concept—not an established academic discipline or a capability whose general validity is taken for granted.
 
-### 12.3 Ejemplo tangible — migración entre entornos
+**Systems Thinking**
 
-**Una configuración que funciona en un entorno no necesariamente puede operar en otro.**
+The perspective that helps us understand systems, their boundaries, conditions, relationships, dynamics and possibilities.
 
-Imagina un sistema de software que funciona en su entorno de origen. Al trasladarlo a un segundo entorno, encuentra diferencias de configuración, dependencias, recursos o permisos. En esas condiciones, algunas operaciones que eran posibles dejan de estar disponibles.
+**Systems Engineering**
 
-Al modificar y adaptar las condiciones pertinentes, una operación que antes no era accesible puede pasar a estarlo. El sistema habrá ampliado o reconfigurado sus posibilidades, aunque todavía habrá que distinguir si esa operación se ejecuta, qué resultado produce y cómo se evalúa.
+The discipline that contributes practices for modelling, designing, developing and intervening in systems and their transformations.
 
-**Pie de ilustración:** Cambiar las condiciones puede cambiar qué transformaciones están al alcance del sistema. Que una transformación sea accesible no significa que se ejecute ni que produzca un resultado favorable.
+**Three perspectives. One shared ambition: to understand, design and guide how the possibilities of systems evolve.**
 
-**Nota editorial:** este caso se construirá como ilustración explicativa acotada. No es una ejecución ya realizada, una aplicación validada ni una función del Juguete Colectivo.
+The work takes place across two connected activity spaces:
 
-### 12.4 Explicación conceptual
+- **Research** develops questions, foundations, models, methods, experiments and evidence.
+- **Labs & Applications** brings together experimentation, bounded demonstrators and the exploration of application contexts.
 
-**De las condiciones a las trayectorias**
+Research can inform experimentation and applied work; what is learned in those settings can, in turn, generate new research questions.
 
-1. **Sistema y condiciones:** delimitamos el sistema y el contexto en que opera.
-2. **Transformaciones candidatas:** identificamos los cambios que podrían considerarse.
-3. **Accesibilidad:** determinamos cuáles están disponibles bajo las condiciones y el límite de decisión definidos.
-4. **Transición:** distinguimos cuál llega efectivamente a realizarse.
-5. **Nuevas posibilidades:** observamos cómo cambia el conjunto de transformaciones disponibles desde el estado resultante.
-6. **Trayectorias:** exploramos qué secuencias futuras pueden abrirse o cerrarse.
-7. **Resultados y valor:** requieren evaluación y criterios propios; no se deducen automáticamente de la accesibilidad.
+## 3.6 Explore according to your interests
 
-### 12.5 El ecosistema
+**Explore**  
+Understand the core ideas and how a system's conditions relate to its accessible transformations.
 
-**Una capacidad integradora, dos perspectivas complementarias.**
+**Research**  
+Discover the research programme, its questions, models, methods, experiments and evidence limitations.
 
-- **Transformational Intelligence:** capacidad integradora para comprender, razonar y orientar transformaciones en los sistemas. Es el eje articulador del ecosistema y un concepto/capacidad en desarrollo, no una disciplina académica ya consolidada.
-- **Systems Thinking:** perspectiva para comprender sistemas, condiciones, relaciones, dinámicas y posibilidades.
-- **Systems Engineering:** disciplina para modelar, diseñar, desarrollar e intervenir en sistemas y sus transformaciones.
+**Systems Engineering**  
+Explore how systems modelling, design and intervention relate to the transformational perspective.
 
-Research desarrolla conocimiento, métodos, modelos y evidencia. Labs & Applications explora experimentos, demostradores y contextos de aplicación. Ambos espacios se retroalimentan.
+**Transformational Intelligence**  
+Learn more about reasoning over possible transformations, accessibility and future trajectories.
 
-### 12.6 Explora según tu interés
+**Labs & Applications**  
+Explore demonstrators, experiments and exploratory application contexts, with their scope and status clearly stated.
 
-- **Explore:** comprende las ideas y distinciones fundamentales.
-- **Research:** conoce TGCV, sus preguntas, métodos, experimentos y límites.
-- **Systems Engineering:** explora la relación con el modelado, diseño e intervención en sistemas.
-- **Transformational Intelligence:** profundiza en la capacidad de razonar sobre transformaciones posibles y orientar trayectorias.
-- **Labs & Applications:** consulta demostradores y contextos exploratorios con su estado claramente indicado.
+## 3.7 Closing invitation
 
-**CTA final:** Encuentra por dónde empezar → Explore.
+### Start by exploring what a system may become able to do.
 
-**About** y **Contact** permanecen disponibles en la navegación y el pie de página. Contact solo se activará cuando exista un canal real y monitorizado.
+You can approach this work through its core ideas, its research questions or the challenges it raises for systems engineering.
 
-### 12.7 Control de publicación
+**Primary action:** Explore the approach → Explore.
 
-La Home se publicará en español e inglés con equivalencia conceptual y editorial. El Efecto Ajá se evaluará sobre la experiencia completa como objetivo de calidad deseable: revisión conceptual y narrativa, comprobación del ejemplo y simulación de perfiles; pruebas reales cuando sean viables. La validación externa no es un requisito obligatorio de lanzamiento.
+**Secondary action:** Discover the research → Research.
 
-Antes de publicar, verificar el lenguaje científico con el Core y la evidencia canónica vigente, comprobar todos los enlaces y activos, y asegurar accesibilidad, respuesta móvil, privacidad y mantenimiento. No presentar como disponibles el Playground futuro, la migración ilustrativa, aplicaciones exploratorias ni funcionalidades no verificadas.
+**Contact:** Get in touch with the project once a public contact channel is available.
 
-### v0.2 — 2026-11-24
-- Introduce la pregunta de apertura, titular y secuencia aprobados.
-- Incorpora la migración de configuración entre entornos como ejemplo ilustrativo, separado de los demostradores existentes.
-- Reestructura el ecosistema alrededor de TI, Systems Thinking y Systems Engineering, y separa las áreas de actividad Research y Labs & Applications.
-- Alinea navegación, bilingüismo y Efecto Ajá con las decisiones aprobadas.
+## 3.8 Footer
+
+**TGCV — Theory of Value Construction in Generative Systems**
+
+An integrative research programme exploring systems, transformation spaces and the conditions that determine which transformations are within their reach.
+
+Explore · Research · Systems Engineering · Transformational Intelligence · Labs & Applications · About · Contact
+
+Concepts, hypotheses, synthetic demonstrations and empirical evidence are identified separately. A technical demonstration does not, by itself, constitute scientific validation.
+
+# 4. Editorial and publication controls
+
+## 4.1 Scientific fidelity
+
+Before publication, verify the copy against the current canonical TGCV Core and current evidence/governance state. In particular:
+
+- Do not conflate candidate transformations with accessible transformations.
+- Do not conflate accessibility with execution.
+- Do not infer favourable outcomes or value from accessibility.
+- Do not present TI as a consolidated discipline or generally validated capability.
+- Do not present software migration as an existing experiment or demonstrator.
+- Do not describe exploratory application contexts as validated deployments.
+
+## 4.2 Language equivalence
+
+The Spanish and English versions must communicate the same conceptual distinctions, caveats, navigation and maturity status. Terminology may differ where needed for natural language, but the underlying claims must remain equivalent.
+
+## 4.3 Efecto Ajá
+
+Efecto Ajá is a desired quality objective, not a mandatory publication condition. Review the full experience conceptually and narratively, inspect the example and visual, and simulate representative visitor profiles. Add external visitor testing when feasible. Its absence alone does not block publication.
+
+## 4.4 Release checks
+
+- Verify all links and destinations.
+- Verify the current state and availability of every linked asset.
+- Enable Contact only when a real monitored channel and privacy information are ready.
+- Confirm complete Spanish and English content.
+- Review accessibility, responsive behaviour and maintainability.
+- Confirm that no copy implies a community, event programme, staffed laboratory, deployed application or professional Playground that does not exist.
+
+**Publication status: NOT APPROVED.** This is a bilingual working draft for editorial and conceptual review.
+
+### Version history
+
+- **0.3 — 2026-11-24:** Rewritten as a clean bilingual Home draft aligned with the approved visitor question, identity architecture, software-environment illustration, navigation and publication controls.
+- **0.2 — 2026-11-24:** Approved editorial direction and Spanish working copy added.
