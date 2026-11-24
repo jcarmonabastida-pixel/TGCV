@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 0.7  
+**Versión:** 0.8  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -1030,12 +1030,12 @@ No introducir permisos como explicación alternativa dentro de este ejemplo. La 
 
 ### 23.4 Versiones estratégicas vigentes
 
-- Home Experience: v0.8.
-- Home Copy: v0.5.
+- Home Experience: v0.9.
+- Home Copy: v0.6.
 - Explore Experience: v0.2.
 - Explore Copy: v0.2.
-- Information Architecture: v0.6.
-- Content Blueprint: v0.4.
+- Information Architecture: v0.7.
+- Content Blueprint: v0.5.
 
 Estas versiones siguen siendo documentos de trabajo y no constituyen autorización de publicación.
 
@@ -1043,3 +1043,8 @@ Estas versiones siguen siendo documentos de trabajo y no constituyen autorizaci�
 - Integra la revisión editorial Home → Explore.
 - Fija una condición única para el ejemplo compartido y actualiza los contratos de contenido subordinados.
 - Aclara la definición divulgativa de transformación candidata, el alcance de accessibility of transformations y la representación de trayectoria.
+
+
+### v0.8 — 2026-11-24
+- Completa la reconciliación visual de trayectoria entre Home y Explore: se representa como recorrido a través de estados y transiciones, no como etapa secuencial independiente.
+- Actualiza las versiones vigentes de Home, Information Architecture y Content Blueprint.
