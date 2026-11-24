@@ -11,6 +11,8 @@
 
 ---
 
+> **Current editorial authority (2026-11-24):** the approved decision-lock section at the end of this document is authoritative for the first public web release. It supersedes any earlier working text that conflicts with the approved audience, identity architecture, Home narrative, software-migration illustration, first-release navigation, Spanish/English requirement or non-blocking Efecto Ajá status. Earlier material is retained as design history until the next full editorial rewrite; it must not be treated as current instruction where it conflicts with the decision lock.
+
 ## 0. Síntesis ejecutiva
 
 La identidad que mejor representa el núcleo actual de TGCV no es la consultoría de negocio ni una oferta genérica de creación de valor. Es un programa de investigación y desarrollo interdisciplinar situado en la intersección de:
