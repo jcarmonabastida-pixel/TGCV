@@ -1,7 +1,7 @@
 # TGCV — Explore Copy
 
 **Identifier:** TGCV-WEB-EXPLORE-COPY-001  
-**Version:** 0.7  
+**Version:** 0.8  
 **Date:** 2026-11-25  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`  
@@ -118,31 +118,27 @@ Aquí resulta útil el pensamiento sistémico (*Systems Thinking*): una perspect
 
 ## 2.6 Una nueva forma de comprender y orientar las transformaciones
 
-Si las posibilidades de un sistema pueden cambiar, necesitamos comprender cómo se producen esos cambios, cómo se relacionan con su evolución y qué consecuencias pueden tener.
+Si las posibilidades de un sistema pueden cambiar, necesitamos comprender cómo se producen esos cambios, cómo se relacionan con su evolución y qué consecuencias pueden tener. Para abordar esa cuestión se necesitan perspectivas y prácticas complementarias.
 
-Esta cuestión conecta tres dimensiones complementarias:
+**Systems Thinking — comprender los sistemas**
 
-**Systems Thinking — comprender**
-
-Una perspectiva para interpretar los sistemas, sus relaciones, condiciones, restricciones y dinámicas.
+Una perspectiva para observar conjuntamente los límites del sistema, sus elementos, relaciones, dependencias, condiciones, restricciones y dinámicas. Ayuda a comprender cómo se relaciona el conjunto, en lugar de analizar cada componente de forma aislada.
 
 **Systems Engineering — diseñar e intervenir**
 
-Una disciplina para modelar, diseñar, desarrollar e intervenir en sistemas, teniendo en cuenta su estructura, comportamiento y evolución.
+Una disciplina de ingeniería, con métodos y prácticas para modelar, diseñar, desarrollar, integrar e intervenir en sistemas. Permite llevar la comprensión de un sistema al terreno de su diseño y transformación.
 
-**Transformational Intelligence — integrar y orientar**
+**Transformational Intelligence — integrar el razonamiento sobre el cambio**
 
-Una capacidad integradora que busca comprender, razonar y orientar transformaciones en sistemas, considerando cómo cambian sus posibilidades y qué trayectorias pueden abrirse.
+Un concepto de capacidad integradora en desarrollo. Busca conectar la comprensión de un sistema con el razonamiento sobre las transformaciones que pueden estar a su alcance, los cambios en esas posibilidades, las trayectorias que podrían abrirse y las consecuencias de distintas intervenciones.
 
-No se trata únicamente de comprender un sistema o de intervenir sobre él, sino de relacionar ambas capacidades para razonar sobre cómo pueden cambiar sus posibilidades de transformación y orientar su evolución.
+En términos prácticos, la pregunta que orienta este concepto es: ¿cómo podemos comprender un sistema, examinar qué transformaciones puede realizar bajo determinadas condiciones, razonar sobre cómo podrían cambiar sus posibilidades y orientar esos cambios? Esto expresa el propósito de la capacidad que se quiere desarrollar, no un método completo ni una capacidad operativa ya validada.
 
-Transformational Intelligence es un concepto y una capacidad en desarrollo. Su alcance, fundamentos y aplicaciones forman parte de una línea de investigación y desarrollo; no se presenta aquí como una capacidad generalmente validada.
+Transformational Intelligence no es otro nombre para Systems Thinking o Systems Engineering, ni es sinónimo de inteligencia artificial. La IA puede aportar tecnologías de apoyo, pero no define el concepto. Tampoco se presenta como una disciplina académica consolidada o como una capacidad generalmente validada.
 
-TGCV — Transformaciones Generativas y Construcción de Valor es un programa de investigación aplicada e innovación. Estudia cómo las condiciones y relaciones de un sistema influyen en las transformaciones que tiene a su alcance y cómo estas se relacionan con sus trayectorias y la construcción de valor.
+TGCV — Transformaciones Generativas y Construcción de Valor es el programa de investigación aplicada e innovación que estudia cómo las condiciones y relaciones de un sistema influyen en las transformaciones que tiene a su alcance y cómo estas pueden relacionarse con sus trayectorias y la construcción de valor. Esa investigación contribuye a las bases para desarrollar y examinar el concepto de Transformational Intelligence. Ambos están relacionados, pero no son equivalentes: TGCV es el programa de investigación; Transformational Intelligence es un concepto de capacidad que busca integrar comprensión, razonamiento y orientación del cambio.
 
-**La cuestión no es solamente cómo cambiar un sistema, sino cómo comprender y orientar el cambio de sus posibilidades.**
-
----
+**El objetivo no es solamente comprender los sistemas o intervenir en ellos, sino desarrollar formas de razonar sobre los cambios en lo que pueden hacer y sobre cómo orientar esos cambios.**
 
 ## ¿Por dónde quieres continuar?
 
@@ -253,31 +249,27 @@ This is where *Systems Thinking* becomes useful: a perspective that helps us exa
 
 ## 3.6 A new way to understand and guide transformations
 
-If a system's possibilities can change, we need to understand how those changes occur, how they relate to the system's evolution and what consequences they may have.
+If a system's possibilities can change, we need to understand how those changes occur, how they relate to the system's evolution and what consequences they may have. Addressing this requires complementary perspectives and practices.
 
-This question brings together three complementary dimensions:
+**Systems Thinking — understanding systems**
 
-**Systems Thinking — understanding**
-
-A perspective for interpreting systems, their relationships, conditions, constraints and dynamics.
+A perspective for examining system boundaries, elements, relationships, dependencies, conditions, constraints and dynamics together. It helps us understand how the whole is connected rather than analysing each component in isolation.
 
 **Systems Engineering — designing and intervening**
 
-A discipline for modelling, designing, developing and intervening in systems, taking into account their structure, behaviour and evolution.
+An engineering discipline, with methods and practices for modelling, designing, developing, integrating and intervening in systems. It helps translate an understanding of a system into its design and transformation.
 
-**Transformational Intelligence — integrating and guiding**
+**Transformational Intelligence — integrating reasoning about change**
 
-An integrative capability that seeks to understand, reason about and guide transformations in systems, considering how their possibilities change and what trajectories may become available.
+A working concept of an integrative capability under development. It seeks to connect system understanding with reasoning about transformations that may be within a system's reach, changes in those possibilities, trajectories that may become available and the consequences of alternative interventions.
 
-The aim is not simply to understand a system or intervene in it, but to bring these capabilities together to reason about how its possibilities for transformation can change and how its evolution might be guided.
+In practical terms, the question guiding this concept is: how can we understand a system, examine which transformations it can carry out under specified conditions, reason about how its possibilities might change and guide those changes? This expresses the purpose of the capability being developed; it is not a complete method or an already validated operational capability.
 
-Transformational Intelligence is a concept and capability under development. Its scope, foundations and applications are part of an ongoing research and development effort; it is not presented here as a generally validated capability.
+Transformational Intelligence is not another name for Systems Thinking or Systems Engineering, nor is it synonymous with artificial intelligence. AI may provide supporting technologies, but it does not define the concept. It is also not presented as a consolidated academic discipline or a generally validated capability.
 
-TGCV — Generative Transformations and Value Construction is a programme of applied research and innovation. It explores how a system's conditions and relationships influence the transformations within its reach, and how these relate to its trajectories and the construction of value.
+TGCV — Generative Transformations and Value Construction is the programme of applied research and innovation that explores how a system's conditions and relationships influence the transformations within its reach and how these may relate to its trajectories and the construction of value. This research contributes to the foundations for developing and examining the Transformational Intelligence concept. They are related but not equivalent: TGCV is the research programme; Transformational Intelligence is a capability concept seeking to integrate understanding, reasoning and guidance of change.
 
-**The question is not only how to change a system, but how to understand and guide changes in what it can do.**
-
----
+**The aim is not only to understand systems or intervene in them, but to develop ways of reasoning about changes in what they can do and how those changes might be guided.**
 
 ## Where would you like to go next?
 
@@ -313,3 +305,5 @@ TGCV — Generative Transformations and Value Construction is a programme of app
 - **0.6 — 2026-11-25:** Clarifies in Spanish and English that the migration comparison holds the stated system/configuration, operation, boundary assumptions and other specified prerequisites constant while varying one dependency-availability condition; explicitly bounds the inference to the illustration.
 
 - **0.7 — 2026-11-25:** Rewrites the space-of-possibilities section in Spanish and English to explain how element capabilities, relationships/dependencies and operating conditions jointly shape accessible transformations.
+
+- **0.8 — 2026-11-25:** Rewrites the Spanish and English TI explanation to distinguish the developing capability concept from Systems Thinking, Systems Engineering, AI and the TGCV research programme; clarifies intended function without implying validation.
