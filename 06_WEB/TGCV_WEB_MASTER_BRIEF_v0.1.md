@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 1.2  
+**Versión:** 1.3  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -1111,3 +1111,46 @@ This is a public identity/editorial decision only. It does not rename the reposi
 - Replaces the public framing of TGCV as a “theory” with “research programme”.
 - Adds the canonical Spanish descriptor and equivalent English rendering.
 - Explicitly separates public identity from internal scientific naming and scientific-governance changes.
+
+
+## 24. Home review — public identity and narrative alignment (2026-11-24)
+
+**Review status:** EDITORIAL REVIEW COMPLETED; revised documents remain working drafts and are not publication approval.
+
+### 24.1 Identity placement
+- The site-wide header/brand lockup identifies the initiative as **TGCV — Transformaciones Generativas y Construcción de Valor**. On constrained mobile layouts, “TGCV” may be visually prioritised, provided the full name remains available accessibly and in the footer/About identity block.
+- The approved descriptor remains: *Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
+- Do not add a long institutional self-description ahead of the opening question. The brand identifies the initiative; the visitor-facing question leads the Home narrative.
+- Keep the full descriptor in the footer and the relevant About/Research identity blocks. The hero may retain its concise supporting copy rather than repeat the descriptor verbatim.
+- English identity: **TGCV — Generative Transformations and Value Construction**. The English version is an editorial rendering; TGCV remains the proper name.
+
+### 24.2 Corrected Home sequence
+The controlling sequence, in both languages, is:
+1. Opening question.
+2. Discovery: a system's possibilities can change.
+3. Second question and concise answer about new options and possible paths, including the conditional opportunity for value.
+4. Tangible software-configuration example across two environments.
+5. Conceptual explanation of conditions, candidate transformations, accessibility, realised transition, new possibilities and trajectories; keep accessibility, execution, outcome and value distinct.
+6. Ecosystem: Transformational Intelligence as the integrative capability, supported by Systems Thinking as a perspective and Systems Engineering as a discipline.
+7. Routes into Explore, Research, Systems Engineering, Transformational Intelligence and Labs & Applications.
+
+The second question must precede the tangible example. Home Copy already follows this order; the Home Experience specification is corrected to match it.
+
+### 24.3 Meaning guardrail for “Generative”
+“Generative” in the public name refers to transformations and changes in what systems can do or access. It must not be read as a reference only to generative AI, content generation or autonomous self-modification. Changes in accessibility may arise from interventions, system dynamics or environmental changes.
+
+### 24.4 Scientific and editorial guardrails
+- Preserve the distinction between possible, accessible, realised, outcome and value.
+- The software migration remains an explanatory illustration, not an executed experiment, validated application or Juguete Colectivo feature.
+- New possibilities may open opportunities for value; they do not guarantee execution, favourable outcomes or value.
+- Do not imply that expanding accessibility is always beneficial; accessible transformations can also be lost, restricted or reorganised.
+- The Home's public identity is a research programme, not a claim that a consolidated theory or general validation already exists.
+
+### 24.5 Review disposition
+The current Home concept and copy are directionally coherent with the approved TGCV identity. The required corrections are the explicit site-wide brand lockup, the corrected narrative-order specification, and synchronized document references. The Home remains a bilingual working draft pending visual design, asset verification, evidence review, accessibility/responsive QA, working destination/contact checks and publication approval.
+
+### v1.3 — 2026-11-24
+- Records the integrated Home review following approval of the public TGCV identity.
+- Defines brand placement without displacing the visitor-first opening question.
+- Aligns the required narrative sequence across Home Copy and Home Experience.
+- Clarifies the intended meaning of “Generative” and preserves scientific claim boundaries.
