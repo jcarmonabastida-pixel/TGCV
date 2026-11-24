@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 1.0  
+**Version:** 1.1  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.2; Information Architecture v1.2; Home Experience v1.1; Home Copy v0.8; Explore Experience v0.5; Explore Copy v0.4.
+**Parent documents:** Web Master Brief v1.3; Information Architecture v1.3; Home Experience v1.2; Home Copy v0.9; Explore Experience v0.5; Explore Copy v0.4.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -587,3 +587,19 @@ This is a public editorial decision only; it does not rename or modify scientifi
 
 ### v1.0 — 2026-11-24
 - Aligns the content blueprint with the approved TGCV public identity and Spanish/English research-programme description.
+
+
+## 15. Home identity review and content contract (2026-11-24)
+
+Use **TGCV — Transformaciones Generativas y Construcción de Valor** in the site-wide header/brand lockup; use **TGCV — Generative Transformations and Value Construction** in English. The full approved programme descriptor remains in the footer and relevant About/Research identity blocks. The opening visitor question remains the first substantive Home message; do not add a long institutional preamble.
+
+The required sequence is opening question → discovery → second question and concise answer → tangible software-configuration example → conceptual explanation → ecosystem → exploration. The second question must appear before the example in both languages.
+
+“Generative” refers to transformations that can change what systems can do or access. Do not imply that the programme concerns only generative AI or content generation, or that transformations must be autonomously initiated by the system.
+
+The Home remains a working draft, not publication approval. Complete the visual design, verify assets and evidence references, check bilingual equivalence, accessibility, responsive behaviour, links and contact readiness before publication.
+
+### v1.1 — 2026-11-24
+- Refreshes parent-document versions after the integrated Home review.
+- Adds the header identity and preserves the visitor-first opening.
+- Aligns the Home content contract and narrative order with the corrected experience specification.
