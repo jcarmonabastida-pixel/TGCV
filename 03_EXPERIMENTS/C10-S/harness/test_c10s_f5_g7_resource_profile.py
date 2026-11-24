@@ -91,7 +91,9 @@ class F5G7ResourceProfileTests(unittest.TestCase):
                 result = validator.validate(profile_path, staged_manifest_path, root)
 
         self.assertEqual(result["datasets_per_shard"], 10)
-        self.assertEqual(result["shard_jobs_per_phase"], 200)
+        self.assertEqual(result["shard_tasks_per_phase"], 200)
+        self.assertEqual(result["matrix_job_count"], 200)
+        self.assertEqual(result["job_topology"], "ONE_MATRIX_JOB_EXECUTES_PRIMARY_AND_CLEAN_SOURCE_REPLAY_SEQUENTIALLY")
         self.assertEqual(result["max_parallel_jobs"], 20)
         self.assertEqual(len(result["shard_matrix"]), 200)
         for cell_id in ("F5_beta22_M10_R5", "F5_beta22_M30_R20"):
@@ -115,9 +117,9 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             item["datasets_per_shard"]: item
             for item in result["candidate_shard_projections"]
         }
-        self.assertTrue(by_size[10]["safe_under_150_minute_job_budget"])
+        self.assertTrue(by_size[10]["safe_primary_replay_pair_under_150_minute_job_budget"])
         for size in (20, 25, 40, 50, 100):
-            self.assertFalse(by_size[size]["safe_under_150_minute_job_budget"])
+            self.assertFalse(by_size[size]["safe_primary_replay_pair_under_150_minute_job_budget"])
         expected_primary_replay = (
             5 * 2 * (10 * 7.966771501000004 + 300)
             + 5 * 2 * (10 * 418.194637585 + 300)
