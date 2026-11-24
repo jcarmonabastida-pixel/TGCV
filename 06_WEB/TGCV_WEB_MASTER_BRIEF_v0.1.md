@@ -931,7 +931,7 @@ Systems Thinking y Systems Engineering son perspectivas complementarias que cont
 
 La secuencia obligatoria de diseño es:
 1. Pregunta de apertura: «¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?»
-2. Descubrimiento: los sistemas pueden cambiar sus propias posibilidades.
+2. Descubrimiento: las posibilidades de un sistema pueden cambiar; esto puede ocurrir cuando cambian condiciones relevantes, sin implicar que el sistema inicie autónomamente el cambio.
 3. Segunda pregunta de descubrimiento: «¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?» / “What new options become available when a system can do something that was previously beyond its reach?” Debe acompañarse de una respuesta breve: cuando se hacen accesibles nuevas transformaciones, aparecen nuevas opciones y caminos posibles que pueden abrir oportunidades para generar valor, sin garantizar su realización ni que el resultado sea valioso.
 4. Ejemplo tangible: migración de una configuración de software entre dos entornos distintos.
 5. Explicación conceptual: condiciones, transformaciones candidatas, accesibilidad, transición, nuevas posibilidades y trayectorias; mantener separados accesibilidad, ejecución, resultado y valor.
