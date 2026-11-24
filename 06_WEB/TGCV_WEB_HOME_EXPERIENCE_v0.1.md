@@ -66,7 +66,7 @@ Research and Labs & Applications inform one another. They are activity spaces, n
 The Home follows this order:
 
 1. **Question:** What would need to change for a system to do something it cannot do today?
-2. **Discovery:** a system's possibilities can change when relevant conditions change; this need not be an autonomous change initiated by the system itself.
+2. **Discovery:** «Las posibilidades de un sistema también pueden cambiar» / “A system's possibilities can change, too.” Explain that this happens when relevant conditions change; it need not be an autonomous change initiated by the system itself.
 3. **Tangible example:** a software configuration considered across two different environments.
 4. **Conceptual explanation:** conditions, candidate transformations, accessibility, transition, new state and possibilities, trajectories, outcomes and value.
 5. **Ecosystem:** TI as the integrative capability, supported by Systems Thinking as a perspective and Systems Engineering as a discipline.
