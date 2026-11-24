@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 0.4  
+**Version:** 0.5  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -597,3 +597,38 @@ Use **Existing**, **In development** and **Exploratory** as operational content 
 - Reconciles navigation and page roles with the approved identity architecture.
 - Removes Community from first-release top-level navigation and gives Systems Thinking a transversal role.
 - Makes bilingual publication explicit and Efecto Ajá non-blocking.
+
+
+## 17. Explore page experience and content authority
+
+The detailed visitor experience and bilingual copy for Explore are defined in:
+
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`
+- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md`
+
+Explore is the guided conceptual entry after Home. It must deepen the visitor's understanding rather than repeat the Home narrative or become a technical Research page.
+
+Its approved working progression is:
+1. A system is more than its current state.
+2. The same candidate operation may be accessible in one environment and inaccessible in another.
+3. A change in relevant conditions may change transformation accessibility.
+4. Accessibility, execution, outcome and value are distinct; trajectory describes evolution through states and transformations.
+5. The accessibility of transformations depends on system elements, relationships and conditions.
+6. Systems Thinking and Systems Engineering contribute complementary foundations to Transformational Intelligence as the ecosystem's integrative capability concept.
+
+The software-configuration migration between two environments is an illustrative editorial example only. It is not an existing execution, validated application, Juguete Colectivo feature or C10-S result.
+
+The Spanish and English versions must be complete and conceptually equivalent. In English, use “accessibility of transformations” when introducing the TGCV concept, clarifying that it is not digital/interface accessibility. “Outcome” is the consistent equivalent of “resultado” in this explanatory context.
+
+The page must preserve these distinctions:
+- candidate transformation ≠ accessible transformation;
+- accessibility ≠ execution;
+- execution ≠ favourable outcome;
+- outcome ≠ value;
+- trajectory ≠ isolated outcome or an additional universal linear stage.
+
+The detailed specification and copy remain working drafts, not publication clearance. Apply the non-blocking Efecto Ajá policy and all scientific, accessibility, bilingual, privacy and maintainability release checks already established in this architecture.
+
+### v0.5 — 2026-11-24
+- Adds the Explore experience specification and bilingual copy as the authoritative working content references for P02.
+- Aligns the page's narrative, example, terminology and conceptual guardrails with the approved first-release identity and navigation.
