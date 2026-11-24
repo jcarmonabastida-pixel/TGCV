@@ -1,7 +1,7 @@
 # TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 0.5  
+**Version:** 0.6  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md`  
@@ -87,6 +87,8 @@ Para comprender cómo cambian las posibilidades de un sistema, distinguimos vari
 
 **07 — Resultado y valor**  
 ¿Qué ocurre y cómo se evalúa ese resultado mediante criterios y modelos de valoración definidos de forma independiente?
+
+La numeración organiza las preguntas de lectura; no representa una cadena causal universal. La **trayectoria** debe mostrarse como el recorrido que forman los estados y las transiciones posibles o realizadas, extendiéndose a lo largo de la secuencia, no como una casilla independiente entre el nuevo estado y el resultado/valor.
 
 **Posible, accesible, realizado y valioso no significan lo mismo.**
 
@@ -225,6 +227,8 @@ Which sequence of transitions can the system follow, or has it followed?
 **07 — Outcome and value**  
 What happens, and how is that outcome assessed using independently defined criteria and value models?
 
+The numbering organises the questions for the reader; it does not represent a universal causal chain. **Trajectory** should be shown as the path formed by states and possible or realised transitions, spanning the sequence rather than as a separate box between the new state and outcome/value.
+
 **Possible, accessible, realised and valuable do not mean the same thing.**
 
 ## 3.5 The ecosystem
@@ -325,6 +329,7 @@ Efecto Ajá is a desired quality objective, not a mandatory publication conditio
 **Publication status: NOT APPROVED.** This is a bilingual working draft for editorial and conceptual review.
 
 ### Version history
+- **0.6 — 2026-11-24:** Adds an explicit visual/editorial rule that trajectory spans states and transitions and must not appear as a discrete stage in the explanatory sequence.
 - **0.5 — 2026-11-24:** Makes the Home example consistent across languages: the target environment lacks one required dependency, which is then made available; permissions are no longer an alternative explanation.
 
 - **0.4 — 2026-11-24:** Corrects the conceptual hierarchy of TI, Systems Thinking and Systems Engineering; removes autonomous-system wording; specifies the migration illustration as a source/target accessibility change without implying execution or automatic capability transfer.
