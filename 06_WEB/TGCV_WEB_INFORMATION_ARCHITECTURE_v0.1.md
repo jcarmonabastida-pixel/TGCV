@@ -579,7 +579,7 @@ Systems Thinking is transversal, not a separate first-release page: introduce it
 
 ### 16.4 Home narrative and language
 
-Home sequence: question → discovery → tangible example → conceptual explanation → ecosystem → exploration. Opening question: «¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?» Working headline: «Comprende cómo cambian las posibilidades de un sistema.» The example is migration of a software configuration between two distinct environments. It is an illustrative editorial example, not an existing validated demonstrator.
+Home sequence: opening question → discovery → second visitor question and concise answer → tangible example → conceptual explanation → ecosystem → exploration. Opening question: «¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?» Second question: «¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?» Its concise answer connects newly accessible transformations with new options and possible opportunities for value, without guaranteeing execution, favourable outcomes or value. Working headline: «Comprende cómo cambian las posibilidades de un sistema.» The example is migration of a software configuration between two distinct environments. It is an illustrative editorial example, not an existing validated demonstrator.
 
 The first public release is Spanish and English, conceptually and editorially equivalent. Adapt naturally rather than translate literally.
 
@@ -592,6 +592,9 @@ Mandatory release requirements remain: coherent identity, clear message, visitor
 ### 16.6 Content maturity and cross-document consistency
 
 Use **Existing**, **In development** and **Exploratory** as operational content labels where useful; keep them distinct from scientific evidence labels. The Content Blueprint remains the operational content inventory. The Home Experience defines the visitor sequence; Home Copy supplies editable language. All must conform to this decision lock.
+
+### v1.0 — 2026-11-24
+- Adds the second visitor question and its concise value-oriented answer to the mandatory Home narrative, preserving Explore as the deeper conceptual destination.
 
 ### v0.4 — 2026-11-24
 - Reconciles navigation and page roles with the approved identity architecture.
