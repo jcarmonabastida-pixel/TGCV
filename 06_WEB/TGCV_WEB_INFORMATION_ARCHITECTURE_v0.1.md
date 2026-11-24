@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 1.3  
+**Version:** 1.4  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -668,11 +668,11 @@ The visitor-facing explanation should also make the practical implication clear:
 The website's public identity is **TGCV — Transformaciones Generativas y Construcción de Valor**. TGCV is presented as a research programme, not as an established theory.
 
 Canonical Spanish descriptor:
-*Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
+*Un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
 
 English rendering:
 **TGCV — Generative Transformations and Value Construction**.
-*A research programme exploring how expanding the transformations available to systems may contribute to value construction.*
+*A programme of applied research and innovation exploring how expanding the transformations available to systems may contribute to value construction.*
 
 Apply this consistently to page titles, first-mention descriptions, About/Research identity blocks, footer and metadata. The Spanish expansion is canonical; in English, TGCV remains the proper name rather than a mechanically re-derived acronym. Keep the scientific and public-identity layers separate.
 
@@ -694,3 +694,7 @@ The required Home sequence is opening question → discovery → second question
 - Specifies placement of the approved TGCV public identity in the site-wide header and footer.
 - Preserves the visitor-first opening and aligns Home narrative ordering.
 - Clarifies the public meaning of “Generative”.
+
+### v1.4 — 2026-11-24
+- Updates the canonical bilingual public descriptor to “applied research and innovation”.
+- Preserves the existing visitor-first Home sequence and the distinction between accessibility, execution, outcome and value.
