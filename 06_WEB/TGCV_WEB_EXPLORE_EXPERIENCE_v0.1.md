@@ -1,12 +1,12 @@
 # TGCV — Explore Experience Specification
 
 **Identifier:** TGCV-WEB-EXPLORE-001  
-**Version:** 0.4  
+**Version:** 0.5  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21–22  
 **Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`, §12–13; Home Experience v0.9; Home Copy v0.6  
-**Copy:** `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md`  
+**Copy:** `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — v0.4  
 **Branch:** `strategy/tgcv-web-master`
 
 ---
@@ -88,13 +88,16 @@ In English, introduce the analytical term **accessibility of transformations**. 
 
 Introduce the distinction through a visitor-facing question: if the operation is now within reach, what can actually be claimed — that the system can perform it, that it has performed it, or that it has achieved something valuable?
 
-Explain five concepts:
+Keep the following distinction explicit and visually prominent:
 
-- **Candidate transformation:** a transformation considered possible within a model or analytical context.
-- **Accessible transformation:** a transformation that is within the system's reach under the boundary and conditions being considered; accessibility alone does not mean it has been performed.
-- **Execution:** the actual performance of that transformation.
+**Accessibility → Execution → Outcome → Value**
+
+- **Accessibility:** a transformation is within the system's reach under the boundary and conditions being considered; this does not mean it has been performed.
+- **Execution:** the system actually performs the transformation.
 - **Outcome:** the state or effect produced as a consequence of execution.
 - **Value:** the relevance or contribution of that outcome, assessed against a particular context and set of criteria.
+
+The **candidate transformation** is the object considered before this sequence: its accessibility is assessed, but being a candidate does not mean it is accessible.
 
 Explain that accessibility does not imply execution; execution does not guarantee the expected outcome; and an outcome does not carry the same value in every context.
 
@@ -104,11 +107,17 @@ Introduce **trajectory** separately: transformations may be connected and may sh
 
 **Key message:** A change in accessibility changes what is within the system's reach; it does not, by itself, establish what should be done or guarantee a favourable outcome or value.
 
-**Visual direction:** A clear conceptual sequence of candidate transformation, accessibility, execution, outcome and value, with trajectory shown as the system's evolution across states and transformations rather than as another sequential stage.
+**Visual direction:** Make **Accessibility → Execution → Outcome → Value** a persistent, high-visibility visual anchor. Place “Candidate transformation” before the sequence as the object being assessed. Show trajectory as a path across states and transformations, not as a fifth stage or a terminal step. Keep these relationships clear in both static diagrams and responsive/mobile layouts.
 
 ### 3.5 A system's space of possibilities
 
-Explain that transformation accessibility can depend on multiple elements and their relationships. Examples may include component capabilities, resources, dependencies, internal/external relationships and interactions, rules and permissions, constraints and environmental conditions.
+Open this section with the highlighted question:
+
+**What new options become available when a system can do something that was previously beyond its reach?**
+
+The Spanish equivalent is: **«¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?»**
+
+Explain that a change in accessibility changes the options within reach, without implying that those options are necessarily useful or desirable. Then explain that transformation accessibility can depend on multiple elements and their relationships. Examples may include component capabilities, resources, dependencies, internal/external relationships and interactions, rules and permissions, constraints and environmental conditions.
 
 Do not present this as a closed or universal list, nor imply that these factors operate independently. A local change may enable one transformation, block another or reconfigure several dependencies.
 
@@ -183,6 +192,7 @@ Do not:
 - imply that accessibility entails execution;
 - imply that execution guarantees success, a favourable outcome or value;
 - present trajectory as a synonym for outcome or as a mandatory linear stage after value;
+- obscure or omit the visible sequence **Accessibility → Execution → Outcome → Value**; candidate transformation must be positioned before it, while trajectory is represented across states and transformations;
 - suggest that expanding the accessible set is always desirable;
 - present the list of accessibility conditions as exhaustive or independent;
 - imply that the system must autonomously initiate changes in its possibilities;
@@ -230,3 +240,4 @@ Before publication:
 - **0.2 — 2026-11-24:** Repositions Explore as a conceptual deepening of Home, fixes the example to one missing dependency, broadens the candidate-transformation definition beyond software operations, and clarifies the bounded meaning of accessibility.
 - **0.3 — 2026-11-24:** Refreshes related Home document versions after the trajectory-visual reconciliation.
 - **0.4 — 2026-11-24:** Adds a visitor-facing explanation of the practical implication of changed accessibility, clarifies that accessibility means being within reach rather than execution, and refines trajectory wording to avoid implying that transformations always form a chain.
+- **0.5 — 2026-11-24:** Requires the block-5 question in both languages and a persistent visual anchor for Accessibility → Execution → Outcome → Value, with candidate transformation before the sequence and trajectory across states and transformations.
