@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 1.2  
+**Version:** 1.3  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -678,3 +678,19 @@ Apply this consistently to page titles, first-mention descriptions, About/Resear
 
 ### v1.2 — 2026-11-24
 - Adds the approved public identity and bilingual naming convention to the information architecture.
+
+
+## 19. Home identity placement review (2026-11-24)
+
+The site-wide header identifies the initiative as **TGCV — Transformaciones Generativas y Construcción de Valor**. The English rendering is **TGCV — Generative Transformations and Value Construction**; TGCV remains the proper name. The full programme descriptor is used in the footer and relevant About/Research identity blocks.
+
+The Home's first substantive message remains the approved visitor question. Do not add a long institutional introduction ahead of it. On narrow screens, the header may visually prioritise “TGCV”, provided the full name remains available accessibly.
+
+The required Home sequence is opening question → discovery → second question and concise answer → tangible software-configuration example → conceptual explanation → ecosystem → exploration. The second question precedes the example in both languages.
+
+“Generative” refers to transformations that can change what systems can do or access; it must not be interpreted as a reference only to generative AI, content generation or autonomous self-modification.
+
+### v1.3 — 2026-11-24
+- Specifies placement of the approved TGCV public identity in the site-wide header and footer.
+- Preserves the visitor-first opening and aligns Home narrative ordering.
+- Clarifies the public meaning of “Generative”.
