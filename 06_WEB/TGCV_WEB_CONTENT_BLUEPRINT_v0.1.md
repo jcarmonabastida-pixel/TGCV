@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 1.2  
+**Version:** 1.3  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.4; Information Architecture v1.4; Home Experience v1.3; Home Copy v1.0; Explore Experience v0.5; Explore Copy v0.4.
+**Parent documents:** Web Master Brief v1.5; Information Architecture v1.4; Home Experience v1.4; Home Copy v1.1; Explore Experience v0.5; Explore Copy v0.4.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -607,3 +607,6 @@ The Home remains a working draft, not publication approval. Complete the visual 
 ### v1.2 — 2026-11-24
 - Adopts the updated public descriptor “investigación aplicada e innovación” and its English equivalent.
 - Clarifies that the applied and innovation orientation does not imply that applications or deployments are already validated.
+
+### v1.3 — 2026-11-24
+- Refreshes parent references to Web Master Brief v1.5, Home Experience v1.4 and Home Copy v1.1 after the integrated Home editorial review.
