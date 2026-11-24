@@ -1,7 +1,7 @@
 # TGCV — Explore Copy
 
 **Identifier:** TGCV-WEB-EXPLORE-COPY-001  
-**Version:** 0.6  
+**Version:** 0.7  
 **Date:** 2026-11-25  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`  
@@ -96,28 +96,25 @@ Las transformaciones pueden relacionarse y condicionar lo que el sistema podrá 
 
 **¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?**
 
-Responderla exige mirar más allá de una transformación aislada: necesitamos comprender qué determina el conjunto de opciones que están al alcance del sistema y cómo se relacionan los elementos que influyen en la accesibilidad.
+Para responder, necesitamos mirar más allá de las capacidades de cada componente por separado. Un sistema puede contener todos los elementos necesarios para una operación y, aun así, no tener esa transformación a su alcance. También importa cómo se relacionan esos elementos, de qué dependen y bajo qué condiciones pueden trabajar conjuntamente.
 
-La accesibilidad puede depender de múltiples elementos y de cómo se relacionan entre sí. Entre ellos pueden encontrarse:
+Podemos observarlo desde tres preguntas:
 
-- Las capacidades de sus componentes.
-- Los recursos disponibles.
-- Las dependencias entre elementos.
-- Las relaciones e interacciones internas y externas.
-- Las reglas, permisos y mecanismos de autorización.
-- Las restricciones y condiciones del entorno.
+- **¿Qué elementos hay y qué puede hacer cada uno?** Los componentes tienen capacidades distintas; los recursos y las dependencias pueden estar disponibles o faltar.
+- **¿Cómo se relacionan?** Las conexiones, interfaces e interacciones permiten que algunos elementos trabajen juntos, o pueden impedirlo aunque los componentes existan.
+- **¿En qué condiciones pueden actuar?** Las reglas, permisos, restricciones y condiciones del entorno pueden habilitar, limitar o bloquear determinadas transformaciones.
 
-Estos elementos no actúan necesariamente de forma independiente. Una modificación aparentemente localizada puede habilitar una transformación, bloquear otras o alterar las relaciones de las que dependen distintas operaciones.
+Volvamos al ejemplo de la migración. En ambos entornos consideramos la misma operación y mantenemos los demás supuestos. Sin embargo, en el entorno B falta la dependencia necesaria. Los componentes pueden estar presentes, pero esa relación de dependencia no está satisfecha. Por eso, la operación puede ser una transformación candidata sin estar todavía al alcance del sistema bajo esas condiciones.
 
-Por eso, comprender las posibilidades de un sistema requiere observarlo como un conjunto de elementos relacionados, situado en un entorno y sujeto a condiciones que pueden cambiar.
+Esto muestra por qué no basta con conocer los elementos de un sistema: también necesitamos comprender cómo están conectados y qué condiciones hacen posible que funcionen conjuntamente.
 
-Aquí adquiere importancia el pensamiento sistémico (*Systems Thinking*): una perspectiva que ayuda a comprender límites, relaciones, dependencias, condiciones y dinámicas.
+Estas dimensiones no actúan de forma independiente. Un cambio en una condición puede modificar una dependencia, hacer que una conexión pueda utilizarse o deje de estar disponible y, como consecuencia, habilitar una transformación mientras limita otra. Las posibilidades pueden abrirse, cerrarse o reorganizarse; ampliarlas no es necesariamente beneficioso en todos los contextos.
 
-**Las posibilidades de un sistema dependen tanto de sus elementos como de las relaciones y condiciones que los conectan.**
+Aquí resulta útil el pensamiento sistémico (*Systems Thinking*): una perspectiva que ayuda a observar conjuntamente los límites del sistema, sus relaciones, dependencias, condiciones y dinámicas.
 
-*Orientación visual:* Un sistema representado mediante componentes, recursos, relaciones y condiciones externas. Algunas conexiones habilitan transformaciones; otras las limitan o bloquean.
+**Las posibilidades de un sistema dependen no solo de lo que sus elementos pueden hacer por separado, sino también de cómo se relacionan y de las condiciones en las que pueden actuar conjuntamente.**
 
----
+*Orientación visual:* Representar un sistema sencillo con varios componentes, una dependencia entre dos de ellos y una condición externa. Mostrar que los componentes pueden existir, pero que una transformación sigue fuera del alcance mientras falte la dependencia necesaria. Después, mostrar cómo el cambio de esa condición puede modificar la relación y la accesibilidad de la transformación. Evitar una red demasiado compleja o una lista visual de factores.
 
 ## 2.6 Una nueva forma de comprender y orientar las transformaciones
 
@@ -234,28 +231,25 @@ Transformations may relate to one another and shape what the system can do next.
 
 **What new options become available when a system can do something that was previously beyond its reach?**
 
-Answering it requires looking beyond an individual transformation: we need to understand what shapes the set of options within a system's reach and how the elements that influence accessibility relate to one another.
+To answer this, we need to look beyond the capabilities of individual components. A system may contain all the elements needed for an operation and still not have that transformation within its reach. How those elements relate, what they depend on and under which conditions they can work together also matters.
 
-The accessibility of transformations can depend on multiple elements and on how they relate to one another. These may include:
+We can examine this through three questions:
 
-- The capabilities of its components.
-- The resources available.
-- Dependencies between elements.
-- Internal and external relationships and interactions.
-- Rules, permissions and authorisation mechanisms.
-- Constraints and conditions in the surrounding environment.
+- **What elements are present, and what can each one do?** Components have different capabilities; resources and dependencies may or may not be available.
+- **How are they related?** Connections, interfaces and interactions allow some elements to work together, or may prevent this even when the components are present.
+- **Under what conditions can they act?** Rules, permissions, constraints and environmental conditions can enable, limit or block particular transformations.
 
-These elements do not necessarily operate independently. A seemingly local change may enable one transformation, block others or alter the relationships on which different operations depend.
+Return to the migration example. We consider the same operation in both environments and keep the other assumptions unchanged. However, the required dependency is missing in environment B. The components may be present, but that dependency relationship is not satisfied. The operation can therefore be a candidate transformation without yet being within the system's reach under those conditions.
 
-Understanding a system's possibilities therefore requires looking at it as a set of related elements, situated within an environment and subject to conditions that can change.
+This shows why knowing which elements a system contains is not enough: we also need to understand how they are connected and what conditions allow them to work together.
 
-This is where *Systems Thinking* becomes important: a perspective that helps us understand boundaries, relationships, dependencies, conditions and dynamics.
+These dimensions do not operate independently. A change in one condition may alter a dependency, make a connection usable or unavailable and, as a result, enable one transformation while constraining another. Possibilities can open, close or be reorganised; expanding them is not necessarily beneficial in every context.
 
-**A system's possibilities depend both on its elements and on the relationships and conditions that connect them.**
+This is where *Systems Thinking* becomes useful: a perspective that helps us examine system boundaries, relationships, dependencies, conditions and dynamics together.
 
-*Visual guidance:* A system represented through components, resources, relationships and external conditions. Some connections enable transformations; others constrain or block them.
+**A system's possibilities depend not only on what its elements can do individually, but also on how they are related and on the conditions under which they can work together.**
 
----
+*Visual guidance:* Show a simple system with several components, a dependency between two of them and one external condition. Make clear that the components may be present while a transformation remains out of reach because the required dependency is missing. Then show how changing that condition may alter the relationship and the accessibility of the transformation. Avoid an overly complex network or a visual checklist of factors.
 
 ## 3.6 A new way to understand and guide transformations
 
@@ -317,3 +311,5 @@ TGCV — Generative Transformations and Value Construction is a programme of app
 - **0.5 — 2026-11-25:** Aligns the Spanish and English TGCV identity statements with the approved public name and applied-research-and-innovation programme description; removes the superseded public-facing “Theory” wording.
 
 - **0.6 — 2026-11-25:** Clarifies in Spanish and English that the migration comparison holds the stated system/configuration, operation, boundary assumptions and other specified prerequisites constant while varying one dependency-availability condition; explicitly bounds the inference to the illustration.
+
+- **0.7 — 2026-11-25:** Rewrites the space-of-possibilities section in Spanish and English to explain how element capabilities, relationships/dependencies and operating conditions jointly shape accessible transformations.
