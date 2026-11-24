@@ -1,7 +1,7 @@
 # TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 0.8  
+**Version:** 0.9  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md`  
@@ -13,7 +13,7 @@
 
 This document contains the Spanish and English working copy for the first Home release. Both language versions express the same concepts, claims, caveats and visitor routes. They are editorial adaptations, not line-by-line translations.
 
-The copy is written first for people who research, design, develop or engineer systems, while remaining understandable to interested visitors outside those fields.
+The copy is written first for people who research, design, develop or engineer systems, while remaining understandable to interested visitors outside those fields. The site-wide brand lockup is **TGCV — Transformaciones Generativas y Construcción de Valor**; the Home must not add a long institutional introduction before the opening question. The full programme descriptor is retained in the footer and relevant About/Research identity blocks.
 
 Do not publish until the scientific language, evidence labels, links, assets, contact route, accessibility and bilingual equivalence have been checked.
 
@@ -163,6 +163,8 @@ Explore · Research · Systems Engineering · Transformational Intelligence · L
 Los conceptos, hipótesis, demostraciones sintéticas y evidencias empíricas se identifican por separado. Una demostración técnica no constituye por sí sola una validación científica.
 
 # 3. English version
+
+**Site-wide header / brand lockup:** TGCV — Generative Transformations and Value Construction. TGCV remains the proper name; the English expansion is a rendering of the canonical Spanish name. On narrow screens, TGCV may be visually prioritised while the full name remains available accessibly. Keep the opening question as the first substantive Home message; do not place a long institutional introduction ahead of it.
 
 ## 3.1 Hero
 
@@ -361,3 +363,23 @@ TGCV is the proper name in both languages; the Spanish expansion is canonical. D
 ### v0.8 — 2026-11-24
 - Replaces the previous public footer identity in Spanish and English.
 - Uses “research programme” as the public positioning and adds the approved concise descriptor.
+
+
+## 5. Home identity and interpretation controls (2026-11-24)
+
+The header identifies the site as **TGCV — Transformaciones Generativas y Construcción de Valor**. The English rendering is **TGCV — Generative Transformations and Value Construction**. The full approved descriptor remains in the footer:
+
+Spanish: *Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
+
+English: *A research programme exploring how expanding the transformations available to systems may contribute to value construction.*
+
+Do not repeat the full descriptor in the hero if doing so weakens the visitor-first opening. The opening question remains the first substantive message.
+
+“Generative” refers to transformations that can change or expand what a system can do or access. Do not imply that TGCV is limited to generative AI, content generation or autonomous self-modification. Conditions may change through interventions, system dynamics or environmental changes.
+
+The approved narrative order is opening question → discovery → second question and concise answer → software-environment example → conceptual explanation → ecosystem → exploration. The Spanish and English copy already follows this order.
+
+### v0.9 — 2026-11-24
+- Adds the site-wide public brand lockup and responsive/accessibility guidance.
+- Keeps the opening question ahead of institutional self-description.
+- Clarifies the meaning of “Generative” and aligns the Home identity with the approved programme descriptor.
