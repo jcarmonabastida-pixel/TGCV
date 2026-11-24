@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 1.4  
+**Version:** 1.5  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.5; Information Architecture v1.4; Home Experience v1.4; Home Copy v1.1; Explore Experience v0.7; Explore Copy v0.6.
+**Parent documents:** Web Master Brief v1.5; Information Architecture v1.4; Home Experience v1.4; Home Copy v1.1; Explore Experience v0.8; Explore Copy v0.7.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -527,6 +527,8 @@ Mandatory gates are identity coherence, clear visitor-facing message, useful and
 
 **Required example:** continue the Home software-configuration migration illustration. Keep one specific difference: the required dependency is available in environment A and missing in environment B. Explicitly state that the same operation, stated boundary assumptions and other specified relevant prerequisites are held constant for this illustrative comparison. Show how making the dependency available in B may change accessibility, without implying it is the only factor in a real migration. Do not add permissions as an alternative condition, depict execution or imply success/value.
 
+**Required explanation of the space of possibilities:** Explain that isolated component capabilities do not determine which transformations are within reach. Organise the visitor explanation around (1) elements and their capabilities/resources, (2) relationships, interfaces and dependencies, and (3) rules, constraints and environmental conditions. Show how these interact rather than presenting a universal independent checklist. Reuse the bounded migration example without changing its single varied condition.
+
 **Required conceptual controls:**
 - candidate transformation is not a synonym for accessible or feasible transformation;
 - accessibility means that a transformation is within reach under specified system boundaries and conditions; it does not imply execution;
@@ -615,3 +617,8 @@ The Home remains a working draft, not publication approval. Complete the visual 
 ### v1.4 — 2026-11-25
 - Refreshes the Explore parent references to Experience v0.7 and Copy v0.6.
 - Adds an explicit control assumption to the illustrative migration comparison so the accessibility contrast is not overgeneralised.
+
+
+### v1.5 — 2026-11-25
+- Updates Explore parent references to Experience v0.8 and Copy v0.7.
+- Adds a content requirement explaining the space of possibilities relationally, through elements, dependencies/relationships and operating conditions.
