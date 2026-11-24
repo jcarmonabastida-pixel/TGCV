@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 0.9  
+**Versión:** 1.0  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -972,8 +972,8 @@ Los documentos web subordinados deben mantener esta especificación común. Si p
 
 La página Explore se desarrolla en dos documentos subordinados:
 
-- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — versión de contenido 0.3: especificación de experiencia, audiencia, arquitectura narrativa, visuales y controles conceptuales.
-- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — versión de contenido 0.2: copy completo en español e inglés, con equivalencia conceptual y controles terminológicos.
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — versión de contenido 0.4: especificación de experiencia, audiencia, arquitectura narrativa, visuales y controles conceptuales.
+- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — versión de contenido 0.3: copy completo en español e inglés, con equivalencia conceptual y controles terminológicos.
 
 Explore desarrolla la intuición de Home sin repetirla. Su recorrido pasa de la diferencia entre estado y posibilidades a un ejemplo acotado de migración de configuración entre dos entornos; después distingue transformación candidata, transformación accesible, ejecución, resultado, valor y trayectoria; finalmente conecta la perspectiva sistémica y la ingeniería de sistemas con Transformational Intelligence y TGCV.
 
@@ -1032,12 +1032,14 @@ No introducir permisos como explicación alternativa dentro de este ejemplo. La 
 
 - Home Experience: v0.9.
 - Home Copy: v0.6.
-- Explore Experience: v0.3.
-- Explore Copy: v0.2.
-- Information Architecture: v0.7.
-- Content Blueprint: v0.5.
+- Explore Experience: v0.4.
+- Explore Copy: v0.3.
+- Information Architecture: v0.9.
+- Content Blueprint: v0.7.
 
 Estas versiones siguen siendo documentos de trabajo y no constituyen autorización de publicación.
+
+La revisión integrada por perfiles de visitante detectó tres refinamientos editoriales: explicar la accesibilidad como estar al alcance y no como ejecución; hacer explícito qué cambia en las opciones disponibles cuando cambia la accesibilidad, sin presuponer valor; y describir la trayectoria como evolución a través de estados y transformaciones sin sugerir una única cadena inevitable. Estos refinamientos se han incorporado de forma equivalente en español e inglés. La simulación de perfiles es una revisión editorial, no una prueba con visitantes reales ni una validación de comprensión empírica.
 
 ### v0.7 — 2026-11-24
 - Integra la revisión editorial Home → Explore.
@@ -1052,3 +1054,9 @@ Estas versiones siguen siendo documentos de trabajo y no constituyen autorizaci�
 
 ### v0.9 — 2026-11-24
 - Actualiza las referencias de versión de Explore Experience, Information Architecture y Content Blueprint tras la reconciliación editorial integrada.
+
+### v1.0 — 2026-11-24
+- Cierra la revisión editorial integrada Home → Explore a nivel de arquitectura y copy de trabajo, sin aprobar la publicación.
+- Incorpora las mejoras bilingües de accesibilidad como “estar al alcance”, implicaciones prácticas de los cambios de accesibilidad y trayectoria no necesariamente lineal.
+- Actualiza las versiones vigentes de Explore Experience, Explore Copy, Information Architecture y Content Blueprint.
+- Registra que la evaluación de cuatro perfiles fue una simulación editorial, no una prueba con visitantes reales.
