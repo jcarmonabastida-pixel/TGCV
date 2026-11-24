@@ -127,14 +127,14 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
             }
         candidate_projections.append({
             "datasets_per_shard": size,
-            "safe_under_150_minute_job_budget": safe,
-            "jobs_per_phase": sum(item["shards"] for item in per_cell.values()),
+            "safe_primary_replay_pair_under_150_minute_job_budget": safe,
+            "shard_tasks_per_phase": sum(item["shards"] for item in per_cell.values()),
             "conservative_primary_plus_replay_wall_seconds": phase_upper,
             "per_cell": per_cell,
         })
     safe_projections = [
         item for item in candidate_projections
-        if item["safe_under_150_minute_job_budget"]
+        if item["safe_primary_replay_pair_under_150_minute_job_budget"]
     ]
     if not safe_projections:
         raise ValueError("G7_NO_PRIMARY_REPLAY_SHARD_PAIR_MEETS_150_MINUTE_JOB_BUDGET")
@@ -178,7 +178,9 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
         "job_budget_seconds": JOB_BUDGET_SECONDS,
         "job_setup_overhead_seconds": JOB_SETUP_OVERHEAD_SECONDS,
         "shard_matrix": shard_matrix,
-        "shard_jobs_per_phase": len(shard_matrix),
+        "shard_tasks_per_phase": len(shard_matrix),
+        "matrix_job_count": len(shard_matrix),
+        "job_topology": "ONE_MATRIX_JOB_EXECUTES_PRIMARY_AND_CLEAN_SOURCE_REPLAY_SEQUENTIALLY",
         "candidate_shard_projections": candidate_projections,
         "selected_shard_projection": selected,
         "primary_plus_replay_conservative_wall_seconds": primary_replay_upper,
