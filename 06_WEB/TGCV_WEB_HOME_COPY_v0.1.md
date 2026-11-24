@@ -1,7 +1,7 @@
 # TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 0.6  
+**Version:** 0.7  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md`  
@@ -46,6 +46,12 @@ Las capacidades, los recursos, las conexiones, las reglas, los permisos y las re
 Cuando cambian esas condiciones —por una intervención, por la dinámica del propio sistema o por cambios en su entorno— también puede cambiar el conjunto de transformaciones que tiene a su alcance. Algunas pueden hacerse accesibles, otras pueden dejar de estarlo y otras pueden reorganizarse.
 
 Eso no significa que el sistema vaya a ejecutar automáticamente una transformación. Que algo esté a su alcance y que llegue a realizarlo son cuestiones distintas.
+
+### ¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?
+
+Cuando un sistema puede realizar transformaciones que antes quedaban fuera de su alcance, aparecen nuevas opciones: puede actuar de otras maneras, explorar caminos diferentes y plantearse resultados que antes no eran posibles. Esas posibilidades pueden abrir oportunidades para generar valor, aunque no garantizan por sí solas que se materialicen ni que el resultado sea valioso.
+
+Esta es la idea que conecta el cambio en las capacidades y posibilidades de un sistema con la construcción de valor. En **Explore** profundizamos en cómo se abren esas opciones y qué condiciones lo hacen posible.
 
 ## 2.3 Ejemplo: una configuración entre dos entornos
 
@@ -185,6 +191,12 @@ Capabilities, resources, connections, rules, permissions and constraints all inf
 When those conditions change—through an intervention, the system's own dynamics or changes in its environment—the set of transformations within its reach can change as well. Some may become accessible, others may cease to be accessible, and the set may be reorganised.
 
 This does not mean the system will automatically carry out a transformation. What is within reach and what is actually performed are two different questions.
+
+### What new options become available when a system can do something that was previously beyond its reach?
+
+When a system can carry out transformations that were previously beyond its reach, new options emerge: it can act in different ways, explore different paths and pursue outcomes that were not previously possible. These possibilities may open up opportunities to create value, although they do not by themselves guarantee that those opportunities will be realised or that the outcome will be valuable.
+
+This is the idea that connects changes in a system's capabilities and possibilities with value construction. **Explore** looks more closely at how these options become available and what conditions make that possible.
 
 ## 3.3 Example: a configuration across two environments
 
@@ -329,6 +341,7 @@ Efecto Ajá is a desired quality objective, not a mandatory publication conditio
 **Publication status: NOT APPROVED.** This is a bilingual working draft for editorial and conceptual review.
 
 ### Version history
+- **0.7 — 2026-11-24:** Adds the second visitor question and a concise bilingual answer to Home, connecting newly accessible options with the possibility—but not the guarantee—of value creation.
 - **0.6 — 2026-11-24:** Adds an explicit visual/editorial rule that trajectory spans states and transitions and must not appear as a discrete stage in the explanatory sequence.
 - **0.5 — 2026-11-24:** Makes the Home example consistent across languages: the target environment lacks one required dependency, which is then made available; permissions are no longer an alternative explanation.
 
