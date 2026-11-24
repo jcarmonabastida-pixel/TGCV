@@ -2,7 +2,7 @@
 
 **Identifier:** TGCV-WEB-EXPLORE-001  
 **Version:** 0.6  
-**Date:** 2026-11-24  
+**Date:** 2026-11-25  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21–22  
 **Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`, §12–13; Home Experience v1.4; Home Copy v1.1  
