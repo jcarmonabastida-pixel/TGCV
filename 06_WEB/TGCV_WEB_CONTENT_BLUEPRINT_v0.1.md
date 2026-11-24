@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v0.2; Information Architecture v0.2; Home Experience v0.2.
+**Parent documents:** Web Master Brief v0.6; Information Architecture v0.5; Home Experience v0.6; Explore Experience v0.1.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -509,3 +509,37 @@ Mandatory gates are identity coherence, clear visitor-facing message, useful and
 - Aligns the content inventory and publication gates with the approved first-release navigation and Home sequence.
 - Separates the illustrative software-migration example from existing demonstrators and synthetic evidence.
 - Makes bilingual completeness mandatory and external Efecto Ajá testing desirable but non-blocking.
+
+
+## 13. P02 — Explore: integrated experience and bilingual copy
+
+**Authoritative working references:**
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`
+- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md`
+
+**Purpose:** move the visitor from the Home insight to an understandable account of how system conditions shape the transformations within reach, without requiring prior knowledge or mathematical notation.
+
+**Required narrative:** system state and possibilities; same candidate operation across two environments; change in conditions and resulting accessibility; distinction between candidate/accessibility/execution/outcome/value; trajectory; system relationships and conditions; connection to Systems Thinking, Systems Engineering, Transformational Intelligence and TGCV.
+
+**Required example:** software-configuration migration between two environments. It must show the source and target conditions, the missing dependency in the target environment, the change that resolves that condition and the resulting accessibility status. It must not depict execution or imply success/value.
+
+**Required conceptual controls:**
+- candidate transformation is not a synonym for accessible or feasible transformation;
+- accessibility does not imply execution;
+- execution does not guarantee a favourable outcome;
+- value requires contextual criteria and independent evaluation;
+- trajectory describes evolution through states and transformations, not a stage appended to a universal linear chain;
+- factors influencing accessibility are illustrative, relational and not an exhaustive independent checklist;
+- changes in possibilities need not be initiated autonomously by the system;
+- TI remains a working capability concept under development.
+
+**Visual asset:** static, accessible diagrams or annotated states. No bespoke simulator or Playground is required. The example is editorial and is not an existing execution, validated application, Juguete Colectivo feature or C10-S result.
+
+**Language:** complete Spanish and English versions with conceptual equivalence. English introduces “accessibility of transformations” to distinguish the TGCV concept from digital/interface accessibility; “outcome” is used consistently for “resultado”.
+
+**Publication condition:** review both language versions, diagrams, terminology and links; check scientific wording against current canonical sources; complete the page-level and whole-site release checks. Efecto Ajá remains a desired quality objective, not a mandatory publication gate.
+
+### v0.3 — 2026-11-24
+- Adds the Explore experience specification and complete bilingual copy.
+- Replaces the earlier generic P02 example direction with the bounded software-migration scenario.
+- Makes trajectory, accessibility, execution, outcome and value distinctions explicit in the page content contract.
