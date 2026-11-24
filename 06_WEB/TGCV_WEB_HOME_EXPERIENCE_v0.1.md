@@ -1,13 +1,13 @@
 # TGCV — Home Experience Concept
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING CONCEPT  
 **Parent documents:**  
 - `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
 - `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`  
 **Branch:** `strategy/tgcv-web-master`  
-**Purpose:** Define the Home page's conceptual narrative, visitor experience, content hierarchy and first interactive model before visual identity and detailed UI design.  
+**Purpose:** Define the Home page's conceptual narrative, visitor experience, content hierarchy and first-release explanatory visual before visual identity and detailed UI design.  
 **Authority:** This document governs only the proposed web experience. It does not alter TGCV's scientific Core, canonical definitions, evidence status or execution authorization.
 
 ---
@@ -50,7 +50,7 @@ This leads to the guided Explore experience, not to a sales contact form.
 
 ### 1.5 First-screen visual
 
-Use a simple, legible transformation-space illustration rather than stock photography or decorative AI imagery.
+Use a simple, legible static transformation-space illustration rather than stock photography or decorative AI imagery.
 
 The visual should show:
 - a system represented as a set of connected components or states;
@@ -102,7 +102,7 @@ Present a simplified, explorable sequence:
 
 Value may be shown as a later contextual evaluation, not as an automatic result of accessibility or transformation.
 
-Each stage should reveal a concise explanation on interaction:
+Each stage should have a concise visible explanation (no interaction is required on Home):
 - **System & conditions:** the system boundary, current configuration and context.
 - **Candidate transformations:** changes that can be considered.
 - **Accessibility:** which transformations are available under the specified conditions and decision boundary.
@@ -164,14 +164,14 @@ Avoid leading with “Book a consultation”, “Get a business assessment” or
 ```text
 ┌──────────────────────────────────────────────────────────┐
 │ TGCV / identity             Explore Research Engineering  │
-│                              Intelligence Labs Community  │
+│                              Intelligence Labs About      │
 ├──────────────────────────────────────────────────────────┤
 │ HERO                                                     │
 │ Understanding and engineering how systems transform.    │
 │ Supporting statement                                     │
 │ [Explore how systems transform] [Discover the research]  │
 │                                                          │
-│       Interactive transformation-space illustration    │
+│       Static transformation-space diagram               │
 ├──────────────────────────────────────────────────────────┤
 │ THE QUESTION                                             │
 │ What changes when a system changes?                      │
@@ -182,7 +182,7 @@ Avoid leading with “Book a consultation”, “Get a business assessment” or
 ├──────────────────────────────────────────────────────────┤
 │ THE ANALYTICAL SEQUENCE                                  │
 │ Conditions → Accessibility → Transition → Trajectory     │
-│ Expandable explanation of each stage                     │
+│ Concise explanation of each stage                        │
 ├──────────────────────────────────────────────────────────┤
 │ THE ECOSYSTEM                                            │
 │ Research | Systems Engineering                           │
@@ -197,7 +197,7 @@ Avoid leading with “Book a consultation”, “Get a business assessment” or
 │ [Explore the transformation space]                       │
 ├──────────────────────────────────────────────────────────┤
 │ FOOTER                                                   │
-│ Research sources | Governance | Community | Contact      │
+│ Research sources | Governance | About | Contact          │
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -358,3 +358,15 @@ The Home experience is ready for the germinal website when:
 9. the page is accessible, responsive and maintainable;
 10. no Playground or custom simulator is required for launch.
 
+
+
+## 13. Home copy reference
+
+The complete Spanish working copy for the first-release Home page is maintained in `06_WEB/TGCV_WEB_HOME_COPY_v0.1.md`. It provides proposed hero copy, narrative sections, analytical sequence, ecosystem pillars, candidate application contexts, calls to action, footer, headline alternatives and an Efecto Ajá review checklist.
+
+The copy is an editorial draft, not publication-approved. The public language strategy (Spanish, English or bilingual) remains open. Scientific and evidence wording must be checked against current canonical state before publication.
+
+### v0.3 — 2026-11-24
+- Aligned the wireframe and visual references with a static explanatory diagram rather than an interactive Home simulator.
+- Replaced premature community navigation references with About.
+- Added the Home Copy v0.1 as the detailed editorial source.
