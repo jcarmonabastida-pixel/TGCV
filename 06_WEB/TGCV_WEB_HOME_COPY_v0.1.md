@@ -1,7 +1,7 @@
 # TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 0.3  
+**Version:** 0.4  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md`  
@@ -39,25 +39,27 @@ Un sistema no solo cambia cuando pasa de un estado a otro. También puede adquir
 
 ## 2.2 Descubrimiento
 
-### Los sistemas pueden cambiar sus propias posibilidades.
+### Las posibilidades de un sistema también pueden cambiar.
 
-Los recursos, las capacidades, las conexiones, las reglas, los permisos y las restricciones influyen en las transformaciones que un sistema tiene a su alcance.
+Las capacidades, los recursos, las conexiones, las reglas, los permisos y las restricciones influyen en lo que un sistema puede hacer.
 
-Cuando cambian esas condiciones, algunas transformaciones pueden hacerse accesibles, otras pueden dejar de estarlo y otras pueden reorganizarse.
+Cuando cambian esas condiciones —por una intervención, por la dinámica del propio sistema o por cambios en su entorno— también puede cambiar el conjunto de transformaciones que tiene a su alcance. Algunas pueden hacerse accesibles, otras pueden dejar de estarlo y otras pueden reorganizarse.
 
 Eso no significa que el sistema vaya a ejecutar automáticamente una transformación. Que algo esté a su alcance y que llegue a realizarlo son cuestiones distintas.
 
 ## 2.3 Ejemplo: una configuración entre dos entornos
 
-### Una configuración que funciona en un entorno no necesariamente puede operar en otro.
+### Una operación accesible en un entorno puede no estarlo en otro.
 
-Imagina un sistema de software que funciona en su entorno de origen. Al trasladar su configuración a un segundo entorno, encuentra diferencias en dependencias, recursos, permisos o parámetros.
+Imagina un sistema de software con una configuración determinada en su entorno de origen. Bajo las condiciones de ese entorno, una operación concreta está disponible porque cuenta con las dependencias y los permisos necesarios.
 
-En las nuevas condiciones, una operación que estaba disponible puede dejar de estar a su alcance. Si se adapta una dependencia, se habilita un permiso o se modifica una condición relevante, esa operación puede volver a ser accesible.
+Al considerar esa configuración en un segundo entorno, una dependencia necesaria o un permiso no está disponible. Bajo esas nuevas condiciones, la misma operación deja de ser accesible.
 
-El cambio no garantiza que la operación se ejecute ni que funcione correctamente. Lo que ha cambiado, en primer lugar, es lo que el sistema puede hacer bajo esas condiciones.
+Si se adapta la dependencia que falta o se habilita el permiso necesario, la operación vuelve a ser accesible en el segundo entorno. **Pero todavía no se ha ejecutado.**
 
-**Pie de ilustración:** Cambiar las condiciones puede cambiar qué transformaciones están al alcance de un sistema. Accesibilidad no significa ejecución ni éxito.
+El cambio descrito no demuestra que la operación vaya a funcionar correctamente ni que produzca un resultado favorable. Lo que ha cambiado es su accesibilidad bajo las nuevas condiciones.
+
+**Pie de ilustración:** Al cambiar una condición relevante, una operación que no estaba al alcance del sistema puede volver a ser accesible. Accesibilidad no significa ejecución ni éxito.
 
 **Nota de producción:** Este escenario es una ilustración explicativa creada para la Home. No es una ejecución ya realizada, una aplicación validada ni una función del Juguete Colectivo.
 
@@ -90,7 +92,7 @@ Para comprender cómo cambian las posibilidades de un sistema, distinguimos vari
 
 ## 2.5 El ecosistema
 
-### Una capacidad integradora. Dos perspectivas complementarias.
+### Una capacidad integradora, apoyada en dos bases complementarias.
 
 **Transformational Intelligence**
 
@@ -104,7 +106,7 @@ La perspectiva que permite comprender los sistemas, sus límites, condiciones, r
 
 La disciplina que aporta prácticas para modelar, diseñar, desarrollar e intervenir en sistemas y sus transformaciones.
 
-**Tres perspectivas. Una ambición compartida: comprender, diseñar y orientar cómo evolucionan las posibilidades de los sistemas.**
+Transformational Intelligence articula estas dos bases desde una capacidad integradora: Systems Thinking aporta una perspectiva para comprender los sistemas; Systems Engineering, una disciplina para modelarlos, diseñarlos e intervenir en ellos.
 
 El trabajo se desarrolla en dos espacios relacionados:
 
@@ -174,25 +176,27 @@ A system does not only change when it moves from one state to another. It can al
 
 ## 3.2 Discovery
 
-### Systems can change their own possibilities.
+### A system's possibilities can change, too.
 
-Resources, capabilities, connections, rules, permissions and constraints all influence which transformations are within a system's reach.
+Capabilities, resources, connections, rules, permissions and constraints all influence what a system can do.
 
-When those conditions change, some transformations may become accessible, others may cease to be accessible, and the available set may be reorganised.
+When those conditions change—through an intervention, the system's own dynamics or changes in its environment—the set of transformations within its reach can change as well. Some may become accessible, others may cease to be accessible, and the set may be reorganised.
 
 This does not mean the system will automatically carry out a transformation. What is within reach and what is actually performed are two different questions.
 
 ## 3.3 Example: a configuration across two environments
 
-### A configuration that works in one environment may not work in another.
+### An operation accessible in one environment may not be accessible in another.
 
-Imagine a software system operating in its original environment. When its configuration is moved to a second environment, it encounters differences in dependencies, resources, permissions or parameters.
+Imagine a software system with a given configuration in its source environment. Under that environment's conditions, a particular operation is available because the required dependencies and permissions are present.
 
-Under the new conditions, an operation that was previously available may no longer be within the system's reach. Adapting a dependency, granting a permission or changing a relevant condition may make that operation accessible again.
+When considering that configuration in a second environment, a required dependency or permission is missing. Under these new conditions, the same operation is no longer accessible.
 
-This change does not guarantee that the operation will be performed or that it will work correctly. What has changed, first of all, is what the system can do under those conditions.
+If the missing dependency is adapted or the required permission is enabled, the operation becomes accessible again in the second environment. **But it has not yet been executed.**
 
-**Illustration caption:** Changing conditions can change which transformations are within a system's reach. Accessibility does not mean execution or success.
+The change described does not establish that the operation will work correctly or produce a favourable outcome. What has changed is its accessibility under the new conditions.
+
+**Illustration caption:** Changing a relevant condition can make an operation accessible to the system when it was previously out of reach. Accessibility does not mean execution or success.
 
 **Production note:** This scenario is an explanatory illustration created for the Home page. It is not an existing execution, a validated application or a feature of the Collective Toy.
 
@@ -225,7 +229,7 @@ What happens, and how is that outcome assessed using independently defined crite
 
 ## 3.5 The ecosystem
 
-### An integrative capability. Two complementary perspectives.
+### An integrative capability, supported by two complementary foundations.
 
 **Transformational Intelligence**
 
@@ -239,7 +243,7 @@ The perspective that helps us understand systems, their boundaries, conditions, 
 
 The discipline that contributes practices for modelling, designing, developing and intervening in systems and their transformations.
 
-**Three perspectives. One shared ambition: to understand, design and guide how the possibilities of systems evolve.**
+Transformational Intelligence brings these two foundations together as an integrative capability: Systems Thinking provides a perspective for understanding systems; Systems Engineering provides a discipline for modelling, designing and intervening in them.
 
 The work takes place across two connected activity spaces:
 
@@ -297,8 +301,9 @@ Before publication, verify the copy against the current canonical TGCV Core and 
 - Do not conflate accessibility with execution.
 - Do not infer favourable outcomes or value from accessibility.
 - Do not present TI as a consolidated discipline or generally validated capability.
-- Do not present software migration as an existing experiment or demonstrator.
+- Do not present software-environment adaptation as an existing experiment or demonstrator.
 - Do not describe exploratory application contexts as validated deployments.
+- Do not imply that a system must autonomously change its own conditions for its accessible transformations to change.
 
 ## 4.2 Language equivalence
 
@@ -321,5 +326,6 @@ Efecto Ajá is a desired quality objective, not a mandatory publication conditio
 
 ### Version history
 
+- **0.4 — 2026-11-24:** Corrects the conceptual hierarchy of TI, Systems Thinking and Systems Engineering; removes autonomous-system wording; specifies the migration illustration as a source/target accessibility change without implying execution or automatic capability transfer.
 - **0.3 — 2026-11-24:** Rewritten as a clean bilingual Home draft aligned with the approved visitor question, identity architecture, software-environment illustration, navigation and publication controls.
 - **0.2 — 2026-11-24:** Approved editorial direction and Spanish working copy added.
