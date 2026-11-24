@@ -1,6 +1,6 @@
 # TGCV — Home Experience Concept
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 0.3  
+**Version:** 0.4  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING CONCEPT  
 **Parent documents:**  
@@ -370,3 +370,59 @@ The copy is an editorial draft, not publication-approved. The public language st
 - Aligned the wireframe and visual references with a static explanatory diagram rather than an interactive Home simulator.
 - Replaced premature community navigation references with About.
 - Added the Home Copy v0.1 as the detailed editorial source.
+
+
+## 14. Approved visitor experience — decision lock (2026-11-24)
+
+This section is authoritative for the first-release Home and supersedes incompatible wording in earlier sections until the detailed copy and wireframe are fully rewritten. Parent decision: Web Master Brief §21.
+
+### 14.1 Audience and identity
+
+Address first people who research, design, develop or engineer systems, while keeping the entry point understandable to other visitors. Present TGCV as an ecosystem of research, systems thinking and systems engineering articulated around Transformational Intelligence.
+
+TI is the integrative capability/conceptual axis for understanding, reasoning about and orienting transformations in systems. Systems Thinking is the perspective for understanding systems and their conditions, relations and dynamics. Systems Engineering is the discipline for modelling, designing, developing and intervening in systems. They are not three equivalent departments. Research and Labs & Applications are activity spaces that exchange knowledge and feedback.
+
+### 14.2 Approved narrative sequence
+
+1. **Question:** «¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?»
+2. **Discovery:** a system can change not only its state but also its possibilities.
+3. **Tangible example:** migration of a software configuration between two different environments.
+4. **Conceptual explanation:** conditions → candidate transformations → accessibility → transition → new possibilities → trajectories. Keep accessibility distinct from execution, outcomes and value.
+5. **Ecosystem:** TI as the axis; Systems Thinking and Systems Engineering as complementary perspectives; Research and Labs & Applications as activity spaces.
+6. **Exploration:** direct routes to Explore, Research, Systems Engineering, Transformational Intelligence and Labs & Applications, with About and Contact as supporting destinations.
+
+### 14.3 Hero direction
+
+Opening question: **«¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?»**
+
+Working headline: **«Comprende cómo cambian las posibilidades de un sistema.»**
+
+Working supporting copy: «Un sistema no solo cambia cuando pasa de un estado a otro. También puede adquirir nuevas capacidades, acceder a transformaciones que antes no estaban a su alcance y abrir trayectorias diferentes.»
+
+Ecosystem line: **«Tres perspectivas. Una ambición compartida: comprender, diseñar y orientar cómo evolucionan las posibilidades de los sistemas.»**
+
+These are approved editorial directions, not immutable final copy. Adapt for natural Spanish and English and verify scientific fidelity before publication.
+
+### 14.4 Example design and scientific boundary
+
+The software-configuration migration between two environments is a new illustrative Home example. Show a bounded initial environment, a target environment, relevant changed conditions/dependencies/configuration, a transformation becoming accessible, the distinction between accessibility and actual execution, and possible subsequent trajectories. Do not imply that migration is automatically successful, valuable or executed. Do not describe the existing Collective Toy as this migration demonstrator unless its actual scenario is independently verified.
+
+Use a static, accessible explanatory illustration; no bespoke simulator is required. The visual should allow opening, closing or reconfiguration of possibilities, not only expansion. Keep TGCV's general research question central; software is an example, not the domain definition.
+
+### 14.5 Ecosystem and visitor routes
+
+Present TI, Systems Thinking and Systems Engineering as related but functionally different. Present Research and Labs & Applications as mutually informative activity spaces. Systems Thinking is transversal: visible on Home, explained in Explore and developed in Research; no separate first-release page.
+
+Approved navigation: Explore, Research, Systems Engineering, Transformational Intelligence, Labs & Applications, About, Contact. Explore must add explanatory depth rather than repeat Home. Contact is advertised only when a real monitored route and privacy notice exist.
+
+### 14.6 Languages and Efecto Ajá
+
+First public release: Spanish and English with conceptual/editorial equivalence, not literal translation. Efecto Ajá is a desired quality objective, not a mandatory acceptance gate. Before publication, perform an integral conceptual, narrative and example review, including simulated visitor profiles. Conduct real visitor testing when an external group becomes viable; its absence alone does not block launch.
+
+### 14.7 First-release acceptance criteria
+
+Mandatory: (a) coherent identity and clear visitor-facing message; (b) the question and example explain changed possibilities without jargon overload; (c) accessibility is not confused with execution, outcome or value; (d) useful content and direct routes exist; (e) evidence and asset maturity are labelled honestly; (f) all links and contact claims are true; (g) responsive, accessible and maintainable design; (h) complete equivalent ES/EN content. External Efecto Ajá validation is desirable, not a launch stopper.
+
+### v0.4 — 2026-11-24
+- Replaces the earlier six-movement institutional narrative with the approved question → discovery → example → explanation → ecosystem → exploration sequence.
+- Locks the software-migration example, hero direction, ecosystem relationship, bilingual requirement and non-blocking Efecto Ajá status.
