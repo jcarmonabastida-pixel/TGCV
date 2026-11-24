@@ -1,7 +1,7 @@
 # TGCV — Home Experience Specification
 
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 1.2  
+**Version:** 1.3  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21  
@@ -279,11 +279,11 @@ The conceptual decisions are approved. Final design, current evidence review, as
 The Home presents the initiative as **TGCV — Transformaciones Generativas y Construcción de Valor**, a research programme.
 
 Approved Spanish descriptor:
-*Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
+*Un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
 
 Approved English rendering:
 **TGCV — Generative Transformations and Value Construction**.
-*A research programme exploring how expanding the transformations available to systems may contribute to value construction.*
+*A programme of applied research and innovation exploring how expanding the transformations available to systems may contribute to value construction.*
 
 Use “research programme” / “programa de investigación”, not “theory” / “teoría”, as the public description of TGCV. The Spanish expansion is canonical; TGCV remains the proper name in English. The identity must not imply that expanded accessibility or possibilities automatically produce execution, outcomes or value.
 
@@ -307,3 +307,7 @@ The identity and copy are directionally coherent. Publication remains blocked pe
 - Aligns the Home sequence with the approved order, placing the second question before the tangible example.
 - Adds site-wide brand-lockup placement and meaning controls for “Generative”.
 - Updates the Home Copy dependency to v0.9.
+
+### v1.3 — 2026-11-24
+- Adopts the public descriptor “investigación aplicada e innovación” and its English equivalent.
+- Clarifies that Home's concise discovery answer should describe newly accessible transformations, not imply that accessibility means execution.
