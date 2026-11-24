@@ -102,34 +102,45 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
     candidate_projections = []
     for size in CANDIDATE_SHARD_SIZES:
         per_cell = {}
-        phase_upper = 0.0
+        total_jobs = 0
+        total_runner_compute_seconds = 0.0
+        paired_job_runtimes = []
         safe = True
         for cell_id in g7.EXPECTED_CELLS:
             shard_count = math.ceil(g7.K_PER_CELL / size)
-            waves = math.ceil(shard_count / MAX_PARALLEL)
             phase_shard_runtime = (
                 size * cells[cell_id]["latency_seconds"]["max"]
                 + JOB_SETUP_OVERHEAD_SECONDS
             )
-            # The workflow executes primary and clean-source replay sequentially
-            # inside the same matrix job. The 150-minute work budget therefore
-            # applies to the pair, not to either half in isolation.
+            # Each matrix job runs primary and clean-source replay sequentially.
+            # max-parallel is shared by the entire matrix, not reset per cell.
             paired_job_runtime = 2 * phase_shard_runtime
             safe = safe and paired_job_runtime <= JOB_BUDGET_SECONDS
-            paired_cell_component = waves * paired_job_runtime
-            phase_upper += paired_cell_component
+            total_jobs += shard_count
+            total_runner_compute_seconds += shard_count * paired_job_runtime
+            paired_job_runtimes.append(paired_job_runtime)
             per_cell[cell_id] = {
                 "shards": shard_count,
-                "waves": waves,
                 "max_observed_phase_shard_runtime_seconds": phase_shard_runtime,
                 "max_observed_primary_replay_job_runtime_seconds": paired_job_runtime,
-                "conservative_primary_replay_wall_seconds": paired_cell_component,
+                "aggregate_primary_replay_compute_seconds": shard_count * paired_job_runtime,
             }
+
+        # Graham's list-scheduling bound: W/m + (1 - 1/m) * p_max.
+        # This is conservative for a single shared pool of MAX_PARALLEL matrix
+        # jobs and avoids incorrectly granting each cell its own 20 runners.
+        max_paired_job_runtime = max(paired_job_runtimes)
+        wall_lower_bound = total_runner_compute_seconds / MAX_PARALLEL
+        wall_scheduling_tail = (1 - 1 / MAX_PARALLEL) * max_paired_job_runtime
+        conservative_wall = wall_lower_bound + wall_scheduling_tail
         candidate_projections.append({
             "datasets_per_shard": size,
             "safe_primary_replay_pair_under_150_minute_job_budget": safe,
-            "shard_tasks_per_phase": sum(item["shards"] for item in per_cell.values()),
-            "conservative_primary_plus_replay_wall_seconds": phase_upper,
+            "shard_tasks_per_phase": total_jobs,
+            "primary_replay_aggregate_compute_hours": total_runner_compute_seconds / 3600,
+            "shared_matrix_wall_workload_lower_bound_seconds": wall_lower_bound,
+            "shared_matrix_list_scheduling_tail_bound_seconds": wall_scheduling_tail,
+            "conservative_primary_plus_replay_wall_seconds": conservative_wall,
             "per_cell": per_cell,
         })
     safe_projections = [
