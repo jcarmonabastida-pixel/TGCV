@@ -254,7 +254,7 @@ Do not imply that the future Playground is available. Do not duplicate Juguete C
 
 **Status: WORKING EXPERIENCE SPECIFICATION — NOT APPROVED FOR PUBLICATION.**
 
-The second visitor question is a required Home content block, positioned immediately after the initial discovery and before the tangible example or, where the layout warrants it, as the concise payoff following that example. Its answer must remain short and visitor-facing; Explore retains the detailed explanation of system elements, relationships, conditions and accessibility.
+The second visitor question is a required Home content block, positioned immediately after the initial discovery and before the tangible example. Its answer must remain short and visitor-facing; Explore retains the detailed explanation of system elements, relationships, conditions and accessibility.
 
 The conceptual decisions are approved. Final design, current evidence review, asset verification, bilingual editorial QA, contact readiness and accessibility/responsive checks remain publication work.
 
