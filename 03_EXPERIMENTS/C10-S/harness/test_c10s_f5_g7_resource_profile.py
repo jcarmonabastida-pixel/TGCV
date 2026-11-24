@@ -90,31 +90,37 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             ):
                 result = validator.validate(profile_path, staged_manifest_path, root)
 
-        self.assertEqual(result["datasets_per_shard"], 20)
-        self.assertEqual(result["shard_jobs_per_phase"], 100)
+        self.assertEqual(result["datasets_per_shard"], 10)
+        self.assertEqual(result["shard_jobs_per_phase"], 200)
         self.assertEqual(result["max_parallel_jobs"], 20)
-        self.assertEqual(len(result["shard_matrix"]), 100)
+        self.assertEqual(len(result["shard_matrix"]), 200)
         for cell_id in ("F5_beta22_M10_R5", "F5_beta22_M30_R20"):
             self.assertEqual(
                 sum(1 for item in result["shard_matrix"] if item["cell_id"] == cell_id),
-                50,
+                100,
             )
         slow = result["selected_shard_projection"]["per_cell"]["F5_beta22_M30_R20"]
         self.assertAlmostEqual(
-            slow["max_observed_shard_runtime_seconds"], 8663.8927517, places=5
+            slow["max_observed_primary_replay_job_runtime_seconds"],
+            8963.8927517,
+            places=5,
         )
-        self.assertEqual(slow["shards"], 50)
-        self.assertEqual(slow["waves"], 3)
+        self.assertLessEqual(
+            slow["max_observed_primary_replay_job_runtime_seconds"],
+            validator.JOB_BUDGET_SECONDS,
+        )
+        self.assertEqual(slow["shards"], 100)
+        self.assertEqual(slow["waves"], 5)
         by_size = {
             item["datasets_per_shard"]: item
             for item in result["candidate_shard_projections"]
         }
-        self.assertTrue(by_size[20]["safe_under_150_minute_job_budget"])
-        for size in (25, 40, 50, 100):
+        self.assertTrue(by_size[10]["safe_under_150_minute_job_budget"])
+        for size in (20, 25, 40, 50, 100):
             self.assertFalse(by_size[size]["safe_under_150_minute_job_budget"])
-        expected_primary_replay = 2 * (
-            3 * (20 * 7.966771501000004 + 300)
-            + 3 * (20 * 418.194637585 + 300)
+        expected_primary_replay = (
+            5 * 2 * (10 * 7.966771501000004 + 300)
+            + 5 * 2 * (10 * 418.194637585 + 300)
         )
         self.assertAlmostEqual(
             result["primary_plus_replay_conservative_wall_seconds"],
