@@ -1,430 +1,253 @@
-# TGCV — Home Experience Concept
+# TGCV — Home Experience Specification
+
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 0.4  
+**Version:** 0.5  
 **Date:** 2026-11-24  
-**Status:** STRATEGIC DESIGN — WORKING CONCEPT  
-**Parent documents:**  
-- `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
-- `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`  
-**Branch:** `strategy/tgcv-web-master`  
-**Purpose:** Define the Home page's conceptual narrative, visitor experience, content hierarchy and first-release explanatory visual before visual identity and detailed UI design.  
-**Authority:** This document governs only the proposed web experience. It does not alter TGCV's scientific Core, canonical definitions, evidence status or execution authorization.
+**Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
+**Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21  
+**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16; `06_WEB/TGCV_WEB_HOME_COPY_v0.1.md`, §13  
+**Branch:** `strategy/tgcv-web-master`
 
 ---
 
-> **Current editorial authority (2026-11-24):** the approved decision-lock section at the end of this document is authoritative for the first public web release. It supersedes any earlier working text that conflicts with the approved audience, identity architecture, Home narrative, software-migration illustration, first-release navigation, Spanish/English requirement or non-blocking Efecto Ajá status. Earlier material is retained as design history until the next full editorial rewrite; it must not be treated as current instruction where it conflicts with the decision lock.
+## 1. Purpose and authority
 
-## 0. Strategic decision
+This document specifies the visitor experience, content hierarchy, explanatory sequence and visual requirements for the first public Home page of TGCV. It is an editorial and experience-design artifact. It does not modify TGCV's scientific Core, canonical definitions, evidence status, execution authorization or research priorities.
 
-The Home page should introduce TGCV's intellectual and engineering territory through one compelling question:
+The approved decisions in Web Master Brief §21 govern this specification. If any future copy or design conflicts with those decisions, the conflict must be resolved before publication.
 
-> **How does a change in a system alter what that system can do next?**
+The Home is the entrance to an interdisciplinary research and systems-engineering ecosystem. It is not a consultancy landing page, an AI-company homepage, a product launch page or an institutional brochure.
 
-This question is more distinctive and more faithful to the current research orientation than a generic promise about transformation, innovation, AI or value creation.
+## 2. Primary visitor and intended understanding
 
-The Home page should make the visitor intuitively understand that systems do not only change state. Their available transformations can also change. When that happens, the system's future possibilities and trajectories may change as well.
+### 2.1 Primary visitor
 
-The page is not a consultancy sales funnel, product launch page or institutional brochure. It is the front door to a research and systems-engineering ecosystem.
+Address people who research, design, develop or engineer systems. Keep the explanation accessible to adjacent audiences and interested newcomers who do not know TGCV.
 
-## 1. First-screen experience
+### 2.2 Intended understanding
 
-### 1.1 Working headline
+After engaging with the Home, a visitor should be able to explain in ordinary language that:
 
-**Understanding and engineering how systems transform.**
+1. a system has a current state and operates under particular conditions;
+2. those conditions shape which candidate transformations are accessible;
+3. changing relevant conditions can open, close or reorganise accessible transformations;
+4. accessibility does not mean that a transformation is executed;
+5. a realised transformation may change the system's state and its subsequent possibilities;
+6. outcomes and value require separate evaluation.
 
-### 1.2 Supporting statement
+The visitor should also understand where to go next according to their interests.
 
-**Research, systems engineering and transformational intelligence for exploring how systems change, what becomes possible, and how future trajectories unfold.**
+## 3. Identity architecture to communicate
 
-This is a working proposition, not final brand copy. It should be tested for comprehension with people from systems engineering, AI/software, complex-systems research and adjacent disciplines.
+The Home must not display three equivalent discipline cards or imply three separate departments.
 
-### 1.3 Primary action
+### 3.1 Transformational Intelligence — integrative axis
 
-**Explore how systems transform**
+Transformational Intelligence (TI) is the ecosystem's integrative conceptual axis: the capability being explored to understand, reason about and orient transformations in systems. Present it as a working concept/capability under development, not as a consolidated academic discipline or generally validated capability.
 
-This leads to the guided Explore experience, not to a sales contact form.
+### 3.2 Systems Thinking — perspective for understanding
 
-### 1.4 Secondary actions
+Systems Thinking contributes the perspective for understanding systems, their boundaries, conditions, relationships, dynamics and possibilities. Its role is transversal: visible on Home, explained in Explore and developed further in Research. It is not a separate first-release navigation destination.
 
-- **Discover the research** → Research / TGCV.
-- **Explore the engineering** → Systems Engineering.
-- **See it in action** → Labs & Simulation, but only when a demonstrator is ready and its status is explicit.
+### 3.3 Systems Engineering — discipline for design and intervention
 
-### 1.5 First-screen visual
+Systems Engineering contributes established practices for modelling, designing, developing, integrating and intervening in systems and their transformations. Do not invent or imply a validated proprietary TGCV engineering lifecycle.
 
-Use a simple, legible static transformation-space illustration rather than stock photography or decorative AI imagery.
+### 3.4 Activity spaces
 
-The visual should show:
-- a system represented as a set of connected components or states;
-- a set of candidate transformations;
-- a boundary or condition that determines which transformations are accessible;
-- a change in conditions or system configuration;
-- a visibly altered set of accessible transformations;
-- at least two possible subsequent trajectories.
+**Research** develops questions, conceptual foundations, models, methods, experiments and evidence.
 
-The diagram must communicate a change in *what is possible next*, not merely a before/after state change.
+**Labs & Applications** hosts or presents bounded experiments, demonstrators and exploratory application contexts, with their actual maturity and evidence limitations made explicit.
 
-Avoid suggesting that every candidate transformation is always accessible, that every accessible transformation is executed, or that every new possibility produces value.
+Research and Labs & Applications inform one another. They are activity spaces, not additional conceptual pillars or promises of staffed physical laboratories.
 
-## 2. The Home narrative
+## 4. Approved narrative sequence
 
-The page should unfold in six narrative movements.
+The Home follows this order:
 
-### Movement 1 — The question
+1. **Question:** What would need to change for a system to do something it cannot do today?
+2. **Discovery:** systems can change not only their state, but also what transformations are within their reach.
+3. **Tangible example:** a software configuration moving between two different environments.
+4. **Conceptual explanation:** conditions, candidate transformations, accessibility, transition, new state and possibilities, trajectories, outcomes and value.
+5. **Ecosystem:** TI as the integrative axis; Systems Thinking and Systems Engineering as complementary foundations; Research and Labs & Applications as activity spaces.
+6. **Exploration:** direct routes to the relevant sections, without forcing a linear journey.
 
-**Section title:** What changes when a system changes?
+Do not add a separate generic “What is transformation?” introduction before the approved question. Do not lead with institutional self-description.
 
-Short copy:
+## 5. First-screen experience
 
-A system is more than its current state. Its structure, resources, relationships, rules and environment shape the transformations it can perform. When these conditions change, the system's possibilities can change too.
+### 5.1 Opening question
 
-Purpose: introduce the distinctive question without overloading the visitor with notation.
+**¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?**
 
-### Movement 2 — The central insight
+English equivalent:
 
-**Section title:** Systems change. Their possibilities change too.
+**What would need to change for a system to do something it cannot do today?**
 
-Short copy:
+### 5.2 Working headline
 
-A new resource, capability, connection, permission or constraint can open some transformations, close others or alter the paths available afterwards. Understanding these changes requires looking beyond isolated actions and states to the system's transformation space.
+**Comprende cómo cambian las posibilidades de un sistema.**
 
-Visual: a two-stage diagram:
-1. Initial system configuration and accessible transformations.
-2. Modified conditions and a changed accessible transformation space.
+English equivalent:
 
-The visual should include one opened path and one constrained or closed path to show that transformation-space change is not always expansion.
+**Understand how a system's possibilities can change.**
 
-### Movement 3 — The analytical sequence
+### 5.3 Supporting copy
 
-**Section title:** From conditions to future trajectories
+Spanish:
 
-Present a simplified, explorable sequence:
+Un sistema no solo cambia cuando pasa de un estado a otro. También puede adquirir nuevas capacidades, acceder a transformaciones que antes no estaban a su alcance y abrir trayectorias diferentes.
 
-`SYSTEM & CONDITIONS → CANDIDATE TRANSFORMATIONS → ACCESSIBILITY → TRANSITION → NEW STATE & POSSIBILITIES → TRAJECTORY → OUTCOME`
+English:
 
-Value may be shown as a later contextual evaluation, not as an automatic result of accessibility or transformation.
+A system does not only change when it moves from one state to another. It can also develop new capabilities, gain access to transformations that were previously out of reach, and open up different trajectories.
 
-Each stage should have a concise visible explanation (no interaction is required on Home):
-- **System & conditions:** the system boundary, current configuration and context.
-- **Candidate transformations:** changes that can be considered.
-- **Accessibility:** which transformations are available under the specified conditions and decision boundary.
-- **Transition:** which transformation is actually performed.
-- **New state & possibilities:** how the system and its subsequent options change.
-- **Trajectory:** the sequence of possible or realised transitions.
-- **Outcome:** what happens and how it is evaluated.
+### 5.4 Primary action
 
-The detailed scientific chain and notation belong in Explore and Research. Home should use plain language first.
-
-### Movement 4 — The ecosystem
-
-**Section title:** Researching, modelling and engineering transformation
-
-Introduce four mutually connected pillars:
-
-1. **Research** — investigate systems, transformation spaces and their dynamics.
-2. **Systems Engineering** — model boundaries, subsystems, interfaces, dependencies and constraints.
-3. **Transformational Intelligence** — reason about, navigate and adapt to accessible transformation spaces and orient trajectories under independently specified objectives.
-4. **Labs & Applications** — build models, simulations and bounded demonstrators; explore application fit across real system domains.
-
-Do not present these as four unrelated business units. Show them as connected modes of work around a shared research object.
-
-### Movement 5 — Across domains
-
-**Section title:** One analytical question. Many kinds of systems.
-
-Show a small selection of candidate application contexts:
-- distributed networks and cloud-edge systems;
-- AI agents and tool-enabled software systems;
-- industrial and cyber-physical systems;
-- energy and mobility infrastructures;
-- socio-technical and interinstitutional systems.
-
-For each, state the transformation problem in one sentence. Examples:
-- How does a change in network configuration alter the services and paths available to dependent systems?
-- How do tools, permissions and environment state change the actions an AI agent can actually perform?
-- How do physical condition, information, resources and operator interventions reshape maintenance options?
-- How do energy constraints and mobility demand alter each other's feasible trajectories?
-- How does a transition in one institution change the next actions available to another?
-
-Label these as **candidate application contexts** unless a case has been qualified by appropriate evidence. Do not imply validated performance or generality.
-
-### Movement 6 — Invitation
-
-**Section title:** Explore the transformation space
-
-Primary invitation: enter the guided Explore narrative, supported by a clear static explanatory diagram.
-
-Secondary invitations:
-- Explore the research.
-- Inspect methods and demonstrators.
-- Follow or contribute to the work.
-
-Avoid leading with “Book a consultation”, “Get a business assessment” or other consultancy-first calls to action.
-
-## 3. Recommended page wireframe
-
-```text
-┌──────────────────────────────────────────────────────────┐
-│ TGCV / identity             Explore Research Engineering  │
-│                              Intelligence Labs About      │
-├──────────────────────────────────────────────────────────┤
-│ HERO                                                     │
-│ Understanding and engineering how systems transform.    │
-│ Supporting statement                                     │
-│ [Explore how systems transform] [Discover the research]  │
-│                                                          │
-│       Static transformation-space diagram               │
-├──────────────────────────────────────────────────────────┤
-│ THE QUESTION                                             │
-│ What changes when a system changes?                      │
-├──────────────────────────────────────────────────────────┤
-│ THE CENTRAL INSIGHT                                      │
-│ Systems change. Their possibilities change too.         │
-│ Initial configuration → changed accessible space         │
-├──────────────────────────────────────────────────────────┤
-│ THE ANALYTICAL SEQUENCE                                  │
-│ Conditions → Accessibility → Transition → Trajectory     │
-│ Concise explanation of each stage                        │
-├──────────────────────────────────────────────────────────┤
-│ THE ECOSYSTEM                                            │
-│ Research | Systems Engineering                           │
-│ Transformational Intelligence | Labs & Applications     │
-├──────────────────────────────────────────────────────────┤
-│ ACROSS DOMAINS                                           │
-│ Networks | Agentic AI | Industry | Energy | Socio-technical│
-│ Candidate cases with mechanism-led explanations         │
-├──────────────────────────────────────────────────────────┤
-│ EXPLORE                                                  │
-│ Guided explanation / available demonstrator (if ready)   │
-│ [Explore the transformation space]                       │
-├──────────────────────────────────────────────────────────┤
-│ FOOTER                                                   │
-│ Research sources | Governance | About | Contact          │
-└──────────────────────────────────────────────────────────┘
-```
-
-This is a content wireframe, not a final visual layout. The actual composition should be responsive and tested on mobile and desktop.
-
-## 4. First-release explanatory visual
-
-The initial Home page should use a carefully designed static diagram or a sequence of annotated visual states. Its purpose is to make the central idea tangible without creating a separate miniature simulator.
-
-The visual should show:
-- a bounded system and its relevant conditions;
-- candidate transformations;
-- which transformations are accessible under the initial conditions;
-- a change in one or more declared conditions;
-- the resulting change in accessible transformations;
-- at least two possible subsequent trajectories.
-
-The visitor should be able to understand the visual without interacting with it. An accessible text explanation must accompany it. The visual must not imply that accessibility guarantees execution, a favourable outcome or value.
-
-A link to an existing demonstrator may be included only when that demonstrator is available, bounded and accurately labelled. The future Playground is a separate application and is not part of this Home implementation.
-
-## 5. Copy principles
-
-The Home page should:
-- start from a question about systems, not from a product or service;
-- explain the distinctive object in ordinary language;
-- introduce formal terms only after intuitive understanding;
-- use active, precise verbs: model, represent, inspect, compare, explore, simulate, engineer;
-- state uncertainty and evidence status honestly;
-- distinguish TGCV, Transformational Intelligence, systems engineering and AI.
-
-Avoid:
-- “Unlock limitless potential”;
-- “Transform your business”;
-- “Create value with AI”;
-- “The future of intelligence”;
-- “A universal engine for transformation”;
-- claims that the approach predicts or optimises all systems.
-
-## 6. Visual direction before visual identity
-
-The visual direction should be derived from the research object.
-
-Potential visual primitives:
-- nodes, components and subsystem boundaries;
-- transformation edges and admissibility conditions;
-- branching trajectories;
-- changing topology or connectivity;
-- layered system architecture;
-- coupled domains and propagation paths;
-- state and condition comparisons.
-
-The visual system should feel like a blend of systems research, engineering instrumentation and exploratory scientific software. It should not imitate a generic corporate consultancy or a generic AI startup.
-
-No final colour palette, typography, logo or brand name is selected here.
-
-## 7. Scientific and editorial controls
+**Explora el enfoque / Explore the approach** → Explore.
+
+Secondary links may lead to Research and Systems Engineering. The Home must not use a “See it in action” action unless a specific demonstrator is available, accessible and accurately described at publication time.
+
+### 5.5 Hero visual
+
+Use a clear static explanatory visual, not stock photography or decorative AI imagery. It should show a bounded system, relevant conditions, candidate transformations, an initial accessibility pattern, a change in conditions, and a resulting pattern in which some transformations become accessible while others may remain inaccessible or become unavailable.
+
+The visual should communicate change in what is possible next, not merely a before/after state change. It must be understandable without interaction and accompanied by an equivalent text explanation.
+
+## 6. Tangible example: software configuration across environments
+
+The Home uses a bounded illustrative scenario: a software configuration that operates in one environment is moved or adapted for a second environment with different dependencies, resources, permissions or configuration conditions.
+
+The example should make the following sequence visible:
+
+1. In the source environment, a specified operation is accessible under the declared configuration and dependencies.
+2. In the target environment, one or more relevant conditions differ.
+3. Because of those differences, the same operation may no longer be accessible under the target conditions.
+4. A change to a relevant dependency, permission, resource or configuration condition may make the operation accessible again.
+5. Accessibility still does not establish that the operation is executed, succeeds, produces a favourable outcome or creates value.
+
+Use this example as an explanatory illustration only. It is not an existing execution, a validated application, a feature of Juguete Colectivo or evidence from C10-S. Do not invent detailed technical parameters that are not needed to explain the concept.
+
+## 7. Conceptual sequence on Home
+
+Use plain language and a compact visual sequence:
+
+1. **System and conditions** — What system are we considering, where are its boundaries, and under what conditions does it operate?
+2. **Candidate transformations** — What changes or transitions are relevant to this system and context?
+3. **Accessibility** — Which candidate transformations are available under the stated conditions and decision boundary?
+4. **Realised transition** — Which transformation is actually carried out?
+5. **New state and possibilities** — How does the system change, and what becomes accessible from the resulting state?
+6. **Trajectory** — What sequence of transitions is possible or has occurred?
+7. **Outcome and value** — What happens, and how is it evaluated under independently specified criteria?
+
+The central guardrail is:
+
+**Possible, accessible, realised and valuable do not mean the same thing.**
+
+Do not suggest that accessible transformations are necessarily executed, that an expanded accessible set is always better, or that value follows automatically.
+
+## 8. Ecosystem presentation
+
+Use a relational composition, not four equal cards.
+
+Suggested order:
+
+- **Transformational Intelligence** — the integrative capability and conceptual axis.
+- **Systems Thinking** — the perspective for understanding systems and their dynamics.
+- **Systems Engineering** — the discipline for modelling, designing and intervening in systems.
+
+Then show the two activity spaces:
+
+- **Research** — concepts, models, methods, experiments and evidence.
+- **Labs & Applications** — demonstrators, bounded experiments and exploratory application contexts.
+
+Use the line:
+
+**Tres perspectivas. Una ambición compartida: comprender, diseñar y orientar cómo evolucionan las posibilidades de los sistemas.**
+
+English:
+
+**Three perspectives. One shared ambition: to understand, design and guide how the possibilities of systems evolve.**
+
+The phrase “three perspectives” is a visitor-facing summary of the three conceptual functions; it does not imply three equivalent disciplines. The accompanying explanation must make the distinct roles explicit.
+
+## 9. Application contexts
+
+If space and current content justify it, show a small selection of candidate contexts, labelled **Exploratory**. Possible examples include AI agents and tools, industrial and cyber-physical systems, energy and mobility, distributed infrastructure and interinstitutional systems.
+
+Each item must be phrased as a question TGCV may help investigate, not as a validated deployment, customer case, proven solution or demonstrated impact. Do not include a context merely to fill a visual grid.
+
+## 10. Visitor routes and navigation
+
+Approved first-release navigation:
+
+- Explore
+- Research
+- Systems Engineering
+- Transformational Intelligence
+- Labs & Applications
+- About
+- Contact
+
+Systems Thinking is transversal: Home, Explore and Research. It has no independent first-release page.
+
+Home should offer a primary route to Explore, with secondary routes to Research and other destinations. Visitors may enter any destination directly; no mandatory linear journey is imposed.
+
+Explore must add conceptual depth and a guided explanation rather than repeat the Home. About explains purpose, scope and governance without implying a staffed institute, external board or formal consortium. Contact is shown only when a real monitored channel and proportionate privacy information are in place.
+
+## 11. Languages
+
+The first public release is Spanish and English. Both versions must be complete and conceptually equivalent. Adapt idiom, syntax and terminology naturally; do not translate literally when that would make either version awkward or misleading.
+
+Do not publish a partial language version or a language switch that leads to missing content.
+
+## 12. Efecto Ajá and quality review
+
+Efecto Ajá is a desired quality objective, not a mandatory publication gate.
+
+Before publication, conduct an integral review of the full experience: conceptual accuracy, narrative sequence, example, visual explanation, visitor orientation and representative visitor-profile simulations. When an external group is viable, add real visitor testing. Lack of external testing alone does not block publication.
+
+A useful qualitative review asks whether visitors can explain:
+- what question TGCV explores;
+- how conditions affect what transformations are accessible;
+- why accessibility differs from execution;
+- what they would explore next.
+
+This is an editorial comprehension review, not a representative survey or scientific experiment.
+
+## 13. Mandatory release checks
 
 Before publication:
-1. Verify every scientific statement against current canonical sources.
-2. Keep the current TGCV Core distinct from non-canonical proposals and adjacent frameworks.
-3. Identify synthetic material as synthetic.
-4. Do not elevate a completed technical run into scientific validation.
-5. Do not imply the candidate Application-Fit cases have been validated.
-6. Keep outcome and value models independent from accessibility measures.
-7. Link detailed definitions and evidence to versioned source artefacts.
-8. Mark working copy and provisional concepts as such during internal review.
 
-The Home page may simplify the explanation, but it must not simplify away distinctions that change the scientific meaning.
+- Identity and audience are coherent with the approved architecture.
+- The opening question and example explain changed possibilities without excessive jargon.
+- The example is clearly illustrative and is not confused with an existing demonstrator.
+- Accessibility, execution, trajectory, outcome and value remain distinct.
+- Systems Thinking, Systems Engineering and TI have distinct, accurate roles.
+- Research and Labs & Applications content is real, bounded and labelled honestly.
+- Existing, In development and Exploratory are used as operational content-maturity labels where useful; they are not scientific evidence grades.
+- Scientific claims are checked against current canonical sources and evidence state.
+- All destinations, links and any Contact route work as described.
+- Spanish and English are complete and equivalent.
+- Accessibility, responsive behaviour, privacy and maintainability have been reviewed.
 
-## 8. Success criteria
+External Efecto Ajá testing is desirable, not a release stopper.
 
-The Home experience is successful when:
-- a first-time visitor can explain the central question after a short visit;
-- a systems engineer recognises the relevance to modelling and engineering systems;
-- an AI practitioner understands that Transformational Intelligence is not simply another term for AI;
-- a researcher can find the research programme and evidence boundaries;
-- the visitor can see how changing conditions can change accessible transformations;
-- no visitor is led to believe that every newly accessible transformation is executed or valuable;
-- the site communicates an interdisciplinary research and engineering ecosystem, not a business consultancy.
+## 14. Visual and interaction constraints
 
-## 9. Open decisions
+The first Home does not require a custom simulator, interactive widget or future Playground. Prefer a static, accessible diagram or a small sequence of annotated visual states.
 
-The following remain open:
-- final headline and supporting copy after comprehension testing;
-- whether the Home interaction is embedded or linked to Explore;
-- which synthetic example best explains the concept;
-- exact navigation labels after user testing;
-- final visual identity, brand name and design system;
-- public display level for technical notation and formal models.
+The visual language may use system boundaries, nodes, components, transformation links, conditions, branching trajectories and before/after accessibility patterns. Show both opening and restriction/reconfiguration; do not depict possibility expansion as inherently positive.
 
-## 10. Relationship to the master architecture
+Do not imply that the future Playground is available. Do not duplicate Juguete Colectivo with a second miniature simulator on Home.
 
-This concept implements the Home page role in `TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md` and the identity orientation in `TGCV_WEB_MASTER_BRIEF_v0.1.md`.
+## 15. Status
 
-If the design becomes more product-led, consultancy-led or value-marketing-led than the master brief permits, revise the design. The governing idea is:
+**Status: WORKING EXPERIENCE SPECIFICATION — NOT APPROVED FOR PUBLICATION.**
 
-**Make the visitor see that a system's future depends not only on its current state, but also on which transformations its structure and conditions make accessible.**
+The conceptual decisions are approved. Final design, current evidence review, asset verification, bilingual editorial QA, contact readiness and accessibility/responsive checks remain publication work.
 
+### Version history
 
-## 11. AWGI adaptation: Home as the start of an active visitor journey
-
-The Home page must do more than describe TGCV. It should help visitors recognise a meaningful question, grasp the central insight, find useful depth and identify a real next step. Apply the sequence:
-**Recognition → Insight → Understanding → Exploration → Participation.**
-
-### 11.1 Efecto Ajá test for Home
-
-The Home experience should be tested with people unfamiliar with TGCV. After a short visit (two minutes as a design target), ask them to explain:
-1. what question the ecosystem investigates;
-2. what changes when a system's conditions change;
-3. why the distinction between current state and accessible future transformations matters;
-4. where they would go next.
-
-Record their own words, misunderstandings, relevant questions and whether they found a meaningful next step. Do not coach them during the test. A positive reaction is not enough if the central idea was not understood. Repeat the test after material changes to headline, visual explanation or page hierarchy.
-
-### 11.2 Visitor-centred narrative and honest invitation
-
-Lead with the visitor's question, not a long institutional self-description. Use a shared invitation such as explore, inspect, compare or contribute only where the destination and activity exist. The Home page should offer value before requesting data: no registration wall for core explanations or public resources, and no contact form as the primary call to action.
-
-### 11.3 Home as a gateway, not a miniature Playground
-
-The first web release will not include a bespoke micro-simulator or an isolated interactive widget on Home. This avoids duplicating the existing Juguete Colectivo and avoids creating a second, disconnected demonstrator. The Playground is a later, separate application line, planned after the germinal website has a stable identity and substantive content.
-
-For the initial Home:
-- use a clear static diagram or carefully designed sequence to explain the change in accessible transformations;
-- provide text explanations and a guided route to Explore;
-- link to a demonstrator only if one is genuinely available and its status and scope are explicit;
-- do not show a non-functional “Enter the Playground” action or imply that a professional Playground already exists.
-
-The future Playground may be deployed separately (for example, on an app subdomain), subject to its own technical and product specification. It is not a prerequisite for publishing the germinal website.
-
-### 11.4 Useful content before participation
-
-The visitor should be able to understand the core idea, inspect available research and access public resources without registering. Offer a low-friction way to send a question or correction, including for people who do not use GitHub. Contributions must be reviewed; no public contribution mechanism should be advertised until its process and ownership are defined.
-
-### 11.5 Honest maturity signals
-
-Where relevant, distinguish:
-- available content or resource;
-- work in development;
-- exploratory candidate;
-- open contribution with a defined task and route;
-- deferred capability.
-
-Keep these operational states separate from scientific labels such as synthetic, executed, audited, empirical or pilot. The Home page must not make a visually polished diagram or demonstrator look like empirical validation.
-
-## 12. Revised first-release Home acceptance criteria
-
-The Home experience is ready for the germinal website when:
-1. external visitors can explain the central question without repeating project jargon;
-2. the first screen identifies the subject and offers a clear route into Explore;
-3. the central visual explains a change in what is possible next, not merely a before/after state;
-4. accessible transformations are not confused with executed transformations or outcomes;
-5. the visitor finds useful content without registering;
-6. every call to action leads to an existing destination or is clearly marked as forthcoming;
-7. application contexts and demonstrators carry honest maturity/evidence labels;
-8. there is a real, low-friction route for questions or corrections, or the absence of one is clearly disclosed;
-9. the page is accessible, responsive and maintainable;
-10. no Playground or custom simulator is required for launch.
-
-
-
-## 13. Home copy reference
-
-The complete Spanish working copy for the first-release Home page is maintained in `06_WEB/TGCV_WEB_HOME_COPY_v0.1.md`. It provides proposed hero copy, narrative sections, analytical sequence, ecosystem pillars, candidate application contexts, calls to action, footer, headline alternatives and an Efecto Ajá review checklist.
-
-The copy is an editorial draft, not publication-approved. The public language strategy (Spanish, English or bilingual) remains open. Scientific and evidence wording must be checked against current canonical state before publication.
-
-### v0.3 — 2026-11-24
-- Aligned the wireframe and visual references with a static explanatory diagram rather than an interactive Home simulator.
-- Replaced premature community navigation references with About.
-- Added the Home Copy v0.1 as the detailed editorial source.
-
-
-## 14. Approved visitor experience — decision lock (2026-11-24)
-
-This section is authoritative for the first-release Home and supersedes incompatible wording in earlier sections until the detailed copy and wireframe are fully rewritten. Parent decision: Web Master Brief §21.
-
-### 14.1 Audience and identity
-
-Address first people who research, design, develop or engineer systems, while keeping the entry point understandable to other visitors. Present TGCV as an ecosystem of research, systems thinking and systems engineering articulated around Transformational Intelligence.
-
-TI is the integrative capability/conceptual axis for understanding, reasoning about and orienting transformations in systems. Systems Thinking is the perspective for understanding systems and their conditions, relations and dynamics. Systems Engineering is the discipline for modelling, designing, developing and intervening in systems. They are not three equivalent departments. Research and Labs & Applications are activity spaces that exchange knowledge and feedback.
-
-### 14.2 Approved narrative sequence
-
-1. **Question:** «¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?»
-2. **Discovery:** a system can change not only its state but also its possibilities.
-3. **Tangible example:** migration of a software configuration between two different environments.
-4. **Conceptual explanation:** conditions → candidate transformations → accessibility → transition → new possibilities → trajectories. Keep accessibility distinct from execution, outcomes and value.
-5. **Ecosystem:** TI as the axis; Systems Thinking and Systems Engineering as complementary perspectives; Research and Labs & Applications as activity spaces.
-6. **Exploration:** direct routes to Explore, Research, Systems Engineering, Transformational Intelligence and Labs & Applications, with About and Contact as supporting destinations.
-
-### 14.3 Hero direction
-
-Opening question: **«¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?»**
-
-Working headline: **«Comprende cómo cambian las posibilidades de un sistema.»**
-
-Working supporting copy: «Un sistema no solo cambia cuando pasa de un estado a otro. También puede adquirir nuevas capacidades, acceder a transformaciones que antes no estaban a su alcance y abrir trayectorias diferentes.»
-
-Ecosystem line: **«Tres perspectivas. Una ambición compartida: comprender, diseñar y orientar cómo evolucionan las posibilidades de los sistemas.»**
-
-These are approved editorial directions, not immutable final copy. Adapt for natural Spanish and English and verify scientific fidelity before publication.
-
-### 14.4 Example design and scientific boundary
-
-The software-configuration migration between two environments is a new illustrative Home example. Show a bounded initial environment, a target environment, relevant changed conditions/dependencies/configuration, a transformation becoming accessible, the distinction between accessibility and actual execution, and possible subsequent trajectories. Do not imply that migration is automatically successful, valuable or executed. Do not describe the existing Collective Toy as this migration demonstrator unless its actual scenario is independently verified.
-
-Use a static, accessible explanatory illustration; no bespoke simulator is required. The visual should allow opening, closing or reconfiguration of possibilities, not only expansion. Keep TGCV's general research question central; software is an example, not the domain definition.
-
-### 14.5 Ecosystem and visitor routes
-
-Present TI, Systems Thinking and Systems Engineering as related but functionally different. Present Research and Labs & Applications as mutually informative activity spaces. Systems Thinking is transversal: visible on Home, explained in Explore and developed in Research; no separate first-release page.
-
-Approved navigation: Explore, Research, Systems Engineering, Transformational Intelligence, Labs & Applications, About, Contact. Explore must add explanatory depth rather than repeat Home. Contact is advertised only when a real monitored route and privacy notice exist.
-
-### 14.6 Languages and Efecto Ajá
-
-First public release: Spanish and English with conceptual/editorial equivalence, not literal translation. Efecto Ajá is a desired quality objective, not a mandatory acceptance gate. Before publication, perform an integral conceptual, narrative and example review, including simulated visitor profiles. Conduct real visitor testing when an external group becomes viable; its absence alone does not block launch.
-
-### 14.7 First-release acceptance criteria
-
-Mandatory: (a) coherent identity and clear visitor-facing message; (b) the question and example explain changed possibilities without jargon overload; (c) accessibility is not confused with execution, outcome or value; (d) useful content and direct routes exist; (e) evidence and asset maturity are labelled honestly; (f) all links and contact claims are true; (g) responsive, accessible and maintainable design; (h) complete equivalent ES/EN content. External Efecto Ajá validation is desirable, not a launch stopper.
-
-### v0.4 — 2026-11-24
-- Replaces the earlier six-movement institutional narrative with the approved question → discovery → example → explanation → ecosystem → exploration sequence.
-- Locks the software-migration example, hero direction, ecosystem relationship, bilingual requirement and non-blocking Efecto Ajá status.
+- **0.5 — 2026-11-24:** Rewritten as a clean experience specification; removes superseded four-pillar narrative and earlier navigation assumptions; integrates the approved audience, identity, example, routes, bilingual requirement and non-blocking Efecto Ajá review.
+- **0.4 — 2026-11-24:** Decision-lock layer added to the prior working concept.
