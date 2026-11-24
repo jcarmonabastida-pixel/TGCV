@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 0.6  
+**Versión:** 0.7  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -972,8 +972,8 @@ Los documentos web subordinados deben mantener esta especificación común. Si p
 
 La página Explore se desarrolla en dos documentos subordinados:
 
-- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — especificación de experiencia, audiencia, comprensión esperada, arquitectura narrativa, visuales, controles conceptuales y aceptación editorial.
-- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — copy completo en español e inglés, con equivalencia conceptual y controles terminológicos.
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — versión de contenido 0.2: especificación de experiencia, audiencia, arquitectura narrativa, visuales y controles conceptuales.
+- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — versión de contenido 0.2: copy completo en español e inglés, con equivalencia conceptual y controles terminológicos.
 
 Explore desarrolla la intuición de Home sin repetirla. Su recorrido pasa de la diferencia entre estado y posibilidades a un ejemplo acotado de migración de configuración entre dos entornos; después distingue transformación candidata, transformación accesible, ejecución, resultado, valor y trayectoria; finalmente conecta la perspectiva sistémica y la ingeniería de sistemas con Transformational Intelligence y TGCV.
 
@@ -995,3 +995,51 @@ Los documentos Explore son especificaciones y copy de trabajo, no autorización 
 - Incorpora la experiencia Explore y su copy bilingüe como documentos subordinados.
 - Establece la progresión conceptual, el ejemplo ilustrativo y las distinciones de accesibilidad, ejecución, resultado, valor y trayectoria.
 - Fija los controles terminológicos ES/EN y mantiene el estado de trabajo no aprobado para publicación.
+
+
+## 23. Home → Explore — integración editorial (2026-11-24)
+
+Esta sección fija la relación editorial entre ambas páginas y prevalece sobre formulaciones anteriores que sugieran repetir el mismo recorrido.
+
+### 23.1 Función diferenciada
+
+- **Home** introduce la pregunta, la intuición de que las posibilidades de un sistema pueden cambiar y el ejemplo tangible de migración entre dos entornos.
+- **Explore** parte de esa intuición y profundiza: cómo se determina si una transformación candidata es accesible, cómo depende esa evaluación de los límites y condiciones considerados y qué no puede inferirse de la accesibilidad.
+
+Explore no debe volver a narrar íntegramente el ejemplo ni repetir la explicación introductoria de Home. Puede retomarlo brevemente como referencia compartida para desarrollar la distinción conceptual.
+
+### 23.2 Ejemplo común y condición única
+
+El ejemplo de ambas páginas queda fijado así:
+1. La transformación considerada es la misma en los dos entornos.
+2. La dependencia necesaria está disponible en el entorno A.
+3. Esa dependencia falta en el entorno B.
+4. Al hacer disponible la dependencia en B, la transformación puede pasar a ser accesible bajo las nuevas condiciones.
+5. No se representa ejecución ni se afirma éxito, resultado favorable o valor.
+
+No introducir permisos como explicación alternativa dentro de este ejemplo. La dependencia es la única diferencia ilustrativa para mantener una narrativa estable y comprensible.
+
+### 23.3 Controles conceptuales y visuales
+
+- “Transformación candidata” es un cambio contemplado como posibilidad dentro de un contexto de análisis; no se reduce a una operación informática.
+- La accesibilidad se evalúa respecto del sistema, sus límites y las condiciones consideradas.
+- En inglés, introducir “accessibility of transformations” y explicar que no se refiere a accesibilidad digital o de interfaces.
+- Accesibilidad no implica ejecución; ejecución no garantiza un resultado favorable; resultado no equivale a valor.
+- Trayectoria representa la evolución del sistema a través de estados y transformaciones. No debe dibujarse como una casilla añadida al final de una cadena lineal universal.
+- La lista de condiciones que influyen en la accesibilidad es ilustrativa, relacional y no exhaustiva.
+
+### 23.4 Versiones estratégicas vigentes
+
+- Home Experience: v0.8.
+- Home Copy: v0.5.
+- Explore Experience: v0.2.
+- Explore Copy: v0.2.
+- Information Architecture: v0.6.
+- Content Blueprint: v0.4.
+
+Estas versiones siguen siendo documentos de trabajo y no constituyen autorización de publicación.
+
+### v0.7 — 2026-11-24
+- Integra la revisión editorial Home → Explore.
+- Fija una condición única para el ejemplo compartido y actualiza los contratos de contenido subordinados.
+- Aclara la definición divulgativa de transformación candidata, el alcance de accessibility of transformations y la representación de trayectoria.
