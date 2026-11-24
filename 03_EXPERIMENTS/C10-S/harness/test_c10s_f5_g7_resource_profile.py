@@ -112,7 +112,11 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             validator.JOB_BUDGET_SECONDS,
         )
         self.assertEqual(slow["shards"], 100)
-        self.assertEqual(slow["waves"], 5)
+        self.assertAlmostEqual(
+            slow["aggregate_primary_replay_compute_seconds"],
+            100 * 8963.8927517,
+            places=4,
+        )
         by_size = {
             item["datasets_per_shard"]: item
             for item in result["candidate_shard_projections"]
