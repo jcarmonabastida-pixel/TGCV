@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 0.8  
+**Versión:** 0.9  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -972,7 +972,7 @@ Los documentos web subordinados deben mantener esta especificación común. Si p
 
 La página Explore se desarrolla en dos documentos subordinados:
 
-- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — versión de contenido 0.2: especificación de experiencia, audiencia, arquitectura narrativa, visuales y controles conceptuales.
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — versión de contenido 0.3: especificación de experiencia, audiencia, arquitectura narrativa, visuales y controles conceptuales.
 - `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — versión de contenido 0.2: copy completo en español e inglés, con equivalencia conceptual y controles terminológicos.
 
 Explore desarrolla la intuición de Home sin repetirla. Su recorrido pasa de la diferencia entre estado y posibilidades a un ejemplo acotado de migración de configuración entre dos entornos; después distingue transformación candidata, transformación accesible, ejecución, resultado, valor y trayectoria; finalmente conecta la perspectiva sistémica y la ingeniería de sistemas con Transformational Intelligence y TGCV.
@@ -1032,7 +1032,7 @@ No introducir permisos como explicación alternativa dentro de este ejemplo. La 
 
 - Home Experience: v0.9.
 - Home Copy: v0.6.
-- Explore Experience: v0.2.
+- Explore Experience: v0.3.
 - Explore Copy: v0.2.
 - Information Architecture: v0.7.
 - Content Blueprint: v0.5.
@@ -1048,3 +1048,7 @@ Estas versiones siguen siendo documentos de trabajo y no constituyen autorizaci�
 ### v0.8 — 2026-11-24
 - Completa la reconciliación visual de trayectoria entre Home y Explore: se representa como recorrido a través de estados y transiciones, no como etapa secuencial independiente.
 - Actualiza las versiones vigentes de Home, Information Architecture y Content Blueprint.
+
+
+### v0.9 — 2026-11-24
+- Actualiza las referencias de versión de Explore Experience, Information Architecture y Content Blueprint tras la reconciliación editorial integrada.
