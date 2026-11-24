@@ -5,7 +5,7 @@
 **Date:** 2026-11-24  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.1; Information Architecture v1.0; Home Experience v1.0; Home Copy v0.7; Explore Experience v0.5; Explore Copy v0.4.
+**Parent documents:** Web Master Brief v1.2; Information Architecture v1.2; Home Experience v1.1; Home Copy v0.8; Explore Experience v0.5; Explore Copy v0.4.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
