@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 0.8  
+**Version:** 0.9  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.1; Information Architecture v1.0; Home Experience v0.9; Home Copy v0.6; Explore Experience v0.5; Explore Copy v0.4.
+**Parent documents:** Web Master Brief v1.1; Information Architecture v1.0; Home Experience v1.0; Home Copy v0.7; Explore Experience v0.5; Explore Copy v0.4.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -476,7 +476,7 @@ First-release navigation: **Explore, Research, Systems Engineering, Transformati
 
 ### 12.2 Home content contract
 
-The Home sequence is question → discovery → tangible example → conceptual explanation → ecosystem → exploration. Use the approved opening question «¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?», working headline «Comprende cómo cambian las posibilidades de un sistema» and the approved explanatory direction in Home Experience §14.3.
+The Home sequence is opening question → discovery → second visitor question with a concise answer → tangible example → conceptual explanation → ecosystem → exploration. Use the approved opening question «¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?» and the second question «¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?». Its short answer must explain that newly accessible transformations create new options and possible paths that may open opportunities for value, without implying execution or guaranteed value. Retain the working headline «Comprende cómo cambian las posibilidades de un sistema» and the conceptual depth for Explore.
 
 The tangible example is migration of a software configuration between two different environments. It must be newly specified as an illustrative bounded scenario. It is not to be represented as an existing execution, a validated application, a feature of Juguete Colectivo or evidence from C10-S.
 
@@ -504,6 +504,9 @@ The first public release is Spanish and English. Produce complete, equivalent co
 Efecto Ajá is a desired quality objective, not a mandatory gate. Before publication, conduct an integral review of concept, narrative, journey and examples and simulate representative visitor profiles. Real visitor testing should be added when an external group is viable; its absence alone does not block launch.
 
 Mandatory gates are identity coherence, clear visitor-facing message, useful and complete content, scientific credibility, truthful maturity/evidence labels, working destinations/contact route, accessibility/responsiveness, privacy and maintainable scope. The external Efecto Ajá test is not a stopper.
+
+### v0.9 — 2026-11-24
+- Adds the second Home discovery question and concise bilingual answer to the content contract, updates the current Home Experience/Copy references and preserves Explore as the deeper explanatory destination.
 
 ### v0.2 — 2026-11-24
 - Aligns the content inventory and publication gates with the approved first-release navigation and Home sequence.
