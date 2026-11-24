@@ -10,6 +10,8 @@
 
 ---
 
+> **Current editorial authority (2026-11-24):** the approved decision-lock section at the end of this document is authoritative for the first public web release. It supersedes any earlier working text that conflicts with the approved audience, identity architecture, Home narrative, software-migration illustration, first-release navigation, Spanish/English requirement or non-blocking Efecto Ajá status. Earlier material is retained as design history until the next full editorial rewrite; it must not be treated as current instruction where it conflicts with the decision lock.
+
 ## 0. Executive decision
 
 The website should be designed as the public interface of an interdisciplinary research, systems-engineering and experimentation ecosystem focused on systems and their transformation spaces.
