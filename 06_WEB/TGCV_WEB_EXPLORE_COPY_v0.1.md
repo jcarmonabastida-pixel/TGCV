@@ -1,7 +1,7 @@
 # TGCV — Explore Copy
 
 **Identifier:** TGCV-WEB-EXPLORE-COPY-001  
-**Version:** 0.3  
+**Version:** 0.4  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`  
@@ -69,15 +69,16 @@ La accesibilidad no es una propiedad que deba interpretarse al margen del sistem
 
 Imagina que ahora la operación está al alcance del entorno B. ¿Qué podemos afirmar realmente? ¿Que el sistema puede realizarla, que ya la ha realizado o que ha obtenido algo valioso?
 
-No son afirmaciones equivalentes. Para comprender qué sucede cuando cambian las posibilidades de un sistema, necesitamos distinguir varios conceptos.
+No son afirmaciones equivalentes. Conviene mantener visible una distinción central:
 
-| Concepto | Qué significa |
-| --- | --- |
-| Transformación candidata | Una transformación contemplada como posible en el modelo o contexto de análisis. |
-| Transformación accesible | Una transformación que está al alcance del sistema bajo los límites y las condiciones consideradas; que sea accesible no significa que se haya realizado. |
-| Ejecución | La realización efectiva de esa transformación. |
-| Resultado | El estado o efecto que se produce como consecuencia de la ejecución. |
-| Valor | La relevancia o contribución de ese resultado, evaluada según un contexto y unos criterios determinados. |
+**Accesibilidad → Ejecución → Resultado → Valor**
+
+- **Accesibilidad:** la transformación está al alcance del sistema bajo los límites y las condiciones consideradas. No significa que se haya realizado.
+- **Ejecución:** el sistema realiza efectivamente la transformación.
+- **Resultado:** el estado o efecto que se produce como consecuencia de la ejecución.
+- **Valor:** la relevancia o contribución de ese resultado, evaluada según un contexto y unos criterios determinados.
+
+La **transformación candidata** es anterior a esta secuencia: es la transformación que se contempla y cuya accesibilidad se evalúa. Ser candidata no significa que esté al alcance del sistema.
 
 Una transformación puede estar a nuestro alcance y no ejecutarse. Puede ejecutarse y no producir el resultado esperado. Y un resultado, incluso cuando es satisfactorio, no tiene por qué representar el mismo valor para todos los sistemas o contextos.
 
@@ -87,11 +88,15 @@ Las transformaciones pueden relacionarse y condicionar lo que el sistema podrá 
 
 **Que cambie lo que un sistema puede hacer no garantiza, por sí mismo, un resultado favorable ni la generación de valor.**
 
-*Orientación visual:* Cinco conceptos diferenciados y conectados: transformación candidata, accesibilidad, ejecución, resultado y valor. La trayectoria representa la evolución del sistema a través de sus estados y transformaciones, no una etapa adicional de la secuencia.
+*Orientación visual:* Mostrar de forma destacada y legible la secuencia **Accesibilidad → Ejecución → Resultado → Valor**. Situar «Transformación candidata» antes de la secuencia, como el objeto cuya accesibilidad se evalúa. Representar la trayectoria como un recorrido que atraviesa distintos estados y transformaciones, no como una quinta etapa ni como una prolongación de la cadena.
 
 ---
 
 ## 2.5 El espacio de posibilidades de un sistema
+
+**¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?**
+
+Cuando cambia la accesibilidad, cambia también el conjunto de opciones que están al alcance del sistema en ese contexto. Esto puede abrir nuevas formas de actuar o de diseñar una intervención, aunque no determina por sí mismo si esas opciones son útiles o deseables.
 
 ¿Qué determina las transformaciones que están al alcance de un sistema?
 
@@ -204,15 +209,16 @@ Here, **accessibility of transformations** refers to whether a transformation is
 
 Imagine that the operation is now within the reach of environment B. What can we actually claim? That the system can perform it, that it has already performed it, or that it has achieved something valuable?
 
-These are not equivalent claims. To understand what happens when a system's possibilities change, we need to distinguish several concepts.
+These are not equivalent claims. One distinction should remain clearly visible:
 
-| Concept | Meaning |
-| --- | --- |
-| Candidate transformation | A transformation considered possible within a model or analytical context. |
-| Accessible transformation | A transformation within the system's reach under the boundary and conditions being considered; accessibility does not mean it has been performed. |
-| Execution | The actual performance of that transformation. |
-| Outcome | The state or effect produced as a consequence of execution. |
-| Value | The relevance or contribution of that outcome, assessed against a particular context and set of criteria. |
+**Accessibility → Execution → Outcome → Value**
+
+- **Accessibility:** the transformation is within the system's reach under the boundary and conditions being considered. This does not mean it has been performed.
+- **Execution:** the system actually performs the transformation.
+- **Outcome:** the state or effect produced as a consequence of execution.
+- **Value:** the relevance or contribution of that outcome, assessed against a particular context and set of criteria.
+
+The **candidate transformation** comes before this sequence: it is the transformation being considered and whose accessibility is assessed. Being a candidate does not mean that it is within the system's reach.
 
 A transformation can be within a system's reach without being executed. It can be executed without producing the expected outcome. And even a satisfactory outcome does not necessarily represent the same value for every system or context.
 
@@ -222,11 +228,15 @@ Transformations may relate to one another and shape what the system can do next.
 
 **A change in what a system can do does not, by itself, guarantee a favourable outcome or the creation of value.**
 
-*Visual guidance:* Five distinct but connected concepts: candidate transformation, accessibility of transformations, execution, outcome and value. A trajectory represents the system's evolution through states and transformations, not an additional stage in the sequence.
+*Visual guidance:* Make **Accessibility → Execution → Outcome → Value** a prominent, readable sequence. Place “Candidate transformation” before it, as the object whose accessibility is assessed. Represent trajectory as a path across different states and transformations, not as a fifth stage or an extension of the chain.
 
 ---
 
 ## 3.5 A system's space of possibilities
+
+**What new options become available when a system can do something that was previously beyond its reach?**
+
+When accessibility changes, the set of options within the system's reach in that context changes too. This may open new ways to act or design an intervention, although it does not by itself determine whether those options are useful or desirable.
 
 What determines which transformations are within a system's reach?
 
@@ -295,6 +305,7 @@ The Theory of Value Construction in Generative Systems (TGCV) is part of this ec
 - “Accessibility of transformations” introduces the analytical meaning in English; “accessible transformations” and “within the system's reach” may be used where natural.
 - “Outcome” is the consistent English equivalent of “resultado” in this explanatory context.
 - “Trajectory” refers to the system's evolution through states and transformations, not to an isolated outcome or an automatic stage after value.
+- Keep the visible distinction **Accessibility → Execution → Outcome → Value**; candidate transformation precedes it, while trajectory is represented across states and transformations rather than as another stage.
 - “Transformational Intelligence” remains a working capability concept under development.
 - The software-migration example is illustrative in both languages and must not be represented as an executed or validated case.
 - Any future edit to one language must trigger a corresponding conceptual check of the other.
@@ -304,3 +315,4 @@ The Theory of Value Construction in Generative Systems (TGCV) is part of this ec
 - **0.1 — 2026-11-24:** Initial bilingual Explore copy.
 - **0.2 — 2026-11-24:** Integrates the Home-to-Explore editorial hand-off, the single-dependency example, a broader candidate-transformation definition and an explicit English definition of accessibility of transformations.
 - **0.3 — 2026-11-24:** Makes the practical implication of changed accessibility explicit in both languages, clarifies accessible as “within reach” rather than performed, and refines trajectory wording so it does not imply one inevitable chain of transformations.
+- **0.4 — 2026-11-24:** Adds the explicit block-5 question about newly available options in Spanish and English; makes **Accessibility → Execution → Outcome → Value** a persistent visual anchor; places candidate transformation before that sequence and trajectory across states and transformations.
