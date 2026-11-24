@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 0.5  
+**Version:** 0.6  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v0.8; Information Architecture v0.7; Home Experience v0.9; Home Copy v0.6; Explore Experience v0.2.
+**Parent documents:** Web Master Brief v0.9; Information Architecture v0.8; Home Experience v0.9; Home Copy v0.6; Explore Experience v0.3.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -552,3 +552,7 @@ Mandatory gates are identity coherence, clear visitor-facing message, useful and
 ### v0.5 — 2026-11-24
 - Adds the explicit Home visual rule that trajectory spans states and transitions rather than appearing as a discrete stage in a linear sequence.
 - Refreshes parent-document versions after the integrated editorial reconciliation.
+
+
+### v0.6 — 2026-11-24
+- Refreshes parent references to the reconciled Home, Explore and Information Architecture versions.
