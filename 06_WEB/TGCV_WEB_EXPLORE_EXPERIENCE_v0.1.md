@@ -1,7 +1,7 @@
 # TGCV — Explore Experience Specification
 
 **Identifier:** TGCV-WEB-EXPLORE-001  
-**Version:** 0.3  
+**Version:** 0.4  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21–22  
@@ -91,16 +91,18 @@ Introduce the distinction through a visitor-facing question: if the operation is
 Explain five concepts:
 
 - **Candidate transformation:** a transformation considered possible within a model or analytical context.
-- **Accessible transformation:** a transformation the system can perform under the conditions being considered.
+- **Accessible transformation:** a transformation that is within the system's reach under the boundary and conditions being considered; accessibility alone does not mean it has been performed.
 - **Execution:** the actual performance of that transformation.
 - **Outcome:** the state or effect produced as a consequence of execution.
 - **Value:** the relevance or contribution of that outcome, assessed against a particular context and set of criteria.
 
 Explain that accessibility does not imply execution; execution does not guarantee the expected outcome; and an outcome does not carry the same value in every context.
 
-Introduce **trajectory** separately: transformations can be connected and shape what the system can do next. A trajectory describes the system's evolution through states and transformations. It is not a synonym for outcome and should not be shown as a sixth stage in a universal linear causal chain.
+Make the practical implication explicit without promising value: when accessibility changes, the set of options within the system's reach changes too. This may open new ways to act or design an intervention, but deciding whether an option is useful or desirable requires additional objectives and contextual criteria.
 
-**Key message:** Expanding possibilities does not, by itself, guarantee a favourable outcome or the creation of value.
+Introduce **trajectory** separately: transformations may be connected and may shape what the system can do next. A trajectory describes the system's evolution through states and transformations. It is not a synonym for outcome and should not be shown as a sixth stage in a universal linear causal chain.
+
+**Key message:** A change in accessibility changes what is within the system's reach; it does not, by itself, establish what should be done or guarantee a favourable outcome or value.
 
 **Visual direction:** A clear conceptual sequence of candidate transformation, accessibility, execution, outcome and value, with trajectory shown as the system's evolution across states and transformations rather than as another sequential stage.
 
@@ -227,3 +229,4 @@ Before publication:
 - **0.1 — 2026-11-24:** Initial Explore experience specification.
 - **0.2 — 2026-11-24:** Repositions Explore as a conceptual deepening of Home, fixes the example to one missing dependency, broadens the candidate-transformation definition beyond software operations, and clarifies the bounded meaning of accessibility.
 - **0.3 — 2026-11-24:** Refreshes related Home document versions after the trajectory-visual reconciliation.
+- **0.4 — 2026-11-24:** Adds a visitor-facing explanation of the practical implication of changed accessibility, clarifies that accessibility means being within reach rather than execution, and refines trajectory wording to avoid implying that transformations always form a chain.
