@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 1.3  
-**Date:** 2026-11-24  
+**Version:** 1.4  
+**Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.5; Information Architecture v1.4; Home Experience v1.4; Home Copy v1.1; Explore Experience v0.5; Explore Copy v0.4.
+**Parent documents:** Web Master Brief v1.5; Information Architecture v1.4; Home Experience v1.4; Home Copy v1.1; Explore Experience v0.7; Explore Copy v0.6.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -525,7 +525,7 @@ Mandatory gates are identity coherence, clear visitor-facing message, useful and
 **Required narrative:** build on the Home discovery rather than repeat it; explain how candidate transformations are assessed for accessibility relative to a system boundary and conditions; keep the visible sequence **Accessibility → Execution → Outcome → Value** (Spanish: **Accesibilidad → Ejecución → Resultado → Valor**) as a persistent visual anchor; place candidate transformation before this sequence as the object being assessed; explain trajectory as evolution across states and transformations, not another stage; connect system relationships and conditions to Systems Thinking, Systems Engineering, Transformational Intelligence and TGCV.
 **Required block-5 question:** “¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?” / “What new options become available when a system can do something that was previously beyond its reach?”
 
-**Required example:** continue the Home software-configuration migration illustration. Keep one specific difference: the required dependency is available in environment A and missing in environment B. Show how making it available in B may change accessibility. Do not add permissions as an alternative condition, depict execution or imply success/value.
+**Required example:** continue the Home software-configuration migration illustration. Keep one specific difference: the required dependency is available in environment A and missing in environment B. Explicitly state that the same operation, stated boundary assumptions and other specified relevant prerequisites are held constant for this illustrative comparison. Show how making the dependency available in B may change accessibility, without implying it is the only factor in a real migration. Do not add permissions as an alternative condition, depict execution or imply success/value.
 
 **Required conceptual controls:**
 - candidate transformation is not a synonym for accessible or feasible transformation;
@@ -610,3 +610,8 @@ The Home remains a working draft, not publication approval. Complete the visual 
 
 ### v1.3 — 2026-11-24
 - Refreshes parent references to Web Master Brief v1.5, Home Experience v1.4 and Home Copy v1.1 after the integrated Home editorial review.
+
+
+### v1.4 — 2026-11-25
+- Refreshes the Explore parent references to Experience v0.7 and Copy v0.6.
+- Adds an explicit control assumption to the illustrative migration comparison so the accessibility contrast is not overgeneralised.
