@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 1.6  
+**Version:** 1.7  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -603,8 +603,8 @@ Use **Existing**, **In development** and **Exploratory** as operational content 
 
 The detailed visitor experience and bilingual copy for Explore are defined in:
 
-- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 0.8.
-- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 0.7.
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 0.9.
+- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 0.8.
 
 Explore is the conceptual deepening after Home, not a second presentation of the same discovery. Home introduces that a system's possibilities can change; Explore asks how we determine whether a candidate transformation is accessible, relative to a defined system, boundary and set of conditions. Home's numbered conceptual sequence is a reading aid, not a universal causal chain; trajectory must be visualised as the path across states and transitions, not as a discrete stage.
 
@@ -708,3 +708,8 @@ The required Home sequence is opening question → discovery → second question
 ### v1.6 — 2026-11-25
 - Updates Explore Experience and Copy references to v0.8 and v0.7.
 - Clarifies the visitor-facing explanation of system possibilities through elements, relationships/dependencies and operating conditions, avoiding a disconnected factor checklist.
+
+
+### v1.7 — 2026-11-25
+- Updates Explore Experience and Copy references to v0.9 and v0.8.
+- Clarifies the distinct roles and maturity of Systems Thinking, Systems Engineering, Transformational Intelligence and TGCV.
