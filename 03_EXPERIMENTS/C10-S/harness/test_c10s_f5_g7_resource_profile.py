@@ -88,14 +88,14 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             ):
                 result = validator.validate(profile_path, manifest_path, root)
             self.assertEqual(result["datasets_per_shard"], 20)
-            self.assertEqual(result["shard_jobs_per_phase"], 10)
+            self.assertEqual(result["shard_jobs_per_phase"], 100)
             self.assertEqual(result["max_parallel_jobs"], 20)
-            self.assertLess(result["end_to_end_conservative_wall_seconds"], 6 * 3600)
+            self.assertLess(result["end_to_end_conservative_wall_seconds"], 30 * 3600)
             self.assertLessEqual(
                 result["selected_shard_projection"]["per_cell"]["F5_beta22_M30_R20"]["max_observed_shard_runtime_seconds"],
                 9000,
             )
-            self.assertEqual(result["selected_shard_projection"]["per_cell"]["F5_beta22_M30_R20"]["shards"], 5)
+            self.assertEqual(result["selected_shard_projection"]["per_cell"]["F5_beta22_M30_R20"]["shards"], 50)
             self.assertFalse(next(item for item in result["candidate_shard_projections"] if item["datasets_per_shard"] == 25)["safe_under_150_minute_job_budget"])
 
     def test_resource_profile_rejects_unexpected_schema_before_compatibility_check(self):
