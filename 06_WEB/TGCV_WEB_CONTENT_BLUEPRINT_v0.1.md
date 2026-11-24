@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 0.3  
+**Version:** 0.4  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v0.6; Information Architecture v0.5; Home Experience v0.6; Explore Experience v0.1.
+**Parent documents:** Web Master Brief v0.7; Information Architecture v0.6; Home Experience v0.8; Explore Experience v0.2.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -519,9 +519,9 @@ Mandatory gates are identity coherence, clear visitor-facing message, useful and
 
 **Purpose:** move the visitor from the Home insight to an understandable account of how system conditions shape the transformations within reach, without requiring prior knowledge or mathematical notation.
 
-**Required narrative:** system state and possibilities; same candidate operation across two environments; change in conditions and resulting accessibility; distinction between candidate/accessibility/execution/outcome/value; trajectory; system relationships and conditions; connection to Systems Thinking, Systems Engineering, Transformational Intelligence and TGCV.
+**Required narrative:** build on the Home discovery rather than repeat it; explain how candidate transformations are assessed for accessibility relative to a system boundary and conditions; distinguish candidate/accessibility/execution/outcome/value; explain trajectory as evolution through states and transformations; connect system relationships and conditions to Systems Thinking, Systems Engineering, Transformational Intelligence and TGCV.
 
-**Required example:** software-configuration migration between two environments. It must show the source and target conditions, the missing dependency in the target environment, the change that resolves that condition and the resulting accessibility status. It must not depict execution or imply success/value.
+**Required example:** continue the Home software-configuration migration illustration. Keep one specific difference: the required dependency is available in environment A and missing in environment B. Show how making it available in B may change accessibility. Do not add permissions as an alternative condition, depict execution or imply success/value.
 
 **Required conceptual controls:**
 - candidate transformation is not a synonym for accessible or feasible transformation;
@@ -540,6 +540,10 @@ Mandatory gates are identity coherence, clear visitor-facing message, useful and
 **Publication condition:** review both language versions, diagrams, terminology and links; check scientific wording against current canonical sources; complete the page-level and whole-site release checks. Efecto Ajá remains a desired quality objective, not a mandatory publication gate.
 
 ### v0.3 — 2026-11-24
-- Adds the Explore experience specification and complete bilingual copy.
-- Replaces the earlier generic P02 example direction with the bounded software-migration scenario.
-- Makes trajectory, accessibility, execution, outcome and value distinctions explicit in the page content contract.
+- Adds the initial Explore experience specification and complete bilingual copy.
+- Establishes the bounded software-migration scenario and its conceptual guardrails.
+
+### v0.4 — 2026-11-24
+- Aligns Home and Explore as a continuous journey: Home introduces the insight; Explore deepens the candidate/accessibility analysis.
+- Fixes the shared migration example to one missing dependency in the target environment.
+- Updates current parent-document versions and strengthens the trajectory representation guidance.
