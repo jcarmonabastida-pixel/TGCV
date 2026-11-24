@@ -1,11 +1,11 @@
 # TGCV — Home Experience Specification
 
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 0.9  
+**Version:** 1.0  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21  
-**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_HOME_COPY_v0.1.md`, §13; `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`; `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md`  
+**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_HOME_COPY_v0.1.md`, v0.7; `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`; `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md`  
 **Branch:** `strategy/tgcv-web-master`
 
 ---
@@ -33,7 +33,8 @@ After engaging with the Home, a visitor should be able to explain in ordinary la
 3. changing relevant conditions can open, close or reorganise accessible transformations;
 4. accessibility does not mean that a transformation is executed;
 5. a realised transformation may change the system's state and its subsequent possibilities;
-6. outcomes and value require separate evaluation.
+6. outcomes and value require separate evaluation;
+7. when new transformations become accessible, new options and possible paths emerge, creating opportunities for value without guaranteeing execution, favourable outcomes or value.
 
 The visitor should also understand where to go next according to their interests.
 
@@ -69,8 +70,9 @@ The Home follows this order:
 2. **Discovery:** «Las posibilidades de un sistema también pueden cambiar» / “A system's possibilities can change, too.” Explain that this happens when relevant conditions change; it need not be an autonomous change initiated by the system itself.
 3. **Tangible example:** a software configuration considered across two different environments.
 4. **Conceptual explanation:** conditions, candidate transformations, accessibility, transition, new state and possibilities, trajectories, outcomes and value.
-5. **Ecosystem:** TI as the integrative capability, supported by Systems Thinking as a perspective and Systems Engineering as a discipline.
-6. **Exploration:** direct routes to the relevant sections, without forcing a linear journey.
+5. **Second visitor question:** «¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?» / “What new options become available when a system can do something that was previously beyond its reach?” Give a concise answer: newly accessible transformations create new options and possible paths, which may open opportunities for value but do not guarantee that they will be realised or valuable.
+6. **Ecosystem:** TI as the integrative capability, supported by Systems Thinking as a perspective and Systems Engineering as a discipline.
+7. **Exploration:** direct routes to the relevant sections, without forcing a linear journey.
 
 Do not add a separate generic “What is transformation?” introduction before the approved question. Do not lead with institutional self-description.
 
@@ -252,9 +254,12 @@ Do not imply that the future Playground is available. Do not duplicate Juguete C
 
 **Status: WORKING EXPERIENCE SPECIFICATION — NOT APPROVED FOR PUBLICATION.**
 
+The second visitor question is a required Home content block, positioned immediately after the initial discovery and before the tangible example or, where the layout warrants it, as the concise payoff following that example. Its answer must remain short and visitor-facing; Explore retains the detailed explanation of system elements, relationships, conditions and accessibility.
+
 The conceptual decisions are approved. Final design, current evidence review, asset verification, bilingual editorial QA, contact readiness and accessibility/responsive checks remain publication work.
 
 ### Version history
+- **1.0 — 2026-11-24:** Adds the second visitor question as a required Home discovery/payoff block, with a concise answer linking new options to possible value while explicitly avoiding a guarantee. Updates the bilingual Home Copy reference.
 - **0.9 — 2026-11-24:** Clarifies that the Home sequence is a reading aid and specifies trajectory as a path across states and transitions, not a discrete sequential stage.
 - **0.8 — 2026-11-24:** Fixes the Home migration example to one missing dependency in the target environment and clarifies the distinct deepening role of Explore.
 
