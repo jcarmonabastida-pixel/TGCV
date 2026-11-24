@@ -1,7 +1,7 @@
 # TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 0.4  
+**Version:** 0.5  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md`  
@@ -51,11 +51,11 @@ Eso no significa que el sistema vaya a ejecutar automáticamente una transformac
 
 ### Una operación accesible en un entorno puede no estarlo en otro.
 
-Imagina un sistema de software con una configuración determinada en su entorno de origen. Bajo las condiciones de ese entorno, una operación concreta está disponible porque cuenta con las dependencias y los permisos necesarios.
+Imagina un sistema de software con una configuración determinada en su entorno de origen. Bajo las condiciones de ese entorno, una operación concreta está al alcance porque la dependencia necesaria está disponible.
 
-Al considerar esa configuración en un segundo entorno, una dependencia necesaria o un permiso no está disponible. Bajo esas nuevas condiciones, la misma operación deja de ser accesible.
+Al considerar esa configuración en un segundo entorno, falta esa dependencia. Bajo esas nuevas condiciones, la misma operación deja de estar al alcance del sistema.
 
-Si se adapta la dependencia que falta o se habilita el permiso necesario, la operación vuelve a ser accesible en el segundo entorno. **Pero todavía no se ha ejecutado.**
+Si la dependencia que falta se hace disponible en el segundo entorno, la operación pasa a estar al alcance del sistema. **Pero todavía no se ha ejecutado.**
 
 El cambio descrito no demuestra que la operación vaya a funcionar correctamente ni que produzca un resultado favorable. Lo que ha cambiado es su accesibilidad bajo las nuevas condiciones.
 
@@ -188,11 +188,11 @@ This does not mean the system will automatically carry out a transformation. Wha
 
 ### An operation accessible in one environment may not be accessible in another.
 
-Imagine a software system with a given configuration in its source environment. Under that environment's conditions, a particular operation is available because the required dependencies and permissions are present.
+Imagine a software system with a given configuration in its source environment. Under that environment's conditions, a particular operation is within reach because the required dependency is available.
 
-When considering that configuration in a second environment, a required dependency or permission is missing. Under these new conditions, the same operation is no longer accessible.
+When considering that configuration in a second environment, that dependency is missing. Under these new conditions, the same operation is no longer accessible.
 
-If the missing dependency is adapted or the required permission is enabled, the operation becomes accessible again in the second environment. **But it has not yet been executed.**
+When the missing dependency is made available in the second environment, the operation becomes accessible there as well. **But it has not yet been executed.**
 
 The change described does not establish that the operation will work correctly or produce a favourable outcome. What has changed is its accessibility under the new conditions.
 
@@ -325,6 +325,7 @@ Efecto Ajá is a desired quality objective, not a mandatory publication conditio
 **Publication status: NOT APPROVED.** This is a bilingual working draft for editorial and conceptual review.
 
 ### Version history
+- **0.5 — 2026-11-24:** Makes the Home example consistent across languages: the target environment lacks one required dependency, which is then made available; permissions are no longer an alternative explanation.
 
 - **0.4 — 2026-11-24:** Corrects the conceptual hierarchy of TI, Systems Thinking and Systems Engineering; removes autonomous-system wording; specifies the migration illustration as a source/target accessibility change without implying execution or automatic capability transfer.
 - **0.3 — 2026-11-24:** Rewritten as a clean bilingual Home draft aligned with the approved visitor question, identity architecture, software-environment illustration, navigation and publication controls.
