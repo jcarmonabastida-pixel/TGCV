@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 0.5  
+**Version:** 0.6  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -603,22 +603,23 @@ Use **Existing**, **In development** and **Exploratory** as operational content 
 
 The detailed visitor experience and bilingual copy for Explore are defined in:
 
-- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`
-- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md`
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 0.2.
+- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 0.2.
 
-Explore is the guided conceptual entry after Home. It must deepen the visitor's understanding rather than repeat the Home narrative or become a technical Research page.
+Explore is the conceptual deepening after Home, not a second presentation of the same discovery. Home introduces that a system's possibilities can change; Explore asks how we determine whether a candidate transformation is accessible, relative to a defined system, boundary and set of conditions.
 
-Its approved working progression is:
-1. A system is more than its current state.
-2. The same candidate operation may be accessible in one environment and inaccessible in another.
-3. A change in relevant conditions may change transformation accessibility.
-4. Accessibility, execution, outcome and value are distinct; trajectory describes evolution through states and transformations.
-5. The accessibility of transformations depends on system elements, relationships and conditions.
-6. Systems Thinking and Systems Engineering contribute complementary foundations to Transformational Intelligence as the ecosystem's integrative capability concept.
+Its working progression is:
+1. Move from the Home insight to the question of how accessibility is assessed.
+2. Distinguish a candidate transformation from an accessible transformation.
+3. Use the same migration transformation in two environments, with one explicit difference: the required dependency is available in A and missing in B.
+4. Explain that making the dependency available may change accessibility, without implying execution, success or value.
+5. Distinguish candidate, accessibility, execution, outcome and value; represent trajectory as evolution through states and transformations, not as an additional linear stage.
+6. Explain how system elements, relationships, boundaries and conditions shape accessibility.
+7. Connect Systems Thinking and Systems Engineering as complementary foundations to Transformational Intelligence as the ecosystem's integrative capability concept.
 
-The software-configuration migration between two environments is an illustrative editorial example only. It is not an existing execution, validated application, Juguete Colectivo feature or C10-S result.
+The migration example is illustrative only. It is not an existing execution, validated application, Juguete Colectivo feature or C10-S result. Keep the single missing-dependency condition consistent across Home, Explore and both languages.
 
-The Spanish and English versions must be complete and conceptually equivalent. In English, use “accessibility of transformations” when introducing the TGCV concept, clarifying that it is not digital/interface accessibility. “Outcome” is the consistent equivalent of “resultado” in this explanatory context.
+The Spanish and English versions must be complete and conceptually equivalent. In English, introduce “accessibility of transformations” and clarify that it refers to whether a transformation is within a system's reach under the system boundary and conditions being considered—not to digital/interface accessibility. “Outcome” remains the consistent equivalent of “resultado” in this explanatory context.
 
 The page must preserve these distinctions:
 - candidate transformation ≠ accessible transformation;
@@ -630,5 +631,9 @@ The page must preserve these distinctions:
 The detailed specification and copy remain working drafts, not publication clearance. Apply the non-blocking Efecto Ajá policy and all scientific, accessibility, bilingual, privacy and maintainability release checks already established in this architecture.
 
 ### v0.5 — 2026-11-24
-- Adds the Explore experience specification and bilingual copy as the authoritative working content references for P02.
+- Adds the initial Explore experience specification and bilingual copy as working references for P02.
 - Aligns the page's narrative, example, terminology and conceptual guardrails with the approved first-release identity and navigation.
+
+### v0.6 — 2026-11-24
+- Clarifies the Home-to-Explore hand-off so Explore deepens rather than repeats the Home discovery.
+- Fixes the migration illustration to one missing dependency and updates the conceptual progression and terminology.
