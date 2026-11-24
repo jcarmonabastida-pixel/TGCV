@@ -1,7 +1,7 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 1.6  
+**Version:** 1.7  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
@@ -627,3 +627,30 @@ The Home remains a working draft, not publication approval. Complete the visual 
 ### v1.6 — 2026-11-25
 - Updates Explore parent references to Experience v0.9 and Copy v0.8.
 - Strengthens maturity and category distinctions for Transformational Intelligence and clarifies its relationship to the TGCV research programme.
+
+
+## 16. P03 — Research: experience and content authority
+
+**Authoritative working reference:**
+- `06_WEB/TGCV_WEB_RESEARCH_EXPERIENCE_v0.1.md` — current content version 0.1.
+
+**Purpose:** present TGCV as an integrative, falsifiable applied-research programme and explain its scientific object, current conceptual architecture, research questions, methodological logic, bounded evidence, open questions and traceable materials.
+
+**Required narrative:** identify TGCV and its public descriptor; explain the current ontological Core (S) and analytical representation (T_{acc}); describe sign-neutral changes in accessible transformations; distinguish (Delta T_{acc}), Reach, Trajectory, Outcome and Value; introduce the research questions; explain the methodological logic and falsifiability; provide a dated evidence snapshot; make open questions explicit; curate research materials and publication-ready links.
+
+**Required evidence distinctions:** canonical conceptual definition; analytical representation; working/non-canonical proposal; synthetic methodological evidence; bounded computational or empirical evidence; non-confirmatory result; unresolved relationship; superseded or historical asset. Do not collapse these categories or imply that a completed technical operation establishes a broader scientific claim.
+
+**Required scientific controls:**
+- (S) remains the current ontological Core; (T_{acc}) is analytically indispensable but not an independent ontological primitive.
+- Changes in accessibility may expand, contract, reconfigure or substitute; do not assume monotonic improvement.
+- The analytical sequence from mechanism through accessibility, Reach, Trajectory, Outcome and Value is not automatically a proven causal chain.
+- C09 bounded empirical causal support does not establish universal efficacy or Value.
+- The downstream (Delta T_{acc} ightarrow Delta V / Value) linkage remains open in the retrieved STATUS baseline.
+- The evidence snapshot must be reconciled against current canonical governance records immediately before final copy/publication.
+- CURRENT / CONTROLLED status does not itself grant public publication permission.
+
+**Publication condition:** complete bilingual copy; current evidence reconciliation; source-by-source publication permission; scientific and editorial review; link/version checks. This page remains a working draft.
+
+### v1.7 — 2026-11-25
+- Adds the Research page content contract and links it to Research Experience v0.1.
+- Defines the evidence categories and scientific claim boundaries required for public presentation.
