@@ -1,11 +1,11 @@
 # TGCV — Home Experience Specification
 
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 1.1  
+**Version:** 1.2  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21  
-**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_HOME_COPY_v0.1.md`, v0.7; `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`; `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md`  
+**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_HOME_COPY_v0.1.md`, v0.9; `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`; `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md`  
 **Branch:** `strategy/tgcv-web-master`
 
 ---
@@ -40,6 +40,12 @@ The visitor should also understand where to go next according to their interests
 
 ## 3. Identity architecture to communicate
 
+### 3.0 Public name and Home placement
+
+The site-wide header/brand lockup is **TGCV — Transformaciones Generativas y Construcción de Valor**. In English use **TGCV — Generative Transformations and Value Construction**; TGCV remains the proper name. The full descriptor belongs in the footer and relevant About/Research identity blocks. Do not insert a long institutional self-description before the opening question. On narrow screens the wordmark may prioritise “TGCV”, provided the full name remains available accessibly.
+
+“Generative” refers to transformations that can change what systems can do or access. Do not let the name imply that TGCV is only about generative AI, content generation or autonomous self-modification.
+
 The Home must not display three equivalent discipline cards or imply three separate departments.
 
 ### 3.1 Transformational Intelligence — integrative axis
@@ -68,9 +74,9 @@ The Home follows this order:
 
 1. **Question:** What would need to change for a system to do something it cannot do today?
 2. **Discovery:** «Las posibilidades de un sistema también pueden cambiar» / “A system's possibilities can change, too.” Explain that this happens when relevant conditions change; it need not be an autonomous change initiated by the system itself.
-3. **Tangible example:** a software configuration considered across two different environments.
-4. **Conceptual explanation:** conditions, candidate transformations, accessibility, transition, new state and possibilities, trajectories, outcomes and value.
-5. **Second visitor question:** «¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?» / “What new options become available when a system can do something that was previously beyond its reach?” Give a concise answer: newly accessible transformations create new options and possible paths, which may open opportunities for value but do not guarantee that they will be realised or valuable.
+3. **Second visitor question and concise answer:** «¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?» / “What new options become available when a system can do something that was previously beyond its reach?” Explain that newly accessible transformations create new options and possible paths, which may open opportunities for value but do not guarantee that they will be realised or valuable.
+4. **Tangible example:** a software configuration considered across two different environments.
+5. **Conceptual explanation:** conditions, candidate transformations, accessibility, transition, new state and possibilities, trajectories, outcomes and value.
 6. **Ecosystem:** TI as the integrative capability, supported by Systems Thinking as a perspective and Systems Engineering as a discipline.
 7. **Exploration:** direct routes to the relevant sections, without forcing a linear journey.
 
@@ -285,3 +291,19 @@ This is a public editorial decision only. It does not alter scientific definitio
 
 ### v1.1 — 2026-11-24
 - Aligns the Home experience identity and first-mention description with the approved TGCV public name and research-programme positioning.
+
+
+## 17. Integrated Home identity review (2026-11-24)
+
+The Home uses the approved site-wide brand lockup **TGCV — Transformaciones Generativas y Construcción de Valor**. English rendering: **TGCV — Generative Transformations and Value Construction**. The full approved research-programme descriptor remains in the footer and relevant About/Research identity blocks; it must not displace the opening question or create a long institutional preamble.
+
+The required narrative order is: opening question → discovery → second question and concise answer → tangible software-configuration example → conceptual explanation → ecosystem → exploration. This corrects the earlier ordering in §4 and aligns the specification with the approved Home Copy.
+
+The word “Generative” refers to transformations that can change what a system can do or access. It is not a synonym for generative AI or content generation, and it does not imply autonomous self-modification. Relevant conditions may change through intervention, system dynamics or environmental change.
+
+The identity and copy are directionally coherent. Publication remains blocked pending the checks listed in §13 and the visual/asset work described in this specification.
+
+### v1.2 — 2026-11-24
+- Aligns the Home sequence with the approved order, placing the second question before the tangible example.
+- Adds site-wide brand-lockup placement and meaning controls for “Generative”.
+- Updates the Home Copy dependency to v0.9.
