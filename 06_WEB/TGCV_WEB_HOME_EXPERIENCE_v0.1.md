@@ -1,7 +1,7 @@
 # TGCV — Home Experience Specification
 
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 0.7  
+**Version:** 0.8  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21  
@@ -121,9 +121,9 @@ The Home uses a bounded illustrative scenario: a software configuration consider
 The example must make this sequence explicit:
 
 1. **Source environment:** a specified operation is accessible under the declared configuration and dependencies.
-2. **Target environment:** one or more relevant conditions differ; for example, a required dependency or permission is absent.
+2. **Target environment:** the required dependency is absent.
 3. **Before intervention:** under those target conditions, the same operation is not accessible.
-4. **Change of condition:** a relevant dependency is adapted or the required permission is enabled.
+4. **Change of condition:** the missing dependency is made available in the target environment.
 5. **After intervention:** the operation becomes accessible under the changed target conditions, but has not thereby been executed.
 
 The explanatory point is the change in accessibility caused by a change in conditions. Do not imply that copying a configuration automatically transfers all capabilities between environments.
@@ -197,7 +197,7 @@ Systems Thinking is transversal: Home, Explore and Research. It has no independe
 
 Home should offer a primary route to Explore, with secondary routes to Research and other destinations. Visitors may enter any destination directly; no mandatory linear journey is imposed.
 
-Explore must add conceptual depth and a guided explanation rather than repeat the Home. About explains purpose, scope and governance without implying a staffed institute, external board or formal consortium. Contact is shown only when a real monitored channel and proportionate privacy information are in place.
+Explore must take the Home example as its starting point and add conceptual depth: clarify how candidate transformations are distinguished from accessible ones, how accessibility depends on a defined system boundary and conditions, and how accessibility differs from execution, outcome and value. Do not replay the full Home narrative. About explains purpose, scope and governance without implying a staffed institute, external board or formal consortium. Contact is shown only when a real monitored channel and proportionate privacy information are in place.
 
 ## 11. Languages
 
@@ -253,6 +253,7 @@ Do not imply that the future Playground is available. Do not duplicate Juguete C
 The conceptual decisions are approved. Final design, current evidence review, asset verification, bilingual editorial QA, contact readiness and accessibility/responsive checks remain publication work.
 
 ### Version history
+- **0.8 — 2026-11-24:** Fixes the Home migration example to one missing dependency in the target environment and clarifies the distinct deepening role of Explore.
 
 - **0.6 — 2026-11-24:** Clarifies that changes in a system's possibilities need not be autonomous; corrects the TI/Systems Thinking/Systems Engineering hierarchy; specifies the source-to-target example as a change in accessibility, not automatic capability transfer.
 - **0.5 — 2026-11-24:** Rewritten as a clean experience specification; removes superseded four-pillar narrative and earlier navigation assumptions; integrates the approved audience, identity, example, routes, bilingual requirement and non-blocking Efecto Ajá review.
