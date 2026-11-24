@@ -120,13 +120,32 @@ class F5G7ResourceProfileTests(unittest.TestCase):
         self.assertTrue(by_size[10]["safe_primary_replay_pair_under_150_minute_job_budget"])
         for size in (20, 25, 40, 50, 100):
             self.assertFalse(by_size[size]["safe_primary_replay_pair_under_150_minute_job_budget"])
+        fast_job = 2 * (10 * 7.966771501000004 + 300)
+        slow_job = 2 * (10 * 418.194637585 + 300)
+        total_runner_compute = 100 * fast_job + 100 * slow_job
         expected_primary_replay = (
-            5 * 2 * (10 * 7.966771501000004 + 300)
-            + 5 * 2 * (10 * 418.194637585 + 300)
+            total_runner_compute / validator.MAX_PARALLEL
+            + (1 - 1 / validator.MAX_PARALLEL) * slow_job
         )
         self.assertAlmostEqual(
             result["primary_plus_replay_conservative_wall_seconds"],
             expected_primary_replay,
+            places=5,
+        )
+        selected = result["selected_shard_projection"]
+        self.assertAlmostEqual(
+            selected["primary_replay_aggregate_compute_hours"],
+            total_runner_compute / 3600,
+            places=8,
+        )
+        self.assertAlmostEqual(
+            selected["shared_matrix_wall_workload_lower_bound_seconds"],
+            total_runner_compute / validator.MAX_PARALLEL,
+            places=5,
+        )
+        self.assertAlmostEqual(
+            selected["shared_matrix_list_scheduling_tail_bound_seconds"],
+            (1 - 1 / validator.MAX_PARALLEL) * slow_job,
             places=5,
         )
         self.assertEqual(result["coverage_adjudication"], "NOT_PERFORMED")
