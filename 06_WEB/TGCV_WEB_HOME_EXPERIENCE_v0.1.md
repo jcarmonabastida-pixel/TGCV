@@ -1,7 +1,7 @@
 # TGCV — Home Experience Specification
 
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 0.5  
+**Version:** 0.6  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21  
@@ -66,10 +66,10 @@ Research and Labs & Applications inform one another. They are activity spaces, n
 The Home follows this order:
 
 1. **Question:** What would need to change for a system to do something it cannot do today?
-2. **Discovery:** systems can change not only their state, but also what transformations are within their reach.
-3. **Tangible example:** a software configuration moving between two different environments.
+2. **Discovery:** a system's possibilities can change when relevant conditions change; this need not be an autonomous change initiated by the system itself.
+3. **Tangible example:** a software configuration considered across two different environments.
 4. **Conceptual explanation:** conditions, candidate transformations, accessibility, transition, new state and possibilities, trajectories, outcomes and value.
-5. **Ecosystem:** TI as the integrative axis; Systems Thinking and Systems Engineering as complementary foundations; Research and Labs & Applications as activity spaces.
+5. **Ecosystem:** TI as the integrative capability, supported by Systems Thinking as a perspective and Systems Engineering as a discipline.
 6. **Exploration:** direct routes to the relevant sections, without forcing a linear journey.
 
 Do not add a separate generic “What is transformation?” introduction before the approved question. Do not lead with institutional self-description.
@@ -116,17 +116,21 @@ The visual should communicate change in what is possible next, not merely a befo
 
 ## 6. Tangible example: software configuration across environments
 
-The Home uses a bounded illustrative scenario: a software configuration that operates in one environment is moved or adapted for a second environment with different dependencies, resources, permissions or configuration conditions.
+The Home uses a bounded illustrative scenario: a software configuration considered across a source environment and a target environment with different dependencies, resources, permissions or configuration conditions.
 
-The example should make the following sequence visible:
+The example must make this sequence explicit:
 
-1. In the source environment, a specified operation is accessible under the declared configuration and dependencies.
-2. In the target environment, one or more relevant conditions differ.
-3. Because of those differences, the same operation may no longer be accessible under the target conditions.
-4. A change to a relevant dependency, permission, resource or configuration condition may make the operation accessible again.
-5. Accessibility still does not establish that the operation is executed, succeeds, produces a favourable outcome or creates value.
+1. **Source environment:** a specified operation is accessible under the declared configuration and dependencies.
+2. **Target environment:** one or more relevant conditions differ; for example, a required dependency or permission is absent.
+3. **Before intervention:** under those target conditions, the same operation is not accessible.
+4. **Change of condition:** a relevant dependency is adapted or the required permission is enabled.
+5. **After intervention:** the operation becomes accessible under the changed target conditions, but has not thereby been executed.
 
-Use this example as an explanatory illustration only. It is not an existing execution, a validated application, a feature of Juguete Colectivo or evidence from C10-S. Do not invent detailed technical parameters that are not needed to explain the concept.
+The explanatory point is the change in accessibility caused by a change in conditions. Do not imply that copying a configuration automatically transfers all capabilities between environments.
+
+Accessibility still does not establish that the operation is executed, succeeds, produces a favourable outcome or creates value. Do not invent detailed technical parameters that are not needed to explain the concept.
+
+Use this example as an explanatory illustration only. It is not an existing execution, a validated application, a feature of Juguete Colectivo or evidence from C10-S.
 
 ## 7. Conceptual sequence on Home
 
@@ -156,20 +160,20 @@ Suggested order:
 - **Systems Thinking** — the perspective for understanding systems and their dynamics.
 - **Systems Engineering** — the discipline for modelling, designing and intervening in systems.
 
+Use the line:
+
+**Una capacidad integradora, apoyada en dos bases complementarias.**
+
+English:
+
+**An integrative capability, supported by two complementary foundations.**
+
+The accompanying explanation must make the different roles explicit: TI is the integrative capability; Systems Thinking is a perspective; Systems Engineering is a discipline. They are not three equivalent perspectives or disciplines.
+
 Then show the two activity spaces:
 
 - **Research** — concepts, models, methods, experiments and evidence.
 - **Labs & Applications** — demonstrators, bounded experiments and exploratory application contexts.
-
-Use the line:
-
-**Tres perspectivas. Una ambición compartida: comprender, diseñar y orientar cómo evolucionan las posibilidades de los sistemas.**
-
-English:
-
-**Three perspectives. One shared ambition: to understand, design and guide how the possibilities of systems evolve.**
-
-The phrase “three perspectives” is a visitor-facing summary of the three conceptual functions; it does not imply three equivalent disciplines. The accompanying explanation must make the distinct roles explicit.
 
 ## 9. Application contexts
 
@@ -221,9 +225,10 @@ Before publication:
 
 - Identity and audience are coherent with the approved architecture.
 - The opening question and example explain changed possibilities without excessive jargon.
+- The example explicitly distinguishes source and target conditions, the change that is made, and the resulting accessibility.
 - The example is clearly illustrative and is not confused with an existing demonstrator.
 - Accessibility, execution, trajectory, outcome and value remain distinct.
-- Systems Thinking, Systems Engineering and TI have distinct, accurate roles.
+- TI, Systems Thinking and Systems Engineering have distinct, accurate roles.
 - Research and Labs & Applications content is real, bounded and labelled honestly.
 - Existing, In development and Exploratory are used as operational content-maturity labels where useful; they are not scientific evidence grades.
 - Scientific claims are checked against current canonical sources and evidence state.
@@ -249,5 +254,6 @@ The conceptual decisions are approved. Final design, current evidence review, as
 
 ### Version history
 
+- **0.6 — 2026-11-24:** Clarifies that changes in a system's possibilities need not be autonomous; corrects the TI/Systems Thinking/Systems Engineering hierarchy; specifies the source-to-target example as a change in accessibility, not automatic capability transfer.
 - **0.5 — 2026-11-24:** Rewritten as a clean experience specification; removes superseded four-pillar narrative and earlier navigation assumptions; integrates the approved audience, identity, example, routes, bilingual requirement and non-blocking Efecto Ajá review.
 - **0.4 — 2026-11-24:** Decision-lock layer added to the prior working concept.
