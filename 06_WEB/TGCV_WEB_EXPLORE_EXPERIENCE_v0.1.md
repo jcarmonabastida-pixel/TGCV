@@ -1,7 +1,7 @@
 # TGCV — Explore Experience Specification
 
 **Identifier:** TGCV-WEB-EXPLORE-001  
-**Version:** 0.8  
+**Version:** 0.9  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21–22  
@@ -137,19 +137,21 @@ Introduce **Systems Thinking** as the perspective that helps examine system boun
 
 ### 3.6 A new way to understand and guide transformations
 
-Explain the complementary roles:
+Explain three complementary but non-equivalent contributions:
 
-- **Systems Thinking — understanding:** a perspective for interpreting systems, relationships, conditions, constraints and dynamics.
-- **Systems Engineering — designing and intervening:** a discipline for modelling, designing, developing and intervening in systems.
-- **Transformational Intelligence — integrating and guiding:** a capability concept under development that seeks to understand, reason about and guide transformations in systems, considering how their possibilities change and what trajectories may become available.
+- **Systems Thinking — understanding systems:** a perspective for examining boundaries, relationships, conditions, constraints, feedback and dynamics. It helps build a connected understanding of the system rather than treating elements in isolation.
+- **Systems Engineering — designing and intervening:** an established engineering discipline with methods and practices for modelling, designing, developing, integrating and intervening in engineered systems.
+- **Transformational Intelligence — integrating reasoning about change:** a working concept of an integrative capability under development. It seeks to connect system understanding with reasoning about candidate transformations, changes in accessibility, possible trajectories and the consequences of alternative interventions.
 
-State explicitly that TI is a working concept/capability under development, not a consolidated academic discipline or generally validated capability.
+Make the intended integration concrete but provisional: the concept asks how we can understand a system, examine what transformations may be within its reach under specified conditions, consider how those possibilities and trajectories may change, and reason about how to guide such change. Do not imply that a complete method, operational capability or validated product already exists.
 
-Position TGCV as part of the ecosystem's research foundations: it studies how system conditions and relationships influence transformations within reach and how these relate to trajectories and value construction. Do not equate TGCV with TI or imply that the research has already validated the full capability.
+State explicitly that Transformational Intelligence is not a synonym for artificial intelligence, a new name for Systems Thinking or Systems Engineering, or a consolidated academic discipline. AI may be one possible supporting technology, not its definition.
 
-**Key message:** The question is not only how to change a system, but how to understand and guide changes in what it can do.
+Position TGCV accurately: **TGCV is the applied research and innovation programme whose research question contributes to the foundations for developing and examining this capability concept.** TGCV and Transformational Intelligence are related but not equivalent: the programme investigates how transformations available to systems may change and how this may contribute to value construction; TI is a capability concept that seeks to integrate understanding, reasoning and guidance around such changes. Do not imply that TGCV has already validated TI.
 
-**Visual direction:** A relational composition with TI as the integrative capability, supported by Systems Thinking as a perspective and Systems Engineering as a discipline. Research may be shown as the activity that develops foundations, models, methods and evidence. Do not use three equivalent discipline cards.
+**Key message:** The aim is not only to understand systems or to intervene in them, but to develop ways of reasoning about changes in what systems can do and how those changes might be guided.
+
+**Visual direction:** Show Systems Thinking as a perspective and Systems Engineering as an established discipline contributing complementary foundations. Place Transformational Intelligence as the integrative capability concept under development, not as a third equivalent discipline. Show TGCV as the research programme contributing questions, models and evidence to its development. Mark the maturity of the TI concept clearly.
 
 ## 4. Visitor routes
 
@@ -256,3 +258,5 @@ Before publication:
 - **0.7 — 2026-11-25:** Makes the illustrative comparison's control assumptions explicit: the same operation and stated boundary/prerequisites are held constant while one dependency-availability condition differs; limits the inference to that bounded illustration.
 
 - **0.8 — 2026-11-25:** Reframes the space-of-possibilities explanation around component capabilities, relationships/dependencies and operating conditions; uses three visitor questions and reconnects the controlled migration example without implying a universal checklist.
+
+- **0.9 — 2026-11-25:** Clarifies Transformational Intelligence as an integrative capability concept under development; distinguishes its intended role from Systems Thinking, Systems Engineering, AI and the TGCV research programme, and avoids implying an operational or validated capability.
