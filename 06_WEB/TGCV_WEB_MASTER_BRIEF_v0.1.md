@@ -934,8 +934,9 @@ La secuencia obligatoria de diseño es:
 2. Descubrimiento: los sistemas pueden cambiar sus propias posibilidades.
 3. Ejemplo tangible: migración de una configuración de software entre dos entornos distintos.
 4. Explicación conceptual: condiciones, transformaciones candidatas, accesibilidad, transición, nuevas posibilidades y trayectorias; mantener separados accesibilidad, ejecución, resultado y valor.
-5. Ecosistema: TI como eje articulador; Systems Thinking y Systems Engineering como perspectivas complementarias.
-6. Exploración: Research, Systems Engineering, Transformational Intelligence y Labs & Applications, con rutas claras.
+5. Segunda pregunta de descubrimiento: «¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?» / “What new options become available when a system can do something that was previously beyond its reach?” Debe acompañarse de una respuesta breve: cuando se hacen accesibles nuevas transformaciones, aparecen nuevas opciones y caminos posibles que pueden abrir oportunidades para generar valor, sin garantizar su realización ni que el resultado sea valioso.
+6. Ecosistema: TI como eje articulador; Systems Thinking y Systems Engineering como perspectivas complementarias.
+7. Exploración: Research, Systems Engineering, Transformational Intelligence y Labs & Applications, con rutas claras.
 
 Titular de trabajo aprobado: **«Comprende cómo cambian las posibilidades de un sistema.»** Subtítulo explicativo de trabajo: «Un sistema no solo cambia cuando pasa de un estado a otro. También puede adquirir nuevas capacidades, acceder a transformaciones que antes no estaban a su alcance y abrir trayectorias diferentes.» La frase de ecosistema que acompaña la presentación es: «Tres perspectivas. Una ambición compartida: comprender, diseñar y orientar cómo evolucionan las posibilidades de los sistemas.» Estas formulaciones quedan aprobadas como dirección editorial, sujetas a edición ES/EN y revisión de fidelidad científica.
 
@@ -962,6 +963,10 @@ El Juguete Colectivo y TSTC v004 pueden presentarse como activos diferenciados s
 ### 21.7 Idioma editorial y control
 
 Los documentos web subordinados deben mantener esta especificación común. Si persiste texto histórico incompatible, esta sección y el registro de decisión de Home de fecha 24-11-2026 prevalecen hasta que el texto se reescriba en la siguiente revisión editorial. No se altera TGCV Core, RMA, Evidence→Claim Matrix ni STATUS.
+
+### v0.6 — 2026-11-24
+- Integra la segunda pregunta de descubrimiento en Home, con una respuesta breve que conecta nuevas opciones y posibles oportunidades de valor sin prometer su realización.
+- Reordena la secuencia narrativa y mantiene Explore como espacio de profundización.
 
 ### v0.5 — 2026-11-24
 - Consolida decisiones aprobadas sobre audiencia, identidad, relación TI/Systems Thinking/Systems Engineering, Research/Labs & Applications, narrativa, ejemplo, navegación, bilingüismo y Efecto Ajá.
