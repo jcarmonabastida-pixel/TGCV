@@ -107,7 +107,7 @@ Introduce **trajectory** separately: transformations may be connected and may sh
 
 **Key message:** A change in accessibility changes what is within the system's reach; it does not, by itself, establish what should be done or guarantee a favourable outcome or value.
 
-**Visual direction:** Make **Accessibility → Execution → Outcome → Value** a persistent, high-visibility visual anchor. Place “Candidate transformation” before the sequence as the object being assessed. Show trajectory as a path across states and transformations, not as a fifth stage or a terminal step. Keep these relationships clear in both static diagrams and responsive/mobile layouts.
+**Visual direction:** Make **Accesibilidad → Ejecución → Resultado → Valor** (English: **Accessibility → Execution → Outcome → Value**) a persistent, high-visibility visual anchor. Place “Candidate transformation” before the sequence as the object being assessed. Show trajectory as a path across states and transformations, not as a fifth stage or a terminal step. Keep these relationships clear in both static diagrams and responsive/mobile layouts.
 
 ### 3.5 A system's space of possibilities
 
