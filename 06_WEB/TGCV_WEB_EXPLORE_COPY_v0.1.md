@@ -1,7 +1,7 @@
 # TGCV — Explore Copy
 
 **Identifier:** TGCV-WEB-EXPLORE-COPY-001  
-**Version:** 0.5  
+**Version:** 0.6  
 **Date:** 2026-11-25  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`  
@@ -41,7 +41,7 @@ Para responder, no basta con enumerar lo que un sistema podría hacer. Necesitam
 
 ## 2.2 Ser candidata no significa ser accesible
 
-Retomemos brevemente el ejemplo de migración de configuración presentado en Home. La operación considerada es la misma en ambos entornos. La diferencia relevante es concreta: la dependencia necesaria está disponible en el entorno A y falta en el entorno B.
+Retomemos brevemente el ejemplo de migración de configuración presentado en Home. La operación considerada es la misma en ambos entornos. Para aislar el contraste de este ejemplo, mantenemos constantes la configuración considerada, la operación, los límites asumidos y los demás requisitos relevantes especificados. La única diferencia que examinamos es que la dependencia necesaria está disponible en el entorno A y falta en el entorno B. Esto permite explicar el papel de esa dependencia en la accesibilidad; no significa que sea el único factor que podría influir en una migración real.
 
 Por tanto, la operación puede considerarse una transformación candidata en ambos entornos, pero solo es accesible en A bajo las condiciones representadas.
 
@@ -55,7 +55,7 @@ Una **transformación candidata** es un cambio que se contempla como posibilidad
 
 ## 2.3 La accesibilidad depende de las condiciones y de los límites considerados
 
-La dependencia ausente en el entorno B ilustra una de las formas en que puede cambiar la accesibilidad. Cuando esa dependencia se hace disponible en el entorno de destino, la transformación puede pasar a ser accesible bajo las nuevas condiciones.
+La dependencia ausente en el entorno B ilustra una de las formas en que puede cambiar la accesibilidad. Cuando esa dependencia se hace disponible en el entorno de destino, manteniendo los demás supuestos del ejemplo, la transformación puede pasar a ser accesible bajo las nuevas condiciones.
 
 Esta conclusión tiene un alcance delimitado: se refiere al sistema, la transformación, los límites y las condiciones que se han especificado. No demuestra que la transformación se haya ejecutado, que vaya a tener éxito ni que su resultado tenga valor.
 
@@ -179,7 +179,7 @@ Answering this requires more than listing what a system might do. We need to ide
 
 ## 3.2 Candidate does not mean accessible
 
-Briefly return to the software-configuration migration introduced on Home. The operation being considered is the same in both environments. The relevant difference is specific: the required dependency is available in environment A and missing in environment B.
+Briefly return to the software-configuration migration introduced on Home. The operation being considered is the same in both environments. To isolate the contrast in this example, keep the configuration being considered, the operation, the stated boundary assumptions and the other specified relevant prerequisites constant. The only difference examined is that the required dependency is available in environment A and missing in environment B. This illustrates the role of that dependency in accessibility; it does not mean it is the only factor that could matter in a real migration.
 
 The operation can therefore be considered a candidate transformation in both environments, but it is accessible only in A under the conditions shown.
 
@@ -193,7 +193,7 @@ A **candidate transformation** is a change considered as a possibility for a sys
 
 ## 3.3 Accessibility depends on conditions and boundaries
 
-The missing dependency in environment B illustrates one way accessibility can change. When that dependency is made available in the target environment, the transformation may become accessible under the revised conditions.
+The missing dependency in environment B illustrates one way accessibility can change. When that dependency is made available in the target environment, while the other assumptions in the example remain unchanged, the transformation may become accessible under the revised conditions.
 
 This conclusion is bounded: it concerns the specified system, transformation, boundary and conditions. It does not establish that the transformation has been executed, that it will succeed, or that its outcome will have value.
 
@@ -315,3 +315,5 @@ TGCV — Generative Transformations and Value Construction is a programme of app
 
 
 - **0.5 — 2026-11-25:** Aligns the Spanish and English TGCV identity statements with the approved public name and applied-research-and-innovation programme description; removes the superseded public-facing “Theory” wording.
+
+- **0.6 — 2026-11-25:** Clarifies in Spanish and English that the migration comparison holds the stated system/configuration, operation, boundary assumptions and other specified prerequisites constant while varying one dependency-availability condition; explicitly bounds the inference to the illustration.
