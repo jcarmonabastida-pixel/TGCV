@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 1.3  
+**Versión:** 1.4  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -41,7 +41,7 @@ El valor sigue siendo una dimensión importante, pero no define el objeto primar
 
 ### 1.1 Qué es TGCV
 
-**Identidad pública:** TGCV — **Transformaciones Generativas y Construcción de Valor**. TGCV se presenta públicamente como un programa de investigación, no como una teoría consolidada. Su descripción breve es: *Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.* La denominación histórica y la continuidad interna del repositorio se mantienen bajo TGCV; esta decisión no cambia el Core ni las denominaciones de los artefactos científicos.
+**Identidad pública:** TGCV — **Transformaciones Generativas y Construcción de Valor**. TGCV se presenta públicamente como un programa de investigación, no como una teoría consolidada. Su descripción breve es: *Un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.* La denominación histórica y la continuidad interna del repositorio se mantienen bajo TGCV; esta decisión no cambia el Core ni las denominaciones de los artefactos científicos.
 
 Su objeto actual se entiende mejor desde la dinámica de los espacios de transformación y la capacidad de los sistemas para razonar y actuar sobre esos espacios.
 
@@ -1081,7 +1081,7 @@ La revisión integrada por perfiles de visitante detectó tres refinamientos edi
 
 **Approved public name:** **TGCV — Transformaciones Generativas y Construcción de Valor**.
 
-**Approved public descriptor:** *Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
+**Approved public descriptor:** *Un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
 
 ### 22.1 Meaning and positioning
 - TGCV is publicly presented as a **research programme**, not as an established or universally validated theory.
@@ -1119,7 +1119,7 @@ This is a public identity/editorial decision only. It does not rename the reposi
 
 ### 24.1 Identity placement
 - The site-wide header/brand lockup identifies the initiative as **TGCV — Transformaciones Generativas y Construcción de Valor**. On constrained mobile layouts, “TGCV” may be visually prioritised, provided the full name remains available accessibly and in the footer/About identity block.
-- The approved descriptor remains: *Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
+- The approved descriptor remains: *Un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
 - Do not add a long institutional self-description ahead of the opening question. The brand identifies the initiative; the visitor-facing question leads the Home narrative.
 - Keep the full descriptor in the footer and the relevant About/Research identity blocks. The hero may retain its concise supporting copy rather than repeat the descriptor verbatim.
 - English identity: **TGCV — Generative Transformations and Value Construction**. The English version is an editorial rendering; TGCV remains the proper name.
@@ -1154,3 +1154,7 @@ The current Home concept and copy are directionally coherent with the approved T
 - Defines brand placement without displacing the visitor-first opening question.
 - Aligns the required narrative sequence across Home Copy and Home Experience.
 - Clarifies the intended meaning of “Generative” and preserves scientific claim boundaries.
+
+### v1.4 — 2026-11-24
+- Adopts the public descriptor “investigación aplicada e innovación” and its English equivalent.
+- Clarifies the complementary roles of applied research (investigation and testing) and innovation (developing methods, tools and applications) without implying validated deployment.
