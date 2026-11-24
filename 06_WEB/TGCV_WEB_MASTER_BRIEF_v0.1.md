@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 1.1  
+**Versión:** 1.2  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -41,7 +41,7 @@ El valor sigue siendo una dimensión importante, pero no define el objeto primar
 
 ### 1.1 Qué es TGCV
 
-TGCV significa **Teoría de Construcción de Valor de Sistemas Generativos**. Se mantiene como un programa de investigación integrador, con una arquitectura conceptual estabilizada y un programa experimental falsable. No debe presentarse como una teoría consolidada ni como una validación universal ya alcanzada.
+**Identidad pública:** TGCV — **Transformaciones Generativas y Construcción de Valor**. TGCV se presenta públicamente como un programa de investigación, no como una teoría consolidada. Su descripción breve es: *Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.* La denominación histórica y la continuidad interna del repositorio se mantienen bajo TGCV; esta decisión no cambia el Core ni las denominaciones de los artefactos científicos.
 
 Su objeto actual se entiende mejor desde la dinámica de los espacios de transformación y la capacidad de los sistemas para razonar y actuar sobre esos espacios.
 
@@ -1075,3 +1075,39 @@ La revisión integrada por perfiles de visitante detectó tres refinamientos edi
 - Sitúa la transformación candidata antes de esa secuencia, como objeto cuya accesibilidad se evalúa, y mantiene la trayectoria como evolución a través de estados y transformaciones, no como una etapa adicional.
 - Actualiza las versiones vigentes de Explore Experience, Explore Copy, Information Architecture y Content Blueprint.
 - Mantiene todos los documentos como borradores de trabajo no aprobados para publicación.
+
+
+## 22. Public identity decision lock (2026-11-24)
+
+**Approved public name:** **TGCV — Transformaciones Generativas y Construcción de Valor**.
+
+**Approved public descriptor:** *Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
+
+### 22.1 Meaning and positioning
+- TGCV is publicly presented as a **research programme**, not as an established or universally validated theory.
+- “Transformaciones Generativas” names the transformational focus: changes that can expand, reconfigure or otherwise alter the transformations available to a system. It must not be reduced to generic content generation or imply that every transformation creates new possibilities.
+- “Construcción de Valor” states the research concern. The descriptor preserves the conditional causal formulation: expanded possibilities may contribute to value construction; they do not guarantee execution, outcomes or value.
+- The public identity describes the programme's focus. It does not redefine the scientific Core or claim that the causal contribution has already been demonstrated.
+
+### 22.2 Spanish and English identity
+Spanish master form:
+**TGCV — Transformaciones Generativas y Construcción de Valor**
+
+English public rendering:
+**TGCV — Generative Transformations and Value Construction**
+
+TGCV remains the proper name in both languages. The English rendering is a translation of the public name, not a new acronym derived from English initials. Keep the approved Spanish name as the canonical expansion of the letters.
+
+### 22.3 Application across the website
+Use this identity consistently in Home/footer, Research, About, page metadata, introductory descriptions and public-facing references. The short form **TGCV** may be used after first mention. The programme descriptor should accompany the name at first meaningful introduction.
+
+Do not use “Theory of Value Construction in Generative Systems” or “Teoría de Construcción de Valor de Sistemas Generativos” as the current public expansion of TGCV. Historical references may remain in retained design history where necessary, but must not govern current copy.
+
+### 22.4 Governance boundary
+This is a public identity/editorial decision only. It does not rename the repository, change internal scientific identifiers, alter TGCV Core, RMA, Evidence→Claim Matrix, STATUS, experimental contracts or research claims. Any future scientific naming change requires a separate explicit decision in the scientific governance layer.
+
+### v1.2 — 2026-11-24
+- Establishes TGCV — Transformaciones Generativas y Construcción de Valor as the approved public identity.
+- Replaces the public framing of TGCV as a “theory” with “research programme”.
+- Adds the canonical Spanish descriptor and equivalent English rendering.
+- Explicitly separates public identity from internal scientific naming and scientific-governance changes.
