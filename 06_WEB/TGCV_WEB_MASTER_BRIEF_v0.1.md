@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 0.5  
+**Versión:** 0.6  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -966,3 +966,32 @@ Los cinco documentos web subordinados deben mantener esta especificación común
 ### v0.5 — 2026-11-24
 - Consolida decisiones aprobadas sobre audiencia, identidad, relación TI/Systems Thinking/Systems Engineering, Research/Labs & Applications, narrativa, ejemplo, navegación, bilingüismo y Efecto Ajá.
 - Establece un bloque de control editorial común para reconciliar los documentos subordinados.
+
+
+## 22. Explore — experiencia conceptual y copy bilingüe
+
+La página Explore se desarrolla en dos documentos subordinados:
+
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — especificación de experiencia, audiencia, comprensión esperada, arquitectura narrativa, visuales, controles conceptuales y aceptación editorial.
+- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — copy completo en español e inglés, con equivalencia conceptual y controles terminológicos.
+
+Explore desarrolla la intuición de Home sin repetirla. Su recorrido pasa de la diferencia entre estado y posibilidades a un ejemplo acotado de migración de configuración entre dos entornos; después distingue transformación candidata, transformación accesible, ejecución, resultado, valor y trayectoria; finalmente conecta la perspectiva sistémica y la ingeniería de sistemas con Transformational Intelligence y TGCV.
+
+El ejemplo es exclusivamente ilustrativo. No representa una ejecución, aplicación validada, función del Juguete Colectivo ni resultado de C10-S.
+
+Controles conceptuales obligatorios:
+- candidata no significa accesible ni factible;
+- accesibilidad no significa ejecución;
+- ejecución no garantiza un resultado favorable;
+- resultado y valor requieren evaluación contextual;
+- trayectoria describe evolución a través de estados y transformaciones, no una etapa adicional de una cadena lineal universal;
+- TI es una capacidad/concepto integrador en desarrollo, no una disciplina consolidada ni una capacidad generalmente validada.
+
+La versión inglesa introduce el término **accessibility of transformations** para evitar confundir el concepto TGCV con accesibilidad digital o de interfaces. “Outcome” se utiliza como equivalente editorial de “resultado” en este contexto.
+
+Los documentos Explore son especificaciones y copy de trabajo, no autorización de publicación. Aplican los controles de madurez, evidencia, bilingüismo y Efecto Ajá establecidos en §21.
+
+### v0.6 — 2026-11-24
+- Incorpora la experiencia Explore y su copy bilingüe como documentos subordinados.
+- Establece la progresión conceptual, el ejemplo ilustrativo y las distinciones de accesibilidad, ejecución, resultado, valor y trayectoria.
+- Fija los controles terminológicos ES/EN y mantiene el estado de trabajo no aprobado para publicación.
