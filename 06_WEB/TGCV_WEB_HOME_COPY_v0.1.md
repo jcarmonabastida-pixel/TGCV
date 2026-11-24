@@ -1,7 +1,7 @@
 # TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 0.9  
+**Version:** 1.0  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md`  
@@ -49,9 +49,9 @@ Eso no significa que el sistema vaya a ejecutar automáticamente una transformac
 
 ### ¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?
 
-Cuando un sistema puede realizar transformaciones que antes quedaban fuera de su alcance, aparecen nuevas opciones: puede actuar de otras maneras, explorar caminos diferentes y plantearse resultados que antes no eran posibles. Esas posibilidades pueden abrir oportunidades para generar valor, aunque no garantizan por sí solas que se materialicen ni que el resultado sea valioso.
+Cuando se hacen accesibles transformaciones que antes quedaban fuera del alcance del sistema, aparecen nuevas opciones: puede actuar de otras maneras, explorar caminos diferentes y abrir trayectorias que antes no estaban disponibles. Esas posibilidades pueden abrir oportunidades para generar valor, aunque no garantizan por sí solas que se materialicen ni que el resultado sea valioso.
 
-Esta es la idea que conecta el cambio en las capacidades y posibilidades de un sistema con la construcción de valor. En **Explore** profundizamos en cómo se abren esas opciones y qué condiciones lo hacen posible.
+Esta es la idea que conecta el cambio en las transformaciones accesibles a un sistema con la construcción de valor. En **Explore** profundizamos en cómo se abren esas opciones y qué condiciones lo hacen posible.
 
 ## 2.3 Ejemplo: una configuración entre dos entornos
 
@@ -129,7 +129,7 @@ Lo que se aprende mediante la investigación puede orientar la experimentación 
 Comprende las ideas fundamentales y cómo se relacionan las condiciones de un sistema con sus transformaciones accesibles.
 
 **Research**  
-Conoce el programa de investigación, sus preguntas, modelos, métodos, experimentos y límites de evidencia.
+Conoce el programa de investigación aplicada e innovación, sus preguntas, modelos, métodos, experimentos y límites de evidencia.
 
 **Systems Engineering**  
 Explora cómo el modelado, el diseño y la intervención en sistemas se relacionan con la perspectiva transformacional.
@@ -156,7 +156,7 @@ Puedes acercarte a esta investigación desde sus ideas fundamentales, desde las 
 
 **TGCV — Transformaciones Generativas y Construcción de Valor**
 
-Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.
+Un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.
 
 Explore · Research · Systems Engineering · Transformational Intelligence · Labs & Applications · About · Contact
 
@@ -196,9 +196,9 @@ This does not mean the system will automatically carry out a transformation. Wha
 
 ### What new options become available when a system can do something that was previously beyond its reach?
 
-When a system can carry out transformations that were previously beyond its reach, new options emerge: it can act in different ways, explore different paths and pursue outcomes that were not previously possible. These possibilities may open up opportunities to create value, although they do not by themselves guarantee that those opportunities will be realised or that the outcome will be valuable.
+When transformations that were previously beyond a system's reach become accessible, new options emerge: the system may be able to act in different ways and explore paths that were not previously available. These possibilities may open up opportunities to create value, although they do not by themselves guarantee that those opportunities will be realised or that the outcome will be valuable.
 
-This is the idea that connects changes in a system's capabilities and possibilities with value construction. **Explore** looks more closely at how these options become available and what conditions make that possible.
+This is the idea that connects changes in the transformations accessible to a system with value construction. **Explore** looks more closely at how these options become available and what conditions make that possible.
 
 ## 3.3 Example: a configuration across two environments
 
@@ -276,7 +276,7 @@ Research can inform experimentation and applied work; what is learned in those s
 Understand the core ideas and how a system's conditions relate to its accessible transformations.
 
 **Research**  
-Discover the research programme, its questions, models, methods, experiments and evidence limitations.
+Discover the applied research and innovation programme, its questions, models, methods, experiments and evidence limitations.
 
 **Systems Engineering**  
 Explore how systems modelling, design and intervention relate to the transformational perspective.
@@ -303,7 +303,7 @@ You can approach this work through its core ideas, its research questions or the
 
 **TGCV — Generative Transformations and Value Construction**
 
-A research programme exploring how expanding the transformations available to systems may contribute to value construction.
+A programme of applied research and innovation exploring how expanding the transformations available to systems may contribute to value construction.
 
 Explore · Research · Systems Engineering · Transformational Intelligence · Labs & Applications · About · Contact
 
@@ -354,9 +354,9 @@ Efecto Ajá is a desired quality objective, not a mandatory publication conditio
 
 ## 5. Public identity decision (2026-11-24)
 
-Use **TGCV — Transformaciones Generativas y Construcción de Valor** as the public name in Spanish. The approved descriptor is: *Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
+Use **TGCV — Transformaciones Generativas y Construcción de Valor** as the public name in Spanish. The approved descriptor is: *Un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
 
-Use **TGCV — Generative Transformations and Value Construction** in English, followed by: *A research programme exploring how expanding the transformations available to systems may contribute to value construction.*
+Use **TGCV — Generative Transformations and Value Construction** in English, followed by: *A programme of applied research and innovation exploring how expanding the transformations available to systems may contribute to value construction.*
 
 TGCV is the proper name in both languages; the Spanish expansion is canonical. Do not describe TGCV publicly as an established theory. Preserve the conditional relationship: expanded possibilities may contribute to value construction but do not guarantee execution, outcomes or value.
 
@@ -369,9 +369,9 @@ TGCV is the proper name in both languages; the Spanish expansion is canonical. D
 
 The header identifies the site as **TGCV — Transformaciones Generativas y Construcción de Valor**. The English rendering is **TGCV — Generative Transformations and Value Construction**. The full approved descriptor remains in the footer:
 
-Spanish: *Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
+Spanish: *Un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
 
-English: *A research programme exploring how expanding the transformations available to systems may contribute to value construction.*
+English: *A programme of applied research and innovation exploring how expanding the transformations available to systems may contribute to value construction.*
 
 Do not repeat the full descriptor in the hero if doing so weakens the visitor-first opening. The opening question remains the first substantive message.
 
@@ -383,3 +383,5 @@ The approved narrative order is opening question → discovery → second questi
 - Adds the site-wide public brand lockup and responsive/accessibility guidance.
 - Keeps the opening question ahead of institutional self-description.
 - Clarifies the meaning of “Generative” and aligns the Home identity with the approved programme descriptor.
+
+- **1.0 — 2026-11-24:** Adopts the public descriptor “applied research and innovation” in both languages; refines the second answer to foreground newly accessible transformations rather than imply execution.
