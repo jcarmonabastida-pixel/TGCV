@@ -96,11 +96,9 @@ Las transformaciones pueden relacionarse y condicionar lo que el sistema podrá 
 
 **¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?**
 
-Cuando cambia la accesibilidad, cambia también el conjunto de opciones que están al alcance del sistema en ese contexto. Esto puede abrir nuevas formas de actuar o de diseñar una intervención, aunque no determina por sí mismo si esas opciones son útiles o deseables.
+Responderla exige mirar más allá de una transformación aislada: necesitamos comprender qué determina el conjunto de opciones que están al alcance del sistema y cómo se relacionan los elementos que influyen en la accesibilidad.
 
-¿Qué determina las transformaciones que están al alcance de un sistema?
-
-No existe una única respuesta válida para todos los sistemas. La accesibilidad puede depender de múltiples elementos y de cómo se relacionan entre sí. Entre ellos pueden encontrarse:
+La accesibilidad puede depender de múltiples elementos y de cómo se relacionan entre sí. Entre ellos pueden encontrarse:
 
 - Las capacidades de sus componentes.
 - Los recursos disponibles.
@@ -236,11 +234,9 @@ Transformations may relate to one another and shape what the system can do next.
 
 **What new options become available when a system can do something that was previously beyond its reach?**
 
-When accessibility changes, the set of options within the system's reach in that context changes too. This may open new ways to act or design an intervention, although it does not by itself determine whether those options are useful or desirable.
+Answering it requires looking beyond an individual transformation: we need to understand what shapes the set of options within a system's reach and how the elements that influence accessibility relate to one another.
 
-What determines which transformations are within a system's reach?
-
-There is no single answer that applies to every system. The accessibility of transformations can depend on multiple elements and on how they relate to one another. These may include:
+The accessibility of transformations can depend on multiple elements and on how they relate to one another. These may include:
 
 - The capabilities of its components.
 - The resources available.
