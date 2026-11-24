@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 0.8  
+**Version:** 0.9  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -603,7 +603,7 @@ Use **Existing**, **In development** and **Exploratory** as operational content 
 
 The detailed visitor experience and bilingual copy for Explore are defined in:
 
-- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 0.3.
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 0.4.
 - `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 0.3.
 
 Explore is the conceptual deepening after Home, not a second presentation of the same discovery. Home introduces that a system's possibilities can change; Explore asks how we determine whether a candidate transformation is accessible, relative to a defined system, boundary and set of conditions. Home's numbered conceptual sequence is a reading aid, not a universal causal chain; trajectory must be visualised as the path across states and transitions, not as a discrete stage.
@@ -623,12 +623,12 @@ The Spanish and English versions must be complete and conceptually equivalent. I
 
 The page must preserve these distinctions:
 - candidate transformation ≠ accessible transformation;
-- accessibility ≠ execution;
+- accessibility means being within reach under specified boundaries and conditions; it does not mean execution;
 - execution ≠ favourable outcome;
 - outcome ≠ value;
-- trajectory ≠ isolated outcome or an additional universal linear stage.
+- trajectory describes evolution through states and transformations and does not imply one inevitable chain or an additional universal linear stage.
 
-The detailed specification and copy remain working drafts, not publication clearance. Apply the non-blocking Efecto Ajá policy and all scientific, accessibility, bilingual, privacy and maintainability release checks already established in this architecture.
+The visitor-facing explanation should also make the practical implication clear: changed accessibility changes the options within reach, while deciding whether those options are useful or desirable requires additional objectives and contextual criteria. The detailed specification and copy remain working drafts, not publication clearance. Apply the non-blocking Efecto Ajá policy and all scientific, accessibility, bilingual, privacy and maintainability release checks already established in this architecture.
 
 ### v0.5 — 2026-11-24
 - Adds the initial Explore experience specification and bilingual copy as working references for P02.
@@ -645,3 +645,7 @@ The detailed specification and copy remain working drafts, not publication clear
 
 ### v0.8 — 2026-11-24
 - Refreshes the current Explore Experience version reference after the integrated editorial reconciliation.
+
+### v0.9 — 2026-11-24
+- Incorporates the final editorial refinement of Explore: accessibility as being within reach rather than execution, practical implications of changed accessibility, and trajectory as an evolution that need not form one chain.
+- Updates the current bilingual copy and experience references.
