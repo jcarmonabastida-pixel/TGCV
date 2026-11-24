@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 1.1  
+**Version:** 1.2  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -661,3 +661,20 @@ The visitor-facing explanation should also make the practical implication clear:
 ### v1.1 — 2026-11-24
 - Adds the second visitor question and its concise value-oriented answer to the mandatory Home narrative, positioned immediately after the initial discovery and before the tangible example.
 - Preserves the existing Explore block-5 question as the deeper conceptual development rather than replacing or duplicating its explanatory role.
+
+
+## 18. Public identity decision (2026-11-24)
+
+The website's public identity is **TGCV — Transformaciones Generativas y Construcción de Valor**. TGCV is presented as a research programme, not as an established theory.
+
+Canonical Spanish descriptor:
+*Un programa de investigación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.*
+
+English rendering:
+**TGCV — Generative Transformations and Value Construction**.
+*A research programme exploring how expanding the transformations available to systems may contribute to value construction.*
+
+Apply this consistently to page titles, first-mention descriptions, About/Research identity blocks, footer and metadata. The Spanish expansion is canonical; in English, TGCV remains the proper name rather than a mechanically re-derived acronym. Keep the scientific and public-identity layers separate.
+
+### v1.2 — 2026-11-24
+- Adds the approved public identity and bilingual naming convention to the information architecture.
