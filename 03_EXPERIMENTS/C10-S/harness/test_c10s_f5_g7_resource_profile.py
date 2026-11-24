@@ -43,16 +43,16 @@ class F5G7ResourceProfileTests(unittest.TestCase):
                     "cell_id": "F5_beta22_M10_R5",
                     "datasets_completed": 100,
                     "latency_seconds": {
-                        "mean": 0.4437369, "p95": 0.8641537,
-                        "p99": 0.9610499, "max": 1.0050521,
+                        "mean": 0.373, "p95": 0.413,
+                        "p99": 0.961, "max": 7.967,
                     },
                 },
                 {
                     "cell_id": "F5_beta22_M30_R20",
                     "datasets_completed": 100,
                     "latency_seconds": {
-                        "mean": 24.2462791, "p95": 36.0141357,
-                        "p99": 40.4227562, "max": 42.5506561,
+                        "mean": 208.420, "p95": 285.521,
+                        "p99": 400.000, "max": 418.195,
                     },
                 },
             ]
@@ -90,11 +90,13 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             self.assertEqual(result["datasets_per_shard"], 50)
             self.assertEqual(result["shard_jobs_per_phase"], 40)
             self.assertEqual(result["max_parallel_jobs"], 20)
-            self.assertLess(result["end_to_end_conservative_wall_seconds"], 3 * 3600)
+            self.assertLess(result["end_to_end_conservative_wall_seconds"], 6 * 3600)
             self.assertLessEqual(
                 result["selected_shard_projection"]["per_cell"]["F5_beta22_M30_R20"]["max_observed_shard_runtime_seconds"],
                 9000,
             )
+            self.assertEqual(result["selected_shard_projection"]["per_cell"]["F5_beta22_M30_R20"]["shards"], 5)
+            self.assertFalse(next(item for item in result["candidate_shard_projections"] if item["datasets_per_shard"] == 25)["safe_under_150_minute_job_budget"])
 
     def test_resource_profile_rejects_unexpected_schema_before_compatibility_check(self):
         with tempfile.TemporaryDirectory() as directory:
