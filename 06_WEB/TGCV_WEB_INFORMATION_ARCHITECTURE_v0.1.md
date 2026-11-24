@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 0.3  
+**Version:** 0.4  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -544,3 +544,54 @@ The germinal website must provide coherent journeys through Home, Explore, Resea
 
 - Added the first-release Content Blueprint as the operational content-planning reference.
 - Clarified the rule against empty or premature navigation destinations.
+
+
+## 16. Decision lock — approved Home identity and navigation (2026-11-24)
+
+This section supersedes any incompatible navigation, audience, page-role or Efecto Ajá requirement earlier in this document. The Web Master Brief §21 is the parent decision record.
+
+### 16.1 Primary visitor
+
+The primary visitor is a person who researches, designs, develops or engineers systems. The experience remains understandable to adjacent audiences and interested newcomers.
+
+### 16.2 Ecosystem identity
+
+Transformational Intelligence (TI) is the integrative capability and conceptual axis of the ecosystem: understanding, reasoning about and orienting transformations in systems. It is a working concept/capability, not a claim of a consolidated academic discipline or generally validated capability.
+
+Systems Thinking is the perspective for understanding systems, conditions, relations, dynamics and possibilities. Systems Engineering is the discipline for modelling, designing, developing and intervening in systems and their transformations. They are complementary foundations contributing to TI, not three equivalent departments.
+
+Research and Labs & Applications are activity spaces: Research develops knowledge, models, methods and evidence; Labs & Applications explores experiments, demonstrators and application contexts. They interact bidirectionally.
+
+### 16.3 First-release navigation
+
+The approved top-level navigation is:
+1. **Explore** — conceptual entry, accessible explanation and the central software-migration example.
+2. **Research** — TGCV, research questions, methods, experiments, evidence and limits.
+3. **Systems Engineering** — engineering practices and their relation to the TGCV research object.
+4. **Transformational Intelligence** — working capability concept, functional dimensions, distinction from AI and open questions.
+5. **Labs & Applications** — bounded demonstrators, synthetic methodological work and exploratory application contexts.
+6. **About** — purpose, scope, governance and accurate programme context.
+7. **Contact** — only a real, monitored contact route with proportionate privacy information.
+
+Systems Thinking is transversal, not a separate first-release page: introduce it on Home, explain its role in Explore and develop its methods/foundations in Research. Do not retain Community as a top-level first-release destination. Do not publish empty destinations.
+
+### 16.4 Home narrative and language
+
+Home sequence: question → discovery → tangible example → conceptual explanation → ecosystem → exploration. Opening question: «¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?» Working headline: «Comprende cómo cambian las posibilidades de un sistema.» The example is migration of a software configuration between two distinct environments. It is an illustrative editorial example, not an existing validated demonstrator.
+
+The first public release is Spanish and English, conceptually and editorially equivalent. Adapt naturally rather than translate literally.
+
+### 16.5 Efecto Ajá and release acceptance
+
+Efecto Ajá is a desired quality objective, not a mandatory publication gate. Conduct an integral pre-publication review of concept, narrative, visitor journey and examples, including simulated visitor profiles. Add real visitor testing when an external group is available. Lack of external validation alone must not block publication.
+
+Mandatory release requirements remain: coherent identity, clear message, visitor orientation, scientific credibility, accessible and responsive experience, useful content, truthful asset/evidence labels, working links and a maintainable scope. No page may imply a community, collaboration programme, lab facility, deployed application or professional Playground that does not exist.
+
+### 16.6 Content maturity and cross-document consistency
+
+Use **Existing**, **In development** and **Exploratory** as operational content labels where useful; keep them distinct from scientific evidence labels. The Content Blueprint remains the operational content inventory. The Home Experience defines the visitor sequence; Home Copy supplies editable language. All must conform to this decision lock.
+
+### v0.4 — 2026-11-24
+- Reconciles navigation and page roles with the approved identity architecture.
+- Removes Community from first-release top-level navigation and gives Systems Thinking a transversal role.
+- Makes bilingual publication explicit and Efecto Ajá non-blocking.
