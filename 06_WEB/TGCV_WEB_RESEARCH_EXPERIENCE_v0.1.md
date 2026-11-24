@@ -1,11 +1,11 @@
 # TGCV — Research Page Experience v0.1
 
 **Identifier:** TGCV-WEB-RESEARCH-EXP-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-25  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
-**Parent documents:** Web Master Brief v1.5; Information Architecture v1.7; Content Blueprint v1.6; Explore Experience v0.9; Explore Copy v0.8.  
+**Parent documents:** Web Master Brief v1.5; Information Architecture v1.8; Content Blueprint v1.7; Explore Experience v0.9; Explore Copy v0.8.  
 **Scientific source baseline:** TGCV Core current; Research Prospectus v0.2; Testable Concept Paper v0.4; Architectural Research Map v0.2; STATUS.md as retrieved from `main` on 2026-11-25.
 
 > This document specifies the visitor experience for Research. It does not change scientific governance, scientific claims, evidence status, publication permissions or execution authorizations. All scientific source assets require a fresh status and publication-permission check before public linking.
@@ -98,15 +98,14 @@ The public-facing visual should make the distinctions inspectable without sugges
 
 **Visitor question:** What questions is TGCV trying to answer?
 
-Organise the programme around the seven questions in the controlled research prospectus and current scientific map. Present them as open research questions, not completed achievements:
+Organise the programme around the six research questions in the current controlled Research Prospectus v0.2. Present them as open research questions, not completed achievements:
 
-1. **Identifiability:** Can candidate transformations and their accessibility be defined and reconstructed without circularity or reliance on future outcome information?
-2. **Non-redundancy:** Does the representation preserve analytically useful distinctions rather than merely renaming constructs already available in domain models or prior work?
-3. **Dynamics:** Can changes in (T_{acc}) be identified independently of observed outcomes and distinguished from changes in state, Reach or Trajectory?
-4. **Reach and Trajectory:** Under what conditions, if any, are changes in accessibility related to changes in reachable states or subsequent trajectories?
+1. **Structure and identifiability:** What minimal representation distinguishes the system, candidate transformations, accessibility and changes in accessibility without circularity or unjustified conceptual redundancy?
+2. **Dynamics:** Under what conditions can changes in (T_{acc}) be identified independently of observed outcomes and distinguished from changes in state, Reach or Trajectory?
+3. **Cross-domain translation:** Can the analytical distinctions be carried across heterogeneous domains while preserving domain-specific semantics rather than merely renaming existing constructs?
+4. **Reach and Trajectory:** Under what conditions are accessibility changes related to differences in reachable states or subsequent trajectories?
 5. **Outcome and Value:** What additional conditions and evidence would be required to establish a defensible relationship with outcomes and value?
-6. **Cross-domain translation:** Can the analytical distinctions be carried across heterogeneous domains without erasing domain-specific semantics?
-7. **Limits and falsifiers:** In which domains or conditions does identification, translation or downstream linkage fail?
+6. **Limits:** In which domains or conditions do identifiability, translation or downstream relationships fail?
 
 **Experience:** use question-led blocks. For each, distinguish the problem, what would count as informative evidence, and the possibility of a negative or limiting result. Avoid turning the page into a list of claimed accomplishments.
 
@@ -138,11 +137,11 @@ Present synthetic experiments, computational analyses, empirical domain studies 
 
 This block must be a concise, dated evidence snapshot—not a celebration of project activity. Use explicit evidence categories and link each statement to its governing record after publication permission is checked.
 
-The retrieved canonical status baseline (STATUS.md dated 2026-11-06, retrieved 2026-11-25) reports, among other bounded results:
+The retrieved canonical status baseline (STATUS.md dated 2026-11-06, retrieved 2026-11-25), reconciled against the current RMA v3.38 and Evidence→Claim Matrix v1.47, reports, among other bounded results:
 
 - the scientific Core remains unchanged;
 - C09 has **bounded empirical causal support** for the accessibility-to-subsequent-trajectory link;
-- KGFS is closed as a D5-A identified contribution, with a 74/74 trajectory-variable reproducibility audit;
+- KGFS is closed as a D5-A identified contribution, with a 74/74 trajectory-variable reproducibility audit; this is a bounded contribution result, not validation of the full TGCV architecture;
 - RUST-DYN-1 and RUST-DYN-2 provide bounded structural evidence about changes in accessible transformation structure and its relation to potential Reach under the specified semantics;
 - TSTC v004 provides bounded synthetic methodological/application-fit evidence for translation across heterogeneous fixtures;
 - TI-001 V012_NEXT2 is bounded, non-confirmatory primary inferential evidence; its pre-specified primary contrast did not establish the proposed mechanism direction;
@@ -150,7 +149,7 @@ The retrieved canonical status baseline (STATUS.md dated 2026-11-06, retrieved 2
 
 These statements must not be expanded into claims of universal validation, general causal efficacy, predictive value, value creation, superiority, full originality, industrial deployment or general Transformational Intelligence validation.
 
-**Critical freshness rule:** STATUS.md currently carries a 2026-11-06 date, while the public web editorial work is dated 2026-11-25. Before drafting final copy or publishing this block, reconcile every evidence statement against the then-current RMA, Evidence→Claim Matrix, traceability, relevant audit records and canonical status pointers. The status snapshot in this experience document is a source-retrieval baseline, not an approval to publish it as current.
+**Critical freshness rule:** STATUS.md carries a 2026-11-06 date. Its evidence snapshot has been cross-checked against RMA v3.38 and Evidence→Claim Matrix v1.47 retrieved on 2026-11-25, but individual material records and publication permissions still require claim-by-claim verification before release. The status snapshot is not a live evidence feed or an approval to publish controlled records.
 
 **Experience:** evidence cards or a table with columns: research area; current result/status; what it supports; what it does not establish; source/version/date. Do not use traffic-light badges as a substitute for explanation.
 
