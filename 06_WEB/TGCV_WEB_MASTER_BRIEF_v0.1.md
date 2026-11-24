@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 1.0  
+**Versión:** 1.1  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -972,8 +972,8 @@ Los documentos web subordinados deben mantener esta especificación común. Si p
 
 La página Explore se desarrolla en dos documentos subordinados:
 
-- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — versión de contenido 0.4: especificación de experiencia, audiencia, arquitectura narrativa, visuales y controles conceptuales.
-- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — versión de contenido 0.3: copy completo en español e inglés, con equivalencia conceptual y controles terminológicos.
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — versión de contenido 0.5: especificación de experiencia, audiencia, arquitectura narrativa, visuales y controles conceptuales.
+- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — versión de contenido 0.4: copy completo en español e inglés, con equivalencia conceptual y controles terminológicos.
 
 Explore desarrolla la intuición de Home sin repetirla. Su recorrido pasa de la diferencia entre estado y posibilidades a un ejemplo acotado de migración de configuración entre dos entornos; después distingue transformación candidata, transformación accesible, ejecución, resultado, valor y trayectoria; finalmente conecta la perspectiva sistémica y la ingeniería de sistemas con Transformational Intelligence y TGCV.
 
@@ -981,10 +981,13 @@ El ejemplo es exclusivamente ilustrativo. No representa una ejecución, aplicaci
 
 Controles conceptuales obligatorios:
 - candidata no significa accesible ni factible;
+- mantener visible la secuencia **Accesibilidad → Ejecución → Resultado → Valor**;
+- la transformación candidata precede a esa secuencia: es el objeto cuya accesibilidad se evalúa;
 - accesibilidad no significa ejecución;
 - ejecución no garantiza un resultado favorable;
 - resultado y valor requieren evaluación contextual;
 - trayectoria describe evolución a través de estados y transformaciones, no una etapa adicional de una cadena lineal universal;
+- en el bloque 5 debe aparecer destacada la pregunta «¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?» y su equivalente inglés;
 - TI es una capacidad/concepto integrador en desarrollo, no una disciplina consolidada ni una capacidad generalmente validada.
 
 La versión inglesa introduce el término **accessibility of transformations** para evitar confundir el concepto TGCV con accesibilidad digital o de interfaces. “Outcome” se utiliza como equivalente editorial de “resultado” en este contexto.
@@ -1032,10 +1035,10 @@ No introducir permisos como explicación alternativa dentro de este ejemplo. La 
 
 - Home Experience: v0.9.
 - Home Copy: v0.6.
-- Explore Experience: v0.4.
-- Explore Copy: v0.3.
-- Information Architecture: v0.9.
-- Content Blueprint: v0.7.
+- Explore Experience: v0.5.
+- Explore Copy: v0.4.
+- Information Architecture: v1.0.
+- Content Blueprint: v0.8.
 
 Estas versiones siguen siendo documentos de trabajo y no constituyen autorización de publicación.
 
@@ -1060,3 +1063,10 @@ La revisión integrada por perfiles de visitante detectó tres refinamientos edi
 - Incorpora las mejoras bilingües de accesibilidad como “estar al alcance”, implicaciones prácticas de los cambios de accesibilidad y trayectoria no necesariamente lineal.
 - Actualiza las versiones vigentes de Explore Experience, Explore Copy, Information Architecture y Content Blueprint.
 - Registra que la evaluación de cuatro perfiles fue una simulación editorial, no una prueba con visitantes reales.
+
+### v1.1 — 2026-11-24
+- Incorpora como pregunta destacada del bloque 5, en español e inglés, qué nuevas opciones aparecen cuando una transformación pasa a estar al alcance del sistema.
+- Establece como anclaje visual persistente la secuencia Accesibilidad → Ejecución → Resultado → Valor (Accessibility → Execution → Outcome → Value).
+- Sitúa la transformación candidata antes de esa secuencia, como objeto cuya accesibilidad se evalúa, y mantiene la trayectoria como evolución a través de estados y transformaciones, no como una etapa adicional.
+- Actualiza las versiones vigentes de Explore Experience, Explore Copy, Information Architecture y Content Blueprint.
+- Mantiene todos los documentos como borradores de trabajo no aprobados para publicación.
