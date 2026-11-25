@@ -280,6 +280,8 @@ class F5G7ResourceProfileTests(unittest.TestCase):
         self.assertIn("actions/artifacts/$PROFILE_ARTIFACT_ID/zip", workflow)
         self.assertIn("gh api", workflow)
         self.assertIn("python verify_c10s_f5_g7_resource_profile_artifact.py", workflow)
+        self.assertIn("working-directory: 03_EXPERIMENTS/C10-S/harness", workflow)
+        self.assertIn("--manifest fixtures/g7_resource_profile_v1_1/manifest.json", workflow)
         self.assertIn("--artifact-metadata", workflow)
         self.assertIn("--extract-profile", workflow)
         self.assertNotIn("unzip -q", workflow)

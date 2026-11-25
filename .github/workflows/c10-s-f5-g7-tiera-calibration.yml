@@ -145,6 +145,7 @@ jobs:
         run: |
           python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
       - name: Download and verify immutable resource-only profile archive
+        working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           GH_TOKEN: ${{ github.token }}
           PROFILE_ARTIFACT_ID: ${{ needs.authorization.outputs.resource_profile_artifact_id }}
@@ -164,7 +165,7 @@ jobs:
             --output "$ARCHIVE"
           python verify_c10s_f5_g7_resource_profile_artifact.py \
             --archive "$ARCHIVE" \
-            --manifest ../fixtures/g7_resource_profile_v1_1/manifest.json \
+            --manifest fixtures/g7_resource_profile_v1_1/manifest.json \
             --artifact-metadata "$METADATA" \
             --output-json "$RUNNER_TEMP/verified-resource-profile-artifact.json" \
             --extract-profile "$RUNNER_TEMP/resource-profile/c10s-f5-g7-resource-profile.json" \
