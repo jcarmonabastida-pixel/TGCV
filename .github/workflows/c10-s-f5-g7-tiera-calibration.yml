@@ -76,7 +76,7 @@ jobs:
               "independent_review": "NOT_AVAILABLE_SINGLE_OPERATOR",
           }
           Path(os.environ["RUNNER_TEMP"], "g7-dispatch-attestation.json").write_text(
-              json.dumps(record, sort_keys=True, indent=2) + "\\n", encoding="utf-8"
+              json.dumps(record, sort_keys=True, indent=2) + "\n", encoding="utf-8"
           )
           PY
       - name: Checkout one-use authorization commit
