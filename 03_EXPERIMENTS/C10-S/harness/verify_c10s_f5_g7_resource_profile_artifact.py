@@ -23,6 +23,8 @@ def verify(archive_path: Path, manifest_path: Path, metadata_path: Path, expecte
         raise ValueError("PROFILE_ARTIFACT_NAME_MISMATCH")
     if metadata.get("expired") is not False:
         raise ValueError("PROFILE_ARTIFACT_EXPIRED_OR_UNKNOWN")
+    if metadata.get("expires_at") != manifest.get("profile_artifact_expires_at"):
+        raise ValueError("PROFILE_ARTIFACT_EXPIRY_MISMATCH")
     run = metadata.get("workflow_run") or {}
     if run.get("id") != manifest.get("profile_run_id"):
         raise ValueError("PROFILE_RUN_ID_MISMATCH")
@@ -31,9 +33,14 @@ def verify(archive_path: Path, manifest_path: Path, metadata_path: Path, expecte
     repository = (run.get("head_repository") or {}).get("full_name")
     if repository != expected_repository:
         raise ValueError("PROFILE_SOURCE_REPOSITORY_MISMATCH")
+    if run.get("repository_id") != run.get("head_repository_id"):
+        raise ValueError("PROFILE_REPOSITORY_ID_MISMATCH")
     actual_archive_sha = sha256(archive_bytes)
     if actual_archive_sha != manifest.get("profile_artifact_archive_sha256"):
         raise ValueError("PROFILE_ARCHIVE_DIGEST_MISMATCH")
+    api_digest = metadata.get("digest")
+    if api_digest != f"sha256:{actual_archive_sha}":
+        raise ValueError("PROFILE_GITHUB_ARTIFACT_DIGEST_MISMATCH")
     try:
         with zipfile.ZipFile(archive_path) as archive:
             names = archive.namelist()
@@ -44,7 +51,7 @@ def verify(archive_path: Path, manifest_path: Path, metadata_path: Path, expecte
                 parts = PurePosixPath(name).parts
                 if PurePosixPath(name).is_absolute() or name.startswith("/") or "\\" in name or any(part == ".." for part in parts) or (parts and ":" in parts[0]):
                     raise ValueError("PROFILE_ARCHIVE_UNSAFE_PATH")
-            unexpected = [name for name in names if name != PROFILE_MEMBER and not name.endswith("/")]
+            unexpected = [name for name in names if name != PROFILE_MEMBER]
             if unexpected:
                 raise ValueError("PROFILE_ARCHIVE_UNEXPECTED_MEMBER")
             profile_bytes = archive.read(PROFILE_MEMBER)
@@ -54,6 +61,8 @@ def verify(archive_path: Path, manifest_path: Path, metadata_path: Path, expecte
     if actual_json_sha != manifest.get("profile_json_sha256"):
         raise ValueError("PROFILE_JSON_DIGEST_MISMATCH")
     profile = json.loads(profile_bytes)
+    if profile.get("source_commit") != manifest.get("profile_source_commit"):
+        raise ValueError("PROFILE_JSON_SOURCE_COMMIT_MISMATCH")
     checks = (
         (profile.get("schema"), manifest.get("profile_schema"), "PROFILE_JSON_SCHEMA_MISMATCH"),
         (profile.get("scope"), manifest.get("profile_scope"), "PROFILE_SCOPE_MISMATCH"),
