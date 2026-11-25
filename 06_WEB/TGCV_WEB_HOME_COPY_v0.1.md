@@ -267,12 +267,15 @@ The discipline that contributes practices for modelling, designing, developing a
 
 Transformational Intelligence brings these two foundations together as an integrative capability: Systems Thinking provides a perspective for understanding systems; Systems Engineering provides a discipline for modelling, designing and intervening in them.
 
-The work takes place across two connected activity spaces:
+The work connects distinct but complementary elements:
 
+- **TGCV** is the applied research and innovation programme investigating how accessible transformations change and whether those changes may contribute to value.
+- **Value Construction** presents VALUE as an applied framework for understanding opportunities, designing alternatives, deciding, acting and learning. It complements TGCV; its effectiveness is not assumed to have been demonstrated by TGCV.
 - **Research** develops questions, foundations, models, methods, experiments and evidence.
-- **Labs & Applications** brings together experimentation, bounded demonstrators and the exploration of application contexts.
+- **Labs & Applications** presents bounded experimentation, demonstrators and exploratory application contexts, with their maturity and scope clearly stated.
+- **ValueLabOS** is a proposed digital and collaborative ecosystem to support the application, experimentation and evolution of VALUE. It is distinct from VALUE and from Labs & Applications.
 
-Research can inform experimentation and applied work; what is learned in those settings can, in turn, generate new research questions.
+These elements are related, but they do not form a proven causal chain. TGCV investigates; VALUE structures applied work; ValueLabOS is proposed as an enabling ecosystem. Research and experimentation can inform one another.
 
 ## 3.6 Explore according to your interests
 
@@ -396,3 +399,8 @@ The approved narrative order is opening question → discovery → second questi
 - Adds Value Construction to Home's ecosystem explanation and visitor routes.
 - Distinguishes TGCV, VALUE, Labs & Applications and the proposed ValueLabOS ecosystem in both languages.
 - Clarifies that the TGCV–VALUE relationship is complementary and not a proven causal chain.
+
+
+### v1.2 — 2026-11-25 (English ecosystem alignment)
+- Aligns the English ecosystem narrative with the Spanish version by distinguishing TGCV, VALUE/Value Construction, Labs & Applications and proposed ValueLabOS.
+- Adds Value Construction to the English visitor routes and clarifies that the TGCV–VALUE relationship is complementary, not a proven causal chain.
