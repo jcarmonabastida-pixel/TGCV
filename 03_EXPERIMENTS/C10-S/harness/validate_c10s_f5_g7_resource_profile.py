@@ -18,9 +18,9 @@ from c10s_f5_g7_source_inventory import compute_path_paths, build_manifests
 PROFILE_SOURCE_PATHS = compute_path_paths()
 
 MAX_PARALLEL = 20
-JOB_SETUP_OVERHEAD_SECONDS = 300
+JOB_SETUP_OVERHEAD_SECONDS = 900  # Conservative 15-minute per-phase engineering reserve.
 JOB_BUDGET_SECONDS = 9000  # 150 minutes; workflow hard timeout is 165 minutes.
-CANDIDATE_SHARD_SIZES = (10, 20, 25, 40, 50, 100)
+CANDIDATE_SHARD_SIZES = (8, 10, 20, 25, 40, 50, 100)
 
 
 def sha256_bytes(value: bytes) -> str:

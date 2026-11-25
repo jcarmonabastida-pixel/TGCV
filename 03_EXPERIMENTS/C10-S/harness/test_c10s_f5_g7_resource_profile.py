@@ -91,31 +91,31 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             ):
                 result = validator.validate(profile_path, staged_manifest_path, root)
 
-        self.assertEqual(result["datasets_per_shard"], 10)
-        self.assertEqual(result["shard_tasks_per_phase"], 200)
-        self.assertEqual(result["matrix_job_count"], 200)
+        self.assertEqual(result["datasets_per_shard"], 8)
+        self.assertEqual(result["shard_tasks_per_phase"], 250)
+        self.assertEqual(result["matrix_job_count"], 250)
         self.assertEqual(result["job_topology"], "ONE_MATRIX_JOB_EXECUTES_PRIMARY_AND_CLEAN_SOURCE_REPLAY_SEQUENTIALLY")
         self.assertEqual(result["max_parallel_jobs"], 20)
-        self.assertEqual(len(result["shard_matrix"]), 200)
+        self.assertEqual(len(result["shard_matrix"]), 250)
         for cell_id in ("F5_beta22_M10_R5", "F5_beta22_M30_R20"):
             self.assertEqual(
                 sum(1 for item in result["shard_matrix"] if item["cell_id"] == cell_id),
-                100,
+                125,
             )
         slow = result["selected_shard_projection"]["per_cell"]["F5_beta22_M30_R20"]
         self.assertAlmostEqual(
             slow["max_observed_primary_replay_job_runtime_seconds"],
-            8963.8927517,
+            8491.11420136,
             places=5,
         )
         self.assertLessEqual(
             slow["max_observed_primary_replay_job_runtime_seconds"],
             validator.JOB_BUDGET_SECONDS,
         )
-        self.assertEqual(slow["shards"], 100)
+        self.assertEqual(slow["shards"], 125)
         self.assertAlmostEqual(
             slow["aggregate_primary_replay_compute_seconds"],
-            100 * 8963.8927517,
+            125 * 8491.11420136,
             places=4,
         )
         by_size = {
@@ -123,11 +123,11 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             for item in result["candidate_shard_projections"]
         }
         self.assertTrue(by_size[10]["safe_primary_replay_pair_under_150_minute_job_budget"])
-        for size in (20, 25, 40, 50, 100):
+        for size in (10, 20, 25, 40, 50, 100):
             self.assertFalse(by_size[size]["safe_primary_replay_pair_under_150_minute_job_budget"])
-        fast_job = 2 * (10 * 7.966771501000004 + 300)
-        slow_job = 2 * (10 * 418.194637585 + 300)
-        total_runner_compute = 100 * fast_job + 100 * slow_job
+        fast_job = 2 * (8 * 7.966771501000004 + 900)
+        slow_job = 2 * (8 * 418.194637585 + 900)
+        total_runner_compute = 125 * fast_job + 125 * slow_job
         expected_primary_replay = (
             total_runner_compute / validator.MAX_PARALLEL
             + (1 - 1 / validator.MAX_PARALLEL) * slow_job
@@ -157,8 +157,8 @@ class F5G7ResourceProfileTests(unittest.TestCase):
         self.assertEqual(result["job_setup_overhead_status"], "ENGINEERING_RESERVE_NOT_EMPIRICALLY_MEASURED")
         sensitivity = {item["per_phase_setup_allowance_seconds"]: item for item in result["job_setup_overhead_sensitivity"]}
         self.assertTrue(sensitivity[300]["within_150_minute_job_budget"])
-        self.assertFalse(sensitivity[600]["within_150_minute_job_budget"])
-        self.assertFalse(sensitivity[900]["within_150_minute_job_budget"])
+        self.assertTrue(sensitivity[600]["within_150_minute_job_budget"])
+        self.assertTrue(sensitivity[900]["within_150_minute_job_budget"])
         self.assertEqual(result["resource_sample_k_per_cell"], 100)
         self.assertAlmostEqual(
             result["probability_sample_max_exceeds_true_p99_under_iid_assumption"],

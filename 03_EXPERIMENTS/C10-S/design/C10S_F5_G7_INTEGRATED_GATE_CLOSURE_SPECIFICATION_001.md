@@ -227,15 +227,19 @@ Los logs de tres shards existentes del mismo entorno Ubuntu 24.04/pinned Python 
 
 En los jobs de agregación y empaquetado, la descarga del artefacto existente duró 0,591 s (138370192179) y 0,451 s (138370455491). Estas medidas incluyen el flujo de perfilado resource-only, no constituyen una medición directa de todos los pasos del futuro workflow G7.
 
-El allowance de **300 s por fase** es una reserva de ingeniería, no una constante medida. Es aproximadamente 13,8 veces el mayor intervalo runner→cálculo observado en esta muestra. Con shard size 10 y el máximo observado de la celda lenta (418,194638 s/dataset), el job pareado primary+replay se proyecta en **8.963,893 s (149,398 min)**, solo **36,107 s** por debajo del presupuesto de 9.000 s.
+El setup observado (16,638–21,695 s) pertenece al workflow resource-only v1.1 y cubre runner, checkout, instalación hash-locked y llegada al cálculo. El allowance de **900 s por fase** adoptado por el dimensionador es una reserva de ingeniería —15 minutos, aproximadamente 41,5 veces el mayor setup observado—, no una constante medida del workflow G7 consumidor.
 
-| Reserva por fase | Job pareado lento | ¿Dentro de 9.000 s? |
+Con el máximo observado de la celda lenta (418,194638 s/dataset) y **8 datasets por shard**, el job pareado primary+replay se proyecta en **8.491,114 s (141,519 min)**, con margen de **508,886 s (8,481 min)** frente al presupuesto de 9.000 s.
+
+| Reserva por fase | Job pareado lento, shard 8 | ¿Dentro de 9.000 s? |
 |---:|---:|---|
-| 300 s | 8.963,893 s (149,398 min) | Sí, margen 36,107 s |
-| 600 s | 9.563,893 s (159,398 min) | No |
-| 900 s | 10.163,893 s (169,398 min) | No |
+| 300 s | 7.291,114 s (121,519 min) | Sí, margen 1.708,886 s |
+| 600 s | 7.891,114 s (131,519 min) | Sí, margen 1.108,886 s |
+| 900 s | 8.491,114 s (141,519 min) | Sí, margen 508,886 s |
 
-**Estado RG-06: CONDITIONAL.** La reserva de 300 s está respaldada como holgada frente al setup observado, pero el margen final del job es estrecho y no existe una medición completa del workflow G7 consumidor. Los escenarios de 600/900 s invalidan el shard size 10 vigente. No se afirmará garantía temporal hasta medir el overhead del recorrido G7 o fijar y validar otra topología.
+El plan derivado para K=1.000 es de **125 shards por celda y 250 jobs de matriz por fase**, con un pool compartido de 20. El coste agregado conservador primary+replay es **361,756 runner-hours**. La cota de list scheduling de Graham es **73.182,699 s (20,329 h)** para primary+replay y **75.783,425 s (21,051 h)** al añadir el perfil resource-only ya ejecutado (2.600,725 s). Son estimaciones condicionadas a la latencia máxima muestral y al allowance de 900 s; no son garantías de duración.
+
+**Estado RG-06: CONDITIONAL — PLAN ROBUSTO BAJO LA RESERVA DECLARADA.** La sensibilidad 300/600/900 s queda dentro del presupuesto con shard 8. La reserva de 900 s sigue siendo una hipótesis de ingeniería y no una medición completa del recorrido G7 consumidor; no se eleva a garantía temporal.
 
 ### 10.2 RG-07 — K=100 → K=1.000
 
@@ -246,11 +250,11 @@ Estadísticos guardados del artefacto (segundos por dataset):
 | F5_beta22_M10_R5 | 0,372553 | 0,413426 | 7,674969 | 7,966772 |
 | F5_beta22_M30_R20 | 208,420042 | 285,520522 | 356,961762 | 418,194638 |
 
-El dimensionador usa el máximo observado para proyectar cada dataset de un shard size 10. Con dos celdas, 100 shards por celda (200 jobs), max-parallel=20 y un pool compartido, el trabajo agregado pareado conservador es 270,090 runner-hours. La cota de list scheduling de Graham es **57.131,839 s (15,870 h)** para primary+replay, bajo los tiempos asumidos; no es una cota probabilística de la duración real.
+El dimensionador utiliza el máximo observado por dataset y el allowance de 900 s/fase. Con shard size 8, K=1.000 por celda, dos celdas, **125 shards por celda (250 jobs por fase)** y max-parallel=20 compartido, el trabajo agregado pareado conservador es **361,756 runner-hours**. La cota de list scheduling de Graham es **73.182,699 s (20,329 h)** para primary+replay; incluyendo el perfil resource-only ya ejecutado, el recorrido estimado suma **75.783,425 s (21,051 h)**. Es una cota de scheduling de tiempos asumidos, no una cota probabilística de la duración real.
 
-Con K=100 observaciones IID, la probabilidad de que el máximo muestral supere el verdadero P99 es 1−0,99^100 = 63,397 %; para el P95 es 1−0,95^100 = 99,408 %. Harían falta al menos **299 observaciones IID** para que el máximo muestral exceda el verdadero P99 con un 95 % de confianza. Aun así, eso acotaría un percentil, no el máximo futuro.
+Con K=100 observaciones IID, la probabilidad de que el máximo muestral supere el verdadero P99 es 1−0,99^100 = **63,397 %**; para el P95 es 1−0,95^100 = **99,408 %**. Harían falta al menos **299 observaciones IID** para que el máximo muestral exceda el verdadero P99 con un 95 % de confianza. Además, bajo IID continuo/exchangeability, la probabilidad de que el máximo de 1.000 observaciones futuras no supere el máximo de las 100 observaciones del perfil es solo 100/(100+1.000) = **9,091 %**; la probabilidad de que lo supere es **90,909 %**. Por tanto, el máximo K=100 no es una cota predictiva defendible para el máximo K=1.000.
 
-**Estado RG-07: CONDITIONAL.** K=100 no demuestra una cota de cola para K=1.000 ni un máximo futuro. La proyección de 15,870 h es una cota de scheduling condicionada a los tiempos observados y a la reserva de 300 s; no es garantía de duración. No se generará otro perfil para intentar cerrar esta limitación sin autorización expresa.
+**Estado RG-07: CONDITIONAL — RIESGO DE COLA EXPLÍCITO.** El dimensionamiento shard 8 satisface el presupuesto de 150 minutos bajo el máximo observado y la reserva declarada, pero K=100 no garantiza el máximo ni los percentiles extremos de K=1.000. El workflow debe conservar timeout y fallo cerrado; no se describirá el plan como temporalmente garantizado. No se generará otro perfil para intentar cerrar esta limitación sin autorización expresa.
 
 ### 10.3 Límite de uso
 
@@ -286,10 +290,10 @@ La suite de validación del run `45550608608`, commit `60c34a17606627a62c7f0db20
 | RG-01 | PASS determinista | Contrato de nombre y descubrimiento alineado |
 | RG-02 | PASS | ZIP productivo descargado; hashes ZIP/JSON coincidentes; verificación integrada 8/8 |
 | RG-03 | PASS determinista | Identidad Git / compute path |
-| RG-04 | IMPLEMENTADO EN CÓDIGO; VALIDACIÓN PENDIENTE | Dispatch manual del propietario, confirmación literal y atestación; se elimina la dependencia de Environment/reviewers |
+| RG-04 | PASS_STATIC | Dispatch manual del propietario, confirmación literal y atestación validados por CI 8/8; sin dependencia de Environment/reviewers |
 | RG-05 | PASS | Inventario tipado único; cobertura integrada 8/8 |
-| RG-06 | CONDITIONAL | 300 s/fase es reserva de ingeniería; margen calculado de 36,107 s frente a 9.000 s |
-| RG-07 | CONDITIONAL | K=100 no garantiza la cola ni el máximo futuro; proyección de scheduling condicionada |
+| RG-06 | CONDITIONAL — PLAN ROBUSTO BAJO RESERVA 900 s | Shard 8; margen calculado de 508,886 s frente a 9.000 s incluso en sensibilidad 900 s/fase |
+| RG-07 | CONDITIONAL — RIESGO DE COLA EXPLÍCITO | K=100 no garantiza el máximo K=1.000; probabilidad IID de superar el máximo muestral: 90,909 % |
 
 **Decisión:** el gate instrumental sigue cerrado a ejecución G7 mientras RG-04 permanezca NOT_VERIFIABLE. RG-06/RG-07 son limitaciones de planificación expresamente documentadas, no autorizaciones. No se inicia G7, Tier-A, holdout, cobertura, replay científico ni ejecución causal C10.
 
