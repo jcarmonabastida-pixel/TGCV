@@ -1,9 +1,6 @@
 name: C10-S F5 G7 prospective Tier-A calibration — staged one-use authorization
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       confirm_scope:
@@ -15,7 +12,7 @@ on:
 
 permissions:
   contents: write
-  actions: write
+  actions: read
 
 # Serialize every dispatch for this exact authorization ref. A queued second
 # dispatch checks the first run after it releases this group.
@@ -32,21 +29,7 @@ env:
 
 
 jobs:
-  temporary_dispatch_bridge:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Dispatch the exact approved one-use authorization branch
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/workflows/c10-s-f5-g7-tiera-calibration.yml/dispatches" \
-            -f ref="research/c10s-f5-g7-auth-C10S-F5-G7-20261125-009" \
-            -f inputs[confirm_scope]="I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT"
-
   authorization:
-    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     outputs:
