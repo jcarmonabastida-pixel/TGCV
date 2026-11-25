@@ -154,6 +154,21 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             places=5,
         )
         self.assertEqual(result["coverage_adjudication"], "NOT_PERFORMED")
+        self.assertEqual(result["job_setup_overhead_status"], "ENGINEERING_RESERVE_NOT_EMPIRICALLY_MEASURED")
+        sensitivity = {item["per_phase_setup_allowance_seconds"]: item for item in result["job_setup_overhead_sensitivity"]}
+        self.assertTrue(sensitivity[300]["within_150_minute_job_budget"])
+        self.assertFalse(sensitivity[600]["within_150_minute_job_budget"])
+        self.assertFalse(sensitivity[900]["within_150_minute_job_budget"])
+        self.assertEqual(result["resource_sample_k_per_cell"], 100)
+        self.assertAlmostEqual(
+            result["probability_sample_max_exceeds_true_p99_under_iid_assumption"],
+            1 - (0.99 ** 100),
+            places=12,
+        )
+        self.assertEqual(
+            result["runtime_extrapolation_status"],
+            "CONDITIONAL_K100_SAMPLE_MAX_IS_NOT_A_K1000_HARD_BOUND",
+        )
 
     def test_resource_profile_rejects_unexpected_schema_before_compatibility_check(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -159,6 +159,34 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
     )
     shard_size = selected["datasets_per_shard"]
 
+    # Explicitly expose the unmeasured setup allowance as an assumption.
+    # Sensitivity is computed from the already-frozen K=100 resource sample;
+    # it does not run or inspect any scientific datasets.
+    setup_sensitivity = []
+    for overhead in (300, 600, 900):
+        scenario_jobs = []
+        scenario_work = 0.0
+        scenario_safe = True
+        for cell_id in g7.EXPECTED_CELLS:
+            shard_count = math.ceil(g7.K_PER_CELL / shard_size)
+            paired = 2 * (
+                shard_size * cells[cell_id]["latency_seconds"]["max"] + overhead
+            )
+            scenario_safe = scenario_safe and paired <= JOB_BUDGET_SECONDS
+            scenario_jobs.append(paired)
+            scenario_work += shard_count * paired
+        scenario_tail = (1 - 1 / MAX_PARALLEL) * max(scenario_jobs)
+        setup_sensitivity.append({
+            "per_phase_setup_allowance_seconds": overhead,
+            "max_paired_job_seconds": max(scenario_jobs),
+            "within_150_minute_job_budget": scenario_safe,
+            "shared_pool_list_scheduling_bound_seconds": scenario_work / MAX_PARALLEL + scenario_tail,
+            "interpretation": "ENGINEERING_ASSUMPTION_NOT_MEASURED" if overhead == JOB_SETUP_OVERHEAD_SECONDS else "SENSITIVITY_SCENARIO",
+        })
+
+    profile_k = profile["K_per_cell"]
+    p99_sample_max_exceedance_probability = 1 - (0.99 ** profile_k)
+
     shard_matrix = []
     for cell_id in g7.EXPECTED_CELLS:
         for start in range(0, g7.K_PER_CELL, shard_size):
@@ -188,6 +216,11 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
         "max_parallel_jobs": MAX_PARALLEL,
         "job_budget_seconds": JOB_BUDGET_SECONDS,
         "job_setup_overhead_seconds": JOB_SETUP_OVERHEAD_SECONDS,
+        "job_setup_overhead_status": "ENGINEERING_RESERVE_NOT_EMPIRICALLY_MEASURED",
+        "job_setup_overhead_sensitivity": setup_sensitivity,
+        "resource_sample_k_per_cell": profile_k,
+        "probability_sample_max_exceeds_true_p99_under_iid_assumption": p99_sample_max_exceedance_probability,
+        "runtime_extrapolation_status": "CONDITIONAL_K100_SAMPLE_MAX_IS_NOT_A_K1000_HARD_BOUND",
         "shard_matrix": shard_matrix,
         "shard_tasks_per_phase": len(shard_matrix),
         "matrix_job_count": len(shard_matrix),
