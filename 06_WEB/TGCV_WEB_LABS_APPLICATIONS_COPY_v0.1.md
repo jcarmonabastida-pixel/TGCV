@@ -1,12 +1,12 @@
-# TGCV — Labs & Applications Copy v0.1
+# TGCV — Labs & Applications Copy v0.2
 
 **Identifier:** TGCV-WEB-P07-COPY-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-25  
 **Status:** BILINGUAL EDITORIAL DRAFT — PENDING REVIEW; NOT PUBLICATION APPROVAL  
 **Branch:** strategy/tgcv-web-master  
 **Authoritative Experience:** TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md v0.4  
-**Content Blueprint:** TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md v3.4
+**Content Blueprint:** TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md v3.6
 
 ---
 
@@ -32,12 +32,12 @@ En el demostrador se pueden examinar el sistema y sus relaciones, revisar transf
 
 El prototipo utiliza sistemas sintéticos y reglas operativas propias. Su cálculo de accesibilidad pertenece al demostrador: no es la función científica canónica de TGCV ni un predictor causal. Tampoco es un simulador de sistemas reales o un producto listo para su despliegue.
 
-El prototipo existe y cuenta con aceptación a nivel de software. Esto no equivale a validación científica. La disponibilidad de una versión pública descargable no está confirmada; por tanto, no presentamos un enlace de descarga ni afirmamos que exista una versión pública operativa.
+**Estado del activo:** prototipo existente. Hay un registro de aceptación funcional basado en un recorrido manual local comunicado por el usuario. La aceptación se refiere al funcionamiento del paquete y no a la validez científica. Además, el archivo ZIP utilizado en ese recorrido no se contrastó byte a byte con el digest del artefacto de integración continua. La disponibilidad de una versión pública descargable no está confirmada; por tanto, no presentamos un enlace de descarga ni afirmamos que exista una versión pública operativa.
 
 ### TSTC — TGCV Cross-Domain Transformation Mapper
 **Un demostrador metodológico basado en escenarios sintéticos.**
 
-TSTC explora una pregunta acotada: si un mismo contrato analítico puede aplicarse a modelos sintéticos de sistemas diferentes y representar explícitamente sus estados y contextos, transformaciones candidatas, accesibilidad, transiciones y trayectorias posteriores.
+**Estado del activo y de la evidencia:** demostrador sintético existente; ejecución v004 completada y auditada dentro del contrato congelado. TSTC explora una pregunta acotada: si un mismo contrato analítico puede aplicarse a modelos sintéticos de sistemas diferentes y representar explícitamente sus estados y contextos, transformaciones candidatas, accesibilidad, transiciones y trayectorias posteriores.
 
 La ejecución examinada incluyó tres escenarios sintéticos: orquestación de redes y entornos cloud; agentes de IA y permisos de herramientas; y restricciones de recursos en sistemas de energía y movilidad. Las comprobaciones posteriores confirmaron el cumplimiento del contrato de salida, los controles negativos y las reglas de propagación sintética declaradas. Las reconstrucciones independientes mediante representaciones convencionales obtuvieron conjuntos equivalentes de transformaciones factibles en los universos examinados.
 
@@ -93,7 +93,7 @@ Este contexto permite investigar si los cambios en el estado físico, la informa
 
 El interés está en examinar cómo las restricciones y los recursos compartidos pueden abrir, cerrar o modificar opciones entre los ámbitos de energía y movilidad.
 
-Se ha ejecutado y auditado un demostrador mínimo sintético relacionado con este contexto. Su alcance es metodológico y limitado; no se estableció una comparación independiente con modelos de referencia. El contexto más amplio sigue siendo candidato.
+Se ha ejecutado y auditado un demostrador mínimo sintético C05 relacionado con este contexto. En esa prueba acotada se observó un cambio operativo de accesibilidad bajo una transición especificada. Sin embargo, la reconstrucción de referencia utilizó una función de admisibilidad operativamente idéntica a la del recorrido TGCV: no fue una implementación de referencia independiente. Por tanto, el resultado no demuestra superioridad ni acuerdo independiente con un método alternativo. Este demostrador C05 es distinto del escenario energético incluido en TSTC v004. El contexto de aplicación más amplio sigue siendo candidato.
 
 **Estado:** contexto candidato en exploración; no es una aplicación desplegada ni validada.
 
@@ -147,7 +147,7 @@ Conviene distinguir tres niveles:
 
 ## Cómo interpretar los estados y la evidencia
 
-La madurez de un activo y el tipo de evidencia disponible son dimensiones diferentes.
+La madurez de un activo y el tipo de evidencia disponible son dimensiones diferentes. En esta página, por ejemplo, Juguete Colectivo es un prototipo existente con aceptación funcional local comunicada por el usuario; TSTC es un demostrador sintético cuya ejecución v004 fue auditada; TGCV Playground, Value Explorer y ValueLabOS Preview son experiencias propuestas, sin disponibilidad operativa verificada; y los contextos de aplicación siguen siendo candidatos exploratorios.
 
 Un prototipo puede existir y funcionar con sistemas sintéticos sin estar validado científicamente. Un experimento sintético puede haberse ejecutado y auditado sin constituir evidencia empírica. Y una aplicación desplegada tampoco demostraría, por sí sola, que TGCV aporta una explicación o un resultado diferencial.
 
@@ -189,12 +189,12 @@ Within the demonstrator, users can inspect the system and its relationships, rev
 
 The prototype uses synthetic systems and its own operational rules. Its accessibility calculation belongs to the demonstrator: it is not TGCV's canonical scientific function or a causal predictor. Nor is it a simulator of real systems or a product ready for deployment.
 
-The prototype exists and has undergone software-level acceptance. This is not scientific validation. The availability of a public downloadable release has not been verified; we therefore provide no download link and make no claim that a public operational version is available.
+**Asset status:** existing prototype. A software-functionality acceptance record is based on a user-reported local walkthrough. This acceptance concerns package functionality, not scientific validity. In addition, the ZIP used in that walkthrough was not byte-matched against the continuous-integration artifact digest. The availability of a public downloadable release has not been verified; we therefore provide no download link and make no claim that a public operational version is available.
 
 ### TSTC — TGCV Cross-Domain Transformation Mapper
 **A methodological demonstrator based on synthetic scenarios.**
 
-TSTC explores a bounded question: can a common analytical contract be instantiated across synthetic models of different systems, explicitly representing their states and contexts, candidate transformations, accessibility, transitions and subsequent trajectories?
+**Asset and evidence status:** existing synthetic demonstrator; v004 execution completed and audited against its frozen contract. TSTC explores a bounded question: can a common analytical contract be instantiated across synthetic models of different systems, explicitly representing their states and contexts, candidate transformations, accessibility, transitions and subsequent trajectories?
 
 The execution examined three synthetic scenarios: network and cloud-environment orchestration; AI agents and tool permissions; and resource constraints in energy and mobility systems. Post-execution checks confirmed conformance with the output contract, negative controls and the declared synthetic propagation rules. Independent reconstructions using conventional representations produced equivalent feasible transformation sets in the tested universes.
 
@@ -250,7 +250,7 @@ How do grid capacity, charging demand, vehicles, charging stations and mobility 
 
 The focus is on examining how shared resources and constraints may open, close or alter options across energy and mobility.
 
-A related minimum synthetic demonstrator has been executed and audited. Its scope is limited and methodological; an independent comparison with reference models was not established. The wider context remains a candidate.
+A related C05 minimum synthetic demonstrator has been executed and audited. In that bounded test, an operational accessibility change was observed under a specified transition. However, its reference reconstruction used an admissibility function operationally identical to the TGCV path; it was not an independently implemented reference model. The result therefore does not demonstrate superiority or independent agreement with an alternative method. This C05 demonstrator is distinct from the energy scenario included in TSTC v004. The wider application context remains a candidate.
 
 **Status:** exploratory candidate application context; not a deployed or validated application.
 
@@ -304,7 +304,7 @@ Three levels should remain distinct:
 
 ## How to interpret status and evidence
 
-The maturity of an asset and the type of evidence available are two different dimensions.
+The maturity of an asset and the type of evidence available are two different dimensions. For example, Juguete Colectivo is an existing prototype with user-reported local functional acceptance; TSTC is a synthetic demonstrator whose v004 execution was audited; TGCV Playground, Value Explorer and ValueLabOS Preview are proposed experiences with no verified operational availability; and application contexts remain exploratory candidates.
 
 A prototype may exist and work with synthetic systems without being scientifically validated. A synthetic experiment may have been executed and audited without constituting empirical evidence. And even a deployed application would not, by itself, demonstrate that TGCV provides a distinctive explanation or result.
 
@@ -335,3 +335,12 @@ This invitation is intended to open a conversation and help discover potential c
 - No public download, live experience, product function or contact workflow is claimed without verification.
 - No content from unrelated initiatives is incorporated.
 - Public release remains subject to editorial review and source-by-source publication checks.
+
+
+## v0.2 review corrections — 2026-11-25
+
+- Tightens the Juguete Colectivo acceptance statement: records the user-reported local walkthrough and the unverified byte-level match between the downloaded ZIP and CI artifact digest.
+- Makes TSTC's asset/evidence status explicit without upgrading its bounded synthetic methodological contribution.
+- Clarifies the C05 EV–Grid demonstrator's non-independent baseline implementation and distinguishes it from the energy fixture in TSTC v004.
+- Adds concrete examples to the explanation that asset maturity and evidence status are separate dimensions.
+- Synchronises the document's Content Blueprint reference to v3.6. No scientific claim, application qualification or publication permission is changed.
