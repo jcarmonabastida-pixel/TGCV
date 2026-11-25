@@ -5,7 +5,7 @@
 **Date:** 2026-11-25  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21–22  
-**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`, §12–13; Home Experience v1.4; Home Copy v1.1  
+**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`, §12–13; Home Experience v1.6; Home Copy v1.3  
 **Copy:** `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — v0.5  
 **Branch:** `strategy/tgcv-web-master`
 
@@ -99,7 +99,7 @@ Keep the following distinction explicit and visually prominent:
 
 The **candidate transformation** is the object considered before this sequence: its accessibility is assessed, but being a candidate does not mean it is accessible.
 
-Explain that accessibility does not imply execution; execution does not guarantee the expected outcome; and an outcome does not carry the same value in every context.
+Explain that accessibility does not imply execution; execution does not guarantee the expected outcome; and an outcome does not carry the same value in every context. State that **Accessibility → Execution → Outcome → Value** is an analytical distinction, not a complete causal model. Trajectory describes evolution across states and transformations, not another stage in this sequence.
 
 Make the practical implication explicit without promising value: when accessibility changes, the set of options within the system's reach changes too. This may open new ways to act or design an intervention, but deciding whether an option is useful or desirable requires additional objectives and contextual criteria.
 
