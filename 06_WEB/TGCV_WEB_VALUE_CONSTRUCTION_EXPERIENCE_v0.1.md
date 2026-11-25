@@ -6,7 +6,7 @@
 **Status:** EXPERIENCE SPECIFICATION — WORKING DRAFT; narrative emphasis approved  
 **Branch:** `strategy/tgcv-web-master`  
 **Page:** P06 — Value Construction  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.6; Content Blueprint v3.7.  
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.7; Content Blueprint v3.8.  
 **Source assets:** `05_ASSETS/Business_Translation/VALUE_METHODOLOGY_LIFECYCLE_001.md` v0.4; `VALUE_ARTIFACT_MASTER_SPECS_v0.1.md`; `VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md`; `TGCV_VALUE_VALUELABOS_IDENTITY_ARCH_v0.1.md`; `VALUE_DISCOVERY_SPRINT_v0.1.md` and the associated CLINIC-001 coherence/review records.
 
 ---
