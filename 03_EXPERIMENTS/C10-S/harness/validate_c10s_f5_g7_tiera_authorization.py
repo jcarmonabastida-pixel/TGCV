@@ -66,8 +66,8 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
         raise ValueError("G7 scope mismatch")
     if auth.get("g7_tiera_calibration_authorized") is not True:
         raise ValueError("explicit G7 calibration authorization required")
-    if auth.get("approved_by") != "USER_EXPLICIT_APPROVAL":
-        raise ValueError("approved_by must record explicit user approval")
+    if auth.get("approval_channel") != "GITHUB_WORKFLOW_DISPATCH":
+        raise ValueError("approval_channel must identify explicit GitHub workflow_dispatch")
     if auth.get("tier_b_authorized") is not False or auth.get("c10_scientific_execution_authorized") is not False:
         raise ValueError("Tier B and C10 causal execution must remain false")
     if auth.get("primary_replay_required") is not True:
