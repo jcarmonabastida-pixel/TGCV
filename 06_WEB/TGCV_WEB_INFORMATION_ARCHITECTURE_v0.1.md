@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 2.7  
+**Version:** 2.8  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -696,8 +696,8 @@ The visitor experience is progressive: accessible explanation first, research ar
 
 The P04 visitor experience and bilingual copy are specified in:
 
-- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_EXPERIENCE_v0.1.md` — current experience version 0.1.
-- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_COPY_v0.1.md` — current bilingual copy version 0.1.
+- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_EXPERIENCE_v0.2.md` — current experience version 0.2.
+- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_COPY_v0.2.md` — current bilingual copy version 0.2.
 
 Systems Engineering is a concise first-release destination (P1). Its visitor question is: **How does systems engineering relate to the research object of TGCV?**
 
@@ -844,3 +844,6 @@ The five Business Translation families are opportunity areas, not validated mark
 ### P07 public naming alignment — 2026-11-25
 - Aligns the proposed experience name to **ValueLabsOS Preview** and retains **TGCV Playground**.
 - Spanish copy uses **Demostrador de cadena completa de TGCV** for the existing prototype; English copy retains **TGCV Full Chain Demo**.
+
+### v2.8 — 2026-11-25
+- Updates P04 current document references to Systems Engineering Experience/Copy v0.2 and aligns P07 naming references with Experience v0.6 and Copy v0.5. No scientific claim or publication status is changed.
