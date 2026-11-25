@@ -5,8 +5,8 @@
 **Date:** 2026-11-25  
 **Status:** BILINGUAL EDITORIAL DRAFT — PENDING REVIEW; NOT PUBLICATION APPROVAL  
 **Branch:** strategy/tgcv-web-master  
-**Authoritative Experience:** TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md v0.5  
-**Content Blueprint:** TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md v3.8
+**Authoritative Experience:** TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md v0.6  
+**Content Blueprint:** TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md v3.9
 
 ---
 
@@ -322,7 +322,7 @@ This invitation is intended to open a conversation and help discover potential c
 
 ## Editorial and evidence controls
 
-- Subordinate to Labs & Applications Experience v0.5 and Content Blueprint v3.8.
+- Subordinate to Labs & Applications Experience v0.6 and Content Blueprint v3.9.
 - Spanish and English preserve the same inventory, statuses and caveats.
 - TGCV Full Chain Demo, the cross-domain mapping demonstrator and TGCV Playground are separate.
 - Value Explorer is not VALUE; ValueLabsOS Preview is not VALUE or Labs & Applications.
