@@ -78,35 +78,37 @@ Criterio PASS: válido aceptado; cada variante adulterada/referencialmente incoh
 
 ### 4.1 Separación de estados
 
-Deben distinguirse cuatro estados, sin inferencia entre ellos:
-1. consentimiento conversacional para un alcance;
-2. aprobación registrada por GitHub para un deployment/run;
-3. validación técnica de la autorización y de la identidad del código;
-4. permiso científico de ejecución para el alcance exacto.
+Se distinguen cuatro elementos que no deben confundirse:
+1. **Autorización humana explícita:** acción consciente del responsable único al despachar manualmente el workflow y seleccionar la confirmación exacta de alcance.
+2. **Atestación técnica de GitHub:** identidad del actor, evento, ref/SHA, run ID y attempt, conservados en un artefacto inmutable del run.
+3. **Validación técnica:** comprobación del registro de un solo uso, rama, commit padre, ventana, manifests y perfil.
+4. **Permiso científico:** sigue requiriendo una autorización explícita, vigente y delimitada; no se deriva de la mera existencia del workflow ni de un test PASS.
 
-El JSON no puede autoconceder el estado 2. El campo `approved_by=USER_EXPLICIT_APPROVAL` y un mensaje de commit no constituyen prueba independiente y deben dejar de actuar como gate suficiente.
+El JSON ya no puede autodeclarar consentimiento mediante `approved_by=USER_EXPLICIT_APPROVAL`. Debe declarar `approval_channel=GITHUB_WORKFLOW_DISPATCH`; el workflow comprueba además que el actor sea el propietario del repositorio, que el evento sea `workflow_dispatch`, que la rama sea la rama de autorización dedicada y que el usuario seleccione la confirmación literal del alcance. El mensaje de commit no concede autorización.
 
-### 4.2 Mecanismo exigido
+### 4.2 Mecanismo para un único responsable
 
-El workflow que habilita G7 debe:
-- ser iniciado mediante evento manual explícito (`workflow_dispatch`) en el snapshot exacto;
-- declarar un GitHub Environment dedicado, p. ej. `c10s-f5-g7-tiera-v1-1`;
-- exigir la aprobación de deployment del environment antes de ejecutar el job de holdout;
-- comprobar que el environment existe y que su protección de reviewers está configurada; ausencia/no verificabilidad de la protección implica fail-closed;
-- ligar el deployment aprobado al workflow run, SHA, protocol/architecture IDs, profile manifest digest, authorization ID, K/B/celdas, primary/replay y Tier-A;
-- impedir que un push, un mensaje de commit o el propio workflow creen aprobación implícita.
+El workflow debe:
+- aceptar exclusivamente `workflow_dispatch`, sin rutas `push` ni disparadores automáticos;
+- ejecutarse sobre la rama de autorización de un solo uso y el SHA exacto seleccionado;
+- exigir actor igual a `github.repository_owner` (no basta con que el actor sea autor del commit);
+- exigir la confirmación literal `I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT`;
+- validar que el registro de autorización enlaza el commit de código aprobado como único padre y que no ha caducado;
+- generar y conservar `g7-dispatch-attestation.json` con actor, evento, ref, SHA, run ID, attempt, alcance confirmado y la declaración `independent_review=NOT_AVAILABLE_SINGLE_OPERATOR`;
+- conservar el Environment dedicado como registro de deployment, sin exigir `required_reviewers` ni `prevent_self_review`;
+- mantener todos los jobs científicos detrás del job de autorización y fallar cerradamente ante cualquier ausencia o discordancia.
 
-La configuración de required reviewers es una protección de repositorio/environment administrada en GitHub Settings, fuera de los archivos versionados. El código puede exigir el environment, pero no puede afirmar que la protección está activa sin leer/verificar su configuración. La disponibilidad de un reviewer y la política de autoaprobación deben comprobarse en la configuración real antes de habilitar G7. No se declarará RG-04 cerrado solo por añadir `environment:` al YAML.
+La atestación demuestra quién despachó qué snapshot y qué alcance confirmó; no se presenta como revisión independiente. Al existir un único responsable, la revisión independiente se declara no disponible y no se simula mediante autoaprobación. Las protecciones de reviewers de GitHub Environment son opcionales y no forman parte del gate RG-04 de este proyecto.
 
-### 4.3 Consentimiento de un solo uso
+### 4.3 Un solo uso y no herencia
 
-El consentimiento conversacional previo se reconoce como consentimiento explícito al alcance que se presentó entonces; no es una prueba técnica almacenada por GitHub ni debe extenderse a un nuevo SHA, una nueva ventana o un nuevo intento. Para la siguiente ejecución G7, se requerirá aprobación humana registrada en el deployment del commit exacto. Tier-B y ejecución causal C10 permanecen excluidos.
+Cada intento requiere una rama/commit de autorización de un solo uso y un dispatch manual nuevo. Una atestación no se hereda a otro SHA, run, intento o alcance. Tier-B y ejecución causal C10 permanecen excluidos. Este cambio de mecanismo no crea una autorización vigente ni habilita por sí mismo G7.
 
 ### 4.4 Pruebas RG-04
 
-- Tests estáticos: workflow_dispatch obligatorio; environment declarado; no existe ruta push que salte el environment; jobs científicos dependen del job protegido.
-- Tests negativos: falta de environment, approval pendiente/rechazada, SHA distinto, manifest distinto, ventana expirada, scope ampliado.
-- Prueba de configuración: consulta verificable de la protección real del environment; si el conector/API no puede leerla, estado NOT_VERIFIABLE y gate cerrado.
+- Tests estáticos: solo `workflow_dispatch`; ausencia de `push`; actor propietario; confirmación literal; artefacto de atestación; todos los jobs científicos dependen del job de autorización.
+- Tests negativos: actor distinto del propietario, evento distinto, rama no autorizada, confirmación ausente/incorrecta, SHA distinto, registro ausente/caducado y scope ampliado.
+- La configuración administrativa de reviewers no es un requisito porque no existe un segundo revisor independiente. La existencia del Environment puede seguir registrándose, pero no se interpreta como aprobación humana.
 
 ## 5. Identidad de código sin inventarios duplicados (RG-05)
 
@@ -190,7 +192,7 @@ La suite se ejecuta en una sola validación determinista sobre el commit integra
 | RG-01 | Productor, manifest, consumidor y extractor usan identidad única; negativo de miembro ausente | FAIL |
 | RG-02 | ZIP real de fixture validado contra digest; JSON validado; negativos de alteración y traversal | FAIL |
 | RG-03 | Repositorio Git real: ascendencia y contenido; negativos de no-ancestro y cambio | FAIL |
-| RG-04 | Deployment approval de GitHub ligado al SHA/scope y protección real verificable | NOT_VERIFIABLE = gate cerrado |
+| RG-04 | Dispatch manual del propietario, confirmación literal de alcance y atestación actor/ref/SHA/run conservada; sin revisión independiente ficticia | FAIL si actor/evento/alcance no coinciden |
 | RG-05 | Inventario tipado único genera ambos manifests deterministas; negativos de drift | FAIL |
 | RG-06 | Overhead medido o declarado como reserva; sensibilidad no excede presupuesto | CONDITIONAL si solo reserva |
 | RG-07 | Extrapolación defendible o declarada condicional con límite de uso | CONDITIONAL; no afirmar garantía |
@@ -302,4 +304,4 @@ Se añadió una regresión que comprueba ambas condiciones. El commit `24b79450c
 
 La integración GitHub disponible permite leer código, runs y rulesets, pero rechaza el endpoint REST `GET /repos/{owner}/{repo}/environments/{environment_name}` como endpoint no permitido. Por tanto, no se ha obtenido evidencia administrativa de que el Environment exista con ambas reglas efectivamente activadas. No se debe inferir su configuración a partir del YAML.
 
-**Estado RG-04: NOT_VERIFIABLE — BLOQUEANTE.** Para cambiarlo a PASS se necesita una lectura administrativa verificable del Environment en GitHub, que confirme revisores obligatorios y prevención de autoaprobación. Hasta entonces, el gate no autoriza G7. No se ha ejecutado G7 ni se ha modificado `main`.
+**Estado RG-04 tras el rediseño: IMPLEMENTADO EN CÓDIGO; VALIDACIÓN DETERMINISTA PENDIENTE.** La comprobación de reviewers obligatorios y prevención de autoaprobación se elimina porque no existe un segundo responsable. El nuevo gate exige dispatch manual del propietario, confirmación literal de alcance, rama/commit de un solo uso y conserva una atestación con actor, ref, SHA y run. Hasta que la suite de validación del nuevo HEAD pase, RG-04 no se declara PASS y G7 sigue sin autorización.
