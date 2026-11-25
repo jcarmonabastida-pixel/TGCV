@@ -1,7 +1,7 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 2.2
+**Version:** 2.3
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
@@ -475,7 +475,7 @@ This section reconciles the Content Blueprint with the approved Home and ecosyst
 
 ### 12.1 Approved page set and navigation
 
-First-release navigation: **Explore, Research, Systems Engineering, Transformational Intelligence, Labs & Applications, About, Contact**. Systems Thinking is transversal (Home, Explore and Research), not a separate first-release page. Do not publish Community as a top-level destination. No empty or placeholder page is permitted.
+First-release navigation: **Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction, Labs & Applications, About, Contact**. Systems Thinking is transversal (Home, Explore and Research), not a separate first-release page. Do not publish Community as a top-level destination. No empty or placeholder page is permitted.
 
 ### 12.2 Home content contract
 
@@ -741,3 +741,6 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 ### v2.2 — 2026-11-25
 - Replaces the earlier four-area Home summary with the public ecosystem map and the approved Value Construction visitor route.
 - Synchronizes P01's source references with Home Experience v1.5 and Home Copy v1.2.
+
+### v2.3 — 2026-11-25
+- Corrects the authoritative §12.1 first-release navigation list to include Value Construction between Transformational Intelligence and Labs & Applications.
