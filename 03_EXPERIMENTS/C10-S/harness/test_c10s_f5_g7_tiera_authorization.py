@@ -211,6 +211,9 @@ class F5G7AuthorizationTests(unittest.TestCase):
         self.assertIn("I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT", workflow)
         self.assertIn("TGCV-C10S-G7-DISPATCH-ATTESTATION-001", workflow)
         self.assertIn("GITHUB_WORKFLOW_DISPATCH", workflow)
+        self.assertIn("  deployments: write", workflow)
+        validator_source = Path(__file__).with_name("validate_c10s_f5_g7_tiera_authorization.py").read_text(encoding="utf-8")
+        self.assertIn('auth.get("approval_channel") != "GITHUB_WORKFLOW_DISPATCH"', validator_source)
         self.assertNotIn("required_reviewers", workflow)
         self.assertNotIn("prevent_self_review", workflow)
         authorization_checkout = workflow.split("Checkout one-use authorization commit", 1)[1].split("Set up pinned Python", 1)[0]
