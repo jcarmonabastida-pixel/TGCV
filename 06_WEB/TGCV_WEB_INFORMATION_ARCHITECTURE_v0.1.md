@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 2.9  
+**Version:** 3.0  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -850,3 +850,6 @@ The five Business Translation families are opportunity areas, not validated mark
 
 ### v2.9 — 2026-11-25
 - Synchronises P06/P07 Copy versions and confirms that Contact remains conditional on a real, monitored public communication route.
+
+### v3.0 — 2026-11-25
+- Updates the current Content Blueprint reference to v4.1 after the P07 Spanish naming correction. Navigation and page order are unchanged.
