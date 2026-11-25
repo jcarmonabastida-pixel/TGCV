@@ -1165,3 +1165,89 @@ The current Home concept and copy are directionally coherent with the approved T
 
 ### v1.5 — 2026-11-24
 - Completes the Home editorial review: sharpens the hero supporting copy around changes in transformations within reach and records the revised bilingual Home Copy/Experience versions.
+
+
+## 25. Public ecosystem architecture — TGCV, Systems Engineering, Transformational Intelligence and Value Construction (2026-11-25)
+
+**Decision:** the first-release website will make the conceptual relationship between the programme's research, its systems foundations, its developing capability concept, its applied value-construction framework and its experimental/application spaces visible to visitors. This architecture is an explanatory map of distinct roles, not a claim of a proven causal chain or a mandatory operational sequence.
+
+### 25.1 The conceptual architecture to communicate
+
+The public narrative should make the following roles legible:
+
+1. **TGCV — research programme:** investigates how the transformations accessible to systems change, under what conditions, and how such changes may relate to reachability, trajectories, outcomes and value. Its causal contribution to value remains a research question; do not present it as demonstrated.
+2. **Systems Thinking — perspective:** helps understand systems through boundaries, elements, relationships, context and dynamics. It is transversal, not a separate first-release destination.
+3. **Systems Engineering — discipline and practice:** provides established practices for defining, modelling, designing, developing, integrating and evaluating engineered systems. It is complementary to TGCV and is not replaced by it.
+4. **Transformational Intelligence — developing capability concept:** explores the integrative capability to understand systems, reason about accessible transformations, navigate possibilities and consider trajectories. It is under development and must not be presented as generally validated or as synonymous with AI.
+5. **Value Construction — applied framework area:** presents VALUE as a distinct applied framework for understanding contexts and opportunities, connecting knowledge and evidence, designing alternatives, deciding, acting and learning about value construction. It is complementary to TGCV; it is not a proven operational derivation of TGCV and does not depend on C10 being confirmed.
+6. **Labs & Applications — experimentation and application spaces:** presents bounded demonstrators, synthetic experiments and candidate application contexts with explicit maturity and evidence labels. These spaces can explore aspects of TGCV, TI or VALUE, but do not automatically validate any of them.
+
+**Identity separation:** TGCV is the research programme; VALUE is the applied framework (descriptor in the identity asset: *Transformational Value Framework*); ValueLabOS is a proposed digital and collaborative ecosystem to support applying, testing, documenting and evolving VALUE. ValueLabOS is not VALUE itself and must not be conflated with the website's Labs & Applications section.
+
+### 25.2 How the visitor should see the architecture
+
+The website must include a clear, accessible conceptual map that shows the roles and relationships above. It should be introduced from Home or an immediately accessible “How the parts connect” overview and remain reachable from the relevant section pages.
+
+The map should:
+- place TGCV as the research foundation/question, not as a parent that has already scientifically derived or validated every other element;
+- show Systems Thinking as a transversal perspective and Systems Engineering as an established complementary discipline/practice;
+- show Transformational Intelligence as a developing capability concept related to reasoning about transformation possibilities;
+- show VALUE / Value Construction as a separate applied framework, related to TGCV through a proposed theoretical-applied articulation that must be evaluated;
+- show Labs & Applications as spaces for bounded experimentation and application, not as a maturity guarantee;
+- show ValueLabOS separately as a proposed enabling ecosystem for VALUE, not as another name for VALUE or Labs & Applications.
+
+Do not draw a single unqualified arrow chain (for example TGCV → TI → VALUE → value achieved). Use labelled relationships such as “investigates”, “provides a perspective”, “engineering practice”, “explores a capability”, “applied framework”, “experiments / explores”, and “enables application and evolution”. Any visual connectors must preserve the distinction between conceptual relationship, implementation support and empirical evidence.
+
+The map is a public explanatory aid, not a formal scientific model, causal diagram, product architecture or claim that all elements are fully implemented.
+
+### 25.3 Value Construction page — strategic content contract
+
+A dedicated **Value Construction** page is added to the first-release content architecture, positioned after Transformational Intelligence and before Labs & Applications.
+
+**Visitor question:** How can a system explore opportunities and organise decisions, action and learning to build value?
+
+**Editorial position:** present VALUE as an applied framework complementary to TGCV, not as a methodology whose efficacy has already been established by TGCV research. The page should explain both its purpose and its relationship to TGCV while preserving their epistemic independence.
+
+**Proposed visitor experience (to be specified in detail when this page is developed):**
+1. From opportunity to value: value is contextual and must be defined for relevant actors, outcomes, horizons and constraints; possibility alone is not value.
+2. Understand the system: context, actors, needs, capabilities, knowledge, relationships, flows, friction and constraints.
+3. Explore possibilities: discover opportunities and design alternatives as hypotheses, not pre-validated solutions.
+4. Decide and act: distinguish alternative selection, decision authority, execution authorisation, implementation and adoption.
+5. Learn and renew: evaluate observed results against prior criteria, record uncertainty and update capabilities or the next cycle.
+6. A worked illustrative case: the fictional clinic appointment-management system, using the relevant A1–A8 artefacts and decision trail where their content and publication status are verified.
+
+The canonical VALUE lifecycle in the current methodology asset is ALIGN as entry/alignment and governance, followed by SENSE, CONNECT, DESIGN, DECIDE, ACT and LEARN. It is iterative, not a rigid waterfall. Do not collapse the lifecycle into a linear promise that completing all phases necessarily creates value.
+
+**Source assets to review at page-development time:**
+- `05_ASSETS/Business_Translation/VALUE_METHODOLOGY_LIFECYCLE_001.md` — current working methodology architecture (v0.4).
+- `05_ASSETS/Business_Translation/TGCV_VALUE_VALUELABOS_IDENTITY_ARCH_v0.1.md` — identity and separation of TGCV, VALUE and ValueLabOS.
+- `05_ASSETS/Business_Translation/VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md` — fictional clinic appointment-management case.
+- Related A1–A8 master artefacts, clinic coherence reviews, supporting specifications and case records in `05_ASSETS/Business_Translation/`. Verify exact current filenames, versions, cross-artefact consistency and public-disclosure suitability before using them.
+
+The clinic case is fictional and any figures, decisions, artefacts or outcomes in it are simulated. It can teach the method; it cannot be described as a real deployment, empirical effectiveness result, independent validation or proof of value creation.
+
+### 25.4 Non-negotiable claim boundaries
+
+- TGCV investigates whether and how changes in accessible transformations may contribute to value; it does not guarantee that they do.
+- VALUE can be presented and evaluated as an applied framework without assuming C10 is confirmed.
+- A successful or coherent VALUE case does not by itself validate TGCV's causal claims.
+- A limitation or refutation of a TGCV causal hypothesis does not automatically invalidate all of VALUE; the framework has its own assumptions, evaluation criteria and evidence requirements.
+- Distinguish opportunity, accessible transformation, decision, authorisation, execution, adoption, outcome and value.
+- Value is contextual: specify whose value, what outcome, over what horizon and subject to which constraints.
+- Do not present the proposed ValueLabOS ecosystem as an available product or the Labs & Applications section as its implementation.
+
+### 25.5 Navigation consequence
+
+First-release order after Systems Engineering:
+- Transformational Intelligence
+- **Value Construction**
+- Labs & Applications
+
+About/Governance and Contact/Participate remain supporting destinations. This addition changes the content architecture and navigation scope; it does not authorise visual design or implementation by itself.
+
+### v1.6 — 2026-11-25
+- Records the public conceptual architecture linking TGCV, Systems Thinking, Systems Engineering, Transformational Intelligence, VALUE/Value Construction, Labs & Applications and ValueLabOS while preserving their distinct roles and maturity.
+- Adds a visitor-facing conceptual map as a required explanatory asset, with labelled non-causal relationships rather than a linear chain.
+- Adds Value Construction as a first-release page after Transformational Intelligence and before Labs & Applications.
+- Records the proposed six-movement Value Construction experience, VALUE lifecycle, source assets and clinic-case evidence/maturity boundaries.
+- Separates TGCV's open causal research question from VALUE's independent applied-framework evaluation.
