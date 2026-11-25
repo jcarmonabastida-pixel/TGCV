@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 2.4
+**Version:** 2.5
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.7; Information Architecture v2.5; Home Experience v1.5; Home Copy v1.3; Explore Experience v0.9; Explore Copy v0.8.
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.3; Explore Experience v0.9; Explore Copy v0.8; Research Experience v0.9; Research Copy v0.8; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.1.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -35,17 +35,17 @@ The germinal site must be useful without the future Playground, without a new in
 
 ### 1.1 Recommended navigation
 
-Primary navigation:
-- **Explore** — understand the central idea and analytical distinctions.
-- **Research** — TGCV, questions, methods, evidence and limitations.
-- **Systems Engineering** — the engineering perspective and its relationship to the research.
-- **Transformational Intelligence** — capability concept, boundaries and relationship to AI.
-- **Labs & Applications** — bounded demonstrators, synthetic work and candidate application contexts.
-- **About** — purpose, working principles, governance and contact/participation.
+**Approved first-release navigation** (supersedes the earlier working list):
+1. **Explore** — understand the central idea and analytical distinctions.
+2. **Research** — TGCV, research questions, methods, evidence and limitations.
+3. **Systems Engineering** — established engineering practices and their relationship to the TGCV research object.
+4. **Transformational Intelligence** — the developing capability concept, its candidate dimensions, boundaries and relationship to AI.
+5. **Value Construction** — VALUE as a complementary applied framework, including its lifecycle and a clearly labelled fictional clinic case.
+6. **Labs & Applications** — bounded demonstrators, synthetic work and exploratory application contexts.
+7. **About** — purpose, scope and governance.
+8. **Contact** — only a real, monitored contact route with proportionate privacy information.
 
-A persistent footer should link to research sources, evidence/governance information, contact and repository where appropriate.
-
-The navigation labels are working labels, not a brand or final information-architecture lock. On mobile, use a compact accessible menu. Do not expose a top-level Community area until there is a real, maintainable participation programme.
+Systems Thinking is transversal, not a separate first-release destination. Do not expose a top-level Community area or publish empty/placeholder destinations. The footer may link to research sources, evidence/governance information, contact and repository where appropriate.
 
 ### 1.2 First-release page inventory
 
@@ -114,6 +114,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 - A short explanation of what execution adds to accessibility.
 - A successor-state/trajectory illustration.
 - A clear warning that accessibility does not guarantee execution, favourable outcomes or value.
+- Explain that **Accessibility → Execution → Outcome → Value** is an analytical distinction, not a complete causal model; represent trajectory across states and transformations, not as another stage.
 - Links to the formal Research page for visitors who want detail.
 
 **Recommended explanatory sequence:**
