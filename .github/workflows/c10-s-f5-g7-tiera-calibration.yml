@@ -164,7 +164,7 @@ jobs:
 
   resource_preflight_validation:
     needs: authorization
-    if: needs.authorization.outputs.approved == 'true'
+    if: needs.authorization.outputs.approved == 'true' && github.run_attempt == 1
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     outputs:
@@ -251,6 +251,7 @@ jobs:
 
   primary_bank:
     needs: [authorization, resource_preflight_validation]
+    if: needs.authorization.outputs.approved == 'true' && github.run_attempt == 1
     runs-on: ubuntu-24.04
     timeout-minutes: 165
     strategy:
@@ -320,6 +321,7 @@ jobs:
           retention-days: 90
   final_adjudication:
     needs: [authorization, resource_preflight_validation, primary_bank]
+    if: needs.authorization.outputs.approved == 'true' && github.run_attempt == 1
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
