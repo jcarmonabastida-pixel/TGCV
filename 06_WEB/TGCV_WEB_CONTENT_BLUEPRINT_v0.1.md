@@ -170,18 +170,23 @@ They remain possible ecosystem capabilities, not first-release commitments.
 
 ### P05 — Transformational Intelligence
 
-**Purpose:** explain TI as a functional capability concerning transformation spaces, not as a new name for AI.
+**Authoritative working reference:** `06_WEB/TGCV_WEB_TRANSFORMATIONAL_INTELLIGENCE_EXPERIENCE_v0.1.md`.
 
-**Required content:**
-- Working definition: reasoning about, navigating and adapting to a system's accessible transformation space, with trajectory orientation under independently specified objectives/value models.
-- Four functional dimensions: reasoning, navigation, adaptation and trajectory orientation.
-- Difference between TI and AI: AI is a family of technologies/models; TI is a capability-level concept that may be implemented with AI, conventional software, human reasoning or hybrid systems.
-- Examples of the information a TI-capable system would need: state/context, candidate transformations, accessibility conditions, consequences and changing future possibilities.
-- Current status and open questions, including the absence of general confirmation that TI is validated or that it necessarily produces value.
+**Purpose:** explain TI as a developing capability concept and open research hypothesis concerning the use of information about accessible transformations and transformation-space evolution. It is not a validated general capability, established discipline, product or synonym for AI.
 
-**Required caveat:** the manifesto is a canonical working manifesto, not proof of a generally validated capability or product.
+**Required narrative and content:**
+- Distinguish Transformation-Space Dynamics (observable evolution of accessible transformations), transformation handling (discrimination, selection, coordination and realisation), and the TI capability hypothesis (representing, evaluating, anticipating or adapting behaviour using information about transformation-space structure/evolution).
+- Use the visitor-facing working definition in the Experience document. Do not define TI through performance, realised value or successful outcomes.
+- Present five candidate dimensions under investigation: representation, evaluation, selection, anticipation and adaptation. They are not validated components or necessary-and-sufficient criteria.
+- Explain the illustrative software-configuration migration example without implying execution, implementation or demonstrated TI.
+- Distinguish TI from AI, Systems Thinking and Systems Engineering. AI may support some TI-related functions but is not equivalent to TI; TI need not require generative AI.
+- Explain the evidence progression from observing transformation-space dynamics to testing sensitivity, actual use, anticipatory/adaptive handling and possible generalisation.
+- State open questions about construct differentiation, incremental explanatory contribution, independent measurement and generalisation.
+- Preserve the independence of outcome and value assessment. Do not imply TI necessarily produces value.
 
-**Source basis:** 00_GOVERNANCE/TGCV_TRANSFORMATIONAL_DYNAMICS_INTELLIGENCE_MANIFESTO_001.md and Master Brief §3.
+**Required caveat:** the manifesto is a canonical working manifesto, not proof of a generally validated capability. The Experience's more cautious three-layer distinction and five candidate dimensions govern public copy; earlier four-dimension formulations are not current page authority.
+
+**Source basis:** `00_GOVERNANCE/TGCV_TRANSFORMATIONAL_DYNAMICS_INTELLIGENCE_MANIFESTO_001.md`, `03_EXPERIMENTS/TR-131/execution/TR131_TRANSFORMATIONAL_CAPABILITY_INTELLIGENCE_CONCEPTUAL_SPEC_001.md` and `03_EXPERIMENTS/TR-131/execution/TR131_FORMAL_MAP_TRANSFORMATION_SPACE_DYNAMICS_TO_TRANSFORMATIONAL_INTELLIGENCE_001.md`.
 
 ### P07 — Labs & Applications
 
@@ -744,3 +749,9 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 
 ### v2.3 — 2026-11-25
 - Corrects the authoritative §12.1 first-release navigation list to include Value Construction between Transformational Intelligence and Labs & Applications.
+
+
+### v2.4 — 2026-11-25
+- Adds the P05 Transformational Intelligence Experience authority.
+- Reconciles the P05 content contract with the three-layer distinction and five candidate dimensions.
+- Replaces the earlier four-dimension wording and adds explicit evidence progression and construct-differentiation guardrails.
