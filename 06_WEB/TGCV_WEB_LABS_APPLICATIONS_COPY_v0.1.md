@@ -5,7 +5,7 @@
 **Date:** 2026-11-25  
 **Status:** BILINGUAL EDITORIAL DRAFT — PENDING REVIEW; NOT PUBLICATION APPROVAL  
 **Branch:** strategy/tgcv-web-master  
-**Authoritative Experience:** TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md v0.4  
+**Authoritative Experience:** TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md v0.5  
 **Content Blueprint:** TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md v3.8
 
 ---
@@ -50,7 +50,7 @@ Tres experiencias complementarias permiten acercarse a distintas partes del ecos
 
 La experiencia propuesta parte de un ejemplo sencillo: migrar una configuración de software entre dos entornos diferentes. Permite comprender cómo una dependencia o condición de operación puede hacer que una transformación esté disponible en un entorno y no en otro. El ejemplo distingue el sistema, sus condiciones y dependencias, las transformaciones candidatas y las que resultan accesibles en cada escenario. También permite explicar qué significaría ejecutar una transformación y observar sus posibles consecuencias.
 
-TGCV Playground es una experiencia educativa y exploratoria propuesta, no un servicio real de migración ni un simulador de propósito general. Es distinta de Juguete Colectivo / Full Chain, que es un prototipo existente y no debe confundirse con la experiencia Playground.
+TGCV Playground es una experiencia educativa y exploratoria propuesta, no un servicio real de migración ni un simulador de propósito general. Es distinta de TGCV Full Chain Demo, que es un prototipo existente y no debe confundirse con la experiencia Playground.
 
 ### Value Explorer
 **Descubre una forma estructurada de explorar oportunidades y construir valor.**
@@ -178,7 +178,7 @@ Research develops the questions, concepts, methods and evidence. Labs & Applicat
 
 ## Demonstrators and experiments
 
-### Juguete Colectivo / Full Chain
+### TGCV Full Chain Demo
 **A software prototype for exploring a synthetic system from end to end.**
 
 TGCV Full Chain Demo is a software prototype developed around a synthetic system. This review does not describe specific operations of a distributable version: the exact package and interface have not been verified together, so we cannot confirm that the documented functions correspond to an artifact that could be made publicly available.
@@ -205,7 +205,7 @@ Three complementary experiences offer different ways to approach the TGCV ecosys
 
 The proposed experience starts with a simple example: migrating a software configuration between two different environments. It helps explain how a dependency or operating condition can make a transformation available in one environment but not in another. The example distinguishes the system, its conditions and dependencies, candidate transformations, and those accessible in each scenario. It can also explain what it would mean to execute a transformation and examine its possible consequences.
 
-TGCV Playground is a proposed educational and exploratory experience, not a real migration service or a general-purpose simulator. It is separate from Juguete Colectivo / Full Chain, which is an existing prototype and should not be confused with the Playground experience.
+TGCV Playground is a proposed educational and exploratory experience, not a real migration service or a general-purpose simulator. It is separate from TGCV Full Chain Demo, which is an existing prototype and should not be confused with the Playground experience.
 
 ### Value Explorer
 **Discover a structured way to explore opportunities and build value.**
@@ -322,7 +322,7 @@ This invitation is intended to open a conversation and help discover potential c
 
 ## Editorial and evidence controls
 
-- Subordinate to Labs & Applications Experience v0.4 and Content Blueprint v3.7.
+- Subordinate to Labs & Applications Experience v0.5 and Content Blueprint v3.8.
 - Spanish and English preserve the same inventory, statuses and caveats.
 - TGCV Full Chain Demo, the cross-domain mapping demonstrator and TGCV Playground are separate.
 - Value Explorer is not VALUE; ValueLabOS Preview is not VALUE or Labs & Applications.
@@ -335,16 +335,16 @@ This invitation is intended to open a conversation and help discover potential c
 
 ## v0.2 review corrections — 2026-11-25
 
-- Tightens the Juguete Colectivo acceptance statement: records the user-reported local walkthrough and the unverified byte-level match between the downloaded ZIP and CI artifact digest.
-- Makes TSTC's asset/evidence status explicit without upgrading its bounded synthetic methodological contribution.
-- Clarifies the C05 EV–Grid demonstrator's non-independent baseline implementation and distinguishes it from the energy fixture in TSTC v004.
+- Tightens the TGCV Full Chain Demo acceptance statement: records the user-reported local walkthrough and the unverified byte-level match between the downloaded downloaded archive and software release workflow artifact file-identity record.
+- Makes the cross-domain mapping demonstrator's asset/evidence status explicit without upgrading its bounded synthetic methodological contribution.
+- Clarifies the energy and mobility minimum demonstrator demonstrator's non-independent baseline implementation and distinguishes it from the energy fixture in the cross-domain mapping demonstrator's audited execution.
 - Adds concrete examples to the explanation that asset maturity and evidence status are separate dimensions.
 - Synchronises the document's Content Blueprint reference to v3.6. No scientific claim, application qualification or publication permission is changed.
 
 
 ## v0.3 integrated editorial review — 2026-11-25
 
-- Removes specific functional claims about TGCV Full Chain Demo until the exact distributable package and interface have been verified together, as required by Experience v0.4.
+- Removes specific functional claims about TGCV Full Chain Demo until the exact distributable package and interface have been verified together, as required by Experience v0.5.
 - Preserves the user-reported local functional acceptance record and explicitly distinguishes it from package identity, public availability and scientific validity.
 - Synchronises the Content Blueprint reference to v3.7.
 
@@ -353,7 +353,7 @@ This invitation is intended to open a conversation and help discover potential c
 
 - Replaces the internal prototype codename with the public name **TGCV Full Chain Demo** throughout the current Spanish and English copy.
 - Replaces the internal demonstrator acronym and execution/version identifiers with a plain-language description of the cross-domain synthetic demonstrator and its bounded result.
-- Removes the internal C05 label and explains the limitation of the energy/mobility comparison in reader-facing terms.
-- Replaces EV–Grid with “coordinación entre vehículos eléctricos y red eléctrica” / “electric-vehicle and electricity-grid coordination”.
+- Removes the internal internal case identifier label and explains the limitation of the energy/mobility comparison in reader-facing terms.
+- Replaces electric-vehicle and electricity-grid coordination with “coordinación entre vehículos eléctricos y red eléctrica” / “electric-vehicle and electricity-grid coordination”.
 - Removes unexplained software-delivery shorthand and repairs the accessibility-calculation sentence.
 - Synchronises the parent Content Blueprint reference to v3.8.
