@@ -132,7 +132,7 @@ For the first release, retain no more than three featured contexts:
 
 1. **artificial-intelligence agents, tools and permissions.** Explore how tool availability, permissions, authentication and backend state may condition the actions an agent can access. The case screen remains provisional and does not establish differential value beyond conventional access-control, workflow and agent-orchestration models.
 2. **Digital twins and predictive maintenance.** Explore the relationship between physical asset condition, digital representations, telemetry, knowledge, resources and maintenance actions. The case screen remains provisional; conventional monitoring, prediction, rules and maintenance scheduling are strong alternative representations.
-3. **Coordination between electric vehicles and the electricity grid.** Explore how grid capacity, charging demand, vehicle capabilities, site conditions and mobility constraints may shape feasible charging and mobility actions. A bounded synthetic minimum demonstrator has been executed and audited with methodological limitations; its independent baseline comparison was not established. The wider application remains a candidate, not a qualified or deployed application.
+3. **Coordination between electric vehicles and the electricity grid (EV–Grid).** Explore how grid capacity, charging demand, vehicle capabilities, site conditions and mobility constraints may shape feasible charging and mobility actions. A bounded synthetic minimum demonstrator has been executed and audited with methodological limitations; its independent baseline comparison was not established. The wider application remains a candidate, not a qualified or deployed application.
 
 Each must be labelled **Exploratory — candidate application context**. Do not rank them or imply that their presence proves fit.
 
@@ -238,7 +238,7 @@ Spanish and English versions must have the same:
 - distinction between asset maturity and evidence status;
 - availability and participation boundaries.
 
-Adapt naturally to each language. Preserve public names such as TGCV Full Chain Demo, TGCV Playground, Value Explorer and ValueLabOS Preview. Use plain-language descriptions for demonstrators; do not expose internal acronyms. Do not translate internal identifiers into public-facing labels.
+Adapt naturally to each language. Preserve public names such as TGCV Full Chain Demo, TGCV Playground, Value Explorer and ValueLabOS Preview. Use plain-language descriptions for demonstrators; do not expose internal TGCV identifiers or internal acronyms. Recognised domain terminology such as EV–Grid may be retained where it improves clarity and traceability. Do not translate internal identifiers into public-facing labels.
 
 ## 6. Source and authority notes
 
