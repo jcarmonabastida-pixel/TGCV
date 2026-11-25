@@ -458,5 +458,5 @@ The relationship between TGCV and VALUE is complementary and represents a line o
 
 ## Change history
 
-- **v0.1 — 2026-11-25:** first bilingual public Copy drafted from Value Construction Experience v0.2 and current VALUE methodological and clinic-case sources. Uses an opportunity/system-understanding-first narrative and preserves the fictional, non-execution and non-validation boundaries.
+- **v0.1 — 2026-11-25:** first bilingual public Copy drafted from Value Construction Experience v0.3 and current VALUE methodological and clinic-case sources. Uses an opportunity/system-understanding-first narrative and preserves the fictional, non-execution and non-validation boundaries.
 - **v0.2 — 2026-11-25:** defines VALUE at its first substantive mention and gives CCV/IVS and the Value Discovery Sprint dedicated, contextualised sections. Clarifies their distinct roles and current maturity limits in both languages.
