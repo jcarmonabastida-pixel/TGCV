@@ -14,6 +14,12 @@ permissions:
   contents: read
   actions: read
 
+# Serialize every dispatch for this exact authorization ref. A queued second
+# dispatch checks the first run after it releases this group.
+concurrency:
+  group: c10s-f5-g7-one-use-${{ github.ref }}
+  cancel-in-progress: false
+
 env:
   OPENBLAS_NUM_THREADS: '1'
   OMP_NUM_THREADS: '1'
@@ -41,12 +47,37 @@ jobs:
           EVENT_ACTOR: ${{ github.actor }}
           REPOSITORY_OWNER: ${{ github.repository_owner }}
           CONFIRM_SCOPE: ${{ inputs.confirm_scope }}
+          WORKFLOW_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test "$EVENT_NAME" = "workflow_dispatch"
           test "$EVENT_ACTOR" = "$REPOSITORY_OWNER"
           test "$CONFIRM_SCOPE" = "I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT"
           [[ "$WORKFLOW_BRANCH" == research/c10s-f5-g7-auth-* ]]
+          # A rerun is a second attempt against the same one-use authorization.
+          test "$RUN_ATTEMPT" = "1"
+          # Workflow-level concurrency serializes attempts on this ref. Reject
+          # any earlier dispatch for the same commit, even if it failed.
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/c10-s-f5-g7-tiera-calibration.yml/runs?branch=$WORKFLOW_BRANCH&event=workflow_dispatch&per_page=100" > "$RUNNER_TEMP/prior-g7-runs.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          payload = json.loads(Path(os.environ["RUNNER_TEMP"], "prior-g7-runs.json").read_text(encoding="utf-8"))
+          current_id = int(os.environ["RUN_ID"])
+          current_sha = os.environ["WORKFLOW_SHA"]
+          prior = [
+              run for run in payload.get("workflow_runs", [])
+              if int(run.get("id", -1)) != current_id
+              and run.get("head_sha") == current_sha
+              and run.get("event") == "workflow_dispatch"
+          ]
+          if prior:
+              ids = ", ".join(str(run["id"]) for run in prior)
+              raise SystemExit(f"ONE_USE_AUTHORIZATION_ALREADY_CONSUMED: prior run(s) {ids}")
+          PY
           echo "approved=true" >> "$GITHUB_OUTPUT"
       - name: Record explicit dispatch attestation
         if: steps.gate.outputs.approved == 'true'
