@@ -1,7 +1,7 @@
-# TGCV — Labs & Applications Experience v0.6
+# TGCV — Labs & Applications Experience v0.7
 
 **Identifier:** TGCV-WEB-P07-EXP-001  
-**Version:** 0.6  
+**Version:** 0.7  
 **Date:** 2026-11-25  
 **Status:** WORKING EXPERIENCE SPECIFICATION — NOT PUBLICATION APPROVAL  
 **Branch:** strategy/tgcv-web-master  
@@ -238,7 +238,7 @@ Spanish and English versions must have the same:
 - distinction between asset maturity and evidence status;
 - availability and participation boundaries.
 
-Adapt naturally to each language. Use the Spanish label “Demostrador de cadena completa de TGCV” and the English label “TGCV Full Chain Demo” for the existing prototype. Preserve TGCV Playground, Value Explorer and ValueLabsOS Preview as experience names in both languages. Use plain-language descriptions for demonstrators; do not expose internal TGCV identifiers or internal acronyms. Recognised domain terminology such as EV–Grid may be retained where it improves clarity and traceability. Do not translate internal identifiers into public-facing labels.
+Adapt naturally to each language. Use **TGCV Full Chain Demo** as the public label in both Spanish and English. In Spanish, explain in the descriptive paragraph that it is “un demostrador de la cadena completa de TGCV”. Preserve TGCV Playground, Value Explorer and ValueLabsOS Preview as experience names in both languages. Use plain-language descriptions for demonstrators; do not expose internal TGCV identifiers or internal acronyms. Recognised domain terminology such as EV–Grid may be retained where it improves clarity and traceability. Do not translate internal identifiers into public-facing labels.
 
 ## 6. Source and authority notes
 
@@ -309,3 +309,5 @@ The page is editorially acceptable when:
 
 ### v0.6 metadata and naming alignment — 2026-11-25
 - Updates the document version and parent references after the approved Spanish/English public-name corrections.
+
+- **v0.7 — 2026-11-25:** aligns the Spanish public heading with TGCV Full Chain Demo and requires the description to explain that it demonstrates TGCV's full chain.
