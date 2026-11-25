@@ -254,7 +254,7 @@ Con K=100 observaciones IID, la probabilidad de que el máximo muestral supere e
 
 ### 10.3 Límite de uso
 
-RG-06 y RG-07 quedan evaluados con evidencia existente, pero no autorizan ejecución. RG-04 continúa bloqueante hasta validar determinísticamente el nuevo mecanismo de dispatch y atestación. El estado RG-02 y RG-05 se actualiza en las subsecciones 10.4 y 10.5, a partir de la descarga productiva del artefacto y de la validación integrada posterior a esta adjudicación.
+RG-06 y RG-07 quedan evaluados con evidencia existente, pero no autorizan ejecución. RG-04 ha superado la validación determinista del mecanismo de dispatch y atestación en el run 45638639205 (8/8 jobs SUCCESS, commit de código `ceda2f765c1c9554e2af2223c731ad77646ce05c`). El HEAD actual `18ad33326c4692886279eef12f5a58639ae4bf4c` añade únicamente esta actualización documental respecto al commit validado; no altera workflow, validador ni tests. El estado RG-02 y RG-05 se actualiza en las subsecciones 10.4 y 10.5, a partir de la descarga productiva del artefacto y de la validación integrada posterior a esta adjudicación.
 
 ### 10.4 RG-02 — verificación material del artefacto productivo
 
@@ -308,4 +308,4 @@ Se sustituye por un control de autorización humana explícita, acotada y audita
 
 La revisión independiente queda registrada como `NOT_AVAILABLE_SINGLE_OPERATOR`; no se simula mediante autoaprobación. El workflow deja de declarar GitHub Environment; la atestación y los metadatos nativos del run son el registro auditable.
 
-**Estado RG-04: IMPLEMENTADO EN CÓDIGO; VALIDACIÓN DETERMINISTA PENDIENTE.** La implementación no constituye autorización de G7. El nuevo HEAD debe superar la suite determinista y la revisión integrada antes de que RG-04 pueda declararse PASS. No se ha ejecutado G7 ni se ha modificado `main`.
+**Estado RG-04: PASS_STATIC — VALIDADO POR CI.** El run `45638639205` terminó SUCCESS con 8/8 jobs, incluida la partición `test_c10s_f5_g7_tiera_authorization`, sobre `ceda2f765c1c9554e2af2223c731ad77646ce05c`. El único cambio posterior hasta el HEAD `18ad33326c4692886279eef12f5a58639ae4bf4c` es esta reconciliación documental. El PASS cubre el contrato y los tests estáticos/deterministas: no demuestra todavía una ejecución real de dispatch, ni una autorización vigente, ni habilita G7. No se ha ejecutado G7 ni se ha modificado `main`.
