@@ -92,7 +92,9 @@ They remain possible ecosystem capabilities, not first-release commitments.
 4. A short analytical sequence: system/state and conditions → candidate transformations → accessibility → realised transition → subsequent state/possibilities → trajectory → outcome; value is a separate contextual evaluation.
 5. A clear, accessible conceptual ecosystem map distinguishing TGCV, Systems Thinking, Systems Engineering, Transformational Intelligence, Value Construction/VALUE, Labs & Applications and proposed ValueLabOS; show labelled relationships, not a proven causal chain.
 6. Direct visitor routes to Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction and Labs & Applications.
-7. Two or three carefully selected candidate application contexts where they add explanatory value, plus a real contact/participation route.
+7. A concise section introducing the five potential Business Translation areas, what TGCV may help make visible, and the value hypotheses that would need to be demonstrated.
+8. Two or three carefully selected candidate Application-Fit contexts only if they add explanatory value; do not confuse these specific candidates with the five broad opportunity families.
+9. Direct visitor routes to the relevant sections and a contact route only if a real monitored channel is ready.
 
 **Draft headline for testing:** “Understanding and engineering how systems transform.”
 
@@ -192,7 +194,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 
 ### P07 — Labs & Applications
 
-**Authoritative working reference:** `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.3. Bilingual Copy remains pending.
+**Authoritative working reference:** `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.4. Bilingual Copy remains pending.
 
 **Purpose:** make TGCV-related work tangible through bounded demonstrators, synthetic experiments and exploratory experiences, while helping visitors recognise further application contexts and opportunities. This is an activity and exploration space, not a physical laboratory network, product catalogue, commercial offer or portfolio of validated deployments.
 
