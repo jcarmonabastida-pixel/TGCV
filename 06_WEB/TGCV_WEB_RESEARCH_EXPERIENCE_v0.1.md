@@ -139,7 +139,7 @@ This block is a public-facing evidence overview, not a project-status report or 
 
 - [longitudinal evidence of changes in accessible transformations in a software ecosystem](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_SOFTWARE_ECOSYSTEM_v0.1.md) — first detailed evidence brief, in Spanish and English;
 - [analysis of the distinction between accessible transformations and potential reachability](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_REACH_DISTINCTION_v0.1.md) — an open empirical question because the successor construction examined so far was not independent of accessibility;
-- [controlled tests and cross-domain reconstruction]( https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_METHODS_CROSS_DOMAIN_v0.1.md ) — a bounded synthetic test of representational insufficiency and a secondary analysis of previously audited evidence from two domains;
+- [controlled tests and cross-domain reconstruction](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_METHODS_CROSS_DOMAIN_v0.1.md) — a bounded synthetic test of representational insufficiency and a secondary analysis of previously audited evidence from two domains;
 - a bounded empirical study of the relationship between accessibility conditions and subsequent trajectories;
 - analyses identifying conditions under which accessibility cannot be determined confidently.
 
