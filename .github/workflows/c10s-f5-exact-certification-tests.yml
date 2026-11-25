@@ -5,6 +5,7 @@ on:
     branches:
       - research/c10s-f5-g7-canonical-mle-v1.1-20261122
       - research/c10s-f5-g7-auth-manifest-generator-20261126-001
+      - research/c10s-f5-g7-integrated-validation-20261126-001
     paths:
       - .github/workflows/c10s-f5-exact-certification-tests.yml
       - 03_EXPERIMENTS/C10-S/harness/**
@@ -127,7 +128,7 @@ jobs:
             --test-names "$TEST_NAMES"
 
   authorization-manifest-regression:
-    if: github.ref_name == 'research/c10s-f5-g7-auth-manifest-generator-20261126-001'
+    if: github.ref_name == 'research/c10s-f5-g7-auth-manifest-generator-20261126-001' || github.ref_name == 'research/c10s-f5-g7-integrated-validation-20261126-001'
     name: G7 authorization manifest builder regression
     needs: compile
     runs-on: ubuntu-24.04
