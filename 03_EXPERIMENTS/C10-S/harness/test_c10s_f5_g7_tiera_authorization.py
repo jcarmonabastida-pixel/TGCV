@@ -217,25 +217,25 @@ class F5G7AuthorizationTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             payload = Path(directory) / "prior-g7-runs.json"
-            env = dict(os.environ, RUNNER_TEMP=directory, RUN_ID="22", WORKFLOW_SHA="a" * 40)
+            env = dict(os.environ, RUNNER_TEMP=directory, RUN_ID="22", WORKFLOW_SHA="a" * 40, WORKFLOW_BRANCH="research/c10s-f5-g7-auth-C10S-F5-G7-20261125-008")
 
             payload.write_text(json.dumps({"workflow_runs": [
-                {"id": 22, "head_sha": "a" * 40, "event": "workflow_dispatch"}
+                {"id": 22, "head_sha": "a" * 40, "head_branch": env["WORKFLOW_BRANCH"], "event": "workflow_dispatch"}
             ]}), encoding="utf-8")
             current_only = subprocess.run([sys.executable, "-c", script], env=env, capture_output=True, text=True)
             self.assertEqual(current_only.returncode, 0, current_only.stderr)
 
             payload.write_text(json.dumps({"workflow_runs": [
-                {"id": 21, "head_sha": "a" * 40, "event": "workflow_dispatch"},
-                {"id": 22, "head_sha": "a" * 40, "event": "workflow_dispatch"}
+                {"id": 21, "head_sha": "b" * 40, "head_branch": env["WORKFLOW_BRANCH"], "event": "workflow_dispatch"},
+                {"id": 22, "head_sha": "a" * 40, "head_branch": env["WORKFLOW_BRANCH"], "event": "workflow_dispatch"}
             ]}), encoding="utf-8")
             reused = subprocess.run([sys.executable, "-c", script], env=env, capture_output=True, text=True)
             self.assertNotEqual(reused.returncode, 0)
             self.assertIn("ONE_USE_AUTHORIZATION_ALREADY_CONSUMED", reused.stderr)
 
             payload.write_text(json.dumps({"workflow_runs": [
-                {"id": 21, "head_sha": "b" * 40, "event": "workflow_dispatch"},
-                {"id": 22, "head_sha": "a" * 40, "event": "workflow_dispatch"}
+                {"id": 21, "head_sha": "b" * 40, "head_branch": "research/other-auth", "event": "workflow_dispatch"},
+                {"id": 22, "head_sha": "a" * 40, "head_branch": env["WORKFLOW_BRANCH"], "event": "workflow_dispatch"}
             ]}), encoding="utf-8")
             other_commit = subprocess.run([sys.executable, "-c", script], env=env, capture_output=True, text=True)
             self.assertEqual(other_commit.returncode, 0, other_commit.stderr)
@@ -256,7 +256,7 @@ class F5G7AuthorizationTests(unittest.TestCase):
         self.assertIn("cancel-in-progress: false", workflow)
         self.assertIn('test "$RUN_ATTEMPT" = "1"', workflow)
         self.assertIn("ONE_USE_AUTHORIZATION_ALREADY_CONSUMED", workflow)
-        self.assertIn('run.get("head_sha") == current_sha', workflow)
+        self.assertIn('run.get("head_branch") == current_branch', workflow)
         self.assertIn('run.get("event") == "workflow_dispatch"', workflow)
         self.assertIn("actions/workflows/c10-s-f5-g7-tiera-calibration.yml/runs", workflow)
         validator_source = Path(__file__).with_name("validate_c10s_f5_g7_tiera_authorization.py").read_text(encoding="utf-8")
