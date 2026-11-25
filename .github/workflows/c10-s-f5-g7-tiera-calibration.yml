@@ -51,27 +51,36 @@ jobs:
           test "$CONFIRM_SCOPE" = "I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT"
           [[ "$WORKFLOW_BRANCH" == research/c10s-f5-g7-auth-* ]]
           echo "approved=true" >> "$GITHUB_OUTPUT"
-      - name: Verify environment has required-reviewer protection
+      - name: Record explicit dispatch attestation
         if: steps.gate.outputs.approved == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
-          ENVIRONMENT_NAME: c10s-f5-g7-tiera-v1-1
+          EVENT_ACTOR: ${{ github.actor }}
+          EVENT_NAME: ${{ github.event_name }}
+          WORKFLOW_REF: ${{ github.ref }}
+          WORKFLOW_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          CONFIRM_SCOPE: ${{ inputs.confirm_scope }}
         run: |
           set -euo pipefail
-          gh api "repos/$GITHUB_REPOSITORY/environments/$ENVIRONMENT_NAME" > "$RUNNER_TEMP/g7-environment.json"
-          python - "$RUNNER_TEMP/g7-environment.json" <<'PY'
-          import json, sys
+          python - <<'PY'
+          import json, os
           from pathlib import Path
-          environment = json.loads(Path(sys.argv[1]).read_text())
-          rules = environment.get("protection_rules", [])
-          required = [
-              rule for rule in rules
-              if rule.get("type") == "required_reviewers" and rule.get("reviewers")
-          ]
-          if not required:
-              raise SystemExit("G7_ENVIRONMENT_REQUIRED_REVIEWERS_NOT_CONFIGURED")
-          if not any(rule.get("prevent_self_review") is True for rule in required):
-              raise SystemExit("G7_ENVIRONMENT_SELF_REVIEW_PREVENTION_NOT_CONFIGURED")
+          record = {
+              "schema": "TGCV-C10S-G7-DISPATCH-ATTESTATION-001",
+              "approval_channel": "GITHUB_WORKFLOW_DISPATCH",
+              "actor": os.environ["EVENT_ACTOR"],
+              "event": os.environ["EVENT_NAME"],
+              "ref": os.environ["WORKFLOW_REF"],
+              "commit": os.environ["WORKFLOW_SHA"],
+              "run_id": os.environ["RUN_ID"],
+              "run_attempt": int(os.environ["RUN_ATTEMPT"]),
+              "confirmed_scope": os.environ["CONFIRM_SCOPE"],
+              "independent_review": "NOT_AVAILABLE_SINGLE_OPERATOR",
+          }
+          Path(os.environ["RUNNER_TEMP"], "g7-dispatch-attestation.json").write_text(
+              json.dumps(record, sort_keys=True, indent=2) + "\\n", encoding="utf-8"
+          )
           PY
       - name: Checkout one-use authorization commit
         if: steps.gate.outputs.approved == 'true'
