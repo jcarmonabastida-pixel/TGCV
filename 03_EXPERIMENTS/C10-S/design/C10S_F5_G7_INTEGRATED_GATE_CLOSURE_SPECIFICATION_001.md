@@ -95,10 +95,10 @@ El workflow debe:
 - exigir la confirmación literal `I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT`;
 - validar que el registro de autorización enlaza el commit de código aprobado como único padre y que no ha caducado;
 - generar y conservar `g7-dispatch-attestation.json` con actor, evento, ref, SHA, run ID, attempt, alcance confirmado y la declaración `independent_review=NOT_AVAILABLE_SINGLE_OPERATOR`;
-- conservar el Environment dedicado como registro de deployment, sin exigir `required_reviewers` ni `prevent_self_review`;
+- no depender de GitHub Environment ni de sus reglas de reviewers; el run y el artefacto de atestación de Actions constituyen el registro auditable;
 - mantener todos los jobs científicos detrás del job de autorización y fallar cerradamente ante cualquier ausencia o discordancia.
 
-La atestación demuestra quién despachó qué snapshot y qué alcance confirmó; no se presenta como revisión independiente. Al existir un único responsable, la revisión independiente se declara no disponible y no se simula mediante autoaprobación. Las protecciones de reviewers de GitHub Environment son opcionales y no forman parte del gate RG-04 de este proyecto.
+La atestación demuestra quién despachó qué snapshot y qué alcance confirmó; no se presenta como revisión independiente. Al existir un único responsable, la revisión independiente se declara no disponible y no se simula mediante autoaprobación. El workflow no declara `environment:`: así no queda sujeto a una regla administrativa de reviewers que reproduzca el bloqueo que se está eliminando.
 
 ### 4.3 Un solo uso y no herencia
 
@@ -108,7 +108,7 @@ Cada intento requiere una rama/commit de autorización de un solo uso y un dispa
 
 - Tests estáticos: solo `workflow_dispatch`; ausencia de `push`; actor propietario; confirmación literal; artefacto de atestación; todos los jobs científicos dependen del job de autorización.
 - Tests negativos: actor distinto del propietario, evento distinto, rama no autorizada, confirmación ausente/incorrecta, SHA distinto, registro ausente/caducado y scope ampliado.
-- La configuración administrativa de reviewers no es un requisito porque no existe un segundo revisor independiente. La existencia del Environment puede seguir registrándose, pero no se interpreta como aprobación humana.
+- La configuración administrativa de reviewers no es un requisito porque no existe un segundo revisor independiente. No se usa GitHub Environment como gate ni como requisito administrativo.
 
 ## 5. Identidad de código sin inventarios duplicados (RG-05)
 
@@ -306,6 +306,6 @@ Se sustituye por un control de autorización humana explícita, acotada y audita
 - artefacto `g7-dispatch-attestation.json` que conserva actor, evento, ref, SHA, run ID, attempt y alcance confirmado;
 - jobs científicos dependientes del job de autorización y bloqueados ante cualquier discordancia.
 
-La revisión independiente queda registrada como `NOT_AVAILABLE_SINGLE_OPERATOR`; no se simula mediante autoaprobación. El Environment dedicado se conserva como registro de deployment, pero sus reviewers no son requisito de RG-04.
+La revisión independiente queda registrada como `NOT_AVAILABLE_SINGLE_OPERATOR`; no se simula mediante autoaprobación. El workflow deja de declarar GitHub Environment; la atestación y los metadatos nativos del run son el registro auditable.
 
 **Estado RG-04: IMPLEMENTADO EN CÓDIGO; VALIDACIÓN DETERMINISTA PENDIENTE.** La implementación no constituye autorización de G7. El nuevo HEAD debe superar la suite determinista y la revisión integrada antes de que RG-04 pueda declararse PASS. No se ha ejecutado G7 ni se ha modificado `main`.
