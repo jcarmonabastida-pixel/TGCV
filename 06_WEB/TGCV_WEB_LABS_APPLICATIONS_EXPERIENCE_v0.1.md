@@ -85,7 +85,7 @@ Its bounded question is whether a common analytical contract can be instantiated
 
 The completed execution examined three synthetic scenarios: network and cloud orchestration; artificial-intelligence agents and tool permissions; and resource constraints in energy and mobility systems. The audit confirmed that outputs followed the predefined format and rules, that controls designed to detect spurious results worked as intended, and that the declared synthetic propagation checks passed. Independent reconstructions using conventional representations produced equivalent feasible transformation sets in the tested scenarios.
 
-**Mandatory interpretation:** this is bounded methodological evidence about executing and comparing representations in frozen synthetic fixtures. It does not demonstrate empirical causality in real systems, TGCV superiority or differential explanatory value, universal validity, value creation, ROI, improved outcomes, industrial validation or deployment readiness. Synthetic propagation follows declared rules, not empirically established causal effects.
+**Mandatory interpretation:** this is bounded methodological evidence about executing and comparing representations in frozen synthetic fixtures. It does not demonstrate empirical causality in real systems, TGCV superiority or differential explanatory value, universal validity, value creation, return on investment, improved outcomes, industrial validation or deployment readiness. Synthetic propagation follows declared rules, not empirically established causal effects.
 
 ### Movement 3 — Explore the possibilities — Experiencias para descubrir y experimentar
 
@@ -130,7 +130,7 @@ Introduce application contexts as places where TGCV's structural questions may b
 
 For the first release, retain no more than three featured contexts:
 
-1. **AI agents, tools and permissions.** Explore how tool availability, permissions, authentication and backend state may condition the actions an agent can access. The case screen remains provisional and does not establish differential value beyond conventional access-control, workflow and agent-orchestration models.
+1. **artificial-intelligence agents, tools and permissions.** Explore how tool availability, permissions, authentication and backend state may condition the actions an agent can access. The case screen remains provisional and does not establish differential value beyond conventional access-control, workflow and agent-orchestration models.
 2. **Digital twins and predictive maintenance.** Explore the relationship between physical asset condition, digital representations, telemetry, knowledge, resources and maintenance actions. The case screen remains provisional; conventional monitoring, prediction, rules and maintenance scheduling are strong alternative representations.
 3. **Coordination between electric vehicles and the electricity grid.** Explore how grid capacity, charging demand, vehicle capabilities, site conditions and mobility constraints may shape feasible charging and mobility actions. A bounded synthetic minimum demonstrator has been executed and audited with methodological limitations; its independent baseline comparison was not established. The wider application remains a candidate, not a qualified or deployed application.
 
@@ -276,7 +276,7 @@ The descriptions of TGCV Playground, Value Explorer and ValueLabOS Preview in th
 
 The page is editorially acceptable when:
 1. visitors can distinguish Labs & Applications from Research and Value Construction;
-2. TGCV Full Chain Demo, TSTC and TGCV Playground are clearly distinct;
+2. TGCV Full Chain Demo, the cross-domain transformation mapping demonstrator and TGCV Playground are clearly distinct;
 3. Value Explorer is introduced as an experience related to, but not identical with, VALUE;
 4. ValueLabOS Preview is described as an initial view of a proposed environment, not as a released product;
 5. no functionality or public availability is claimed without verification;
