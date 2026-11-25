@@ -1,15 +1,19 @@
 name: C10-S F5 G7 prospective Tier-A calibration — staged one-use authorization
 
 on:
-  push:
-    branches:
-      - 'research/c10s-f5-g7-auth-*'
-    paths:
-      - '00_GOVERNANCE/authorizations/C10S_F5_G7_TIERA_CALIBRATION_AUTHORIZATION.json'
+  workflow_dispatch:
+    inputs:
+      confirm_scope:
+        description: "Confirm one-use C10-S F5 G7 Tier-A v1.1 on this exact branch and commit"
+        required: true
+        type: choice
+        options:
+          - I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT
 
 permissions:
   contents: read
   actions: read
+  deployments: read
 
 env:
   OPENBLAS_NUM_THREADS: '1'
@@ -21,6 +25,8 @@ env:
 
 jobs:
   authorization:
+    environment:
+      name: c10s-f5-g7-tiera-v1-1
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     outputs:
@@ -34,14 +40,34 @@ jobs:
         id: gate
         env:
           WORKFLOW_BRANCH: ${{ github.ref_name }}
-          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_ACTOR: ${{ github.actor }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          CONFIRM_SCOPE: ${{ inputs.confirm_scope }}
         run: |
-          if [[ "$WORKFLOW_BRANCH" == research/c10s-f5-g7-auth-* && "$COMMIT_MESSAGE" == *"Approve one-use C10-S F5 G7 TierA calibration"* ]]; then
-            echo "approved=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "approved=false" >> "$GITHUB_OUTPUT"
-            echo "Non-authorization push; no G7 computation will be scheduled."
-          fi
+          set -euo pipefail
+          test "$EVENT_NAME" = "workflow_dispatch"
+          test "$EVENT_ACTOR" = "$REPOSITORY_OWNER"
+          test "$CONFIRM_SCOPE" = "I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT"
+          [[ "$WORKFLOW_BRANCH" == research/c10s-f5-g7-auth-* ]]
+          echo "approved=true" >> "$GITHUB_OUTPUT"
+      - name: Verify environment has required-reviewer protection
+        if: steps.gate.outputs.approved == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ENVIRONMENT_NAME: c10s-f5-g7-tiera-v1-1
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/environments/$ENVIRONMENT_NAME" > "$RUNNER_TEMP/g7-environment.json"
+          python - "$RUNNER_TEMP/g7-environment.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          environment = json.loads(Path(sys.argv[1]).read_text())
+          rules = environment.get("protection_rules", [])
+          required = [rule for rule in rules if rule.get("type") == "required_reviewers" and rule.get("reviewers")]
+          if not required:
+              raise SystemExit("G7_ENVIRONMENT_REQUIRED_REVIEWERS_NOT_CONFIGURED")
+          PY
       - name: Checkout one-use authorization commit
         if: steps.gate.outputs.approved == 'true'
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
