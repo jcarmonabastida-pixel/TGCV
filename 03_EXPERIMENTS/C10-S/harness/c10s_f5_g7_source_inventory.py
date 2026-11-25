@@ -40,3 +40,36 @@ def compute_path_paths() -> tuple[str, ...]:
 def execution_source_hash_paths() -> dict[str, str]:
     data = load_inventory()
     return {row["authorization_hash_key"]: row["path"] for row in data["paths"] if "execution_source" in row["roles"]}
+
+import hashlib
+import subprocess
+
+def _canonical_digest(payload: dict) -> str:
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+def build_manifests(root: Path, commit: str) -> dict:
+    """Derive compute/execution identity manifests from immutable Git tree blobs."""
+    if not isinstance(commit, str) or len(commit) != 40 or any(ch not in "0123456789abcdef" for ch in commit):
+        raise ValueError("G7_SOURCE_INVENTORY_COMMIT_INVALID")
+    data = load_inventory()
+    tracked = set(subprocess.check_output(
+        ["git", "ls-tree", "-r", "--name-only", commit], cwd=root, text=True
+    ).splitlines())
+    result = {}
+    for role, schema in (
+        ("compute_path", "TGCV-C10S-F5-G7-COMPUTE-PATH-MANIFEST-001"),
+        ("execution_source", "TGCV-C10S-F5-G7-EXECUTION-SOURCE-MANIFEST-001"),
+    ):
+        entries = []
+        for row in sorted((item for item in data["paths"] if role in item["roles"]), key=lambda item: item["path"]):
+            relative = row["path"]
+            if relative not in tracked:
+                raise ValueError(f"G7_SOURCE_INVENTORY_PATH_NOT_TRACKED:{relative}")
+            blob = subprocess.check_output(["git", "show", f"{commit}:{relative}"], cwd=root)
+            entries.append({"path": relative, "sha256": hashlib.sha256(blob).hexdigest()})
+        manifest = {"schema": schema, "inventory_schema": data["schema"], "inventory_version": data["version"],
+                    "git_commit": commit, "entries": entries}
+        manifest["root_sha256"] = _canonical_digest(manifest)
+        result[role] = manifest
+    return result

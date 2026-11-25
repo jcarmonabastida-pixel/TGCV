@@ -50,6 +50,35 @@ class F5G7AuthorizationTests(unittest.TestCase):
         self.assertEqual(set(execution.values()), {row["path"] for row in rows if "execution_source" in row["roles"]})
         self.assertEqual(validator.SOURCE_HASH_PATHS, execution)
 
+    def test_inventory_manifests_are_deterministic_and_bind_git_tree_bytes(self):
+        import subprocess
+        import c10s_f5_g7_source_inventory as inventory
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            subprocess.run(["git", "config", "user.email", "tgcv-test@example.invalid"], cwd=root, check=True)
+            subprocess.run(["git", "config", "user.name", "TGCV inventory test"], cwd=root, check=True)
+            for row in inventory.load_inventory()["paths"]:
+                target = root / row["path"]
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text("frozen:" + row["path"], encoding="utf-8")
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-qm", "inventory snapshot"], cwd=root, check=True)
+            commit1 = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+            first = inventory.build_manifests(root, commit1)
+            second = inventory.build_manifests(root, commit1)
+            self.assertEqual(first, second)
+            self.assertEqual(len(first["compute_path"]["entries"]), 12)
+            self.assertEqual(len(first["execution_source"]["entries"]), 32)
+            changed_path = first["compute_path"]["entries"][0]["path"]
+            (root / changed_path).write_text("changed", encoding="utf-8")
+            subprocess.run(["git", "add", changed_path], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-qm", "change compute source"], cwd=root, check=True)
+            commit2 = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+            changed = inventory.build_manifests(root, commit2)
+            self.assertNotEqual(first["compute_path"]["root_sha256"], changed["compute_path"]["root_sha256"])
+            self.assertNotEqual(first["execution_source"]["root_sha256"], changed["execution_source"]["root_sha256"])
+
     def test_source_inventory_rejects_duplicate_or_unclassified_paths(self):
         import c10s_f5_g7_source_inventory as inventory
         with tempfile.TemporaryDirectory() as directory:
