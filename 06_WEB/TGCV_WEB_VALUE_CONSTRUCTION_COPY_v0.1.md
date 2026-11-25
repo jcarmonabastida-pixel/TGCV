@@ -408,11 +408,11 @@ What it does show is how to move from an initial suspicion to a defined opportun
 
 ## 8. Value Construction Capability and Systemic Value Index
 
-VALUE aims to develop **Value Construction Capability (CCV)**: a system's ability to construct value repeatedly and renew the capabilities that make this possible.
+VALUE aims to develop **CCV (Capacidad de Construcción de Valor; Value Construction Capability in English)**: a system's ability to construct value repeatedly and renew the capabilities that make this possible.
 
 CCV is a capability-development objective of the framework. It is not an available score or a validated maturity scale. The methodological documentation has explored different proposals for capability levels, but no canonical scale has been adopted.
 
-The **Systemic Value Index (IVS)** is an exploratory measurement direction proposed to assess aspects of that capability. It is not the value produced and is not a ready-to-use indicator. It does not yet have canonical, validated dimensions, formula, weightings or numerical scale.
+The **IVS (Índice de Valor Sistémico; Systemic Value Index in English)** is an exploratory measurement direction proposed to assess aspects of that capability. It is not the value produced and is not a ready-to-use indicator. It does not yet have canonical, validated dimensions, formula, weightings or numerical scale.
 
 CCV and IVS should therefore not be used to score or compare organisations, or to claim that VALUE has produced more value. They are development lines that require their own definition and evaluation. Neither is required to understand or apply the framework.
 
