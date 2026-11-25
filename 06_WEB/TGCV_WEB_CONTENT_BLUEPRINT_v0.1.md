@@ -1,7 +1,7 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 1.7  
+**Version:** 1.8  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
@@ -137,7 +137,8 @@ They remain possible ecosystem capabilities, not first-release commitments.
 - The analytical sequence and distinction between T_acc, ΔT_acc, Reach, Trajectory, Outcome and Value.
 - Research questions: identifiability/non-circularity; dynamics; reachability/trajectory; cross-domain translation; outcome/value linkage; limits and falsifiers.
 - A short evidence-status summary with links to controlled external assets where approved.
-- Explicit open questions and no-claims.
+- A selected bilingual evidence portfolio summarising representative empirical, industrial, computational and synthetic cases recorded in the current Evidence-to-Claim Matrix; it must distinguish evidence types and preserve each case's claim boundary.
+- Explicit open questions, operational falsifiers and no-claims; explain what observations would support, weaken, restrict or refute specific propositions.
 
 **Recommended source assets:**
 - 01_CORE/architecture/TGCV_CORE_v_current.md — authoritative Core wording.
@@ -146,6 +147,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 - 05_ASSETS/Vision_Paper/TGCV-EXT-VP-001_v0.3.md — current controlled vision paper.
 - 05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.2.md — controlled architecture/research map.
 - STATUS.md, current RMA and Evidence→Claim Matrix — internal source of truth for evidence-state checks; not necessarily direct public downloads.
+- 06_WEB/TGCV_WEB_EVIDENCE_PORTFOLIO_v0.1.md — public-facing selected-case overview; reconcile every entry against the current matrix and publication permissions before release.
 
 **Editorial rule:** write a concise public explanation first; link to longer controlled documents only after publication review. Do not paste governance-heavy or superseded material into the website.
 
