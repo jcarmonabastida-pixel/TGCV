@@ -201,6 +201,45 @@ class F5G7AuthorizationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "ROLE_INVALID"):
                 inventory.load_inventory(path)
 
+    def test_g7_dispatch_guard_rejects_reuse_and_allows_only_current_run(self):
+        import os
+        import subprocess
+        import sys
+        import textwrap
+
+        workflow_path = Path(__file__).resolve().parents[3] / ".github/workflows/c10-s-f5-g7-tiera-calibration.yml"
+        workflow = workflow_path.read_text(encoding="utf-8")
+        marker = 'gh api "repos/$GITHUB_REPOSITORY/actions/workflows/c10-s-f5-g7-tiera-calibration.yml/runs?branch=$WORKFLOW_BRANCH&event=workflow_dispatch&per_page=100"'
+        self.assertIn(marker, workflow)
+        after_query = workflow.split(marker, 1)[1]
+        script = after_query.split("          python - <<'PY'\\n", 1)[1].split("\\n          PY", 1)[0]
+        script = textwrap.dedent(script)
+
+        with tempfile.TemporaryDirectory() as directory:
+            payload = Path(directory) / "prior-g7-runs.json"
+            env = dict(os.environ, RUNNER_TEMP=directory, RUN_ID="22", WORKFLOW_SHA="a" * 40)
+
+            payload.write_text(json.dumps({"workflow_runs": [
+                {"id": 22, "head_sha": "a" * 40, "event": "workflow_dispatch"}
+            ]}), encoding="utf-8")
+            current_only = subprocess.run([sys.executable, "-c", script], env=env, capture_output=True, text=True)
+            self.assertEqual(current_only.returncode, 0, current_only.stderr)
+
+            payload.write_text(json.dumps({"workflow_runs": [
+                {"id": 21, "head_sha": "a" * 40, "event": "workflow_dispatch"},
+                {"id": 22, "head_sha": "a" * 40, "event": "workflow_dispatch"}
+            ]}), encoding="utf-8")
+            reused = subprocess.run([sys.executable, "-c", script], env=env, capture_output=True, text=True)
+            self.assertNotEqual(reused.returncode, 0)
+            self.assertIn("ONE_USE_AUTHORIZATION_ALREADY_CONSUMED", reused.stderr)
+
+            payload.write_text(json.dumps({"workflow_runs": [
+                {"id": 21, "head_sha": "b" * 40, "event": "workflow_dispatch"},
+                {"id": 22, "head_sha": "a" * 40, "event": "workflow_dispatch"}
+            ]}), encoding="utf-8")
+            other_commit = subprocess.run([sys.executable, "-c", script], env=env, capture_output=True, text=True)
+            self.assertEqual(other_commit.returncode, 0, other_commit.stderr)
+
     def test_g7_workflow_requires_owner_dispatch_and_records_attestation(self):
         workflow_path = Path(__file__).resolve().parents[3] / ".github/workflows/c10-s-f5-g7-tiera-calibration.yml"
         workflow = workflow_path.read_text(encoding="utf-8")
