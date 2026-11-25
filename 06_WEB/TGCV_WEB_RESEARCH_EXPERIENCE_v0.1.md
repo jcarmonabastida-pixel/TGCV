@@ -1,7 +1,7 @@
 # TGCV — Research Page Experience v0.1
 
 **Identifier:** TGCV-WEB-RESEARCH-EXP-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-25  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
@@ -83,7 +83,7 @@ Present the analytical sequence:
 
 `mechanism → (S,C) → (S',C') → ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`
 
-Explain that this is an analytical architecture, not an already established complete causal chain. Each link needs its own definition, operationalisation and evidence.
+Explain the notation in plain language: **C** is the relevant context and conditions at the initial point; **C'** is the context and conditions at the later point, after the transition being examined. The prime marks a later state of the context, not a different category. Give concrete examples (operating environment, organisational arrangements, institutional rules) and distinguish context from separately specified constraints, resources and admissibility conditions. Explain that this is an analytical architecture, not an already established complete causal chain. Each link needs its own definition, operationalisation and evidence.
 
 Clarify:
 - Reach concerns what states/configurations can be reached under a declared transition semantics.
@@ -133,25 +133,23 @@ Present synthetic experiments, computational analyses, empirical domain studies 
 
 ### Block 6 — What the evidence currently says
 
-**Visitor question:** What has been established so far, and how strong is that evidence?
+**Visitor question:** What has the research found so far, and what can those findings support?
 
-This block must be a concise, dated evidence snapshot—not a celebration of project activity. Use explicit evidence categories and link each statement to its governing record after publication permission is checked.
+This block is a public-facing evidence overview, not a project-status report or a dump of internal tracking records. Organise it by research question or evidence theme, using plain-language titles:
 
-The retrieved canonical status baseline (STATUS.md dated 2026-11-06, retrieved 2026-11-25), reconciled against the current RMA v3.38 and Evidence→Claim Matrix v1.47, reports, among other bounded results:
+- longitudinal evidence of changes in accessible transformations in a software ecosystem;
+- analysis of how changes in accessible transformations relate to potential reachability;
+- methodological and synthetic tests of reconstruction and translation across different domains;
+- a bounded empirical study of the relationship between accessibility conditions and subsequent trajectories;
+- analyses identifying conditions under which accessibility cannot be determined confidently.
 
-- the scientific Core remains unchanged;
-- C09 has **bounded empirical causal support** for the accessibility-to-subsequent-trajectory link;
-- KGFS is closed as a D5-A identified contribution, with a 74/74 trajectory-variable reproducibility audit; this is a bounded contribution result, not validation of the full TGCV architecture;
-- RUST-DYN-1 and RUST-DYN-2 provide bounded structural evidence about changes in accessible transformation structure and its relation to potential Reach under the specified semantics;
-- TSTC v004 provides bounded synthetic methodological/application-fit evidence for translation across heterogeneous fixtures;
-- TI-001 V012_NEXT2 is bounded, non-confirmatory primary inferential evidence; its pre-specified primary contrast did not establish the proposed mechanism direction;
-- the downstream `ΔT_acc → ΔV / Value` linkage remains open.
+For each theme, distinguish the research question, system/data, method, main finding, scope and limitations. State explicitly what the result does not establish. Do not display internal project codes, experiment identifiers, governance labels or raw status excerpts as public-facing names or claims.
 
-These statements must not be expanded into claims of universal validation, general causal efficacy, predictive value, value creation, superiority, full originality, industrial deployment or general Transformational Intelligence validation.
+**Evidence links are part of the experience, not optional decoration.** Each theme should link to a dedicated, readable evidence description. That page should provide enough detail for an interested visitor to understand and assess the result, with links to public papers, methods, data or reproducibility materials where publication permission exists. If a detailed public description does not yet exist, do not show a dead link or expose a private record; mark the item as awaiting a public evidence brief in the editorial workflow.
 
-**Critical freshness rule:** STATUS.md carries a 2026-11-06 date. Its evidence snapshot has been cross-checked against RMA v3.38 and Evidence→Claim Matrix v1.47 retrieved on 2026-11-25, but individual material records and publication permissions still require claim-by-claim verification before release. The status snapshot is not a live evidence feed or an approval to publish controlled records.
+The overview must make clear that evidence is heterogeneous and bounded. It must not imply universal validation, general causal efficacy, predictive value, value creation, superiority, full originality, industrial deployment or general Transformational Intelligence validation.
 
-**Experience:** evidence cards or a table with columns: research area; current result/status; what it supports; what it does not establish; source/version/date. Do not use traffic-light badges as a substitute for explanation.
+**Experience:** concise evidence summaries with meaningful titles and a clear “Explore the evidence” link to each public evidence brief. Each brief should include: question; system and unit; data and period; operational definitions; method/design; result; what it supports; what it does not establish; limitations; public sources and version/date. Avoid traffic-light badges as a substitute for explanation.
 
 ### Block 7 — What remains open
 
