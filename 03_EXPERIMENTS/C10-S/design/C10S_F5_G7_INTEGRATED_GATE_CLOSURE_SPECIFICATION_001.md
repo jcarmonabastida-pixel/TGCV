@@ -102,7 +102,15 @@ La atestación demuestra quién despachó qué snapshot y qué alcance confirmó
 
 ### 4.3 Un solo uso y no herencia
 
-Cada intento requiere una rama/commit de autorización de un solo uso y un dispatch manual nuevo. Una atestación no se hereda a otro SHA, run, intento o alcance. Tier-B y ejecución causal C10 permanecen excluidos. Este cambio de mecanismo no crea una autorización vigente ni habilita por sí mismo G7.
+Cada autorización se consume en su rama dedicada, no solo mediante una atestación efímera del run:
+
+- Un grupo de concurrencia a nivel de workflow serializa los dispatches sobre la misma ref.
+- El gate consulta el historial de workflow_dispatch de esa rama y rechaza cualquier run anterior, incluso si terminó en fallo. La consulta falla cerrada si GitHub no responde.
+- El primer intento debe tener github.run_attempt == 1. Preflight, banco primario/replay y adjudicación vuelven a comprobarlo en sus condiciones de ejecución; así, «Re-run failed jobs» no puede reanudar una ejecución cuyo job de autorización ya terminó correctamente.
+- Tras validar el registro, el workflow crea mediante GitHub Contents API un marcador 00_GOVERNANCE/authorizations/consumed/<authorization_id>.json en la propia rama. La creación es atómica (no se suministra SHA de archivo existente) y se verifica que el commit del marcador tenga como padre único el commit de autorización y que la ref apunte al nuevo commit.
+- Una nueva invocación sobre esa rama queda bloqueada por el historial y, aun si ese historial no estuviera disponible, el marcador hace que la ref ya no sea el commit de autorización válido. El marcador conserva ID, commit de autorización, código aprobado, rama, run y actor.
+
+La combinación de concurrencia, historial, control de intento y marcador persistente impide el segundo dispatch y el reintento ordinario. Como límite de gobernanza, un propietario con capacidad de reescribir forzosamente la rama o alterar/eliminar los registros puede eludir controles del propio repositorio; no se presenta como una garantía criptográfica frente al administrador del repositorio. Tier-B y ejecución causal C10 permanecen excluidos.
 
 ### 4.4 Pruebas RG-04
 
