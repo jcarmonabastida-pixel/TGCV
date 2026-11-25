@@ -1,7 +1,7 @@
 # TGCV — Labs & Applications Copy v0.2
 
 **Identifier:** TGCV-WEB-P07-COPY-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-25  
 **Status:** BILINGUAL EDITORIAL DRAFT — PENDING REVIEW; NOT PUBLICATION APPROVAL  
 **Branch:** strategy/tgcv-web-master  
@@ -26,9 +26,7 @@ Research desarrolla las preguntas, los conceptos, los métodos y la evidencia. L
 ### Juguete Colectivo / Full Chain
 **Un prototipo de software para explorar un sistema sintético de principio a fin.**
 
-Juguete Colectivo, también denominado Full Chain, es un prototipo que permite trabajar con un pequeño sistema artificial y recorrer distintas etapas de su representación y análisis.
-
-En el demostrador se pueden examinar el sistema y sus relaciones, revisar transformaciones candidatas, comparar escenarios, explorar estados alcanzables y trayectorias posibles, y observar qué ocurre cuando un paso no puede realizarse. También contempla registrar resultados y mantener separada su valoración contextual.
+Juguete Colectivo, también denominado Full Chain, es un prototipo de software desarrollado en torno a un sistema sintético. En esta revisión no describimos operaciones concretas de una versión distribuible: el paquete y la interfaz exactos no se han verificado conjuntamente, por lo que no puede asegurarse que las funciones documentadas correspondan al artefacto que podría ponerse a disposición del público.
 
 El prototipo utiliza sistemas sintéticos y reglas operativas propias. Su cálculo de accesibilidad pertenece al demostrador: no es la función científica canónica de TGCV ni un predictor causal. Tampoco es un simulador de sistemas reales o un producto listo para su despliegue.
 
@@ -183,9 +181,7 @@ Research develops the questions, concepts, methods and evidence. Labs & Applicat
 ### Juguete Colectivo / Full Chain
 **A software prototype for exploring a synthetic system from end to end.**
 
-Juguete Colectivo, also known as Full Chain, is a prototype for working with a small artificial system and exploring connected stages of its representation and analysis.
-
-Within the demonstrator, users can inspect the system and its relationships, review candidate transformations, compare scenarios, explore reachable states and possible trajectories, and see what happens when a step cannot be carried out. It also provides for recording outcomes while keeping their contextual assessment separate.
+Juguete Colectivo, also known as Full Chain, is a software prototype developed around a synthetic system. This review does not describe specific operations of a distributable version: the exact package and interface have not been verified together, so we cannot confirm that the documented functions correspond to an artifact that could be made publicly available.
 
 The prototype uses synthetic systems and its own operational rules. Its accessibility calculation belongs to the demonstrator: it is not TGCV's canonical scientific function or a causal predictor. Nor is it a simulator of real systems or a product ready for deployment.
 
@@ -326,7 +322,7 @@ This invitation is intended to open a conversation and help discover potential c
 
 ## Editorial and evidence controls
 
-- Subordinate to Labs & Applications Experience v0.4 and Content Blueprint v3.4.
+- Subordinate to Labs & Applications Experience v0.4 and Content Blueprint v3.7.
 - Spanish and English preserve the same inventory, statuses and caveats.
 - Juguete Colectivo / Full Chain, TSTC and TGCV Playground are separate.
 - Value Explorer is not VALUE; ValueLabOS Preview is not VALUE or Labs & Applications.
@@ -344,3 +340,10 @@ This invitation is intended to open a conversation and help discover potential c
 - Clarifies the C05 EV–Grid demonstrator's non-independent baseline implementation and distinguishes it from the energy fixture in TSTC v004.
 - Adds concrete examples to the explanation that asset maturity and evidence status are separate dimensions.
 - Synchronises the document's Content Blueprint reference to v3.6. No scientific claim, application qualification or publication permission is changed.
+
+
+## v0.3 integrated editorial review — 2026-11-25
+
+- Removes specific functional claims about Juguete Colectivo / Full Chain until the exact distributable package and interface have been verified together, as required by Experience v0.4.
+- Preserves the user-reported local functional acceptance record and explicitly distinguishes it from package identity, public availability and scientific validity.
+- Synchronises the Content Blueprint reference to v3.7.
