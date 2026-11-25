@@ -192,7 +192,7 @@ State plainly that the first release does not automatically offer:
 - guaranteed improvement, ROI or value-creation services;
 - a physical laboratory network;
 - an open interactive platform or standing collaboration programme;
-- functionality for TGCV Playground, Value Explore or ValueLabOS Preview beyond what has actually been implemented and verified.
+- functionality for TGCV Playground, Value Explorer or ValueLabOS Preview beyond what has actually been implemented and verified.
 
 End the Application-Fit area with a proportionate invitation: TGCV is exploring different application contexts and also wants to discover other problems and opportunities together with people and organisations interested in investigating them. The invitation should help visitors recognise that their own context may be relevant.
 
@@ -209,7 +209,7 @@ Provide routes to:
 
 - Prefer plain-language explanations; do not lead with internal candidate IDs, WP labels, fixture IDs, hashes or gate names.
 - Distinguish Juguete Colectivo / Full Chain, TSTC and TGCV Playground; they are not interchangeable.
-- Distinguish Value Explore from the VALUE framework and from the Value Construction page.
+- Distinguish Value Explorer from the VALUE framework and from the Value Construction page.
 - Distinguish ValueLabOS from VALUE and from Labs & Applications.
 - Do not introduce any unrelated umbrella initiative, platform architecture or brand as part of the TGCV website.
 - Do not use “laboratory” to imply physical facilities or staffed labs.
@@ -229,7 +229,7 @@ Spanish and English versions must have the same:
 - distinction between asset maturity and evidence status;
 - availability and participation boundaries.
 
-Adapt naturally to each language. Preserve proper names such as Juguete Colectivo, TSTC, TGCV Playground, Value Explore and ValueLabOS — First Insight. Do not translate internal identifiers into public-facing labels.
+Adapt naturally to each language. Preserve proper names such as Juguete Colectivo, TSTC, TGCV Playground, Value Explorer and ValueLabOS Preview. Do not translate internal identifiers into public-facing labels.
 
 ## 6. Source and authority notes
 
@@ -261,15 +261,15 @@ The candidate register identifies eight initial candidates and explicitly states
 - `05_ASSETS/Business_Translation/TGCV_EXECUTIVE_BUSINESS_BRIDGE_001.md`: broad opportunity families and the proposal for bounded, comparative exploration; not validated commercial claims or an approved service offer.
 - `05_ASSETS/Business_Translation/TGCV_VALUE_VALUELABOS_IDENTITY_ARCH_v0.1.md`: distinction between TGCV as research programme, VALUE as applied framework and ValueLabOS as a proposed digital and collaborative environment. It does not establish a released product.
 
-The descriptions of TGCV Playground, Value Explore and ValueLabOS — First Insight in this Experience are bounded editorial definitions for the website. They do not certify implementation or public availability.
+The descriptions of TGCV Playground, Value Explorer and ValueLabOS Preview in this Experience are bounded editorial definitions for the website. They do not certify implementation or public availability.
 
 ## 7. Acceptance criteria for Experience and subsequent Copy
 
 The page is editorially acceptable when:
 1. visitors can distinguish Labs & Applications from Research and Value Construction;
 2. Juguete Colectivo, TSTC and TGCV Playground are clearly distinct;
-3. Value Explore is introduced as an experience related to, but not identical with, VALUE;
-4. ValueLabOS — First Insight is described as an initial view of a proposed environment, not as a released product;
+3. Value Explorer is introduced as an experience related to, but not identical with, VALUE;
+4. ValueLabOS Preview is described as an initial view of a proposed environment, not as a released product;
 5. no functionality or public availability is claimed without verification;
 6. the TSTC v004 result is described as bounded synthetic methodological evidence, including the equivalent-baseline finding;
 7. the three featured contexts are clearly exploratory and no additional candidate is presented as qualified;
