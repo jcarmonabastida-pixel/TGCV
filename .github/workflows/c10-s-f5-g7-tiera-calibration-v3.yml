@@ -1,6 +1,11 @@
 name: C10-S F5 G7 Tier-A calibration — clean independent dispatch v3
 
 on:
+  # One-time inert bootstrap event: registers the workflow in Actions without
+  # entering the authorization or experiment jobs.
+  push:
+    branches:
+      - 'research/c10s-f5-g7-ui-bootstrap-*'
   workflow_dispatch:
     inputs:
       confirm_scope:
@@ -30,6 +35,7 @@ env:
 
 jobs:
   authorization:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     outputs:
