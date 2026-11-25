@@ -1,12 +1,12 @@
 # TGCV — Explore Experience Specification
 
 **Identifier:** TGCV-WEB-EXPLORE-001  
-**Version:** 1.0  
+**Version:** 1.1  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21–22  
 **Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`, §12–13; Home Experience v1.6; Home Copy v1.3  
-**Copy:** `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — v0.8  
+**Copy:** `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — v1.0  
 **Branch:** `strategy/tgcv-web-master`
 
 ---
@@ -37,7 +37,7 @@ After engaging with Explore, a visitor should be able to explain in ordinary lan
 6. Why understanding these possibilities requires looking at system elements, relationships and conditions together.
 7. How Systems Thinking, Systems Engineering, Transformational Intelligence and TGCV relate without being treated as equivalent concepts.
 
-The visitor should also be able to identify a useful next destination: Research, Systems Engineering or Transformational Intelligence.
+The visitor should also be able to identify the relevant next destination: Research, Systems Engineering or Transformational Intelligence for conceptual and research depth; Value Construction for a complementary applied framework.
 
 ## 3. Narrative architecture
 
@@ -161,6 +161,11 @@ At the end of Explore, provide clear routes:
 - **Systems Engineering** — systems-engineering practices for modelling, designing and developing systems.
 - **Transformational Intelligence** — the working capability concept and its development.
 
+Provide a separate, clearly distinguished applied-framework route:
+- **Value Construction** — explore VALUE as a complementary applied framework for understanding opportunities, designing alternatives, organising decisions, action and learning in pursuit of contextual value.
+
+This is a cross-connection, not a fourth conceptual deepening route and not the next step in a causal chain. Explain that TGCV investigates whether and how changes in accessible transformations may contribute to value, while VALUE structures applied work through its own methodological foundations and evaluation. Do not imply that TGCV has validated VALUE, that VALUE is derived causally from TGCV, or that expanded accessibility automatically produces value.
+
 These destinations must be populated with accurate, useful content before their links are published. Do not promise a simulator, Playground, community, collaboration workflow or application that is not available.
 
 ## 5. Visual and interaction constraints
@@ -240,7 +245,7 @@ Before publication:
 - the example is clearly marked as illustrative and bounded;
 - diagrams preserve the distinctions and do not imply unsupported causal claims;
 - terminology is consistent with Home and Research;
-- links lead to real, populated destinations;
+- links lead to real, populated destinations, including the distinct Value Construction cross-connection;
 - scientific wording and evidence references are checked against current canonical sources;
 - responsive behaviour, accessibility, privacy and maintainability are reviewed.
 
@@ -261,3 +266,4 @@ Before publication:
 
 - **0.9 — 2026-11-25:** Clarifies Transformational Intelligence as an integrative capability concept under development; distinguishes its intended role from Systems Thinking, Systems Engineering, AI and the TGCV research programme, and avoids implying an operational or validated capability.
 - **1.0 — 2026-11-25:** Explicitly states that Accessibility → Execution → Outcome → Value is an analytical distinction rather than a complete causal model; trajectory remains represented across states and transformations.
+- **1.1 — 2026-11-25:** Adds Value Construction as a clearly differentiated applied-framework cross-connection, not a fourth conceptual deepening route or a causal continuation of Explore.
