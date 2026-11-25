@@ -1,7 +1,7 @@
-# TGCV — Labs & Applications Copy v0.5
+# TGCV — Labs & Applications Copy v0.6
 
 **Identifier:** TGCV-WEB-P07-COPY-001  
-**Version:** 0.5  
+**Version:** 0.6  
 **Date:** 2026-11-25  
 **Status:** BILINGUAL EDITORIAL DRAFT — PENDING REVIEW; NOT PUBLICATION APPROVAL  
 **Branch:** strategy/tgcv-web-master  
@@ -161,7 +161,7 @@ Quizá tu organización, equipo o sistema se enfrenta a una transformación en l
 
 Esta invitación busca abrir una conversación y descubrir posibles casos. No constituye un programa formal de colaboración ni implica aceptación, financiación, análisis o trabajo comprometido.
 
-**Para profundizar:** Research · Systems Engineering · Transformational Intelligence · Value Construction · Contact.
+**Para profundizar:** Research · Systems Engineering · Transformational Intelligence · Value Construction.
 
 ---
 
@@ -316,7 +316,7 @@ Your organisation, team or system may be facing a transformation in which capabi
 
 This invitation is intended to open a conversation and help discover potential cases. It is not a formal collaboration programme and does not imply acceptance, funding, analysis or a commitment to undertake work.
 
-**Explore further:** Research · Systems Engineering · Transformational Intelligence · Value Construction · Contact.
+**Explore further:** Research · Systems Engineering · Transformational Intelligence · Value Construction.
 
 ---
 
@@ -365,3 +365,5 @@ This invitation is intended to open a conversation and help discover potential c
 - Preserves the distinction between the existing software prototype and the proposed TGCV Playground experience.
 
 - **v0.5 — 2026-11-25:** applies the requested visitor-facing names and localises the existing prototype name in Spanish while retaining its English name in the English copy.
+
+- **v0.6 — 2026-11-25:** removes Contact from the active visitor-route list until a real, monitored public channel and page are available.
