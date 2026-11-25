@@ -212,7 +212,7 @@ class F5G7AuthorizationTests(unittest.TestCase):
         marker = 'gh api "repos/$GITHUB_REPOSITORY/actions/workflows/c10-s-f5-g7-tiera-calibration.yml/runs?branch=$WORKFLOW_BRANCH&event=workflow_dispatch&per_page=100"'
         self.assertIn(marker, workflow)
         after_query = workflow.split(marker, 1)[1]
-        script = after_query.split("          python - <<'PY'\\n", 1)[1].split("\\n          PY", 1)[0]
+        script = after_query.split("          python - <<'PY'\n", 1)[1].split("\n          PY", 1)[0]
         script = textwrap.dedent(script)
 
         with tempfile.TemporaryDirectory() as directory:
