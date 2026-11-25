@@ -822,7 +822,7 @@ The current P07 visitor experience and bilingual working copy are:
 
 The page distinguishes existing demonstrators, proposed visitor experiences, featured and additional Application-Fit candidates, and broad Business Translation opportunity families. These are different content classes and must not be conflated. Asset maturity/availability is separate from evidence/test status.
 
-TGCV Full Chain Demo must not be attributed specific distributable functionality until its exact package and interface have been verified together. The cross-domain mapping demonstrator remains bounded synthetic methodological evidence. In the electric-vehicle and electricity-grid demonstrator, the comparison model reused the same admissibility rule as the TGCV path and therefore was not an independent baseline. TGCV Playground, Value Explorer and ValueLabOS Preview are proposed experiences, not available operational tools unless separately verified.
+TGCV Full Chain Demo must not be attributed specific distributable functionality until its exact package and interface have been verified together. The cross-domain mapping demonstrator remains bounded synthetic methodological evidence. In the electric-vehicle and electricity-grid demonstrator, the comparison model reused the same admissibility rule as the TGCV path and therefore was not an independent baseline. TGCV Playground, Value Explorer and ValueLabsOS Preview are proposed experiences, not available operational tools unless separately verified.
 
 The five Business Translation families are opportunity areas, not validated markets, services or applications. Application-Fit contexts remain candidates. The invitation to discover further problems is not a formal participation or intake process. Contact links may be used only when a real monitored contact route is ready.
 
@@ -839,3 +839,8 @@ The five Business Translation families are opportunity areas, not validated mark
 - Establishes TGCV Full Chain Demo as the public name for the existing software prototype; its former internal codename is not used in current visitor-facing text.
 - Requires plain-language descriptions for the cross-domain synthetic demonstrator and the electric-vehicle/electricity-grid context, without internal execution IDs, version labels or unexplained acronyms.
 - Preserves the synthetic evidence boundaries and the non-independent nature of the energy/mobility comparison.
+
+
+### P07 public naming alignment — 2026-11-25
+- Aligns the proposed experience name to **ValueLabsOS Preview** and retains **TGCV Playground**.
+- Spanish copy uses **Demostrador de cadena completa de TGCV** for the existing prototype; English copy retains **TGCV Full Chain Demo**.
