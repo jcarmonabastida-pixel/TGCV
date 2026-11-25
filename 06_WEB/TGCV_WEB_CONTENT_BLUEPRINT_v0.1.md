@@ -1,7 +1,7 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 1.8  
+**Version:** 1.9
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
@@ -147,7 +147,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 - 05_ASSETS/Vision_Paper/TGCV-EXT-VP-001_v0.3.md — current controlled vision paper.
 - 05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.2.md — controlled architecture/research map.
 - STATUS.md, current RMA and Evidence→Claim Matrix — internal source of truth for evidence-state checks; not necessarily direct public downloads.
-- 06_WEB/TGCV_WEB_EVIDENCE_PORTFOLIO_v0.1.md — public-facing selected-case overview; reconcile every entry against the current matrix and publication permissions before release.
+- 06_WEB/TGCV_WEB_EVIDENCE_PORTFOLIO_v0.1.md (current editorial version 0.2) — public-facing selected-case overview; reconcile every entry against the current Evidence→Claim Matrix and RMA, cross-link detailed evidence briefs where available, avoid duplicate claims, and verify publication permissions before release.
 
 **Editorial rule:** write a concise public explanation first; link to longer controlled documents only after publication review. Do not paste governance-heavy or superseded material into the website.
 
