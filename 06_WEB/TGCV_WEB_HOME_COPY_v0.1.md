@@ -141,6 +141,9 @@ Explora cómo el modelado, el diseño y la intervención en sistemas se relacion
 **Transformational Intelligence**  
 Profundiza en la capacidad de razonar sobre transformaciones posibles, accesibilidad y trayectorias futuras.
 
+**Value Construction**  
+Conoce VALUE, un framework aplicado complementario a TGCV para explorar oportunidades, diseñar alternativas, decidir, actuar y aprender sobre la construcción de valor.
+
 **Labs & Applications**  
 Consulta demostradores, experimentos y contextos exploratorios, con su alcance y estado claramente indicados.
 
@@ -148,7 +151,7 @@ Consulta demostradores, experimentos y contextos exploratorios, con su alcance y
 
 ### Empieza por explorar lo que un sistema puede llegar a hacer.
 
-Puedes acercarte a esta investigación desde sus ideas fundamentales, desde las preguntas científicas o desde los problemas que plantea la ingeniería de sistemas.
+Puedes acercarte a este trabajo desde sus ideas fundamentales, sus preguntas de investigación, la ingeniería de sistemas, la inteligencia transformacional o el framework aplicado de construcción de valor.
 
 **Acción principal:** Explora el enfoque → Explore.
 
@@ -291,6 +294,9 @@ Explore how systems modelling, design and intervention relate to the transformat
 **Transformational Intelligence**  
 Learn more about reasoning over possible transformations, accessibility and future trajectories.
 
+**Value Construction**  
+Discover VALUE, an applied framework complementary to TGCV for exploring opportunities, designing alternatives, deciding, acting and learning about value construction.
+
 **Labs & Applications**  
 Explore demonstrators, experiments and exploratory application contexts, with their scope and status clearly stated.
 
@@ -298,7 +304,7 @@ Explore demonstrators, experiments and exploratory application contexts, with th
 
 ### Start by exploring what a system may become able to do.
 
-You can approach this work through its core ideas, its research questions or the challenges it raises for systems engineering.
+You can approach this work through its core ideas, its research questions, systems engineering, transformational intelligence or the applied framework for value construction.
 
 **Primary action:** Explore the approach → Explore.
 
@@ -404,3 +410,8 @@ The approved narrative order is opening question → discovery → second questi
 ### v1.2 — 2026-11-25 (English ecosystem alignment)
 - Aligns the English ecosystem narrative with the Spanish version by distinguishing TGCV, VALUE/Value Construction, Labs & Applications and proposed ValueLabOS.
 - Adds Value Construction to the English visitor routes and clarifies that the TGCV–VALUE relationship is complementary, not a proven causal chain.
+
+
+### v1.3 — 2026-11-25
+- Adds Value Construction as an explicit visitor route in both Spanish and English Home interest sections, not only in the footer or ecosystem explanation.
+- Aligns the closing invitation in both languages with the full set of substantive routes.
