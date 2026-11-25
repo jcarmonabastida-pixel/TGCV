@@ -1261,3 +1261,20 @@ About/Governance and Contact/Participate remain supporting destinations. This ad
 ### v1.8 — 2026-11-25
 - Corrects the earlier Home decision-lock route list to include Value Construction.
 - Aligns the ecosystem activity description with the distinct role of VALUE as a complementary applied framework.
+
+## 25.6 Official naming and localisation rule — mandatory
+
+For all first-release website Experience and Copy documents, approved proper names, product/experience names, demonstrator names and navigation labels must be preserved exactly as approved. They must not be translated, localised, abbreviated, respelled or replaced by descriptive translations unless the user explicitly authorises that change. This rule applies equally to Spanish and English content and to headings, body text, cross-references, metadata and editorial records.
+
+- Preserve official names such as **TGCV Full Chain Demo**, **TGCV Cross Domain Demo**, **TGCV Playground**, **Value Explorer**, **ValueLabOS Preview**, **ValueLabOS**, **VALUE**, **Value Discovery Sprint**, **Transformational Intelligence**, **Systems Thinking**, **Systems Engineering** and recognised domain terminology such as **EV–Grid**, using their approved spelling, capitalisation and punctuation.
+- Preserve the approved navigation labels: **Explore**, **Research**, **Systems Engineering**, **Transformational Intelligence**, **Value Construction**, **Labs & Applications**, **About** and **Contact**.
+- Translate or adapt generic explanatory descriptions when appropriate, but keep them separate from the official name. A descriptive phrase must never silently become a translated name.
+- Do not expose internal project identifiers, codenames or execution labels in visitor-facing copy unless expressly authorised. Conversely, do not remove recognised public domain terminology merely because it resembles an acronym.
+- Before closing any editorial revision, check the official names in both language versions and verify the persisted GitHub files. The GitHub branch `strategy/tgcv-web-master` remains the source of truth for this web work.
+
+No naming change is authorised by editorial preference alone. When in doubt, retain the approved proper name and add a separate explanatory description.
+
+
+### v1.9 — 2026-11-25
+- Establishes a mandatory bilingual naming rule: approved proper names and navigation labels are not translated or renamed without the user's explicit authorisation.
+- Distinguishes translatable descriptive copy from protected names and requires a Spanish/English naming check plus GitHub verification for editorial changes.
