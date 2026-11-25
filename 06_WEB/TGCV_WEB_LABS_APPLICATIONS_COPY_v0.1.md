@@ -86,7 +86,7 @@ Este contexto permite investigar si los cambios en el estado físico, la informa
 
 **Estado:** contexto candidato en exploración. La monitorización, la predicción, las reglas de mantenimiento y la planificación convencional son referencias alternativas que deben considerarse.
 
-### Coordinación entre vehículos eléctricos y red eléctrica
+### Coordinación entre vehículos eléctricos y red eléctrica (EV–Grid)
 ¿Cómo condicionan la capacidad de la red eléctrica, la demanda de recarga, los vehículos, las estaciones y las necesidades de movilidad las opciones factibles de carga y desplazamiento?
 
 El interés está en examinar cómo las restricciones y los recursos compartidos pueden abrir, cerrar o modificar opciones entre los ámbitos de energía y movilidad.
@@ -241,7 +241,7 @@ This context offers an opportunity to investigate whether changes in physical co
 
 **Status:** exploratory candidate application context. Conventional monitoring, prediction, maintenance rules and scheduling are alternative approaches that must be considered.
 
-### Electric-vehicle and electricity-grid coordination
+### Electric-vehicle and electricity-grid coordination (EV–Grid)
 How do grid capacity, charging demand, vehicles, charging stations and mobility needs shape feasible charging and travel options?
 
 The focus is on examining how shared resources and constraints may open, close or alter options across energy and mobility.
@@ -354,6 +354,6 @@ This invitation is intended to open a conversation and help discover potential c
 - Replaces the internal prototype codename with the public name **TGCV Full Chain Demo** throughout the current Spanish and English copy.
 - Replaces the internal demonstrator acronym and execution/version identifiers with a plain-language description of the cross-domain synthetic demonstrator and its bounded result.
 - Removes the internal case identifier and explains the limitation of the energy/mobility comparison in reader-facing terms.
-- Uses “coordinación entre vehículos eléctricos y red eléctrica” / “electric-vehicle and electricity-grid coordination” instead of the EV–Grid shorthand.
+- Retains EV–Grid as a recognised public-domain term, adding it parenthetically to the descriptive heading in Spanish and English for consistency with Research and the Evidence Portfolio.
 - Removes unexplained software-delivery shorthand and repairs the accessibility-calculation sentence.
 - Synchronises the parent Content Blueprint reference to v3.8.
