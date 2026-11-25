@@ -1,7 +1,7 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 3.0  
-**Date:** 2026-11-25  
+**Version:** 3.1  
+**Date:** 2026-11-26  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
 **Branch:** `strategy/tgcv-web-master`  
@@ -817,14 +817,26 @@ This authority supersedes earlier P05 working text that describes four dimension
 
 The current P07 visitor experience and bilingual working copy are:
 
-- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.6.
-- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.6.
+- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.7.
+- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.7.
 
 The page distinguishes existing demonstrators, proposed visitor experiences, featured and additional Application-Fit candidates, and broad Business Translation opportunity families. These are different content classes and must not be conflated. Asset maturity/availability is separate from evidence/test status.
 
 TGCV Full Chain Demo must not be attributed specific distributable functionality until its exact package and interface have been verified together. The cross-domain mapping demonstrator remains bounded synthetic methodological evidence. In the electric-vehicle and electricity-grid demonstrator, the comparison model reused the same admissibility rule as the TGCV path and therefore was not an independent baseline. TGCV Playground, Value Explorer and ValueLabsOS Preview are proposed experiences, not available operational tools unless separately verified.
 
 The five Business Translation families are opportunity areas, not validated markets, services or applications. Application-Fit contexts remain candidates. The invitation to discover further problems is not a formal participation or intake process. Contact links may be used only when a real monitored contact route is ready.
+
+
+## 25. About page experience and bilingual copy authority
+
+The current P08 visitor experience and bilingual working copy are:
+
+- `06_WEB/TGCV_WEB_ABOUT_EXPERIENCE_v0.1.md` — Experience v0.1.
+- `06_WEB/TGCV_WEB_ABOUT_COPY_v0.1.md` — bilingual Copy v0.1.
+
+About establishes TGCV's identity, purpose, research question, working principles, evidence discipline and transparency commitments. It must not imply a staffed institute, formal company or research centre, external scientific board, institutional affiliation, consortium, active community or formal participation programme unless independently established and authorised. It must not invent team biographies, partners, funders, endorsements or contact details.
+
+The page is an orientation layer, not a substitute for Research's scientific account. It preserves the open status of the causal contribution to outcomes and value and distinguishes research questions, proposals, synthetic experiments, software prototypes, exploratory contexts and validated results. Contact remains conditional on a real, monitored route.
 
 ### v2.6 — 2026-11-25
 - Replaces the obsolete six-destination / Community navigation draft with the approved eight-destination first-release navigation.
@@ -853,3 +865,9 @@ The five Business Translation families are opportunity areas, not validated mark
 
 ### v3.0 — 2026-11-25
 - Updates the current Content Blueprint reference to v4.1 after the P07 Spanish naming correction. Navigation and page order are unchanged.
+
+### v3.1 — 2026-11-26
+- Adds P08 About Experience v0.1 and bilingual Copy v0.1 as the current working authorities.
+- Defines About's role as an identity, purpose, research-principles and transparency page, with explicit organisational and evidence boundaries.
+- Synchronises P07 Experience and Copy references to v0.7.
+- Preserves Contact as conditional on a real, monitored route; no publication approval is implied.
