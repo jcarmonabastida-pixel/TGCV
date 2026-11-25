@@ -56,11 +56,12 @@ The navigation labels are working labels, not a brand or final information-archi
 | P03 | Research / TGCV | P0 | What is TGCV, what does it investigate, and what is its current status? | Scientific wording checked against current canonical sources |
 | P04 | Systems Engineering | P1 | How does systems engineering relate to the research object? | Scope precise; no claim of a proprietary engineering method |
 | P05 | Transformational Intelligence | P1 | What is TI, and how is it different from AI? | Working concept/capability labelled; no overclaim |
-| P06 | Labs & Applications | P1 | What can I inspect in practice, and in which domains is the perspective explored? | Every asset and case has a maturity/evidence label |
-| P07 | About / Governance | P0 | Who/what is behind the work, and how are claims and contributions controlled? | Contact and governance statements accurate |
-| P08 | Contact / Participate | P0 | How can I ask, correct, suggest or connect? | A working and monitored route exists |
+| P06 | Value Construction | P1 | How can a system explore opportunities and organise decisions, action and learning to build value? | VALUE is presented as a complementary applied framework, not as validated by TGCV; fictional case labelled |
+| P07 | Labs & Applications | P1 | What can I inspect in practice, and in which domains is the perspective explored? | Every asset and case has a maturity/evidence label |
+| P08 | About / Governance | P0 | Who/what is behind the work, and how are claims and contributions controlled? | Contact and governance statements accurate |
+| P09 | Contact / Participate | P0 | How can I ask, correct, suggest or connect? | A working and monitored route exists |
 
-P04–P06 may initially be concise pages or carefully structured sections. They must not be padded to look like mature departments. P08 may be a simple contact route, not a registration system.
+P04–P07 may initially be concise pages or carefully structured sections. They must not be padded to look like mature departments. P09 may be a simple contact route, not a registration system.
 
 ### 1.3 Long-term destinations deferred
 
@@ -182,7 +183,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 
 **Source basis:** 00_GOVERNANCE/TGCV_TRANSFORMATIONAL_DYNAMICS_INTELLIGENCE_MANIFESTO_001.md and Master Brief §3.
 
-### P06 — Labs & Applications
+### P07 — Labs & Applications
 
 **Purpose:** show tangible work while separating software demonstration, synthetic methodological evidence, candidate application fit, empirical evidence and deployment.
 
@@ -689,3 +690,43 @@ The Home remains a working draft, not publication approval. Complete the visual 
 - Updates P04 authoritative references to Systems Engineering Experience v0.2 and bilingual Copy v0.2 after technical review.
 - Clarifies iterative, concurrent and non-linear life-cycle practice and the planning of verification and validation throughout the work.
 - Adds verified further-reading references to ISO/IEC/IEEE 15288:2023, the INCOSE Systems Engineering Handbook (5th edition) and the NASA Systems Engineering Handbook.
+
+
+## 18. P06 — Value Construction: strategic content contract
+
+**Status:** destination approved for first-release architecture; detailed Experience and Copy not yet developed. Do not begin visual design or implementation from this contract alone.
+
+**Purpose:** explain VALUE as an applied framework complementary to TGCV, showing how a system can understand a context and opportunity, connect knowledge, design alternatives, decide, act and learn in pursuit of contextually defined value.
+
+**Visitor question:** How can a system explore opportunities and organise decisions, action and learning to build value?
+
+**Required narrative (six movements):**
+1. **From opportunity to value:** define value contextually (for whom, which outcomes, over what horizon and under what constraints); do not equate possibility with value.
+2. **Understand the system:** examine context, actors, needs, capabilities, knowledge, relationships, flows, friction and constraints.
+3. **Explore possibilities:** identify opportunities and design alternatives as hypotheses with explicit assumptions and evidence needs.
+4. **Decide and act:** distinguish alternative selection, decision authority, execution authorisation, implementation and adoption.
+5. **Learn and renew:** evaluate observed results against criteria agreed beforehand, record uncertainty and update capabilities or the next cycle.
+6. **A case in practice — the clinic:** walk through the fictional appointment-management case and relevant A1–A8 artefacts, decisions and outputs after verifying current versions and publication suitability.
+
+**Method reference:** ALIGN is the entry/alignment and governance condition, followed by SENSE, CONNECT, DESIGN, DECIDE, ACT and LEARN. The process is iterative, not a rigid waterfall. Keep the distinctions among Value Construction, VCF, VSM, Value Architecture, Value Opportunity, CCV and IVS; do not imply that every proposed measurement or artefact is mature or validated.
+
+**TGCV relationship:** TGCV investigates how accessible transformations change and whether/how such changes may contribute to value. VALUE structures applied work to explore opportunities and organise intervention and learning. The relationship is a proposed theoretical-applied articulation, not a demonstrated derivation. VALUE can be evaluated independently and does not depend on C10 being confirmed.
+
+**Case boundary:** the clinic appointment-management case is fictional. Figures, artefacts, decisions and outcomes are simulated. It is a teaching example, not a real deployment, empirical effectiveness result, independent validation or proof of value creation.
+
+**Source assets to recheck when detailed work begins:**
+- `05_ASSETS/Business_Translation/VALUE_METHODOLOGY_LIFECYCLE_001.md`;
+- `05_ASSETS/Business_Translation/TGCV_VALUE_VALUELABOS_IDENTITY_ARCH_v0.1.md`;
+- `05_ASSETS/Business_Translation/VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md`;
+- current A1–A8 master artefacts and supporting clinic coherence/decision-execution-learning reviews in `05_ASSETS/Business_Translation/`.
+
+Recheck current versions, exact filenames, internal consistency, terminology and public-disclosure suitability. Translate internal artefact codes into visitor-understandable descriptions; do not expose internal identifiers in primary public copy.
+
+**Required ecosystem map:** P01/Home must introduce an accessible conceptual map showing TGCV, Systems Thinking, Systems Engineering, Transformational Intelligence, VALUE/Value Construction, Labs & Applications and ValueLabOS as distinct but related elements. Do not draw an unqualified causal chain. Use labelled relationships and distinguish conceptual role, applied framework, experimentation and enabling ecosystem. Relevant pages should link back to or reuse the explanation.
+
+**Publication guardrails:** no automatic value claim; no claim that VALUE is validated by TGCV; no claim that VALUE outcomes validate TGCV; no implication that ValueLabOS is available; no conflation of ValueLabOS with Labs & Applications; preserve opportunity, accessibility, decision, authorisation, execution, adoption, outcome and value as distinct concepts.
+
+### v2.0 — 2026-11-25
+- Adds P06 Value Construction to the first-release page inventory and moves Labs & Applications to P07.
+- Records the six-movement visitor experience, VALUE lifecycle, source assets and fictional clinic-case boundaries.
+- Adds the ecosystem map as a required public explanatory asset and preserves the independent epistemic status of TGCV and VALUE.
