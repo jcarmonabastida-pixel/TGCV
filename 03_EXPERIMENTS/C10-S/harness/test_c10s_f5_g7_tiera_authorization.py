@@ -136,6 +136,26 @@ class F5G7AuthorizationTests(unittest.TestCase):
             auth["compute_path_content_sha256"] = bindings["compute_path_content_sha256"]
             validate_source_manifest_hashes(auth, manifests)
 
+    def test_manifest_builder_only_generates_draft_authorizations(self):
+        from build_c10s_f5_g7_authorization_manifest import (
+            BINDINGS_SCHEMA,
+            build_draft_authorization,
+        )
+
+        bindings = {
+            "schema": BINDINGS_SCHEMA,
+            "approved_code_commit": "a" * 40,
+            "execution_source_manifest_sha256": "b" * 64,
+            "compute_path_content_sha256": "c" * 64,
+            "source_hashes": {"sample_sha256": "d" * 64},
+        }
+        draft = build_draft_authorization({"status": "DRAFT", "authorization_id": "draft-only"}, bindings)
+        self.assertEqual(draft["status"], "DRAFT")
+        self.assertEqual(draft["approved_code_commit"], "a" * 40)
+        self.assertEqual(draft["sample_sha256"], "d" * 64)
+        with self.assertRaisesRegex(ValueError, "MUST_BE_DRAFT"):
+            build_draft_authorization({"status": "APPROVED"}, bindings)
+
     def test_execution_manifest_rejects_stale_hashes_and_unbound_inventory(self):
         from validate_c10s_f5_g7_tiera_authorization import validate_source_manifest_hashes
         import c10s_f5_g7_source_inventory as inventory
