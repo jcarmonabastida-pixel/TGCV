@@ -1,7 +1,7 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 1.9
+**Version:** 2.1
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
@@ -730,3 +730,9 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Adds P06 Value Construction to the first-release page inventory and moves Labs & Applications to P07.
 - Records the six-movement visitor experience, VALUE lifecycle, source assets and fictional clinic-case boundaries.
 - Adds the ecosystem map as a required public explanatory asset and preserves the independent epistemic status of TGCV and VALUE.
+
+
+### v2.1 — 2026-11-25
+- Updates P01/Home references to Experience v1.5 and Copy v1.2.
+- Requires the public conceptual ecosystem map in Home and adds Value Construction to the Home visitor routes.
+- Aligns P06 Value Construction and P07 Labs & Applications with the approved first-release navigation.
