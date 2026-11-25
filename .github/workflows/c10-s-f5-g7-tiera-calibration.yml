@@ -132,7 +132,7 @@ jobs:
         env:
           PLAN_JSON: ${{ runner.temp }}/g7-resource-profile-validation.json
         run: |
-          PROFILE_JSON="$(find "$RUNNER_TEMP/resource-profile" -type f -name 'c10s-f5-g7-resource-parallel-profile.json' -print -quit)"
+          PROFILE_JSON="$(find "$RUNNER_TEMP/resource-profile" -type f -name 'c10s-f5-g7-resource-profile.json' -print -quit)"
           test -n "$PROFILE_JSON"
           python validate_c10s_f5_g7_resource_profile.py \
             --profile "$PROFILE_JSON" \

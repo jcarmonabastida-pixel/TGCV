@@ -75,7 +75,7 @@ Por tanto:
 
 - el test prueba el ZIP fixture almacenado en el repositorio;
 - el workflow productivo prueba el JSON extraído y su digest;
-- no existe todavía una comprobación productiva que enlace los bytes del ZIP descargado con `profile_artifact_archive_sha256`.
+- el log productivo del run `45517753203` acredita que `actions/download-artifact` calculó el digest `14e317a6…fe568e21` y lo comparó con el digest esperado por GitHub, coincidente con `profile_artifact_archive_sha256` del manifest. El workflow no compara explícitamente ese digest descargado con el campo del manifest; por ello RG-02 es una brecha de enlace explícito manifest-descarga, no ausencia total de verificación del ZIP.
 
 Debe elegirse y materializarse una sola política:
 1. descargar el archivo ZIP original, verificar su digest y después extraerlo; o
@@ -107,7 +107,7 @@ El validador exige `status=APPROVED`, `g7_tiera_calibration_authorized=true` y `
 
 Estas condiciones validan el formato del registro y una convención de commit; no demuestran que el usuario haya emitido la aprobación. El valor `USER_EXPLICIT_APPROVAL` es texto autodeclarado por quien crea el JSON. El mensaje de commit también puede ser escrito por el propio operador. No hay una atestación independiente de actor/acción que conecte el consentimiento real con el alcance, el commit y la ventana de autorización.
 
-La autorización `C10S-F5-G7-20261125-007` fue creada durante la auditoría después de que el usuario aceptara continuar con la reconciliación integrada, no después de una aprobación expresa de G7. **Debe considerarse inválida y no utilizable.** El PASS del job de autorización en el run `45517753203` es únicamente un PASS de validación sintáctica/técnica del documento.
+El usuario había dado previamente una respuesta afirmativa explícita a una pregunta que delimitaba la ejecución G7 v1.1 (K=1.000 por celda, B=1.000, C0/C5, primary/replay y adjudicación Tier-A; Tier-B y ejecución causal C10 excluidas). Por tanto, sí existió consentimiento conversacional para ese alcance. Sin embargo, el workflow no conserva una atestación verificable de esa interacción: `approved_by=USER_EXPLICIT_APPROVAL` y el mensaje de commit no la acreditan por sí solos. Tampoco debe suponerse que cada nueva autorización técnica o reintento hereda automáticamente el consentimiento de un solo uso. El PASS del job de autorización en el run `45517753203` acredita únicamente la validación técnica del documento, no la trazabilidad independiente del consentimiento ni el paso de los demás gates.
 
 La solución no es generar otro JSON con los mismos campos. El gate debe distinguir:
 - aprobación humana explícita y registrada para el alcance exacto;
@@ -142,9 +142,9 @@ Por tanto, se retira la sospecha anterior de que ese script concreto estuviera r
 | ID | Causa / discrepancia | Evidencia | Estado |
 |---|---|---|---|
 | RG-01 | Nombre de perfil distinto entre productor, fixture/test y consumidor | Rutas y literales de los workflows/tests | **CONFIRMADO; bloquea preflight** |
-| RG-02 | Digest ZIP no verificado en la ruta productiva | Validador solo valida formato; workflow consume JSON extraído | **CONFIRMADO; brecha de integridad** |
+| RG-02 | Digest ZIP del manifest no enlazado explícitamente al digest que reporta la descarga productiva | `actions/download-artifact` verificó el digest del artefacto contra GitHub en run 45517753203; el workflow no compara ese valor con el campo del manifest | **CONDITIONAL; transporte verificado, enlace manifest-descarga no explícito** |
 | RG-03 | Tests de Git simulan ascendencia y `git show` | Mocks en test de perfil | **CONFIRMADO; falta integración real** |
-| RG-04 | Aprobación humana autodeclarada en JSON/commit message | Validador y trigger del workflow | **CONFIRMADO; brecha de gobernanza** |
+| RG-04 | Aprobación humana sin atestación independiente en el workflow | Consentimiento explícito conversacional existente; JSON y mensaje de commit no lo acreditan por sí solos | **CONFIRMADO; brecha de trazabilidad, no ausencia de consentimiento** |
 | RG-05 | Inventarios de hash manuales y solapados | `SOURCE_HASH_PATHS` y `PROFILE_SOURCE_PATHS` | **CONFIRMADO; riesgo de deriva** |
 | RG-06 | Overhead fijo de 300 s sin justificación de medición registrada | Constante del validador/test | **OPEN; supuesto no acreditado** |
 | RG-07 | Máximo observado K=100 tratado como base de proyección para K=1.000 | Perfil y fórmula | **CONDICIONAL; límite de extrapolación** |

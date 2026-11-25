@@ -5,6 +5,7 @@ import hashlib
 import io
 import json
 import tempfile
+import subprocess
 import zipfile
 import unittest
 from types import SimpleNamespace
@@ -213,6 +214,49 @@ class F5G7ResourceProfileTests(unittest.TestCase):
                 self.assertTrue(all(set(row) == {"dataset_id", "wall_seconds"} for row in rows))
             self.assertIn("No certificate status", result["interpretation"])
             self.assertNotIn("interval_emission_counts", json.dumps(result))
+
+
+    def test_real_git_repository_ancestry_and_compute_path_identity(self):
+        fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "g7_resource_profile_v1_1"
+        profile_zip = base64.b64decode((fixture_dir / "profile_artifact.zip.b64").read_text(encoding="ascii"))
+        with zipfile.ZipFile(io.BytesIO(profile_zip)) as archive:
+            profile_bytes = archive.read("c10s-f5-g7-resource-profile.json")
+        original_manifest = json.loads((fixture_dir / "manifest.json").read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            subprocess.run(["git", "config", "user.email", "tgcv-test@example.invalid"], cwd=root, check=True)
+            subprocess.run(["git", "config", "user.name", "TGCV integration test"], cwd=root, check=True)
+            for relative in validator.PROFILE_SOURCE_PATHS:
+                target = root / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(("frozen:" + relative).encode("utf-8"))
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-qm", "profile source snapshot"], cwd=root, check=True)
+            source_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+            (root / "unrelated.txt").write_text("descendant", encoding="utf-8")
+            subprocess.run(["git", "add", "unrelated.txt"], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-qm", "descendant execution snapshot"], cwd=root, check=True)
+            manifest = dict(original_manifest)
+            manifest["profile_source_commit"] = source_commit
+            profile_path, manifest_path = root / "profile.json", root / "manifest.json"
+            profile_path.write_bytes(profile_bytes)
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            result = validator.validate(profile_path, manifest_path, root)
+            self.assertEqual(result["profile_json_sha256"], hashlib.sha256(profile_bytes).hexdigest())
+            changed = root / validator.PROFILE_SOURCE_PATHS[0]
+            changed.write_bytes(b"modified compute path")
+            with self.assertRaisesRegex(ValueError, "COMPUTE_PATH_CHANGED"):
+                validator.validate(profile_path, manifest_path, root)
+
+    def test_consumer_discovers_exact_filename_published_by_producer(self):
+        repo_root = Path(__file__).resolve().parents[3]
+        consumer = (repo_root / ".github/workflows/c10-s-f5-g7-tiera-calibration.yml").read_text(encoding="utf-8")
+        producer = (repo_root / ".github/workflows/c10s-f5-g7-resource-profile.yml").read_text(encoding="utf-8")
+        canonical_name = "c10s-f5-g7-resource-profile.json"
+        self.assertIn("name '" + canonical_name + "'", consumer)
+        self.assertIn(canonical_name, producer)
+        self.assertNotIn("c10s-f5-g7-resource-parallel-profile.json", consumer)
 
 
 
