@@ -61,7 +61,7 @@ jobs:
           test "$RUN_ATTEMPT" = "1"
           # Workflow-level concurrency serializes attempts on this ref. Reject
           # any earlier dispatch for this authorization branch, even if it failed.
-          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/c10-s-f5-g7-tiera-calibration.yml/runs?branch=$WORKFLOW_BRANCH&event=workflow_dispatch&per_page=100" > "$RUNNER_TEMP/prior-g7-runs.json"
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/c10-s-f5-g7-tiera-calibration-v3.yml/runs?branch=$WORKFLOW_BRANCH&event=workflow_dispatch&per_page=100" > "$RUNNER_TEMP/prior-g7-runs.json"
           python - <<'PY'
           import json, os
           from pathlib import Path
