@@ -6,7 +6,7 @@
 **Status:** BILINGUAL EDITORIAL DRAFT — PENDING REVIEW; NOT PUBLICATION APPROVAL  
 **Branch:** strategy/tgcv-web-master  
 **Authoritative Experience:** TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md v0.6  
-**Content Blueprint:** TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md v3.9
+**Content Blueprint:** TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md v4.0
 
 ---
 
