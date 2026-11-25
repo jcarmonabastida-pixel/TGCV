@@ -1,0 +1,441 @@
+name: C10-S F5 G7 Tier-A calibration — clean independent dispatch v3
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_scope:
+        description: "Confirm one-use C10-S F5 G7 Tier-A v1.1 on this exact branch and commit"
+        required: true
+        type: choice
+        options:
+          - I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT
+
+permissions:
+  contents: write
+  actions: read
+
+# Serialize every dispatch for this exact authorization ref. A queued second
+# dispatch checks the first run after it releases this group.
+concurrency:
+  group: c10s-f5-g7-one-use-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  OPENBLAS_NUM_THREADS: '1'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  NUMEXPR_NUM_THREADS: '1'
+  VECLIB_MAXIMUM_THREADS: '1'
+
+
+jobs:
+  authorization:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    outputs:
+      approved: ${{ steps.gate.outputs.approved }}
+      authorization_id: ${{ steps.authorization.outputs.authorization_id }}
+      approved_code_commit: ${{ steps.authorization.outputs.approved_code_commit }}
+      resource_profile_run_id: ${{ steps.authorization.outputs.resource_profile_run_id }}
+      resource_profile_artifact_id: ${{ steps.authorization.outputs.resource_profile_artifact_id }}
+    steps:
+      - name: Gate branch and explicit authorization commit
+        id: gate
+        env:
+          WORKFLOW_BRANCH: ${{ github.ref_name }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_ACTOR: ${{ github.actor }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          CONFIRM_SCOPE: ${{ inputs.confirm_scope }}
+          WORKFLOW_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$EVENT_NAME" = "workflow_dispatch"
+          test "$EVENT_ACTOR" = "$REPOSITORY_OWNER"
+          test "$CONFIRM_SCOPE" = "I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT"
+          [[ "$WORKFLOW_BRANCH" == research/c10s-f5-g7-auth-* ]]
+          # A rerun is a second attempt against the same one-use authorization.
+          test "$RUN_ATTEMPT" = "1"
+          # Workflow-level concurrency serializes attempts on this ref. Reject
+          # any earlier dispatch for this authorization branch, even if it failed.
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/c10-s-f5-g7-tiera-calibration-v3.yml/runs?branch=$WORKFLOW_BRANCH&event=workflow_dispatch&per_page=100" > "$RUNNER_TEMP/prior-g7-runs.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          payload = json.loads(Path(os.environ["RUNNER_TEMP"], "prior-g7-runs.json").read_text(encoding="utf-8"))
+          current_id = int(os.environ["RUN_ID"])
+          current_branch = os.environ["WORKFLOW_BRANCH"]
+          prior = [
+              run for run in payload.get("workflow_runs", [])
+              if int(run.get("id", -1)) != current_id
+              and run.get("head_branch") == current_branch
+              and run.get("event") == "workflow_dispatch"
+          ]
+          if prior:
+              ids = ", ".join(str(run["id"]) for run in prior)
+              raise SystemExit(f"ONE_USE_AUTHORIZATION_ALREADY_CONSUMED: prior run(s) {ids}")
+          PY
+          echo "approved=true" >> "$GITHUB_OUTPUT"
+      - name: Record explicit dispatch attestation
+        if: steps.gate.outputs.approved == 'true'
+        env:
+          EVENT_ACTOR: ${{ github.actor }}
+          EVENT_NAME: ${{ github.event_name }}
+          WORKFLOW_REF: ${{ github.ref }}
+          WORKFLOW_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          CONFIRM_SCOPE: ${{ inputs.confirm_scope }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          record = {
+              "schema": "TGCV-C10S-G7-DISPATCH-ATTESTATION-001",
+              "approval_channel": "GITHUB_WORKFLOW_DISPATCH",
+              "actor": os.environ["EVENT_ACTOR"],
+              "event": os.environ["EVENT_NAME"],
+              "ref": os.environ["WORKFLOW_REF"],
+              "commit": os.environ["WORKFLOW_SHA"],
+              "run_id": os.environ["RUN_ID"],
+              "run_attempt": int(os.environ["RUN_ATTEMPT"]),
+              "confirmed_scope": os.environ["CONFIRM_SCOPE"],
+              "independent_review": "NOT_AVAILABLE_SINGLE_OPERATOR",
+          }
+          Path(os.environ["RUNNER_TEMP"], "g7-dispatch-attestation.json").write_text(
+              json.dumps(record, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+          )
+          PY
+      - name: Checkout one-use authorization commit
+        if: steps.gate.outputs.approved == 'true'
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up pinned Python
+        if: steps.gate.outputs.approved == 'true'
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Install hash-locked dependencies for authorization validation
+        if: steps.gate.outputs.approved == 'true'
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+      - name: Validate one-use G7 authorization and exact code parent
+        if: steps.gate.outputs.approved == 'true'
+        id: authorization
+        env:
+          WORKFLOW_COMMIT: ${{ github.sha }}
+          WORKFLOW_BRANCH: ${{ github.ref_name }}
+        run: |
+          python 03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_tiera_authorization.py \
+            --authorization 00_GOVERNANCE/authorizations/C10S_F5_G7_TIERA_CALIBRATION_AUTHORIZATION.json \
+            --root . \
+            --workflow-commit "$WORKFLOW_COMMIT" \
+            --branch "$WORKFLOW_BRANCH" \
+            --output-json "$RUNNER_TEMP/validated-g7-authorization.json"
+          cp 00_GOVERNANCE/authorizations/C10S_F5_G7_TIERA_CALIBRATION_AUTHORIZATION.json "$RUNNER_TEMP/original-g7-authorization.json"
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+          from pathlib import Path
+          data = json.loads(Path(os.environ["RUNNER_TEMP"], "validated-g7-authorization.json").read_text())
+          print(f"authorization_id={data['authorization_id']}")
+          print(f"approved_code_commit={data['approved_code_commit']}")
+          print(f"resource_profile_run_id={data['resource_profile_run_id']}")
+          print(f"resource_profile_artifact_id={data['resource_profile_artifact_id']}")
+          PY
+      - name: Verify exact dispatched workflow identity against authorization
+        if: steps.gate.outputs.approved == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUTHORIZATION_PATH: 00_GOVERNANCE/authorizations/C10S_F5_G7_TIERA_CALIBRATION_AUTHORIZATION.json
+          WORKFLOW_PATH: .github/workflows/c10-s-f5-g7-tiera-calibration-v3.yml
+        run: |
+          set -euo pipefail
+          EXPECTED_WORKFLOW_BLOB="$(python -c 'import json,os; print(json.load(open(os.environ["AUTHORIZATION_PATH"]))["dispatch_workflow_git_blob_sha"])')"
+          ACTUAL_WORKFLOW_BLOB="$(gh api "repos/$GITHUB_REPOSITORY/contents/$WORKFLOW_PATH?ref=main" --jq '.sha')"
+          test -n "$EXPECTED_WORKFLOW_BLOB"
+          test "$ACTUAL_WORKFLOW_BLOB" = "$EXPECTED_WORKFLOW_BLOB"
+      - name: Preserve original and validated one-use authorization evidence
+        if: steps.gate.outputs.approved == 'true'
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-authorization-${{ steps.authorization.outputs.authorization_id }}
+          path: |
+            ${{ runner.temp }}/validated-g7-authorization.json
+            ${{ runner.temp }}/original-g7-authorization.json
+            ${{ runner.temp }}/g7-dispatch-attestation.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Permanently consume authorization on its dedicated branch
+        if: steps.gate.outputs.approved == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUTHORIZATION_ID: ${{ steps.authorization.outputs.authorization_id }}
+          APPROVED_CODE_COMMIT: ${{ steps.authorization.outputs.approved_code_commit }}
+          WORKFLOW_BRANCH: ${{ github.ref_name }}
+          WORKFLOW_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          EVENT_ACTOR: ${{ github.actor }}
+        run: |
+          set -euo pipefail
+          CURRENT_SHA="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$WORKFLOW_BRANCH" --jq '.object.sha')"
+          test "$CURRENT_SHA" = "$WORKFLOW_SHA"
+          MARKER_PATH="00_GOVERNANCE/authorizations/consumed/$AUTHORIZATION_ID.json"
+          mkdir -p "$RUNNER_TEMP/g7-consumption"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          record = {
+              "schema": "TGCV-C10S-G7-AUTHORIZATION-CONSUMED-001",
+              "authorization_id": os.environ["AUTHORIZATION_ID"],
+              "authorization_commit": os.environ["WORKFLOW_SHA"],
+              "approved_code_commit": os.environ["APPROVED_CODE_COMMIT"],
+              "authorization_branch": os.environ["WORKFLOW_BRANCH"],
+              "run_id": int(os.environ["RUN_ID"]),
+              "actor": os.environ["EVENT_ACTOR"],
+              "consumed_by": "GITHUB_ACTIONS_AUTHORIZATION_GATE",
+          }
+          Path(os.environ["RUNNER_TEMP"], "g7-consumption", "consumed.json").write_text(
+              json.dumps(record, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+          )
+          PY
+          gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$MARKER_PATH" \
+            -f message="Consume one-use G7 authorization $AUTHORIZATION_ID" \
+            -f content="$(base64 -w0 "$RUNNER_TEMP/g7-consumption/consumed.json")" \
+            -f branch="$WORKFLOW_BRANCH" > "$RUNNER_TEMP/g7-consumption/create-response.json"
+          CONSUMED_COMMIT="$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["commit"]["sha"])' "$RUNNER_TEMP/g7-consumption/create-response.json")"
+          PARENT_SHA="$(gh api "repos/$GITHUB_REPOSITORY/git/commits/$CONSUMED_COMMIT" --jq '.parents[0].sha')"
+          test "$PARENT_SHA" = "$WORKFLOW_SHA"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$WORKFLOW_BRANCH" --jq '.object.sha')" = "$CONSUMED_COMMIT"
+
+  resource_preflight_validation:
+    needs: authorization
+    if: needs.authorization.outputs.approved == 'true' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      shard_matrix: ${{ steps.plan.outputs.shard_matrix }}
+      resource_profile_sha256: ${{ steps.plan.outputs.resource_profile_sha256 }}
+      datasets_per_shard: ${{ steps.plan.outputs.datasets_per_shard }}
+      estimated_end_to_end_wall_seconds: ${{ steps.plan.outputs.estimated_end_to_end_wall_seconds }}
+    steps:
+      - name: Checkout exact approved research code and history
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ needs.authorization.outputs.approved_code_commit }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+      - name: Download and verify immutable resource-only profile archive
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PROFILE_ARTIFACT_ID: ${{ needs.authorization.outputs.resource_profile_artifact_id }}
+          PROFILE_RUN_ID: ${{ needs.authorization.outputs.resource_profile_run_id }}
+          EXPECTED_REPOSITORY: ${{ github.repository }}
+          EXPECTED_REPOSITORY_ID: ${{ github.repository_id }}
+        run: |
+          set -euo pipefail
+          MANIFEST="03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json"
+          ARCHIVE="$RUNNER_TEMP/resource-profile.zip"
+          METADATA="$RUNNER_TEMP/resource-profile-artifact-metadata.json"
+          mkdir -p "$RUNNER_TEMP/resource-profile"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$PROFILE_ARTIFACT_ID" > "$METADATA"
+          curl --fail --location --silent --show-error \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/artifacts/$PROFILE_ARTIFACT_ID/zip" \
+            --output "$ARCHIVE"
+          python verify_c10s_f5_g7_resource_profile_artifact.py \
+            --archive "$ARCHIVE" \
+            --manifest fixtures/g7_resource_profile_v1_1/manifest.json \
+            --artifact-metadata "$METADATA" \
+            --output-json "$RUNNER_TEMP/verified-resource-profile-artifact.json" \
+            --extract-profile "$RUNNER_TEMP/resource-profile/c10s-f5-g7-resource-profile.json" \
+            --expected-repository "$EXPECTED_REPOSITORY" \
+            --expected-repository-id "$EXPECTED_REPOSITORY_ID"
+      - name: Validate immutable resource profile and derive safe shard matrix
+        id: plan
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          PLAN_JSON: ${{ runner.temp }}/g7-resource-profile-validation.json
+        run: |
+          PROFILE_JSON="$(find "$RUNNER_TEMP/resource-profile" -type f -name 'c10s-f5-g7-resource-profile.json' -print -quit)"
+          test -n "$PROFILE_JSON"
+          python validate_c10s_f5_g7_resource_profile.py \
+            --profile "$PROFILE_JSON" \
+            --manifest ../fixtures/g7_resource_profile_v1_1/manifest.json \
+            --root ../../.. \
+            --output-json "$RUNNER_TEMP/g7-resource-profile-validation.json"
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+          from pathlib import Path
+          data = json.loads(Path(os.environ["PLAN_JSON"]).read_text())
+          print("shard_matrix=" + json.dumps(data["shard_matrix"], separators=(",", ":")))
+          print("resource_profile_sha256=" + data["profile_json_sha256"])
+          print("datasets_per_shard=" + str(data["datasets_per_shard"]))
+          print("estimated_end_to_end_wall_seconds=" + str(data["end_to_end_conservative_wall_seconds"]))
+          PY
+          mkdir -p "$RUNNER_TEMP/g7-resource-plan"
+          cp "$RUNNER_TEMP/g7-resource-profile-validation.json" "$RUNNER_TEMP/g7-resource-plan/"
+          cp "$PROFILE_JSON" "$RUNNER_TEMP/g7-resource-plan/resource-profile.json"
+          cp ../fixtures/g7_resource_profile_v1_1/manifest.json "$RUNNER_TEMP/g7-resource-plan/resource-profile-manifest.json"
+      - name: Upload validated resource plan and immutable profile (no recomputation)
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-resource-plan-${{ needs.authorization.outputs.authorization_id }}
+          path: ${{ runner.temp }}/g7-resource-plan/
+          if-no-files-found: error
+          retention-days: 90
+
+  primary_bank:
+    needs: [authorization, resource_preflight_validation]
+    if: needs.authorization.outputs.approved == 'true' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 165
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: ${{ fromJSON(needs.resource_preflight_validation.outputs.shard_matrix) }}
+    steps:
+      - name: Checkout exact approved research code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ needs.authorization.outputs.approved_code_commit }}
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+      - name: Execute one primary shard
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          GITHUB_SHA: ${{ needs.authorization.outputs.approved_code_commit }}
+          APPROVED_CODE_COMMIT: ${{ needs.authorization.outputs.approved_code_commit }}
+        run: |
+          python execute_c10s_f5_g7_tiera_shard.py \
+            --phase primary \
+            --cell-id "${{ matrix.shard.cell_id }}" \
+            --replicate-start "${{ matrix.shard.replicate_start }}" \
+            --replicate-count "${{ matrix.shard.replicate_count }}" \
+            --source-commit "$APPROVED_CODE_COMMIT" \
+            --output "$RUNNER_TEMP/${{ matrix.shard.cell_id }}-${{ matrix.shard.replicate_start }}.json"
+      - name: Upload immutable primary shard
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-primary-${{ needs.authorization.outputs.authorization_id }}-${{ matrix.shard.cell_id }}-${{ matrix.shard.replicate_start }}
+          path: ${{ runner.temp }}/${{ matrix.shard.cell_id }}-${{ matrix.shard.replicate_start }}.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Create clean source tree for replay on the same runner
+        env:
+          APPROVED_CODE_COMMIT: ${{ needs.authorization.outputs.approved_code_commit }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/g7-clean-replay"
+          git archive "$APPROVED_CODE_COMMIT" | tar -x -C "$RUNNER_TEMP/g7-clean-replay"
+      - name: Execute clean-source replay shard on the primary runner
+        working-directory: ${{ runner.temp }}/g7-clean-replay/03_EXPERIMENTS/C10-S/harness
+        env:
+          GITHUB_SHA: ${{ needs.authorization.outputs.approved_code_commit }}
+          APPROVED_CODE_COMMIT: ${{ needs.authorization.outputs.approved_code_commit }}
+        run: |
+          python execute_c10s_f5_g7_tiera_shard.py \
+            --phase replay \
+            --cell-id "${{ matrix.shard.cell_id }}" \
+            --replicate-start "${{ matrix.shard.replicate_start }}" \
+            --replicate-count "${{ matrix.shard.replicate_count }}" \
+            --source-commit "$APPROVED_CODE_COMMIT" \
+            --output "$RUNNER_TEMP/${{ matrix.shard.cell_id }}-${{ matrix.shard.replicate_start }}-replay.json"
+      - name: Upload immutable replay shard
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-replay-${{ needs.authorization.outputs.authorization_id }}-${{ matrix.shard.cell_id }}-${{ matrix.shard.replicate_start }}
+          path: ${{ runner.temp }}/${{ matrix.shard.cell_id }}-${{ matrix.shard.replicate_start }}-replay.json
+          if-no-files-found: error
+          retention-days: 90
+  final_adjudication:
+    needs: [authorization, resource_preflight_validation, primary_bank]
+    if: needs.authorization.outputs.approved == 'true' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Checkout exact approved research code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ needs.authorization.outputs.approved_code_commit }}
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+      - name: Download all completed primary shards
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: c10s-f5-g7-primary-${{ needs.authorization.outputs.authorization_id }}-*
+          path: ${{ runner.temp }}/g7-shards/primary
+          merge-multiple: true
+      - name: Download all completed replay shards
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: c10s-f5-g7-replay-${{ needs.authorization.outputs.authorization_id }}-*
+          path: ${{ runner.temp }}/g7-shards/replay
+          merge-multiple: true
+      - name: Download validated resource profile plan
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: c10s-f5-g7-resource-plan-${{ needs.authorization.outputs.authorization_id }}
+          path: ${{ runner.temp }}/g7-resource-plan
+      - name: Download original and validated authorization evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: c10s-f5-g7-authorization-${{ needs.authorization.outputs.authorization_id }}
+          path: ${{ runner.temp }}/c10s-f5-g7-tiera/authorization
+      - name: Aggregate, verify exact replay and adjudicate full denominators once
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          GITHUB_SHA: ${{ needs.authorization.outputs.approved_code_commit }}
+        run: |
+          python aggregate_c10s_f5_g7_tiera_shards.py \
+            --primary-dir "$RUNNER_TEMP/g7-shards/primary" \
+            --replay-dir "$RUNNER_TEMP/g7-shards/replay" \
+            --preflight "$RUNNER_TEMP/g7-resource-plan/resource-profile.json" \
+            --preflight-manifest "$RUNNER_TEMP/g7-resource-plan/resource-profile-manifest.json" \
+            --expected-preflight-sha256 "${{ needs.resource_preflight_validation.outputs.resource_profile_sha256 }}" \
+            --output-dir "$RUNNER_TEMP/c10s-f5-g7-tiera" \
+            --source-commit "${{ needs.authorization.outputs.approved_code_commit }}" \
+            --authorization-id "${{ needs.authorization.outputs.authorization_id }}"
+          mkdir -p "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-profile" "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-plan"
+          cp "$RUNNER_TEMP/g7-resource-plan/resource-profile.json" "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-profile/"
+          cp "$RUNNER_TEMP/g7-resource-plan/resource-profile-manifest.json" "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-profile/"
+          cp "$RUNNER_TEMP/g7-resource-plan/g7-resource-profile-validation.json" "$RUNNER_TEMP/c10s-f5-g7-tiera/resource-plan/"
+      - name: Upload final G7 result and immutable bank artifacts
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-tiera-${{ needs.authorization.outputs.authorization_id }}-${{ needs.authorization.outputs.approved_code_commit }}
+          path: ${{ runner.temp }}/c10s-f5-g7-tiera/
+          if-no-files-found: warn
+          retention-days: 90
