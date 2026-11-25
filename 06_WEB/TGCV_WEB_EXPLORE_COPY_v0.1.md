@@ -73,6 +73,8 @@ No son afirmaciones equivalentes. Conviene mantener visible una distinción cent
 
 **Accesibilidad → Ejecución → Resultado → Valor**
 
+Esta secuencia organiza niveles de análisis; no es una explicación causal completa ni sustituye el análisis de las condiciones, los mecanismos y las trayectorias concretas del sistema.
+
 - **Accesibilidad:** la transformación está al alcance del sistema bajo los límites y las condiciones consideradas. No significa que se haya realizado.
 - **Ejecución:** el sistema realiza efectivamente la transformación.
 - **Resultado:** el estado o efecto que se produce como consecuencia de la ejecución.
@@ -203,6 +205,8 @@ Imagine that the operation is now within the reach of environment B. What can we
 These are not equivalent claims. One distinction should remain clearly visible:
 
 **Accessibility → Execution → Outcome → Value**
+
+This sequence organises analytical distinctions; it is not a complete causal explanation and does not replace analysis of the system's specific conditions, mechanisms and trajectories.
 
 - **Accessibility:** the transformation is within the system's reach under the boundary and conditions being considered. This does not mean it has been performed.
 - **Execution:** the system actually performs the transformation.
