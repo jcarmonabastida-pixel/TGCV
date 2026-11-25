@@ -123,58 +123,28 @@ El propósito es desarrollar la capacidad de un sistema para construir valor de 
 
 Su ciclo operativo se articula en seis fases, precedidas por una condición de alineamiento y gobernanza:
 
-<box border radius="lg" padding={3} gap={3}>
-  <box background="surface-secondary" radius="md" padding={3} gap={1}>
-    **ALIGN — Alinear valor**
+**ALIGN — Alinear valor**  
+Acordar qué valor se busca, para quién, con qué alcance, criterios, restricciones y responsabilidad de decisión.
 
-    <text color="secondary" size="sm">Acordar qué valor se busca, para quién, con qué alcance, criterios, restricciones y responsabilidad de decisión.</text>
-  </box>
-  <grid columns={2} gap={2}>
-    <grid-item>
-      <box border radius="md" padding={2} gap={1}>
-        **SENSE — Descubrir**
+**SENSE — Descubrir**  
+Comprender qué ocurre y qué oportunidad merece atención.
 
-        <text color="secondary" size="sm">Comprender qué ocurre y qué oportunidad merece atención.</text>
-      </box>
-    </grid-item>
-    <grid-item>
-      <box border radius="md" padding={2} gap={1}>
-        **CONNECT — Integrar**
+**CONNECT — Integrar**  
+Comprender el sistema y conectar el conocimiento relevante.
 
-        <text color="secondary" size="sm">Comprender el sistema y conectar el conocimiento relevante.</text>
-      </box>
-    </grid-item>
-    <grid-item>
-      <box border radius="md" padding={2} gap={1}>
-        **DESIGN — Diseñar**
+**DESIGN — Diseñar**  
+Explorar alternativas e hipótesis de valor.
 
-        <text color="secondary" size="sm">Explorar alternativas e hipótesis de valor.</text>
-      </box>
-    </grid-item>
-    <grid-item>
-      <box border radius="md" padding={2} gap={1}>
-        **DECIDE — Decidir**
+**DECIDE — Decidir**  
+Elegir el siguiente paso que la evidencia permite justificar.
 
-        <text color="secondary" size="sm">Elegir el siguiente paso que la evidencia permite justificar.</text>
-      </box>
-    </grid-item>
-    <grid-item>
-      <box border radius="md" padding={2} gap={1}>
-        **ACT — Actuar**
+**ACT — Actuar**  
+Ejecutar y facilitar la adopción de lo que ha sido autorizado.
 
-        <text color="secondary" size="sm">Ejecutar y facilitar la adopción de lo que ha sido autorizado.</text>
-      </box>
-    </grid-item>
-    <grid-item>
-      <box border radius="md" padding={2} gap={1}>
-        **LEARN — Aprender**
+**LEARN — Aprender**  
+Revisar resultados y renovar el siguiente ciclo.
 
-        <text color="secondary" size="sm">Revisar resultados y renovar el siguiente ciclo.</text>
-      </box>
-    </grid-item>
-  </grid>
-  <text color="secondary" size="xs">Esquema del ciclo operativo VCF. ALIGN es la condición de entrada y gobernanza; las fases pueden revisitarse y no obligan a avanzar cuando la evidencia es insuficiente.</text>
-</box>
+ALIGN es la condición de entrada y gobernanza; las seis fases constituyen el ciclo operativo VCF. Las fases pueden revisitarse y no obligan a avanzar cuando la evidencia es insuficiente.
 
 El framework se apoya en registros conectados que ayudan a mantener la trazabilidad entre intención, oportunidad, comprensión del sistema, alternativas, evidencia, decisiones, planes y aprendizaje. No son ocho fases adicionales ni un conjunto de formularios que deban cumplimentarse mecánicamente. Su función es conservar el razonamiento, las fuentes, las decisiones y los cambios a lo largo del trabajo.
 
@@ -360,58 +330,28 @@ The aim is to develop a system's ability to construct value deliberately and lea
 
 Its operating cycle consists of six phases, preceded by an alignment and governance condition:
 
-<box border radius="lg" padding={3} gap={3}>
-  <box background="surface-secondary" radius="md" padding={3} gap={1}>
-    **ALIGN — Align value**
+**ALIGN — Align value**  
+Agree on the value sought, for whom, within what scope, criteria and constraints, and with whose decision responsibility.
 
-    <text color="secondary" size="sm">Agree on the value sought, for whom, within what scope, criteria and constraints, and with whose decision responsibility.</text>
-  </box>
-  <grid columns={2} gap={2}>
-    <grid-item>
-      <box border radius="md" padding={2} gap={1}>
-        **SENSE — Discover**
+**SENSE — Discover**  
+Understand what is happening and which opportunity deserves attention.
 
-        <text color="secondary" size="sm">Understand what is happening and which opportunity deserves attention.</text>
-      </box>
-    </grid-item>
-    <grid-item>
-      <box border radius="md" padding={2} gap={1}>
-        **CONNECT — Integrate**
+**CONNECT — Integrate**  
+Understand the system and connect relevant knowledge.
 
-        <text color="secondary" size="sm">Understand the system and connect relevant knowledge.</text>
-      </box>
-    </grid-item>
-    <grid-item>
-      <box border radius="md" padding={2} gap={1}>
-        **DESIGN — Design**
+**DESIGN — Design**  
+Explore alternatives and value hypotheses.
 
-        <text color="secondary" size="sm">Explore alternatives and value hypotheses.</text>
-      </box>
-    </grid-item>
-    <grid-item>
-      <box border radius="md" padding={2} gap={1}>
-        **DECIDE — Decide**
+**DECIDE — Decide**  
+Choose the next step that the evidence can justify.
 
-        <text color="secondary" size="sm">Choose the next step that the evidence can justify.</text>
-      </box>
-    </grid-item>
-    <grid-item>
-      <box border radius="md" padding={2} gap={1}>
-        **ACT — Act**
+**ACT — Act**  
+Execute and support the adoption of what has been authorised.
 
-        <text color="secondary" size="sm">Execute and support the adoption of what has been authorised.</text>
-      </box>
-    </grid-item>
-    <grid-item>
-      <box border radius="md" padding={2} gap={1}>
-        **LEARN — Learn**
+**LEARN — Learn**  
+Review outcomes and renew the next cycle.
 
-        <text color="secondary" size="sm">Review outcomes and renew the next cycle.</text>
-      </box>
-    </grid-item>
-  </grid>
-  <text color="secondary" size="xs">Overview of the VCF operating cycle. ALIGN is the entry and governance condition; phases may be revisited and do not require progression when evidence is insufficient.</text>
-</box>
+ALIGN is the entry and governance condition; the six phases form the VCF operating cycle. Phases may be revisited and do not require progression when evidence is insufficient.
 
 The framework is supported by connected records that preserve traceability across intent, opportunity, system understanding, alternatives, evidence, decisions, plans and learning. These are not eight additional phases or forms to be completed mechanically. Their purpose is to retain the reasoning, sources, decisions and changes throughout the work.
 
