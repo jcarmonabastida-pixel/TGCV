@@ -55,6 +55,7 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
         or profile.get("C0_B") != g7.C0_B
         or profile.get("C5_B") != g7.C5_B
         or profile.get("coverage_adjudication") != "NOT_PERFORMED"
+        or profile.get("source_commit") != source_commit
     ):
         raise ValueError("G7_RESOURCE_PROFILE_PROTOCOL_MISMATCH")
     if profile.get("wall_elapsed_seconds", JOB_BUDGET_SECONDS + 1) > JOB_BUDGET_SECONDS:
@@ -70,27 +71,20 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
         if not all(isinstance(latency.get(key), (int, float)) and latency[key] > 0 for key in ("mean", "p95", "p99", "max")):
             raise ValueError(f"G7_RESOURCE_PROFILE_LATENCY_SUMMARY_INVALID:{cell_id}")
 
-    # Derive a stable compute-path identity from the current immutable Git tree.
+    # Compare compute-path manifests generated from immutable Git trees.
     current_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
-    source_manifests = build_manifests(root, current_commit)
-    compute_manifest = source_manifests["compute_path"]
-    if tuple(item["path"] for item in compute_manifest["entries"]) != PROFILE_SOURCE_PATHS:
+    current_compute = build_manifests(root, current_commit, roles=("compute_path",))["compute_path"]
+    measured_compute = build_manifests(root, source_commit, roles=("compute_path",))["compute_path"]
+    if tuple(item["path"] for item in current_compute["entries"]) != PROFILE_SOURCE_PATHS:
         raise ValueError("G7_COMPUTE_PATH_INVENTORY_MANIFEST_MISMATCH")
-
-    # The resource sample is reusable only while the measured compute path is byte-identical.
     ancestor = subprocess.run(
         ["git", "merge-base", "--is-ancestor", source_commit, "HEAD"],
         cwd=root, check=False,
     )
     if ancestor.returncode != 0:
         raise ValueError("G7_RESOURCE_PROFILE_SOURCE_NOT_ANCESTOR")
-    for relative in PROFILE_SOURCE_PATHS:
-        previous = subprocess.check_output(
-            ["git", "show", f"{source_commit}:{relative}"], cwd=root
-        )
-        current = (root / relative).read_bytes()
-        if sha256_bytes(previous) != sha256_bytes(current):
-            raise ValueError(f"G7_RESOURCE_PROFILE_COMPUTE_PATH_CHANGED:{relative}")
+    if measured_compute["content_sha256"] != current_compute["content_sha256"]:
+        raise ValueError("G7_RESOURCE_PROFILE_COMPUTE_PATH_CHANGED")
 
     # Use the worst observed per-dataset latency, not only the mean or p95.
     max_observed_dataset_seconds = max(
@@ -203,7 +197,8 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
     )
     return {
         "schema": "TGCV-C10S-F5-G7-RESOURCE-PROFILE-VALIDATION-001",
-        "compute_path_manifest_sha256": compute_manifest["root_sha256"],
+        "compute_path_manifest_sha256": current_compute["root_sha256"],
+        "compute_path_content_sha256": current_compute["content_sha256"],
         "profile_run_id": manifest["profile_run_id"],
         "profile_source_commit": source_commit,
         "profile_json_sha256": profile_sha,

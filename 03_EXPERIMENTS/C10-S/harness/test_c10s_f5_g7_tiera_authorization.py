@@ -44,7 +44,7 @@ class F5G7AuthorizationTests(unittest.TestCase):
         compute = inventory.compute_path_paths()
         execution = inventory.execution_source_hash_paths()
         self.assertEqual(len(compute), 12)
-        self.assertEqual(len(execution), 32)
+        self.assertEqual(len(execution), 34)
         self.assertEqual(len(rows), len({row["path"] for row in rows}))
         self.assertTrue(all("compute_path" in row["roles"] for row in rows if row["path"] in compute))
         self.assertEqual(set(execution.values()), {row["path"] for row in rows if "execution_source" in row["roles"]})
@@ -69,7 +69,7 @@ class F5G7AuthorizationTests(unittest.TestCase):
             second = inventory.build_manifests(root, commit1)
             self.assertEqual(first, second)
             self.assertEqual(len(first["compute_path"]["entries"]), 12)
-            self.assertEqual(len(first["execution_source"]["entries"]), 32)
+            self.assertEqual(len(first["execution_source"]["entries"]), 34)
             changed_path = first["compute_path"]["entries"][0]["path"]
             (root / changed_path).write_text("changed", encoding="utf-8")
             subprocess.run(["git", "add", changed_path], cwd=root, check=True)
@@ -78,6 +78,29 @@ class F5G7AuthorizationTests(unittest.TestCase):
             changed = inventory.build_manifests(root, commit2)
             self.assertNotEqual(first["compute_path"]["root_sha256"], changed["compute_path"]["root_sha256"])
             self.assertNotEqual(first["execution_source"]["root_sha256"], changed["execution_source"]["root_sha256"])
+
+    def test_execution_manifest_rejects_stale_hashes_and_unbound_inventory(self):
+        from validate_c10s_f5_g7_tiera_authorization import validate_source_manifest_hashes
+        import c10s_f5_g7_source_inventory as inventory
+        rows = inventory.load_inventory()["paths"]
+        self.assertIn("03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_source_inventory.json",
+                      {row["path"] for row in rows if "execution_source" in row["roles"]})
+        self.assertIn("03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_source_inventory.py",
+                      {row["path"] for row in rows if "execution_source" in row["roles"]})
+        entries = [{"path": path, "sha256": "a" * 64} for path in validator.SOURCE_HASH_PATHS.values()]
+        execution = {"root_sha256": "b" * 64, "entries": entries}
+        compute = {"content_sha256": "c" * 64}
+        source_manifests = {"execution_source": execution, "compute_path": compute}
+        valid = {key: "a" * 64 for key in validator.SOURCE_HASH_PATHS}
+        valid.update({"execution_source_manifest_sha256": "b" * 64, "compute_path_content_sha256": "c" * 64})
+        validate_source_manifest_hashes(valid, source_manifests)
+        stale = dict(valid)
+        stale[next(iter(validator.SOURCE_HASH_PATHS))] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "immutable Git tree"):
+            validate_source_manifest_hashes(stale, source_manifests)
+        stale_inventory = dict(valid, execution_source_manifest_sha256="0" * 64)
+        with self.assertRaisesRegex(ValueError, "execution_source_manifest_sha256"):
+            validate_source_manifest_hashes(stale_inventory, source_manifests)
 
     def test_source_inventory_rejects_duplicate_or_unclassified_paths(self):
         import c10s_f5_g7_source_inventory as inventory

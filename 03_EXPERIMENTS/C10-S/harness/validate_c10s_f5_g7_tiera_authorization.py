@@ -35,6 +35,22 @@ def git(*args: str) -> str:
     return subprocess.check_output(["git", *args], text=True).strip()
 
 
+def validate_source_manifest_hashes(auth: dict, source_manifests: dict) -> None:
+    compute_manifest = source_manifests["compute_path"]
+    execution_manifest = source_manifests["execution_source"]
+    execution_hashes = {item["path"]: item["sha256"] for item in execution_manifest["entries"]}
+    expected_paths = set(SOURCE_HASH_PATHS.values())
+    if set(execution_hashes) != expected_paths:
+        raise ValueError("execution source inventory and manifest path set mismatch")
+    if auth.get("execution_source_manifest_sha256") != execution_manifest["root_sha256"]:
+        raise ValueError("execution_source_manifest_sha256 mismatch")
+    if auth.get("compute_path_content_sha256") != compute_manifest["content_sha256"]:
+        raise ValueError("compute_path_content_sha256 mismatch")
+    for key, relative in SOURCE_HASH_PATHS.items():
+        if auth.get(key) != execution_hashes.get(relative):
+            raise ValueError(f"{key} mismatch for immutable Git tree path {relative}")
+
+
 def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
     if not branch.startswith(BRANCH_PREFIX):
         raise ValueError("dedicated F5 G7 authorization branch required")
@@ -105,14 +121,14 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
     changed = git("diff-tree", "--no-commit-id", "--name-only", "-r", workflow_commit).splitlines()
     if changed != [AUTH_PATH]:
         raise ValueError("authorization commit may change only the G7 authorization JSON")
-    source_manifests = build_manifests(root, workflow_commit)
+    # The authorization commit changes only the authorization JSON. Bind all source
+    # identities to its immutable approved-code parent to avoid a self-referential digest.
+    source_manifests = build_manifests(root, code_commit)
+    validate_source_manifest_hashes(auth, source_manifests)
     execution_manifest = source_manifests["execution_source"]
-    execution_hashes = {item["path"]: item["sha256"] for item in execution_manifest["entries"]}
-    for key, relative in SOURCE_HASH_PATHS.items():
-        if auth.get(key) != sha256_file(root / relative):
-            raise ValueError(f"{key} mismatch for {relative}")
     return {
         "execution_source_manifest_sha256": execution_manifest["root_sha256"],
+        "compute_path_content_sha256": source_manifests["compute_path"]["content_sha256"],
         "authorization_id": authorization_id,
         "authorization_sha256": sha256_file(path),
         "approved_code_commit": code_commit,

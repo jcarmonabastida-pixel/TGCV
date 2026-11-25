@@ -76,18 +76,18 @@ class F5G7ResourceProfileTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            for relative in validator.PROFILE_SOURCE_PATHS:
-                target = root / relative
-                target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes(b"frozen-compute-path")
             profile_path = root / "profile.json"
             staged_manifest_path = root / "manifest.json"
             profile_path.write_bytes(profile_bytes)
             staged_manifest_path.write_bytes(manifest_bytes)
+            fake_entries = [{"path": path, "sha256": "a" * 64} for path in validator.PROFILE_SOURCE_PATHS]
+            fake_manifest = {"entries": fake_entries, "root_sha256": "b" * 64, "content_sha256": "c" * 64}
             with patch.object(
                 validator.subprocess, "run", return_value=SimpleNamespace(returncode=0)
             ), patch.object(
                 validator.subprocess, "check_output", return_value=b"frozen-compute-path"
+            ), patch.object(
+                validator, "build_manifests", return_value={"compute_path": fake_manifest}
             ):
                 result = validator.validate(profile_path, staged_manifest_path, root)
 
@@ -232,35 +232,40 @@ class F5G7ResourceProfileTests(unittest.TestCase):
 
 
     def test_real_git_repository_ancestry_and_compute_path_identity(self):
+        import c10s_f5_g7_source_inventory as inventory
         fixture_dir = Path(__file__).resolve().parents[1] / "fixtures" / "g7_resource_profile_v1_1"
         profile_zip = base64.b64decode((fixture_dir / "profile_artifact.zip.b64").read_text(encoding="ascii"))
         with zipfile.ZipFile(io.BytesIO(profile_zip)) as archive:
-            profile_bytes = archive.read("c10s-f5-g7-resource-profile.json")
+            profile = json.loads(archive.read("c10s-f5-g7-resource-profile.json"))
         original_manifest = json.loads((fixture_dir / "manifest.json").read_text(encoding="utf-8"))
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             subprocess.run(["git", "init", "-q"], cwd=root, check=True)
             subprocess.run(["git", "config", "user.email", "tgcv-test@example.invalid"], cwd=root, check=True)
             subprocess.run(["git", "config", "user.name", "TGCV integration test"], cwd=root, check=True)
-            for relative in validator.PROFILE_SOURCE_PATHS:
-                target = root / relative
+            for row in inventory.load_inventory()["paths"]:
+                target = root / row["path"]
                 target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes(("frozen:" + relative).encode("utf-8"))
+                target.write_bytes(("frozen:" + row["path"]).encode("utf-8"))
             subprocess.run(["git", "add", "."], cwd=root, check=True)
             subprocess.run(["git", "commit", "-qm", "profile source snapshot"], cwd=root, check=True)
             source_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
-            (root / "unrelated.txt").write_text("descendant", encoding="utf-8")
-            subprocess.run(["git", "add", "unrelated.txt"], cwd=root, check=True)
-            subprocess.run(["git", "commit", "-qm", "descendant execution snapshot"], cwd=root, check=True)
-            manifest = dict(original_manifest)
-            manifest["profile_source_commit"] = source_commit
+            profile["source_commit"] = source_commit
+            profile_bytes = json.dumps(profile, sort_keys=True, indent=2).encode("utf-8")
+            manifest = dict(original_manifest, profile_source_commit=source_commit,
+                            profile_json_sha256=hashlib.sha256(profile_bytes).hexdigest())
             profile_path, manifest_path = root / "profile.json", root / "manifest.json"
             profile_path.write_bytes(profile_bytes)
             manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            (root / "unrelated.txt").write_text("descendant", encoding="utf-8")
+            subprocess.run(["git", "add", "unrelated.txt"], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-qm", "descendant execution snapshot"], cwd=root, check=True)
             result = validator.validate(profile_path, manifest_path, root)
             self.assertEqual(result["profile_json_sha256"], hashlib.sha256(profile_bytes).hexdigest())
             changed = root / validator.PROFILE_SOURCE_PATHS[0]
             changed.write_bytes(b"modified compute path")
+            subprocess.run(["git", "add", str(changed.relative_to(root))], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-qm", "compute path drift"], cwd=root, check=True)
             with self.assertRaisesRegex(ValueError, "COMPUTE_PATH_CHANGED"):
                 validator.validate(profile_path, manifest_path, root)
 

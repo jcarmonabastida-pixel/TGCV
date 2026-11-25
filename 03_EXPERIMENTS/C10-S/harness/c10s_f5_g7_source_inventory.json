@@ -89,6 +89,20 @@
       "authorization_hash_key": "shard_execution_sha256"
     },
     {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_source_inventory.json",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "source_inventory_json_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_source_inventory.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "source_inventory_module_sha256"
+    },
+    {
       "path": "03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py",
       "roles": [
         "compute_path",
