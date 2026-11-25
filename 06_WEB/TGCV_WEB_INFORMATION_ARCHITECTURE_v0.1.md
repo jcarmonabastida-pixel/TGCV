@@ -571,9 +571,10 @@ The approved top-level navigation is:
 2. **Research** — TGCV, research questions, methods, experiments, evidence and limits.
 3. **Systems Engineering** — engineering practices and their relation to the TGCV research object.
 4. **Transformational Intelligence** — working capability concept, functional dimensions, distinction from AI and open questions.
-5. **Labs & Applications** — bounded demonstrators, synthetic methodological work and exploratory application contexts.
-6. **About** — purpose, scope, governance and accurate programme context.
-7. **Contact** — only a real, monitored contact route with proportionate privacy information.
+5. **Value Construction** — VALUE as an applied framework complementary to TGCV, its lifecycle and a clearly labelled fictional clinic case.
+6. **Labs & Applications** — bounded demonstrators, synthetic methodological work and exploratory application contexts.
+7. **About** — purpose, scope, governance and accurate programme context.
+8. **Contact** — only a real, monitored contact route with proportionate privacy information.
 
 Systems Thinking is transversal, not a separate first-release page: introduce it on Home, explain its role in Explore and develop its methods/foundations in Research. Do not retain Community as a top-level first-release destination. Do not publish empty destinations.
 
@@ -818,3 +819,7 @@ Do not assume these versions remain current when development begins. Recheck exa
 - Synchronises the approved first-release navigation with the new Value Construction destination and its position after Transformational Intelligence.
 - Updates Home's Experience and Copy authorities to v1.5 and v1.2.
 - Makes the public ecosystem map a Home-level explanatory element and preserves the distinctions among TGCV, VALUE, ValueLabOS and Labs & Applications.
+
+
+### v2.3 — 2026-11-25
+- Corrects the authoritative first-release navigation list to include Value Construction between Transformational Intelligence and Labs & Applications.
