@@ -197,7 +197,7 @@ La suite se ejecuta en una sola validación determinista sobre el commit integra
 | RG-06 | Overhead medido o declarado como reserva; sensibilidad no excede presupuesto | CONDITIONAL si solo reserva |
 | RG-07 | Extrapolación defendible o declarada condicional con límite de uso | CONDITIONAL; no afirmar garantía |
 
-**Cierre del gate instrumental para G7:** RG-01…RG-05 deben estar PASS. RG-06/RG-07 deben tener evaluación documentada y la proyección debe satisfacer los límites bajo los escenarios aceptados. RG-04 NOT_VERIFIABLE bloquea toda ejecución. Un PASS de la suite determinista no reemplaza la verificación de la protección real del environment.
+**Cierre del gate instrumental para G7:** RG-01…RG-05 deben estar PASS. RG-06/RG-07 deben tener evaluación documentada y la proyección debe satisfacer los límites bajo los escenarios aceptados. RG-04 bloquea toda ejecución si no puede verificarse el actor propietario, el dispatch manual, el alcance literal, la atestación o la identidad del commit. Un PASS determinista no sustituye una autorización explícita para el run concreto.
 
 ## 9. Preservación de gobernanza y alcance
 
@@ -206,7 +206,7 @@ La suite se ejecuta en una sola validación determinista sobre el commit integra
 - No modificar contratos científicos, DGP, estimandos, thresholds, seed bank ni adjudicador.
 - No ejecutar G7, holdout, cobertura, bootstrap confirmatorio, replay científico ni Tier-A.
 - No repetir el perfil resource-only existente.
-- Cualquier nueva ejecución científica requiere aprobación de deployment verificable y confirmación de que el SHA y alcance coinciden exactamente con esta especificación.
+- Cualquier nueva ejecución G7 requiere un dispatch manual explícito del propietario sobre la rama/commit de autorización de un solo uso, confirmación literal del alcance y validación técnica satisfactoria. Este cambio de mecanismo no equivale a emitir ahora esa autorización.
 
 
 ## 10. Adjudicación RG-06/RG-07 con evidencia persistida
@@ -254,7 +254,7 @@ Con K=100 observaciones IID, la probabilidad de que el máximo muestral supere e
 
 ### 10.3 Límite de uso
 
-RG-06 y RG-07 quedan evaluados con evidencia existente, pero no autorizan ejecución. RG-04 continúa bloqueante mientras la protección efectiva del GitHub Environment no pueda verificarse. El estado RG-02 y RG-05 se actualiza en las subsecciones 10.4 y 10.5, a partir de la descarga productiva del artefacto y de la validación integrada posterior a esta adjudicación.
+RG-06 y RG-07 quedan evaluados con evidencia existente, pero no autorizan ejecución. RG-04 continúa bloqueante hasta validar determinísticamente el nuevo mecanismo de dispatch y atestación. El estado RG-02 y RG-05 se actualiza en las subsecciones 10.4 y 10.5, a partir de la descarga productiva del artefacto y de la validación integrada posterior a esta adjudicación.
 
 ### 10.4 RG-02 — verificación material del artefacto productivo
 
@@ -286,7 +286,7 @@ La suite de validación del run `45550608608`, commit `60c34a17606627a62c7f0db20
 | RG-01 | PASS determinista | Contrato de nombre y descubrimiento alineado |
 | RG-02 | PASS | ZIP productivo descargado; hashes ZIP/JSON coincidentes; verificación integrada 8/8 |
 | RG-03 | PASS determinista | Identidad Git / compute path |
-| RG-04 | NOT_VERIFIABLE — BLOQUEANTE | El workflow ahora exige reviewers obligatorios y `prevent_self_review=true`; falta comprobar la configuración efectiva del Environment en Settings |
+| RG-04 | IMPLEMENTADO EN CÓDIGO; VALIDACIÓN PENDIENTE | Dispatch manual del propietario, confirmación literal y atestación; se elimina la dependencia de Environment/reviewers |
 | RG-05 | PASS | Inventario tipado único; cobertura integrada 8/8 |
 | RG-06 | CONDITIONAL | 300 s/fase es reserva de ingeniería; margen calculado de 36,107 s frente a 9.000 s |
 | RG-07 | CONDITIONAL | K=100 no garantiza la cola ni el máximo futuro; proyección de scheduling condicionada |
