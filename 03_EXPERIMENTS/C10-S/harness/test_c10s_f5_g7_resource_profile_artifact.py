@@ -26,7 +26,11 @@ class ResourceProfileArtifactVerificationTests(unittest.TestCase):
             archive, manifest_path, metadata_path = root / "profile.zip", root / "manifest.json", root / "metadata.json"
             archive.write_bytes(self.archive_bytes if archive_bytes is None else archive_bytes)
             manifest_path.write_text(json.dumps(self.manifest if manifest is None else manifest), encoding="utf-8")
-            metadata_path.write_text(json.dumps(self.metadata if metadata is None else metadata), encoding="utf-8")
+            effective_manifest = self.manifest if manifest is None else manifest
+            effective_metadata = dict(self.metadata if metadata is None else metadata)
+            if metadata is None:
+                effective_metadata["digest"] = "sha256:" + effective_manifest["profile_artifact_archive_sha256"]
+            metadata_path.write_text(json.dumps(effective_metadata), encoding="utf-8")
             return verifier.verify(archive, manifest_path, metadata_path, "jcarmonabastida-pixel/TGCV")[0]
 
     def test_accepts_original_immutable_profile_artifact(self):
