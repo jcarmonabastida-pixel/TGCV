@@ -73,8 +73,8 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
 
     # Compare compute-path manifests generated from immutable Git trees.
     current_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
-    current_compute = build_manifests(root, current_commit, roles=("compute_path",))["compute_path"]
-    measured_compute = build_manifests(root, source_commit, roles=("compute_path",))["compute_path"]
+    current_compute = build_manifests(root, current_commit, roles=("compute_path",), inventory_commit=current_commit)["compute_path"]
+    measured_compute = build_manifests(root, source_commit, roles=("compute_path",), inventory_commit=current_commit)["compute_path"]
     if tuple(item["path"] for item in current_compute["entries"]) != PROFILE_SOURCE_PATHS:
         raise ValueError("G7_COMPUTE_PATH_INVENTORY_MANIFEST_MISMATCH")
     ancestor = subprocess.run(

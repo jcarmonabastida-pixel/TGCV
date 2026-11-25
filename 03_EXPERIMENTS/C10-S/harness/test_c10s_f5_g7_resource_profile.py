@@ -243,10 +243,17 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             subprocess.run(["git", "init", "-q"], cwd=root, check=True)
             subprocess.run(["git", "config", "user.email", "tgcv-test@example.invalid"], cwd=root, check=True)
             subprocess.run(["git", "config", "user.name", "TGCV integration test"], cwd=root, check=True)
+            repo_root = Path(__file__).resolve().parents[3]
             for row in inventory.load_inventory()["paths"]:
                 target = root / row["path"]
                 target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes(("frozen:" + row["path"]).encode("utf-8"))
+                if row["path"] in {
+                    "03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_source_inventory.json",
+                    "03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_source_inventory.py",
+                }:
+                    target.write_bytes((repo_root / row["path"]).read_bytes())
+                else:
+                    target.write_bytes(("frozen:" + row["path"]).encode("utf-8"))
             subprocess.run(["git", "add", "."], cwd=root, check=True)
             subprocess.run(["git", "commit", "-qm", "profile source snapshot"], cwd=root, check=True)
             source_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()

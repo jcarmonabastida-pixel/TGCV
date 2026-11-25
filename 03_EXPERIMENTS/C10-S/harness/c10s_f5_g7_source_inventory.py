@@ -7,6 +7,8 @@ import subprocess
 from pathlib import Path
 
 INVENTORY_PATH = Path(__file__).with_name("c10s_f5_g7_source_inventory.json")
+INVENTORY_RELATIVE_PATH = "03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_source_inventory.json"
+MODULE_RELATIVE_PATH = "03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_source_inventory.py"
 VALID_ROLES = {"compute_path", "execution_source"}
 
 
@@ -57,13 +59,29 @@ def _canonical_digest(payload: dict) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
-def build_manifests(root: Path, commit: str, roles: tuple[str, ...] = ("compute_path", "execution_source")) -> dict:
+def build_manifests(
+    root: Path,
+    commit: str,
+    roles: tuple[str, ...] = ("compute_path", "execution_source"),
+    inventory_commit: str | None = None,
+) -> dict:
     """Derive typed identity manifests from immutable Git tree blobs, never the working tree."""
     if not isinstance(commit, str) or len(commit) != 40 or any(ch not in "0123456789abcdef" for ch in commit):
         raise ValueError("G7_SOURCE_INVENTORY_COMMIT_INVALID")
     if not roles or not set(roles) <= VALID_ROLES:
         raise ValueError("G7_SOURCE_INVENTORY_ROLES_INVALID")
-    data = load_inventory()
+    inventory_commit = inventory_commit or commit
+    if not isinstance(inventory_commit, str) or len(inventory_commit) != 40 or any(ch not in "0123456789abcdef" for ch in inventory_commit):
+        raise ValueError("G7_SOURCE_INVENTORY_COMMIT_INVALID")
+    # The role definitions and the generator must themselves match the selected
+    # inventory commit; older resource-profile commits are checked against the
+    # current approved inventory snapshot, not a file that did not yet exist.
+    for relative in (INVENTORY_RELATIVE_PATH, MODULE_RELATIVE_PATH):
+        expected = subprocess.check_output(["git", "show", f"{inventory_commit}:{relative}"], cwd=root)
+        actual = (root / relative).read_bytes()
+        if actual != expected:
+            raise ValueError(f"G7_SOURCE_INVENTORY_WORKTREE_MISMATCH:{relative}")
+    data = load_inventory(root / INVENTORY_RELATIVE_PATH)
     tracked = set(subprocess.check_output(
         ["git", "ls-tree", "-r", "--name-only", commit], cwd=root, text=True
     ).splitlines())
