@@ -787,3 +787,4 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Updates current parent references to Home Copy v1.4, Research Copy v0.9 and Transformational Intelligence Copy v0.2.
 - Aligns the Home ecosystem map across Spanish and English, corrects a duplicated English heading, aligns the Research evidence-portfolio overview across languages and refreshes Transformational Intelligence editorial references.
 - Records that the Research description of Core S and analytical T_acc is consistent with canonical RMA v3.38; no scientific artifact or claim is modified.
+- Adds `TGCV_WEB_INTEGRATED_EDITORIAL_REVIEW_v0.1.md` as the review record and publication-gate reference.
