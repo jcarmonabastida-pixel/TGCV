@@ -204,3 +204,51 @@ La suite se ejecuta en una sola validación determinista sobre el commit integra
 - No ejecutar G7, holdout, cobertura, bootstrap confirmatorio, replay científico ni Tier-A.
 - No repetir el perfil resource-only existente.
 - Cualquier nueva ejecución científica requiere aprobación de deployment verificable y confirmación de que el SHA y alcance coinciden exactamente con esta especificación.
+
+
+## 10. Adjudicación RG-06/RG-07 con evidencia persistida
+
+Esta actualización utiliza exclusivamente el artefacto resource-only ya existente; no se ha repetido el perfil ni se han ejecutado datasets nuevos.
+
+**Fuente de tiempos:** run 45365559253, artifact 14908914198, source commit 8b62b89a78681cc39bdd4c0cbb76c43ef073c1e9, K=100 por celda, B=1.000, coverage_adjudication=NOT_PERFORMED. El ZIP original y el JSON extraído se verificaron contra sus dos SHA-256 canónicos. El perfil registra 20 shards, 200 datasets y 2.600,725 s de wall time del propio perfil resource-only.
+
+### 10.1 RG-06 — overhead
+
+Los logs de tres shards existentes del mismo entorno Ubuntu 24.04/pinned Python muestran desde el primer registro del runner hasta el inicio del cálculo:
+
+| Job | Inicio del runner | Inicio del cálculo | Setup observado |
+|---|---:|---:|---:|
+| 138346242310 | 09:28:42.716 | 09:29:02.772 | 20,055 s |
+| 138346242252 | 09:28:42.714 | 09:28:59.352 | 16,638 s |
+| 138346242265 | 09:28:42.849 | 09:29:04.544 | 21,695 s |
+
+En los jobs de agregación y empaquetado, la descarga del artefacto existente duró 0,591 s (138370192179) y 0,451 s (138370455491). Estas medidas incluyen el flujo de perfilado resource-only, no constituyen una medición directa de todos los pasos del futuro workflow G7.
+
+El allowance de **300 s por fase** es una reserva de ingeniería, no una constante medida. Es aproximadamente 13,8 veces el mayor intervalo runner→cálculo observado en esta muestra. Con shard size 10 y el máximo observado de la celda lenta (418,194638 s/dataset), el job pareado primary+replay se proyecta en **8.963,893 s (149,398 min)**, solo **36,107 s** por debajo del presupuesto de 9.000 s.
+
+| Reserva por fase | Job pareado lento | ¿Dentro de 9.000 s? |
+|---:|---:|---|
+| 300 s | 8.963,893 s (149,398 min) | Sí, margen 36,107 s |
+| 600 s | 9.563,893 s (159,398 min) | No |
+| 900 s | 10.163,893 s (169,398 min) | No |
+
+**Estado RG-06: CONDITIONAL.** La reserva de 300 s está respaldada como holgada frente al setup observado, pero el margen final del job es estrecho y no existe una medición completa del workflow G7 consumidor. Los escenarios de 600/900 s invalidan el shard size 10 vigente. No se afirmará garantía temporal hasta medir el overhead del recorrido G7 o fijar y validar otra topología.
+
+### 10.2 RG-07 — K=100 → K=1.000
+
+Estadísticos guardados del artefacto (segundos por dataset):
+
+| Celda | Media | P95 | P99 | Máximo |
+|---|---:|---:|---:|---:|
+| F5_beta22_M10_R5 | 0,372553 | 0,413426 | 7,674969 | 7,966772 |
+| F5_beta22_M30_R20 | 208,420042 | 285,520522 | 356,961762 | 418,194638 |
+
+El dimensionador usa el máximo observado para proyectar cada dataset de un shard size 10. Con dos celdas, 100 shards por celda (200 jobs), max-parallel=20 y un pool compartido, el trabajo agregado pareado conservador es 270,090 runner-hours. La cota de list scheduling de Graham es **57.131,839 s (15,870 h)** para primary+replay, bajo los tiempos asumidos; no es una cota probabilística de la duración real.
+
+Con K=100 observaciones IID, la probabilidad de que el máximo muestral supere el verdadero P99 es 1−0,99^100 = 63,397 %; para el P95 es 1−0,95^100 = 99,408 %. Harían falta al menos **299 observaciones IID** para que el máximo muestral exceda el verdadero P99 con un 95 % de confianza. Aun así, eso acotaría un percentil, no el máximo futuro.
+
+**Estado RG-07: CONDITIONAL.** K=100 no demuestra una cota de cola para K=1.000 ni un máximo futuro. La proyección de 15,870 h es una cota de scheduling condicionada a los tiempos observados y a la reserva de 300 s; no es garantía de duración. No se generará otro perfil para intentar cerrar esta limitación sin autorización expresa.
+
+### 10.3 Límite de uso
+
+RG-06 y RG-07 quedan evaluados con evidencia existente, pero no autorizan ejecución. RG-04 continúa bloqueante mientras la protección efectiva del GitHub Environment no pueda verificarse. El cierre técnico de RG-02/RG-05 queda pendiente del resultado de la suite determinista integrada sobre el HEAD final.

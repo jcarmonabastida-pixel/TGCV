@@ -44,11 +44,12 @@ class F5G7AuthorizationTests(unittest.TestCase):
         compute = inventory.compute_path_paths()
         execution = inventory.execution_source_hash_paths()
         self.assertEqual(len(compute), 12)
-        self.assertEqual(len(execution), 34)
+        self.assertEqual(len(execution), 35)
         self.assertEqual(len(rows), len({row["path"] for row in rows}))
         self.assertTrue(all("compute_path" in row["roles"] for row in rows if row["path"] in compute))
         self.assertEqual(set(execution.values()), {row["path"] for row in rows if "execution_source" in row["roles"]})
         self.assertEqual(validator.SOURCE_HASH_PATHS, execution)
+        self.assertIn("03_EXPERIMENTS/C10-S/design/C10S_F5_G7_INTEGRATED_GATE_CLOSURE_SPECIFICATION_001.md", set(execution.values()))
 
     def test_inventory_manifests_are_deterministic_and_bind_git_tree_bytes(self):
         import subprocess
@@ -76,7 +77,7 @@ class F5G7AuthorizationTests(unittest.TestCase):
             second = inventory.build_manifests(root, commit1)
             self.assertEqual(first, second)
             self.assertEqual(len(first["compute_path"]["entries"]), 12)
-            self.assertEqual(len(first["execution_source"]["entries"]), 34)
+            self.assertEqual(len(first["execution_source"]["entries"]), 35)
             changed_path = first["compute_path"]["entries"][0]["path"]
             (root / changed_path).write_text("changed", encoding="utf-8")
             subprocess.run(["git", "add", changed_path], cwd=root, check=True)

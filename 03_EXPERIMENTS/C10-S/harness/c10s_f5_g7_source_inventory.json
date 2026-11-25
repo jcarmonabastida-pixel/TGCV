@@ -25,6 +25,13 @@
       "authorization_hash_key": "execution_architecture_sha256"
     },
     {
+      "path": "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_INTEGRATED_GATE_CLOSURE_SPECIFICATION_001.md",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "gate_closure_specification_sha256"
+    },
+    {
       "path": "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_TIERA_PROSPECTIVE_PROTOCOL_002.md",
       "roles": [
         "execution_source"
