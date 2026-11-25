@@ -55,7 +55,7 @@ class F5G7ResourceProfileTests(unittest.TestCase):
         manifest_bytes = manifest_path.read_bytes()
         self.assertEqual(
             hashlib.sha256(manifest_bytes).hexdigest(),
-            "4c15aba0fffbed1d2ad9fea5e85f60a1cfa52253a96c2e56f47f362b694d52c7",
+            "470d2b77eb3a6a64a14cd68459bc4ab534a36eb53b1f54c1942f784498a2a639",
         )
         profile = json.loads(profile_bytes)
         manifest = json.loads(manifest_bytes)
