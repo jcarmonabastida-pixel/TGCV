@@ -5,7 +5,7 @@
 **Date:** 2026-11-25  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
-**Depends on:** Web Master Brief v1.8; Research Experience v0.9; Information Architecture v2.5; Content Blueprint v3.7; current TGCV Core; Research Prospectus v0.2; Testable Concept Paper v0.4; Architectural Research Map v0.2; current RMA v3.38 and Evidence→Claim Matrix v1.47.
+**Depends on:** Web Master Brief v1.8; Research Experience v0.9; Information Architecture v2.6; Content Blueprint v3.7; current TGCV Core; Research Prospectus v0.2; Testable Concept Paper v0.4; Architectural Research Map v0.2; current RMA v3.38 and Evidence→Claim Matrix v1.47.
 
 > This is a first bilingual editorial draft. It is not a scientific asset, does not change claim status, and does not authorize publication of controlled scientific records. The evidence snapshot must be rechecked immediately before publication.
 
