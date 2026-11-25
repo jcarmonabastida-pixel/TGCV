@@ -1,7 +1,7 @@
 # TGCV — Research Page Experience v0.1
 
 **Identifier:** TGCV-WEB-RESEARCH-EXP-001  
-**Version:** 0.4  
+**Version:** 0.5  
 **Date:** 2026-11-25  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
@@ -138,7 +138,7 @@ Present synthetic experiments, computational analyses, empirical domain studies 
 This block is a public-facing evidence overview, not a project-status report or a dump of internal tracking records. Organise it by research question or evidence theme, using plain-language titles:
 
 - [longitudinal evidence of changes in accessible transformations in a software ecosystem](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_SOFTWARE_ECOSYSTEM_v0.1.md) — first detailed evidence brief, in Spanish and English;
-- analysis of how changes in accessible transformations relate to potential reachability;
+- [analysis of the distinction between accessible transformations and potential reachability](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_REACH_DISTINCTION_v0.1.md) — an open empirical question because the successor construction examined so far was not independent of accessibility;
 - methodological and synthetic tests of reconstruction and translation across different domains;
 - a bounded empirical study of the relationship between accessibility conditions and subsequent trajectories;
 - analyses identifying conditions under which accessibility cannot be determined confidently.
