@@ -5,7 +5,7 @@
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.7; Home Experience v1.7; Home Copy v1.5; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.3; Value Construction Copy v0.2; Labs & Applications Experience v0.4; Labs & Applications Copy v0.3.
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.7; Home Experience v1.7; Home Copy v1.5; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.3; Value Construction Copy v0.2; Labs & Applications Experience v0.5; Labs & Applications Copy v0.4.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -848,3 +848,9 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Locks **TGCV Full Chain Demo** as the public name; the internal prototype codename is not to appear in visitor-facing content.
 - Removes internal demonstrator and candidate identifiers, execution/version labels and the EV–Grid shorthand from the P07 visitor narrative. The cross-domain synthetic demonstrator and electric-vehicle/electricity-grid context are described in plain language.
 - Preserves the methodological limits of the synthetic demonstrations, including the non-independent comparison in the energy/mobility minimum demonstrator.
+
+
+### v3.8 — 2026-11-25 (P07 reader terminology)
+- Synchronises P07 authorities to Experience v0.5 and Copy v0.4.
+- Uses TGCV Full Chain Demo as the public prototype name and plain-language descriptions for the cross-domain demonstrator and electric-vehicle/electricity-grid context.
+- Removes internal case labels and execution/version shorthand from the current visitor narrative; retains detailed internal identifiers only in source and traceability references.
