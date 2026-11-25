@@ -1,7 +1,7 @@
 # TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 1.3  
+**Version:** 1.4  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md`  
@@ -116,14 +116,13 @@ La disciplina que aporta prácticas para modelar, diseñar, desarrollar e interv
 
 Transformational Intelligence articula estas dos bases desde una capacidad integradora: Systems Thinking aporta una perspectiva para comprender los sistemas; Systems Engineering, una disciplina para modelarlos, diseñarlos e intervenir en ellos.
 
-El trabajo se desarrolla en dos espacios relacionados:
+El ecosistema conecta elementos distintos y complementarios:
 
-- **Research** desarrolla preguntas, fundamentos, modelos, métodos, experimentos y evidencia.
-- **Value Construction** presenta VALUE como un framework aplicado complementario a TGCV. Organiza el trabajo de comprensión de oportunidades, diseño de alternativas, decisión, acción y aprendizaje. No se presenta como una metodología cuya eficacia haya sido demostrada por TGCV.
-
-**Labs & Applications** reúne experimentación, demostradores acotados y exploración de contextos de aplicación, identificando su madurez y alcance.
-
-**ValueLabOS** es una propuesta de ecosistema digital y colaborativo para facilitar la aplicación, experimentación y evolución de VALUE. No es otro nombre para VALUE ni para Labs & Applications.
+- **TGCV** es el programa de investigación aplicada e innovación que estudia cómo cambian las transformaciones accesibles a los sistemas y si esos cambios pueden contribuir a la construcción de valor.
+- **Research** desarrolla y comunica las preguntas, fundamentos, modelos, métodos, experimentos y evidencias del programa.
+- **Value Construction** presenta VALUE como un framework aplicado complementario a TGCV. Organiza el trabajo de comprensión de oportunidades, diseño de alternativas, decisión, acción y aprendizaje. Su metodología y eficacia tienen fundamentos y evaluación propios; no se consideran demostradas por TGCV.
+- **Labs & Applications** reúne experimentación, demostradores acotados y exploración de contextos de aplicación, identificando su madurez y alcance.
+- **ValueLabOS** es una propuesta de ecosistema digital y colaborativo para facilitar la aplicación, experimentación y evolución de VALUE. No es otro nombre para VALUE ni para Labs & Applications.
 
 Estas piezas están relacionadas, pero no forman una cadena causal demostrada. TGCV investiga cómo cambian las transformaciones accesibles y si esos cambios pueden contribuir a la construcción de valor; VALUE estructura el trabajo aplicado para explorar oportunidades y organizar decisiones, acción y aprendizaje. La investigación y la experimentación pueden informarse mutuamente.
 
@@ -169,7 +168,7 @@ Explore · Research · Systems Engineering · Transformational Intelligence · V
 
 Los conceptos, hipótesis, demostraciones sintéticas y evidencias empíricas se identifican por separado. Una demostración técnica no constituye por sí sola una validación científica.
 
-# 3. English version# 3. English version
+# 3. English version
 
 **Site-wide header / brand lockup:** TGCV — Generative Transformations and Value Construction. TGCV remains the proper name; the English expansion is a rendering of the canonical Spanish name. On narrow screens, TGCV may be visually prioritised while the full name remains available accessibly. Keep the opening question as the first substantive Home message; do not place a long institutional introduction ahead of it.
 
@@ -415,3 +414,9 @@ The approved narrative order is opening question → discovery → second questi
 ### v1.3 — 2026-11-25
 - Adds Value Construction as an explicit visitor route in both Spanish and English Home interest sections, not only in the footer or ecosystem explanation.
 - Aligns the closing invitation in both languages with the full set of substantive routes.
+
+
+### v1.4 — 2026-11-25
+- Aligns the Spanish and English Home ecosystem maps so both distinguish TGCV, Research, Value Construction/VALUE, Labs & Applications and proposed ValueLabOS.
+- Corrects the duplicated English-version heading.
+- Preserves the complementary, non-causal and independently evaluated relationship between TGCV and VALUE.
