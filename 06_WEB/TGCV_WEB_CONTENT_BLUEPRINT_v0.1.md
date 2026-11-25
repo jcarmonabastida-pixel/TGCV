@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 2.3
+**Version:** 2.4
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.7; Information Architecture v2.3; Home Experience v1.5; Home Copy v1.3; Explore Experience v0.9; Explore Copy v0.8.
+**Parent documents:** Web Master Brief v1.7; Information Architecture v2.5; Home Experience v1.5; Home Copy v1.3; Explore Experience v0.9; Explore Copy v0.8.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
