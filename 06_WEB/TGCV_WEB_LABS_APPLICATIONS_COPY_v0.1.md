@@ -1,7 +1,7 @@
-# TGCV — Labs & Applications Copy v0.4
+# TGCV — Labs & Applications Copy v0.5
 
 **Identifier:** TGCV-WEB-P07-COPY-001  
-**Version:** 0.4  
+**Version:** 0.5  
 **Date:** 2026-11-25  
 **Status:** BILINGUAL EDITORIAL DRAFT — PENDING REVIEW; NOT PUBLICATION APPROVAL  
 **Branch:** strategy/tgcv-web-master  
@@ -363,3 +363,5 @@ This invitation is intended to open a conversation and help discover potential c
 - Uses **TGCV Playground** and **ValueLabsOS Preview** for the two proposed visitor experiences.
 - Uses **Demostrador de cadena completa de TGCV** in the Spanish page text for the existing prototype; retains **TGCV Full Chain Demo** in the English page text.
 - Preserves the distinction between the existing software prototype and the proposed TGCV Playground experience.
+
+- **v0.5 — 2026-11-25:** applies the requested visitor-facing names and localises the existing prototype name in Spanish while retaining its English name in the English copy.
