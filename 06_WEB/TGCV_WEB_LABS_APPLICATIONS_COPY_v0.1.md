@@ -1,4 +1,4 @@
-# TGCV — Labs & Applications Copy v0.2
+# TGCV — Labs & Applications Copy v0.3
 
 **Identifier:** TGCV-WEB-P07-COPY-001  
 **Version:** 0.3  
@@ -28,7 +28,7 @@ Research desarrolla las preguntas, los conceptos, los métodos y la evidencia. L
 
 Juguete Colectivo, también denominado Full Chain, es un prototipo de software desarrollado en torno a un sistema sintético. En esta revisión no describimos operaciones concretas de una versión distribuible: el paquete y la interfaz exactos no se han verificado conjuntamente, por lo que no puede asegurarse que las funciones documentadas correspondan al artefacto que podría ponerse a disposición del público.
 
-El prototipo utiliza sistemas sintéticos y reglas operativas propias. Su cálculo de accesibilidad pertenece al demostrador: no es la función científica canónica de TGCV ni un predictor causal. Tampoco es un simulador de sistemas reales o un producto listo para su despliegue.
+El diseño del prototipo contempla sistemas sintéticos y reglas operativas propias. El cálculo de accesibilidad especificado para el demostrador: no es la función científica canónica de TGCV ni un predictor causal. Tampoco es un simulador de sistemas reales o un producto listo para su despliegue.
 
 **Estado del activo:** prototipo existente. Hay un registro de aceptación funcional basado en un recorrido manual local comunicado por el usuario. La aceptación se refiere al funcionamiento del paquete y no a la validez científica. Además, el archivo ZIP utilizado en ese recorrido no se contrastó byte a byte con el digest del artefacto de integración continua. La disponibilidad de una versión pública descargable no está confirmada; por tanto, no presentamos un enlace de descarga ni afirmamos que exista una versión pública operativa.
 
@@ -183,7 +183,7 @@ Research develops the questions, concepts, methods and evidence. Labs & Applicat
 
 Juguete Colectivo, also known as Full Chain, is a software prototype developed around a synthetic system. This review does not describe specific operations of a distributable version: the exact package and interface have not been verified together, so we cannot confirm that the documented functions correspond to an artifact that could be made publicly available.
 
-The prototype uses synthetic systems and its own operational rules. Its accessibility calculation belongs to the demonstrator: it is not TGCV's canonical scientific function or a causal predictor. Nor is it a simulator of real systems or a product ready for deployment.
+The prototype design uses synthetic systems and its own operational rules. The accessibility calculation specified for the demonstrator: it is not TGCV's canonical scientific function or a causal predictor. Nor is it a simulator of real systems or a product ready for deployment.
 
 **Asset status:** existing prototype. A software-functionality acceptance record is based on a user-reported local walkthrough. This acceptance concerns package functionality, not scientific validity. In addition, the ZIP used in that walkthrough was not byte-matched against the continuous-integration artifact digest. The availability of a public downloadable release has not been verified; we therefore provide no download link and make no claim that a public operational version is available.
 
