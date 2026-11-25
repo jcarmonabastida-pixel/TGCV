@@ -265,7 +265,7 @@ The relationship between these two lines of work is itself a subject of research
 
 ## Editorial notes — not public-facing copy
 
-- This draft follows the P05 Experience v0.1 and the current Content Blueprint v2.9.
+- This draft follows the P05 Experience v0.1 and the current Content Blueprint v3.7.
 - TI remains a developing capability concept and open research hypothesis. Do not shorten this status to imply a validated capability.
 - The five dimensions are candidates under investigation, not a settled architecture or necessary-and-sufficient criteria.
 - Keep transformation-space dynamics, transformation handling and the TI capability hypothesis distinct.
