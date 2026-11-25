@@ -1,7 +1,7 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 3.4
+**Version:** 3.5
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
@@ -194,7 +194,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 
 ### P07 — Labs & Applications
 
-**Authoritative working reference:** `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.4. Bilingual Copy remains pending.
+**Authoritative working references:** `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.4; `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.1 (editorial draft, pending review and publication approval).
 
 **Purpose:** make TGCV-related work tangible through bounded demonstrators, synthetic experiments and exploratory experiences, while helping visitors recognise further application contexts and opportunities. This is an activity and exploration space, not a physical laboratory network, product catalogue, commercial offer or portfolio of validated deployments.
 
@@ -823,3 +823,9 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Adds the five potential Business Translation application areas to Home in concise form, distinguishing TGCV's possible analytical contribution from value hypotheses that remain to be demonstrated.
 - Updates P07/Labs & Applications Experience to v0.4, requiring a developed treatment of the same five opportunity families and their context-specific value hypotheses.
 - Clarifies the hierarchy between broad Business Translation opportunity families, specific Application-Fit contexts and bounded demonstrators/experiments.
+
+
+### v3.5 — 2026-11-25
+- Adds the bilingual Labs & Applications Copy v0.1 as an editorial draft aligned with Experience v0.4.
+- Records the Spanish/English treatment of Juguete Colectivo, TSTC, the three proposed discovery experiences, featured and additional Application-Fit contexts, and the five Business Translation opportunity families.
+- Preserves separate asset-maturity and evidence-status dimensions, and all availability, scientific-claim and participation boundaries. Copy remains pending editorial review and publication approval.
