@@ -1,12 +1,12 @@
 # TGCV — Value Construction Experience
 
 **Identifier:** TGCV-WEB-VALUE-CONSTRUCTION-EXPERIENCE-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-25  
 **Status:** EXPERIENCE SPECIFICATION — WORKING DRAFT; narrative emphasis approved  
 **Branch:** `strategy/tgcv-web-master`  
 **Page:** P06 — Value Construction  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Content Blueprint v2.9.  
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Content Blueprint v3.0.  
 **Source assets:** `05_ASSETS/Business_Translation/VALUE_METHODOLOGY_LIFECYCLE_001.md` v0.4; `VALUE_ARTIFACT_MASTER_SPECS_v0.1.md`; `VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md`; `TGCV_VALUE_VALUELABOS_IDENTITY_ARCH_v0.1.md`; `VALUE_DISCOVERY_SPRINT_v0.1.md` and the associated CLINIC-001 coherence/review records.
 
 ---
@@ -98,6 +98,8 @@ Establish the identity boundaries:
 
 **Core discovery:** value is not presumed from an idea, a new possibility or an intervention. It requires contextual criteria, decisions, observed outcomes and evaluation.
 
+**Required introduction order:** the public Copy must define VALUE in plain language at its first substantive mention, before using the name as an unexplained subject in later sections. Explain that VALUE is the working name of the applied framework and that its descriptor is Transformational Value Framework. Do not assume visitors know the acronym or its relationship to Value Construction. Later sections may use VALUE without repeating the full definition.
+
 ### Movement 2 — Understand the system
 
 **Purpose:** show why opportunity work requires a systemic understanding before choosing an intervention.
@@ -176,7 +178,26 @@ Measurement boundaries:
 - **Capacidad de Construcción de Valor (CCV)** is a capability objective that VALUE aims to develop, not a validated score or maturity scale.
 - **Índice de Valor Sistémico (IVS)** is an exploratory measurement line, not a ready KPI; no canonical formula, weighting or validated scale is available.
 - Neither CCV nor IVS should be used on this page to rank organisations or quantify performance.
-- The **Value Discovery Sprint** is a pilot-service design in evolution, not a proven service and not a promise that a complete intervention can be delivered in five days. Do not advertise it as purchasable or available.
+
+### Dedicated section — Capability objective and exploratory measurement: CCV and IVS
+
+Give CCV and IVS their own clearly titled explanatory section, after VALUE and its operating cycle have been introduced. Do not first mention either acronym in a passing caveat.
+
+Explain:
+- **Capacidad de Construcción de Valor (CCV):** the capability objective VALUE aims to develop — a system's ability to construct value repeatedly and renew the capabilities that make this possible. It is an intended capability, not an observed result, validated maturity scale or score.
+- **Índice de Valor Sistémico (IVS):** an exploratory measurement proposal intended to assess aspects of that capability. It is not the value created, not a ready KPI and not part of the mandatory VALUE process.
+
+State the unresolved status explicitly: the source methodology contains competing CCV maturity-level proposals and does not adopt a canonical scale; the IVS has no canonical dimensions, formula, weighting or validated scale. Do not calculate it, rank organisations or imply that CCV can currently be measured reliably. Explain why these ideas are being explored without making them prerequisites for using VALUE.
+
+### Dedicated section — Value Discovery Sprint: a pilot-service design
+
+Give the Value Discovery Sprint its own section, after VALUE and its methodological elements have been explained. Introduce it as a proposed, bounded way of applying VALUE to a specific, initially unclear opportunity — not as another phase of VALUE, a separate framework or an available commercial offer.
+
+Explain its intended purpose: build shared understanding of the opportunity and system, make hypotheses and options explicit, assemble enough relevant evidence for a proportionate decision, and define a traceable next step. Its intended outcome is improved decision quality and traceability, not full implementation or proof of realised value.
+
+The current design uses five working days distributed over one or two weeks as a planning hypothesis for a future pilot. It has not yet been tested in a real case; duration, scope, effort and commercial conditions remain open. Do not advertise availability, price or guaranteed deliverables. Clarify that any later implementation or pilot execution requires separate authorisation and occurs beyond the discovery Sprint. The Sprint does not require CCV or IVS measurement.
+
+
 
 ### Movement 6 — A case in practice: access to appointments in a clinic
 
@@ -227,7 +248,7 @@ The Experience is ready for Copy development when:
 6. The clinic case is consistently labelled fictional; no simulated data is presented as observed or causal.
 7. The page does not claim VALUE is validated, universally effective or derived causally from TGCV.
 8. CCV and IVS are not presented as validated measures.
-9. ValueLabOS and the Value Discovery Sprint are not presented as available products/services.
+9. CCV and IVS are contextualised as a capability objective and exploratory measurement proposal, not validated instruments.\n10. The Value Discovery Sprint is introduced in its own section as an untested pilot-service design, not an available offer.\n11. ValueLabOS is not presented as an available product.
 10. The Spanish and English Copy can preserve the same distinctions and caveats without unnecessary technical overload.
 
 ## 9. Source and authority notes
@@ -248,3 +269,4 @@ These assets are working methodological and editorial sources, not proof of empi
 
 - **v0.1 — 2026-11-25:** first Experience specification drafted from the current VALUE methodological architecture, A1–A8 specifications, CLINIC-001 v1.1 fictional case, identity architecture and Value Discovery Sprint. Establishes the page narrative, public scope, cross-page relationships and epistemic guardrails; no Copy or visual design is included.
 - **v0.2 — 2026-11-25:** records the approved opportunity/system-understanding-first narrative. The full VCF cycle is introduced only after the visitor has followed the reasoning from opportunity and system understanding through alternatives, evidence, decisions, action and learning.
+- **v0.3 — 2026-11-25:** adds explicit first-mention definition requirements for VALUE and dedicated explanatory sections for CCV/IVS and the Value Discovery Sprint, grounded in the current methodology and Sprint design status.
