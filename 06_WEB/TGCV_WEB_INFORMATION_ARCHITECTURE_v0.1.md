@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 2.8  
+**Version:** 2.9  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -818,7 +818,7 @@ This authority supersedes earlier P05 working text that describes four dimension
 The current P07 visitor experience and bilingual working copy are:
 
 - `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.6.
-- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.5.
+- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.6.
 
 The page distinguishes existing demonstrators, proposed visitor experiences, featured and additional Application-Fit candidates, and broad Business Translation opportunity families. These are different content classes and must not be conflated. Asset maturity/availability is separate from evidence/test status.
 
@@ -847,3 +847,6 @@ The five Business Translation families are opportunity areas, not validated mark
 
 ### v2.8 — 2026-11-25
 - Updates P04 current document references to Systems Engineering Experience/Copy v0.2 and aligns P07 naming references with Experience v0.6 and Copy v0.5. No scientific claim or publication status is changed.
+
+### v2.9 — 2026-11-25
+- Synchronises P06/P07 Copy versions and confirms that Contact remains conditional on a real, monitored public communication route.
