@@ -43,8 +43,8 @@ class F5G7AuthorizationTests(unittest.TestCase):
         rows = inventory.load_inventory()["paths"]
         compute = inventory.compute_path_paths()
         execution = inventory.execution_source_hash_paths()
-        self.assertEqual(len(compute), 12)
-        self.assertEqual(len(execution), 35)
+        self.assertEqual(len(compute), 19)
+        self.assertEqual(len(execution), 49)
         self.assertEqual(len(rows), len({row["path"] for row in rows}))
         self.assertTrue(all("compute_path" in row["roles"] for row in rows if row["path"] in compute))
         self.assertEqual(set(execution.values()), {row["path"] for row in rows if "execution_source" in row["roles"]})
@@ -76,8 +76,8 @@ class F5G7AuthorizationTests(unittest.TestCase):
             first = inventory.build_manifests(root, commit1)
             second = inventory.build_manifests(root, commit1)
             self.assertEqual(first, second)
-            self.assertEqual(len(first["compute_path"]["entries"]), 12)
-            self.assertEqual(len(first["execution_source"]["entries"]), 35)
+            self.assertEqual(len(first["compute_path"]["entries"]), 19)
+            self.assertEqual(len(first["execution_source"]["entries"]), 49)
             changed_path = first["compute_path"]["entries"][0]["path"]
             (root / changed_path).write_text("changed", encoding="utf-8")
             subprocess.run(["git", "add", changed_path], cwd=root, check=True)
@@ -124,6 +124,62 @@ class F5G7AuthorizationTests(unittest.TestCase):
         auth["compute_path_content_sha256"] = "d" * 64
         with self.assertRaisesRegex(ValueError, "compute_path_content_sha256"):
             validate_source_manifest_hashes(auth, source)
+
+    def test_inventory_covers_workflow_sources_and_g7_compute_import_closure(self):
+        import ast
+        import re
+        import c10s_f5_g7_source_inventory as inventory
+        repo_root = Path(__file__).resolve().parents[3]
+        harness = repo_root / "03_EXPERIMENTS/C10-S/harness"
+        rows = inventory.load_inventory()["paths"]
+        execution = {row["path"] for row in rows if "execution_source" in row["roles"]}
+        compute = {row["path"] for row in rows if "compute_path" in row["roles"]}
+
+        workflow_paths = {
+            ".github/workflows/c10-s-f5-g7-tiera-calibration.yml",
+            ".github/workflows/c10-s-nested-mr-calibration-comparator-static.yml",
+            ".github/workflows/c10s-f5-exact-certification-tests.yml",
+            ".github/workflows/c10s-f5-g7-resource-profile.yml",
+        }
+        self.assertTrue(workflow_paths <= execution)
+
+        validation_workflow = (repo_root / ".github/workflows/c10s-f5-exact-certification-tests.yml").read_text(encoding="utf-8")
+        compile_command = validation_workflow.split("python -m py_compile", 1)[1].split("\\n      - name:", 1)[0]
+        compiled = set(re.findall(r"([A-Za-z0-9_.-]+\\.py)", compile_command))
+        matrix_modules = set(re.findall(r"^\\s+module:\\s+([A-Za-z0-9_]+)\\s*$", validation_workflow, re.MULTILINE))
+        matrix_tests = {module + ".py" for module in matrix_modules}
+        for filename in compiled | matrix_tests:
+            self.assertIn("03_EXPERIMENTS/C10-S/harness/" + filename, execution, filename)
+
+        for workflow_path in (
+            ".github/workflows/c10s-f5-g7-resource-profile.yml",
+            ".github/workflows/c10-s-f5-g7-tiera-calibration.yml",
+        ):
+            workflow_text = (repo_root / workflow_path).read_text(encoding="utf-8")
+            referenced = set(re.findall(r"python\\s+(?:03_EXPERIMENTS/C10-S/harness/)?([A-Za-z0-9_.-]+\\.py)", workflow_text))
+            for filename in referenced:
+                self.assertIn("03_EXPERIMENTS/C10-S/harness/" + filename, execution, filename)
+
+        pending = [harness / "run_c10s_f5_g7_tiera_calibration.py"]
+        visited = set()
+        while pending:
+            current = pending.pop()
+            relative = current.relative_to(repo_root).as_posix()
+            if relative in visited:
+                continue
+            visited.add(relative)
+            tree = ast.parse(current.read_text(encoding="utf-8"), filename=relative)
+            for node in ast.walk(tree):
+                modules = []
+                if isinstance(node, ast.Import):
+                    modules.extend(alias.name for alias in node.names)
+                elif isinstance(node, ast.ImportFrom) and node.module and not node.level:
+                    modules.append(node.module)
+                for module in modules:
+                    candidate = harness / (module.replace(".", "/") + ".py")
+                    if candidate.is_file():
+                        pending.append(candidate)
+        self.assertTrue(visited <= compute, "missing compute-path imports: " + repr(sorted(visited - compute)))
 
     def test_source_inventory_rejects_duplicate_or_unclassified_paths(self):
         import c10s_f5_g7_source_inventory as inventory
