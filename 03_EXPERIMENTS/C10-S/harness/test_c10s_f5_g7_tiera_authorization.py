@@ -44,7 +44,7 @@ class F5G7AuthorizationTests(unittest.TestCase):
         compute = inventory.compute_path_paths()
         execution = inventory.execution_source_hash_paths()
         self.assertEqual(len(compute), 20)
-        self.assertEqual(len(execution), 54)
+        self.assertEqual(len(execution), 55)
         self.assertEqual(len(rows), len({row["path"] for row in rows}))
         self.assertTrue(all("compute_path" in row["roles"] for row in rows if row["path"] in compute))
         self.assertEqual(set(execution.values()), {row["path"] for row in rows if "execution_source" in row["roles"]})
@@ -77,7 +77,7 @@ class F5G7AuthorizationTests(unittest.TestCase):
             second = inventory.build_manifests(root, commit1)
             self.assertEqual(first, second)
             self.assertEqual(len(first["compute_path"]["entries"]), 20)
-            self.assertEqual(len(first["execution_source"]["entries"]), 54)
+            self.assertEqual(len(first["execution_source"]["entries"]), 55)
             changed_path = first["compute_path"]["entries"][0]["path"]
             (root / changed_path).write_text("changed", encoding="utf-8")
             subprocess.run(["git", "add", changed_path], cwd=root, check=True)
@@ -142,6 +142,10 @@ class F5G7AuthorizationTests(unittest.TestCase):
             ".github/workflows/c10s-f5-g7-resource-profile.yml",
         }
         self.assertTrue(workflow_paths <= execution)
+        fixture_directory = repo_root / "03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1"
+        fixture_paths = {path.relative_to(repo_root).as_posix() for path in fixture_directory.iterdir() if path.is_file()}
+        self.assertTrue(fixture_paths <= execution, "unhashed G7 profile fixtures: " + repr(sorted(fixture_paths - execution)))
+
 
         validation_workflow = (repo_root / ".github/workflows/c10s-f5-exact-certification-tests.yml").read_text(encoding="utf-8")
         compile_command = validation_workflow.split("python -m py_compile", 1)[1].split("\n      - name:", 1)[0]

@@ -60,6 +60,13 @@
       "authorization_hash_key": "resource_profile_manifest_sha256"
     },
     {
+      "path": "03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/profile_artifact.zip.b64",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "resource_profile_artifact_fixture_sha256"
+    },
+    {
       "path": "03_EXPERIMENTS/C10-S/harness/aggregate_c10s_f5_g7_resource_shards.py",
       "roles": [
         "compute_path",
