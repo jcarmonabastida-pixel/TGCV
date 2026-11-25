@@ -259,6 +259,18 @@ class F5G7ResourceProfileTests(unittest.TestCase):
         self.assertNotIn("c10s-f5-g7-resource-parallel-profile.json", consumer)
 
 
+    def test_production_download_contract_verifies_archive_and_json_digests(self):
+        repo_root = Path(__file__).resolve().parents[3]
+        workflow = (repo_root / ".github/workflows/c10-s-f5-g7-tiera-calibration.yml").read_text(encoding="utf-8")
+        self.assertIn("actions/artifacts/$PROFILE_ARTIFACT_ID/zip", workflow)
+        self.assertIn('test "$ACTUAL_ARCHIVE_SHA" = "$EXPECTED_ARCHIVE_SHA"', workflow)
+        self.assertIn('test "$ACTUAL_JSON_SHA" = "$EXPECTED_JSON_SHA"', workflow)
+        self.assertIn('sha256sum "$ARCHIVE"', workflow)
+        self.assertIn('sha256sum "$PROFILE_JSON"', workflow)
+        self.assertNotIn("actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093\n        with:\n          artifact-ids:", workflow)
+
+
+
 
 if __name__ == "__main__":
     unittest.main()

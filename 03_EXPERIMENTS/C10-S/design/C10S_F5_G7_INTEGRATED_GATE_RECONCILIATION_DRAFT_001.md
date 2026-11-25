@@ -142,7 +142,7 @@ Por tanto, se retira la sospecha anterior de que ese script concreto estuviera r
 | ID | Causa / discrepancia | Evidencia | Estado |
 |---|---|---|---|
 | RG-01 | Nombre de perfil distinto entre productor, fixture/test y consumidor | Rutas y literales de los workflows/tests | **CONFIRMADO; bloquea preflight** |
-| RG-02 | Digest ZIP del manifest no enlazado explícitamente al digest que reporta la descarga productiva | `actions/download-artifact` verificó el digest del artefacto contra GitHub en run 45517753203; el workflow no compara ese valor con el campo del manifest | **CONDITIONAL; transporte verificado, enlace manifest-descarga no explícito** |
+| RG-02 | Digest ZIP del manifest no enlazado explícitamente al digest que reporta la descarga productiva | Nueva ruta descarga el ZIP original por API, calcula SHA-256 y lo compara con el manifest; verifica también el JSON extraído | **IMPLEMENTADO; validación CI pendiente** |
 | RG-03 | Tests de Git simulan ascendencia y `git show` | Mocks en test de perfil | **CONFIRMADO; falta integración real** |
 | RG-04 | Aprobación humana sin atestación independiente en el workflow | Consentimiento explícito conversacional existente; JSON y mensaje de commit no lo acreditan por sí solos | **CONFIRMADO; brecha de trazabilidad, no ausencia de consentimiento** |
 | RG-05 | Inventarios de hash manuales y solapados | `SOURCE_HASH_PATHS` y `PROFILE_SOURCE_PATHS` | **CONFIRMADO; riesgo de deriva** |
@@ -154,7 +154,7 @@ Por tanto, se retira la sospecha anterior de que ese script concreto estuviera r
 
 La corrección debe realizarse como una unidad coordinada, sin secuencia de parches y sin tocar el diseño causal:
 
-1. **Contrato del artefacto:** un único nombre/ruta canónica, schema, manifest, ID de artefacto, run de origen, commit fuente, scope, digest JSON y, si se conserva, digest ZIP verificable.
+1. **Contrato del artefacto:** un único nombre/ruta canónica, schema, manifest, ID de artefacto, run de origen, commit fuente, scope, digest JSON y digest ZIP verificado explícitamente. RG-02 se implementa descargando el ZIP original por la API de GitHub y comparando ambos digests antes de extraer/consumir.
 2. **Productor/consumidor:** el workflow consumidor descarga exactamente el artefacto identificado, verifica su identidad e integridad y localiza el archivo por el contrato canónico. Si falta un elemento, falla antes de crear la matriz.
 3. **Identidad de fuente:** manifests separados y explícitos para compute path y execution source, generados de forma determinista desde el commit; autorización enlazada al digest del manifest, no a una lista duplicada que deba actualizarse manualmente.
 4. **Autorización:** separar validación de estructura de aprobación humana. El workflow no puede interpretar un string autodeclarado o un mensaje de commit como prueba suficiente de aprobación.
