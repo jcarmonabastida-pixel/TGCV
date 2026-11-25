@@ -1,0 +1,67 @@
+"""Build the exact manifest bindings consumed by the one-use G7 authorization validator.
+
+This utility never creates, approves, edits, or consumes an authorization. It emits
+only a deterministic sidecar from the canonical Git-tree manifests. The resulting
+values can then be copied into a separately reviewed DRAFT authorization.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+from c10s_f5_g7_source_inventory import build_manifests, execution_source_hash_paths
+
+BINDINGS_SCHEMA = "TGCV-C10S-F5-G7-AUTHORIZATION-MANIFEST-BINDINGS-001"
+
+
+def build_authorization_manifest_bindings(root: Path, approved_code_commit: str) -> dict:
+    """Derive every authorization hash field from the validator's canonical manifests."""
+    manifests = build_manifests(root, approved_code_commit)
+    execution = manifests["execution_source"]
+    compute = manifests["compute_path"]
+
+    path_hashes = {
+        entry["path"]: entry["sha256"]
+        for entry in execution["entries"]
+    }
+    key_to_path = execution_source_hash_paths()
+    if set(path_hashes) != set(key_to_path.values()):
+        raise ValueError("G7_AUTHORIZATION_BINDINGS_EXECUTION_PATH_SET_MISMATCH")
+
+    source_hashes = {
+        key: path_hashes[relative]
+        for key, relative in sorted(key_to_path.items())
+    }
+    if len(source_hashes) != len(key_to_path):
+        raise ValueError("G7_AUTHORIZATION_BINDINGS_HASH_KEY_COLLISION")
+
+    return {
+        "schema": BINDINGS_SCHEMA,
+        "approved_code_commit": approved_code_commit,
+        "execution_source_manifest_sha256": execution["root_sha256"],
+        "compute_path_content_sha256": compute["content_sha256"],
+        "source_hashes": source_hashes,
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Build canonical G7 authorization manifest bindings without creating an authorization."
+    )
+    parser.add_argument("--root", type=Path, default=Path.cwd())
+    parser.add_argument("--approved-code-commit", required=True)
+    parser.add_argument("--output-json", type=Path, required=True)
+    args = parser.parse_args()
+
+    result = build_authorization_manifest_bindings(args.root, args.approved_code_commit)
+    args.output_json.parent.mkdir(parents=True, exist_ok=True)
+    args.output_json.write_text(
+        json.dumps(result, sort_keys=True, indent=2, allow_nan=False) + "\\n",
+        encoding="utf-8",
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
