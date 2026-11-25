@@ -109,6 +109,21 @@ class F5G7AuthorizationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "execution_source_manifest_sha256"):
             validate_source_manifest_hashes(stale_inventory, source_manifests)
 
+    def test_authorization_rejects_profile_compute_path_drift(self):
+        import c10s_f5_g7_source_inventory as inventory
+        from validate_c10s_f5_g7_tiera_authorization import validate_source_manifest_hashes
+        entries = [{"path": path, "sha256": "a" * 64} for path in validator.SOURCE_HASH_PATHS.values()]
+        source = {
+            "execution_source": {"root_sha256": "b" * 64, "entries": entries},
+            "compute_path": {"content_sha256": "c" * 64},
+        }
+        auth = {key: "a" * 64 for key in validator.SOURCE_HASH_PATHS}
+        auth.update({"execution_source_manifest_sha256": "b" * 64, "compute_path_content_sha256": "c" * 64})
+        validate_source_manifest_hashes(auth, source)
+        auth["compute_path_content_sha256"] = "d" * 64
+        with self.assertRaisesRegex(ValueError, "compute_path_content_sha256"):
+            validate_source_manifest_hashes(auth, source)
+
     def test_source_inventory_rejects_duplicate_or_unclassified_paths(self):
         import c10s_f5_g7_source_inventory as inventory
         with tempfile.TemporaryDirectory() as directory:

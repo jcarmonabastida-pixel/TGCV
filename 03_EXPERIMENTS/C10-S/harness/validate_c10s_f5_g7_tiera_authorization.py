@@ -125,6 +125,12 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
     # identities to its immutable approved-code parent to avoid a self-referential digest.
     source_manifests = build_manifests(root, code_commit)
     validate_source_manifest_hashes(auth, source_manifests)
+    profile_compute_manifest = build_manifests(
+        root, profile_manifest["profile_source_commit"],
+        roles=("compute_path",), inventory_commit=code_commit,
+    )["compute_path"]
+    if profile_compute_manifest["content_sha256"] != source_manifests["compute_path"]["content_sha256"]:
+        raise ValueError("resource profile compute-path content differs from approved code commit")
     execution_manifest = source_manifests["execution_source"]
     return {
         "execution_source_manifest_sha256": execution_manifest["root_sha256"],
