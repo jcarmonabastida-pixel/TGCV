@@ -1,7 +1,7 @@
 # TGCV — Research Page Copy v0.1
 
 **Identifier:** TGCV-WEB-RESEARCH-COPY-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-25  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
@@ -52,6 +52,8 @@ La arquitectura analítica de referencia es:
 
 `mecanismo → (S,C) → (S',C') → ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`
 
+Aquí, **C** representa el contexto y las condiciones relevantes del sistema en el momento inicial: por ejemplo, su entorno operativo, organizativo o institucional. **C'** representa ese contexto y esas condiciones en el momento posterior, después de la transición considerada. La prima no designa otro tipo de contexto: señala que las condiciones pueden haber cambiado. Las restricciones, los recursos y los criterios de admisibilidad se especifican además en el análisis de accesibilidad.
+
 Esta secuencia organiza preguntas y niveles de análisis; no representa una cadena causal completa ya demostrada.
 
 - **Accesibilidad y T_acc:** qué transformaciones satisfacen las condiciones definidas.
@@ -88,21 +90,21 @@ Las pruebas sintéticas permiten examinar propiedades bajo condiciones controlad
 
 ## 6. Qué indica la evidencia hasta ahora
 
-La evidencia disponible es heterogénea y acotada. Cada resultado responde a una pregunta y a unas condiciones específicas; no debe interpretarse como validación general de TGCV.
+La investigación ha producido resultados de distintos tipos y alcances. No todos responden a la misma pregunta ni permiten el mismo tipo de conclusión. La evidencia disponible debe entenderse como parcial y específica de los sistemas, datos, métodos y condiciones examinados; no constituye una validación general de TGCV.
 
-Entre los resultados que recoge el estado científico gobernado se encuentran:
+Entre las líneas de evidencia que pueden explicarse al público se encuentran:
 
-- **Cambios en estructuras de transformaciones accesibles:** los análisis temporales del ecosistema Rust muestran persistencia, expansión, contracción y reconfiguración en la representación operacional estudiada. Es evidencia estructural acotada a ese sistema y esa semántica.
-- **Distinción entre ΔT_acc y Reach:** los análisis Rust identifican casos en los que cambia T_acc sin cambio en Reach potencial de profundidad 1, así como casos en los que ambos cambian. No demuestran reachability de ejecución runtime de Cargo ni una relación universal.
-- **Reconstrucción y traducción entre dominios:** diferentes estudios y pruebas metodológicas han examinado cómo preservar las distinciones entre estado, transformaciones candidatas, accesibilidad, transiciones y consecuencias. La evidencia de traducción sigue siendo acotada; no establece validez transversal completa ni superioridad.
-- **Relación con trayectorias:** C09 mantiene un resultado de apoyo causal empírico acotado para el vínculo entre accesibilidad y trayectoria posterior, dentro del alcance de su diseño y evidencia. No permite inferir automáticamente creación de valor.
-- **Selección y razonamiento transformacional:** los resultados TI-001 incluyen evidencia inferencial acotada y no confirmatoria, junto con análisis metodológicos posteriores. No validan una capacidad general de Transformational Intelligence ni una relación causal con Value.
+- **Cambios en las posibilidades de transformación de un ecosistema de software.** Un análisis longitudinal de sus componentes y dependencias identifica persistencia, expansión, contracción y reconfiguración de las transformaciones que resultan accesibles bajo una definición operacional explícita. Describe cambios estructurales en ese ecosistema; no demuestra que todas esas transformaciones se ejecutaran ni que produjeran valor.
+- **Relación entre accesibilidad y estados alcanzables.** Un segundo análisis compara los cambios en las transformaciones accesibles con los estados que podrían alcanzarse bajo reglas de transición delimitadas. Encuentra situaciones en las que ambas dimensiones cambian de forma distinta. El resultado depende de la semántica de alcance utilizada y no equivale a demostrar ejecución real.
+- **Reconstrucción y comparación entre dominios.** Pruebas metodológicas y experimentos sintéticos examinan si las distinciones entre estado, transformaciones candidatas, accesibilidad y consecuencias pueden reconstruirse en sistemas diferentes. Sus resultados son acotados a los casos y diseños estudiados; no demuestran validez transversal completa ni superioridad frente a todos los modelos existentes.
+- **Accesibilidad y evolución posterior.** Un estudio empírico delimitado aporta apoyo a la hipótesis de que las condiciones de accesibilidad pueden relacionarse con la trayectoria posterior de un sistema. La conclusión está restringida a la población, las medidas y el diseño de ese estudio; no demuestra una relación universal ni permite inferir por sí sola creación de valor.
+- **Límites de identificación.** Otros análisis muestran que, cuando no se conocen suficientemente las condiciones relevantes en el momento de decisión, puede no ser posible determinar si una transformación era realmente accesible. Reconocer esa indeterminación es parte del método, no un resultado que deba ocultarse.
 
-El estado científico también mantiene abiertas cuestiones de no-redundancia y originalidad comparativa. Los resultados disponibles no establecen superioridad explicativa general, validez universal, utilidad industrial general ni creación o predicción de valor.
+La investigación también ha examinado métodos de razonamiento y selección de transformaciones. Esos trabajos no justifican afirmar que exista una capacidad general validada de Transformational Intelligence.
 
-**La relación downstream entre ΔT_acc, Outcome y Value continúa siendo una cuestión abierta.** No se afirma que ampliar las transformaciones accesibles genere valor por sí mismo.
+**La relación entre los cambios en las transformaciones accesibles, los resultados y el valor sigue siendo una cuestión abierta.** Ampliar lo que un sistema puede hacer no garantiza que lo haga, que obtenga un resultado favorable ni que ese resultado tenga valor.
 
-> **Nota editorial de evidencia:** este resumen se ha redactado a partir de STATUS.md (fechado 2026-11-06), RMA v3.38 y Evidence→Claim Matrix v1.47 consultados el 25-11-2026. Antes de publicación debe verificarse cada afirmación contra los registros materiales y las filas de claims vigentes, y confirmarse qué fuentes pueden hacerse públicas. Esta nota de trabajo no sustituye esa revisión.
+Las descripciones detalladas de cada línea de evidencia deberán estar disponibles mediante enlaces específicos desde esta sección. Cada ficha explicará la pregunta examinada, el sistema y los datos utilizados, el método, el resultado, su alcance, sus limitaciones y los materiales de respaldo que puedan hacerse públicos. Los identificadores técnicos y las referencias internas de seguimiento no se mostrarán como si fueran nombres significativos para el visitante.
 
 ## 7. Qué sigue abierto
 
@@ -169,6 +171,8 @@ The reference analytical architecture is:
 
 `mechanism → (S,C) → (S',C') → ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`
 
+Here, **C** denotes the system's relevant context and conditions at the initial point—for example, its operating, organisational or institutional environment. **C'** denotes that context and those conditions at the later point, after the transition under study. The prime does not indicate a different kind of context; it marks that the conditions may have changed. Constraints, resources and admissibility criteria are also specified separately in the accessibility analysis.
+
 This sequence organises questions and analytical layers; it is not a fully established causal chain.
 
 - **Accessibility and T_acc:** which transformations satisfy the specified conditions.
@@ -205,21 +209,21 @@ Synthetic tests can examine properties under controlled conditions; they do not,
 
 ## 6. What does the evidence indicate so far?
 
-The available evidence is heterogeneous and bounded. Each result addresses a specific question under specific conditions; it should not be interpreted as general validation of TGCV.
+The research has produced results of different kinds and with different scopes. They do not all address the same question or support the same type of conclusion. The available evidence should be understood as partial and specific to the systems, data, methods and conditions examined; it does not amount to general validation of TGCV.
 
-The governed scientific status includes, among other results:
+The evidence strands that can be explained to a public audience include:
 
-- **Changes in accessible transformation structures:** temporal analyses of the Rust ecosystem show persistence, expansion, contraction and reconfiguration in the operational representation studied. This is structural evidence bounded to that system and semantics.
-- **Distinguishing ΔT_acc from Reach:** Rust analyses identify cases where T_acc changes without a change in depth-1 potential Reach, as well as cases where both change. They do not demonstrate Cargo runtime execution reachability or a universal relationship.
-- **Cross-domain reconstruction and translation:** several studies and methodological tests have examined how to preserve distinctions among state, candidate transformations, accessibility, transitions and downstream consequences. Translation evidence remains bounded; it does not establish complete cross-domain validity or superiority.
-- **Relationship with trajectories:** C09 retains bounded empirical causal support for the link between accessibility and subsequent trajectory, within the scope of its design and evidence. This does not automatically imply value creation.
-- **Transformational reasoning and selection:** TI-001 results include bounded, non-confirmatory inferential evidence alongside subsequent methodological analyses. They do not validate Transformational Intelligence as a general capability or establish a causal relationship with Value.
+- **Changes in the transformation possibilities of a software ecosystem.** A longitudinal analysis of its components and dependencies identifies persistence, expansion, contraction and reconfiguration in the transformations accessible under an explicit operational definition. It describes structural changes in that ecosystem; it does not show that all such transformations were executed or generated value.
+- **The relationship between accessibility and reachable states.** A second analysis compares changes in accessible transformations with the states that could be reached under bounded transition rules. It finds cases in which the two dimensions change differently. The result depends on the reachability semantics used and is not equivalent to demonstrating actual execution.
+- **Reconstruction and comparison across domains.** Methodological tests and synthetic experiments examine whether distinctions among state, candidate transformations, accessibility and consequences can be reconstructed in different systems. Their results are bounded to the cases and designs studied; they do not demonstrate complete cross-domain validity or superiority over all existing models.
+- **Accessibility and subsequent development.** A bounded empirical study provides support for the hypothesis that accessibility conditions may be related to a system's subsequent trajectory. The conclusion is limited to that study's population, measures and design; it does not demonstrate a universal relationship or, by itself, imply value creation.
+- **Limits of identification.** Other analyses show that when relevant conditions at the decision point are not sufficiently known, it may be impossible to determine whether a transformation was genuinely accessible. Recognising such indeterminacy is part of the method, not a result to be concealed.
 
-The scientific status also leaves questions of non-redundancy and comparative originality open. Available results do not establish general explanatory superiority, universal validity, general industrial utility, or value creation or prediction.
+The research has also examined methods for reasoning about and selecting transformations. Those studies do not justify claiming that a generally validated Transformational Intelligence capability already exists.
 
-**The downstream relationship between ΔT_acc, Outcome and Value remains an open research question.** TGCV does not claim that making more transformations accessible creates value by itself.
+**The relationship between changes in accessible transformations, outcomes and value remains an open question.** Expanding what a system can do does not guarantee that it will do it, achieve a favourable outcome or produce something valuable.
 
-> **Evidence editorial note:** this summary was drafted from STATUS.md (dated 2026-11-06), RMA v3.38 and Evidence→Claim Matrix v1.47 retrieved on 2026-11-25. Before publication, every statement must be checked against the material records and current claim rows, and public-release permissions for sources must be confirmed. This working note does not replace that review.
+Detailed descriptions of each evidence strand should be available through dedicated links from this section. Each evidence page will explain the research question, system and data, method, result, scope, limitations and supporting materials that can be made public. Technical identifiers and internal tracking references should not be displayed as if they were meaningful names for visitors.
 
 ## 7. What remains open?
 
