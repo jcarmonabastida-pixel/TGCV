@@ -121,6 +121,11 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
     changed = git("diff-tree", "--no-commit-id", "--name-only", "-r", workflow_commit).splitlines()
     if changed != [AUTH_PATH]:
         raise ValueError("authorization commit may change only the G7 authorization JSON")
+    # The pinned resource profile must originate in the approved code history.
+    try:
+        git("merge-base", "--is-ancestor", profile_manifest["profile_source_commit"], code_commit)
+    except subprocess.CalledProcessError as exc:
+        raise ValueError("G7 resource profile source commit is not an ancestor of approved code commit") from exc
     # The authorization commit changes only the authorization JSON. Bind all source
     # identities to its immutable approved-code parent to avoid a self-referential digest.
     source_manifests = build_manifests(root, code_commit)
