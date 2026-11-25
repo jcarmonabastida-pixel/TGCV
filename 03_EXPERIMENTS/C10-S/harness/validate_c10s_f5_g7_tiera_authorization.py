@@ -13,40 +13,10 @@ AUTH_PATH = "00_GOVERNANCE/authorizations/C10S_F5_G7_TIERA_CALIBRATION_AUTHORIZA
 BRANCH_PREFIX = "research/c10s-f5-g7-auth-"
 PROTOCOL_PATH = "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_TIERA_PROSPECTIVE_PROTOCOL_002.md"
 RESOURCE_PROFILE_MANIFEST_PATH = "03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json"
-SOURCE_HASH_PATHS = {
-    "execution_architecture_sha256": "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_EXECUTION_ARCHITECTURE_002.md",
-    "resource_profile_manifest_sha256": RESOURCE_PROFILE_MANIFEST_PATH,
-    "resource_profile_validator_sha256": "03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_resource_profile.py",
-    "resource_profile_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_resource_profile.py",
-    "resource_profile_script_sha256": "03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_resource_preflight_parallel.py",
-    "shard_execution_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_shard_execution.py",
-    "shard_cli_sha256": "03_EXPERIMENTS/C10-S/harness/execute_c10s_f5_g7_tiera_shard.py",
-    "shard_aggregator_sha256": "03_EXPERIMENTS/C10-S/harness/aggregate_c10s_f5_g7_tiera_shards.py",
-    "shard_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_shard_execution.py",
-    "protocol_sha256": PROTOCOL_PATH,
-    "runner_sha256": "03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_tiera_calibration.py",
-    "fitter_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_fitted_beta_binomial_bootstrap.py",
-    "engine_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py",
-    "certificate_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py",
-    "fixtures_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py",
-    "legacy_comparator_runner_sha256": "03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_comparative_holdout.py",
-    "dependency_lock_sha256": "03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock",
-    "executor_sha256": "03_EXPERIMENTS/C10-S/harness/execute_c10s_f5_g7_tiera_calibration.py",
-    "validator_sha256": "03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_tiera_authorization.py",
-    "workflow_sha256": ".github/workflows/c10-s-f5-g7-tiera-calibration.yml",
-    "static_workflow_sha256": ".github/workflows/c10-s-nested-mr-calibration-comparator-static.yml",
-    "runner_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_tiera_calibration.py",
-    "authorization_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_tiera_authorization.py",
-    "variance_interface_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_variance_comparison_interface.py",
-    "f5_likelihood_diagnostics_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py",
-    "f1_candidate_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f1_exact_pivotal_candidate.py",
-    "gaussian_oracle_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_gaussian_variance_oracles.py",
-    "beta_binomial_oracle_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_beta_binomial_variance_oracles.py",
-    "f1_profile_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f1_between_profile_likelihood.py",
-    "fitter_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_fitted_beta_binomial_bootstrap.py",
-    "engine_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_inference_engine.py",
-    "legacy_runner_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_holdout.py",
-}
+from c10s_f5_g7_source_inventory import execution_source_hash_paths
+
+SOURCE_HASH_PATHS = execution_source_hash_paths()
+
 PROTOCOL_ID = "C10S-F5-G7-TIERA-PROSPECTIVE-001"
 PROTOCOL_VERSION = "1.1"
 AUTH_SCHEMA = "TGCV-C10S-F5-G7-TIERA-AUTH-002"

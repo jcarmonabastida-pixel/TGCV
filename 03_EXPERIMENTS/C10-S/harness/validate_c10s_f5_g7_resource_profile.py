@@ -13,20 +13,10 @@ import run_c10s_f5_g7_tiera_calibration as g7
 
 PROFILE_SCHEMA = "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-002"
 PROFILE_SCOPE = "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT"
-PROFILE_SOURCE_PATHS = (
-    "03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py",
-    "03_EXPERIMENTS/C10-S/harness/c10s_fitted_beta_binomial_bootstrap.py",
-    "03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py",
-    "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py",
-    "03_EXPERIMENTS/C10-S/harness/c10s_variance_comparison_interface.py",
-    "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py",
-    "03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_tiera_calibration.py",
-    "03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_resource_preflight_parallel.py",
-    "03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_resource_shard.py",
-    "03_EXPERIMENTS/C10-S/harness/aggregate_c10s_f5_g7_resource_shards.py",
-    "03_EXPERIMENTS/C10-S/harness/create_c10s_f5_g7_resource_profile_manifest.py",
-    "03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock",
-)
+from c10s_f5_g7_source_inventory import compute_path_paths
+
+PROFILE_SOURCE_PATHS = compute_path_paths()
+
 MAX_PARALLEL = 20
 JOB_SETUP_OVERHEAD_SECONDS = 300
 JOB_BUDGET_SECONDS = 9000  # 150 minutes; workflow hard timeout is 165 minutes.
