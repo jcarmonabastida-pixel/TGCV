@@ -5,7 +5,7 @@
 **Date:** 2026-11-25  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.6; Content Blueprint v3.7; Explore Experience v1.1; Explore Copy v1.0.  
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.7; Content Blueprint v3.8; Explore Experience v1.1; Explore Copy v1.0.  
 **Scientific source baseline:** TGCV Core current; Research Prospectus v0.2; Testable Concept Paper v0.4; Architectural Research Map v0.2; STATUS.md as retrieved from `main` on 2026-11-25.
 
 > This document specifies the visitor experience for Research. It does not change scientific governance, scientific claims, evidence status, publication permissions or execution authorizations. All scientific source assets require a fresh status and publication-permission check before public linking.
