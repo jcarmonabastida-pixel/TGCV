@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 4.1
-**Date:** 2026-11-25  
+**Version:** 4.2
+**Date:** 2026-11-26  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.8; Home Experience v1.7; Home Copy v1.5; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.2; Systems Engineering Copy v0.2; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.3; Value Construction Copy v0.3; Labs & Applications Experience v0.7; Labs & Applications Copy v0.7.
+**Parent documents:** Web Master Brief v1.9; Information Architecture v3.1; Home Experience v1.7; Home Copy v1.5; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.2; Systems Engineering Copy v0.2; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.3; Value Construction Copy v0.3; Labs & Applications Experience v0.7; Labs & Applications Copy v0.7; About Experience v0.1; About Copy v0.1.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -224,9 +224,11 @@ They remain possible ecosystem capabilities, not first-release commitments.
 **Claim boundaries:** no claim of TGCV superiority, universal applicability, causal propagation in real systems, value creation, ROI, industrial validation or deployment readiness. The downstream ΔT_acc → ΔV / Value linkage remains open in the canonical STATUS baseline.
 
 
-### P08 — About / Governance
+### P08 — About
 
-**Purpose:** establish identity, openness and credibility without a long institutional biography or exaggerated organisational claims.
+**Current working authorities:** About Experience v0.1 and bilingual About Copy v0.1.
+
+**Purpose:** establish identity, purpose, openness and credibility without a long institutional biography or exaggerated organisational claims.
 
 **Required content:**
 - Why the programme exists and what question it pursues.
@@ -234,8 +236,10 @@ They remain possible ecosystem capabilities, not first-release commitments.
 - How the work is governed: versioned research assets, explicit evidence boundaries, reproducibility and correction of errors.
 - Clear distinction between research, exploratory application fit, software prototypes and validated real-world results.
 - A concise statement that the programme is evolving and invites thoughtful engagement.
+- A clear distinction among research questions, conceptual/methodological proposals, synthetic experiments, software prototypes, exploratory application contexts and validated results.
+- Public-facing commitments to traceability, explicit claim boundaries and correction of material errors.
 
-**Do not:** imply a staffed institute, formal consortium, active community, external scientific board or institutional affiliations unless independently established and authorised for publication.
+**Do not:** imply a staffed institute, formal company or research centre, formal consortium, active community, external scientific board, institutional affiliations, team structure, partners, funders or endorsements unless independently established and authorised for publication. Do not invent contact details or promise unrestricted public access to research assets.
 
 ### P09 — Contact / Participate
 
@@ -868,3 +872,9 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 
 ### v4.1 — 2026-11-25
 - Aligns the Spanish P07 public heading and descriptive paragraph with the requested TGCV Full Chain Demo naming; updates current P07 Experience and Copy references.
+
+### v4.2 — 2026-11-26
+- Adds the P08 About Experience v0.1 and bilingual Copy v0.1 as working first-release content authorities.
+- Specifies the About page's identity, purpose, research-principles, evidence-discipline and transparency content, with explicit limits on organisational and institutional claims.
+- Synchronises parent references to Web Master Brief v1.9, Information Architecture v3.1 and current P07 Experience/Copy v0.7.
+- Keeps Contact conditional on a real, monitored route; no publication approval is implied.
