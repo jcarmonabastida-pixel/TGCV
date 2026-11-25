@@ -1,7 +1,7 @@
 # TGCV — Research Page Copy v0.1
 
 **Identifier:** TGCV-WEB-RESEARCH-COPY-001  
-**Version:** 0.8
+**Version:** 0.9
 **Date:** 2026-11-25  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
@@ -222,7 +222,7 @@ The evidence strands that can be explained to a public audience include:
 - [**The relationship between accessibility and reachable states.**](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_REACH_DISTINCTION_v0.1.md) The research has defined this distinction and conducted preliminary structural analyses. A subsequent methodological review identified that successor construction depended directly on accessible transformations. An independent empirical test of Reach is therefore not yet available under this operationalisation. The brief explains the preliminary findings, the limitation and what is needed to resolve the question.
 - [**Controlled tests and cross-domain reconstruction.**](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_METHODS_CROSS_DOMAIN_v0.1.md) A controlled synthetic test showed that, in one specific construction, two cases equal in state, context and accessible transformations could realise different trajectories when another pre-realisation condition differed. Separately, a secondary analysis of previously audited evidence from two domains reconstructed common descriptors of transformational change while preserving domain-specific semantics. No trajectory divergence was observed in the available records. These results do not demonstrate general validity, superiority or value creation.
 - [**From accessibility changes to subsequent trajectories.**](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_ACCESSIBILITY_TRAJECTORY_v0.1.md) The evidence combines a temporal reconstruction in a self-adaptive system, a randomised experiment expanding structural financial access, and an analysis showing when data do not allow executed trajectories to be reconstructed. These findings have different scopes: the temporal reconstruction does not identify causality; the experiment provides bounded causal evidence about the structural intervention as a whole, without automatically isolating the effect of each component; and the software case illustrates observation limits. None demonstrates a universal relationship or value creation.
-- [**Other studies and research cases: an evidence overview.**](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_PORTFOLIO_v0.1.md) A representative selection of empirical, industrial, computational and synthetic work: SWIM, AWS functional recovery, rural financial-access expansion, software ecosystems, EV–Grid, VSL Paired, cross-domain tests and other studies. The brief explains what was investigated, what each case contributes and, importantly, what it cannot establish. It is neither an exhaustive inventory nor an automatic sum of validations.
+- [**Other studies and research cases: an evidence overview.**](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_PORTFOLIO_v0.1.md) A representative selection of empirical, industrial, computational and synthetic work: SWIM, AWS functional recovery, rural financial-access expansion, software ecosystems, urban infrastructure, electrical systems, EV–Grid, VSL Paired, decision experiments and cross-domain tests. The brief explains what was investigated, what each case contributes and, importantly, what it cannot establish. It is neither an exhaustive inventory nor an automatic sum of validations.
 - **Limits of identification.** Other analyses show that when relevant conditions at the decision point are not sufficiently known, it may be impossible to determine whether a transformation was genuinely accessible. Recognising such indeterminacy is part of the method, not a result to be concealed.
 
 The research has also examined methods for reasoning about and selecting transformations. Those studies do not justify claiming that a generally validated Transformational Intelligence capability already exists.
@@ -267,3 +267,8 @@ The programme continues to develop and test its architecture. Its contribution, 
 4. Decide whether the public page should expose numerical evidence summaries or retain qualitative, bounded descriptions.
 5. Run a terminology and comprehension review in Spanish and English.
 6. Preserve all negative, conditional and open findings; do not convert programme activity into scientific achievement.
+
+
+## Version history
+
+- **0.9 — 2026-11-25:** Aligns the English evidence-portfolio overview with the Spanish version so both identify the same representative domains and study types. The bounded claims and evidence limitations are unchanged.
