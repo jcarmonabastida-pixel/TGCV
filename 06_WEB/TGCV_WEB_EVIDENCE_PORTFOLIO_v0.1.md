@@ -1,7 +1,7 @@
 # TGCV — Selected Research Cases and Evidence Portfolio v0.1
 
 **Identifier:** TGCV-WEB-EVIDENCE-PORTFOLIO-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-25  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Editorial basis:** Current Evidence-to-Claim Matrix v1.47 and its material-evidence records  
@@ -11,7 +11,7 @@
 
 ## Una investigación desarrollada en distintos sistemas y métodos
 
-Las fichas de evidencia de Research profundizan en algunas preguntas centrales de TGCV. Esta panorámica las complementa con una selección representativa de otros casos empíricos, industriales, computacionales y sintéticos registrados en la matriz de evidencia.
+Las fichas individuales de Research profundizan en algunas preguntas centrales de TGCV. Esta panorámica las complementa y sitúa junto a otros casos empíricos, industriales, computacionales y sintéticos registrados en la matriz de evidencia. Algunos trabajos aparecen también en una ficha específica: aquí se resumen brevemente para mostrar cómo encajan en el conjunto, no para duplicar su análisis.
 
 La selección muestra la amplitud de los sistemas estudiados y la variedad de métodos empleados: reconstrucción de sistemas en funcionamiento, análisis de datos longitudinales, experimentos de campo, pruebas controladas, simulaciones, reconstrucciones independientes y demostradores sintéticos.
 
@@ -21,7 +21,7 @@ No es un inventario exhaustivo ni un ranking de éxitos. Los casos no tienen tod
 
 ### SWIM — adaptación de recursos en un sistema de software
 
-A partir de registros de una ejecución de un sistema auto-adaptativo se reconstruyeron transformaciones como añadir o retirar servidores y modificar parámetros de iluminación. Se identificaron momentos en que esas transformaciones entraban o salían del conjunto accesible y se reconstruyeron acciones y transiciones de estado posteriores.
+A partir de registros de una ejecución de un sistema auto-adaptativo se reconstruyeron transformaciones como añadir o retirar servidores y modificar parámetros de iluminación. Se identificaron momentos en que esas transformaciones entraban o salían del conjunto accesible y se reconstruyeron acciones y transiciones de estado posteriores. Esta línea se desarrolla con más detalle en la [ficha sobre accesibilidad y trayectorias posteriores](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_ACCESSIBILITY_TRAJECTORY_v0.1.md).
 
 Un análisis complementario examinó la separación entre accesibilidad y la política nativa que selecciona acciones. La comparabilidad entre determinados estados quedó limitada, por lo que no se afirma una independencia general de la política.
 
@@ -39,7 +39,7 @@ Un caso industrial siguió una secuencia de recuperación de una instancia de co
 
 ### Ecosistema de paquetes de software
 
-Un análisis longitudinal de **516.061 pares temporales adyacentes** de versiones de paquetes caracterizó persistencia, expansión, contracción y reconfiguración de transformaciones accesibles bajo una representación operacional delimitada. El 84,91 % de los pares presentó algún cambio en el espacio de transformaciones accesibles. El análisis también distinguió esos cambios de una medida acotada de alcance potencial a un paso.
+Una ficha específica presenta el análisis longitudinal de **516.061 pares temporales adyacentes** de versiones de paquetes: caracterizó persistencia, expansión, contracción y reconfiguración de transformaciones accesibles bajo una representación operacional delimitada. El 84,91 % de los pares presentó algún cambio en ese espacio. El análisis distinguió esos cambios de una medida acotada de alcance potencial a un paso. [Consultar la ficha del ecosistema de software](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_SOFTWARE_ECOSYSTEM_v0.1.md).
 
 **Aporta:** evidencia estructural cuantitativa a gran escala sobre la dinámica de posibilidades en el ecosistema estudiado.
 
@@ -57,7 +57,7 @@ Un caso basado en un evento técnico de una red 5G reconstruyó el estado previo
 
 ### Servicios financieros rurales — expansión estructural del acceso
 
-Un experimento de campo en India evaluó la apertura temprana y aleatorizada de sucursales de servicios financieros en áreas rurales. La intervención amplió la infraestructura local disponible para acceder a préstamos, ahorro, seguros y asesoramiento. Se analizaron consecuencias posteriores para los hogares y se reconstruyeron las variables longitudinales utilizadas en el estudio.
+Un experimento de campo en India evaluó la apertura temprana y aleatorizada de sucursales de servicios financieros en áreas rurales. La intervención amplió la infraestructura local disponible para acceder a préstamos, ahorro, seguros y asesoramiento. Se analizaron consecuencias posteriores para los hogares y se reconstruyeron las variables longitudinales utilizadas en el estudio. Esta es la base de la evidencia causal acotada que se explica en la [ficha sobre accesibilidad y trayectorias posteriores](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_ACCESSIBILITY_TRAJECTORY_v0.1.md).
 
 **Aporta:** evidencia causal acotada de las consecuencias de una intervención estructural de expansión del acceso financiero, dentro de la población, intervención y periodo estudiados.
 
@@ -69,15 +69,23 @@ Un estudio de inversión local en infraestructura urbana permitió reconstruir c
 
 **Aporta:** reconstrucción empírica de cambios estructurales y experiencia metodológica al someter una hipótesis a un contraste causal acotado.
 
-**Límite:** el resultado se cerró como negativo dentro del estimando y la operacionalización definidos. No debe presentarse como confirmación de un efecto positivo general ni como evidencia de creación de valor.
+**Resultado y límite:** no se detectó un efecto estadísticamente significativo de la intervención sobre el cambio neto en el número de transformaciones accesibles bajo la operacionalización congelada. Esto no demuestra que el efecto verdadero sea exactamente cero. Es un resultado causal negativo acotado, no una confirmación de un efecto positivo general ni evidencia de creación de valor.
 
 ### Egipto e India — límites de reconstrucción de la accesibilidad
 
-Dos investigaciones con datos longitudinales permitieron reconstruir aspectos del estado estructural, la intervención o los cambios observados, pero no identificar de forma independiente una regla de admisibilidad suficiente para reconstruir el conjunto de transformaciones accesibles.
+Dos investigaciones con datos longitudinales ilustran límites distintos. En Egipto, se reconstruyeron el estado estructural y cambios observados, pero el material no permitía definir una regla de admisibilidad independiente. En India, un paquete de replicación de un experimento sobre energía solar aislada contenía datos longitudinales, variables de tratamiento, instalación y adopción, pero no permitía identificar, dentro de la búsqueda operacional acotada, el universo de transformaciones y la regla necesaria para reconstruir la accesibilidad. La inspección fue deliberadamente acotada: no demuestra que el universo completo sea intrínsecamente inabordable.
 
 **Aporta:** evidencia empírica de frontera: disponer de datos longitudinales, observar cambios o conocer la adopción de una intervención no basta necesariamente para identificar T_acc.
 
 **Límite:** estos casos no son evidencia positiva de cambios en T_acc. Delimitan qué información falta para poder hacerlo.
+
+### Transiciones históricas de sistemas eléctricos europeos — transferencia metodológica
+
+Un estudio de transiciones de sistemas eléctricos de 31 países europeos entre 1990 y 2019 permitió probar la transferencia de la metodología a un dominio técnico heterogéneo. Se identificaron estructuras de países, tecnologías, recursos y parámetros técnicos y económicos. Una capa candidata de restricciones técnicas alcanzó un 92,58 % de cobertura completa, pero la regla de admisibilidad global y el conjunto completo de transformaciones accesibles no quedaron identificados.
+
+**Aporta:** evidencia metodológica de transferencia y de separación entre restricciones técnicas, transformaciones realizadas, trayectorias y variables económicas.
+
+**Límite:** no demuestra una regla completa de accesibilidad, un efecto causal sobre trayectorias, una relación con valor ni validez transversal general.
 
 ### Marruecos — reconstrucción de un indicador social
 
@@ -115,7 +123,11 @@ Se compararon registros de dos dominios sintéticos/analíticos diferentes: plan
 
 ### Pruebas de aplicación sintética en varios dominios
 
-Otros demostradores sintéticos examinaron si la cadena de representación podía instanciarse en contextos como orquestación técnica, agentes y permisos, recursos y restricciones. Su función fue comprobar coherencia, trazabilidad y ejecutabilidad de los elementos representados.
+Un demostrador sintético adicional, ejecutado en tres escenarios —orquestación técnica, agentes/herramientas/permisos y recursos/restricciones— comparó la representación TGCV con modelos de referencia reconstruidos de forma independiente. Las representaciones resultaron equivalentes dentro de los universos sintéticos congelados. La prueba corrigió y auditó también el contrato de salida y los controles negativos.
+
+**Aporta:** evidencia metodológica de aplicación controlada y comparación reproducible en tres escenarios heterogéneos.
+
+**Límite:** la equivalencia de representación no demuestra superioridad explicativa o predictiva, validación empírica, causalidad ni preparación para despliegue industrial.
 
 **Aporta:** evidencia de aplicación metodológica en escenarios controlados y de identificación de limitaciones de las propias implementaciones.
 
@@ -123,9 +135,9 @@ Otros demostradores sintéticos examinaron si la cadena de representación podí
 
 ## 4. Experimentos sobre selección y Transformational Intelligence
 
-Una línea de experimentación controlada examinó decisiones de agentes ante estructuras de posibilidades futuras. Incluye pruebas de selección, contrastes con controles negativos, análisis posteriores y simulaciones Monte Carlo para caracterizar la calibración y potencia de diseños estadísticos.
+Una línea de experimentación controlada examinó si agentes incorporan estructuras de posibilidades futuras en sus decisiones. En dos ejecuciones independientes de un primer experimento se obtuvieron 420 decisiones válidas en cada una y se reprodujeron los análisis; los contrastes descriptivos observados no constituyen una estimación general de capacidad. En una prueba posterior de 72 decisiones, la selección se concentró en una misma acción y no discriminó de forma positiva el mecanismo de correspondencia entre decisión y posibilidades futuras. Un contraste inferencial posterior, definido antes del análisis y basado en más de 22.000 decisiones válidas, tampoco estableció el efecto de interacción previsto. Otros análisis posteriores fueron expresamente exploratorios y no confirmatorios.
 
-Los resultados son heterogéneos: algunos análisis permiten estudiar trazabilidad entre decisión y estructura de transformaciones; otros no ofrecen evidencia confirmatoria del mecanismo propuesto o permanecen en un nivel exploratorio. Las simulaciones Monte Carlo caracterizan el comportamiento de un diseño estadístico bajo datos generados, no el comportamiento de sistemas reales.
+La línea también incluye controles negativos, análisis de trazabilidad y simulaciones Monte Carlo para caracterizar la calibración y potencia de diseños estadísticos. Estas simulaciones describen el comportamiento de un diseño bajo datos generados, no el comportamiento de sistemas reales.
 
 **Aporta:** desarrollo y prueba de operacionalizaciones experimentales, trazabilidad de decisiones, controles y evaluación de diseños antes de interpretar futuros resultados.
 
@@ -155,7 +167,7 @@ La matriz de evidencia organiza la relación entre casos y afirmaciones científ
 
 ## Research conducted across different systems and methods
 
-The Research evidence briefs examine selected central questions in TGCV in depth. This overview complements them with a representative selection of other empirical, industrial, computational and synthetic cases recorded in the evidence matrix.
+The individual Research evidence briefs examine selected central questions in TGCV in depth. This overview complements them and places them alongside other empirical, industrial, computational and synthetic cases recorded in the evidence matrix. Some studies also have a dedicated brief: they are summarised here to show how they fit into the wider programme, not to duplicate their analysis.
 
 The selection illustrates the range of systems studied and methods used: reconstruction of operating systems, longitudinal data analysis, field experiments, controlled tests, simulations, independent reconstructions and synthetic demonstrators.
 
@@ -165,7 +177,7 @@ It is not an exhaustive inventory or a ranking of successes. The cases do not al
 
 ### SWIM — resource adaptation in a software system
 
-Records from an execution of a self-adaptive system were used to reconstruct transformations such as adding or removing servers and changing lighting parameters. The analysis identified moments when these transformations entered or left the accessible set and reconstructed subsequent actions and state transitions.
+Records from an execution of a self-adaptive system were used to reconstruct transformations such as adding or removing servers and changing lighting parameters. The analysis identified moments when these transformations entered or left the accessible set and reconstructed subsequent actions and state transitions. This line is examined in more detail in the [brief on accessibility and subsequent trajectories](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_ACCESSIBILITY_TRAJECTORY_v0.1.md).
 
 A complementary analysis examined the separation between accessibility and the native policy that selects actions. Comparability across some states was limited, so no general policy independence is claimed.
 
@@ -183,7 +195,7 @@ An industrial case followed the recovery of a computing instance. Repairing the 
 
 ### Software package ecosystem
 
-A longitudinal analysis of **516,061 adjacent temporal package-version pairs** characterised persistence, expansion, contraction and reconfiguration of accessible transformations under a bounded operational representation. Some change in the accessible transformation space occurred in 84.91% of pairs. The analysis also distinguished these changes from a bounded one-step potential-reach measure.
+A dedicated brief presents the longitudinal analysis of **516,061 adjacent temporal package-version pairs**: it characterised persistence, expansion, contraction and reconfiguration of accessible transformations under a bounded operational representation. Some change in that space occurred in 84.91% of pairs. The analysis distinguished these changes from a bounded one-step potential-reach measure. [Read the software ecosystem evidence brief](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_SOFTWARE_ECOSYSTEM_v0.1.md).
 
 **Contribution:** large-scale quantitative structural evidence about the dynamics of possibilities in the ecosystem studied.
 
@@ -201,7 +213,7 @@ A case based on a technical event in a 5G network reconstructed the prior state,
 
 ### Rural financial services — structural expansion of access
 
-A field experiment in India evaluated the randomised early opening of financial-service branches in rural areas. The intervention expanded local infrastructure for access to loans, savings, insurance and advice. Subsequent household consequences were analysed, and the study's longitudinal variables were reconstructed.
+A field experiment in India evaluated the randomised early opening of financial-service branches in rural areas. The intervention expanded local infrastructure for access to loans, savings, insurance and advice. Subsequent household consequences were analysed, and the study's longitudinal variables were reconstructed. This is the basis of the bounded causal evidence discussed in the [brief on accessibility and subsequent trajectories](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_ACCESSIBILITY_TRAJECTORY_v0.1.md).
 
 **Contribution:** bounded causal evidence about the consequences of a structural financial-access intervention, within the population, intervention and period studied.
 
@@ -213,15 +225,23 @@ A study of local urban infrastructure investment made it possible to reconstruct
 
 **Contribution:** empirical reconstruction of structural changes and methodological experience from subjecting a hypothesis to a bounded causal test.
 
-**Limit:** the result was closed as negative within the specified estimand and operationalisation. It should not be presented as confirmation of a general positive effect or as evidence of value creation.
+**Result and limit:** no statistically detectable intervention effect was found on the net change in the number of accessible transformations under the frozen operationalisation. This does not show that the true effect is exactly zero. It is a bounded negative causal result, not confirmation of a general positive effect or evidence of value creation.
 
 ### Egypt and India — limits of accessibility reconstruction
 
-Two studies with longitudinal data made it possible to reconstruct aspects of structural state, intervention or observed change, but did not independently identify a sufficient admissibility rule for reconstructing the set of accessible transformations.
+Two longitudinal studies illustrate different limits. In Egypt, structural state and observed changes could be reconstructed, but the material did not support an independent admissibility rule. In India, a replication package for an off-grid solar experiment contained longitudinal data and treatment, installation and adoption variables, but did not identify, within the bounded operational search, the transformation universe and rule needed to reconstruct accessibility. The inspection was deliberately bounded: it does not show that the complete universe is intrinsically intractable.
 
 **Contribution:** empirical boundary evidence: longitudinal data, observed changes or knowledge of intervention adoption are not necessarily sufficient to identify T_acc.
 
 **Limit:** these cases are not positive evidence of changes in T_acc. They delimit the information needed to make such a reconstruction.
+
+### Historical European electricity-system transitions — methodological transfer
+
+A study of electricity-system transitions across 31 European countries from 1990 to 2019 was used to test the transfer of the methodology to a heterogeneous technical domain. Country, technology, resource and technical/economic parameter structures were identified. A candidate technical-constraint layer achieved 92.58% complete coverage, but a complete admissibility rule and accessible-transformation set were not identified.
+
+**Contribution:** methodological evidence of transfer and of the separation between technical constraints, realised transformations, trajectories and economic variables.
+
+**Limit:** it does not demonstrate a complete accessibility rule, a causal effect on trajectories, a value relationship or general cross-domain validity.
 
 ### Morocco — reconstruction of a social indicator
 
@@ -259,7 +279,11 @@ Records from two different synthetic/analytical domains—grid-based planning an
 
 ### Synthetic application tests across several domains
 
-Other synthetic demonstrators examined whether the representational chain could be instantiated in contexts such as technical orchestration, agents and permissions, resources and constraints. Their purpose was to test consistency, traceability and executability of the represented elements.
+An additional synthetic demonstrator, executed across three scenarios—technical orchestration, agents/tools/permissions, and resources/constraints—compared the TGCV representation with independently reconstructed reference models. The representations were equivalent within the frozen synthetic universes. The test also corrected and audited the output contract and negative controls.
+
+**Contribution:** methodological evidence of controlled application and reproducible comparison across three heterogeneous scenarios.
+
+**Limit:** representational equivalence does not demonstrate explanatory or predictive superiority, empirical validation, causality or industrial deployment readiness.
 
 **Contribution:** evidence of methodological application in controlled scenarios and identification of limitations in the implementations themselves.
 
@@ -267,9 +291,9 @@ Other synthetic demonstrators examined whether the representational chain could 
 
 ## 4. Experiments on selection and Transformational Intelligence
 
-A line of controlled experimentation examined agent decisions in the presence of future possibility structures. It includes selection tests, contrasts with negative controls, post-primary analyses and Monte Carlo simulations to characterise the calibration and power of statistical designs.
+A line of controlled experimentation examined whether agents incorporate future possibility structures into their decisions. Two independent executions of an initial experiment each produced 420 valid decisions and reproducible analyses; the observed descriptive contrasts are not general capability estimates. In a subsequent 72-decision test, selection concentrated on the same action and did not positively discriminate the proposed correspondence mechanism between decisions and future possibilities. A later pre-specified inferential contrast based on more than 22,000 valid decisions also failed to establish the predicted interaction effect. Further post-primary analyses were explicitly exploratory and non-confirmatory.
 
-The results are heterogeneous: some analyses support the study of traceability between decisions and transformation structures; others do not provide confirmatory evidence for the proposed mechanism or remain exploratory. Monte Carlo simulations characterise the behaviour of a statistical design under generated data, not the behaviour of real systems.
+The line also includes negative controls, traceability analyses and Monte Carlo simulations to characterise the calibration and power of statistical designs. These simulations describe a design's behaviour under generated data, not the behaviour of real systems.
 
 **Contribution:** development and testing of experimental operationalisations, decision traceability, controls and design evaluation before interpreting future results.
 
