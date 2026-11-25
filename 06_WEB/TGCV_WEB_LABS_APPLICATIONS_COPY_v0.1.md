@@ -37,7 +37,7 @@ El prototipo utiliza sistemas sintéticos y reglas operativas propias. Su cálcu
 
 **Estado del activo y de la evidencia:** demostrador sintético existente, con una ejecución completada y auditada. Examina una pregunta acotada: si un mismo marco de análisis puede aplicarse a modelos sintéticos de distintos tipos de sistemas y representar sus estados y contexto, las transformaciones candidatas, su accesibilidad, las transiciones y las trayectorias posteriores.
 
-La ejecución examinada incluyó tres escenarios sintéticos: orquestación de redes y entornos cloud; agentes de IA y permisos de herramientas; y restricciones de recursos en sistemas de energía y movilidad. Las comprobaciones posteriores confirmaron que los resultados respetaban el formato y las reglas definidos para la prueba, que los controles diseñados para detectar resultados espurios funcionaban y que las reglas de propagación entre escenarios se aplicaban según lo previsto. Las reconstrucciones independientes mediante representaciones convencionales obtuvieron conjuntos equivalentes de transformaciones factibles en los universos examinados.
+La ejecución examinada incluyó tres escenarios sintéticos: coordinación de redes y servicios de computación en la nube; agentes de inteligencia artificial (IA) y permisos de herramientas; y restricciones de recursos en sistemas de energía y movilidad. Las comprobaciones posteriores confirmaron que los resultados respetaban el formato y las reglas definidos para la prueba, que los controles diseñados para detectar resultados espurios funcionaban y que las reglas de propagación entre escenarios se aplicaban según lo previsto. Las reconstrucciones independientes mediante representaciones convencionales obtuvieron conjuntos equivalentes de transformaciones factibles en los universos examinados.
 
 Este resultado aporta evidencia metodológica limitada sobre la ejecución y comparación de representaciones en esos escenarios sintéticos. No demuestra causalidad empírica en sistemas reales, superioridad explicativa de TGCV, validez universal, creación de valor, retorno de inversión ni preparación para el despliegue industrial. La propagación observada sigue las reglas definidas para cada escenario; no representa efectos causales establecidos empíricamente.
 
@@ -99,7 +99,7 @@ Se ha ejecutado y auditado un demostrador sintético mínimo relacionado con est
 
 La búsqueda no se limita a los tres contextos destacados. También se han identificado problemas en los que distintas capacidades, reglas, recursos y trayectorias pueden depender unas de otras:
 
-- **Orquestación multidominio de redes 5G, cloud y edge.** Coordinación de cambios entre redes, infraestructuras cloud-edge, seguridad y servicios.
+- **Orquestación multidominio de redes 5G, servicios en la nube y computación en el borde.** Coordinación de cambios entre redes, infraestructuras distribuidas, seguridad y servicios.
 - **Ciberseguridad y redes autodefensivas.** Interacción entre identidad, estado de seguridad, telemetría, infraestructura y respuesta automatizada.
 - **Servicios sociales integrados y gestión de casos ciudadanos.** Continuidad de los casos entre departamentos, datos interoperables, procesos y canales de atención.
 - **Atención integrada sanitaria y social.** Coordinación entre atención primaria, hospitales, servicios sociales, sistemas de información y organizaciones.
@@ -192,7 +192,7 @@ The prototype uses synthetic systems and its own operational rules. Its accessib
 
 **Asset and evidence status:** existing synthetic demonstrator, with one completed and audited execution. It examines a bounded question: can a common analytical framework be applied to synthetic models of different types of systems, explicitly representing their states and context, candidate transformations, accessibility, transitions and subsequent trajectories?
 
-The execution examined three synthetic scenarios: network and cloud-environment orchestration; AI agents and tool permissions; and resource constraints in energy and mobility systems. Subsequent checks confirmed that outputs followed the format and rules defined for the test, that controls designed to detect spurious results worked as intended, and that the declared rules for propagation between scenarios were followed. Independent reconstructions using conventional representations produced equivalent feasible transformation sets in the tested universes.
+The execution examined three synthetic scenarios: network and cloud-computing orchestration; artificial intelligence (AI) agents and tool permissions; and resource constraints in energy and mobility systems. Subsequent checks confirmed that outputs followed the format and rules defined for the test, that controls designed to detect spurious results worked as intended, and that the declared rules for propagation between scenarios were followed. Independent reconstructions using conventional representations produced equivalent feasible transformation sets in the tested universes.
 
 This provides limited methodological evidence about executing and comparing representations in those synthetic scenarios. It does not demonstrate empirical causality in real systems, TGCV's explanatory superiority, universal validity, value creation, return on investment or readiness for industrial deployment. The observed propagation follows the rules defined for each scenario; it does not represent empirically established causal effects.
 
@@ -254,7 +254,7 @@ A related minimum synthetic demonstrator has been executed and audited. In that 
 
 The search is not limited to the three featured contexts. Other problems have also been identified in which different capabilities, rules, resources and trajectories may depend on one another:
 
-- **Multi-domain 5G, cloud and edge orchestration.** Coordinating changes across networks, cloud-edge infrastructure, security and services.
+- **Multi-domain 5G networks, cloud services and edge computing.** Coordinating changes across networks, distributed infrastructure, security and services.
 - **Cybersecurity and self-defending networks.** Interactions between identity, security state, telemetry, infrastructure and automated response.
 - **Integrated social services and citizen case management.** Continuity of cases across departments, interoperable data, workflows and service channels.
 - **Integrated health and social care.** Coordination across primary care, hospitals, social services, information systems and organisations.
@@ -335,9 +335,9 @@ This invitation is intended to open a conversation and help discover potential c
 
 ## v0.2 review corrections — 2026-11-25
 
-- Tightens the TGCV Full Chain Demo acceptance statement: records the user-reported local walkthrough and the unverified byte-level match between the downloaded downloaded archive and software release workflow artifact file-identity record.
+- Clarifies the TGCV Full Chain Demo acceptance record: the user-reported local walkthrough was completed, but the downloaded archive was not independently verified as identical to the package generated by the software release process.
 - Makes the cross-domain mapping demonstrator's asset/evidence status explicit without upgrading its bounded synthetic methodological contribution.
-- Clarifies the energy and mobility minimum demonstrator demonstrator's non-independent baseline implementation and distinguishes it from the energy fixture in the cross-domain mapping demonstrator's audited execution.
+- Clarifies that the energy and mobility minimum demonstrator did not use an independent comparison model.
 - Adds concrete examples to the explanation that asset maturity and evidence status are separate dimensions.
 - Synchronises the document's Content Blueprint reference to v3.6. No scientific claim, application qualification or publication permission is changed.
 
@@ -353,7 +353,7 @@ This invitation is intended to open a conversation and help discover potential c
 
 - Replaces the internal prototype codename with the public name **TGCV Full Chain Demo** throughout the current Spanish and English copy.
 - Replaces the internal demonstrator acronym and execution/version identifiers with a plain-language description of the cross-domain synthetic demonstrator and its bounded result.
-- Removes the internal internal case identifier label and explains the limitation of the energy/mobility comparison in reader-facing terms.
-- Replaces electric-vehicle and electricity-grid coordination with “coordinación entre vehículos eléctricos y red eléctrica” / “electric-vehicle and electricity-grid coordination”.
+- Removes the internal case identifier and explains the limitation of the energy/mobility comparison in reader-facing terms.
+- Uses “coordinación entre vehículos eléctricos y red eléctrica” / “electric-vehicle and electricity-grid coordination” instead of the EV–Grid shorthand.
 - Removes unexplained software-delivery shorthand and repairs the accessibility-calculation sentence.
 - Synchronises the parent Content Blueprint reference to v3.8.
