@@ -24,16 +24,16 @@ Research desarrolla las preguntas, los conceptos, los métodos y la evidencia. L
 ## Demostradores y experimentos
 
 ### TGCV Full Chain Demo
-**Un prototipo de software desarrollado en torno a un sistema sintético.**
+**Un demostrador sintético de la cadena completa de TGCV.**
 
-TGCV Full Chain Demo es un demostrador de la cadena completa de TGCV: un prototipo de software desarrollado en torno a un sistema sintético. El prototipo existe, pero no presentamos funciones concretas como disponibles en una versión descargable: todavía no se han verificado conjuntamente el paquete y la interfaz exactos. Por ello, no podemos asegurar que las funciones descritas en la documentación correspondan al artefacto que podría ponerse a disposición del público.
+TGCV Full Chain Demo es un prototipo de software desarrollado en torno a un sistema sintético que permite simular la cadena completa de TGCV. El prototipo existe, pero no presentamos funciones concretas como disponibles en una versión descargable: todavía no se han verificado conjuntamente el paquete y la interfaz exactos. Por ello, no podemos asegurar que las funciones descritas en la documentación correspondan al artefacto que podría ponerse a disposición del público.
 
 El prototipo utiliza sistemas sintéticos y reglas operativas propias. Su cálculo de accesibilidad es específico del demostrador: no constituye la función científica canónica de TGCV ni un predictor causal. Tampoco es un simulador de sistemas reales ni un producto listo para su despliegue.
 
 **Estado del activo:** prototipo existente. Cuenta con un registro de aceptación funcional basado en un recorrido manual local. Esta aceptación se refiere al funcionamiento del paquete probado, no a su validez científica. El archivo utilizado en ese recorrido no se ha podido verificar como idéntico al paquete generado para su distribución. La disponibilidad de una versión pública descargable no está confirmada; por tanto, no presentamos un enlace de descarga ni afirmamos que exista una versión pública operativa.
 
-### Demostrador de mapeo de transformaciones entre distintos tipos de sistemas
-**Un demostrador metodológico basado en escenarios sintéticos.**
+### TGCV Cross Domain Demo
+**Un demostrador metodológico de mapeo de transformaciones entre distintos tipos de sistemas basado en escenarios sintéticos.**
 
 **Estado del activo y de la evidencia:** demostrador sintético existente, con una ejecución completada y auditada. Examina una pregunta acotada: si un mismo marco de análisis puede aplicarse a modelos sintéticos de distintos tipos de sistemas y representar sus estados y contexto, las transformaciones candidatas, su accesibilidad, las transiciones y las trayectorias posteriores.
 
@@ -187,8 +187,8 @@ The prototype uses synthetic systems and its own operational rules. Its accessib
 
 **Asset status:** existing prototype. It has a software-functionality acceptance record based on a local manual walkthrough. This acceptance concerns the package that was tested, not scientific validity. The file used in that walkthrough has not been verified as identical to the package generated for distribution. The availability of a public downloadable release has not been verified; we therefore provide no download link and make no claim that a public operational version is available.
 
-### Cross-domain transformation mapping demonstrator
-**A methodological demonstrator based on synthetic scenarios.**
+### TGCV Cross Domain Demo
+**A methodological demonstrator for mapping transformations across different types of systems based on synthetic scenarios.**
 
 **Asset and evidence status:** existing synthetic demonstrator, with one completed and audited execution. It examines a bounded question: can a common analytical framework be applied to synthetic models of different types of systems, explicitly representing their states and context, candidate transformations, accessibility, transitions and subsequent trajectories?
 
