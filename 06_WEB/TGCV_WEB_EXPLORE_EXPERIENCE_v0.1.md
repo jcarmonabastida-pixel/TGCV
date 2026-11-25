@@ -1,7 +1,7 @@
 # TGCV — Explore Experience Specification
 
 **Identifier:** TGCV-WEB-EXPLORE-001  
-**Version:** 0.9  
+**Version:** 1.0  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21–22  
@@ -260,3 +260,4 @@ Before publication:
 - **0.8 — 2026-11-25:** Reframes the space-of-possibilities explanation around component capabilities, relationships/dependencies and operating conditions; uses three visitor questions and reconnects the controlled migration example without implying a universal checklist.
 
 - **0.9 — 2026-11-25:** Clarifies Transformational Intelligence as an integrative capability concept under development; distinguishes its intended role from Systems Thinking, Systems Engineering, AI and the TGCV research programme, and avoids implying an operational or validated capability.
+- **1.0 — 2026-11-25:** Explicitly states that Accessibility → Execution → Outcome → Value is an analytical distinction rather than a complete causal model; trajectory remains represented across states and transformations.
