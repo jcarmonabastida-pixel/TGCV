@@ -73,154 +73,124 @@ Editorial principles:
 - **Separate decision from permission to execute:** selecting an option or authorising further design does not authorise implementation.
 - **Do not overstate evidence:** activity, more ideas, more data or more accessible possibilities are not automatically value.
 
-## 5. Page experience — proposed content blocks
+## 5. Page experience — six narrative movements
 
-### Block 1 — Opening: value is constructed, not presumed
+The page follows the six movements approved in the Content Blueprint. The VALUE cycle and the A1–A8 records are explained within these movements; they must not become competing page structures or an additional set of phases.
 
-**Purpose:** establish the practical question and distinguish value construction from a generic promise of improvement.
+### Movement 1 — From opportunity to value
 
-**Visitor experience:** start from a recognisable challenge: systems often have opportunities, knowledge and capabilities distributed across people and processes, but these do not automatically combine into useful outcomes.
+**Purpose:** establish that value is contextual and that a potential opportunity must be understood before a solution is prescribed.
 
-**Core message:** constructing value requires understanding what matters in context, how the system works, what options are plausible, what evidence supports them and what happens after a decision.
+Introduce:
+- **Value Construction:** the contextual process through which a system combines knowledge, capabilities and opportunities to produce outcomes considered valuable in a particular context.
+- **VALUE:** the applied framework that structures this work; its working identity descriptor is **Transformational Value Framework**.
+- **Value Opportunity:** a contextualised possibility that may warrant investigation; it is not a solution.
+- The value question: for whom is an outcome valuable, which outcome matters, over what horizon and under what constraints?
 
-**Editorial guardrail:** avoid claims that VALUE guarantees value, efficiency, innovation or better performance.
+Explain the framework's operating cycle as a compact overview: **ALIGN** is the entry/alignment and governance condition, followed by **SENSE → CONNECT → DESIGN → DECIDE → ACT → LEARN**. This is the VCF operating cycle, not a second methodology or a guaranteed linear route.
 
-### Block 2 — What is Value Construction?
+Establish the identity boundaries:
+- TGCV is the research programme.
+- VALUE is the complementary applied framework.
+- ValueLabOS is a proposed digital and collaborative ecosystem to facilitate VALUE application and evolution; it is not VALUE itself or a finished product.
 
-**Purpose:** explain the central concept before introducing the framework.
+**Core discovery:** value is not presumed from an idea, a new possibility or an intervention. It requires contextual criteria, decisions, observed outcomes and evaluation.
 
-**Working definition:** Value Construction is the process through which a system combines knowledge, capabilities and opportunities to produce outcomes considered valuable in a particular context.
+### Movement 2 — Understand the system
 
-Clarify:
-- a **Value Opportunity** is a contextualised possibility that may warrant investigation; it is not a solution;
-- value depends on who evaluates an outcome, which criteria are used and the context and time horizon;
-- a proposed outcome, a decision, an executed intervention and a valued result are different things.
+**Purpose:** show why opportunity work requires a systemic understanding before choosing an intervention.
 
-**Visitor discovery:** the work is not simply to find an idea or choose a technology; it is to understand and organise the conditions for a justified intervention and subsequent learning.
-
-### Block 3 — Introducing VALUE
-
-**Purpose:** introduce VALUE as the framework that structures the work.
-
-**Public naming:** VALUE — Transformational Value Framework (descriptor of identity); describe it in the page as an applied framework complementary to TGCV.
-
-Explain the distinction between:
-- **Value Construction:** the contextual process/concept;
-- **VALUE:** the applied framework;
-- **Value Construction Framework (VCF):** the operational cycle within VALUE;
-- **Value System Model (VSM):** the integrated model used to understand the system.
-
-Do not use VCF and VSM interchangeably. Do not present the descriptor as evidence of formal derivation from TGCV.
-
-### Block 4 — The VALUE cycle: from intention to learning
-
-**Purpose:** make the method's operating logic understandable.
-
-Present **ALIGN** as the entry and governance condition, followed by the six VCF phases:
-
-| Element | Visitor-facing question | What it contributes |
-|---|---|---|
-| **ALIGN — Align value** | What value are we seeking, for whom, and what decision needs support? | Purpose, scope, affected groups, criteria, constraints and decision responsibility. |
-| **SENSE — Discover** | What is happening and which opportunity deserves attention? | A contextualised opportunity, signals, needs and open questions. |
-| **CONNECT — Understand and integrate** | How does the system work, and what knowledge must be connected? | A shared model of actors, capabilities, relationships, flows, frictions and evidence gaps. |
-| **DESIGN — Design alternatives** | Which plausible options could address the opportunity? | Alternatives, value hypotheses, assumptions, risks and preliminary designs. |
-| **DECIDE — Decide with evidence** | Which option or test is justified now? | A traceable decision to proceed, test, reformulate, investigate further, defer or stop. |
-| **ACT — Execute and adopt** | What is required to put the authorised decision into practice? | An appropriately scoped plan, responsibilities, adoption, execution records and observable results. |
-| **LEARN — Learn and renew** | What have we learned and what should change in the system's capacity? | Review of results, unintended effects, lessons and the next decision or cycle. |
-
-Show that the process is iterative, not a rigid waterfall. Evidence can be recorded across phases. A phase or decision may be reopened.
-
-**Critical decision boundary:** selection of an option, permission to continue design, permission for preparatory work and formal authorisation to execute are distinct. Execution requires explicit authority and a defined scope, resources, conditions, safeguards and limits. Without it, ACT does not begin.
-
-**Gate logic:** a gate may conclude with insufficient evidence, defer or stop; it must not force progression to the next phase.
-
-### Block 5 — Understanding the system: Value System Model
-
-**Purpose:** show what VALUE means by understanding the system rather than analysing isolated functions.
-
-Introduce the VSM as one integrated model. Its relevant elements include:
-- intention and criteria of value;
+Introduce the **Value System Model (VSM)** as one integrated model of the system being examined. Its relevant elements include:
+- purpose and value intent;
 - actors and affected groups;
 - needs, tensions and context;
-- capabilities, resources and knowledge;
+- capabilities, resources, knowledge and evidence;
 - relationships and flows;
-- frictions, constraints and dependencies;
-- alternatives, hypotheses and decisions;
-- results and learning.
+- frictions, restrictions and dependencies;
+- alternatives, decisions, actions, results and learning.
 
-Explain that network, capability, flow and collective-knowledge maps are complementary views of the same model, not independent models or separate mandatory artefacts.
+Explain that network, capability, flow and collective-knowledge maps are complementary views of the same model, not independent models or mandatory standalone artefacts. The model is scoped to the decision at hand, not an exhaustive map of an entire organisation. It evolves as understanding and evidence change.
 
-The model is scoped to the decision being considered; it is not intended to map an entire organisation exhaustively. It can evolve as the work progresses and should distinguish observations, assumptions, disagreement and missing evidence.
-
-### Block 6 — From method to traceable work: A1–A8
-
-**Purpose:** explain how the framework preserves continuity from intention to learning without turning the page into a technical manual.
-
-Introduce the eight canonical records in plain language:
+Connect this movement to the first records:
 - **A1 — Value Intent:** purpose, affected groups, criteria, scope and decision to support.
-- **A2 — Value Opportunity Brief:** contextual description of the opportunity, signals, sources and questions.
-- **A3 — Value System Model:** shared representation of the system and its relevant relationships and constraints.
-- **A4 — Value Hypothesis & Options Record:** alternatives, expected mechanisms, assumptions and risks.
-- **A5 — Evidence Record:** sources, methods, quality, limitations and contradictory evidence; transversal to the cycle.
-- **A6 — Value Decision Record:** criteria, evidence, trade-offs, authority, decision and conditions.
-- **A7 — Value Blueprint & Delivery Plan:** design and plan, with proposal, authorisation and execution states kept distinct.
+- **A2 — Value Opportunity Brief:** contextual opportunity, signals, sources and open questions.
+- **A3 — Value System Model:** shared representation of the system, its relationships and constraints.
+
+The public copy should use visitor-understandable language and need not foreground the A-codes. Distinguish observations, hypotheses, assumptions, disagreements and missing evidence.
+
+### Movement 3 — Explore possibilities
+
+**Purpose:** move from system understanding to alternatives that can be compared and challenged.
+
+Explain that VALUE does not treat the first proposed solution as the answer. Alternatives should:
+- address a defined need or opportunity;
+- describe the proposed change and expected mechanism;
+- identify affected people and required capabilities;
+- state assumptions, dependencies, risks and possible unintended effects;
+- specify what evidence could support or contradict the hypothesis;
+- include, where relevant, maintaining the current approach, gathering better evidence or not acting.
+
+Connect to:
+- **A4 — Value Hypothesis & Options Record:** alternatives, hypotheses, assumptions and risks.
+- **A5 — Evidence Record:** sources, methods, quality, limitations, contradictions and evidence gaps.
+
+A5 is transversal to the cycle, not a separate phase. No universal score or ranking should be invented. More alternatives, more data or more accessible possibilities do not automatically imply greater value.
+
+### Movement 4 — Decide and act
+
+**Purpose:** make the transition from options to responsible action understandable and prevent a recommendation from being mistaken for permission to execute.
+
+Explain that decisions should be proportionate to available evidence and can legitimately:
+- select an option for further design;
+- authorise a bounded test;
+- request more evidence;
+- defer under explicit conditions;
+- reformulate the opportunity;
+- or stop.
+
+Connect to:
+- **A6 — Value Decision Record:** criteria, evidence, trade-offs, uncertainty, decision authority, reasons and the precise next step authorised.
+- **A7 — Value Blueprint & Delivery Plan:** the selected design, scope, capabilities, dependencies, responsibilities, safeguards, plan and execution status.
+
+**Critical boundary:** selecting an option or authorising further design does not authorise implementation. Formal execution requires explicit authorisation by the competent authority, with scope, resources, conditions, safeguards and limits. A7 may remain a proposal; ACT does not begin without the required authorisation. Adoption and execution must be distinguished from a plan or recommendation.
+
+### Movement 5 — Learn and renew
+
+**Purpose:** show that work does not end when a decision is made or an action is completed.
+
+Explain that learning compares observed results with the intention and criteria agreed beforehand. It should include:
+- expected and unexpected effects, positive and negative;
+- data quality, uncertainty and alternative explanations;
+- differences between the plan and what was actually carried out;
+- limits on attributing outcomes to an intervention or to VALUE;
+- changes to capabilities, practices, relationships or the next cycle.
+
+Connect to:
 - **A8 — Value Learning Record:** observed results, unintended effects, attribution limits and learning for the next cycle.
 
-Do not describe A1–A8 as eight phases. A5 is transversal; A3 evolves through the work; A7 maintains different states. The traceability links represent provenance and dependencies, not causal proof.
+The cycle is iterative, not a rigid waterfall. New evidence or changed conditions may reopen earlier phases and decisions.
 
-The public page may summarise these records and link to public, reviewed examples. Do not expose internal review IDs, filenames or governance metadata in visitor-facing copy.
+Measurement boundaries:
+- **Capacidad de Construcción de Valor (CCV)** is a capability objective that VALUE aims to develop, not a validated score or maturity scale.
+- **Índice de Valor Sistémico (IVS)** is an exploratory measurement line, not a ready KPI; no canonical formula, weighting or validated scale is available.
+- Neither CCV nor IVS should be used on this page to rank organisations or quantify performance.
+- The **Value Discovery Sprint** is a pilot-service design in evolution, not a proven service and not a promise that a complete intervention can be delivered in five days. Do not advertise it as purchasable or available.
 
-### Block 7 — A fictional case: access to appointments in a clinic
+### Movement 6 — A case in practice: access to appointments in a clinic
 
-**Purpose:** make the cycle concrete while modelling epistemic discipline.
+**Purpose:** make the framework tangible through the fictional end-to-end case while modelling epistemic discipline.
 
-Use `VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md` as the source of truth. Label the clinic, people, observations, figures, options, decision and results as fictional/invented throughout. It is a documentary example, not a real implementation, pilot or empirical validation.
+Use `VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md` as the source of truth. Label the clinic, people, observations, figures, options, decision and results as fictional/invented. It is a documentary example, not a real implementation, pilot or empirical validation.
 
 Suggested narrative:
 1. **Starting situation:** a fictional medium-sized outpatient clinic receives complaints about delays in appointment allocation. The cause is unknown; the initial suspicion about coordination is not treated as fact.
-2. **Opportunity and scope:** ask how access to appointments might be improved without harming clinical priority, increasing unacceptable staff burden or disadvantaging patients with greater needs. Clinical diagnosis and changes to clinical prioritisation remain outside scope.
-3. **System understanding:** show the administrative appointment process, relevant actors, hand-offs, information, capacities, rules, dependencies and uncertainty. Do not turn A3 into a detailed operating manual or invent clinical procedures.
+2. **Opportunity and scope:** ask how access to appointments might be improved without harming clinical priority, creating unacceptable staff burden or disadvantaging patients with greater needs. Clinical diagnosis and changes to clinical prioritisation remain outside scope.
+3. **System understanding:** show the administrative appointment process, relevant actors, hand-offs, information, capacities, rules, dependencies and uncertainties. Do not turn A3 into a detailed operating manual or invent clinical procedures.
 4. **Alternatives:** present the five options at a high level: maintain and measure; daily review of pending requests; improve completeness at intake; increase capacity; redesign the full process. They are design options, not actions taken.
 5. **Decision boundary:** O1 is selected only as a design preference for a possible limited test. Formal execution authorisation is not granted; criteria and safeguards remain pending. This does not authorise preparation, communication or real operation.
-6. **Plan and learning:** a hypothetical four-week test is described only as a proposal. The numeric values in A5/A8 are fabricated; they are not observed results. The sequence labelled as execution is counterfactual illustration, not an execution record. The case has no empirical learning or demonstrated value.
+6. **Plan and learning:** a hypothetical four-week test is described only as a proposal. Numeric values in A5/A8 are fabricated; they are not observed results. The sequence labelled as execution is counterfactual illustration, not an execution record. The case has no empirical learning or demonstrated value.
 
 **Public presentation rule:** prefer explaining the reasoning, alternatives and explicit non-execution over displaying invented percentages. If any simulated figures are shown, label them beside the figures and state that they are not observations, do not establish causality and do not demonstrate efficacy. The case must never be used as proof that O1 works or that VALUE produces value.
-
-### Block 8 — What VALUE does not claim; measurement and maturity
-
-**Purpose:** make the framework's current status and boundaries transparent.
-
-State that:
-- VALUE is a methodological architecture in evolution, with working specifications and a fictional case; documentary coherence does not establish empirical usability, validity or effectiveness.
-- The Value Discovery Sprint is a pilot-service design in evolution, not a proven service or a promise that a complete intervention can be delivered in five days.
-- **Capacidad de Construcción de Valor (CCV)** is an intended capability outcome, not a validated score.
-- **Índice de Valor Sistémico (IVS)** is an exploratory measurement line, not a ready KPI; there is no canonical formula, weighting or validated scale. Neither CCV nor IVS should be used to rank organisations or quantify performance on this page.
-- More information, options, activity or transformation possibilities do not automatically mean more value.
-- Evidence and attribution depend on the case and its evaluation design.
-
-Avoid burdening the main narrative with unresolved measurement detail. A short "status and limits" subsection is sufficient.
-
-### Block 9 — How VALUE relates to TGCV and ValueLabOS
-
-**Purpose:** position the three elements without conflation.
-
-- **TGCV:** investigates how accessible transformations and their conditions may relate to system trajectories and value.
-- **VALUE:** structures applied work to understand opportunities, model systems, design alternatives, decide, act and learn.
-- **ValueLabOS:** proposed digital and collaborative ecosystem for applying, experimenting with and evolving VALUE; not a finished product and not required to use the framework.
-
-State that the possible bridge between TGCV and VALUE is a hypothesis to be examined: whether explicit modelling of accessible transformations, conditions and constraints adds useful information to opportunity understanding and decision-making. The relationship is not assumed to be causally established, and VALUE is not a literal implementation of TGCV.
-
-### Block 10 — Where to go next
-
-**Purpose:** provide meaningful routes without implying that a product or service is available.
-
-Recommended routes:
-- **Research:** understand TGCV's research questions, evidence and limits.
-- **Explore:** revisit the conceptual distinction between accessible transformations, execution, outcomes and value.
-- **Labs & Applications:** inspect bounded demonstrators and exploratory application contexts, with their maturity/evidence labels.
-- **Contact:** ask a question or propose a scoped conversation only if the monitored contact route exists.
-
-Do not promote ValueLabOS as a live platform, the Value Discovery Sprint as a purchasable service, or an open community unless those capabilities are actually available and maintained.
 
 ## 6. Terminology and distinctions to preserve
 
