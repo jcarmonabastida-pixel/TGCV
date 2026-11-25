@@ -6,7 +6,7 @@
 **Status:** BILINGUAL COPY — WORKING DRAFT  
 **Branch:** `strategy/tgcv-web-master`  
 **Page:** P06 — Value Construction  
-**Experience:** `TGCV_WEB_VALUE_CONSTRUCTION_EXPERIENCE_v0.1.md`  
+**Experience:** `TGCV_WEB_VALUE_CONSTRUCTION_EXPERIENCE_v0.1.md` — v0.2  
 **Source basis:** VALUE Methodology Lifecycle v0.4; VALUE Artifact Master Specs v0.1; VALUE Fictional Clinic Case v1.1; TGCV–VALUE–ValueLabOS Identity Architecture v0.1.
 
 ---
@@ -436,4 +436,4 @@ The relationship between TGCV and VALUE is complementary and represents a line o
 
 ## Change history
 
-- **v0.1 — 2026-11-25:** first bilingual public Copy drafted from Value Construction Experience v0.1 and current VALUE methodological and clinic-case sources. Uses an opportunity/system-understanding-first narrative and preserves the fictional, non-execution and non-validation boundaries.
+- **v0.1 — 2026-11-25:** first bilingual public Copy drafted from Value Construction Experience v0.2 and current VALUE methodological and clinic-case sources. Uses an opportunity/system-understanding-first narrative and preserves the fictional, non-execution and non-validation boundaries.
