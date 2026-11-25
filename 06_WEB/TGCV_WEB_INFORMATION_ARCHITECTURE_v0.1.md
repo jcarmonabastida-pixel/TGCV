@@ -817,8 +817,8 @@ This authority supersedes earlier P05 working text that describes four dimension
 
 The current P07 visitor experience and bilingual working copy are:
 
-- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.5.
-- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.4.
+- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.6.
+- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.5.
 
 The page distinguishes existing demonstrators, proposed visitor experiences, featured and additional Application-Fit candidates, and broad Business Translation opportunity families. These are different content classes and must not be conflated. Asset maturity/availability is separate from evidence/test status.
 
