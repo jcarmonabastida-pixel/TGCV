@@ -1,7 +1,7 @@
 # TGCV — Research Page Experience v0.1
 
 **Identifier:** TGCV-WEB-RESEARCH-EXP-001  
-**Version:** 0.8  
+**Version:** 0.9
 **Date:** 2026-11-25  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
@@ -148,7 +148,7 @@ For each theme, distinguish the research question, system/data, method, main fin
 
 **Evidence links are part of the experience, not optional decoration.** Each theme should link to a dedicated, readable evidence description. That page should provide enough detail for an interested visitor to understand and assess the result, with links to public papers, methods, data or reproducibility materials where publication permission exists. If a detailed public description does not yet exist, do not show a dead link or expose a private record; mark the item as awaiting a public evidence brief in the editorial workflow.
 
-The overview must make clear that evidence is heterogeneous and bounded. It must not imply universal validation, general causal efficacy, predictive value, value creation, superiority, full originality, industrial deployment or general Transformational Intelligence validation.
+The overview and portfolio are complementary: a case may be summarised in the portfolio and examined in depth in a dedicated brief, but the portfolio must not duplicate detailed analysis or imply an additional independent result. The overview must make clear that evidence is heterogeneous and bounded. It must not imply universal validation, general causal efficacy, predictive value, value creation, superiority, full originality, industrial deployment or general Transformational Intelligence validation.
 
 **Experience:** concise evidence summaries with meaningful titles and a clear “Explore the evidence” link to each public evidence brief. Each brief should include: question; system and unit; data and period; operational definitions; method/design; result; what it supports; what it does not establish; limitations; public sources and version/date. Avoid traffic-light badges as a substitute for explanation.
 
