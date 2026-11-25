@@ -5,7 +5,7 @@
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.3; Explore Experience v0.9; Explore Copy v0.8; Research Experience v0.9; Research Copy v0.8; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.1.
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.3; Explore Experience v1.0; Explore Copy v0.9; Research Experience v0.9; Research Copy v0.8; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.1.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -761,3 +761,4 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Reconciles §1.1 navigation with the approved first-release sequence, including Value Construction.
 - Updates parent-document references to current Home, Explore, Research, Systems Engineering and Transformational Intelligence artifacts.
 - Clarifies that the Explore sequence is an analytical distinction, not a complete causal model, and that trajectory is represented across states and transformations.
+- Updates the authoritative Explore Experience and Copy references to v1.0 and v0.9.
