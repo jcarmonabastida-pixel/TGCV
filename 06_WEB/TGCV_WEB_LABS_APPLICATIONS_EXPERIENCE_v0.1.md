@@ -248,7 +248,7 @@ Adapt naturally to each language. Preserve public names such as TGCV Full Chain 
 - `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_TSTC_EVIDENCE_TO_CLAIM_PROPAGATION_001.md`: bounded evidence registered, no claim-level upgrade.
 - `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_C05_EV_GRID_POST_EXECUTION_AUDIT_001.md`: synthetic minimum demonstrator audit with limitations; independent baseline comparison not established.
 
-### Juguete Colectivo sources
+### TGCV Full Chain Demo sources
 - `prototypes/collective_toy/DISTRIBUTION_README_001.md`
 - `prototypes/collective_toy/GUIA_DE_USO.md`
 - `prototypes/collective_toy/TGCV_FULL_CHAIN_DEMONSTRATOR_CONTRACT_001.md`
@@ -276,7 +276,7 @@ The descriptions of TGCV Playground, Value Explorer and ValueLabOS Preview in th
 
 The page is editorially acceptable when:
 1. visitors can distinguish Labs & Applications from Research and Value Construction;
-2. Juguete Colectivo, TSTC and TGCV Playground are clearly distinct;
+2. TGCV Full Chain Demo, TSTC and TGCV Playground are clearly distinct;
 3. Value Explorer is introduced as an experience related to, but not identical with, VALUE;
 4. ValueLabOS Preview is described as an initial view of a proposed environment, not as a released product;
 5. no functionality or public availability is claimed without verification;
@@ -291,8 +291,8 @@ The page is editorially acceptable when:
 
 ## 8. Change record
 
-- **v0.1 — 2026-11-25:** First Experience specification for P07, reconstructed from the current Web Master Brief and Content Blueprint, canonical main STATUS, TSTC v004 audit and evidence propagation, C05 synthetic demonstrator audit, Juguete Colectivo prototype/distribution records and Application-Fit candidate screens.
-- **v0.2 — 2026-11-25:** Reworked the first-release Experience after user clarification. Adds TGCV Playground, Value Explore and ValueLabOS — First Insight as distinct proposed experiences; separates them from Juguete Colectivo and TSTC; expands the additional Application-Fit candidate list and Business Translation opportunity families; adds a careful invitation to suggest further contexts. Excludes unrelated initiatives and preserves all evidence and availability boundaries. No scientific artifact, claim, evidence state or execution authorization is modified.
+- **v0.1 — 2026-11-25:** First Experience specification for P07, reconstructed from the current Web Master Brief and Content Blueprint, canonical main STATUS, TSTC v004 audit and evidence propagation, C05 synthetic demonstrator audit, TGCV Full Chain Demo prototype/distribution records and Application-Fit candidate screens.
+- **v0.2 — 2026-11-25:** Reworked the first-release Experience after user clarification. Adds TGCV Playground, Value Explore and ValueLabOS — First Insight as distinct proposed experiences; separates them from TGCV Full Chain Demo and TSTC; expands the additional Application-Fit candidate list and Business Translation opportunity families; adds a careful invitation to suggest further contexts. Excludes unrelated initiatives and preserves all evidence and availability boundaries. No scientific artifact, claim, evidence state or execution authorization is modified.
 
 
 - **v0.3 — 2026-11-25:** Establishes the explicit area **Explore the possibilities — Experiencias para descubrir y experimentar**, standardises the three experience names as TGCV Playground, Value Explorer and ValueLabOS Preview, and relocates the participation invitation to the end of Application-Fit. The invitation is an open call to discover problems and opportunities with interested people and organisations, not a formal intake process. Participation forms, eligibility and rules are reserved for a possible separate Participation area/page; its inclusion and scope in the first release remain undecided.
