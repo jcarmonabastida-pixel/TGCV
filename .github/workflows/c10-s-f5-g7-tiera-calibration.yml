@@ -126,22 +126,21 @@ jobs:
         run: |
           set -euo pipefail
           MANIFEST="03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json"
-          EXPECTED_ARCHIVE_SHA="$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["profile_artifact_archive_sha256"])' "$MANIFEST")"
           ARCHIVE="$RUNNER_TEMP/resource-profile.zip"
+          METADATA="$RUNNER_TEMP/resource-profile-artifact-metadata.json"
           mkdir -p "$RUNNER_TEMP/resource-profile"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$PROFILE_ARTIFACT_ID" > "$METADATA"
           curl --fail --location --silent --show-error \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/artifacts/$PROFILE_ARTIFACT_ID/zip" \
             --output "$ARCHIVE"
-          ACTUAL_ARCHIVE_SHA="$(sha256sum "$ARCHIVE" | cut -d ' ' -f 1)"
-          test "$ACTUAL_ARCHIVE_SHA" = "$EXPECTED_ARCHIVE_SHA"
+          python verify_c10s_f5_g7_resource_profile_artifact.py \
+            --archive "$ARCHIVE" \
+            --manifest ../fixtures/g7_resource_profile_v1_1/manifest.json \
+            --artifact-metadata "$METADATA" \
+            --output-json "$RUNNER_TEMP/verified-resource-profile-artifact.json"
           unzip -q "$ARCHIVE" -d "$RUNNER_TEMP/resource-profile"
-          PROFILE_JSON="$RUNNER_TEMP/resource-profile/c10s-f5-g7-resource-profile.json"
-          test -s "$PROFILE_JSON"
-          EXPECTED_JSON_SHA="$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["profile_json_sha256"])' "$MANIFEST")"
-          ACTUAL_JSON_SHA="$(sha256sum "$PROFILE_JSON" | cut -d ' ' -f 1)"
-          test "$ACTUAL_JSON_SHA" = "$EXPECTED_JSON_SHA"
       - name: Validate immutable resource profile and derive safe shard matrix
         id: plan
         working-directory: 03_EXPERIMENTS/C10-S/harness
