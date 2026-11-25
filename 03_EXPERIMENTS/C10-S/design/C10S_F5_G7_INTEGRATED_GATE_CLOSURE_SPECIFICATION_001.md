@@ -284,9 +284,22 @@ La suite de validación del run `45550608608`, commit `60c34a17606627a62c7f0db20
 | RG-01 | PASS determinista | Contrato de nombre y descubrimiento alineado |
 | RG-02 | PASS | ZIP productivo descargado; hashes ZIP/JSON coincidentes; verificación integrada 8/8 |
 | RG-03 | PASS determinista | Identidad Git / compute path |
-| RG-04 | NOT_VERIFIABLE — BLOQUEANTE | Falta comprobar en Settings la protección efectiva del Environment y el requisito de reviewer |
+| RG-04 | NOT_VERIFIABLE — BLOQUEANTE | El workflow ahora exige reviewers obligatorios y `prevent_self_review=true`; falta comprobar la configuración efectiva del Environment en Settings |
 | RG-05 | PASS | Inventario tipado único; cobertura integrada 8/8 |
 | RG-06 | CONDITIONAL | 300 s/fase es reserva de ingeniería; margen calculado de 36,107 s frente a 9.000 s |
 | RG-07 | CONDITIONAL | K=100 no garantiza la cola ni el máximo futuro; proyección de scheduling condicionada |
 
 **Decisión:** el gate instrumental sigue cerrado a ejecución G7 mientras RG-04 permanezca NOT_VERIFIABLE. RG-06/RG-07 son limitaciones de planificación expresamente documentadas, no autorizaciones. No se inicia G7, Tier-A, holdout, cobertura, replay científico ni ejecución causal C10.
+
+### 10.7 RG-04 — cierre de la protección en el workflow y límite de verificación administrativa
+
+El workflow `.github/workflows/c10-s-f5-g7-tiera-calibration.yml` contiene ahora dos comprobaciones fail-closed sobre los metadatos del Environment `c10s-f5-g7-tiera-v1-1`:
+
+1. Debe existir al menos una regla `required_reviewers` con revisores configurados.
+2. Al menos una de esas reglas debe declarar `prevent_self_review=true`; de lo contrario, el job termina con `G7_ENVIRONMENT_SELF_REVIEW_PREVENTION_NOT_CONFIGURED`.
+
+Se añadió una regresión que comprueba ambas condiciones. El commit `24b79450c4d0a9c65bb7218ed675ed572cdff142` terminó en el run `45627389138` con **SUCCESS, 8/8 jobs**, incluida la partición de autorización G7. Esto valida el código y el comportamiento contractual esperado, no la configuración real de GitHub.
+
+La integración GitHub disponible permite leer código, runs y rulesets, pero rechaza el endpoint REST `GET /repos/{owner}/{repo}/environments/{environment_name}` como endpoint no permitido. Por tanto, no se ha obtenido evidencia administrativa de que el Environment exista con ambas reglas efectivamente activadas. No se debe inferir su configuración a partir del YAML.
+
+**Estado RG-04: NOT_VERIFIABLE — BLOQUEANTE.** Para cambiarlo a PASS se necesita una lectura administrativa verificable del Environment en GitHub, que confirme revisores obligatorios y prevención de autoaprobación. Hasta entonces, el gate no autoriza G7. No se ha ejecutado G7 ni se ha modificado `main`.
