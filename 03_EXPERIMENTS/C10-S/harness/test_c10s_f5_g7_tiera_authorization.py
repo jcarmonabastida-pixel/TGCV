@@ -210,6 +210,8 @@ class F5G7AuthorizationTests(unittest.TestCase):
         authorization_checkout = workflow.split("Checkout one-use authorization commit", 1)[1].split("Set up pinned Python", 1)[0]
         self.assertIn("fetch-depth: 0", authorization_checkout)
         self.assertIn("G7_ENVIRONMENT_REQUIRED_REVIEWERS_NOT_CONFIGURED", workflow)
+        self.assertIn("G7_ENVIRONMENT_SELF_REVIEW_PREVENTION_NOT_CONFIGURED", workflow)
+        self.assertIn('rule.get("prevent_self_review") is True', workflow)
         self.assertIn("EXPECTED_REPOSITORY_ID:", workflow)
         self.assertIn("--expected-repository-id", workflow)
         self.assertIn("I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT", workflow)

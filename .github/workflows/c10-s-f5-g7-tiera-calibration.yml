@@ -64,9 +64,14 @@ jobs:
           from pathlib import Path
           environment = json.loads(Path(sys.argv[1]).read_text())
           rules = environment.get("protection_rules", [])
-          required = [rule for rule in rules if rule.get("type") == "required_reviewers" and rule.get("reviewers")]
+          required = [
+              rule for rule in rules
+              if rule.get("type") == "required_reviewers" and rule.get("reviewers")
+          ]
           if not required:
               raise SystemExit("G7_ENVIRONMENT_REQUIRED_REVIEWERS_NOT_CONFIGURED")
+          if not any(rule.get("prevent_self_review") is True for rule in required):
+              raise SystemExit("G7_ENVIRONMENT_SELF_REVIEW_PREVENTION_NOT_CONFIGURED")
           PY
       - name: Checkout one-use authorization commit
         if: steps.gate.outputs.approved == 'true'
