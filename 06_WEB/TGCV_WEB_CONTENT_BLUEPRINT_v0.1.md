@@ -683,3 +683,9 @@ The Home remains a working draft, not publication approval. Complete the visual 
 - Adds the approved Systems Engineering experience and bilingual copy as the authoritative P04 working references.
 - Defines the five-movement page structure and the illustrative-only status of the software-migration example.
 - Records the distinction between established engineering practice and the complementary TGCV research question.
+
+
+### v1.9 — 2026-11-25
+- Updates P04 authoritative references to Systems Engineering Experience v0.2 and bilingual Copy v0.2 after technical review.
+- Clarifies iterative, concurrent and non-linear life-cycle practice and the planning of verification and validation throughout the work.
+- Adds verified further-reading references to ISO/IEC/IEEE 15288:2023, the INCOSE Systems Engineering Handbook (5th edition) and the NASA Systems Engineering Handbook.
