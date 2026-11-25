@@ -576,7 +576,7 @@ Its working progression is:
 7. Explain the space of possibilities through three visitor questions: what elements are present and what can each do; how are they related; and under what conditions can they act together. Make clear that component capabilities alone do not determine accessibility.
 7. Connect Systems Thinking and Systems Engineering as complementary foundations to Transformational Intelligence as the ecosystem's integrative capability concept.
 
-The migration example is illustrative only. It is not an existing execution, validated application, Juguete Colectivo feature or C10-S result. Keep the single missing-dependency condition consistent across Home, Explore and both languages.
+The migration example is illustrative only. It is not an existing execution, validated application, TGCV Full Chain Demo feature or C10-S result. Keep the single missing-dependency condition consistent across Home, Explore and both languages.
 
 The Spanish and English versions must be complete and conceptually equivalent. In English, introduce “accessibility of transformations” and clarify that it refers to whether a transformation is within a system's reach under the system boundary and conditions being considered—not to digital/interface accessibility. “Outcome” remains the consistent equivalent of “resultado” in this explanatory context.
 
