@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 2.8
+**Version:** 2.9
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.3; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.8; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.1; Value Construction Experience v0.2; Value Construction Copy v0.1.
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.4; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.2; Value Construction Copy v0.1.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -100,7 +100,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 
 **Do not:** lead with value creation, AI automation, consulting services, a generic innovation promise, or a Playground that does not yet exist.
 
-**Source basis:** Home Experience v1.5 and Home Copy v1.2, aligned with the current Web Master Brief and Information Architecture. All final copy remains subject to external comprehension testing.
+**Source basis:** Home Experience v1.6 and Home Copy v1.4, aligned with the current Web Master Brief and Information Architecture. All final copy remains subject to external comprehension testing.
 
 ### P02 — Explore
 
@@ -780,3 +780,10 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Refines Value Construction Experience to v0.2, recording the approved opportunity/system-understanding-first visitor journey; the full VCF cycle is introduced after the reasoning narrative, not as the page's opening recipe.
 - Adds bilingual Value Construction Copy v0.1 as the first public-content draft, based on current methodology and fictional clinic case sources.
 - Preserves the distinction between a design preference and execution authorisation in the clinic case, and does not use its invented figures as evidence or efficacy claims.
+
+
+### v2.9 — 2026-11-25
+- Records the integrated editorial review across Home, Explore, Research, Systems Engineering, Transformational Intelligence and Value Construction bilingual copy.
+- Updates current parent references to Home Copy v1.4, Research Copy v0.9 and Transformational Intelligence Copy v0.2.
+- Aligns the Home ecosystem map across Spanish and English, corrects a duplicated English heading, aligns the Research evidence-portfolio overview across languages and refreshes Transformational Intelligence editorial references.
+- Records that the Research description of Core S and analytical T_acc is consistent with canonical RMA v3.38; no scientific artifact or claim is modified.
