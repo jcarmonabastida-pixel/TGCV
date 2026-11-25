@@ -828,14 +828,7 @@ The five Business Translation families are opportunity areas, not validated mark
 
 ### v2.6 — 2026-11-25
 - Replaces the obsolete six-destination / Community navigation draft with the approved eight-destination first-release navigation.
-- Synchronises Explore, Research, Systems Engineering and Transformational Intelligence page references with the files actually present on the branch.
-- Adds current Value Construction and Labs & Applications page authorities and their editorial/evidence boundaries.
-- Corrects invalid Systems Engineering v0.2 references; current branch documents are v0.1.
-
-
-### v2.6 — 2026-11-25 (integrated cross-page reconciliation)
-- Replaces the obsolete first-release navigation draft with the approved eight-destination order.
-- Corrects the current Explore, Research and Systems Engineering document references and adds current Copy references where available.
-- Adds the current Value Construction page authority, including the distinct status of CCV, IVS and Value Discovery Sprint.
-- Adds the current Labs & Applications Experience and Copy authority with demonstrator, application-fit and availability boundaries.
+- Synchronises Explore, Research, Systems Engineering and Transformational Intelligence page references with the files actually present on the branch, correcting invalid Systems Engineering v0.2 references; current Experience and Copy files are v0.1.
+- Adds current Value Construction and Labs & Applications page authorities and their bilingual Copy references.
+- Records the distinct status of CCV, IVS and Value Discovery Sprint, and the demonstrator, application-fit, availability and evidence boundaries for Labs & Applications.
 - Synchronises page-document dependencies to Information Architecture v2.6.
