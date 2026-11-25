@@ -756,3 +756,8 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Adds the P05 Transformational Intelligence Experience authority.
 - Reconciles the P05 content contract with the three-layer distinction and five candidate dimensions.
 - Replaces the earlier four-dimension wording and adds explicit evidence progression and construct-differentiation guardrails.
+
+### v2.5 — 2026-11-25
+- Reconciles §1.1 navigation with the approved first-release sequence, including Value Construction.
+- Updates parent-document references to current Home, Explore, Research, Systems Engineering and Transformational Intelligence artifacts.
+- Clarifies that the Explore sequence is an analytical distinction, not a complete causal model, and that trajectory is represented across states and transformations.
