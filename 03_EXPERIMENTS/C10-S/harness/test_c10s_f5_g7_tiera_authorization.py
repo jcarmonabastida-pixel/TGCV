@@ -144,9 +144,9 @@ class F5G7AuthorizationTests(unittest.TestCase):
         self.assertTrue(workflow_paths <= execution)
 
         validation_workflow = (repo_root / ".github/workflows/c10s-f5-exact-certification-tests.yml").read_text(encoding="utf-8")
-        compile_command = validation_workflow.split("python -m py_compile", 1)[1].split("\\n      - name:", 1)[0]
-        compiled = set(re.findall(r"([A-Za-z0-9_.-]+\\.py)", compile_command))
-        matrix_modules = set(re.findall(r"^\\s+module:\\s+([A-Za-z0-9_]+)\\s*$", validation_workflow, re.MULTILINE))
+        compile_command = validation_workflow.split("python -m py_compile", 1)[1].split("\n      - name:", 1)[0]
+        compiled = set(re.findall(r"([A-Za-z0-9_.-]+\.py)", compile_command))
+        matrix_modules = set(re.findall(r"^\s+module:\s+([A-Za-z0-9_]+)\s*$", validation_workflow, re.MULTILINE))
         matrix_tests = {module + ".py" for module in matrix_modules}
         for filename in compiled | matrix_tests:
             self.assertIn("03_EXPERIMENTS/C10-S/harness/" + filename, execution, filename)
@@ -156,7 +156,7 @@ class F5G7AuthorizationTests(unittest.TestCase):
             ".github/workflows/c10-s-f5-g7-tiera-calibration.yml",
         ):
             workflow_text = (repo_root / workflow_path).read_text(encoding="utf-8")
-            referenced = set(re.findall(r"python\\s+(?:03_EXPERIMENTS/C10-S/harness/)?([A-Za-z0-9_.-]+\\.py)", workflow_text))
+            referenced = set(re.findall(r"python\s+(?:03_EXPERIMENTS/C10-S/harness/)?([A-Za-z0-9_.-]+\.py)", workflow_text))
             for filename in referenced:
                 self.assertIn("03_EXPERIMENTS/C10-S/harness/" + filename, execution, filename)
 
