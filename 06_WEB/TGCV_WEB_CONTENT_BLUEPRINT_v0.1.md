@@ -1,7 +1,7 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 3.2
+**Version:** 3.3
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
@@ -192,9 +192,9 @@ They remain possible ecosystem capabilities, not first-release commitments.
 
 ### P07 — Labs & Applications
 
-**Authoritative working reference:** `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.2. Bilingual Copy remains pending.
+**Authoritative working reference:** `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.3. Bilingual Copy remains pending.
 
-**Purpose:** make TGCV-related work tangible through bounded demonstrators, synthetic experiments and exploratory experiences, while helping visitors recognise further application contexts and propose relevant challenges. This is an activity and exploration space, not a physical laboratory network, product catalogue, commercial offer or portfolio of validated deployments.
+**Purpose:** make TGCV-related work tangible through bounded demonstrators, synthetic experiments and exploratory experiences, while helping visitors recognise further application contexts and opportunities. This is an activity and exploration space, not a physical laboratory network, product catalogue, commercial offer or portfolio of validated deployments.
 
 **Visitor question:** What can I explore, what has actually been tested, and could these ideas help us examine a challenge in our own system?
 
@@ -202,23 +202,25 @@ They remain possible ecosystem capabilities, not first-release commitments.
 1. Introduce the relationship with Research: research develops questions, methods and evidence; Labs & Applications makes selected questions tangible through demonstrators, controlled experiments and candidate contexts.
 2. Present Juguete Colectivo / Full Chain as an existing synthetic software prototype. Describe functionality only after exact current package/interface verification. Its rules are prototype-specific, not the canonical scientific function of TGCV. Software acceptance is not scientific validation and no public download is currently verified.
 3. Present TSTC v004 separately as bounded synthetic methodological evidence. Its independent conventional baseline reconstructions yielded equivalent feasible transformation sets in the tested universes. It does not establish empirical causality, superiority, generality, value, ROI or industrial readiness.
-4. Introduce three distinct proposed experiences: TGCV Playground (software-configuration migration between two environments); Value Explore (an introductory exploration of VALUE's applied reasoning); and ValueLabOS — First Insight (an initial view of a proposed digital and collaborative environment). Do not conflate TGCV Playground with Juguete Colectivo, Value Explore with VALUE itself, or ValueLabOS with Labs & Applications. No live availability or functionality is implied without verification.
+4. Create the named area **Explore the possibilities — Experiencias para descubrir y experimentar**, containing three distinct experiences: **TGCV Playground** (software-configuration migration between two environments); **Value Explorer** (an introductory exploration of VALUE's applied reasoning); and **ValueLabOS Preview** (an initial view of the proposed digital and collaborative environment). Do not conflate TGCV Playground with Juguete Colectivo, Value Explorer with VALUE itself, or ValueLabOS Preview with Labs & Applications. No live availability or functionality is implied without verification.
 5. Present no more than three featured candidate contexts: AI agents/tools/permissions (C03), digital twins/predictive maintenance (C04), and energy–mobility/EV-grid (C05). All remain exploratory, not qualified or validated applications. C05's synthetic minimum demonstrator has methodological limitations; independent baseline comparison was not established.
 6. Add a secondary list of additional Application-Fit candidates: multi-domain 5G/cloud-edge/network orchestration (C01); cybersecurity/self-defending networks (C02); integrated social services/citizen case management (C06); integrated health and social care (C07); and cross-agency public services/justice (C08). Distinguish deeper-screened candidates from initial candidates; do not imply equal maturity or qualification.
 7. Add broader opportunity families from Business Translation: organisational transformation; product/service innovation; operations/process change; evolution of AI and technology systems; and transformation alternatives/investment decisions. These are broad discovery areas, not screened cases or validated markets.
-8. Explain the separate dimensions of asset maturity/availability and evidence/test status.
-9. Invite visitors to suggest a relevant system or challenge for possible exploration, without promising an intake, partner programme, service or collaboration process that is not operational.
-10. Provide routes to Research, Systems Engineering, Transformational Intelligence, Value Construction and Contact.
+8. End the Application-Fit area with an open invitation: TGCV is exploring different application contexts and wants to discover other problems and opportunities together with people and organisations interested in investigating them. The invitation should help visitors recognise that their own context may be relevant.
+9. Treat this invitation as an expression of interest, not a formal participation or intake process. Do not place a participation form, eligibility criteria, submission requirements, review rules, selection process, commitments or collaboration terms in Labs & Applications. These belong, if approved, in a separate Participation area/page. Whether that area and how much of it will enter the first release remain undecided. A simple Contact route may be used only if Contact is ready; it must not imply a structured participation workflow.
+10. Explain the separate dimensions of asset maturity/availability and evidence/test status.
+11. Provide routes to Research, Systems Engineering, Transformational Intelligence, Value Construction and Contact.
 
-**Required distinctions:** Juguete Colectivo is not TSTC or TGCV Playground; TGCV Playground is an exploratory visitor experience, not a general-purpose simulator; Value Explore is not VALUE itself; ValueLabOS is a proposed digital/collaborative environment, not a released product; synthetic execution is not empirical validation; application-fit candidates are not validated applications; existing assets are not necessarily publicly downloadable; operational availability is not scientific evidence.
+**Required distinctions:** Juguete Colectivo is not TSTC or TGCV Playground; TGCV Playground is an exploratory visitor experience, not a general-purpose simulator; Value Explorer is not VALUE itself; ValueLabOS Preview is a proposed digital/collaborative environment, not a released product; synthetic execution is not empirical validation; application-fit candidates are not validated applications; existing assets are not necessarily publicly downloadable; operational availability is not scientific evidence.
 
 **Asset and evidence status:** use separate labels for asset maturity/availability (Existing, In development, Exploratory/proposed) and evidence/test status (Conceptual/proposed, Synthetic, Executed, Audited, Empirical, Pilot, Deployed). Labels must be grounded in exact source records and must not imply a higher scientific state.
 
-**Publication gates:** verify the exact Juguete Colectivo package, source commit, package version, launch route, selector/functionality, security and accessibility before any public demo/download link. Link TSTC evidence only after public-release permission and current canonical status are checked. Verify each application-context description and external attribution. Show TGCV Playground, Value Explore and ValueLabOS — First Insight as proposed/in-development/exploratory unless an actual usable implementation is independently verified. Do not simulate unimplemented ValueLabOS persistence, integrations, AI or collaboration functions.
+**Publication gates:** verify the exact Juguete Colectivo package, source commit, package version, launch route, selector/functionality, security and accessibility before any public demo/download link. Link TSTC evidence only after public-release permission and current canonical status are checked. Verify each application-context description and external attribution. Show TGCV Playground, Value Explorer and ValueLabOS Preview as proposed/in-development/exploratory unless an actual usable implementation is independently verified. Do not simulate unimplemented ValueLabOS persistence, integrations, AI or collaboration functions.
 
 **Source basis:** canonical main STATUS and current governance pointers; TSTC v004 post-execution audit and evidence-to-claim propagation; C05 EV–Grid post-execution audit; Juguete Colectivo distribution, usage, contract and package acceptance records; WP2 Application-Fit candidate register and cross-case synthesis; C03/C04/C05 deep screens; Business Translation executive bridge; TGCV–VALUE–ValueLabOS identity architecture. The Application-Fit register states that no application is qualified; the cross-case synthesis does not establish differential value.
 
 **Claim boundaries:** no claim of TGCV superiority, universal applicability, causal propagation in real systems, value creation, ROI, industrial validation or deployment readiness. The downstream ΔT_acc → ΔV / Value linkage remains open in the canonical STATUS baseline.
+
 
 ### P07 — About / Governance
 
@@ -805,3 +807,10 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Expands the secondary Application-Fit candidate list to C01, C02, C06, C07 and C08, alongside the three featured contexts C03, C04 and C05.
 - Adds broad Business Translation opportunity families and a carefully bounded invitation to suggest further contexts.
 - Excludes unrelated initiatives and preserves evidence, maturity, availability and publication boundaries.
+
+
+### v3.3 — 2026-11-25
+- Refines P07 with the named **Explore the possibilities — Experiencias para descubrir y experimentar** area and standardises its three components as TGCV Playground, Value Explorer and ValueLabOS Preview.
+- Places the open invitation to discover additional application contexts at the end of Application-Fit, explicitly involving interested people and organisations.
+- Separates this invitation from formal participation: forms, eligibility, submission and review rules, and collaboration terms are reserved for a possible dedicated Participation area/page. Its inclusion and scope in the first release remain undecided.
+- Updates P07's authoritative Experience reference to v0.3 and preserves scientific, availability and maturity boundaries.
