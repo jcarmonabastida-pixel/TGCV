@@ -194,7 +194,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 
 ### P07 — Labs & Applications
 
-**Authoritative working references:** `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.5; `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.4 (editorial draft, pending review and publication approval).
+**Authoritative working references:** `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.6; `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.5 (editorial draft, pending review and publication approval).
 
 **Purpose:** make TGCV-related work tangible through bounded demonstrators, synthetic experiments and exploratory experiences, while helping visitors recognise further application contexts and opportunities. This is an activity and exploration space, not a physical laboratory network, product catalogue, commercial offer or portfolio of validated deployments.
 
