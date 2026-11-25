@@ -1,7 +1,7 @@
 # TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 1.2  
+**Version:** 1.3  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md`  
