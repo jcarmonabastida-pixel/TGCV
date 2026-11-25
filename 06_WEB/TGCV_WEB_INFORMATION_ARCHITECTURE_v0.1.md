@@ -731,3 +731,21 @@ The visitor experience is progressive: accessible explanation first, research ar
 - Adds the Research page experience authority and its current working specification.
 - Defines Research as the scientific deepening after Home and Explore.
 - Adds explicit evidence-status and public-source publication controls.
+
+
+## 21. Systems Engineering page experience authority
+
+The P04 visitor experience and bilingual copy are specified in:
+
+- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_EXPERIENCE_v0.1.md` — current experience version 0.1.
+- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_COPY_v0.1.md` — current bilingual copy version 0.1.
+
+Systems Engineering is a concise first-release destination (P1). Its visitor question is: **How does systems engineering relate to the research object of TGCV?**
+
+The five-movement experience moves from working with systems as wholes, through representing system structure and conditions, to design/integration/verification, an illustrative software-configuration migration, and finally the complementary TGCV research question about changes in accessible transformations.
+
+Keep Systems Thinking, Systems Engineering, TGCV and Transformational Intelligence distinct. Do not imply that TGCV replaces systems engineering, provides a proprietary or validated engineering method, or that the illustrative migration has been executed. Bilingual copy must preserve the distinction between accessibility, execution, outcome and value.
+
+### v1.9 — 2026-11-25
+- Adds the Systems Engineering page experience and bilingual copy as current P04 authorities.
+- Aligns the information architecture with the approved five-movement experience and the first-release P1 scope.
