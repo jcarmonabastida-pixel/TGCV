@@ -1,7 +1,7 @@
 # TGCV — Explore Copy
 
 **Identifier:** TGCV-WEB-EXPLORE-COPY-001  
-**Version:** 0.8  
+**Version:** 0.9  
 **Date:** 2026-11-25  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`  
@@ -311,3 +311,4 @@ TGCV — Generative Transformations and Value Construction is the programme of a
 - **0.7 — 2026-11-25:** Rewrites the space-of-possibilities section in Spanish and English to explain how element capabilities, relationships/dependencies and operating conditions jointly shape accessible transformations.
 
 - **0.8 — 2026-11-25:** Rewrites the Spanish and English TI explanation to distinguish the developing capability concept from Systems Thinking, Systems Engineering, AI and the TGCV research programme; clarifies intended function without implying validation.
+- **0.9 — 2026-11-25:** Clarifies in both languages that the visible accessibility/execution/outcome/value sequence is an analytical distinction, not a complete causal explanation.
