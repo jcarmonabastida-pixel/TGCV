@@ -198,7 +198,7 @@ For every item shown, provide a concise account of purpose, system boundary, ass
 State plainly that the first release does not automatically offer:
 - a general-purpose professional Playground;
 - an industrial deployment or validated commercial application;
-- guaranteed improvement, ROI or value-creation services;
+- guaranteed improvement, return on investment or value-creation services;
 - a physical laboratory network;
 - an open interactive platform or standing collaboration programme;
 - functionality for TGCV Playground, Value Explorer or ValueLabOS Preview beyond what has actually been implemented and verified.
@@ -225,7 +225,7 @@ Provide routes to:
 - Use “application context under exploration” rather than “validated application”.
 - Do not equate software functionality, operational availability, scientific evidence and value.
 - No single maturity badge may imply scientific validity.
-- No claim of TGCV superiority, universal applicability, value creation, ROI or deployment readiness.
+- No claim of TGCV superiority, universal applicability, value creation, return on investment or deployment readiness.
 - The page is not a catalogue of products, services or sectors.
 
 ## 5. Bilingual requirements
@@ -284,7 +284,7 @@ The page is editorially acceptable when:
 7. the three featured contexts are clearly exploratory and no additional candidate is presented as qualified;
 8. additional Application-Fit candidates are distinguished from broader Business Translation opportunity families;
 9. asset maturity and evidence status are visibly distinct;
-10. no claim of superiority, universal validity, value creation, ROI or deployment readiness is made;
+10. no claim of superiority, universal validity, value creation, return on investment or deployment readiness is made;
 11. the Application-Fit invitation expresses an open interest in discovering further problems and opportunities with people and organisations, without creating a formal participation process;
 12. participation forms, eligibility and participation rules are not embedded in Labs & Applications; a separate Participation area/page remains a first-release decision;
 13. Spanish and English versions preserve equivalent claims and limits.
