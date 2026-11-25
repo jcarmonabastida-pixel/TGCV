@@ -1,7 +1,7 @@
 # TGCV — Research Page Copy v0.1
 
 **Identifier:** TGCV-WEB-RESEARCH-COPY-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-25  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
@@ -94,7 +94,7 @@ La investigación ha producido resultados de distintos tipos y alcances. No todo
 
 Entre las líneas de evidencia que pueden explicarse al público se encuentran:
 
-- **Cambios en las posibilidades de transformación de un ecosistema de software.** Un análisis longitudinal de sus componentes y dependencias identifica persistencia, expansión, contracción y reconfiguración de las transformaciones que resultan accesibles bajo una definición operacional explícita. Describe cambios estructurales en ese ecosistema; no demuestra que todas esas transformaciones se ejecutaran ni que produjeran valor.
+- [**Cambios en las posibilidades de transformación de un ecosistema de software.**](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_SOFTWARE_ECOSYSTEM_v0.1.md) Un análisis longitudinal de sus componentes y dependencias identifica persistencia, expansión, contracción y reconfiguración de las transformaciones que resultan accesibles bajo una definición operacional explícita. Describe cambios estructurales en ese ecosistema; no demuestra que todas esas transformaciones se ejecutaran ni que produjeran valor.
 - **Relación entre accesibilidad y estados alcanzables.** Un segundo análisis compara los cambios en las transformaciones accesibles con los estados que podrían alcanzarse bajo reglas de transición delimitadas. Encuentra situaciones en las que ambas dimensiones cambian de forma distinta. El resultado depende de la semántica de alcance utilizada y no equivale a demostrar ejecución real.
 - **Reconstrucción y comparación entre dominios.** Pruebas metodológicas y experimentos sintéticos examinan si las distinciones entre estado, transformaciones candidatas, accesibilidad y consecuencias pueden reconstruirse en sistemas diferentes. Sus resultados son acotados a los casos y diseños estudiados; no demuestran validez transversal completa ni superioridad frente a todos los modelos existentes.
 - **Accesibilidad y evolución posterior.** Un estudio empírico delimitado aporta apoyo a la hipótesis de que las condiciones de accesibilidad pueden relacionarse con la trayectoria posterior de un sistema. La conclusión está restringida a la población, las medidas y el diseño de ese estudio; no demuestra una relación universal ni permite inferir por sí sola creación de valor.
@@ -213,7 +213,7 @@ The research has produced results of different kinds and with different scopes. 
 
 The evidence strands that can be explained to a public audience include:
 
-- **Changes in the transformation possibilities of a software ecosystem.** A longitudinal analysis of its components and dependencies identifies persistence, expansion, contraction and reconfiguration in the transformations accessible under an explicit operational definition. It describes structural changes in that ecosystem; it does not show that all such transformations were executed or generated value.
+- [**Changes in the transformation possibilities of a software ecosystem.**](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_SOFTWARE_ECOSYSTEM_v0.1.md) A longitudinal analysis of its components and dependencies identifies persistence, expansion, contraction and reconfiguration in the transformations accessible under an explicit operational definition. It describes structural changes in that ecosystem; it does not show that all such transformations were executed or generated value.
 - **The relationship between accessibility and reachable states.** A second analysis compares changes in accessible transformations with the states that could be reached under bounded transition rules. It finds cases in which the two dimensions change differently. The result depends on the reachability semantics used and is not equivalent to demonstrating actual execution.
 - **Reconstruction and comparison across domains.** Methodological tests and synthetic experiments examine whether distinctions among state, candidate transformations, accessibility and consequences can be reconstructed in different systems. Their results are bounded to the cases and designs studied; they do not demonstrate complete cross-domain validity or superiority over all existing models.
 - **Accessibility and subsequent development.** A bounded empirical study provides support for the hypothesis that accessibility conditions may be related to a system's subsequent trajectory. The conclusion is limited to that study's population, measures and design; it does not demonstrate a universal relationship or, by itself, imply value creation.
