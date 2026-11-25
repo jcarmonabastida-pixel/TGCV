@@ -293,15 +293,19 @@ La suite de validación del run `45550608608`, commit `60c34a17606627a62c7f0db20
 
 **Decisión:** el gate instrumental sigue cerrado a ejecución G7 mientras RG-04 permanezca NOT_VERIFIABLE. RG-06/RG-07 son limitaciones de planificación expresamente documentadas, no autorizaciones. No se inicia G7, Tier-A, holdout, cobertura, replay científico ni ejecución causal C10.
 
-### 10.7 RG-04 — cierre de la protección en el workflow y límite de verificación administrativa
+### 10.7 RG-04 — autorización explícita para un único responsable
 
-El workflow `.github/workflows/c10-s-f5-g7-tiera-calibration.yml` contiene ahora dos comprobaciones fail-closed sobre los metadatos del Environment `c10s-f5-g7-tiera-v1-1`:
+El diseño previo exigía revisores obligatorios y prevención de autoaprobación en el Environment. Ese requisito suponía la existencia de una segunda persona revisora que no existe en la estructura actual del proyecto. Mantenerlo no aportaba una revisión independiente real: bloqueaba el flujo por una condición organizativa ficticia.
 
-1. Debe existir al menos una regla `required_reviewers` con revisores configurados.
-2. Al menos una de esas reglas debe declarar `prevent_self_review=true`; de lo contrario, el job termina con `G7_ENVIRONMENT_SELF_REVIEW_PREVENTION_NOT_CONFIGURED`.
+Se sustituye por un control de autorización humana explícita, acotada y auditable:
+- evento exclusivamente `workflow_dispatch`;
+- actor igual al propietario del repositorio;
+- confirmación literal del alcance G7 v1.1;
+- rama de autorización dedicada y commit de autorización de un solo uso;
+- registro técnico enlazado al commit de código aprobado como único padre;
+- artefacto `g7-dispatch-attestation.json` que conserva actor, evento, ref, SHA, run ID, attempt y alcance confirmado;
+- jobs científicos dependientes del job de autorización y bloqueados ante cualquier discordancia.
 
-Se añadió una regresión que comprueba ambas condiciones. El commit `24b79450c4d0a9c65bb7218ed675ed572cdff142` terminó en el run `45627389138` con **SUCCESS, 8/8 jobs**, incluida la partición de autorización G7. Esto valida el código y el comportamiento contractual esperado, no la configuración real de GitHub.
+La revisión independiente queda registrada como `NOT_AVAILABLE_SINGLE_OPERATOR`; no se simula mediante autoaprobación. El Environment dedicado se conserva como registro de deployment, pero sus reviewers no son requisito de RG-04.
 
-La integración GitHub disponible permite leer código, runs y rulesets, pero rechaza el endpoint REST `GET /repos/{owner}/{repo}/environments/{environment_name}` como endpoint no permitido. Por tanto, no se ha obtenido evidencia administrativa de que el Environment exista con ambas reglas efectivamente activadas. No se debe inferir su configuración a partir del YAML.
-
-**Estado RG-04 tras el rediseño: IMPLEMENTADO EN CÓDIGO; VALIDACIÓN DETERMINISTA PENDIENTE.** La comprobación de reviewers obligatorios y prevención de autoaprobación se elimina porque no existe un segundo responsable. El nuevo gate exige dispatch manual del propietario, confirmación literal de alcance, rama/commit de un solo uso y conserva una atestación con actor, ref, SHA y run. Hasta que la suite de validación del nuevo HEAD pase, RG-04 no se declara PASS y G7 sigue sin autorización.
+**Estado RG-04: IMPLEMENTADO EN CÓDIGO; VALIDACIÓN DETERMINISTA PENDIENTE.** La implementación no constituye autorización de G7. El nuevo HEAD debe superar la suite determinista y la revisión integrada antes de que RG-04 pueda declararse PASS. No se ha ejecutado G7 ni se ha modificado `main`.
