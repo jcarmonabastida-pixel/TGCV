@@ -1,7 +1,7 @@
 # TGCV — Integrated Editorial Review of the First Website Release
 
 **Identifier:** TGCV-WEB-INTEGRATED-REVIEW-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-25  
 **Status:** INTEGRATED EDITORIAL REVIEW — WORKING RECORD; NOT PUBLICATION APPROVAL  
 **Branch:** `strategy/tgcv-web-master`  
@@ -69,9 +69,9 @@ The page distinguishes four content classes:
 
 The featured and additional contexts remain exploratory candidates. The five Business Translation families are not validated markets, a service portfolio or evidence of application fit. The invitation to discover other problems is not a formal participation process.
 
-The Copy v0.3 removes specific claims about Juguete Colectivo's distributable functionality until the exact package and interface have been verified together. The user-reported local acceptance record remains qualified and separate from scientific validity, package identity and public availability.
+The Copy v0.4 removes specific claims about TGCV Full Chain Demo's distributable functionality until the exact package and interface have been verified together. The user-reported local acceptance record remains qualified and separate from scientific validity, package identity and public availability.
 
-TSTC remains bounded synthetic methodological evidence. C05 EV–Grid remains distinct from the energy scenario in TSTC v004, and its reference reconstruction was not an independent baseline implementation.
+the cross-domain mapping demonstrator remains bounded synthetic methodological evidence. energy/mobility minimum demonstrator remains distinct from the energy scenario in the cross-domain mapping demonstrator, and its reference reconstruction was not an independent baseline implementation.
 
 **Disposition:** editorial boundaries are materially clearer. Public links, downloads and functionality claims remain gated by asset and release verification.
 
@@ -80,7 +80,7 @@ TSTC remains bounded synthetic methodological evidence. C05 EV–Grid remains di
 1. **First-release navigation:** Information Architecture now records the approved eight destinations in order: Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction, Labs & Applications, About and Contact. Systems Thinking is transversal; Community is not a top-level first-release destination.
 2. **Information Architecture authorities:** corrected stale Explore and Research version references; corrected Systems Engineering references that pointed to non-current v0.2 filenames; added current Value Construction and Labs & Applications page authorities.
 3. **Content Blueprint:** synchronized parent versions and corrected page identifiers to P08 About / Governance and P09 Contact / Participate.
-4. **Labs & Applications Copy:** advanced to v0.3; removed specific Juguete Colectivo operational feature claims pending exact package/interface verification; corrected its Blueprint dependency.
+4. **Labs & Applications Copy:** advanced to v0.4; removed specific TGCV Full Chain Demo operational feature claims pending exact package/interface verification; corrected its Blueprint dependency.
 5. **Dependency metadata:** synchronized references to Information Architecture v2.6 and Content Blueprint v3.7 in the affected page specifications and copies, including Research, Value Construction, Labs & Applications and Transformational Intelligence.
 
 No scientific document, `main` branch artifact, evidence claim, experiment, execution authorization or publication permission was changed.
@@ -95,7 +95,7 @@ No scientific document, `main` branch artifact, evidence claim, experiment, exec
 | Systems Engineering | v0.1 | v0.1 | Working specification / first bilingual draft |
 | Transformational Intelligence | v0.1 | v0.2 | Working specification / bilingual draft |
 | Value Construction | v0.3 | v0.2 | Working specification / bilingual draft |
-| Labs & Applications | v0.4 | v0.3 | Working specification / bilingual draft |
+| Labs & Applications | v0.5 | v0.4 | Working specification / bilingual draft |
 
 Strategic indexes:
 - Information Architecture: v2.6
@@ -103,8 +103,8 @@ Strategic indexes:
 
 ## 5. Open publication gates
 
-1. **Juguete Colectivo:** verify the exact current package, source commit, version, interface, launch route, security, accessibility and correspondence with the locally accepted ZIP before describing specific functions or offering a public link.
-2. **TSTC:** verify current canonical status and permission for public release of the demonstrator/evidence materials.
+1. **TGCV Full Chain Demo:** verify the exact current package, source commit, version, interface, launch route, security, accessibility and correspondence with the locally accepted ZIP before describing specific functions or offering a public link.
+2. **the cross-domain mapping demonstrator:** verify current canonical status and permission for public release of the demonstrator/evidence materials.
 3. **Research evidence:** refresh public evidence statements and linked briefs against current canonical STATUS, RMA, Evidence→Claim Matrix, traceability and source records; verify disclosure permissions for each asset.
 4. **Application-Fit:** verify each context description, source attribution and maturity label against current source records. Do not promote a candidate to a qualified application by editorial wording.
 5. **About / Governance:** prepare its Experience and bilingual Copy, consistent with the approved first-release scope and without implying a staffed institute, external board or formal consortium.
@@ -119,10 +119,29 @@ This editorial review does not establish:
 - that Transformational Intelligence is generally validated;
 - that VALUE is validated by TGCV;
 - that any Application-Fit context is a validated deployment;
-- that Juguete Colectivo, TGCV Playground, Value Explorer or ValueLabOS Preview is publicly available;
-- that TSTC demonstrates empirical causality, superiority, ROI or industrial readiness;
+- that TGCV Full Chain Demo, TGCV Playground, Value Explorer or ValueLabOS Preview is publicly available;
+- that the cross-domain mapping demonstrator demonstrates empirical causality, superiority, ROI or industrial readiness;
 - that the first website is approved for publication.
 
 ## 7. Next editorial operation
 
 The next content operation should be the **About / Governance Experience and bilingual Copy**, followed by the **Contact** decision based on actual channel readiness. After those destinations exist, perform one final publication-readiness pass across all pages, links, assets, evidence labels, bilingual copy and accessibility requirements.
+
+
+## v0.2 reader-facing terminology correction — 2026-11-25
+
+A further review of Labs & Applications identified that the previous visitor copy still exposed internal labels and shorthand that were meaningful only within project records. The following corrections are now authoritative:
+
+1. **Public prototype name:** TGCV Full Chain Demo replaces the internal codename in all current visitor-facing copy and Experience descriptions.
+2. **Cross-domain synthetic demonstrator:** its public description is now a plain-language label. Internal acronym and execution-version identifiers have been removed from the visitor narrative. Its result remains bounded synthetic methodological evidence; the equivalent conventional representations do not establish superiority or empirical validity.
+3. **Energy and mobility:** EV–Grid is replaced by “coordination between electric vehicles and the electricity grid”. The internal case identifier and execution code are removed. The public text explains that the comparison reused the same admissibility rule as the TGCV path and was therefore not an independent baseline.
+4. **Technical delivery shorthand:** references such as CI, ZIP and digest have been replaced by plain descriptions of the downloaded archive and software release package. The provenance limitation remains explicit.
+5. **Terminology audit:** Spanish and English current copy have been checked for the internal prototype codename, unexplained demonstrator acronyms, execution-version labels and internal case identifiers.
+
+Current P07 authorities:
+- Experience v0.5
+- Bilingual Copy v0.4
+- Information Architecture v2.7
+- Content Blueprint v3.8
+
+These are editorial and terminology changes only. They do not alter the underlying evidence, upgrade any application context, verify public asset availability or approve publication.
