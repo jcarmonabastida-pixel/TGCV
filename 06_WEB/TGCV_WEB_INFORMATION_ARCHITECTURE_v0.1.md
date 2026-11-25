@@ -735,7 +735,7 @@ Position **Value Construction** after Transformational Intelligence and before L
 
 **Visitor question:** How can a system explore opportunities and organise decisions, action and learning to build value?
 
-The future page must present VALUE as an applied framework complementary to TGCV and independently evaluable. Its working six-movement visitor experience is:
+The current Value Construction page presents VALUE as an applied framework complementary to TGCV and independently evaluable. Its six-movement visitor experience is:
 1. From opportunity to value: contextual value criteria and affected actors.
 2. Understand the system: context, actors, needs, capabilities, knowledge, relations, flows and constraints.
 3. Explore possibilities: opportunities and alternatives as hypotheses.
@@ -786,6 +786,15 @@ Do not assume these versions remain current when development begins. Recheck exa
 - Adds an explicit cross-document navigation consistency rule for Value Construction, including Home's bilingual visitor routes.
 
 
+## 22.4 Current Value Construction page authority
+
+The P06 page is specified by:
+
+- `06_WEB/TGCV_WEB_VALUE_CONSTRUCTION_EXPERIENCE_v0.1.md` — Experience v0.3.
+- `06_WEB/TGCV_WEB_VALUE_CONSTRUCTION_COPY_v0.1.md` — bilingual Copy v0.2.
+
+The page follows the opportunity/system-understanding-first narrative before introducing the VALUE lifecycle. It includes dedicated explanations of Capability of Value Construction (CCV) and the Systemic Value Index (IVS) as development objective / exploratory measurement proposal, not validated instruments; and the Value Discovery Sprint as an untested pilot-intervention design, not an available service. The fictional clinic case and its figures are simulated, not empirical results.
+
 ## 23. P05 — Transformational Intelligence experience authority
 
 **Authoritative working references:**
@@ -822,3 +831,11 @@ The five Business Translation families are opportunity areas, not validated mark
 - Synchronises Explore, Research, Systems Engineering and Transformational Intelligence page references with the files actually present on the branch.
 - Adds current Value Construction and Labs & Applications page authorities and their editorial/evidence boundaries.
 - Corrects invalid Systems Engineering v0.2 references; current branch documents are v0.1.
+
+
+### v2.6 — 2026-11-25 (integrated cross-page reconciliation)
+- Replaces the obsolete first-release navigation draft with the approved eight-destination order.
+- Corrects the current Explore, Research and Systems Engineering document references and adds current Copy references where available.
+- Adds the current Value Construction page authority, including the distinct status of CCV, IVS and Value Discovery Sprint.
+- Adds the current Labs & Applications Experience and Copy authority with demonstrator, application-fit and availability boundaries.
+- Synchronises page-document dependencies to Information Architecture v2.6.
