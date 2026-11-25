@@ -1,18 +1,18 @@
 # TGCV — Integrated Editorial Review of the First Website Release
 
 **Identifier:** TGCV-WEB-INTEGRATED-REVIEW-001  
-**Version:** 0.2  
-**Date:** 2026-11-25  
+**Version:** 0.3  
+**Date:** 2026-11-26  
 **Status:** INTEGRATED EDITORIAL REVIEW — WORKING RECORD; NOT PUBLICATION APPROVAL  
 **Branch:** `strategy/tgcv-web-master`  
-**Scope:** Home, Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction and Labs & Applications.  
+**Scope:** Home, Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction, Labs & Applications and About. Contact readiness remains a separate conditional decision.  
 **Authority boundary:** Editorial and information-architecture review only. This record does not change scientific definitions, evidence status, asset publication permissions, execution authorization or the canonical scientific repository state.
 
 ---
 
 ## 1. Executive disposition
 
-The seven substantive first-release sections form a coherent editorial progression:
+The seven substantive research and application sections form a coherent editorial progression, with About now added as the identity and transparency layer:
 
 1. **Home** introduces the central question, accessible transformations and routes into the ecosystem.
 2. **Explore** explains candidate transformations, accessibility, execution, outcome, value and trajectory.
@@ -21,10 +21,11 @@ The seven substantive first-release sections form a coherent editorial progressi
 5. **Transformational Intelligence** presents a developing capability concept, distinct from AI, Systems Thinking and Systems Engineering.
 6. **Value Construction** presents VALUE as an applied framework with independent foundations and evaluation.
 7. **Labs & Applications** presents bounded demonstrators, proposed visitor experiences, candidate application contexts and broad opportunity families.
+8. **About** explains the programme's identity, purpose, working principles, evidence discipline and transparency commitments without implying an institution or formal organisation.
 
 The conceptual architecture is coherent at the level of role and epistemic status. The website must not imply a linear causal story from TGCV through TI and VALUE to value creation. The sections are related, but they are not equivalent and are not stages in a validated process.
 
-**Disposition:** the seven-section editorial set is suitable for continued content refinement and later design preparation. It is **not yet ready for publication approval**. About and Contact remain first-release destinations in the Content Blueprint but do not yet have a completed Experience/Copy pair in the reviewed set.
+**Disposition:** the seven substantive sections remain suitable for continued content refinement. About now has a first Experience/Copy pair (v0.1), but that pair is a working draft and has not yet undergone a focused editorial review. The expanded eight-destination set is **not ready for publication approval**. Contact remains conditional on operational readiness.
 
 ## 2. Integrated narrative and boundary review
 
@@ -107,8 +108,8 @@ Strategic indexes:
 2. **the cross-domain mapping demonstrator:** verify current canonical status and permission for public release of the demonstrator/evidence materials.
 3. **Research evidence:** refresh public evidence statements and linked briefs against current canonical STATUS, RMA, Evidence→Claim Matrix, traceability and source records; verify disclosure permissions for each asset.
 4. **Application-Fit:** verify each context description, source attribution and maturity label against current source records. Do not promote a candidate to a qualified application by editorial wording.
-5. **About / Governance:** prepare its Experience and bilingual Copy, consistent with the approved first-release scope and without implying a staffed institute, external board or formal consortium.
-6. **Contact:** prepare the destination only if a real monitored channel, proportionate privacy information and a sustainable response process are ready. Otherwise defer it or provide only an accurate available contact method.
+5. **About:** review the newly created Experience v0.1 and bilingual Copy v0.1 for factual accuracy, narrative fit, bilingual equivalence and compliance with the naming rule. The draft must not imply a staffed institute, external board, formal consortium or other unverified organisational structure.
+6. **Contact:** decide whether a real monitored channel, proportionate privacy information and a sustainable response process are ready. Otherwise defer the destination or provide only an accurate available contact method.
 7. **Bilingual and link QA:** check Spanish/English conceptual equivalence, every internal/external destination, asset references, terminology and accessibility.
 8. **Visitor comprehension:** simulated editorial reviews are not tests with real visitors. Real-user testing is desirable before or after launch according to the release plan; its absence alone is not a scientific validation failure.
 
@@ -125,7 +126,7 @@ This editorial review does not establish:
 
 ## 7. Next editorial operation
 
-The next content operation should be the **About / Governance Experience and bilingual Copy**, followed by the **Contact** decision based on actual channel readiness. After those destinations exist, perform one final publication-readiness pass across all pages, links, assets, evidence labels, bilingual copy and accessibility requirements.
+The About Experience and bilingual Copy now exist as working drafts and require a focused review. The next content operation is the **Contact readiness decision**, based on an actual monitored channel, proportionate privacy information and sustainable ownership. After the Contact decision, perform a final publication-readiness pass across all pages, links, assets, evidence labels, bilingual copy and accessibility requirements. The existence of the About drafts does not constitute editorial approval or publication approval.
 
 
 ## v0.2 reader-facing terminology correction — 2026-11-25
@@ -145,3 +146,11 @@ Current P07 authorities:
 - Content Blueprint v3.8
 
 These are editorial and terminology changes only. They do not alter the underlying evidence, upgrade any application context, verify public asset availability or approve publication.
+
+## v0.3 — 2026-11-26: About draft added
+
+- Adds About Experience v0.1 and bilingual Copy v0.1 to the first-release editorial set as working drafts.
+- Defines About as the identity, purpose, research-principles and transparency layer, not an institutional biography or governance manual.
+- Records explicit safeguards against unsupported claims about a staffed institute, formal company or research centre, external board, institutional affiliations, consortium, team, partners, funders or active community.
+- The About pair has not yet passed focused editorial review. No page is approved for publication.
+- Moves the next content operation to the Contact readiness decision; a public Contact destination remains conditional on a real, monitored channel.
