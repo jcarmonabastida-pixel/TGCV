@@ -1,7 +1,7 @@
 # TGCV — Home Experience Specification
 
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 1.5  
+**Version:** 1.6  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21  
@@ -206,7 +206,7 @@ Approved first-release navigation:
 
 Systems Thinking is transversal: Home, Explore and Research. It has no independent first-release page.
 
-Home should offer a primary route to Explore, with secondary routes to Research and other destinations. Visitors may enter any destination directly; no mandatory linear journey is imposed.
+Home should offer a primary route to Explore and clear, direct routes to Research, Systems Engineering, Transformational Intelligence, Value Construction and Labs & Applications. Value Construction must appear as an explicit destination in the ecosystem map and in the Home interest/navigation list; mentioning it only in explanatory prose or the footer is insufficient. Visitors may enter any destination directly; no mandatory linear journey is imposed.
 
 Explore must take the Home example as its starting point and add conceptual depth: clarify how candidate transformations are distinguished from accessible ones, how accessibility depends on a defined system boundary and conditions, and how accessibility differs from execution, outcome and value. Do not replay the full Home narrative. About explains purpose, scope and governance without implying a staffed institute, external board or formal consortium. Contact is shown only when a real monitored channel and proportionate privacy information are in place.
 
@@ -323,3 +323,8 @@ The identity and copy are directionally coherent. Publication remains blocked pe
 - Adds Value Construction as a first-release visitor destination after Transformational Intelligence.
 - Replaces the earlier simplified ecosystem composition with a visitor-facing conceptual map distinguishing TGCV, Systems Thinking, Systems Engineering, Transformational Intelligence, VALUE/Value Construction, Labs & Applications and the proposed ValueLabOS ecosystem.
 - Requires labelled, non-causal relationships and makes the map reachable from Home and relevant pages without displacing the opening narrative.
+
+
+### v1.6 — 2026-11-25
+- Makes Value Construction an explicit Home visitor route, not merely an ecosystem explanation or footer item.
+- Requires direct routes from Home to all first-release substantive destinations, including Value Construction.
