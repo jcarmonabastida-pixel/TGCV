@@ -1,7 +1,7 @@
 # TGCV — Research Page Experience v0.1
 
 **Identifier:** TGCV-WEB-RESEARCH-EXP-001  
-**Version:** 0.7  
+**Version:** 0.8  
 **Date:** 2026-11-25  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
@@ -141,7 +141,7 @@ This block is a public-facing evidence overview, not a project-status report or 
 - [analysis of the distinction between accessible transformations and potential reachability](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_REACH_DISTINCTION_v0.1.md) — an open empirical question because the successor construction examined so far was not independent of accessibility;
 - [controlled tests and cross-domain reconstruction](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_METHODS_CROSS_DOMAIN_v0.1.md) — a bounded synthetic test of representational insufficiency and a secondary analysis of previously audited evidence from two domains;
 - [from accessibility changes to subsequent trajectories](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_ACCESSIBILITY_TRAJECTORY_v0.1.md) — a bounded temporal reconstruction, a randomised structural-access intervention and an explicit account of the limits of trajectory observation;
-- a bounded empirical study of the relationship between accessibility conditions and subsequent trajectories;
+- [selected research cases and evidence portfolio](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_PORTFOLIO_v0.1.md) — a bilingual overview of representative empirical, industrial, computational and synthetic work, including SWIM, AWS functional recovery, rural financial access, software ecosystems, EV–Grid, VSL Paired, cross-domain tests and additional methodological cases;
 - analyses identifying conditions under which accessibility cannot be determined confidently.
 
 For each theme, distinguish the research question, system/data, method, main finding, scope and limitations. State explicitly what the result does not establish. Do not display internal project codes, experiment identifiers, governance labels or raw status excerpts as public-facing names or claims.
@@ -156,16 +156,18 @@ The overview must make clear that evidence is heterogeneous and bounded. It must
 
 **Visitor question:** What does TGCV not yet know?
 
-Make open questions visible rather than burying them in footnotes. At minimum:
-- the conditions under which (T_{acc}) can be identified robustly and non-circularly across domains;
-- the degree of non-redundancy relative to established domain representations and prior work;
-- the conditions linking (Delta T_{acc}) to Reach and Trajectory beyond bounded cases;
-- the independent causal contribution of accessibility changes;
-- the downstream link from accessibility/trajectory to Outcome and Value;
-- the limits of cross-domain translation and the domains where the architecture is not useful;
-- the extent to which Transformational Intelligence can be operationalised and validated as a capability.
+Make open questions visible rather than burying them in footnotes. For each question, distinguish: (a) what is currently defined or supported; (b) what remains unidentified; (c) what observation or comparison would support the claim; and (d) what result would weaken, restrict or refute it under the stated conditions.
 
-State that a negative, conditional or domain-limited result is a legitimate outcome of the programme. Do not imply that every open question is simply awaiting engineering completion.
+At minimum, cover:
+- **Accessibility identification:** whether T_acc can be defined from independent, pre-outcome admissibility conditions; circularity, temporal leakage or non-reproducibility limit identification.
+- **Additional explanatory/representational contribution:** whether TGCV adds information beyond domain-native models; pre-specified comparisons showing no relevant incremental contribution restrict the claim.
+- **Reach and Trajectory:** when a change in T_acc is followed by a difference in reachable states or realised trajectories; repeated null or contrary results under conditions where a difference is predicted weaken the relevant proposition.
+- **Causal contribution:** separation of the total intervention effect, the accessibility-mediated effect and residual pathways; where assumptions or data do not identify these quantities, state underidentification rather than causal confirmation.
+- **Outcome and Value:** independent outcome and value measures; no effect, invalid measurement or effects attributable to other intervention components limit any value claim.
+- **Cross-domain transfer:** whether constructs can be reconstructed without erasing domain semantics; failed or non-reproducible operationalisation marks an applicability boundary.
+- **Transformational Intelligence:** whether the proposed capability can be distinguished and reproduced beyond stable preferences, heuristics or design artefacts.
+
+Falsifiability applies to specific claims under explicit conditions, not to an undifferentiated all-or-nothing verdict on the entire programme. A negative, conditional or domain-limited result is a legitimate scientific outcome. Do not imply that every open question is simply awaiting engineering completion or retrospectively change criteria to turn a negative result into success.
 
 ### Block 8 — Research materials and traceability
 
