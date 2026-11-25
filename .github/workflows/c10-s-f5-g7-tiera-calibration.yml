@@ -130,6 +130,7 @@ jobs:
           path: |
             ${{ runner.temp }}/validated-g7-authorization.json
             ${{ runner.temp }}/original-g7-authorization.json
+            ${{ runner.temp }}/g7-dispatch-attestation.json
           if-no-files-found: error
           retention-days: 90
 
