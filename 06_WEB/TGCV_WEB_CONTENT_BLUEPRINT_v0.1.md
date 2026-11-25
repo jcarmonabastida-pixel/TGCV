@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 2.9
+**Version:** 3.0
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.4; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.2; Value Construction Copy v0.1.
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.4; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.3; Value Construction Copy v0.2.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -701,23 +701,27 @@ The Home remains a working draft, not publication approval. Complete the visual 
 
 ## 18. P06 — Value Construction: strategic content contract
 
-**Status:** destination approved for first-release architecture; Experience v0.2 and bilingual Copy v0.1 drafted and persisted. Visual design and implementation remain out of scope at this stage.
+**Status:** destination approved for first-release architecture; Experience v0.3 and bilingual Copy v0.2 revised and persisted; CCV/IVS and Value Discovery Sprint now have dedicated explanatory sections. Visual design and implementation remain out of scope at this stage.
 
-**Authoritative working references:** `06_WEB/TGCV_WEB_VALUE_CONSTRUCTION_EXPERIENCE_v0.1.md` v0.2 and `06_WEB/TGCV_WEB_VALUE_CONSTRUCTION_COPY_v0.1.md` v0.1. The visitor journey begins with opportunity framing and system understanding; the full VCF cycle is introduced only after the visitor has followed the reasoning through alternatives, evidence, decisions, action and learning.
+**Authoritative working references:** `06_WEB/TGCV_WEB_VALUE_CONSTRUCTION_EXPERIENCE_v0.1.md` v0.3 and `06_WEB/TGCV_WEB_VALUE_CONSTRUCTION_COPY_v0.1.md` v0.2. VALUE must be defined in plain language at its first substantive mention. The visitor journey begins with contextual value, opportunity framing and system understanding; the full VCF cycle is introduced only after the visitor has followed the reasoning through alternatives, evidence, decisions, action and learning. CCV/IVS and the Value Discovery Sprint receive separate explanatory sections after the framework and its cycle have been introduced.
 
 **Purpose:** explain VALUE as an applied framework complementary to TGCV, showing how a system can understand a context and opportunity, connect knowledge, design alternatives, decide, act and learn in pursuit of contextually defined value.
 
 **Visitor question:** How can a system explore opportunities and organise decisions, action and learning to build value?
 
-**Required narrative (six movements):**
-1. **From opportunity to value:** define value contextually (for whom, which outcomes, over what horizon and under what constraints); do not equate possibility with value.
-2. **Understand the system:** examine context, actors, needs, capabilities, knowledge, relationships, flows, friction and constraints.
-3. **Explore possibilities:** identify opportunities and design alternatives as hypotheses with explicit assumptions and evidence needs.
-4. **Decide and act:** distinguish alternative selection, decision authority, execution authorisation, implementation and adoption.
-5. **Learn and renew:** evaluate observed results against criteria agreed beforehand, record uncertainty and update capabilities or the next cycle.
-6. **A case in practice — the clinic:** walk through the fictional appointment-management case and relevant A1–A8 artefacts, decisions and outputs after verifying current versions and publication suitability.
+**Required narrative:**
+1. **From contextual value to VALUE:** explain Value Construction, define VALUE as the applied framework at first substantive mention, state its purpose and distinguish it from TGCV and ValueLabOS.
+2. **Frame the opportunity:** identify whose outcomes matter, the context, criteria, scope and constraints.
+3. **Understand the system:** examine actors, needs, capabilities, knowledge, relationships, flows, friction and dependencies; introduce VSM only after VALUE is defined.
+4. **Explore possibilities and evidence:** develop alternatives as hypotheses, make assumptions explicit and identify evidence needs.
+5. **Decide and act responsibly:** distinguish selection, decision authority, execution authorisation, implementation and adoption.
+6. **Learn and renew:** evaluate observed results against prior criteria, record uncertainty and update capabilities or the next cycle.
+7. **Explain the VCF cycle:** introduce ALIGN and the six operational phases after the visitor understands the reasoning journey; do not lead with phase names.
+8. **CCV and IVS — capability and measurement under development:** explain CCV as a capability objective and IVS as an exploratory measurement proposal; neither is a validated score or ready KPI.
+9. **Value Discovery Sprint — pilot intervention design:** explain its purpose, intended decision-quality outputs, five-day planning hypothesis and untested status; do not imply availability or implementation.
+10. **A case in practice — the clinic:** walk through the fictional appointment-management case and relevant records, decisions and outputs after verifying current versions and publication suitability.
 
-**Method reference:** ALIGN is the entry/alignment and governance condition, followed by SENSE, CONNECT, DESIGN, DECIDE, ACT and LEARN. The process is iterative, not a rigid waterfall. Keep the distinctions among Value Construction, VALUE, VCF, VSM, Value Architecture, Value Opportunity, CCV and IVS; do not imply that every proposed measurement or artefact is mature or validated. A1–A8 are traceable records, not eight additional phases; A5 is transversal, A3 evolves and A7 preserves distinct proposal, authorisation and execution states.
+**Method reference:** ALIGN is the entry/alignment and governance condition, followed by SENSE, CONNECT, DESIGN, DECIDE, ACT and LEARN. The process is iterative, not a rigid waterfall. Introduce VALUE before using VCF, VSM, CCV or IVS as unexplained terms. Keep Value Construction, VALUE, VCF, VSM, Value Architecture, Value Opportunity, CCV, IVS and Value Discovery Sprint distinct. CCV is a capability objective, not a validated scale; IVS is exploratory, not a ready KPI; the Sprint is a pilot-service design, not an available offer or a separate phase of VALUE. A1–A8 are traceable records, not eight additional phases; A5 is transversal, A3 evolves and A7 preserves distinct proposal, authorisation and execution states.
 
 **TGCV relationship:** TGCV investigates how accessible transformations change and whether/how such changes may contribute to value. VALUE structures applied work to explore opportunities and organise intervention and learning. The relationship is a proposed theoretical-applied articulation, not a demonstrated derivation. VALUE can be evaluated independently and does not depend on C10 being confirmed.
 
@@ -788,3 +792,10 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Aligns the Home ecosystem map across Spanish and English, corrects a duplicated English heading, aligns the Research evidence-portfolio overview across languages and refreshes Transformational Intelligence editorial references.
 - Records that the Research description of Core S and analytical T_acc is consistent with canonical RMA v3.38; no scientific artifact or claim is modified.
 - Adds `TGCV_WEB_INTEGRATED_EDITORIAL_REVIEW_v0.1.md` as the review record and publication-gate reference.
+
+
+### v3.0 — 2026-11-25
+- Reopens P06 after editorial feedback identified unexplained first mentions of VALUE, CCV, IVS and the Value Discovery Sprint.
+- Requires VALUE to be defined at its first substantive mention and VSM to be introduced only after VALUE is explained.
+- Adds dedicated sections for CCV/IVS and the Value Discovery Sprint, with current methodological status and limits.
+- Updates P06 Experience to v0.3 and bilingual Copy to v0.2; no scientific or methodological source definitions are changed.
