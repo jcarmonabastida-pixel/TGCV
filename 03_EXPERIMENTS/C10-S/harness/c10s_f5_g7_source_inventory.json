@@ -82,6 +82,13 @@
       "authorization_hash_key": "shard_aggregator_sha256"
     },
     {
+      "path": "03_EXPERIMENTS/C10-S/harness/build_c10s_f5_g7_authorization_manifest.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "authorization_manifest_generator_sha256"
+    },
+    {
       "path": "03_EXPERIMENTS/C10-S/harness/c10s_beta_binomial_variance_oracles.py",
       "roles": [
         "execution_source"
