@@ -749,3 +749,8 @@ Keep Systems Thinking, Systems Engineering, TGCV and Transformational Intelligen
 ### v1.9 — 2026-11-25
 - Adds the Systems Engineering page experience and bilingual copy as current P04 authorities.
 - Aligns the information architecture with the approved five-movement experience and the first-release P1 scope.
+
+
+### v2.0 — 2026-11-25
+- Updates the P04 Systems Engineering experience and bilingual copy authorities to v0.2.
+- Records the technical editorial refinements: iterative/concurrent life-cycle activities, verification and validation throughout the work, and recognised further-reading sources.
