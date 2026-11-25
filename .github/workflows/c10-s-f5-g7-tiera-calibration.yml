@@ -13,7 +13,6 @@ on:
 permissions:
   contents: read
   actions: read
-  deployments: write
 
 env:
   OPENBLAS_NUM_THREADS: '1'
@@ -25,8 +24,6 @@ env:
 
 jobs:
   authorization:
-    environment:
-      name: c10s-f5-g7-tiera-v1-1
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     outputs:
