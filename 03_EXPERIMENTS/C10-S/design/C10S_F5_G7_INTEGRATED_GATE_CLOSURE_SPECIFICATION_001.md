@@ -40,6 +40,7 @@ El manifest de perfil es la autoridad de identidad y debe declarar, como mínimo
 - schema/version;
 - nombre exacto del miembro JSON dentro del ZIP;
 - profile run ID y artifact ID;
+- nombre completo e ID numérico del repositorio de origen, contrastados con los IDs del objeto artifact/workflow_run de GitHub;
 - source commit;
 - profile scope, namespace, K y B;
 - SHA-256 del ZIP y del JSON;

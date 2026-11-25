@@ -17,8 +17,9 @@ class ResourceProfileArtifactVerificationTests(unittest.TestCase):
             "expires_at": self.manifest["profile_artifact_expires_at"],
             "digest": "sha256:" + self.manifest["profile_artifact_archive_sha256"],
             "workflow_run": {"id": self.manifest["profile_run_id"], "head_sha": self.manifest["profile_source_commit"],
-                "repository_id": 1348691577, "head_repository_id": 1348691577,
-                "head_repository": {"full_name": "jcarmonabastida-pixel/TGCV"}}}
+                "repository_id": self.manifest["profile_repository_id"],
+                "head_repository_id": self.manifest["profile_repository_id"],
+                "head_branch": "research/c10s-f5-g7-canonical-mle-v1.1-20261122"}}
 
     def run_fixture(self, archive_bytes=None, manifest=None, metadata=None):
         with tempfile.TemporaryDirectory() as directory:
@@ -31,7 +32,7 @@ class ResourceProfileArtifactVerificationTests(unittest.TestCase):
             if metadata is None:
                 effective_metadata["digest"] = "sha256:" + effective_manifest["profile_artifact_archive_sha256"]
             metadata_path.write_text(json.dumps(effective_metadata), encoding="utf-8")
-            return verifier.verify(archive, manifest_path, metadata_path, "jcarmonabastida-pixel/TGCV")[0]
+            return verifier.verify(archive, manifest_path, metadata_path, "jcarmonabastida-pixel/TGCV", 1348691577)[0]
 
     def test_accepts_original_immutable_profile_artifact(self):
         result = self.run_fixture()
@@ -55,8 +56,19 @@ class ResourceProfileArtifactVerificationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "RUN_ID_MISMATCH"): self.run_fixture(metadata=metadata)
 
     def test_rejects_wrong_source_repository(self):
-        metadata = dict(self.metadata); metadata["workflow_run"] = dict(self.metadata["workflow_run"], head_repository={"full_name": "attacker/other"})
-        with self.assertRaisesRegex(ValueError, "REPOSITORY_MISMATCH"): self.run_fixture(metadata=metadata)
+        run = dict(self.metadata["workflow_run"], repository_id=999)
+        metadata = dict(self.metadata, workflow_run=run)
+        with self.assertRaisesRegex(ValueError, "REPOSITORY_ID_MISMATCH"): self.run_fixture(metadata=metadata)
+
+    def test_rejects_manifest_repository_name_mismatch(self):
+        manifest = dict(self.manifest, profile_repository_full_name="attacker/other")
+        with self.assertRaisesRegex(ValueError, "MANIFEST_REPOSITORY_NAME_MISMATCH"):
+            self.run_fixture(manifest=manifest)
+
+    def test_rejects_manifest_repository_id_mismatch(self):
+        manifest = dict(self.manifest, profile_repository_id=999)
+        with self.assertRaisesRegex(ValueError, "MANIFEST_REPOSITORY_ID_MISMATCH"):
+            self.run_fixture(manifest=manifest)
 
     def test_rejects_expired_artifact(self):
         metadata = dict(self.metadata, expired=True)

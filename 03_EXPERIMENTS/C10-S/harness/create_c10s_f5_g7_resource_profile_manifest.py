@@ -24,6 +24,7 @@ def request(url: str, token: str) -> bytes:
 def create(profile: Path, output: Path) -> dict:
     token = os.environ["GITHUB_TOKEN"]
     repository = os.environ["GITHUB_REPOSITORY"]
+    repository_id = int(os.environ["GITHUB_REPOSITORY_ID"])
     run_id = int(os.environ["GITHUB_RUN_ID"])
     run_url = f"https://github.com/{repository}/actions/runs/{run_id}"
     artifacts_url = f"https://api.github.com/repos/{repository}/actions/runs/{run_id}/artifacts"
@@ -44,7 +45,9 @@ def create(profile: Path, output: Path) -> dict:
     if not isinstance(source_commit, str) or len(source_commit) != 40:
         raise ValueError("RESOURCE_PROFILE_SOURCE_COMMIT_MISSING")
     manifest = {
-        "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002",
+        "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-003",
+        "profile_repository_full_name": repository,
+        "profile_repository_id": repository_id,
         "profile_run_id": run_id,
         "profile_run_url": run_url,
         "profile_artifact_id": int(artifact["id"]),

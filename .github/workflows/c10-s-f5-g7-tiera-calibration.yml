@@ -151,6 +151,7 @@ jobs:
           PROFILE_ARTIFACT_ID: ${{ needs.authorization.outputs.resource_profile_artifact_id }}
           PROFILE_RUN_ID: ${{ needs.authorization.outputs.resource_profile_run_id }}
           EXPECTED_REPOSITORY: ${{ github.repository }}
+          EXPECTED_REPOSITORY_ID: ${{ github.repository_id }}
         run: |
           set -euo pipefail
           MANIFEST="03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json"
@@ -169,7 +170,8 @@ jobs:
             --artifact-metadata "$METADATA" \
             --output-json "$RUNNER_TEMP/verified-resource-profile-artifact.json" \
             --extract-profile "$RUNNER_TEMP/resource-profile/c10s-f5-g7-resource-profile.json" \
-            --expected-repository "$EXPECTED_REPOSITORY"
+            --expected-repository "$EXPECTED_REPOSITORY" \
+            --expected-repository-id "$EXPECTED_REPOSITORY_ID"
       - name: Validate immutable resource profile and derive safe shard matrix
         id: plan
         working-directory: 03_EXPERIMENTS/C10-S/harness

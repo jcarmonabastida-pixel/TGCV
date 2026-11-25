@@ -32,7 +32,7 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
     profile_sha = sha256_bytes(profile_bytes)
     profile = json.loads(profile_bytes)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    if manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002":
+    if manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-003":
         raise ValueError("G7_RESOURCE_PROFILE_MANIFEST_SCHEMA_MISMATCH")
     if manifest.get("profile_json_sha256") != profile_sha:
         raise ValueError("G7_RESOURCE_PROFILE_JSON_DIGEST_MISMATCH")

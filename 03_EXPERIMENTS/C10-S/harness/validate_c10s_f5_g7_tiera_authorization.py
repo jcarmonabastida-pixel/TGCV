@@ -94,12 +94,14 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
     if (auth.get("max_job_minutes"), auth.get("max_parallel_jobs")) != (150, 20):
         raise ValueError("G7 execution budget or parallelism mismatch")
     profile_manifest = json.loads((root / RESOURCE_PROFILE_MANIFEST_PATH).read_text(encoding="utf-8"))
-    if profile_manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002":
+    if profile_manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-003":
         raise ValueError("G7 resource profile manifest schema mismatch")
     if (
         auth.get("resource_profile_run_id") != profile_manifest.get("profile_run_id")
         or auth.get("resource_profile_artifact_id") != profile_manifest.get("profile_artifact_id")
         or auth.get("resource_profile_source_commit") != profile_manifest.get("profile_source_commit")
+        or auth.get("resource_profile_repository_full_name") != profile_manifest.get("profile_repository_full_name")
+        or auth.get("resource_profile_repository_id") != profile_manifest.get("profile_repository_id")
         or auth.get("resource_profile_artifact_archive_sha256") != profile_manifest.get("profile_artifact_archive_sha256")
         or auth.get("resource_profile_sha256") != profile_manifest.get("profile_json_sha256")
         or auth.get("resource_profile_scope") != "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT"
@@ -150,6 +152,8 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
         "c5_bootstrap_replicates": 1000,
         "resource_preflight_k_per_cell": 100,
         "execution_architecture_id": "C10S-F5-G7-EXECUTION-ARCHITECTURE-002",
+        "resource_profile_repository_full_name": profile_manifest["profile_repository_full_name"],
+        "resource_profile_repository_id": profile_manifest["profile_repository_id"],
         "resource_profile_run_id": auth["resource_profile_run_id"],
         "resource_profile_artifact_id": auth["resource_profile_artifact_id"],
         "resource_profile_source_commit": auth["resource_profile_source_commit"],

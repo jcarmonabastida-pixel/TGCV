@@ -1,4 +1,4 @@
-"Verify immutable G7 resource profile artifact before planning."
+"""Verify immutable G7 resource profile artifact before planning."""
 from __future__ import annotations
 import argparse
 import hashlib
@@ -11,12 +11,19 @@ PROFILE_MEMBER = "c10s-f5-g7-resource-profile.json"
 def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
-def verify(archive_path: Path, manifest_path: Path, metadata_path: Path, expected_repository: str) -> tuple[dict, bytes]:
+def verify(archive_path: Path, manifest_path: Path, metadata_path: Path, expected_repository: str, expected_repository_id: int) -> tuple[dict, bytes]:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     archive_bytes = archive_path.read_bytes()
-    if manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002":
+    if manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-003":
         raise ValueError("PROFILE_MANIFEST_SCHEMA_MISMATCH")
+    if manifest.get("profile_repository_full_name") != expected_repository:
+        raise ValueError("PROFILE_MANIFEST_REPOSITORY_NAME_MISMATCH")
+    if manifest.get("profile_repository_id") != expected_repository_id:
+        raise ValueError("PROFILE_MANIFEST_REPOSITORY_ID_MISMATCH")
+    expected_run_url = f"https://github.com/{expected_repository}/actions/runs/{manifest.get('profile_run_id')}"
+    if manifest.get("profile_run_url") != expected_run_url:
+        raise ValueError("PROFILE_RUN_URL_MISMATCH")
     if metadata.get("id") != manifest.get("profile_artifact_id"):
         raise ValueError("PROFILE_ARTIFACT_ID_MISMATCH")
     if metadata.get("name") != manifest.get("profile_artifact_name"):
@@ -30,16 +37,12 @@ def verify(archive_path: Path, manifest_path: Path, metadata_path: Path, expecte
         raise ValueError("PROFILE_RUN_ID_MISMATCH")
     if run.get("head_sha") != manifest.get("profile_source_commit"):
         raise ValueError("PROFILE_SOURCE_COMMIT_MISMATCH")
-    repository = (run.get("head_repository") or {}).get("full_name")
-    if repository != expected_repository:
-        raise ValueError("PROFILE_SOURCE_REPOSITORY_MISMATCH")
-    if run.get("repository_id") != run.get("head_repository_id"):
-        raise ValueError("PROFILE_REPOSITORY_ID_MISMATCH")
+    if run.get("repository_id") != expected_repository_id or run.get("head_repository_id") != expected_repository_id:
+        raise ValueError("PROFILE_SOURCE_REPOSITORY_ID_MISMATCH")
     actual_archive_sha = sha256(archive_bytes)
     if actual_archive_sha != manifest.get("profile_artifact_archive_sha256"):
         raise ValueError("PROFILE_ARCHIVE_DIGEST_MISMATCH")
-    api_digest = metadata.get("digest")
-    if api_digest != f"sha256:{actual_archive_sha}":
+    if metadata.get("digest") != f"sha256:{actual_archive_sha}":
         raise ValueError("PROFILE_GITHUB_ARTIFACT_DIGEST_MISMATCH")
     try:
         with zipfile.ZipFile(archive_path) as archive:
@@ -51,8 +54,7 @@ def verify(archive_path: Path, manifest_path: Path, metadata_path: Path, expecte
                 parts = PurePosixPath(name).parts
                 if PurePosixPath(name).is_absolute() or name.startswith("/") or "\\" in name or any(part == ".." for part in parts) or (parts and ":" in parts[0]):
                     raise ValueError("PROFILE_ARCHIVE_UNSAFE_PATH")
-            unexpected = [name for name in names if name != PROFILE_MEMBER]
-            if unexpected:
+            if [name for name in names if name != PROFILE_MEMBER]:
                 raise ValueError("PROFILE_ARCHIVE_UNEXPECTED_MEMBER")
             profile_bytes = archive.read(PROFILE_MEMBER)
     except zipfile.BadZipFile as exc:
@@ -76,12 +78,10 @@ def verify(archive_path: Path, manifest_path: Path, metadata_path: Path, expecte
             raise ValueError(error)
     if profile.get("coverage_adjudication") != "NOT_PERFORMED":
         raise ValueError("PROFILE_SCOPE_VIOLATION")
-    return ({
-        "artifact_id": metadata["id"], "artifact_name": metadata["name"],
-        "run_id": run["id"], "source_commit": run["head_sha"],
-        "source_repository": repository, "archive_sha256": actual_archive_sha,
-        "profile_json_sha256": actual_json_sha, "profile_member": PROFILE_MEMBER,
-    }, profile_bytes)
+    return ({"artifact_id": metadata["id"], "artifact_name": metadata["name"], "run_id": run["id"],
+             "source_commit": run["head_sha"], "source_repository": expected_repository,
+             "source_repository_id": expected_repository_id, "archive_sha256": actual_archive_sha,
+             "profile_json_sha256": actual_json_sha, "profile_member": PROFILE_MEMBER}, profile_bytes)
 
 def main() -> int:
     parser = argparse.ArgumentParser()
@@ -91,8 +91,9 @@ def main() -> int:
     parser.add_argument("--output-json", type=Path, required=True)
     parser.add_argument("--extract-profile", type=Path, required=True)
     parser.add_argument("--expected-repository", required=True)
+    parser.add_argument("--expected-repository-id", type=int, required=True)
     args = parser.parse_args()
-    result, profile_bytes = verify(args.archive, args.manifest, args.artifact_metadata, args.expected_repository)
+    result, profile_bytes = verify(args.archive, args.manifest, args.artifact_metadata, args.expected_repository, args.expected_repository_id)
     args.extract_profile.parent.mkdir(parents=True, exist_ok=True)
     args.extract_profile.write_bytes(profile_bytes)
     args.output_json.write_text(json.dumps(result, sort_keys=True, indent=2) + "\n", encoding="utf-8")

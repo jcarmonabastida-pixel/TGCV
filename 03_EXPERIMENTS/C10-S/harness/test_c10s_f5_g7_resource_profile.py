@@ -25,7 +25,7 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             manifest = root / "manifest.json"
             profile.write_text(json.dumps({"schema": "not-the-profile"}), encoding="utf-8")
             manifest.write_text(json.dumps({
-                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002",
+                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-003",
                 "profile_json_sha256": "0" * 64,
                 "profile_source_commit": "a" * 40,
                 "profile_run_id": 45000000001,
@@ -178,7 +178,7 @@ class F5G7ResourceProfileTests(unittest.TestCase):
             profile_bytes = json.dumps({"schema": "wrong"}).encode()
             profile.write_bytes(profile_bytes)
             manifest.write_text(json.dumps({
-                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002",
+                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-003",
                 "profile_json_sha256": hashlib.sha256(profile_bytes).hexdigest(),
                 "profile_source_commit": "a" * 40,
                 "profile_run_id": 45000000001,

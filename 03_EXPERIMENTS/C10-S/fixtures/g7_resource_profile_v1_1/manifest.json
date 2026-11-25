@@ -13,6 +13,8 @@
   "profile_schema": "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-002",
   "profile_scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT",
   "profile_source_commit": "8b62b89a78681cc39bdd4c0cbb76c43ef073c1e9",
-  "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002",
-  "seed_namespace": "c10s_f5_g7_resource_v1_1"
+  "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-003",
+  "seed_namespace": "c10s_f5_g7_resource_v1_1",
+  "profile_repository_full_name": "jcarmonabastida-pixel/TGCV",
+  "profile_repository_id": 1348691577
 }
