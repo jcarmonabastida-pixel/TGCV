@@ -6,7 +6,7 @@
 **Status:** WORKING EXPERIENCE SPECIFICATION — NOT PUBLICATION APPROVAL  
 **Branch:** strategy/tgcv-web-master  
 **Page:** P07 — Labs & Applications  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Content Blueprint v3.6.
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Content Blueprint v3.7.
 
 ---
 
