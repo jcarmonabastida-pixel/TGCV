@@ -1,9 +1,9 @@
 # TGCV — Integrated Editorial Review of First-Release Bilingual Copy
 
 **Identifier:** TGCV-WEB-EDITORIAL-REVIEW-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-25  
-**Status:** EDITORIAL REVIEW COMPLETE — WORKING COPY; NOT PUBLICATION APPROVAL  
+**Status:** UPDATED EDITORIAL REVIEW — VALUE CONSTRUCTION RESEQUENCED; NOT PUBLICATION APPROVAL  
 **Branch:** `strategy/tgcv-web-master`
 
 ---
@@ -30,9 +30,9 @@ The review covers the current copy for Home, Explore, Research, Systems Engineer
 | Research | `TGCV_WEB_RESEARCH_COPY_v0.1.md` v0.9 | Reviewed; bilingual evidence-portfolio summary aligned; Core wording checked against canonical RMA |
 | Systems Engineering | `TGCV_WEB_SYSTEMS_ENGINEERING_COPY_v0.1.md` v0.1 | Reviewed; distinct discipline role and illustrative example preserved |
 | Transformational Intelligence | `TGCV_WEB_TRANSFORMATIONAL_INTELLIGENCE_COPY_v0.1.md` v0.2 | Reviewed; stale editorial references refreshed |
-| Value Construction | `TGCV_WEB_VALUE_CONSTRUCTION_COPY_v0.1.md` v0.1 | Reviewed; fictional case, non-execution and independent VALUE status preserved |
+| Value Construction | `TGCV_WEB_VALUE_CONSTRUCTION_COPY_v0.1.md` v0.2 | Revised after review feedback; VALUE introduced before use; CCV/IVS and Value Discovery Sprint contextualised in dedicated sections |
 
-Reference architecture: current Content Blueprint v2.9, the current page Experience documents and the public identity decisions recorded in the web strategy documents.
+Reference architecture: current Content Blueprint v3.0, the current page Experience documents and the public identity decisions recorded in the web strategy documents.
 
 Scientific cross-check for the Research page: canonical `main` RMA v3.38 and `CANONICAL_STATE.json`. The RMA states Core ontology `S`, analytical accessible transformation space `T_acc = F(S,C,L)`, central phenomenon `ΔT_acc`, and downstream chain `ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`. The Research copy's corresponding formulation is consistent with that canonical state.
 
@@ -101,6 +101,20 @@ VALUE is presented as a complementary applied framework with its own methodologi
 
 **Disposition:** coherent; no change to scientific or methodological source assets.
 
+### 3.7 Value Construction terminology — first-mention and contextualisation correction
+
+The previous Value Construction Copy used the name VALUE in the system-model explanation before defining what VALUE was. It also introduced CCV, IVS and the Value Discovery Sprint in a short cautionary passage without first explaining their distinct purposes. This was a genuine sequencing defect that the first integrated review did not catch; the review's earlier broad coherence conclusion must not be read as evidence that this detail was correct.
+
+The page has been revised so that:
+- VALUE is defined at its first substantive mention as the working name of the applied framework, with its Transformational Value Framework descriptor, before VSM or later sections refer to it as an established subject.
+- CCV has a dedicated section as the capability objective the framework aims to develop, not a validated score or maturity scale. The unresolved alternatives for maturity levels remain open.
+- IVS has a dedicated section as an exploratory measurement proposal, with no canonical dimensions, formula, weights or validated scale. It is not a ready KPI or the value produced.
+- The Value Discovery Sprint has its own section as a bounded pilot-intervention design intended to improve the quality and traceability of a decision. Its five-day duration is a planning hypothesis; it has not been tested in a real case and is not an available commercial offer.
+- CCV and IVS are not required for the Sprint; the Sprint does not include implementation or proof of realised value, and any subsequent execution requires separate authorisation.
+- The canonical acronyms CCV and IVS are retained in both language versions, with the English expansions explained rather than silently changing the identifiers.
+
+**Disposition:** corrected in Value Construction Experience v0.3 and bilingual Copy v0.2. These are editorial clarifications grounded in the existing methodological and Sprint source documents; they do not change those source definitions or their maturity status.
+
 ## 4. Cross-page narrative coherence
 
 The first-release copy forms a coherent visitor progression:
@@ -110,7 +124,7 @@ The first-release copy forms a coherent visitor progression:
 3. **Research** explains what TGCV investigates, how it is examined, what the evidence supports and what remains open.
 4. **Systems Engineering** explains the established engineering discipline and connects system modelling/intervention to the TGCV research question without conflating their roles.
 5. **Transformational Intelligence** explores a developing capability hypothesis about using information on accessible transformations to reason and guide behaviour.
-6. **Value Construction** explains an applied framework for opportunity understanding, system modelling, alternatives, decisions, action and learning, while preserving its independent status relative to TGCV.
+6. **Value Construction** defines VALUE before using it, explains the applied framework and its cycle, then separately contextualises CCV/IVS, the Value Discovery Sprint and the fictional clinic case while preserving its independent status relative to TGCV.
 
 The page set avoids presenting these elements as a proven causal pipeline. Cross-links distinguish conceptual/research deepening from the complementary applied VALUE route.
 
@@ -133,3 +147,4 @@ The Research copy must continue to be checked against current canonical scientif
 ## 6. Change record
 
 - **v0.1 — 2026-11-25:** First integrated editorial review of Home, Explore, Research, Systems Engineering, Transformational Intelligence and Value Construction bilingual copy. Records cross-page coherence, corrected Home and Research bilingual asymmetries, refreshed TI editorial references, and the Research Core cross-check against canonical RMA v3.38. No scientific asset, claim, authorization or evidence status was changed.
+- **v0.2 — 2026-11-25:** Reopens the Value Construction review after the user identified unexplained first mentions of VALUE, CCV, IVS and Value Discovery Sprint. Records the corrected sequence, dedicated explanatory sections, canonical bilingual acronyms and explicit maturity/availability boundaries.
