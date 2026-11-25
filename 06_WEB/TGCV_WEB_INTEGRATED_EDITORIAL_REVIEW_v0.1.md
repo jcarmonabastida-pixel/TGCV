@@ -103,7 +103,7 @@ Strategic indexes:
 
 ## 5. Open publication gates
 
-1. **TGCV Full Chain Demo:** verify the exact current package, source commit, version, interface, launch route, security, accessibility and correspondence with the locally accepted ZIP before describing specific functions or offering a public link.
+1. **TGCV Full Chain Demo:** verify the exact current package, source commit, version, interface, launch route, security, accessibility and correspondence with the locally accepted downloaded archive before describing specific functions or offering a public link.
 2. **the cross-domain mapping demonstrator:** verify current canonical status and permission for public release of the demonstrator/evidence materials.
 3. **Research evidence:** refresh public evidence statements and linked briefs against current canonical STATUS, RMA, Evidence→Claim Matrix, traceability and source records; verify disclosure permissions for each asset.
 4. **Application-Fit:** verify each context description, source attribution and maturity label against current source records. Do not promote a candidate to a qualified application by editorial wording.
@@ -135,7 +135,7 @@ A further review of Labs & Applications identified that the previous visitor cop
 1. **Public prototype name:** TGCV Full Chain Demo replaces the internal codename in all current visitor-facing copy and Experience descriptions.
 2. **Cross-domain synthetic demonstrator:** its public description is now a plain-language label. Internal acronym and execution-version identifiers have been removed from the visitor narrative. Its result remains bounded synthetic methodological evidence; the equivalent conventional representations do not establish superiority or empirical validity.
 3. **Energy and mobility:** EV–Grid is replaced by “coordination between electric vehicles and the electricity grid”. The internal case identifier and execution code are removed. The public text explains that the comparison reused the same admissibility rule as the TGCV path and was therefore not an independent baseline.
-4. **Technical delivery shorthand:** references such as CI, ZIP and digest have been replaced by plain descriptions of the downloaded archive and software release package. The provenance limitation remains explicit.
+4. **Technical delivery shorthand:** references to internal software-delivery terminology have been replaced by plain descriptions of the downloaded archive and software release package. The provenance limitation remains explicit.
 5. **Terminology audit:** Spanish and English current copy have been checked for the internal prototype codename, unexplained demonstrator acronyms, execution-version labels and internal case identifiers.
 
 Current P07 authorities:
