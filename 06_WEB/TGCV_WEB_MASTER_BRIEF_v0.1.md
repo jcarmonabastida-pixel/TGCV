@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 1.5  
+**Versión:** 1.7  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -1251,3 +1251,8 @@ About/Governance and Contact/Participate remain supporting destinations. This ad
 - Adds Value Construction as a first-release page after Transformational Intelligence and before Labs & Applications.
 - Records the proposed six-movement Value Construction experience, VALUE lifecycle, source assets and clinic-case evidence/maturity boundaries.
 - Separates TGCV's open causal research question from VALUE's independent applied-framework evaluation.
+
+
+### v1.7 — 2026-11-25
+- Synchronizes Home Experience v1.5 and Home Copy v1.2 with the approved public ecosystem map and Value Construction destination.
+- Makes the visitor-facing map part of the Home experience while preserving the visitor-first opening narrative.
