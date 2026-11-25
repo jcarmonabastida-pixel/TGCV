@@ -1,11 +1,11 @@
 # TGCV — Research Page Copy v0.1
 
 **Identifier:** TGCV-WEB-RESEARCH-COPY-001  
-**Version:** 0.7  
+**Version:** 0.8
 **Date:** 2026-11-25  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
-**Depends on:** Web Master Brief v1.5; Research Experience v0.8; Information Architecture v1.8; Content Blueprint v1.8; current TGCV Core; Research Prospectus v0.2; Testable Concept Paper v0.4; Architectural Research Map v0.2; current RMA v3.38 and Evidence→Claim Matrix v1.47.
+**Depends on:** Web Master Brief v1.5; Research Experience v0.9; Information Architecture v1.8; Content Blueprint v1.9; current TGCV Core; Research Prospectus v0.2; Testable Concept Paper v0.4; Architectural Research Map v0.2; current RMA v3.38 and Evidence→Claim Matrix v1.47.
 
 > This is a first bilingual editorial draft. It is not a scientific asset, does not change claim status, and does not authorize publication of controlled scientific records. The evidence snapshot must be rechecked immediately before publication.
 
@@ -99,7 +99,7 @@ Entre las líneas de evidencia que pueden explicarse al público se encuentran:
 - [**Pruebas controladas y reconstrucción entre dominios.**](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_METHODS_CROSS_DOMAIN_v0.1.md) Una prueba sintética controlada mostró que, en una construcción concreta, dos casos iguales en estado, contexto y transformaciones accesibles podían realizar trayectorias distintas cuando difería otra condición previa. Por separado, un análisis secundario de evidencias ya auditadas en dos dominios permitió reconstruir descriptores comunes de cambio transformacional, manteniendo separadas sus semánticas. No se observó divergencia de trayectorias en los registros disponibles. Estos resultados no demuestran validez general, superioridad ni creación de valor.
 - [**De los cambios de accesibilidad a las trayectorias posteriores.**](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_ACCESSIBILITY_TRAJECTORY_v0.1.md) La evidencia combina una reconstrucción temporal de un sistema auto-adaptativo, un experimento aleatorizado de expansión estructural del acceso financiero y un análisis que delimita cuándo los datos no permiten reconstruir trayectorias ejecutadas. Son resultados de distinto alcance: la reconstrucción temporal no identifica causalidad; el experimento aporta evidencia causal acotada sobre la intervención estructural como conjunto, sin aislar automáticamente el efecto de cada componente; y el caso de software muestra límites de observación. Ninguno demuestra una relación universal ni creación de valor.
 - **Límites de identificación.** Otros análisis muestran que, cuando no se conocen suficientemente las condiciones relevantes en el momento de decisión, puede no ser posible determinar si una transformación era realmente accesible. Reconocer esa indeterminación es parte del método, no un resultado que deba ocultarse.
-- [**Otros estudios y casos investigados: una panorámica de la evidencia.**](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_PORTFOLIO_v0.1.md) Una selección representativa de trabajos empíricos, industriales, computacionales y sintéticos: SWIM, recuperación funcional en AWS, expansión del acceso financiero rural, ecosistemas de software, EV–Grid, VSL Paired, pruebas entre dominios y otros estudios. La ficha explica qué se investigó, qué aporta cada caso y, especialmente, qué no permite concluir. No es un inventario exhaustivo ni una suma automática de validaciones.
+- [**Otros estudios y casos investigados: una panorámica de la evidencia.**](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_PORTFOLIO_v0.1.md) Una selección representativa de trabajos empíricos, industriales, computacionales y sintéticos: SWIM, recuperación funcional en AWS, expansión del acceso financiero rural, ecosistemas de software, infraestructura urbana, sistemas eléctricos, EV–Grid, VSL Paired, experimentos de decisión y pruebas entre dominios. La ficha explica qué se investigó, qué aporta cada caso y, especialmente, qué no permite concluir. No es un inventario exhaustivo ni una suma automática de validaciones.
 
 La investigación también ha examinado métodos de razonamiento y selección de transformaciones. Esos trabajos no justifican afirmar que exista una capacidad general validada de Transformational Intelligence.
 
