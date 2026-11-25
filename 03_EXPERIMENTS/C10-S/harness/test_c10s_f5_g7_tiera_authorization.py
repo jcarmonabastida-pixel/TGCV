@@ -201,20 +201,22 @@ class F5G7AuthorizationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "ROLE_INVALID"):
                 inventory.load_inventory(path)
 
-    def test_g7_workflow_requires_manual_dispatch_and_protected_environment(self):
+    def test_g7_workflow_requires_owner_dispatch_and_records_attestation(self):
         workflow_path = Path(__file__).resolve().parents[3] / ".github/workflows/c10-s-f5-g7-tiera-calibration.yml"
         workflow = workflow_path.read_text(encoding="utf-8")
         self.assertIn("workflow_dispatch:", workflow)
         self.assertNotIn("\n  push:", workflow)
         self.assertIn("name: c10s-f5-g7-tiera-v1-1", workflow)
+        self.assertIn('test "$EVENT_ACTOR" = "$REPOSITORY_OWNER"', workflow)
+        self.assertIn("I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT", workflow)
+        self.assertIn("TGCV-C10S-G7-DISPATCH-ATTESTATION-001", workflow)
+        self.assertIn("GITHUB_WORKFLOW_DISPATCH", workflow)
+        self.assertNotIn("required_reviewers", workflow)
+        self.assertNotIn("prevent_self_review", workflow)
         authorization_checkout = workflow.split("Checkout one-use authorization commit", 1)[1].split("Set up pinned Python", 1)[0]
         self.assertIn("fetch-depth: 0", authorization_checkout)
-        self.assertIn("G7_ENVIRONMENT_REQUIRED_REVIEWERS_NOT_CONFIGURED", workflow)
-        self.assertIn("G7_ENVIRONMENT_SELF_REVIEW_PREVENTION_NOT_CONFIGURED", workflow)
-        self.assertIn('rule.get("prevent_self_review") is True', workflow)
         self.assertIn("EXPECTED_REPOSITORY_ID:", workflow)
         self.assertIn("--expected-repository-id", workflow)
-        self.assertIn("I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT", workflow)
 
 if __name__ == "__main__":
     unittest.main()
