@@ -99,7 +99,7 @@ Se ha ejecutado y auditado un demostrador sintético mínimo relacionado con est
 
 La búsqueda no se limita a los tres contextos destacados. También se han identificado problemas en los que distintas capacidades, reglas, recursos y trayectorias pueden depender unas de otras:
 
-- **Orquestación multidominio de redes 5G, servicios en la nube y computación en el borde.** Coordinación de cambios entre redes, infraestructuras distribuidas, seguridad y servicios.
+- **Orquestación multidominio de redes móviles de quinta generación (5G), servicios en la nube y procesamiento de datos cerca de donde se generan.** Coordinación de cambios entre redes, infraestructuras distribuidas, seguridad y servicios.
 - **Ciberseguridad y redes autodefensivas.** Interacción entre identidad, estado de seguridad, telemetría, infraestructura y respuesta automatizada.
 - **Servicios sociales integrados y gestión de casos ciudadanos.** Continuidad de los casos entre departamentos, datos interoperables, procesos y canales de atención.
 - **Atención integrada sanitaria y social.** Coordinación entre atención primaria, hospitales, servicios sociales, sistemas de información y organizaciones.
@@ -254,7 +254,7 @@ A related minimum synthetic demonstrator has been executed and audited. In that 
 
 The search is not limited to the three featured contexts. Other problems have also been identified in which different capabilities, rules, resources and trajectories may depend on one another:
 
-- **Multi-domain 5G networks, cloud services and edge computing.** Coordinating changes across networks, distributed infrastructure, security and services.
+- **Multi-domain fifth-generation mobile networks (5G), cloud services and computing close to connected devices.** Coordinating changes across networks, distributed infrastructure, security and services.
 - **Cybersecurity and self-defending networks.** Interactions between identity, security state, telemetry, infrastructure and automated response.
 - **Integrated social services and citizen case management.** Continuity of cases across departments, interoperable data, workflows and service channels.
 - **Integrated health and social care.** Coordination across primary care, hospitals, social services, information systems and organisations.
