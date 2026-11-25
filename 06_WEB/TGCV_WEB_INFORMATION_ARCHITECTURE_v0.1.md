@@ -829,3 +829,20 @@ Do not assume these versions remain current when development begins. Recheck exa
 
 ### v2.4 — 2026-11-25
 - Adds an explicit cross-document navigation consistency rule for Value Construction, including Home's bilingual visitor routes.
+
+
+## 23. P05 — Transformational Intelligence experience authority
+
+**Authoritative working reference:**
+- `06_WEB/TGCV_WEB_TRANSFORMATIONAL_INTELLIGENCE_EXPERIENCE_v0.1.md` — current content version 0.1.
+
+P05 presents Transformational Intelligence as a developing integrative capability concept and open research hypothesis. The page distinguishes observable transformation-space dynamics, transformation handling and the capability hypothesis. Its five candidate dimensions are representation, evaluation, selection, anticipation and adaptation; these are not validated components or necessary-and-sufficient criteria.
+
+The page must distinguish TI from AI, Systems Thinking and Systems Engineering; preserve the independence of outcomes and value; and explain the evidence progression from observing transformation-space dynamics to testing transformation-space-informed and adaptive behaviour. The software-migration example is illustrative only.
+
+This authority supersedes earlier P05 working text that describes four dimensions or presents trajectory orientation as a settled functional component. Trajectory orientation may be discussed as a possible application context, but must not be substituted for the more carefully differentiated candidate dimensions without further conceptual decision.
+
+### v2.5 — 2026-11-25
+- Adds the P05 Transformational Intelligence Experience authority.
+- Aligns P05 with the distinction among transformation-space dynamics, transformation handling and the open TI capability hypothesis.
+- Replaces earlier four-dimension wording with five candidate dimensions and explicit evidence progression.
