@@ -285,7 +285,7 @@ La validación integrada del consumidor contra la forma real de metadatos de Git
 
 ### 10.5 RG-05 — inventario único y clausura de fuentes
 
-El inventario tipado único `c10s_f5_g7_source_inventory.json` contiene 55 rutas: 20 clasificadas como `compute_path` y 55 como `execution_source` (con solapamiento tipado). Incluye el código transitivo importado por el ejecutor, tests y workflows, y el fixture ZIP inmutable. El generador produce los manifests derivados y los hashes desde el árbol Git; las pruebas detectan dependencias transitivas ausentes, referencias de workflow/test fuera del inventario y fixtures no identificados.
+El inventario tipado único `c10s_f5_g7_source_inventory.json` contiene 55 rutas: 19 clasificadas como `compute_path` y 55 como `execution_source` (con solapamiento tipado). El generador de manifest del perfil queda clasificado solo como `execution_source`: se ejecuta después de terminar y agregar los shards de medición, por lo que no determina los tiempos observados ni forma parte del compute path medido. La revisión de roles eleva el inventario a versión 2 sin cambiar el protocolo ni los datos del perfil K=100 existente. El inventario incluye el código transitivo importado por el ejecutor, tests y workflows, y el fixture ZIP inmutable. El generador produce los manifests derivados y los hashes desde el árbol Git; las pruebas detectan dependencias transitivas ausentes, referencias de workflow/test fuera del inventario y fixtures no identificados.
 
 La suite de validación del run `45550608608`, commit `60c34a17606627a62c7f0db2064855985cf2efe9`, terminó SUCCESS 8/8. El job de compilación y las particiones de autorización, perfil, artefactos, shards, bootstrap y polinomios terminaron todas en SUCCESS.
 
