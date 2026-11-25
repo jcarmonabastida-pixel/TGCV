@@ -6,7 +6,7 @@
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21–22  
 **Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`, §12–13; Home Experience v1.6; Home Copy v1.3  
-**Copy:** `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — v0.5  
+**Copy:** `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — v0.8  
 **Branch:** `strategy/tgcv-web-master`
 
 ---
