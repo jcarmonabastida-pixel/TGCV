@@ -1,9 +1,9 @@
 # TGCV — Evidence Brief: From Accessibility Changes to Subsequent Trajectories v0.1
 
 **Identifier:** TGCV-WEB-EVIDENCE-TRAJECTORY-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-25  
-**Status:** EDITORIAL WORKING DRAFT — SCIENTIFIC CLASSIFICATION RECONCILIATION REQUIRED BEFORE PUBLICATION  
+**Status:** EDITORIAL WORKING DRAFT — FINAL PUBLICATION REVIEW REQUIRED  
 **Branch:** strategy/tgcv-web-master
 
 # ESPAÑOL
@@ -50,7 +50,7 @@ La investigación TGCV ha reconstruido la intervención como un cambio estructur
 
 El efecto causal identificado corresponde a la intervención estructural asignada como conjunto. No debe confundirse automáticamente con una estimación aislada de un efecto mediado por cada transformación accesible, ni con una demostración de que todos los componentes de la intervención operen exclusivamente a través de la ampliación de posibilidades.
 
-La clasificación científica interna del grado de identificación y de los posibles canales residuales requiere reconciliación documental antes de publicar una etiqueta más fuerte. Por ello, esta ficha presenta el caso como evidencia causal acotada de una intervención estructural de acceso, sin afirmar que se haya aislado un efecto causal universal o independiente de cada componente de T_acc.
+El registro científico vigente consolida esta línea como evidencia causal empírica acotada: la asignación aleatoria de la expansión estructural del acceso financiero, junto con la reconstrucción de las capacidades introducidas y la auditoría independiente de las variables longitudinales, permite sostener una conclusión causal delimitada sobre las trayectorias posteriores en el contexto estudiado. Esta conclusión no equivale a identificar por separado el efecto mediado por cada transformación accesible, no demuestra que todos los componentes actúen exclusivamente a través de T_acc y no permite generalizar el efecto a cualquier sistema o población.
 
 ## 3. Por qué no todos los datos permiten reconstruir trayectorias
 
@@ -68,7 +68,7 @@ Los casos permiten distinguir tres niveles:
 2. **Evidencia causal acotada:** un experimento aleatorizado puede identificar las consecuencias posteriores de una intervención que implementa una expansión estructural de acceso, dentro de los límites de esa intervención y población.
 3. **Límite de observación:** algunos conjuntos de datos permiten reconstruir posibilidades, pero no contienen la información necesaria para observar trayectorias efectivamente ejecutadas.
 
-La evidencia disponible respalda que la relación entre accesibilidad y trayectoria puede investigarse empíricamente y que existen casos acotados de reconstrucción temporal y de intervención causal. No demuestra una ley universal según la cual todo cambio en las posibilidades accesibles produzca una trayectoria distinta o mejor.
+La evidencia disponible respalda una conclusión causal acotada sobre una intervención estructural de acceso financiero, complementada por una reconstrucción temporal en un sistema auto-adaptativo y por un caso que muestra límites de observación. No demuestra una ley universal según la cual todo cambio en las posibilidades accesibles produzca una trayectoria distinta o mejor.
 
 ## 5. Qué sigue abierto
 
@@ -135,7 +135,7 @@ TGCV research has reconstructed the intervention as a structural change in avail
 
 The identified causal effect concerns the assigned structural intervention as a whole. It should not automatically be treated as an isolated estimate of an effect mediated by each accessible transformation, or as proof that every intervention component operates exclusively through the expansion of possibilities.
 
-The internal scientific classification of the identification strength and possible residual pathways requires documentary reconciliation before a stronger label is published. This brief therefore presents the case as bounded causal evidence about a structural access intervention, without claiming a universal causal effect or an independently isolated effect for every component of T_acc.
+The current scientific record consolidates this line as bounded empirical causal evidence: random assignment of the structural financial-access expansion, together with reconstruction of the capabilities introduced and independent auditing of the longitudinal variables, supports a delimited causal conclusion about subsequent trajectories in the studied context. This conclusion does not identify separately the effect mediated by each accessible transformation, does not show that every intervention component operates exclusively through T_acc, and cannot be generalised to every system or population.
 
 ## 3. Why not all datasets allow trajectories to be reconstructed
 
