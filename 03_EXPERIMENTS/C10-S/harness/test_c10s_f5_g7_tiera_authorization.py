@@ -264,6 +264,7 @@ class F5G7AuthorizationTests(unittest.TestCase):
         self.assertIn("TGCV-C10S-G7-AUTHORIZATION-CONSUMED-001", workflow)
         self.assertIn('gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$MARKER_PATH"', workflow)
         self.assertIn('test "$PARENT_SHA" = "$WORKFLOW_SHA"', workflow)
+        self.assertIn('json.dumps(record, sort_keys=True, indent=2) + "\\n"', workflow)
         rerun_guard = "if: needs.authorization.outputs.approved == 'true' && github.run_attempt == 1"
         self.assertEqual(workflow.count(rerun_guard), 3)
         validator_source = Path(__file__).with_name("validate_c10s_f5_g7_tiera_authorization.py").read_text(encoding="utf-8")
