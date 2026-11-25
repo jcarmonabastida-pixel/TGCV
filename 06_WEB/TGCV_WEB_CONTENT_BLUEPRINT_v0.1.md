@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 3.5
+**Version:** 3.6
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.4; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.3; Value Construction Copy v0.2; Labs & Applications Experience v0.2.
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.4; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.3; Value Construction Copy v0.2; Labs & Applications Experience v0.4; Labs & Applications Copy v0.2.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -194,7 +194,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 
 ### P07 — Labs & Applications
 
-**Authoritative working references:** `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.4; `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.1 (editorial draft, pending review and publication approval).
+**Authoritative working references:** `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.4; `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.2 (editorial draft, pending review and publication approval).
 
 **Purpose:** make TGCV-related work tangible through bounded demonstrators, synthetic experiments and exploratory experiences, while helping visitors recognise further application contexts and opportunities. This is an activity and exploration space, not a physical laboratory network, product catalogue, commercial offer or portfolio of validated deployments.
 
@@ -829,3 +829,9 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Adds the bilingual Labs & Applications Copy v0.1 as an editorial draft aligned with Experience v0.4.
 - Records the Spanish/English treatment of Juguete Colectivo, TSTC, the three proposed discovery experiences, featured and additional Application-Fit contexts, and the five Business Translation opportunity families.
 - Preserves separate asset-maturity and evidence-status dimensions, and all availability, scientific-claim and participation boundaries. Copy remains pending editorial review and publication approval.
+
+
+### v3.6 — 2026-11-25
+- Records Labs & Applications Copy v0.2 after integrated editorial/evidence review.
+- Tightens the Juguete Colectivo acceptance and package-provenance qualification; clarifies the C05 EV–Grid demonstrator's non-independent baseline and separates it from the TSTC v004 energy fixture.
+- Synchronises P07 references and corrects the Experience v0.4 title/version heading. No scientific claim, application qualification, execution authorization or publication permission changes.
