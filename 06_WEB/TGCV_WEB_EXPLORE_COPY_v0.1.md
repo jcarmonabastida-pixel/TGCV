@@ -1,7 +1,7 @@
 # TGCV — Explore Copy
 
 **Identifier:** TGCV-WEB-EXPLORE-COPY-001  
-**Version:** 0.9  
+**Version:** 1.0  
 **Date:** 2026-11-25  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`  
@@ -144,9 +144,17 @@ TGCV — Transformaciones Generativas y Construcción de Valor es el programa de
 
 ## ¿Por dónde quieres continuar?
 
-- **Research** — Explora los fundamentos, modelos, preguntas y líneas de investigación.
-- **Systems Engineering** — Descubre cómo la ingeniería de sistemas permite modelar, diseñar y desarrollar sistemas.
-- **Transformational Intelligence** — Conoce el concepto y la capacidad que articulan este ecosistema.
+**Profundiza en la investigación y los conceptos**
+
+- **Research** — Explora los fundamentos, modelos, preguntas y líneas de investigación de TGCV.
+- **Systems Engineering** — Descubre cómo la ingeniería de sistemas permite modelar, diseñar, integrar e intervenir en sistemas.
+- **Transformational Intelligence** — Conoce el concepto de capacidad integradora en desarrollo y las preguntas que orientan su investigación.
+
+**Explora una vía de aplicación complementaria**
+
+- **Value Construction** — Descubre cómo VALUE, un framework aplicado complementario a TGCV, organiza la comprensión de oportunidades, el diseño de alternativas, las decisiones, la acción y el aprendizaje en la búsqueda de valor contextual.
+
+TGCV investiga si los cambios en las transformaciones accesibles pueden contribuir a la construcción de valor. VALUE ofrece un marco propio para organizar el trabajo aplicado; su metodología y eficacia tienen fundamentos y evaluación propios. Esta conexión no implica que TGCV haya validado VALUE ni que ampliar las posibilidades de un sistema produzca valor automáticamente.
 
 *Las posibilidades de un sistema no terminan en lo que puede hacer hoy. Comprender cómo cambian es el primer paso para explorar lo que puede llegar a hacer.*
 
@@ -277,9 +285,17 @@ TGCV — Generative Transformations and Value Construction is the programme of a
 
 ## Where would you like to go next?
 
-- **Research** — Explore the foundations, models, questions and research directions.
-- **Systems Engineering** — Discover how systems engineering enables us to model, design and develop systems.
-- **Transformational Intelligence** — Learn about the concept and capability that bring this ecosystem together.
+**Explore the research and its conceptual foundations**
+
+- **Research** — Explore TGCV's foundations, models, questions and research directions.
+- **Systems Engineering** — Discover how systems engineering helps model, design, integrate and intervene in systems.
+- **Transformational Intelligence** — Learn about the integrative capability concept under development and the questions guiding its investigation.
+
+**Explore a complementary applied approach**
+
+- **Value Construction** — Discover how VALUE, an applied framework complementary to TGCV, organises opportunity understanding, alternative design, decisions, action and learning in pursuit of contextual value.
+
+TGCV investigates whether and how changes in accessible transformations may contribute to value construction. VALUE provides its own framework for organising applied work, with its own methodological foundations and evaluation. This connection does not mean that TGCV has validated VALUE or that expanding a system's possibilities automatically produces value.
 
 *A system's possibilities do not end with what it can do today. Understanding how they change is the first step towards exploring what it could do next.*
 
@@ -312,3 +328,4 @@ TGCV — Generative Transformations and Value Construction is the programme of a
 
 - **0.8 — 2026-11-25:** Rewrites the Spanish and English TI explanation to distinguish the developing capability concept from Systems Thinking, Systems Engineering, AI and the TGCV research programme; clarifies intended function without implying validation.
 - **0.9 — 2026-11-25:** Clarifies in both languages that the visible accessibility/execution/outcome/value sequence is an analytical distinction, not a complete causal explanation.
+- **1.0 — 2026-11-25:** Adds a distinct Value Construction route in both languages, separating conceptual/research deepening from the complementary applied VALUE framework and stating their non-validated relationship.
