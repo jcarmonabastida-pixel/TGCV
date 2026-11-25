@@ -1,7 +1,7 @@
-# TGCV — Value Construction Copy
+# TGCV — Value Construction Copy v0.3
 
 **Identifier:** TGCV-WEB-VALUE-CONSTRUCTION-COPY-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-25  
 **Status:** BILINGUAL COPY — WORKING DRAFT  
 **Branch:** `strategy/tgcv-web-master`  
@@ -225,7 +225,7 @@ La relación entre TGCV y VALUE es complementaria y constituye una línea de art
 - **Explore** — Comprende cómo cambian las transformaciones que están al alcance de un sistema y qué implicaciones puede tener.
 - **Research** — Conoce las preguntas, modelos, evidencias y límites del programa de investigación TGCV.
 - **Labs & Applications** — Explora demostradores y contextos de aplicación, distinguiendo siempre su alcance y grado de evidencia.
-- **Contact** — Comparte una pregunta o plantea una conversación sobre estas ideas.
+El enlace a Contact se habilitará cuando exista un canal público de comunicación real y monitorizado.
 
 ---
 
@@ -443,7 +443,7 @@ The relationship between TGCV and VALUE is complementary and represents a line o
 - **Explore** — Understand how the transformations accessible to a system can change and what this may imply.
 - **Research** — Explore the questions, models, evidence and limits of the TGCV research programme.
 - **Labs & Applications** — Explore demonstrators and application contexts, always distinguishing their scope and level of evidence.
-- **Contact** — Share a question or propose a conversation about these ideas.
+A public Contact route will be added when a real, monitored communication channel is available.
 
 ---
 
@@ -460,3 +460,5 @@ The relationship between TGCV and VALUE is complementary and represents a line o
 
 - **v0.1 — 2026-11-25:** first bilingual public Copy drafted from Value Construction Experience v0.3 and current VALUE methodological and clinic-case sources. Uses an opportunity/system-understanding-first narrative and preserves the fictional, non-execution and non-validation boundaries.
 - **v0.2 — 2026-11-25:** defines VALUE at its first substantive mention and gives CCV/IVS and the Value Discovery Sprint dedicated, contextualised sections. Clarifies their distinct roles and current maturity limits in both languages.
+
+- **v0.3 — 2026-11-25:** removes the premature Contact destination from the visitor routes; the link remains conditional on a real, monitored public channel, as required by the Information Architecture.
