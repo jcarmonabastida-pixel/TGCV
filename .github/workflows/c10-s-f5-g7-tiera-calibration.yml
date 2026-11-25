@@ -67,11 +67,11 @@ jobs:
           from pathlib import Path
           payload = json.loads(Path(os.environ["RUNNER_TEMP"], "prior-g7-runs.json").read_text(encoding="utf-8"))
           current_id = int(os.environ["RUN_ID"])
-          current_sha = os.environ["WORKFLOW_SHA"]
+          current_branch = os.environ["WORKFLOW_BRANCH"]
           prior = [
               run for run in payload.get("workflow_runs", [])
               if int(run.get("id", -1)) != current_id
-              and run.get("head_sha") == current_sha
+              and run.get("head_branch") == current_branch
               and run.get("event") == "workflow_dispatch"
           ]
           if prior:
