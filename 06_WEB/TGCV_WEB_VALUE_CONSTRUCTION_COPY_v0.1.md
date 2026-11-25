@@ -1,12 +1,12 @@
 # TGCV — Value Construction Copy
 
 **Identifier:** TGCV-WEB-VALUE-CONSTRUCTION-COPY-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-25  
 **Status:** BILINGUAL COPY — WORKING DRAFT  
 **Branch:** `strategy/tgcv-web-master`  
 **Page:** P06 — Value Construction  
-**Experience:** `TGCV_WEB_VALUE_CONSTRUCTION_EXPERIENCE_v0.1.md` — v0.2  
+**Experience:** `TGCV_WEB_VALUE_CONSTRUCTION_EXPERIENCE_v0.1.md` — v0.3  
 **Source basis:** VALUE Methodology Lifecycle v0.4; VALUE Artifact Master Specs v0.1; VALUE Fictional Clinic Case v1.1; TGCV–VALUE–ValueLabOS Identity Architecture v0.1.
 
 ---
@@ -20,6 +20,8 @@
 Una oportunidad no se convierte en valor por el simple hecho de identificarla. Antes de decidir qué hacer, necesitamos comprender qué está ocurriendo, a quién afecta, cómo funciona el sistema y qué condiciones podrían permitir un cambio útil.
 
 **Value Construction** aborda precisamente ese recorrido: combinar conocimiento, capacidades y oportunidades para producir resultados que tengan valor en un contexto determinado.
+
+**VALUE** es el nombre de trabajo de un framework aplicado —con el descriptor **Transformational Value Framework**— que estructura cómo abordar ese trabajo: comprender la oportunidad y el sistema, conectar conocimiento y evidencia, explorar alternativas, decidir, actuar cuando exista autorización y aprender de los resultados. Su metodología está en desarrollo y debe evaluarse por sus propios méritos; no es una metodología validada por TGCV.
 
 No se trata de aplicar una receta ni de empezar eligiendo una solución. Se trata de comprender primero, explorar después y decidir con fundamento qué merece la pena hacer, qué hace falta para hacerlo y cómo aprender de lo que ocurra.
 
@@ -186,20 +188,29 @@ El caso incluye un diseño hipotético de prueba y cifras inventadas para ilustr
 
 Lo que muestra es otra cosa: cómo pasar de una sospecha inicial a una oportunidad delimitada, comprender el sistema, comparar alternativas, hacer explícita una decisión y reconocer qué falta antes de actuar.
 
-## 8. Qué es —y qué no es— VALUE
+## 8. Capacidad de Construcción de Valor e Índice de Valor Sistémico
 
-VALUE es un framework aplicado en evolución, con una arquitectura metodológica documentada y un caso ficticio utilizado para revisar su coherencia. Su desarrollo documental no demuestra todavía que sea fácil de utilizar en equipos reales, que produzca mejores resultados o que tenga eficacia general.
+VALUE persigue desarrollar la **Capacidad de Construcción de Valor (CCV)**: la capacidad de un sistema para construir valor de forma repetida y renovar las capacidades que hacen posible ese trabajo.
 
-Dos líneas relacionadas requieren especial cautela:
+La CCV es un objetivo de desarrollo de la metodología. No es una puntuación disponible ni una escala de madurez validada. La documentación metodológica ha explorado distintas propuestas de niveles, pero todavía no ha adoptado una escala canónica.
 
-- **Capacidad de Construcción de Valor (CCV):** expresa una capacidad que la metodología pretende desarrollar. No es una puntuación ni una escala de madurez validada.
-- **Índice de Valor Sistémico (IVS):** es una línea de medición exploratoria. No existe aquí una fórmula, ponderación o escala validada que permita utilizarlo como indicador de rendimiento.
+El **Índice de Valor Sistémico (IVS)** es una línea de medición exploratoria que se propone evaluar aspectos de esa capacidad. No representa el valor producido ni constituye un indicador listo para utilizar. No dispone todavía de dimensiones, fórmula, ponderaciones o escala numérica canónicas y validadas.
 
-El Value Discovery Sprint es un diseño de servicio piloto en evolución, no un servicio cuya eficacia esté demostrada ni una oferta disponible por el mero hecho de describirse.
+Por tanto, CCV e IVS no deben utilizarse para puntuar o comparar organizaciones ni para afirmar que VALUE ha producido más valor. Son líneas de desarrollo que requieren definición y evaluación específicas. Ninguna de ellas es necesaria para recorrer o aplicar el framework.
 
-VALUE no garantiza resultados positivos. Más información, más alternativas, más actividad o más posibilidades de transformación no equivalen automáticamente a más valor. Cada aplicación requiere criterios contextuales, evidencia apropiada, responsabilidades claras y evaluación de los resultados.
+## 9. Value Discovery Sprint: una intervención piloto en diseño
 
-## 9. VALUE, TGCV y ValueLabOS: tres funciones complementarias
+El **Value Discovery Sprint** es un diseño de intervención acotada que busca aplicar VALUE a una oportunidad concreta que todavía no está suficientemente definida.
+
+Su propósito es ayudar a un equipo a construir una comprensión compartida de la oportunidad y del sistema, hacer explícitas las hipótesis y alternativas, reunir evidencia relevante para una decisión proporcionada y definir un siguiente paso trazable.
+
+Su resultado principal no sería implantar una solución ni demostrar valor realizado, sino mejorar la calidad y la trazabilidad de la decisión sobre qué hacer a continuación.
+
+El diseño actual contempla cinco jornadas de trabajo distribuidas en una o dos semanas. Esa duración es una hipótesis de planificación para un futuro piloto, no un estándar probado. El Sprint todavía no se ha probado en un caso real; su alcance, esfuerzo y condiciones de prestación siguen en desarrollo. Por tanto, no se presenta como un servicio disponible, una oferta comercial ni una intervención con eficacia demostrada.
+
+Si de un Sprint surgiera la propuesta de realizar una prueba o intervención, su ejecución requeriría una decisión y autorización separadas. El Sprint no incluye por sí mismo la implantación ni la demostración de resultados. Tampoco requiere calcular CCV o IVS.
+
+## 10. VALUE, TGCV y ValueLabOS: tres funciones complementarias
 
 VALUE forma parte de un ecosistema conceptual más amplio, pero no debe confundirse con sus otros elementos.
 
@@ -227,6 +238,8 @@ La relación entre TGCV y VALUE es complementaria y constituye una línea de art
 An opportunity does not become value simply because it has been identified. Before deciding what to do, we need to understand what is happening, who is affected, how the system works and which conditions could make a useful change possible.
 
 **Value Construction** addresses this journey: combining knowledge, capabilities and opportunities to produce outcomes that are considered valuable in a particular context.
+
+**VALUE** is the working name of an applied framework —with the descriptor **Transformational Value Framework**— that structures how to approach this work: understand the opportunity and the system, connect knowledge and evidence, explore alternatives, decide, act when authorised and learn from outcomes. Its methodology is in development and must be evaluated on its own merits; it is not a methodology validated by TGCV.
 
 It is not about applying a recipe or starting by choosing a solution. It is about understanding first, exploring next, and then making a reasoned decision about what is worth doing, what it will take and how to learn from what happens.
 
@@ -393,20 +406,29 @@ The case includes a hypothetical test design and invented figures to illustrate 
 
 What it does show is how to move from an initial suspicion to a defined opportunity, understand the system, compare alternatives, make a decision explicit and recognise what remains unresolved before action.
 
-## 8. What VALUE does — and does not — claim
+## 8. Value Construction Capability and Systemic Value Index
 
-VALUE is an applied framework in development, with a documented methodological architecture and a fictional case used to review its coherence. Documentary development does not yet demonstrate that it is easy for real teams to use, that it produces better outcomes or that it is generally effective.
+VALUE aims to develop **Value Construction Capability (CCV)**: a system's ability to construct value repeatedly and renew the capabilities that make this possible.
 
-Two related lines require particular caution:
+CCV is a capability-development objective of the framework. It is not an available score or a validated maturity scale. The methodological documentation has explored different proposals for capability levels, but no canonical scale has been adopted.
 
-- **Value Construction Capability (CCV):** describes a capability the framework aims to develop. It is not a validated score or maturity scale.
-- **Systemic Value Index (IVS):** is an exploratory measurement direction. No validated formula, weighting or scale is available here for use as a performance indicator.
+The **Systemic Value Index (IVS)** is an exploratory measurement direction proposed to assess aspects of that capability. It is not the value produced and is not a ready-to-use indicator. It does not yet have canonical, validated dimensions, formula, weightings or numerical scale.
 
-The Value Discovery Sprint is a pilot-service design in development, not a service with demonstrated effectiveness or an available offer simply because it has been described.
+CCV and IVS should therefore not be used to score or compare organisations, or to claim that VALUE has produced more value. They are development lines that require their own definition and evaluation. Neither is required to understand or apply the framework.
 
-VALUE does not guarantee positive outcomes. More information, more alternatives, more activity or more transformation possibilities do not automatically mean more value. Each application requires contextual criteria, appropriate evidence, clear responsibilities and evaluation of outcomes.
+## 9. Value Discovery Sprint: a pilot intervention in development
 
-## 9. VALUE, TGCV and ValueLabOS: three complementary roles
+The **Value Discovery Sprint** is a proposed, bounded intervention designed to apply VALUE to a specific opportunity that is not yet sufficiently understood or defined.
+
+Its purpose is to help a team build a shared understanding of the opportunity and the system, make hypotheses and alternatives explicit, gather relevant evidence for a proportionate decision, and define a traceable next step.
+
+Its primary intended outcome is not to implement a solution or demonstrate realised value, but to improve the quality and traceability of the decision about what to do next.
+
+The current design envisages five working days distributed over one or two weeks. This duration is a planning hypothesis for a future pilot, not a tested standard. The Sprint has not yet been tested in a real case; its scope, effort and delivery conditions remain in development. It is therefore not presented as an available service, a commercial offer or an intervention with demonstrated effectiveness.
+
+If a Sprint leads to a proposal for a test or intervention, execution requires a separate decision and authorisation. The Sprint does not itself include implementation or proof of outcomes. Nor does it require CCV or IVS to be calculated.
+
+## 10. VALUE, TGCV and ValueLabOS: three complementary roles
 
 VALUE is part of a broader conceptual ecosystem, but it should not be confused with its other elements.
 
@@ -437,3 +459,4 @@ The relationship between TGCV and VALUE is complementary and represents a line o
 ## Change history
 
 - **v0.1 — 2026-11-25:** first bilingual public Copy drafted from Value Construction Experience v0.2 and current VALUE methodological and clinic-case sources. Uses an opportunity/system-understanding-first narrative and preserves the fictional, non-execution and non-validation boundaries.
+- **v0.2 — 2026-11-25:** defines VALUE at its first substantive mention and gives CCV/IVS and the Value Discovery Sprint dedicated, contextualised sections. Clarifies their distinct roles and current maturity limits in both languages.
