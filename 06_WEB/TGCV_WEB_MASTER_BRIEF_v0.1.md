@@ -1,6 +1,6 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 1.7  
+**Versión:** 1.8  
 **Fecha:** 2026-11-24  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
@@ -925,7 +925,7 @@ Systems Thinking y Systems Engineering son perspectivas complementarias que cont
 
 ### 21.2 Actividad del ecosistema
 
-**Research** desarrolla conocimiento, fundamentos, métodos, modelos, experimentos y evidencia. **Labs & Applications** reúne experimentación, demostradores y exploración de contextos de aplicación. Son espacios de actividad relacionados mediante retroalimentación bidireccional; no fases lineales ni promesas de laboratorios físicos o aplicaciones desplegadas.
+**Research** desarrolla conocimiento, fundamentos, métodos, modelos, experimentos y evidencia. **Value Construction** presenta VALUE como framework aplicado complementario a TGCV para estructurar comprensión de oportunidades, diseño de alternativas, decisión, acción y aprendizaje. **Labs & Applications** reúne experimentación, demostradores y exploración de contextos de aplicación. Son elementos con funciones diferentes y relaciones de retroalimentación; no fases lineales ni promesas de laboratorios físicos o aplicaciones desplegadas.
 
 ### 21.3 Narrativa aprobada de Home
 
@@ -1135,7 +1135,7 @@ The controlling sequence, in both languages, is:
 4. Tangible software-configuration example across two environments.
 5. Conceptual explanation of conditions, candidate transformations, accessibility, realised transition, new possibilities and trajectories; keep accessibility, execution, outcome and value distinct.
 6. Ecosystem: Transformational Intelligence as the integrative capability, supported by Systems Thinking as a perspective and Systems Engineering as a discipline.
-7. Routes into Explore, Research, Systems Engineering, Transformational Intelligence and Labs & Applications.
+7. Ecosystem and routes: introduce the public conceptual map distinguishing TGCV, Systems Thinking, Systems Engineering, Transformational Intelligence, Value Construction/VALUE, Labs & Applications and proposed ValueLabOS; provide direct routes into Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction and Labs & Applications.
 
 The second question must precede the tangible example. Home Copy already follows this order; the Home Experience specification is corrected to match it.
 
@@ -1256,3 +1256,8 @@ About/Governance and Contact/Participate remain supporting destinations. This ad
 ### v1.7 — 2026-11-25
 - Synchronizes Home Experience v1.5 and Home Copy v1.2 with the approved public ecosystem map and Value Construction destination.
 - Makes the visitor-facing map part of the Home experience while preserving the visitor-first opening narrative.
+
+
+### v1.8 — 2026-11-25
+- Corrects the earlier Home decision-lock route list to include Value Construction.
+- Aligns the ecosystem activity description with the distinct role of VALUE as a complementary applied framework.
