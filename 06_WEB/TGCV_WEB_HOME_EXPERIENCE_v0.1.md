@@ -1,7 +1,7 @@
 # TGCV — Home Experience Specification
 
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 1.4  
+**Version:** 1.5  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21  
@@ -199,6 +199,7 @@ Approved first-release navigation:
 - Research
 - Systems Engineering
 - Transformational Intelligence
+- **Value Construction**
 - Labs & Applications
 - About
 - Contact
@@ -238,7 +239,8 @@ Before publication:
 - The example explicitly distinguishes source and target conditions, the change that is made, and the resulting accessibility.
 - The example is clearly illustrative and is not confused with an existing demonstrator.
 - Accessibility, execution, trajectory, outcome and value remain distinct.
-- TI, Systems Thinking and Systems Engineering have distinct, accurate roles.
+- TI, Systems Thinking, Systems Engineering, VALUE, ValueLabOS and Labs & Applications have distinct, accurate roles.
+- The ecosystem map is accessible, understandable without interaction and does not imply a proven causal chain.
 - Research and Labs & Applications content is real, bounded and labelled honestly.
 - Existing, In development and Exploratory are used as operational content-maturity labels where useful; they are not scientific evidence grades.
 - Scientific claims are checked against current canonical sources and evidence state.
@@ -316,3 +318,8 @@ The identity and copy are directionally coherent. Publication remains blocked pe
 ### v1.4 — 2026-11-24
 - Refines the Home supporting copy to foreground changes in accessible transformations rather than capability acquisition.
 - Updates the current Home Copy reference to v1.1.
+
+### v1.5 — 2026-11-25
+- Adds Value Construction as a first-release visitor destination after Transformational Intelligence.
+- Replaces the earlier simplified ecosystem composition with a visitor-facing conceptual map distinguishing TGCV, Systems Thinking, Systems Engineering, Transformational Intelligence, VALUE/Value Construction, Labs & Applications and the proposed ValueLabOS ecosystem.
+- Requires labelled, non-causal relationships and makes the map reachable from Home and relevant pages without displacing the opening narrative.
