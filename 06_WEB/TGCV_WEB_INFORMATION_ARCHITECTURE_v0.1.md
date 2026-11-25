@@ -719,7 +719,7 @@ The required Home sequence is opening question → discovery → second question
 
 The Research visitor experience is specified in:
 
-- `06_WEB/TGCV_WEB_RESEARCH_EXPERIENCE_v0.1.md` — current content version 0.1.
+- `06_WEB/TGCV_WEB_RESEARCH_EXPERIENCE_v0.1.md` — current content version 0.2.
 
 Research follows Home and Explore. Home introduces the central question; Explore explains candidate transformations and accessibility under stated system boundaries and conditions; Research presents the scientific programme, current Core, research questions, methodological logic, evidence status, open questions and traceable research materials.
 
@@ -737,8 +737,8 @@ The visitor experience is progressive: accessible explanation first, research ar
 
 The P04 visitor experience and bilingual copy are specified in:
 
-- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_EXPERIENCE_v0.1.md` — current experience version 0.1.
-- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_COPY_v0.1.md` — current bilingual copy version 0.1.
+- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_EXPERIENCE_v0.2.md` — current experience version 0.2.
+- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_COPY_v0.2.md` — current bilingual copy version 0.2.
 
 Systems Engineering is a concise first-release destination (P1). Its visitor question is: **How does systems engineering relate to the research object of TGCV?**
 
