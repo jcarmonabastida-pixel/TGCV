@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 2.5  
+**Version:** 2.6  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -47,81 +47,36 @@ Do not assume all audiences need the same entry point. The site should support b
 
 ## 2. Navigation model
 
-### 2.1 Recommended top-level navigation
+### 2.1 Approved first-release navigation
 
-Keep the primary navigation compact. Use six principal destinations:
+The approved first-release navigation is:
 
-1. **Explore** — a guided entry into the core ideas and interactive explanations.
-2. **Research** — TGCV, transformation-space dynamics, scientific programme and evidence.
-3. **Engineering** — systems thinking, systems engineering, modelling and methods.
-4. **Intelligence** — Transformational Intelligence: concepts, capabilities and technical work.
-5. **Labs & Applications** — simulation, demonstrators, Application-Fit and applied systems.
-6. **Community** — learning, participation, collaboration and open resources.
+1. **Explore** — conceptual entry, accessible explanation and the central software-migration example.
+2. **Research** — TGCV, research questions, methods, experiments, evidence and limitations.
+3. **Systems Engineering** — established engineering practices and their relationship to the TGCV research object.
+4. **Transformational Intelligence** — the developing capability concept, its candidate dimensions, boundaries and relationship to AI.
+5. **Value Construction** — VALUE as a complementary applied framework, its lifecycle and a clearly labelled fictional clinic case.
+6. **Labs & Applications** — bounded demonstrators, synthetic methodological work and exploratory application contexts.
+7. **About** — purpose, scope and governance.
+8. **Contact** — only a real, monitored contact route with proportionate privacy information.
 
-A persistent **About** destination may sit at the end of the navigation or in the footer, depending on visual design. Search can be added when content volume justifies it.
+Systems Thinking is transversal, not a separate first-release destination. Do not expose Community as a top-level destination or publish empty/placeholder pages. Contact must not be advertised until a real monitored channel is available.
 
-### 2.2 Sitemap
+### 2.2 First-release sitemap
 
 ```text
 /
 ├── Explore
-│   ├── The central question
-│   ├── How systems transform
-│   ├── Transformation spaces
-│   ├── A guided example
-│   └── Glossary
-│
 ├── Research
-│   ├── TGCV
-│   ├── Transformation-space dynamics
-│   ├── Concepts and definitions
-│   ├── Research programme
-│   ├── Experiments and evidence
-│   └── Publications and working papers
-│
-├── Engineering
-│   ├── Systems thinking
-│   ├── Systems engineering
-│   ├── System modelling
-│   ├── Cross-domain architecture
-│   └── Methods and specifications
-│
-├── Intelligence
-│   ├── Transformational Intelligence
-│   ├── Reasoning over transformation spaces
-│   ├── Navigation
-│   ├── Adaptation
-│   ├── Trajectory orientation
-│   └── Technical explorations
-│
+├── Systems Engineering
+├── Transformational Intelligence
+├── Value Construction
 ├── Labs & Applications
-│   ├── Labs and simulation
-│   ├── Demonstrators
-│   ├── Open Playground
-│   ├── Application-Fit
-│   │   ├── Cross-domain patterns
-│   │   └── Candidate cases
-│   └── Applied Systems
-│       ├── Distributed networks
-│       ├── Agentic AI systems
-│       ├── Industrial and cyber-physical systems
-│       ├── Energy and mobility
-│       └── Socio-technical and public systems
-│
-├── Community
-│   ├── Learning resources
-│   ├── Participate
-│   ├── Collaborate
-│   └── Events / updates (when available)
-│
-└── About
-    ├── Ecosystem
-    ├── Relationship with TGCV
-    ├── Principles and governance
-    └── Contact
+├── About
+└── Contact
 ```
 
-This is a target content model, not a commitment to publish every page in the first release. Empty or speculative pages should not be published merely to fill the menu.
+Systems Thinking is introduced on Home, explained in Explore and developed further in Research. It does not have a separate first-release page. Community, a community platform, events and structured participation workflows remain deferred until they exist and can be maintained.
 
 ## 3. Page roles and content briefs
 
@@ -606,8 +561,8 @@ Use **Existing**, **In development** and **Exploratory** as operational content 
 
 The detailed visitor experience and bilingual copy for Explore are defined in:
 
-- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 0.9.
-- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 0.8.
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 1.1.
+- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 1.0.
 
 Explore is the conceptual deepening after Home, not a second presentation of the same discovery. Home introduces that a system's possibilities can change; Explore asks how we determine whether a candidate transformation is accessible, relative to a defined system, boundary and set of conditions. Home's numbered conceptual sequence is a reading aid, not a universal causal chain; trajectory must be visualised as the path across states and transitions, not as a discrete stage.
 
@@ -722,7 +677,8 @@ The required Home sequence is opening question → discovery → second question
 
 The Research visitor experience is specified in:
 
-- `06_WEB/TGCV_WEB_RESEARCH_EXPERIENCE_v0.1.md` — current content version 0.2.
+- `06_WEB/TGCV_WEB_RESEARCH_EXPERIENCE_v0.1.md` — current content version 0.9.
+- `06_WEB/TGCV_WEB_RESEARCH_COPY_v0.1.md` — bilingual working copy version 0.9.
 
 Research follows Home and Explore. Home introduces the central question; Explore explains candidate transformations and accessibility under stated system boundaries and conditions; Research presents the scientific programme, current Core, research questions, methodological logic, evidence status, open questions and traceable research materials.
 
@@ -740,8 +696,8 @@ The visitor experience is progressive: accessible explanation first, research ar
 
 The P04 visitor experience and bilingual copy are specified in:
 
-- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_EXPERIENCE_v0.2.md` — current experience version 0.2.
-- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_COPY_v0.2.md` — current bilingual copy version 0.2.
+- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_EXPERIENCE_v0.1.md` — current experience version 0.1.
+- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_COPY_v0.1.md` — current bilingual copy version 0.1.
 
 Systems Engineering is a concise first-release destination (P1). Its visitor question is: **How does systems engineering relate to the research object of TGCV?**
 
@@ -755,8 +711,7 @@ Keep Systems Thinking, Systems Engineering, TGCV and Transformational Intelligen
 
 
 ### v2.0 — 2026-11-25
-- Updates the P04 Systems Engineering experience and bilingual copy authorities to v0.2.
-- Records the technical editorial refinements: iterative/concurrent life-cycle activities, verification and validation throughout the work, and recognised further-reading sources.
+- Records a superseded planned update to P04. The current files on this branch remain Systems Engineering Experience v0.1 and Copy v0.1; the earlier v0.2 references were invalid and are corrected in v2.6.
 
 
 ## 22. Public ecosystem architecture and Value Construction destination
@@ -833,8 +788,9 @@ Do not assume these versions remain current when development begins. Recheck exa
 
 ## 23. P05 — Transformational Intelligence experience authority
 
-**Authoritative working reference:**
-- `06_WEB/TGCV_WEB_TRANSFORMATIONAL_INTELLIGENCE_EXPERIENCE_v0.1.md` — current content version 0.1.
+**Authoritative working references:**
+- `06_WEB/TGCV_WEB_TRANSFORMATIONAL_INTELLIGENCE_EXPERIENCE_v0.1.md` — current Experience v0.1.
+- `06_WEB/TGCV_WEB_TRANSFORMATIONAL_INTELLIGENCE_COPY_v0.1.md` — bilingual Copy v0.2.
 
 P05 presents Transformational Intelligence as a developing integrative capability concept and open research hypothesis. The page distinguishes observable transformation-space dynamics, transformation handling and the capability hypothesis. Its five candidate dimensions are representation, evaluation, selection, anticipation and adaptation; these are not validated components or necessary-and-sufficient criteria.
 
@@ -846,3 +802,23 @@ This authority supersedes earlier P05 working text that describes four dimension
 - Adds the P05 Transformational Intelligence Experience authority.
 - Aligns P05 with the distinction among transformation-space dynamics, transformation handling and the open TI capability hypothesis.
 - Replaces earlier four-dimension wording with five candidate dimensions and explicit evidence progression.
+
+
+## 24. Labs & Applications page experience and copy authority
+
+The current P07 visitor experience and bilingual working copy are:
+
+- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.4.
+- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.3.
+
+The page distinguishes existing demonstrators, proposed visitor experiences, featured and additional Application-Fit candidates, and broad Business Translation opportunity families. These are different content classes and must not be conflated. Asset maturity/availability is separate from evidence/test status.
+
+Juguete Colectivo / Full Chain must not be attributed specific distributable functionality until its exact package and interface have been verified together. TSTC v004 remains bounded synthetic methodological evidence. C05 EV–Grid is not an independent baseline comparison. TGCV Playground, Value Explorer and ValueLabOS Preview are proposed experiences, not available operational tools unless separately verified.
+
+The five Business Translation families are opportunity areas, not validated markets, services or applications. Application-Fit contexts remain candidates. The invitation to discover further problems is not a formal participation or intake process. Contact links may be used only when a real monitored contact route is ready.
+
+### v2.6 — 2026-11-25
+- Replaces the obsolete six-destination / Community navigation draft with the approved eight-destination first-release navigation.
+- Synchronises Explore, Research, Systems Engineering and Transformational Intelligence page references with the files actually present on the branch.
+- Adds current Value Construction and Labs & Applications page authorities and their editorial/evidence boundaries.
+- Corrects invalid Systems Engineering v0.2 references; current branch documents are v0.1.
