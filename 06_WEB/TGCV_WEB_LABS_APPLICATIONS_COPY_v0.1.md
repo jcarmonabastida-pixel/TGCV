@@ -1,7 +1,7 @@
-# TGCV — Labs & Applications Copy v0.6
+# TGCV — Labs & Applications Copy v0.7
 
 **Identifier:** TGCV-WEB-P07-COPY-001  
-**Version:** 0.6  
+**Version:** 0.7  
 **Date:** 2026-11-25  
 **Status:** BILINGUAL EDITORIAL DRAFT — PENDING REVIEW; NOT PUBLICATION APPROVAL  
 **Branch:** strategy/tgcv-web-master  
@@ -23,10 +23,10 @@ Research desarrolla las preguntas, los conceptos, los métodos y la evidencia. L
 
 ## Demostradores y experimentos
 
-### Demostrador de cadena completa de TGCV
+### TGCV Full Chain Demo
 **Un prototipo de software desarrollado en torno a un sistema sintético.**
 
-Demostrador de cadena completa de TGCV es un prototipo de software desarrollado en torno a un sistema sintético. El prototipo existe, pero no presentamos funciones concretas como disponibles en una versión descargable: todavía no se han verificado conjuntamente el paquete y la interfaz exactos. Por ello, no podemos asegurar que las funciones descritas en la documentación correspondan al artefacto que podría ponerse a disposición del público.
+TGCV Full Chain Demo es un demostrador de la cadena completa de TGCV: un prototipo de software desarrollado en torno a un sistema sintético. El prototipo existe, pero no presentamos funciones concretas como disponibles en una versión descargable: todavía no se han verificado conjuntamente el paquete y la interfaz exactos. Por ello, no podemos asegurar que las funciones descritas en la documentación correspondan al artefacto que podría ponerse a disposición del público.
 
 El prototipo utiliza sistemas sintéticos y reglas operativas propias. Su cálculo de accesibilidad es específico del demostrador: no constituye la función científica canónica de TGCV ni un predictor causal. Tampoco es un simulador de sistemas reales ni un producto listo para su despliegue.
 
@@ -50,7 +50,7 @@ Tres experiencias complementarias permiten acercarse a distintas partes del ecos
 
 La experiencia propuesta parte de un ejemplo sencillo: migrar una configuración de software entre dos entornos diferentes. Permite comprender cómo una dependencia o condición de operación puede hacer que una transformación esté disponible en un entorno y no en otro. El ejemplo distingue el sistema, sus condiciones y dependencias, las transformaciones candidatas y las que resultan accesibles en cada escenario. También permite explicar qué significaría ejecutar una transformación y observar sus posibles consecuencias.
 
-TGCV Playground es una experiencia educativa y exploratoria propuesta, no un servicio real de migración ni un simulador de propósito general. Es distinta de Demostrador de cadena completa de TGCV, que es un prototipo existente y no debe confundirse con la experiencia Playground.
+TGCV Playground es una experiencia educativa y exploratoria propuesta, no un servicio real de migración ni un simulador de propósito general. Es distinta de TGCV Full Chain Demo, que es un demostrador de la cadena completa de TGCV y un prototipo existente y no debe confundirse con la experiencia Playground.
 
 ### Value Explorer
 **Descubre una forma estructurada de explorar oportunidades y construir valor.**
@@ -145,7 +145,7 @@ Conviene distinguir tres niveles:
 
 ## Cómo interpretar los estados y la evidencia
 
-La madurez de un activo y el tipo de evidencia disponible son dimensiones diferentes. En esta página, por ejemplo, Demostrador de cadena completa de TGCV es un prototipo existente con aceptación funcional local comunicada por el usuario; el demostrador de mapeo entre distintos tipos de sistemas es un experimento sintético ejecutado y auditado; TGCV Playground, Value Explorer y ValueLabsOS Preview son experiencias propuestas, sin disponibilidad operativa verificada; y los contextos de aplicación siguen siendo candidatos exploratorios.
+La madurez de un activo y el tipo de evidencia disponible son dimensiones diferentes. En esta página, por ejemplo, TGCV Full Chain Demo es un demostrador de la cadena completa de TGCV y un prototipo existente con aceptación funcional local comunicada por el usuario; el demostrador de mapeo entre distintos tipos de sistemas es un experimento sintético ejecutado y auditado; TGCV Playground, Value Explorer y ValueLabsOS Preview son experiencias propuestas, sin disponibilidad operativa verificada; y los contextos de aplicación siguen siendo candidatos exploratorios.
 
 Un prototipo puede existir y funcionar con sistemas sintéticos sin estar validado científicamente. Un experimento sintético puede haberse ejecutado y auditado sin constituir evidencia empírica. Y una aplicación desplegada tampoco demostraría, por sí sola, que TGCV aporta una explicación o un resultado diferencial.
 
@@ -367,3 +367,5 @@ This invitation is intended to open a conversation and help discover potential c
 - **v0.5 — 2026-11-25:** applies the requested visitor-facing names and localises the existing prototype name in Spanish while retaining its English name in the English copy.
 
 - **v0.6 — 2026-11-25:** removes Contact from the active visitor-route list until a real, monitored public channel and page are available.
+
+- **v0.7 — 2026-11-25:** uses **TGCV Full Chain Demo** as the Spanish heading and name in the descriptive paragraph, explicitly identifying it as a demonstrator of TGCV's full chain. English copy remains unchanged.
