@@ -656,3 +656,30 @@ The Home remains a working draft, not publication approval. Complete the visual 
 ### v1.7 — 2026-11-25
 - Adds the Research page content contract and links it to Research Experience v0.1.
 - Defines the evidence categories and scientific claim boundaries required for public presentation.
+
+
+## 17. P04 — Systems Engineering: experience and content authority
+
+**Authoritative working references:**
+- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_EXPERIENCE_v0.1.md` — current experience version 0.1.
+- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_COPY_v0.1.md` — current bilingual copy version 0.1.
+
+**Purpose:** explain established systems-engineering practice and its relationship to the TGCV research object. P04 is a concise first-release page (P1), not an encyclopaedic discipline overview or a claim of a mature engineering department.
+
+**Required five-movement narrative:**
+1. Work with engineered systems as wholes.
+2. Represent the system, its boundary, architecture, interfaces, dependencies and operating conditions.
+3. Explain design alternatives, integration, verification and validation.
+4. Use the software-configuration migration as an illustrative engineering walkthrough, not as an executed or validated case.
+5. Introduce the complementary TGCV question: how changes in dependencies or operating conditions alter the transformations within a system's reach.
+
+**Required distinctions:** Systems Thinking is a perspective for understanding systems; Systems Engineering is an engineering discipline and practice; TGCV is an applied research and innovation programme; Transformational Intelligence is an integrative capability concept under development. They are related but not equivalent and do not constitute a mandatory sequence.
+
+**Claim boundaries:** do not present TGCV as a replacement for systems engineering, a proprietary engineering lifecycle or a validated method. Do not imply that conventional systems engineering ignores relationships, dependencies, transformations or constraints. Accessibility does not imply execution; execution does not guarantee a favourable outcome or value.
+
+**Publication condition:** bilingual editorial review; consistency with current public identity and conceptual guardrails; verify any cited standards or normative references against exact current editions. No standards clauses or compliance claims are made in the initial copy.
+
+### v1.8 — 2026-11-25
+- Adds the approved Systems Engineering experience and bilingual copy as the authoritative P04 working references.
+- Defines the five-movement page structure and the illustrative-only status of the software-migration example.
+- Records the distinction between established engineering practice and the complementary TGCV research question.
