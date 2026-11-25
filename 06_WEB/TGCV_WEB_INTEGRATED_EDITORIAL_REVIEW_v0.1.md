@@ -69,7 +69,7 @@ The page distinguishes four content classes:
 
 The featured and additional contexts remain exploratory candidates. The five Business Translation families are not validated markets, a service portfolio or evidence of application fit. The invitation to discover other problems is not a formal participation process.
 
-The Copy v0.4 removes specific claims about TGCV Full Chain Demo's distributable functionality until the exact package and interface have been verified together. The user-reported local acceptance record remains qualified and separate from scientific validity, package identity and public availability.
+The Copy v0.4 removes specific claims about TGCV Full Chain Demo's distributable functionality until the exact package and interface have been verified together. The local manual acceptance record remains qualified and separate from scientific validity, package identity and public availability.
 
 the cross-domain mapping demonstrator remains bounded synthetic methodological evidence. energy/mobility minimum demonstrator remains distinct from the energy scenario in the cross-domain mapping demonstrator, and its reference reconstruction was not an independent baseline implementation.
 
