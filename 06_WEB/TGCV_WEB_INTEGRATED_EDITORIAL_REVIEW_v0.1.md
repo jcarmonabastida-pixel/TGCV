@@ -87,7 +87,7 @@ This is a correction of editorial coverage, not an addition of evidence or a cha
 
 ### 3.5 Transformational Intelligence references refreshed
 
-The Transformational Intelligence copy's editorial notes referred to older Content Blueprint versions and described the integrated cross-page terminology check as still pending. Those references have been updated to Content Blueprint v2.8 and the current page-copy set reviewed here.
+The Transformational Intelligence copy's editorial notes referred to older Content Blueprint versions and described the integrated cross-page terminology check as still pending. Those references have been updated to Content Blueprint v2.9 and the current page-copy set reviewed here.
 
 The five dimensions remain candidate dimensions under investigation, not a validated architecture or necessary-and-sufficient criteria. The distinctions between transformation-space dynamics, transformation handling and the TI capability hypothesis remain intact.
 
