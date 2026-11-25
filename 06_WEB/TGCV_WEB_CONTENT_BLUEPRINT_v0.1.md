@@ -634,7 +634,7 @@ The Home remains a working draft, not publication approval. Complete the visual 
 ## 16. P03 — Research: experience and content authority
 
 **Authoritative working reference:**
-- `06_WEB/TGCV_WEB_RESEARCH_EXPERIENCE_v0.1.md` — current content version 0.1.
+- `06_WEB/TGCV_WEB_RESEARCH_EXPERIENCE_v0.1.md` — current content version 0.2.
 
 **Purpose:** present TGCV as an integrative, falsifiable applied-research programme and explain its scientific object, current conceptual architecture, research questions, methodological logic, bounded evidence, open questions and traceable materials.
 
@@ -661,8 +661,8 @@ The Home remains a working draft, not publication approval. Complete the visual 
 ## 17. P04 — Systems Engineering: experience and content authority
 
 **Authoritative working references:**
-- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_EXPERIENCE_v0.1.md` — current experience version 0.1.
-- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_COPY_v0.1.md` — current bilingual copy version 0.1.
+- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_EXPERIENCE_v0.2.md` — current experience version 0.2.
+- `06_WEB/TGCV_WEB_SYSTEMS_ENGINEERING_COPY_v0.2.md` — current bilingual copy version 0.2.
 
 **Purpose:** explain established systems-engineering practice and its relationship to the TGCV research object. P04 is a concise first-release page (P1), not an encyclopaedic discipline overview or a claim of a mature engineering department.
 
