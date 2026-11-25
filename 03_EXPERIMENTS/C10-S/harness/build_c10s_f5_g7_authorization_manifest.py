@@ -45,6 +45,24 @@ def build_authorization_manifest_bindings(root: Path, approved_code_commit: str)
     }
 
 
+def build_draft_authorization(template: dict, bindings: dict) -> dict:
+    """Apply canonical bindings to a DRAFT template; never approve or consume it."""
+    if template.get("status") != "DRAFT":
+        raise ValueError("G7_AUTHORIZATION_TEMPLATE_MUST_BE_DRAFT")
+    if bindings.get("schema") != BINDINGS_SCHEMA:
+        raise ValueError("G7_AUTHORIZATION_BINDINGS_SCHEMA_MISMATCH")
+    draft = dict(template)
+    draft["approved_code_commit"] = bindings["approved_code_commit"]
+    draft["execution_source_manifest_sha256"] = bindings["execution_source_manifest_sha256"]
+    draft["compute_path_content_sha256"] = bindings["compute_path_content_sha256"]
+    source_hashes = bindings["source_hashes"]
+    if not isinstance(source_hashes, dict):
+        raise ValueError("G7_AUTHORIZATION_BINDINGS_SOURCE_HASHES_INVALID")
+    draft.update(source_hashes)
+    draft["status"] = "DRAFT"
+    return draft
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Build canonical G7 authorization manifest bindings without creating an authorization."
