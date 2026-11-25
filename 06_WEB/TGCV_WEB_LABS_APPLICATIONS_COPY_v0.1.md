@@ -23,10 +23,10 @@ Research desarrolla las preguntas, los conceptos, los métodos y la evidencia. L
 
 ## Demostradores y experimentos
 
-### TGCV Full Chain Demo
+### Demostrador de cadena completa de TGCV
 **Un prototipo de software desarrollado en torno a un sistema sintético.**
 
-TGCV Full Chain Demo es un prototipo de software desarrollado en torno a un sistema sintético. El prototipo existe, pero no presentamos funciones concretas como disponibles en una versión descargable: todavía no se han verificado conjuntamente el paquete y la interfaz exactos. Por ello, no podemos asegurar que las funciones descritas en la documentación correspondan al artefacto que podría ponerse a disposición del público.
+Demostrador de cadena completa de TGCV es un prototipo de software desarrollado en torno a un sistema sintético. El prototipo existe, pero no presentamos funciones concretas como disponibles en una versión descargable: todavía no se han verificado conjuntamente el paquete y la interfaz exactos. Por ello, no podemos asegurar que las funciones descritas en la documentación correspondan al artefacto que podría ponerse a disposición del público.
 
 El prototipo utiliza sistemas sintéticos y reglas operativas propias. Su cálculo de accesibilidad es específico del demostrador: no constituye la función científica canónica de TGCV ni un predictor causal. Tampoco es un simulador de sistemas reales ni un producto listo para su despliegue.
 
@@ -50,7 +50,7 @@ Tres experiencias complementarias permiten acercarse a distintas partes del ecos
 
 La experiencia propuesta parte de un ejemplo sencillo: migrar una configuración de software entre dos entornos diferentes. Permite comprender cómo una dependencia o condición de operación puede hacer que una transformación esté disponible en un entorno y no en otro. El ejemplo distingue el sistema, sus condiciones y dependencias, las transformaciones candidatas y las que resultan accesibles en cada escenario. También permite explicar qué significaría ejecutar una transformación y observar sus posibles consecuencias.
 
-TGCV Playground es una experiencia educativa y exploratoria propuesta, no un servicio real de migración ni un simulador de propósito general. Es distinta de TGCV Full Chain Demo, que es un prototipo existente y no debe confundirse con la experiencia Playground.
+TGCV Playground es una experiencia educativa y exploratoria propuesta, no un servicio real de migración ni un simulador de propósito general. Es distinta de Demostrador de cadena completa de TGCV, que es un prototipo existente y no debe confundirse con la experiencia Playground.
 
 ### Value Explorer
 **Descubre una forma estructurada de explorar oportunidades y construir valor.**
@@ -59,12 +59,12 @@ Value Explorer se plantea como una introducción al razonamiento aplicado organi
 
 Su propósito es acercar esa lógica mediante una experiencia introductoria. No es VALUE en sí mismo, no sustituye la sección Value Construction y no debe interpretarse como una herramienta operativa mientras no se verifique una implementación utilizable.
 
-### ValueLabOS Preview
+### ValueLabsOS Preview
 **Una primera aproximación a un entorno digital y colaborativo propuesto.**
 
 ValueLabOS es una propuesta de entorno que busca facilitar la aplicación de VALUE, la experimentación, la documentación de casos, la evaluación de resultados y el intercambio de aprendizajes.
 
-ValueLabOS Preview presenta la idea y el posible papel de ese entorno, sin dar a entender que exista ya una plataforma terminada. No presupone cuentas de usuario, integraciones, funciones de inteligencia artificial, persistencia de información ni flujos de colaboración operativos.
+ValueLabsOS Preview presenta la idea y el posible papel de ese entorno, sin dar a entender que exista ya una plataforma terminada. No presupone cuentas de usuario, integraciones, funciones de inteligencia artificial, persistencia de información ni flujos de colaboración operativos.
 
 ValueLabOS es distinto de VALUE y de Labs & Applications. VALUE puede comprenderse y aplicarse sin ValueLabOS.
 
@@ -145,13 +145,13 @@ Conviene distinguir tres niveles:
 
 ## Cómo interpretar los estados y la evidencia
 
-La madurez de un activo y el tipo de evidencia disponible son dimensiones diferentes. En esta página, por ejemplo, TGCV Full Chain Demo es un prototipo existente con aceptación funcional local comunicada por el usuario; el demostrador de mapeo entre distintos tipos de sistemas es un experimento sintético ejecutado y auditado; TGCV Playground, Value Explorer y ValueLabOS Preview son experiencias propuestas, sin disponibilidad operativa verificada; y los contextos de aplicación siguen siendo candidatos exploratorios.
+La madurez de un activo y el tipo de evidencia disponible son dimensiones diferentes. En esta página, por ejemplo, Demostrador de cadena completa de TGCV es un prototipo existente con aceptación funcional local comunicada por el usuario; el demostrador de mapeo entre distintos tipos de sistemas es un experimento sintético ejecutado y auditado; TGCV Playground, Value Explorer y ValueLabsOS Preview son experiencias propuestas, sin disponibilidad operativa verificada; y los contextos de aplicación siguen siendo candidatos exploratorios.
 
 Un prototipo puede existir y funcionar con sistemas sintéticos sin estar validado científicamente. Un experimento sintético puede haberse ejecutado y auditado sin constituir evidencia empírica. Y una aplicación desplegada tampoco demostraría, por sí sola, que TGCV aporta una explicación o un resultado diferencial.
 
 Por eso describimos cada trabajo según lo que realmente se ha construido, probado o documentado. No equiparamos existencia de software, disponibilidad pública, ejecución, auditoría, evidencia empírica, despliegue y creación de valor.
 
-En el estado actual, esta página no ofrece un Playground profesional de propósito general, aplicaciones industriales validadas, servicios con resultados garantizados, una red de laboratorios físicos ni una plataforma abierta de colaboración. TGCV Playground, Value Explorer y ValueLabOS Preview no se presentan como herramientas operativas disponibles.
+En el estado actual, esta página no ofrece un Playground profesional de propósito general, aplicaciones industriales validadas, servicios con resultados garantizados, una red de laboratorios físicos ni una plataforma abierta de colaboración. TGCV Playground, Value Explorer y ValueLabsOS Preview no se presentan como herramientas operativas disponibles.
 
 ## Descubrir nuevos problemas y oportunidades
 
@@ -214,12 +214,12 @@ Value Explorer is conceived as an introduction to the applied reasoning organise
 
 Its purpose is to introduce this logic through an introductory experience. It is not VALUE itself, does not replace the Value Construction page, and should not be interpreted as an operational tool while no usable implementation has been verified.
 
-### ValueLabOS Preview
+### ValueLabsOS Preview
 **A first look at a proposed digital and collaborative environment.**
 
 ValueLabOS is a proposed environment intended to facilitate the application of VALUE, experimentation, case documentation, the evaluation of results and the sharing of learning.
 
-ValueLabOS Preview introduces the idea and possible role of this environment without suggesting that a finished platform already exists. It does not imply operational user accounts, integrations, AI capabilities, persistent information or collaboration workflows.
+ValueLabsOS Preview introduces the idea and possible role of this environment without suggesting that a finished platform already exists. It does not imply operational user accounts, integrations, AI capabilities, persistent information or collaboration workflows.
 
 ValueLabOS is distinct from VALUE and from Labs & Applications. VALUE can be understood and applied without ValueLabOS.
 
@@ -300,13 +300,13 @@ Three levels should remain distinct:
 
 ## How to interpret status and evidence
 
-The maturity of an asset and the type of evidence available are two different dimensions. For example, TGCV Full Chain Demo is an existing prototype with user-reported local functional acceptance; the cross-domain mapping demonstrator is a synthetic experiment that has been executed and audited; TGCV Playground, Value Explorer and ValueLabOS Preview are proposed experiences with no verified operational availability; and application contexts remain exploratory candidates.
+The maturity of an asset and the type of evidence available are two different dimensions. For example, TGCV Full Chain Demo is an existing prototype with user-reported local functional acceptance; the cross-domain mapping demonstrator is a synthetic experiment that has been executed and audited; TGCV Playground, Value Explorer and ValueLabsOS Preview are proposed experiences with no verified operational availability; and application contexts remain exploratory candidates.
 
 A prototype may exist and work with synthetic systems without being scientifically validated. A synthetic experiment may have been executed and audited without constituting empirical evidence. And even a deployed application would not, by itself, demonstrate that TGCV provides a distinctive explanation or result.
 
 We therefore describe each piece of work according to what has actually been built, tested or documented. We do not equate software existence, public availability, execution, audit, empirical evidence, deployment and value creation.
 
-At this stage, this page does not offer a general-purpose professional Playground, validated industrial applications, services with guaranteed results, a network of physical laboratories or an open collaboration platform. TGCV Playground, Value Explorer and ValueLabOS Preview are not presented as available operational tools.
+At this stage, this page does not offer a general-purpose professional Playground, validated industrial applications, services with guaranteed results, a network of physical laboratories or an open collaboration platform. TGCV Playground, Value Explorer and ValueLabsOS Preview are not presented as available operational tools.
 
 ## Discovering new problems and opportunities
 
@@ -325,7 +325,7 @@ This invitation is intended to open a conversation and help discover potential c
 - Subordinate to Labs & Applications Experience v0.5 and Content Blueprint v3.8.
 - Spanish and English preserve the same inventory, statuses and caveats.
 - TGCV Full Chain Demo, the cross-domain mapping demonstrator and TGCV Playground are separate.
-- Value Explorer is not VALUE; ValueLabOS Preview is not VALUE or Labs & Applications.
+- Value Explorer is not VALUE; ValueLabsOS Preview is not VALUE or Labs & Applications.
 - The five Business Translation families are opportunity areas, not validated markets or services.
 - The five additional Application-Fit contexts and three featured contexts remain exploratory candidates.
 - No public download, live experience, product function or contact workflow is claimed without verification.
@@ -357,3 +357,9 @@ This invitation is intended to open a conversation and help discover potential c
 - Retains EV–Grid as a recognised public-domain term, adding it parenthetically to the descriptive heading in Spanish and English for consistency with Research and the Evidence Portfolio.
 - Removes unexplained software-delivery shorthand and repairs the accessibility-calculation sentence.
 - Synchronises the parent Content Blueprint reference to v3.8.
+
+
+## v0.5 naming corrections — 2026-11-25
+- Uses **TGCV Playground** and **ValueLabsOS Preview** for the two proposed visitor experiences.
+- Uses **Demostrador de cadena completa de TGCV** in the Spanish page text for the existing prototype; retains **TGCV Full Chain Demo** in the English page text.
+- Preserves the distinction between the existing software prototype and the proposed TGCV Playground experience.
