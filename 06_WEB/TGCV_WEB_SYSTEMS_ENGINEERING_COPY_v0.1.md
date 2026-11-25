@@ -10,7 +10,7 @@
 
 ## Ingeniería de sistemas: comprender, diseñar e integrar sistemas
 
-Los sistemas de ingeniería reúnen componentes, relaciones, interfaces y condiciones de operación. Para desarrollarlos o intervenir en ellos no basta con estudiar cada elemento por separado: es necesario comprender cómo funciona el conjunto y qué necesita para responder a su propósito.
+Un sistema de ingeniería integra componentes, relaciones, interfaces y condiciones de operación. Para desarrollarlos o intervenir en ellos no basta con estudiar cada elemento por separado: es necesario comprender cómo funciona el conjunto y qué necesita para responder a su propósito.
 
 La **ingeniería de sistemas** proporciona prácticas y métodos para abordar esa complejidad: definir el sistema y su contexto, comprender necesidades y requisitos, representar su arquitectura, analizar alternativas, integrar sus componentes y comprobar su comportamiento.
 
