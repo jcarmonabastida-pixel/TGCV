@@ -1,7 +1,7 @@
 # TGCV Web — Transformational Intelligence Copy
 
 **Document:** TGCV_WEB_TRANSFORMATIONAL_INTELLIGENCE_COPY_v0.1.md  
-**Version:** 0.1  
+**Version:** 0.2  
 **Status:** Bilingual editorial draft — for review  
 **Page:** P05 — Transformational Intelligence  
 **Branch:** `strategy/tgcv-web-master`  
@@ -265,7 +265,7 @@ The relationship between these two lines of work is itself a subject of research
 
 ## Editorial notes — not public-facing copy
 
-- This draft follows the P05 Experience v0.1 and Content Blueprint v2.5.
+- This draft follows the P05 Experience v0.1 and the current Content Blueprint v2.8.
 - TI remains a developing capability concept and open research hypothesis. Do not shorten this status to imply a validated capability.
 - The five dimensions are candidates under investigation, not a settled architecture or necessary-and-sufficient criteria.
 - Keep transformation-space dynamics, transformation handling and the TI capability hypothesis distinct.
@@ -273,8 +273,9 @@ The relationship between these two lines of work is itself a subject of research
 - Do not define TI through successful outcomes, performance, reward or value.
 - Do not position TI as a competitor to AI or as a replacement for Systems Thinking or Systems Engineering.
 - Preserve the distinction among accessibility, execution/realisation, trajectory, outcome and value.
-- Check terminology against the approved Spanish and English copy of Explore, Research and Systems Engineering during the integrated editorial review.
+- Integrated editorial review checked terminology and boundaries against the current Spanish and English copy of Home v1.4, Explore v1.0, Research v0.8, Systems Engineering v0.1 and Value Construction v0.1. Recheck these relationships when any source page changes.
 
 ## Version history
 
 - **0.1 — 2026-11-25:** Initial bilingual copy draft based on the approved P05 Experience v0.1 and reconciled Content Blueprint v2.4.
+- **0.2 — 2026-11-25:** Updates editorial references to the current Content Blueprint and records the integrated terminology review across the first-release page copies; no change to the scientific status or five candidate dimensions.
