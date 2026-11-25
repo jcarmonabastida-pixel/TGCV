@@ -191,7 +191,7 @@ jobs:
               "consumed_by": "GITHUB_ACTIONS_AUTHORIZATION_GATE",
           }
           Path(os.environ["RUNNER_TEMP"], "g7-consumption", "consumed.json").write_text(
-              json.dumps(record, sort_keys=True, indent=2) + "\\n", encoding="utf-8"
+              json.dumps(record, sort_keys=True, indent=2) + "\n", encoding="utf-8"
           )
           PY
           gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$MARKER_PATH" \
