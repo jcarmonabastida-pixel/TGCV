@@ -1,7 +1,7 @@
 # TGCV — Research Page Copy v0.1
 
 **Identifier:** TGCV-WEB-RESEARCH-COPY-001  
-**Version:** 0.6  
+**Version:** 0.7  
 **Date:** 2026-11-25  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
@@ -99,6 +99,7 @@ Entre las líneas de evidencia que pueden explicarse al público se encuentran:
 - [**Pruebas controladas y reconstrucción entre dominios.**](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_METHODS_CROSS_DOMAIN_v0.1.md) Una prueba sintética controlada mostró que, en una construcción concreta, dos casos iguales en estado, contexto y transformaciones accesibles podían realizar trayectorias distintas cuando difería otra condición previa. Por separado, un análisis secundario de evidencias ya auditadas en dos dominios permitió reconstruir descriptores comunes de cambio transformacional, manteniendo separadas sus semánticas. No se observó divergencia de trayectorias en los registros disponibles. Estos resultados no demuestran validez general, superioridad ni creación de valor.
 - [**De los cambios de accesibilidad a las trayectorias posteriores.**](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_ACCESSIBILITY_TRAJECTORY_v0.1.md) La evidencia combina una reconstrucción temporal de un sistema auto-adaptativo, un experimento aleatorizado de expansión estructural del acceso financiero y un análisis que delimita cuándo los datos no permiten reconstruir trayectorias ejecutadas. Son resultados de distinto alcance: la reconstrucción temporal no identifica causalidad; el experimento aporta evidencia causal acotada sobre la intervención estructural como conjunto, sin aislar automáticamente el efecto de cada componente; y el caso de software muestra límites de observación. Ninguno demuestra una relación universal ni creación de valor.
 - **Límites de identificación.** Otros análisis muestran que, cuando no se conocen suficientemente las condiciones relevantes en el momento de decisión, puede no ser posible determinar si una transformación era realmente accesible. Reconocer esa indeterminación es parte del método, no un resultado que deba ocultarse.
+- [**Otros estudios y casos investigados: una panorámica de la evidencia.**](https://github.com/jcarmonabastida-pixel/TGCV/blob/strategy/tgcv-web-master/06_WEB/TGCV_WEB_EVIDENCE_PORTFOLIO_v0.1.md) Una selección representativa de trabajos empíricos, industriales, computacionales y sintéticos: SWIM, recuperación funcional en AWS, expansión del acceso financiero rural, ecosistemas de software, EV–Grid, VSL Paired, pruebas entre dominios y otros estudios. La ficha explica qué se investigó, qué aporta cada caso y, especialmente, qué no permite concluir. No es un inventario exhaustivo ni una suma automática de validaciones.
 
 La investigación también ha examinado métodos de razonamiento y selección de transformaciones. Esos trabajos no justifican afirmar que exista una capacidad general validada de Transformational Intelligence.
 
@@ -106,19 +107,23 @@ La investigación también ha examinado métodos de razonamiento y selección de
 
 Las descripciones detalladas de cada línea de evidencia deberán estar disponibles mediante enlaces específicos desde esta sección. Cada ficha explicará la pregunta examinada, el sistema y los datos utilizados, el método, el resultado, su alcance, sus limitaciones y los materiales de respaldo que puedan hacerse públicos. Los identificadores técnicos y las referencias internas de seguimiento no se mostrarán como si fueran nombres significativos para el visitante.
 
-## 7. Qué sigue abierto
+## 7. Qué sigue abierto y cómo se somete a prueba
 
-TGCV no presupone de antemano que su arquitectura sea aplicable a cualquier sistema. Permanecen abiertas, entre otras, las siguientes cuestiones:
+TGCV no presupone de antemano que su arquitectura sea aplicable a cualquier sistema. Sus afirmaciones deben poder ponerse a prueba mediante definiciones operativas explícitas, criterios fijados antes del análisis, medidas independientes y comparación con explicaciones alternativas.
 
-- cómo identificar T_acc de forma robusta y no circular en distintos dominios;
-- qué información analítica aporta que no esté ya representada por modelos existentes;
-- cuándo los cambios en T_acc se relacionan con Reach y Trajectory, y cuándo no;
-- qué diseños permiten atribuir causalmente consecuencias a cambios de accesibilidad;
-- qué evidencia y qué modelo independiente serían necesarios para conectar esos cambios con Outcome y Value;
-- dónde falla la traducción entre dominios;
-- hasta qué punto puede operacionalizarse y validarse Transformational Intelligence como capacidad.
+Entre las principales cuestiones abiertas se encuentran:
 
-Un resultado negativo, una limitación de identificación o una frontera de aplicabilidad pueden modificar sustancialmente el alcance del programa. La investigación debe poder reconocerlos sin redefinir retrospectivamente sus criterios.
+- **Identificación de la accesibilidad.** ¿Puede definirse T_acc a partir de condiciones y reglas independientes de la ejecución y de sus resultados? La identificación quedaría limitada si la regla dependiera de lo que finalmente se ejecutó, de la adopción observada o de resultados posteriores, o si no pudiera reproducirse con los mismos datos y criterios.
+- **Aportación respecto de modelos existentes.** ¿Qué información adicional ofrece la representación de TGCV frente a las representaciones nativas de cada dominio? Si las comparaciones predefinidas no muestran una diferencia relevante, la pretensión de aportación adicional deberá restringirse o abandonarse para ese ámbito.
+- **Accesibilidad, Reach y Trajectory.** ¿En qué condiciones un cambio en T_acc se relaciona con cambios en estados alcanzables o trayectorias realizadas? La hipótesis se debilitaría si, en condiciones donde se predice una diferencia, cambios reproducibles de accesibilidad no fueran seguidos de diferencias en Reach o Trajectory, o si estas pudieran explicarse completamente por otros mecanismos.
+- **Atribución causal.** ¿Qué parte de las consecuencias posteriores se debe a la intervención que amplía la accesibilidad, qué parte está mediada por el cambio en T_acc y qué parte responde a otras vías? Si los datos no permiten separar esos efectos, la conclusión correcta será que el efecto está subidentificado. Un efecto nulo o contrario a la hipótesis, obtenido con un diseño adecuado y supuestos defendibles, limitaría la afirmación correspondiente.
+- **Resultados y valor.** ¿Puede conectarse un cambio de accesibilidad o trayectoria con un resultado y con una medida de valor definida de forma independiente? La ausencia de efecto, la falta de una medida válida o la dependencia del resultado respecto de otros componentes impedirían atribuir valor a la ampliación de posibilidades.
+- **Transferencia entre dominios.** ¿Se pueden reconstruir los elementos relevantes sin borrar las semánticas propias de cada sistema? Si las reglas de admisibilidad no pueden especificarse o la representación no es reproducible en un dominio, ese caso delimita dónde no se ha demostrado su aplicabilidad.
+- **Transformational Intelligence.** ¿Puede operacionalizarse como una capacidad diferenciable y reproducible, más allá de preferencias estables, heurísticas de selección o artefactos del diseño experimental? Resultados nulos, no replicables o no discriminantes limitarían esa propuesta.
+
+La falsabilidad se aplica a afirmaciones concretas y a sus condiciones de alcance. Un resultado negativo en una operacionalización no refuta automáticamente toda la arquitectura, pero sí puede refutar o restringir la afirmación examinada. Del mismo modo, una prueba superada no valida por sí sola TGCV en general.
+
+Un resultado negativo, una limitación de identificación o una frontera de aplicabilidad son resultados científicos legítimos. Los criterios no deben redefinirse retrospectivamente para convertirlos en éxitos.
 
 ## 8. Un programa en desarrollo
 
@@ -225,19 +230,23 @@ The research has also examined methods for reasoning about and selecting transfo
 
 Detailed descriptions of each evidence strand should be available through dedicated links from this section. Each evidence page will explain the research question, system and data, method, result, scope, limitations and supporting materials that can be made public. Technical identifiers and internal tracking references should not be displayed as if they were meaningful names for visitors.
 
-## 7. What remains open?
+## 7. What remains open, and how it can be tested
 
-TGCV does not assume in advance that its architecture applies to every system. Open questions include:
+TGCV does not assume in advance that its architecture applies to every system. Its claims must be testable through explicit operational definitions, criteria fixed before analysis, independent measures and comparison with alternative explanations.
 
-- how to identify T_acc robustly and non-circularly across domains;
-- what analytical information it adds beyond existing models;
-- when changes in T_acc relate to Reach and Trajectory, and when they do not;
-- which designs allow causal attribution of consequences to accessibility changes;
-- what evidence and independent model would be required to connect those changes with Outcome and Value;
-- where cross-domain translation fails;
-- to what extent Transformational Intelligence can be operationalised and validated as a capability.
+Key open questions include:
 
-A negative result, an identification limitation or an applicability boundary may materially change the programme's scope. The research must be able to recognise such findings without retrospectively redefining its criteria.
+- **Identifying accessibility.** Can T_acc be defined from conditions and rules independently of execution and its outcomes? Identification would be limited if the rule depended on what was ultimately executed, observed adoption or downstream outcomes, or if it could not be reproduced using the same data and criteria.
+- **Contribution beyond existing models.** What additional information does the TGCV representation provide compared with domain-native representations? If pre-specified comparisons show no relevant difference, the claim of additional contribution must be restricted or abandoned for that domain.
+- **Accessibility, Reach and Trajectory.** Under what conditions is a change in T_acc related to changes in reachable states or realised trajectories? The hypothesis would be weakened if, under conditions where a difference is predicted, reproducible accessibility changes were not followed by differences in Reach or Trajectory, or if those differences could be fully explained by other mechanisms.
+- **Causal attribution.** Which part of subsequent consequences is due to the intervention expanding accessibility, which part is mediated by the change in T_acc, and which part follows other pathways? If the data cannot separate these effects, the correct conclusion is that the effect is underidentified. A null or contrary effect from an adequate design with defensible assumptions would limit the corresponding claim.
+- **Outcomes and value.** Can an accessibility or trajectory change be connected to an outcome and an independently defined measure of value? No effect, the absence of a valid measure, or dependence on other intervention components would prevent attributing value to the expansion of possibilities.
+- **Cross-domain transfer.** Can the relevant elements be reconstructed without erasing each system's native semantics? If admissibility rules cannot be specified or the representation cannot be reproduced in a domain, that case marks a boundary where applicability has not been demonstrated.
+- **Transformational Intelligence.** Can it be operationalised as a distinct and reproducible capability beyond stable preferences, selection heuristics or artefacts of experimental design? Null, non-replicable or non-discriminating results would limit the proposal.
+
+Falsifiability applies to specific claims and their stated conditions of scope. A negative result in one operationalisation does not automatically refute the entire architecture, but it may refute or restrict the claim being examined. Likewise, passing one test does not validate TGCV as a whole.
+
+Negative findings, identification limits and applicability boundaries are legitimate scientific outcomes. Criteria must not be redefined retrospectively to turn them into successes.
 
 ## 8. A programme in development
 
