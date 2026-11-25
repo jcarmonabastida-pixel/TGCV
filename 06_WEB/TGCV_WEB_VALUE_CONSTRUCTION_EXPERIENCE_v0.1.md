@@ -184,8 +184,8 @@ Measurement boundaries:
 Give CCV and IVS their own clearly titled explanatory section, after VALUE and its operating cycle have been introduced. Do not first mention either acronym in a passing caveat.
 
 Explain:
-- **Capacidad de Construcción de Valor (CCV):** the capability objective VALUE aims to develop — a system's ability to construct value repeatedly and renew the capabilities that make this possible. It is an intended capability, not an observed result, validated maturity scale or score.
-- **Índice de Valor Sistémico (IVS):** an exploratory measurement proposal intended to assess aspects of that capability. It is not the value created, not a ready KPI and not part of the mandatory VALUE process.
+- **CCV — Capacidad de Construcción de Valor** (Value Construction Capability in English): the capability objective VALUE aims to develop — a system's ability to construct value repeatedly and renew the capabilities that make this possible. It is an intended capability, not an observed result, validated maturity scale or score. Retain CCV as the canonical acronym in both language versions.
+- **IVS — Índice de Valor Sistémico** (Systemic Value Index in English): an exploratory measurement proposal intended to assess aspects of that capability. It is not the value created, not a ready KPI and not part of the mandatory VALUE process. Retain IVS as the canonical acronym in both language versions.
 
 State the unresolved status explicitly: the source methodology contains competing CCV maturity-level proposals and does not adopt a canonical scale; the IVS has no canonical dimensions, formula, weighting or validated scale. Do not calculate it, rank organisations or imply that CCV can currently be measured reliably. Explain why these ideas are being explored without making them prerequisites for using VALUE.
 
