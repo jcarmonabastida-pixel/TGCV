@@ -81,7 +81,7 @@ the cross-domain mapping demonstrator remains bounded synthetic methodological e
 2. **Information Architecture authorities:** corrected stale Explore and Research version references; corrected Systems Engineering references that pointed to non-current v0.2 filenames; added current Value Construction and Labs & Applications page authorities.
 3. **Content Blueprint:** synchronized parent versions and corrected page identifiers to P08 About / Governance and P09 Contact / Participate.
 4. **Labs & Applications Copy:** advanced to v0.4; removed specific TGCV Full Chain Demo operational feature claims pending exact package/interface verification; corrected its Blueprint dependency.
-5. **Dependency metadata:** synchronized references to Information Architecture v2.6 and Content Blueprint v3.7 in the affected page specifications and copies, including Research, Value Construction, Labs & Applications and Transformational Intelligence.
+5. **Dependency metadata:** synchronized references to Information Architecture v2.7 and Content Blueprint v3.8 in the affected page specifications and copies, including Research, Value Construction, Labs & Applications and Transformational Intelligence.
 
 No scientific document, `main` branch artifact, evidence claim, experiment, execution authorization or publication permission was changed.
 
@@ -120,7 +120,7 @@ This editorial review does not establish:
 - that VALUE is validated by TGCV;
 - that any Application-Fit context is a validated deployment;
 - that TGCV Full Chain Demo, TGCV Playground, Value Explorer or ValueLabOS Preview is publicly available;
-- that the cross-domain mapping demonstrator demonstrates empirical causality, superiority, ROI or industrial readiness;
+- that the cross-domain mapping demonstrator demonstrates empirical causality, superiority, return on investment or industrial readiness;
 - that the first website is approved for publication.
 
 ## 7. Next editorial operation
