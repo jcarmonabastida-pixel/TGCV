@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 3.0
+**Version:** 3.1
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.4; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.3; Value Construction Copy v0.2.
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.4; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.3; Value Construction Copy v0.2; Labs & Applications Experience v0.1.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -192,42 +192,30 @@ They remain possible ecosystem capabilities, not first-release commitments.
 
 ### P07 — Labs & Applications
 
-**Purpose:** show tangible work while separating software demonstration, synthetic methodological evidence, candidate application fit, empirical evidence and deployment.
+**Authoritative working reference:** `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.1. Bilingual Copy remains pending.
 
-**Recommended structure:**
+**Purpose:** show tangible work while separating software demonstration, synthetic methodological evidence, candidate application fit, empirical evidence and deployment. Labs & Applications is an activity/exploration space, not a claim of physical laboratories, a commercial offer or a deployed application portfolio.
 
-**A. Demonstrators**
-- Juguete Colectivo / Full Chain demonstrator.
-- Describe its actual functionality only after checking the exact distributable package, version, launch route and current selector status.
-- State prominently that it uses synthetic scenarios and operational prototype rules; it is not the canonical scientific implementation, scientific validation, a causal predictor or a production-ready Playground.
-- Link to a downloadable package or live instance only after distribution, security, accessibility and version checks.
+**Visitor question:** What can I inspect in practice, what has actually been tested, and where are the ideas still being explored?
 
-**B. Synthetic methods**
-- TSTC v004 as a bounded synthetic methodological demonstrator.
-- Explain that it instantiated a common contract across three heterogeneous synthetic fixtures and preserved the required analytical distinctions.
-- Explicitly state that it does not establish empirical causality, value creation, superiority, real-world generality or industrial validation.
+**Required narrative:**
+1. Introduce the role of Labs & Applications and its reciprocal relationship with Research.
+2. Present Juguete Colectivo / Full Chain as an existing synthetic software prototype. Describe functionality only after exact current package/interface verification. Its operational rules are prototype-specific, not the canonical scientific function of TGCV. Software-level acceptance is not scientific validation.
+3. Present TSTC v004 separately as a bounded synthetic methodological demonstrator. It executed a common contract across three heterogeneous synthetic fixtures, with negative controls and synthetic propagation; independent baseline reconstructions yielded equivalent feasible sets within the tested universes. It does not establish empirical causality, superiority, generality, value, ROI or industrial readiness.
+4. Present no more than three candidate application contexts: AI agents/tools/permissions (C03), digital twins/predictive maintenance (C04), and energy–mobility/EV-grid (C05). All remain exploratory candidates, not qualified or validated applications. C05's synthetic minimum demonstrator audit passed with limitations; independent baseline comparison was not established.
+5. Explain asset maturity labels separately from scientific evidence/test labels.
+6. State what is not available: professional Playground, industrial deployment, ROI/service claims, physical laboratory network, open community or unapproved collaboration programme.
+7. Provide routes to Research, Systems Engineering, Transformational Intelligence, Value Construction and Contact without promising access or participation processes that do not exist.
 
-**C. Candidate application contexts**
-Select no more than three for the first release. Recommended editorial shortlist:
-1. AI agents, tools and permissions (C03): intuitive accessibility example.
-2. Cross-domain digital twin / predictive maintenance (C04): physical-digital-engineering coupling.
-3. Energy–mobility / EV-grid coordination (C05): resource and constraint coupling.
+**Required distinctions:** Juguete Colectivo is not TSTC; a software prototype is not the scientific Core implementation; synthetic execution is not empirical validation; application-fit candidate is not validated application; an existing asset is not necessarily publicly downloadable; operational availability is not scientific evidence; a deployed system would not automatically validate TGCV.
 
-C01 (network/cloud-edge orchestration) and C08 (cross-agency public-service/criminal-justice trajectories) can be added later or substituted if source quality, public interest and explainability justify it.
+**Asset and evidence status:** use separate labels for asset maturity/availability (Existing, In development, Exploratory) and evidence/test status (Conceptual/proposed, Synthetic, Executed, Audited, Empirical, Pilot, Deployed). Labels must be grounded in exact source records and never imply a higher scientific state.
 
-Every case must be labelled **candidate application context / exploratory**, not validated application. Describe the structural question, not promised benefits.
+**Publication gates:** verify the exact Juguete Colectivo package, source commit, package version, launch route, selector/functionality, security and accessibility before any public demo/download link. The repository has no GitHub release or verified public download asset at the time of this Experience. Link TSTC evidence only after public-release permission and current canonical status are checked. Verify every application-context description and external attribution; preserve its exploratory status.
 
-**D. What is not yet available**
-- No professional Playground at launch.
-- No industrial deployment claim.
-- No public claim of TGCV superiority or ROI.
-- No unqualified application offer.
+**Source basis:** canonical main STATUS.md; TSTC v004 post-execution audit and evidence-to-claim propagation; C05 EV–Grid post-execution audit and evidence propagation; Juguete Colectivo distribution README, usage guide, demonstrator contract and package acceptance records; WP2 Application-Fit candidate register, cross-case synthesis and C03/C04/C05 deep screens.
 
-**Source basis:**
-- Candidate register and cross-case synthesis under 00_GOVERNANCE/SIP/.
-- TSTC post-execution audit 002 and evidence-to-claim propagation record.
-- Juguete Colectivo usage guide and distribution README.
-- Current STATUS, RMA and Evidence→Claim Matrix for evidence status.
+**Claim boundaries:** no claim of TGCV superiority, universal applicability, causal propagation in real systems, value creation, ROI, industrial validation or deployment readiness. The downstream ΔT_acc → ΔV / Value linkage remains open in the canonical STATUS baseline.
 
 ### P07 — About / Governance
 
@@ -799,3 +787,10 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Requires VALUE to be defined at its first substantive mention and VSM to be introduced only after VALUE is explained.
 - Adds dedicated sections for CCV/IVS and the Value Discovery Sprint, with current methodological status and limits.
 - Updates P06 Experience to v0.3 and bilingual Copy to v0.2; no scientific or methodological source definitions are changed.
+
+
+### v3.1 — 2026-11-25
+- Adds Labs & Applications Experience v0.1 as the authoritative P07 visitor-journey specification.
+- Reconstructs current demonstrator and application-fit history: Juguete Colectivo is an existing synthetic software prototype but no current public release/download is verified; TSTC v004 is bounded synthetic methodological evidence; C03/C04/C05 remain exploratory application contexts.
+- Separates asset maturity/availability from evidence/test status and records explicit publication gates and non-claims.
+- Leaves bilingual P07 Copy pending; no scientific asset, claim, evidence status or execution authorization is modified.
