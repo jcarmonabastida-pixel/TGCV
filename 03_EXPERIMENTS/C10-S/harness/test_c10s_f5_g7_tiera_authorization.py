@@ -259,6 +259,8 @@ class F5G7AuthorizationTests(unittest.TestCase):
         self.assertIn('run.get("head_branch") == current_branch', workflow)
         self.assertIn('run.get("event") == "workflow_dispatch"', workflow)
         self.assertIn("actions/workflows/c10-s-f5-g7-tiera-calibration.yml/runs", workflow)
+        rerun_guard = "if: needs.authorization.outputs.approved == 'true' && github.run_attempt == 1"
+        self.assertEqual(workflow.count(rerun_guard), 3)
         validator_source = Path(__file__).with_name("validate_c10s_f5_g7_tiera_authorization.py").read_text(encoding="utf-8")
         self.assertIn('auth.get("approval_channel") != "GITHUB_WORKFLOW_DISPATCH"', validator_source)
         self.assertNotIn("environment:", workflow)
