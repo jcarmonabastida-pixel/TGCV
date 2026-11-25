@@ -140,8 +140,8 @@ jobs:
             --archive "$ARCHIVE" \
             --manifest ../fixtures/g7_resource_profile_v1_1/manifest.json \
             --artifact-metadata "$METADATA" \
-            --output-json "$RUNNER_TEMP/verified-resource-profile-artifact.json" \\
-            --extract-profile "$RUNNER_TEMP/resource-profile/c10s-f5-g7-resource-profile.json" \\
+            --output-json "$RUNNER_TEMP/verified-resource-profile-artifact.json" \
+            --extract-profile "$RUNNER_TEMP/resource-profile/c10s-f5-g7-resource-profile.json" \
             --expected-repository "$EXPECTED_REPOSITORY"
       - name: Validate immutable resource profile and derive safe shard matrix
         id: plan
