@@ -1,7 +1,7 @@
 # TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 1.1  
+**Version:** 1.2  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md`  
@@ -119,9 +119,13 @@ Transformational Intelligence articula estas dos bases desde una capacidad integ
 El trabajo se desarrolla en dos espacios relacionados:
 
 - **Research** desarrolla preguntas, fundamentos, modelos, métodos, experimentos y evidencia.
-- **Labs & Applications** reúne experimentación, demostradores acotados y exploración de contextos de aplicación.
+- **Value Construction** presenta VALUE como un framework aplicado complementario a TGCV. Organiza el trabajo de comprensión de oportunidades, diseño de alternativas, decisión, acción y aprendizaje. No se presenta como una metodología cuya eficacia haya sido demostrada por TGCV.
 
-Lo que se aprende mediante la investigación puede orientar la experimentación y el trabajo aplicado; lo que se observa en esos entornos puede, a su vez, abrir nuevas preguntas de investigación.
+**Labs & Applications** reúne experimentación, demostradores acotados y exploración de contextos de aplicación, identificando su madurez y alcance.
+
+**ValueLabOS** es una propuesta de ecosistema digital y colaborativo para facilitar la aplicación, experimentación y evolución de VALUE. No es otro nombre para VALUE ni para Labs & Applications.
+
+Estas piezas están relacionadas, pero no forman una cadena causal demostrada. TGCV investiga cómo cambian las transformaciones accesibles y si esos cambios pueden contribuir a la construcción de valor; VALUE estructura el trabajo aplicado para explorar oportunidades y organizar decisiones, acción y aprendizaje. La investigación y la experimentación pueden informarse mutuamente.
 
 ## 2.6 Explora según tu interés
 
@@ -158,11 +162,11 @@ Puedes acercarte a esta investigación desde sus ideas fundamentales, desde las 
 
 Un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.
 
-Explore · Research · Systems Engineering · Transformational Intelligence · Labs & Applications · About · Contact
+Explore · Research · Systems Engineering · Transformational Intelligence · Value Construction · Labs & Applications · About · Contact
 
 Los conceptos, hipótesis, demostraciones sintéticas y evidencias empíricas se identifican por separado. Una demostración técnica no constituye por sí sola una validación científica.
 
-# 3. English version
+# 3. English version# 3. English version
 
 **Site-wide header / brand lockup:** TGCV — Generative Transformations and Value Construction. TGCV remains the proper name; the English expansion is a rendering of the canonical Spanish name. On narrow screens, TGCV may be visually prioritised while the full name remains available accessibly. Keep the opening question as the first substantive Home message; do not place a long institutional introduction ahead of it.
 
@@ -305,7 +309,7 @@ You can approach this work through its core ideas, its research questions or the
 
 A programme of applied research and innovation exploring how expanding the transformations available to systems may contribute to value construction.
 
-Explore · Research · Systems Engineering · Transformational Intelligence · Labs & Applications · About · Contact
+Explore · Research · Systems Engineering · Transformational Intelligence · Value Construction · Labs & Applications · About · Contact
 
 Concepts, hypotheses, synthetic demonstrations and empirical evidence are identified separately. A technical demonstration does not, by itself, constitute scientific validation.
 
@@ -387,3 +391,8 @@ The approved narrative order is opening question → discovery → second questi
 - **1.0 — 2026-11-24:** Adopts the public descriptor “applied research and innovation” in both languages; refines the second answer to foreground newly accessible transformations rather than imply execution.
 
 - **1.1 — 2026-11-24:** Refines the hero supporting copy to focus directly on changes in the transformations within a system's reach, avoiding possible conflation with capability acquisition.
+
+### v1.2 — 2026-11-25
+- Adds Value Construction to Home's ecosystem explanation and visitor routes.
+- Distinguishes TGCV, VALUE, Labs & Applications and the proposed ValueLabOS ecosystem in both languages.
+- Clarifies that the TGCV–VALUE relationship is complementary and not a proven causal chain.
