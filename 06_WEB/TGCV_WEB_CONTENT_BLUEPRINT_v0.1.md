@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 2.6
+**Version:** 2.7
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.3; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.8; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.1.
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.3; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.8; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.1; Value Construction Experience v0.1.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -701,7 +701,9 @@ The Home remains a working draft, not publication approval. Complete the visual 
 
 ## 18. P06 — Value Construction: strategic content contract
 
-**Status:** destination approved for first-release architecture; detailed Experience and Copy not yet developed. Do not begin visual design or implementation from this contract alone.
+**Status:** destination approved for first-release architecture; Experience v0.1 drafted and persisted; bilingual Copy not yet developed. Do not begin visual design or implementation from this contract alone.
+
+**Authoritative working reference:** `06_WEB/TGCV_WEB_VALUE_CONSTRUCTION_EXPERIENCE_v0.1.md`. The Experience follows the six movements below and governs subsequent bilingual Copy.
 
 **Purpose:** explain VALUE as an applied framework complementary to TGCV, showing how a system can understand a context and opportunity, connect knowledge, design alternatives, decide, act and learn in pursuit of contextually defined value.
 
@@ -715,7 +717,7 @@ The Home remains a working draft, not publication approval. Complete the visual 
 5. **Learn and renew:** evaluate observed results against criteria agreed beforehand, record uncertainty and update capabilities or the next cycle.
 6. **A case in practice — the clinic:** walk through the fictional appointment-management case and relevant A1–A8 artefacts, decisions and outputs after verifying current versions and publication suitability.
 
-**Method reference:** ALIGN is the entry/alignment and governance condition, followed by SENSE, CONNECT, DESIGN, DECIDE, ACT and LEARN. The process is iterative, not a rigid waterfall. Keep the distinctions among Value Construction, VCF, VSM, Value Architecture, Value Opportunity, CCV and IVS; do not imply that every proposed measurement or artefact is mature or validated.
+**Method reference:** ALIGN is the entry/alignment and governance condition, followed by SENSE, CONNECT, DESIGN, DECIDE, ACT and LEARN. The process is iterative, not a rigid waterfall. Keep the distinctions among Value Construction, VALUE, VCF, VSM, Value Architecture, Value Opportunity, CCV and IVS; do not imply that every proposed measurement or artefact is mature or validated. A1–A8 are traceable records, not eight additional phases; A5 is transversal, A3 evolves and A7 preserves distinct proposal, authorisation and execution states.
 
 **TGCV relationship:** TGCV investigates how accessible transformations change and whether/how such changes may contribute to value. VALUE structures applied work to explore opportunities and organise intervention and learning. The relationship is a proposed theoretical-applied articulation, not a demonstrated derivation. VALUE can be evaluated independently and does not depend on C10 being confirmed.
 
@@ -768,3 +770,8 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Updates Explore Experience and Copy to v1.1 and v1.0.
 - Adds Value Construction as a clearly differentiated applied-framework cross-connection at the end of Explore, not as a fourth conceptual deepening route or causal continuation.
 - Requires bilingual explanation of the complementary but independently grounded/evaluated relationship between TGCV and VALUE.
+
+### v2.7 — 2026-11-25
+- Adds `TGCV_WEB_VALUE_CONSTRUCTION_EXPERIENCE_v0.1.md` as the authoritative working Experience for P06.
+- Aligns the Experience with the six approved narrative movements and the current VALUE v0.4, A1–A8 specifications and fictional clinic case v1.1.
+- Records that bilingual Copy remains pending; preserves the independent methodological/evidential status of TGCV and VALUE, and the explicit non-execution boundary in CLINIC-001.
