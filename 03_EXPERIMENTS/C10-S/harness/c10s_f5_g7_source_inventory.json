@@ -98,6 +98,14 @@
       "authorization_hash_key": "f1_candidate_sha256"
     },
     {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_f1_independent_root_isolator.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "f1_independent_root_isolator_sha256"
+    },
+    {
       "path": "03_EXPERIMENTS/C10-S/harness/c10s_f1_root_adjudication.py",
       "roles": [
         "compute_path",
@@ -258,6 +266,13 @@
         "compute_path"
       ],
       "authorization_hash_key": "legacy_comparator_runner_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_f1_independent_root_isolator.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "f1_independent_root_isolator_test_sha256"
     },
     {
       "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_f1_root_adjudication.py",
