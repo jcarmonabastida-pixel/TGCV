@@ -278,5 +278,4 @@ The relationship between these two lines of work is itself a subject of research
 ## Version history
 
 - **0.1 — 2026-11-25:** Initial bilingual copy draft based on the approved P05 Experience v0.1 and reconciled Content Blueprint v2.4.
-- **0.2 — 2026-11-25:** Refreshes editorial references to Content Blueprint v2.9 and records the integrated terminology/boundary review against current first-release bilingual page copy. No change to the status of TI or its candidate dimensions.
-- **0.2 — 2026-11-25:** Updates editorial references to the current Content Blueprint and records the integrated terminology review across the first-release page copies; no change to the scientific status or five candidate dimensions.
+- **0.2 — 2026-11-25:** Refreshes editorial references to the current Content Blueprint and records the integrated terminology/boundary review across first-release bilingual page copies. No change to the scientific status or five candidate dimensions.
