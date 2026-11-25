@@ -90,9 +90,9 @@ They remain possible ecosystem capabilities, not first-release commitments.
 2. One clear explanatory visual showing system conditions and a changed set of accessible transformations.
 3. The central insight in plain language.
 4. A short analytical sequence: system/state and conditions → candidate transformations → accessibility → realised transition → subsequent state/possibilities → trajectory → outcome; value is a separate contextual evaluation.
-5. Four connected areas of work: Research, Systems Engineering, Transformational Intelligence, Labs & Applications.
-6. Two or three carefully selected candidate application contexts.
-7. Links to Explore and Research, plus a real contact/participation route.
+5. A clear, accessible conceptual ecosystem map distinguishing TGCV, Systems Thinking, Systems Engineering, Transformational Intelligence, Value Construction/VALUE, Labs & Applications and proposed ValueLabOS; show labelled relationships, not a proven causal chain.
+6. Direct visitor routes to Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction and Labs & Applications.
+7. Two or three carefully selected candidate application contexts where they add explanatory value, plus a real contact/participation route.
 
 **Draft headline for testing:** “Understanding and engineering how systems transform.”
 
@@ -100,7 +100,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 
 **Do not:** lead with value creation, AI automation, consulting services, a generic innovation promise, or a Playground that does not yet exist.
 
-**Source basis:** Home Experience v0.2 and Master Brief v0.2. All final copy remains subject to external comprehension testing.
+**Source basis:** Home Experience v1.5 and Home Copy v1.2, aligned with the current Web Master Brief and Information Architecture. All final copy remains subject to external comprehension testing.
 
 ### P02 — Explore
 
@@ -736,3 +736,8 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Updates P01/Home references to Experience v1.5 and Copy v1.2.
 - Requires the public conceptual ecosystem map in Home and adds Value Construction to the Home visitor routes.
 - Aligns P06 Value Construction and P07 Labs & Applications with the approved first-release navigation.
+
+
+### v2.2 — 2026-11-25
+- Replaces the earlier four-area Home summary with the public ecosystem map and the approved Value Construction visitor route.
+- Synchronizes P01's source references with Home Experience v1.5 and Home Copy v1.2.
