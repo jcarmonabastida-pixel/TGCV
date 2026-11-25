@@ -1,12 +1,12 @@
 # TGCV — Labs & Applications Experience v0.3
 
 **Identifier:** TGCV-WEB-P07-EXP-001  
-**Version:** 0.3  
+**Version:** 0.4  
 **Date:** 2026-11-25  
 **Status:** WORKING EXPERIENCE SPECIFICATION — NOT PUBLICATION APPROVAL  
 **Branch:** strategy/tgcv-web-master  
 **Page:** P07 — Labs & Applications  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Content Blueprint v3.3.
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Content Blueprint v3.4.
 
 ---
 
@@ -150,15 +150,24 @@ Beyond the three featured contexts, show a concise, clearly secondary selection 
 
 The first, second, fourth and fifth items above are not equivalent in maturity: some have deeper screening or cross-case comparison, while others remain initial candidates. The public Copy should use a common exploratory label and avoid implying equal analytical depth. None is a qualified TGCV application.
 
-**Broader opportunity areas from Business Translation:**
+**Broader opportunity areas from Business Translation — developed as application and value hypotheses:**
 
-- organisational transformation and new ways of working;
-- product and service innovation;
-- operations and process change;
-- evolution of AI and technology systems;
-- transformation alternatives and investment decisions.
+For each family, explain what TGCV may help make visible and what potential value would need to be investigated. Use hypothesis language throughout; none is a demonstrated benefit, validated market or approved service offer.
 
-These are broad problem families for discovering and framing possible cases, not screened Application-Fit cases, validated markets or an approved service catalogue.
+1. **Organisational transformation and new ways of working.** Examine which new capabilities, relationships and prior changes could make different organisational arrangements or ways of working accessible. Value hypothesis: identify more viable organisational alternatives and better understand the dependencies and transition paths they require.
+2. **Product and service innovation.** Examine which combinations of system capabilities, relationships, resources and transformations could make new or changed offerings possible. Value hypothesis: discover promising alternatives earlier and reduce effort invested in concepts whose enabling conditions cannot be met.
+3. **Operations and process change.** Make visible transformations blocked by dependencies or constraints, the changes required to unlock them and feasible sequences of operational change. Value hypothesis: compare more viable process alternatives and avoid committing to sequences that cannot be realised under current conditions.
+4. **Evolution of AI and technology systems.** Examine how tools, permissions, data, resources, integrations and operating conditions may change which actions and functions are accessible to a system. Value hypothesis: make technology evolution choices more explicit and better grounded in actual dependencies and feasible trajectories.
+5. **Transformation alternatives and investment decisions.** Compare candidate transformation paths, the prior changes they depend on, and the conditions that must hold before resources are committed. Value hypothesis: identify better-grounded alternatives, reduce investment in options that prove infeasible and improve the justification of decisions.
+
+These are broad problem families for discovering and framing possible cases, not screened Application-Fit cases, validated markets or an approved service catalogue. The hypotheses require independent operationalisation and evidence. Do not claim that TGCV already improves decisions, reduces investment losses, increases innovation or creates value.
+
+Keep the relationship between three levels explicit:
+- **Business Translation opportunity families:** broad domains in which relevant problems may be recognised.
+- **Application-Fit contexts:** more specific candidate system contexts, with their own screening depth and evidence status.
+- **Demonstrators and experiments:** bounded assets that explore or test particular questions and do not automatically validate a wider application family.
+
+End the Application-Fit area with the open invitation already defined in Movement 7. The invitation connects these opportunity families and candidate contexts to the possibility of discovering further problems with interested people and organisations.
 
 The page may also invite visitors to suggest a system or challenge that is not represented in the current examples. Do not promise acceptance, analysis, funding or collaboration. Explain that proposals would need to be scoped and assessed before any work is agreed.
 
@@ -287,3 +296,6 @@ The page is editorially acceptable when:
 
 
 - **v0.3 — 2026-11-25:** Establishes the explicit area **Explore the possibilities — Experiencias para descubrir y experimentar**, standardises the three experience names as TGCV Playground, Value Explorer and ValueLabOS Preview, and relocates the participation invitation to the end of Application-Fit. The invitation is an open call to discover problems and opportunities with interested people and organisations, not a formal intake process. Participation forms, eligibility and rules are reserved for a possible separate Participation area/page; its inclusion and scope in the first release remain undecided.
+
+
+- **v0.4 — 2026-11-25:** Develops the five Business Translation opportunity families into context-specific explanations of what TGCV may help make visible and the value hypotheses that would need to be tested. Clarifies the distinction between broad opportunity families, Application-Fit contexts and bounded demonstrators/experiments. No application or value claim is upgraded.

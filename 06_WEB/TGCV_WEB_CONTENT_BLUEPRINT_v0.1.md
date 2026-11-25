@@ -1,7 +1,7 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 3.3
+**Version:** 3.4
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
@@ -100,7 +100,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 
 **Do not:** lead with value creation, AI automation, consulting services, a generic innovation promise, or a Playground that does not yet exist.
 
-**Source basis:** Home Experience v1.6 and Home Copy v1.4, aligned with the current Web Master Brief and Information Architecture. All final copy remains subject to external comprehension testing.
+**Source basis:** Home Experience v1.7 and Home Copy v1.5, aligned with the current Web Master Brief and Information Architecture. All final copy remains subject to external comprehension testing.
 
 ### P02 — Explore
 
@@ -814,3 +814,10 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Places the open invitation to discover additional application contexts at the end of Application-Fit, explicitly involving interested people and organisations.
 - Separates this invitation from formal participation: forms, eligibility, submission and review rules, and collaboration terms are reserved for a possible dedicated Participation area/page. Its inclusion and scope in the first release remain undecided.
 - Updates P07's authoritative Experience reference to v0.3 and preserves scientific, availability and maturity boundaries.
+
+
+### v3.4 — 2026-11-25
+- Updates P01/Home authority to Home Experience v1.7 and bilingual Copy v1.5.
+- Adds the five potential Business Translation application areas to Home in concise form, distinguishing TGCV's possible analytical contribution from value hypotheses that remain to be demonstrated.
+- Updates P07/Labs & Applications Experience to v0.4, requiring a developed treatment of the same five opportunity families and their context-specific value hypotheses.
+- Clarifies the hierarchy between broad Business Translation opportunity families, specific Application-Fit contexts and bounded demonstrators/experiments.

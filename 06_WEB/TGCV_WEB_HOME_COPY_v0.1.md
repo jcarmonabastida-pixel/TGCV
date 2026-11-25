@@ -1,7 +1,7 @@
 # TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 1.4  
+**Version:** 1.5  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md`  
@@ -98,7 +98,23 @@ La numeración organiza las preguntas de lectura; no representa una cadena causa
 
 **Posible, accesible, realizado y valioso no significan lo mismo.**
 
-## 2.5 El ecosistema
+## 2.5 Dónde podrían abrirse nuevas posibilidades
+
+Las preguntas de TGCV pueden explorarse en distintos ámbitos donde las capacidades, las relaciones y las condiciones de un sistema determinan qué puede llegar a hacer:
+
+- **Transformación organizativa:** nuevas capacidades, relaciones y formas de trabajar.
+- **Innovación de productos y servicios:** combinaciones de capacidades y transformaciones que podrían hacer posibles nuevas ofertas.
+- **Operaciones y procesos:** transformaciones bloqueadas, dependencias y secuencias posibles de cambio.
+- **IA y sistemas tecnológicos:** herramientas, permisos, recursos e integraciones que pueden cambiar qué acciones o funciones están al alcance.
+- **Alternativas de transformación e inversión:** opciones accesibles, cambios previos necesarios y condiciones para comprometer recursos.
+
+**¿Qué podría aportar una perspectiva diferente?** Hacer visibles qué transformaciones están al alcance de un sistema, cuáles dependen de cambios previos y qué trayectorias podrían estudiarse.
+
+**¿Qué valor habría que demostrar?** Si esa información puede ayudar a identificar mejores alternativas, reducir inversiones en opciones que resulten inviables y fundamentar mejor las decisiones.
+
+Estas cinco áreas son hipótesis de aplicación y de valor. No son resultados demostrados ni beneficios garantizados por TGCV.
+
+## 2.6 El ecosistema
 
 ### Una capacidad integradora, apoyada en dos bases complementarias.
 
@@ -126,7 +142,7 @@ El ecosistema conecta elementos distintos y complementarios:
 
 Estas piezas están relacionadas, pero no forman una cadena causal demostrada. TGCV investiga cómo cambian las transformaciones accesibles y si esos cambios pueden contribuir a la construcción de valor; VALUE estructura el trabajo aplicado para explorar oportunidades y organizar decisiones, acción y aprendizaje. La investigación y la experimentación pueden informarse mutuamente.
 
-## 2.6 Explora según tu interés
+## 2.7 Explora según tu interés
 
 **Explore**  
 Comprende las ideas fundamentales y cómo se relacionan las condiciones de un sistema con sus transformaciones accesibles.
@@ -146,7 +162,7 @@ Conoce VALUE, un framework aplicado complementario a TGCV para explorar oportuni
 **Labs & Applications**  
 Consulta demostradores, experimentos y contextos exploratorios, con su alcance y estado claramente indicados.
 
-## 2.7 Cierre e invitación
+## 2.8 Cierre e invitación
 
 ### Empieza por explorar lo que un sistema puede llegar a hacer.
 
@@ -158,7 +174,7 @@ Puedes acercarte a este trabajo desde sus ideas fundamentales, sus preguntas de 
 
 **Contacto:** Contacta con el proyecto, cuando el canal público de comunicación esté habilitado.
 
-## 2.8 Pie de página
+## 2.9 Pie de página
 
 **TGCV — Transformaciones Generativas y Construcción de Valor**
 
@@ -251,7 +267,23 @@ The numbering organises the questions for the reader; it does not represent a un
 
 **Possible, accessible, realised and valuable do not mean the same thing.**
 
-## 3.5 The ecosystem
+## 3.5 Where new possibilities could matter
+
+TGCV's questions may be explored in different areas where a system's capabilities, relationships and conditions shape what it may become able to do:
+
+- **Organisational transformation:** new capabilities, relationships and ways of working.
+- **Product and service innovation:** combinations of capabilities and transformations that could make new offerings possible.
+- **Operations and processes:** blocked transformations, dependencies and possible sequences of change.
+- **AI and technology systems:** tools, permissions, resources and integrations that may change which actions or functions are within reach.
+- **Transformation alternatives and investment decisions:** accessible options, prior changes they depend on and the conditions required before committing resources.
+
+**What could a different perspective contribute?** Make visible which transformations are within a system's reach, which depend on prior changes and which trajectories could be investigated.
+
+**What value would need to be demonstrated?** Whether this information can help identify better alternatives, reduce investment in options that prove infeasible and support better-grounded decisions.
+
+These five areas are application and value hypotheses. They are not demonstrated results or benefits guaranteed by TGCV.
+
+## 3.6 The ecosystem
 
 ### An integrative capability, supported by two complementary foundations.
 
@@ -279,7 +311,7 @@ The work connects distinct but complementary elements:
 
 These elements are related, but they do not form a proven causal chain. TGCV investigates; VALUE structures applied work; ValueLabOS is proposed as an enabling ecosystem. Research and experimentation can inform one another.
 
-## 3.6 Explore according to your interests
+## 3.7 Explore according to your interests
 
 **Explore**  
 Understand the core ideas and how a system's conditions relate to its accessible transformations.
@@ -299,7 +331,7 @@ Discover VALUE, an applied framework complementary to TGCV for exploring opportu
 **Labs & Applications**  
 Explore demonstrators, experiments and exploratory application contexts, with their scope and status clearly stated.
 
-## 3.7 Closing invitation
+## 3.8 Closing invitation
 
 ### Start by exploring what a system may become able to do.
 
@@ -311,7 +343,7 @@ You can approach this work through its core ideas, its research questions, syste
 
 **Contact:** Get in touch with the project once a public contact channel is available.
 
-## 3.8 Footer
+## 3.9 Footer
 
 **TGCV — Generative Transformations and Value Construction**
 
@@ -420,3 +452,9 @@ The approved narrative order is opening question → discovery → second questi
 - Aligns the Spanish and English Home ecosystem maps so both distinguish TGCV, Research, Value Construction/VALUE, Labs & Applications and proposed ValueLabOS.
 - Corrects the duplicated English-version heading.
 - Preserves the complementary, non-causal and independently evaluated relationship between TGCV and VALUE.
+
+
+### v1.5 — 2026-11-25
+- Adds a concise bilingual section presenting the five potential Business Translation application areas.
+- Distinguishes TGCV's possible analytical contribution from the value hypotheses that would need to be demonstrated.
+- Explicitly states that the five areas are hypotheses, not demonstrated results or guaranteed benefits.

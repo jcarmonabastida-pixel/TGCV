@@ -1,11 +1,11 @@
 # TGCV — Home Experience Specification
 
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 1.6  
+**Version:** 1.7  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21  
-**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_HOME_COPY_v0.1.md`, v1.4; `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`; `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md`  
+**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_HOME_COPY_v0.1.md`, v1.5; `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`; `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md`  
 **Branch:** `strategy/tgcv-web-master`
 
 ---
@@ -159,6 +159,20 @@ The central guardrail is:
 **Possible, accessible, realised and valuable do not mean the same thing.**
 
 Do not suggest that accessible transformations are necessarily executed, that an expanded accessible set is always better, or that value follows automatically.
+
+## 7A. Potential application areas and value hypotheses
+
+After the conceptual explanation and before the ecosystem map, include a compact section that helps visitors recognise where the TGCV question may be relevant. Use the five broad opportunity areas identified in Business Translation, without turning Home into a catalogue:
+
+1. **Organisational transformation** — explore which new capabilities, relationships and prior changes could make different ways of working accessible.
+2. **Product and service innovation** — explore which combinations of capabilities and transformations could make new or changed offerings possible.
+3. **Operations and processes** — examine blocked transformations, dependencies and feasible sequences of operational change.
+4. **AI and technology systems** — examine how tools, permissions, resources, integrations and system conditions may change which actions or functions are accessible.
+5. **Transformation alternatives and investment decisions** — compare which options are accessible, which depend on prior changes and what conditions would need to be met before resources are committed.
+
+TGCV may help make visible which transformations are accessible, which depend on prior changes and which trajectories could be investigated. The value hypotheses to test are whether this perspective can help identify better alternatives, reduce investment in options that prove infeasible and support better-grounded decisions. These are hypotheses, not demonstrated benefits, guaranteed outcomes or validated applications.
+
+Keep this section concise. Detailed cases and context-specific analysis belong in Labs & Applications.
 
 ## 8. Ecosystem presentation
 
@@ -328,3 +342,9 @@ The identity and copy are directionally coherent. Publication remains blocked pe
 ### v1.6 — 2026-11-25
 - Makes Value Construction an explicit Home visitor route, not merely an ecosystem explanation or footer item.
 - Requires direct routes from Home to all first-release substantive destinations, including Value Construction.
+
+
+### v1.7 — 2026-11-25
+- Adds a concise section on five potential Business Translation application areas, TGCV's possible analytical contribution and value hypotheses to investigate.
+- Explicitly labels potential contributions as hypotheses, not demonstrated benefits or validated applications.
+- Updates the Home Copy parent reference to v1.5.
