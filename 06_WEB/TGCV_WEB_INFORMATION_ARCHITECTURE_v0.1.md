@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 2.6  
+**Version:** 2.7  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -170,7 +170,7 @@ Each item must have a visible status:
 
 A status must not be inferred from visual polish or a successful software run. Each demonstrator page should include purpose, system boundary, assumptions, inputs, method, output, baseline, limitations, provenance and reproducibility information.
 
-TSTC v004 may be presented as a bounded synthetic methodological demonstrator. It must not be presented as empirical validation, proof of causal propagation in real systems or evidence of universal applicability.
+The cross-domain transformation mapping demonstrator may be presented as bounded synthetic methodological evidence. It must not be presented as empirical validation, proof of causal propagation in real systems or evidence of universal applicability.
 
 ### 3.7 Application-Fit and Applied Systems
 
@@ -817,12 +817,12 @@ This authority supersedes earlier P05 working text that describes four dimension
 
 The current P07 visitor experience and bilingual working copy are:
 
-- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.4.
-- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.3.
+- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.5.
+- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.4.
 
 The page distinguishes existing demonstrators, proposed visitor experiences, featured and additional Application-Fit candidates, and broad Business Translation opportunity families. These are different content classes and must not be conflated. Asset maturity/availability is separate from evidence/test status.
 
-Juguete Colectivo / Full Chain must not be attributed specific distributable functionality until its exact package and interface have been verified together. TSTC v004 remains bounded synthetic methodological evidence. C05 EV–Grid is not an independent baseline comparison. TGCV Playground, Value Explorer and ValueLabOS Preview are proposed experiences, not available operational tools unless separately verified.
+TGCV Full Chain Demo must not be attributed specific distributable functionality until its exact package and interface have been verified together. The cross-domain mapping demonstrator remains bounded synthetic methodological evidence. In the electric-vehicle and electricity-grid demonstrator, the comparison model reused the same admissibility rule as the TGCV path and therefore was not an independent baseline. TGCV Playground, Value Explorer and ValueLabOS Preview are proposed experiences, not available operational tools unless separately verified.
 
 The five Business Translation families are opportunity areas, not validated markets, services or applications. Application-Fit contexts remain candidates. The invitation to discover further problems is not a formal participation or intake process. Contact links may be used only when a real monitored contact route is ready.
 
@@ -832,3 +832,10 @@ The five Business Translation families are opportunity areas, not validated mark
 - Adds current Value Construction and Labs & Applications page authorities and their bilingual Copy references.
 - Records the distinct status of CCV, IVS and Value Discovery Sprint, and the demonstrator, application-fit, availability and evidence boundaries for Labs & Applications.
 - Synchronises page-document dependencies to Information Architecture v2.6.
+
+
+### v2.7 — 2026-11-25
+- Updates the P07 Experience and Copy authorities to v0.5 and v0.4.
+- Establishes TGCV Full Chain Demo as the public name for the existing software prototype; its former internal codename is not used in current visitor-facing text.
+- Requires plain-language descriptions for the cross-domain synthetic demonstrator and the electric-vehicle/electricity-grid context, without internal execution IDs, version labels or unexplained acronyms.
+- Preserves the synthetic evidence boundaries and the non-independent nature of the energy/mobility comparison.
