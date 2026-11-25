@@ -209,6 +209,8 @@ class F5G7AuthorizationTests(unittest.TestCase):
         self.assertIn('test "$EVENT_ACTOR" = "$REPOSITORY_OWNER"', workflow)
         self.assertIn("I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT", workflow)
         self.assertIn("TGCV-C10S-G7-DISPATCH-ATTESTATION-001", workflow)
+        self.assertIn("g7-dispatch-attestation.json", workflow)
+        self.assertIn('indent=2) + "\\n"', workflow)
         self.assertIn("GITHUB_WORKFLOW_DISPATCH", workflow)
         validator_source = Path(__file__).with_name("validate_c10s_f5_g7_tiera_authorization.py").read_text(encoding="utf-8")
         self.assertIn('auth.get("approval_channel") != "GITHUB_WORKFLOW_DISPATCH"', validator_source)
