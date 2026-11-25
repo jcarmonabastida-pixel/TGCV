@@ -1,6 +1,6 @@
 {
   "schema": "TGCV-C10S-F5-G7-SOURCE-INVENTORY-001",
-  "version": 1,
+  "version": 2,
   "description": "Single typed source of truth for G7 compute-path and execution-source file identities. Hash manifests are derived from Git tree blobs.",
   "paths": [
     {
@@ -208,7 +208,6 @@
     {
       "path": "03_EXPERIMENTS/C10-S/harness/create_c10s_f5_g7_resource_profile_manifest.py",
       "roles": [
-        "compute_path",
         "execution_source"
       ],
       "authorization_hash_key": "resource_profile_manifest_generator_sha256"
