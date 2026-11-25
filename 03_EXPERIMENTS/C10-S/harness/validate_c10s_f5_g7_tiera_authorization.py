@@ -13,7 +13,7 @@ AUTH_PATH = "00_GOVERNANCE/authorizations/C10S_F5_G7_TIERA_CALIBRATION_AUTHORIZA
 BRANCH_PREFIX = "research/c10s-f5-g7-auth-"
 PROTOCOL_PATH = "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_TIERA_PROSPECTIVE_PROTOCOL_002.md"
 RESOURCE_PROFILE_MANIFEST_PATH = "03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json"
-from c10s_f5_g7_source_inventory import execution_source_hash_paths
+from c10s_f5_g7_source_inventory import execution_source_hash_paths, build_manifests
 
 SOURCE_HASH_PATHS = execution_source_hash_paths()
 
@@ -105,10 +105,14 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
     changed = git("diff-tree", "--no-commit-id", "--name-only", "-r", workflow_commit).splitlines()
     if changed != [AUTH_PATH]:
         raise ValueError("authorization commit may change only the G7 authorization JSON")
+    source_manifests = build_manifests(root, workflow_commit)
+    execution_manifest = source_manifests["execution_source"]
+    execution_hashes = {item["path"]: item["sha256"] for item in execution_manifest["entries"]}
     for key, relative in SOURCE_HASH_PATHS.items():
         if auth.get(key) != sha256_file(root / relative):
             raise ValueError(f"{key} mismatch for {relative}")
     return {
+        "execution_source_manifest_sha256": execution_manifest["root_sha256"],
         "authorization_id": authorization_id,
         "authorization_sha256": sha256_file(path),
         "approved_code_commit": code_commit,

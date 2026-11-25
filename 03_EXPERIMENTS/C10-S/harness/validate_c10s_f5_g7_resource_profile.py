@@ -13,7 +13,7 @@ import run_c10s_f5_g7_tiera_calibration as g7
 
 PROFILE_SCHEMA = "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-002"
 PROFILE_SCOPE = "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT"
-from c10s_f5_g7_source_inventory import compute_path_paths
+from c10s_f5_g7_source_inventory import compute_path_paths, build_manifests
 
 PROFILE_SOURCE_PATHS = compute_path_paths()
 
@@ -69,6 +69,13 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
         latency = cell.get("latency_seconds", {})
         if not all(isinstance(latency.get(key), (int, float)) and latency[key] > 0 for key in ("mean", "p95", "p99", "max")):
             raise ValueError(f"G7_RESOURCE_PROFILE_LATENCY_SUMMARY_INVALID:{cell_id}")
+
+    # Derive a stable compute-path identity from the current immutable Git tree.
+    current_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+    source_manifests = build_manifests(root, current_commit)
+    compute_manifest = source_manifests["compute_path"]
+    if tuple(item["path"] for item in compute_manifest["entries"]) != PROFILE_SOURCE_PATHS:
+        raise ValueError("G7_COMPUTE_PATH_INVENTORY_MANIFEST_MISMATCH")
 
     # The resource sample is reusable only while the measured compute path is byte-identical.
     ancestor = subprocess.run(
@@ -196,6 +203,7 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
     )
     return {
         "schema": "TGCV-C10S-F5-G7-RESOURCE-PROFILE-VALIDATION-001",
+        "compute_path_manifest_sha256": compute_manifest["root_sha256"],
         "profile_run_id": manifest["profile_run_id"],
         "profile_source_commit": source_commit,
         "profile_json_sha256": profile_sha,
