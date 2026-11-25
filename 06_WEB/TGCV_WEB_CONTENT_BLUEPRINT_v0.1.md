@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 3.8
+**Version:** 3.9
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.7; Home Experience v1.7; Home Copy v1.5; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.3; Value Construction Copy v0.2; Labs & Applications Experience v0.5; Labs & Applications Copy v0.4.
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.8; Home Experience v1.7; Home Copy v1.5; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.2; Systems Engineering Copy v0.2; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.3; Value Construction Copy v0.2; Labs & Applications Experience v0.6; Labs & Applications Copy v0.5.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -859,3 +859,6 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 ### P07 naming alignment — 2026-11-25
 - Aligns the proposed experience name to **ValueLabsOS Preview** and retains **TGCV Playground**.
 - The existing prototype is named **Demostrador de cadena completa de TGCV** in Spanish copy and **TGCV Full Chain Demo** in English copy.
+
+### v3.9 — 2026-11-25
+- Updates the current P04/P07 source-version inventory and aligns P07 naming references with Experience v0.6 and Copy v0.5. No scientific claim or publication status is changed.
