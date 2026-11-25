@@ -252,4 +252,41 @@ Con K=100 observaciones IID, la probabilidad de que el máximo muestral supere e
 
 ### 10.3 Límite de uso
 
-RG-06 y RG-07 quedan evaluados con evidencia existente, pero no autorizan ejecución. RG-04 continúa bloqueante mientras la protección efectiva del GitHub Environment no pueda verificarse. El cierre técnico de RG-02/RG-05 queda pendiente del resultado de la suite determinista integrada sobre el HEAD final.
+RG-06 y RG-07 quedan evaluados con evidencia existente, pero no autorizan ejecución. RG-04 continúa bloqueante mientras la protección efectiva del GitHub Environment no pueda verificarse. El estado RG-02 y RG-05 se actualiza en las subsecciones 10.4 y 10.5, a partir de la descarga productiva del artefacto y de la validación integrada posterior a esta adjudicación.
+
+### 10.4 RG-02 — verificación material del artefacto productivo
+
+El artefacto original `c10s-f5-g7-resource-profile-v1-1` (ID `14908914198`, run `45365559253`) se descargó directamente mediante el endpoint de descarga de artefactos de GitHub Actions, sin reconstruir ni reempaquetar el ZIP. Se calculó SHA-256 sobre los bytes descargados y sobre el único miembro JSON extraído:
+
+| Objeto | SHA-256 esperado en manifest | SHA-256 calculado |
+|---|---|---|
+| ZIP original | `14e317a6f38d9934dc0903b4b038da5ffc580c9bb076d26dbcc6e47cfe568e21` | `14e317a6f38d9934dc0903b4b038da5ffc580c9bb076d26dbcc6e47cfe568e21` |
+| JSON extraído | `005ef265fa7dd8812c2572d9187cc7943c365506dc8e1169f1883487c0094d9f` | `005ef265fa7dd8812c2572d9187cc7943c365506dc8e1169f1883487c0094d9f` |
+
+El ZIP contiene exactamente un miembro: `c10s-f5-g7-resource-profile.json`. El manifiesto v003 liga el perfil al repositorio `jcarmonabastida-pixel/TGCV`, ID `1348691577`, al run `45365559253`, al commit fuente `8b62b89a78681cc39bdd4c0cbb76c43ef073c1e9`, namespace `c10s_f5_g7_resource_v1_1`, K=100, C0_B=C5_B=1.000 y scope resource-only con `coverage_adjudication=NOT_PERFORMED`.
+
+La validación integrada del consumidor contra la forma real de metadatos de GitHub y los casos negativos de identidad de repositorio pasó en el run `45550608608`. Ese run terminó SUCCESS con 8/8 jobs en el commit `60c34a17606627a62c7f0db2064855985cf2efe9`.
+
+**Estado RG-02: PASS.** La descarga y la integridad de los bytes del artefacto existente están verificadas; esto no equivale a ejecutar G7 ni autoriza consumir el perfil para una ejecución científica.
+
+### 10.5 RG-05 — inventario único y clausura de fuentes
+
+El inventario tipado único `c10s_f5_g7_source_inventory.json` contiene 55 rutas: 20 clasificadas como `compute_path` y 55 como `execution_source` (con solapamiento tipado). Incluye el código transitivo importado por el ejecutor, tests y workflows, y el fixture ZIP inmutable. El generador produce los manifests derivados y los hashes desde el árbol Git; las pruebas detectan dependencias transitivas ausentes, referencias de workflow/test fuera del inventario y fixtures no identificados.
+
+La suite de validación del run `45550608608`, commit `60c34a17606627a62c7f0db2064855985cf2efe9`, terminó SUCCESS 8/8. El job de compilación y las particiones de autorización, perfil, artefactos, shards, bootstrap y polinomios terminaron todas en SUCCESS.
+
+**Estado RG-05: PASS.** El inventario y su cobertura quedan validados en ese commit. No se ha modificado `main` ni se ha promovido el PR #119.
+
+### 10.6 Estado consolidado del gate
+
+| Requisito | Estado actualizado | Evidencia / límite |
+|---|---|---|
+| RG-01 | PASS determinista | Contrato de nombre y descubrimiento alineado |
+| RG-02 | PASS | ZIP productivo descargado; hashes ZIP/JSON coincidentes; verificación integrada 8/8 |
+| RG-03 | PASS determinista | Identidad Git / compute path |
+| RG-04 | NOT_VERIFIABLE — BLOQUEANTE | Falta comprobar en Settings la protección efectiva del Environment y el requisito de reviewer |
+| RG-05 | PASS | Inventario tipado único; cobertura integrada 8/8 |
+| RG-06 | CONDITIONAL | 300 s/fase es reserva de ingeniería; margen calculado de 36,107 s frente a 9.000 s |
+| RG-07 | CONDITIONAL | K=100 no garantiza la cola ni el máximo futuro; proyección de scheduling condicionada |
+
+**Decisión:** el gate instrumental sigue cerrado a ejecución G7 mientras RG-04 permanezca NOT_VERIFIABLE. RG-06/RG-07 son limitaciones de planificación expresamente documentadas, no autorizaciones. No se inicia G7, Tier-A, holdout, cobertura, replay científico ni ejecución causal C10.
