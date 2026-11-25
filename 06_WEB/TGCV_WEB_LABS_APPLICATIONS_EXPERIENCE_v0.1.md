@@ -1,12 +1,12 @@
-# TGCV — Labs & Applications Experience v0.5
+# TGCV — Labs & Applications Experience v0.6
 
 **Identifier:** TGCV-WEB-P07-EXP-001  
-**Version:** 0.5  
+**Version:** 0.6  
 **Date:** 2026-11-25  
 **Status:** WORKING EXPERIENCE SPECIFICATION — NOT PUBLICATION APPROVAL  
 **Branch:** strategy/tgcv-web-master  
 **Page:** P07 — Labs & Applications  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.7; Content Blueprint v3.8.
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.8; Content Blueprint v3.9.
 
 ---
 
@@ -306,3 +306,6 @@ The page is editorially acceptable when:
 
 ### v0.6 — 2026-11-25
 - Applies the requested public naming: ValueLabsOS Preview and TGCV Playground; specifies the Spanish label “Demostrador de cadena completa de TGCV” and retains “TGCV Full Chain Demo” in English. The existing prototype and proposed Playground remain distinct.
+
+### v0.6 metadata and naming alignment — 2026-11-25
+- Updates the document version and parent references after the approved Spanish/English public-name corrections.
