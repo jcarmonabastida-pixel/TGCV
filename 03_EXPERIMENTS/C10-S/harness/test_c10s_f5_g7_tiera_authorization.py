@@ -259,6 +259,11 @@ class F5G7AuthorizationTests(unittest.TestCase):
         self.assertIn('run.get("head_branch") == current_branch', workflow)
         self.assertIn('run.get("event") == "workflow_dispatch"', workflow)
         self.assertIn("actions/workflows/c10-s-f5-g7-tiera-calibration.yml/runs", workflow)
+        self.assertIn("contents: write", workflow)
+        self.assertIn("Permanently consume authorization on its dedicated branch", workflow)
+        self.assertIn("TGCV-C10S-G7-AUTHORIZATION-CONSUMED-001", workflow)
+        self.assertIn('gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$MARKER_PATH"', workflow)
+        self.assertIn('test "$PARENT_SHA" = "$WORKFLOW_SHA"', workflow)
         rerun_guard = "if: needs.authorization.outputs.approved == 'true' && github.run_attempt == 1"
         self.assertEqual(workflow.count(rerun_guard), 3)
         validator_source = Path(__file__).with_name("validate_c10s_f5_g7_tiera_authorization.py").read_text(encoding="utf-8")
