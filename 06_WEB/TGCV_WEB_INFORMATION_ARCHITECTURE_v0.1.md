@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 2.3  
+**Version:** 2.4  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -578,6 +578,8 @@ The approved top-level navigation is:
 
 Systems Thinking is transversal, not a separate first-release page: introduce it on Home, explain its role in Explore and develop its methods/foundations in Research. Do not retain Community as a top-level first-release destination. Do not publish empty destinations.
 
+**Navigation consistency rule:** Value Construction must appear consistently in the top-level first-release navigation, Home's ecosystem map, Home's explicit visitor-interest routes, and the Spanish and English versions of Home Copy. Its presence only in the footer or explanatory ecosystem prose does not satisfy the navigation requirement.
+
 ### 16.4 Home narrative and language
 
 Home sequence: opening question → discovery → second visitor question and concise answer → tangible example → conceptual explanation → ecosystem → exploration. Opening question: «¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?» Second question: «¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?» Its concise answer connects newly accessible transformations with new options and possible opportunities for value, without guaranteeing execution, favourable outcomes or value. Working headline: «Comprende cómo cambian las posibilidades de un sistema.» The example is migration of a software configuration between two distinct environments. It is an illustrative editorial example, not an existing validated demonstrator.
@@ -823,3 +825,7 @@ Do not assume these versions remain current when development begins. Recheck exa
 
 ### v2.3 — 2026-11-25
 - Corrects the authoritative first-release navigation list to include Value Construction between Transformational Intelligence and Labs & Applications.
+
+
+### v2.4 — 2026-11-25
+- Adds an explicit cross-document navigation consistency rule for Value Construction, including Home's bilingual visitor routes.
