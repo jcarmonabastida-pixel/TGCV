@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 1.8  
+**Version:** 2.2  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -581,7 +581,7 @@ Systems Thinking is transversal, not a separate first-release page: introduce it
 
 Home sequence: opening question → discovery → second visitor question and concise answer → tangible example → conceptual explanation → ecosystem → exploration. Opening question: «¿Qué tendría que cambiar para que un sistema pudiera hacer algo que hoy no puede hacer?» Second question: «¿Qué nuevas opciones aparecen cuando un sistema puede hacer algo que antes no estaba a su alcance?» Its concise answer connects newly accessible transformations with new options and possible opportunities for value, without guaranteeing execution, favourable outcomes or value. Working headline: «Comprende cómo cambian las posibilidades de un sistema.» The example is migration of a software configuration between two distinct environments. It is an illustrative editorial example, not an existing validated demonstrator.
 
-The first public release is Spanish and English, conceptually and editorially equivalent. Adapt naturally rather than translate literally.
+The first public release is Spanish and English, conceptually and editorially equivalent. Adapt naturally rather than translate literally. Home must introduce the accessible ecosystem map that distinguishes TGCV, Systems Thinking, Systems Engineering, Transformational Intelligence, Value Construction/VALUE, Labs & Applications and proposed ValueLabOS.
 
 ### 16.5 Efecto Ajá and release acceptance
 
@@ -812,3 +812,9 @@ Do not assume these versions remain current when development begins. Recheck exa
 - Adds Value Construction as a first-release destination between Transformational Intelligence and Labs & Applications.
 - Adds the public conceptual map and defines its non-linear, non-causal explanatory role.
 - Records the VALUE lifecycle, clinic-case use and independent-evaluation guardrails.
+
+
+### v2.2 — 2026-11-25
+- Synchronises the approved first-release navigation with the new Value Construction destination and its position after Transformational Intelligence.
+- Updates Home's Experience and Copy authorities to v1.5 and v1.2.
+- Makes the public ecosystem map a Home-level explanatory element and preserves the distinctions among TGCV, VALUE, ValueLabOS and Labs & Applications.
