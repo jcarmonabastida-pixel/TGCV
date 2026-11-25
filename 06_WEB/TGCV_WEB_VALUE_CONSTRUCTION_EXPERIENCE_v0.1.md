@@ -1,9 +1,9 @@
 # TGCV — Value Construction Experience
 
 **Identifier:** TGCV-WEB-VALUE-CONSTRUCTION-EXPERIENCE-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-25  
-**Status:** EXPERIENCE SPECIFICATION — WORKING DRAFT  
+**Status:** EXPERIENCE SPECIFICATION — WORKING DRAFT; narrative emphasis approved  
 **Branch:** `strategy/tgcv-web-master`  
 **Page:** P06 — Value Construction  
 **Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Content Blueprint v2.7.  
@@ -58,9 +58,11 @@ After visiting the page, a visitor should be able to:
 
 ## 4. Narrative and experience principles
 
-The page should follow this progression:
+The page should follow this visitor journey:
 
-**Contextual value → Opportunity → System understanding → Alternatives and evidence → Decision → Action → Learning**
+**Contextual value → Frame the opportunity → Understand the system → Explore alternatives and evidence → Decide responsibly → Act when authorised → Learn and renew.**
+
+The editorial emphasis is deliberate: visitors should first discover why an opportunity must be framed and the system understood before they encounter the framework's operational cycle in detail. The page must not lead with a list of phases or make VALUE look like a recipe. Only after the opportunity/system reasoning and the decision/action/learning logic are clear should the VCF cycle be presented as a concise organising structure.
 
 This is a learning narrative, not a guaranteed causal chain. The framework is iterative: phases may be revisited when evidence, context or assumptions change. A decision may legitimately be to gather more evidence, defer or stop.
 
@@ -87,7 +89,7 @@ Introduce:
 - **Value Opportunity:** a contextualised possibility that may warrant investigation; it is not a solution.
 - The value question: for whom is an outcome valuable, which outcome matters, over what horizon and under what constraints?
 
-Explain the framework's operating cycle as a compact overview: **ALIGN** is the entry/alignment and governance condition, followed by **SENSE → CONNECT → DESIGN → DECIDE → ACT → LEARN**. This is the VCF operating cycle, not a second methodology or a guaranteed linear route.
+Do not explain the full VCF cycle at the opening. Establish that VALUE provides a structured way to move from understanding to responsible action and learning; reveal the phase names and their roles later, after the visitor has understood opportunity framing, system understanding, alternatives, evidence and decision boundaries. When introduced, show **ALIGN** as the entry/alignment and governance condition, followed by **SENSE → CONNECT → DESIGN → DECIDE → ACT → LEARN**. This is the VCF operating cycle, not a second methodology or a guaranteed linear route.
 
 Establish the identity boundaries:
 - TGCV is the research programme.
@@ -245,3 +247,4 @@ These assets are working methodological and editorial sources, not proof of empi
 ## Change history
 
 - **v0.1 — 2026-11-25:** first Experience specification drafted from the current VALUE methodological architecture, A1–A8 specifications, CLINIC-001 v1.1 fictional case, identity architecture and Value Discovery Sprint. Establishes the page narrative, public scope, cross-page relationships and epistemic guardrails; no Copy or visual design is included.
+- **v0.2 — 2026-11-25:** records the approved opportunity/system-understanding-first narrative. The full VCF cycle is introduced only after the visitor has followed the reasoning from opportunity and system understanding through alternatives, evidence, decisions, action and learning.
