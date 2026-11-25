@@ -1,11 +1,11 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 2.5
+**Version:** 2.6
 **Date:** 2026-11-25  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.3; Explore Experience v1.0; Explore Copy v0.9; Research Experience v0.9; Research Copy v0.8; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.1.
+**Parent documents:** Web Master Brief v1.8; Information Architecture v2.5; Home Experience v1.6; Home Copy v1.3; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.8; Systems Engineering Experience v0.1; Systems Engineering Copy v0.1; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.1.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -116,6 +116,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 - A clear warning that accessibility does not guarantee execution, favourable outcomes or value.
 - Explain that **Accessibility → Execution → Outcome → Value** is an analytical distinction, not a complete causal model; represent trajectory across states and transformations, not as another stage.
 - Links to the formal Research page for visitors who want detail.
+- At the end, distinguish conceptual/research routes (Research, Systems Engineering, Transformational Intelligence) from a separate applied-framework cross-connection to Value Construction. Describe VALUE as complementary to TGCV, with its own methodological foundations and evaluation; do not imply causal derivation, validation by TGCV or automatic value creation.
 
 **Recommended explanatory sequence:**
 1. A system has a current state and operates under conditions.
@@ -762,3 +763,8 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Updates parent-document references to current Home, Explore, Research, Systems Engineering and Transformational Intelligence artifacts.
 - Clarifies that the Explore sequence is an analytical distinction, not a complete causal model, and that trajectory is represented across states and transformations.
 - Updates the authoritative Explore Experience and Copy references to v1.0 and v0.9.
+
+### v2.6 — 2026-11-25
+- Updates Explore Experience and Copy to v1.1 and v1.0.
+- Adds Value Construction as a clearly differentiated applied-framework cross-connection at the end of Explore, not as a fourth conceptual deepening route or causal continuation.
+- Requires bilingual explanation of the complementary but independently grounded/evaluated relationship between TGCV and VALUE.
