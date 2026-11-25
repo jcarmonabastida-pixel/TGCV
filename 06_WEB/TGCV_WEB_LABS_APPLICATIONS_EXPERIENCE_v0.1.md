@@ -34,7 +34,7 @@ Labs & Applications is an activity and exploration space within the TGCV ecosyst
 
 By the end of the page, visitors should understand that:
 1. some TGCV-related software and bounded synthetic demonstrations already exist;
-2. the area **Explore the possibilities — Experiencias para descubrir y experimentar** introduces three distinct proposed experiences: TGCV Playground, Value Explorer and ValueLabOS Preview; their availability must be stated honestly;
+2. the area **Explore the possibilities — Experiencias para descubrir y experimentar** introduces three distinct proposed experiences: TGCV Playground, Value Explorer and ValueLabsOS Preview; their availability must be stated honestly;
 3. each demonstrator or experiment answers a limited question and has explicit assumptions and limitations;
 4. the three featured application contexts are exploratory candidates, not validated applications;
 5. additional contexts have been identified and the search for relevant cases remains open;
@@ -116,7 +116,7 @@ It is complementary to TGCV Playground:
 
 Value Explorer is not VALUE itself, not a replacement for the Value Construction page and not an operational tool unless an actual usable implementation is verified. It must preserve the methodological status and limitations already established for VALUE.
 
-#### 3.3 ValueLabOS Preview
+#### 3.3 ValueLabsOS Preview
 
 A first, bounded introduction to the idea behind ValueLabOS: a digital and collaborative environment intended to facilitate the application of VALUE, experimentation, documentation of cases, evaluation of results, sharing of learning and evolution of the framework.
 
@@ -201,7 +201,7 @@ State plainly that the first release does not automatically offer:
 - guaranteed improvement, return on investment or value-creation services;
 - a physical laboratory network;
 - an open interactive platform or standing collaboration programme;
-- functionality for TGCV Playground, Value Explorer or ValueLabOS Preview beyond what has actually been implemented and verified.
+- functionality for TGCV Playground, Value Explorer or ValueLabsOS Preview beyond what has actually been implemented and verified.
 
 End the Application-Fit area with a proportionate invitation: TGCV is exploring different application contexts and also wants to discover other problems and opportunities together with people and organisations interested in investigating them. The invitation should help visitors recognise that their own context may be relevant.
 
@@ -238,7 +238,7 @@ Spanish and English versions must have the same:
 - distinction between asset maturity and evidence status;
 - availability and participation boundaries.
 
-Adapt naturally to each language. Preserve public names such as TGCV Full Chain Demo, TGCV Playground, Value Explorer and ValueLabOS Preview. Use plain-language descriptions for demonstrators; do not expose internal TGCV identifiers or internal acronyms. Recognised domain terminology such as EV–Grid may be retained where it improves clarity and traceability. Do not translate internal identifiers into public-facing labels.
+Adapt naturally to each language. Use the Spanish label “Demostrador de cadena completa de TGCV” and the English label “TGCV Full Chain Demo” for the existing prototype. Preserve TGCV Playground, Value Explorer and ValueLabsOS Preview as experience names in both languages. Use plain-language descriptions for demonstrators; do not expose internal TGCV identifiers or internal acronyms. Recognised domain terminology such as EV–Grid may be retained where it improves clarity and traceability. Do not translate internal identifiers into public-facing labels.
 
 ## 6. Source and authority notes
 
@@ -270,7 +270,7 @@ The candidate register identifies eight initial candidates and explicitly states
 - `05_ASSETS/Business_Translation/TGCV_EXECUTIVE_BUSINESS_BRIDGE_001.md`: broad opportunity families and the proposal for bounded, comparative exploration; not validated commercial claims or an approved service offer.
 - `05_ASSETS/Business_Translation/TGCV_VALUE_VALUELABOS_IDENTITY_ARCH_v0.1.md`: distinction between TGCV as research programme, VALUE as applied framework and ValueLabOS as a proposed digital and collaborative environment. It does not establish a released product.
 
-The descriptions of TGCV Playground, Value Explorer and ValueLabOS Preview in this Experience are bounded editorial definitions for the website. They do not certify implementation or public availability.
+The descriptions of TGCV Playground, Value Explorer and ValueLabsOS Preview in this Experience are bounded editorial definitions for the website. They do not certify implementation or public availability.
 
 ## 7. Acceptance criteria for Experience and subsequent Copy
 
@@ -278,7 +278,7 @@ The page is editorially acceptable when:
 1. visitors can distinguish Labs & Applications from Research and Value Construction;
 2. TGCV Full Chain Demo, the cross-domain transformation mapping demonstrator and TGCV Playground are clearly distinct;
 3. Value Explorer is introduced as an experience related to, but not identical with, VALUE;
-4. ValueLabOS Preview is described as an initial view of a proposed environment, not as a released product;
+4. ValueLabsOS Preview is described as an initial view of a proposed environment, not as a released product;
 5. no functionality or public availability is claimed without verification;
 6. the cross-domain mapping demonstrator is described as bounded synthetic methodological evidence, including the equivalent-baseline finding;
 7. the three featured contexts are clearly exploratory and no additional candidate is presented as qualified;
@@ -295,10 +295,14 @@ The page is editorially acceptable when:
 - **v0.2 — 2026-11-25:** Reworked the first-release Experience after user clarification. Adds TGCV Playground, Value Explore and ValueLabOS — First Insight as distinct proposed experiences; separates them from TGCV Full Chain Demo and TSTC; expands the additional Application-Fit candidate list and Business Translation opportunity families; adds a careful invitation to suggest further contexts. Excludes unrelated initiatives and preserves all evidence and availability boundaries. No scientific artifact, claim, evidence state or execution authorization is modified.
 
 
-- **v0.3 — 2026-11-25:** Establishes the explicit area **Explore the possibilities — Experiencias para descubrir y experimentar**, standardises the three experience names as TGCV Playground, Value Explorer and ValueLabOS Preview, and relocates the participation invitation to the end of Application-Fit. The invitation is an open call to discover problems and opportunities with interested people and organisations, not a formal intake process. Participation forms, eligibility and rules are reserved for a possible separate Participation area/page; its inclusion and scope in the first release remain undecided.
+- **v0.3 — 2026-11-25:** Establishes the explicit area **Explore the possibilities — Experiencias para descubrir y experimentar**, standardises the three experience names as TGCV Playground, Value Explorer and ValueLabsOS Preview, and relocates the participation invitation to the end of Application-Fit. The invitation is an open call to discover problems and opportunities with interested people and organisations, not a formal intake process. Participation forms, eligibility and rules are reserved for a possible separate Participation area/page; its inclusion and scope in the first release remain undecided.
 
 
 - **v0.4 — 2026-11-25:** Develops the five Business Translation opportunity families into context-specific explanations of what TGCV may help make visible and the value hypotheses that would need to be tested. Clarifies the distinction between broad opportunity families, Application-Fit contexts and bounded demonstrators/experiments. No application or value claim is upgraded.
 
 
 - **v0.5 — 2026-11-25:** Replaces the internal prototype codename with the public name TGCV Full Chain Demo; removes the internal demonstrator acronym and execution-version labels from visitor-facing descriptions; describes the synthetic demonstrator and the electric-vehicle/electricity-grid context in plain language. Internal source filenames and audit references are retained only in the source notes for traceability. No evidence status or scientific claim is upgraded.
+
+
+### v0.6 — 2026-11-25
+- Applies the requested public naming: ValueLabsOS Preview and TGCV Playground; specifies the Spanish label “Demostrador de cadena completa de TGCV” and retains “TGCV Full Chain Demo” in English. The existing prototype and proposed Playground remain distinct.
