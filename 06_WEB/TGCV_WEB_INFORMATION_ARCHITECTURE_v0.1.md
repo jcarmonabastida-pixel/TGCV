@@ -831,8 +831,8 @@ The five Business Translation families are opportunity areas, not validated mark
 
 The current P08 visitor experience and bilingual working copy are:
 
-- `06_WEB/TGCV_WEB_ABOUT_EXPERIENCE_v0.1.md` — Experience v0.1.
-- `06_WEB/TGCV_WEB_ABOUT_COPY_v0.1.md` — bilingual Copy v0.1.
+- `06_WEB/TGCV_WEB_ABOUT_EXPERIENCE_v0.1.md` — Experience v0.3.
+- `06_WEB/TGCV_WEB_ABOUT_COPY_v0.1.md` — bilingual Copy v0.3.
 
 About establishes TGCV's identity, purpose, research question, working principles, evidence discipline and transparency commitments. It must not imply a staffed institute, formal company or research centre, external scientific board, institutional affiliation, consortium, active community or formal participation programme unless independently established and authorised. It must not invent team biographies, partners, funders, endorsements or contact details.
 
@@ -875,3 +875,6 @@ The page is an orientation layer, not a substitute for Research's scientific acc
 ### v3.2 — 2026-11-26
 - Records the user decision to defer Contact until a domain-associated account or other real, monitored communication channel is available.
 - Updates About Experience and Copy to v0.2 after focused editorial review; no Contact CTA or implied participation process is permitted while the destination is deferred.
+
+### v3.3 — 2026-11-26
+- Synchronises P08 About Experience and bilingual Copy references to v0.3 after the final Spanish/English editorial consistency check.
