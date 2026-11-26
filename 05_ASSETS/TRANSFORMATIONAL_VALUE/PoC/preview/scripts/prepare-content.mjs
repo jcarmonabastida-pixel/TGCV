@@ -7,7 +7,7 @@ import { promisify } from "node:util";
 const execFileAsync = promisify(execFile);
 const here = dirname(fileURLToPath(import.meta.url));
 const previewRoot = resolve(here, "..");
-const repoRoot = resolve(previewRoot, "../../../../..");
+const repoRoot = resolve(previewRoot, "../../../..");
 const contentRoot = resolve(repoRoot, "05_ASSETS/TRANSFORMATIONAL_VALUE");
 const outputRoot = resolve(previewRoot, "src/content/docs");
 
