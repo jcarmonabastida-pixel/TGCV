@@ -128,9 +128,9 @@ For this reason, the accessibility criterion should be declared before examining
 
 ## 3. The accessible transformation space
 
-Once candidate transformations have been delimited and an accessibility criterion specified, we can represent the set—or structure—of transformations the system can perform under the conditions being considered. We call this representation the **accessible transformation space**, denoted by \(T_{acc}\).
+Once candidate transformations have been delimited and an accessibility criterion specified, we can represent the set—or structure—of transformations that are available for realisation by the system under the conditions being considered. We call this representation the **accessible transformation space**, denoted by \(T_{acc}\).
 
-The word *space* does not necessarily imply a geometric space or a collection that must be exhaustively enumerated. It refers to an analytical structure of delimited possibilities. Depending on the domain, that structure may be represented through sets, relations, functions, admissibility states or other suitable forms.
+The word *space* does not necessarily imply a geometric space or a collection that must be exhaustively enumerated. It refers to an analytical structure of delimited possibilities. Depending on the domain, that structure may be represented through sets, relations, functions, admissibility states or other suitable forms. A set-based representation identifies transformations as elements of \(T_{acc}\). However, membership alone may not capture all the relevant information. In some domains, relationships, dependencies, ordering constraints or other structural properties between transformations are also necessary to describe the accessible space adequately. The choice of representation should therefore reflect the analytical requirements of the domain and the question being addressed.
 
 Its content depends on three methodological decisions:
 
@@ -187,6 +187,8 @@ T_{acc,t+1}=\{A,B,E,F\}
 Both spaces contain four transformations. Looking only at their size would suggest that nothing changed. Their composition, however, is different: two transformations persist, two disappear and two new ones are added. Reconfiguration has occurred while cardinality is conserved.
 
 This introduces an important distinction: **the number of transformations does not, by itself, describe the identity or structure of the space**. Two spaces of equal size may contain different transformations. An increase in number does not necessarily imply improvement either: the new transformations may be irrelevant, costly, harmful or less valuable to some stakeholders.
+
+Comparisons of cardinality are meaningful only when the system boundaries, candidate universes, transformation identities and levels of granularity are sufficiently compatible. Otherwise, an apparent difference in the number of accessible transformations may reflect differences in how the spaces were delimited or represented rather than a change in the system itself. Even when cardinalities are comparable, a larger space does not necessarily indicate greater capability or improvement.
 
 Where transformations can be identified consistently across time, it is useful to distinguish:
 
