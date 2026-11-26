@@ -5,7 +5,7 @@ title: "Observing transformation-space reconfiguration across two domains"
 language: en
 content_type: learning_resource
 status: draft
-version: 0.1
+version: 0.2
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -65,7 +65,7 @@ S_t \rightarrow T_{acc,t} \rightarrow T_{real,t}
 
 Descriptors for persistence, added identities, removed identities, turnover and net cardinality change were derived from the accessible spaces at the two states. Set operations were performed within each domain; cross-domain comparison was limited to the structure of the descriptors.
 
-The source evidence had already been frozen. The comparative analysis was a secondary analysis of those records, not a new scientific execution. Independent reconstructions were used to check the consistency of the source records, and an independent mathematical audit checked the derived descriptors.
+The source evidence had already been frozen. The comparative analysis was a secondary analysis of those records, not a new scientific execution. For each transition, the initial accessible space was derived from the source state, while the successor space was recomputed from the reconstructed successor state. The independent grid-planning reconstructions agreed on the 21-node, 20-edge tree structure. In the probabilistic model, the two executors each reconstructed 25 records, with a matching source-fixture hash and zero structural deviations. An independent mathematical audit then checked the 36 comparative records and their derived descriptors.
 
 ## Results
 
