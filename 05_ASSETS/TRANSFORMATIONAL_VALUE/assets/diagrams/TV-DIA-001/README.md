@@ -22,7 +22,7 @@ The source is a shared conceptual teaching asset for the Spanish and English ver
 
 **Caption**
 
-El estado y las condiciones relevantes determinan el espacio de transformaciones accesibles. Una transformación accesible puede realizarse o no; si se realiza, conduce a un estado sucesor desde el que se evalúa el siguiente espacio accesible.
+El espacio de transformaciones accesibles se evalúa a partir del estado del sistema y de las condiciones relevantes. Una transformación accesible puede realizarse o no; si se realiza, conduce a un estado sucesor desde el que se evalúa el siguiente espacio accesible.
 
 **Alternative text**
 
@@ -32,7 +32,7 @@ Diagrama horizontal de cinco etapas: estado y condiciones relevantes; espacio de
 
 **Caption**
 
-The system state and relevant conditions determine its accessible transformation space. An accessible transformation may or may not be realised; if it is, it leads to a successor state from which the next accessible space is evaluated.
+The accessible transformation space is evaluated from the system state and relevant conditions. An accessible transformation may or may not be realised; if it is, it leads to a successor state from which the next accessible space is evaluated.
 
 **Alternative text**
 
