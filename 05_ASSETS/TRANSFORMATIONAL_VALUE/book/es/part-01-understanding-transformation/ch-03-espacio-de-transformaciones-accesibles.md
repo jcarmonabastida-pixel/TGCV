@@ -5,7 +5,7 @@ title: "El espacio de transformaciones accesibles"
 language: es
 content_type: chapter
 status: draft
-version: 0.12
+version: 0.13
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -204,34 +204,54 @@ Estas son descripciones estructurales, no puntuaciones de calidad. La forma adec
 
 Para estudiar la evolución temporal podemos comparar el espacio accesible en dos momentos sucesivos. Una secuencia analítica útil es:
 
-\[
-S_t \rightarrow T_{acc,t} \rightarrow T_{real,t}
-\rightarrow S_{t+1} \rightarrow T_{acc,t+1}
-\]
+\\[
+(S_t,C_t,L_t)\\rightarrow T_{acc,t}
+\\]
 
-La secuencia distingue el estado inicial, las transformaciones accesibles, la transformación que efectivamente se realiza, el estado resultante y el espacio accesible bajo las nuevas condiciones. Las flechas organizan la observación; no deben interpretarse como una ley causal universal. La relación entre una transformación realizada, el estado sucesor y la accesibilidad posterior debe examinarse en cada caso.
+\\[
+T_{acc,t}\\rightarrow T_{real,t}\\rightarrow S_{t+1}
+\\]
+
+\\[
+(S_{t+1},C_{t+1},L_{t+1})\\rightarrow T_{acc,t+1}
+\\]
+
+Esta secuencia representa una organización analítica de las observaciones, no una dinámica universal ni una afirmación de que toda transición de estado proceda exclusivamente de una transformación realizada dentro del sistema. Los cambios contextuales y las condiciones externas también pueden modificar el espacio accesible.
 
 Cuando las transformaciones pueden identificarse de forma consistente entre dos momentos, podemos describir el cambio mediante varios indicadores:
 
-\[
-\begin{aligned}
+\\[
+\\begin{aligned}
 A_t &= |T_{acc,t}| \\
 A_{t+1} &= |T_{acc,t+1}| \\
-G_t &= |T_{acc,t+1} \setminus T_{acc,t}| \\
-L_t &= |T_{acc,t} \setminus T_{acc,t+1}| \\
-P_t &= |T_{acc,t} \cap T_{acc,t+1}| \\
+G_t &= |T_{acc,t+1} \\setminus T_{acc,t}| \\
+L_t &= |T_{acc,t} \\setminus T_{acc,t+1}| \\
+P_t &= |T_{acc,t} \\cap T_{acc,t+1}| \\
 R_t &= G_t + L_t \\
 D_t &= A_{t+1}-A_t = G_t-L_t
-\end{aligned}
-\]
+\\end{aligned}
+\\]
 
-Aquí, \(A_t\) y \(A_{t+1}\) son las cardinalidades inicial y sucesora; \(G_t\), las identidades incorporadas; \(L_t\), las retiradas; \(P_t\), las que persisten; \(R_t\), la rotación total de identidades; y \(D_t\), el cambio neto de cardinalidad. Estas cantidades describen aspectos distintos: el cambio neto no revela por sí solo cuántas identidades se han sustituido, y la rotación no indica si el espacio ha aumentado o disminuido en términos netos.
+Aquí, \\(A_t\\) y \\(A_{t+1}\\) son las cardinalidades inicial y sucesora; \\(G_t\\), las identidades incorporadas; \\(L_t\\), las retiradas; \\(P_t\\), las que persisten; \\(R_t\\), el volumen de identidades añadidas y retiradas; y \\(D_t\\), el cambio neto de cardinalidad. Estas operaciones presuponen que las transformaciones se han identificado con criterios compatibles en ambos momentos y que sus identidades pueden compararse. Si cambia la granularidad, la definición de transformación o el procedimiento de identificación, las diferencias observadas podrían reflejar cambios en la representación y no necesariamente cambios en el sistema.
+
+Las cantidades están relacionadas por las identidades:
+
+\\[
+A_{t+1}=P_t+G_t
+\\]
+\\[
+A_t=P_t+L_t
+\\]
+
+Estas relaciones permiten comprobar que la cardinalidad sucesora se compone de las transformaciones persistentes y las incorporadas, mientras que la cardinalidad inicial se compone de las persistentes y las retiradas. El volumen \\(R_t\\) no es una tasa normalizada de rotación: expresa el total de identidades añadidas y retiradas. Por ello, no debe compararse directamente entre espacios de tamaños muy distintos como si fuera una medida relativa.
+
+Estas cantidades describen aspectos distintos: el cambio neto no revela por sí solo cuántas identidades se han sustituido, y el volumen de identidades añadidas y retiradas no indica si el espacio ha aumentado o disminuido en términos netos.
 
 No es necesario reducir toda la dinámica a un único indicador. Un sistema puede mantener el mismo número de transformaciones y, aun así, experimentar una sustitución profunda. Otro puede ampliar el espacio incorporando opciones que apenas modifican las trayectorias que realmente puede seguir. La selección de descriptores debe responder a la pregunta analítica, a la calidad de los datos y a la semántica del dominio. Ninguno de estos descriptores constituye por sí mismo una puntuación de calidad, capacidad o valor.
 
-En algunos análisis puede estudiarse también el **alcance potencial a un paso**: el conjunto de estados sucesores estructuralmente posibles bajo una representación determinada. Este objeto no equivale a la ejecución observada ni a la alcanzabilidad efectiva en tiempo de ejecución. La evidencia disponible muestra que el cambio del espacio accesible y el cambio de ese alcance potencial pueden distinguirse; por tanto, no deben tratarse como una misma magnitud.
+En algunos análisis puede estudiarse también el **alcance potencial a un paso**: el conjunto de estados sucesores estructuralmente posibles desde un estado dado, bajo una representación y unas reglas de transición especificadas. Su composición y cardinalidad dependen de cómo se definan los estados y las transiciones en el modelo. Este objeto no equivale a la ejecución observada ni a la alcanzabilidad efectiva en tiempo de ejecución. La evidencia disponible muestra que el cambio del espacio accesible y el cambio de ese alcance potencial pueden distinguirse; por tanto, no deben tratarse como una misma magnitud.
 
-La comparación entre dominios exige una precaución adicional. Puede ser posible utilizar la misma estructura analítica en sistemas diferentes sin asumir que sus transformaciones concretas son equivalentes. La consistencia debe buscarse en el papel que desempeñan los conceptos —estado, accesibilidad, realización y estado sucesor— y no en imponer etiquetas idénticas a fenómenos distintos.
+La comparación entre dominios exige una precaución adicional. Puede ser posible utilizar una misma estructura analítica en sistemas diferentes sin asumir que sus transformaciones concretas, mecanismos o significados sean equivalentes. La consistencia debe buscarse en el papel que desempeñan los conceptos —estado, accesibilidad, realización y estado sucesor— y en la validez de las operaciones aplicadas, no en imponer etiquetas idénticas a fenómenos distintos. La equivalencia de los mecanismos o de los efectos debe establecerse mediante evidencia específica.
 
 ## 7. Qué muestra la evidencia acotada y qué no demuestra
 
