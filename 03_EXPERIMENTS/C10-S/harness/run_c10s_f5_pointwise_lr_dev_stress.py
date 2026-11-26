@@ -135,7 +135,7 @@ def _append_event(path: Path, event: str, **fields) -> None:
     }
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as stream:
-        stream.write(json.dumps(record, sort_keys=True, allow_nan=False) + "\\n")
+        stream.write(json.dumps(record, sort_keys=True, allow_nan=False) + "\n")
         stream.flush()
 
 
@@ -155,7 +155,7 @@ def _write_checkpoint(path: Path, *, source_revision: str, seed_audit: dict,
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text(
-        json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\\n",
+        json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\n",
         encoding="utf-8",
     )
     temporary.replace(path)
@@ -345,7 +345,7 @@ def run_stress(
         }
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(
-            json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\\n",
+            json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\n",
             encoding="utf-8",
         )
         _write_checkpoint(
