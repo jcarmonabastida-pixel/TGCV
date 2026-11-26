@@ -1248,6 +1248,25 @@ def _uni_divide_linear(poly, root):
     return _uni_monic(quotient)
 
 
+def _c10s_root_progress_event(event):
+    """Best-effort, opt-in JSONL telemetry; never participates in inference."""
+    import json
+    import os
+    from time import perf_counter
+
+    path = os.environ.get("TGCV_C10S_ROOT_PROGRESS_PATH")
+    if not path:
+        return
+    record = {"event": event, "monotonic_seconds": perf_counter()}
+    try:
+        with open(path, "a", encoding="utf-8") as stream:
+            stream.write(json.dumps(record, sort_keys=True, allow_nan=False) + "\\n")
+            stream.flush()
+    except OSError:
+        # Diagnostics must not change the mathematical result or status.
+        return
+
+
 def _uni_isolate_squarefree_unit_roots(
     poly,
     *,
@@ -1266,9 +1285,19 @@ def _uni_isolate_squarefree_unit_roots(
     if type(max_intervals) is not int or max_intervals < 1:
         raise ValueError("MAX_INTERVALS_MUST_BE_POSITIVE_INTEGER")
 
+    from time import perf_counter
+
+    isolation_started = perf_counter()
     current = _uni_monic(poly)
     exact_roots = []
     processed = 0
+    _c10s_root_progress_event({
+        "phase": "START",
+        "degree": len(current) - 1,
+        "width": str(target_width),
+        "max_depth": max_depth,
+        "max_intervals": max_intervals,
+    })
     while len(current) > 1:
         if _uni_evaluate(current, Fraction(0)) == 0:
             exact_roots.append(Fraction(0))
@@ -1283,6 +1312,18 @@ def _uni_isolate_squarefree_unit_roots(
 
         sequence = _uni_sturm_sequence(current)
         integer_sequence = _uni_sturm_integer_sequence(sequence)
+        coefficient_bits = max(
+            (abs(value).bit_length() for row in integer_sequence for value in row),
+            default=0,
+        )
+        _c10s_root_progress_event({
+            "phase": "STURM_SEQUENCE_READY",
+            "degree": len(current) - 1,
+            "sturm_sequence_length": len(integer_sequence),
+            "max_integer_coefficient_bits": coefficient_bits,
+            "processed_intervals": processed,
+            "elapsed_seconds": round(perf_counter() - isolation_started, 6),
+        })
         left_endpoint = Fraction(0)
         right_endpoint = Fraction(1)
         left_variations = _uni_sign_variations_integer(integer_sequence, left_endpoint)
@@ -1301,6 +1342,18 @@ def _uni_isolate_squarefree_unit_roots(
             if count == 0:
                 continue
             processed += 1
+            if processed == 1 or processed % 100 == 0:
+                _c10s_root_progress_event({
+                    "phase": "INTERVAL_PROGRESS",
+                    "degree": len(current) - 1,
+                    "processed_intervals": processed,
+                    "queued_intervals": len(queue),
+                    "current_depth": depth,
+                    "current_root_count": count,
+                    "isolated_roots": len(exact_roots) + len(intervals),
+                    "unresolved_intervals": len(unresolved),
+                    "elapsed_seconds": round(perf_counter() - isolation_started, 6),
+                })
             if processed > max_intervals:
                 unresolved.append({
                     "interval": (left, right),
@@ -1314,6 +1367,14 @@ def _uni_isolate_squarefree_unit_roots(
                     "depth": d,
                     "state": "NOT_PROCESSED_INTERVAL_BUDGET",
                 } for a, b, d, n, _, _ in queue if n)
+                _c10s_root_progress_event({
+                    "phase": "END",
+                    "status": "RESOURCE_LIMIT_WITH_REMAINDER",
+                    "processed_intervals": processed,
+                    "isolated_roots": len(exact_roots) + len(intervals),
+                    "unresolved_intervals": len(unresolved),
+                    "elapsed_seconds": round(perf_counter() - isolation_started, 6),
+                })
                 return {
                     "status": "RESOURCE_LIMIT_WITH_REMAINDER",
                     "exact_roots": tuple(sorted(exact_roots)),
@@ -1362,14 +1423,31 @@ def _uni_isolate_squarefree_unit_roots(
             current = _uni_divide_linear(current, discovered_rational_root)
             continue
 
+        final_status = "ISOLATION_COMPLETE" if not unresolved else "PARTIAL_ISOLATION"
+        _c10s_root_progress_event({
+            "phase": "END",
+            "status": final_status,
+            "processed_intervals": processed,
+            "isolated_roots": len(exact_roots) + len(intervals),
+            "unresolved_intervals": len(unresolved),
+            "elapsed_seconds": round(perf_counter() - isolation_started, 6),
+        })
         return {
-            "status": "ISOLATION_COMPLETE" if not unresolved else "PARTIAL_ISOLATION",
+            "status": final_status,
             "exact_roots": tuple(sorted(exact_roots)),
             "isolating_intervals": intervals,
             "unresolved_intervals": unresolved,
             "processed_intervals": processed,
         }
 
+    _c10s_root_progress_event({
+        "phase": "END",
+        "status": "ISOLATION_COMPLETE",
+        "processed_intervals": processed,
+        "isolated_roots": len(exact_roots),
+        "unresolved_intervals": 0,
+        "elapsed_seconds": round(perf_counter() - isolation_started, 6),
+    })
     return {
         "status": "ISOLATION_COMPLETE",
         "exact_roots": tuple(sorted(exact_roots)),
