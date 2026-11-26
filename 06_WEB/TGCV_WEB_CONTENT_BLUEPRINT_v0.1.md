@@ -25,11 +25,11 @@ It must let a first-time visitor:
 3. distinguish the research programme from Transformational Intelligence, systems engineering and AI;
 4. inspect the current scientific position and its limits;
 5. see how the analytical perspective may be explored across different system domains;
-6. find a real next step to explore, ask a question or follow the work.
+6. find a useful next step to explore or follow the work; a contact route is not promised in this release.
 
 The germinal site must be useful without the future Playground, without a new interactive simulator, without a community platform and without an unvalidated product proposition.
 
-**First-release scope:** seven substantive destinations plus a compact About / Governance destination. Contact / Participate is deferred until a domain-associated account or another real, monitored communication channel is available. Do not publish a navigation item merely because it appears in the long-term ecosystem map.
+**First-release scope:** seven substantive pages (Home, Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction and Labs & Applications) plus a compact About / Governance destination. Contact / Participate is deferred until a domain-associated account or another real, monitored communication channel is available. Do not publish a navigation item merely because it appears in the long-term ecosystem map.
 
 ## 1. Editorial architecture and first-release page set
 
@@ -43,9 +43,7 @@ The germinal site must be useful without the future Playground, without a new in
 5. **Value Construction** — VALUE as a complementary applied framework, including its lifecycle and a clearly labelled fictional clinic case.
 6. **Labs & Applications** — bounded demonstrators, synthetic work and exploratory application contexts.
 7. **About** — purpose, scope and governance.
-8. **Contact** — planned future destination; deferred from first release until a real, monitored domain-associated communication channel and proportionate privacy information are available.
-
-Systems Thinking is transversal, not a separate first-release destination. Do not expose a top-level Community area or publish empty/placeholder destinations. The footer may link to research sources, evidence/governance information, contact and repository where appropriate.
+Systems Thinking is transversal, not a separate first-release destination. Do not expose a top-level Community area or publish empty/placeholder destinations. The footer may link to research sources, evidence/governance information and the repository where appropriate. Do not link to Contact while it is deferred.
 
 ### 1.2 First-release page inventory
 
