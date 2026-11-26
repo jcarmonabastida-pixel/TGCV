@@ -63,7 +63,7 @@ jobs:
           set -euo pipefail
           python 03_EXPERIMENTS/C10-S/harness/build_c10s_f5_g7_authorization_manifest.py \
             --root . \
-            --approved-code-commit "$AUTH_SHA" \
+            --approved-code-commit "d6c93eaa747490751435e85d93170d478bd463ea" \
             --output-json "$RUNNER_TEMP/g7-authorization-manifest-bindings.json"
           python - <<'PY'
           import json, os
