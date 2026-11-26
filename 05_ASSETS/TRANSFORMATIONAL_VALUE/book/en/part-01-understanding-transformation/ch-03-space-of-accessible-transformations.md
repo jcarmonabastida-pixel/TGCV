@@ -166,11 +166,11 @@ This separation avoids two symmetrical errors: treating every possibility as an 
 
 ## 5. How an accessible space can change
 
-The accessible transformation space need not remain constant. It can change when the system's state or any relevant condition changes. Such change can take several forms:
+The accessible transformation space need not remain constant. It can change when the system's state or any relevant condition changes. Such change can be described along several dimensions, which are not necessarily mutually exclusive:
 
 - **Expansion:** transformations become accessible that were not accessible before.
 - **Contraction:** some transformations cease to be available.
-- **Reconfiguration:** the composition of the space changes even though its total size remains the same.
+- **Reconfiguration:** the composition of the space changes, regardless of whether its total size increases, decreases or remains the same.
 - **Substitution:** some transformations cease to be accessible and others take their place.
 
 The term **latent possibilities** is sometimes used for transformations that are already accessible but have not yet been realised. It should be used carefully: it does not refer to a mysterious capability or a merely imaginable possibility. It is meaningful only where the accessibility conditions can be justified independently. A transformation that becomes accessible for the first time may be described as newly enabled; one that no longer meets the relevant conditions ceases to belong to the accessible space.
@@ -186,7 +186,7 @@ T_{acc,t+1}=\{A,B,E,F\}
 
 Both spaces contain four transformations. Looking only at their size would suggest that nothing changed. Their composition, however, is different: two transformations persist, two disappear and two new ones are added. Reconfiguration has occurred while cardinality is conserved.
 
-This introduces an important distinction: **the number of transformations does not, by itself, describe the identity or structure of the space**. Two spaces of equal size may contain different transformations. An increase in number does not necessarily imply improvement either: the new transformations may be irrelevant, costly, harmful or less valuable to some stakeholders.
+This introduces an important distinction: **the number of transformations does not, by itself, describe the identity or structure of the space**. Two spaces of equal size may contain different transformations. An increase in number does not necessarily imply improvement either: the new transformations may be irrelevant, costly, harmful or less valuable to some stakeholders. Their evaluation requires a subsequent analysis and cannot be inferred from the expansion of the space alone.
 
 Comparisons of cardinality are meaningful only when the system boundaries, candidate universes, transformation identities and levels of granularity are sufficiently compatible. Otherwise, an apparent difference in the number of accessible transformations may reflect differences in how the spaces were delimited or represented rather than a change in the system itself. Even when cardinalities are comparable, a larger space does not necessarily indicate greater capability or improvement.
 
