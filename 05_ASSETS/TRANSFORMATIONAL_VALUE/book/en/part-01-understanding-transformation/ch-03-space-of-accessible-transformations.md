@@ -200,16 +200,23 @@ Where transformations can be identified consistently across time, it is useful t
 
 These are structural descriptions, not quality scores. The appropriate way to compare them depends on how transformation identities are defined in each domain. Different labels should not automatically be treated as different transformations, and identical labels do not guarantee semantic equivalence.
 
-## 6. Observing transformation-space dynamics
+## 6. Observing the dynamics of the transformation space
 
 To study change over time, we can compare the accessible space at two successive points. One useful analytical sequence is:
 
 \[
-S_t \rightarrow T_{acc,t} \rightarrow T_{real,t}
-\rightarrow S_{t+1} \rightarrow T_{acc,t+1}
+(S_t,C_t,L_t)\rightarrow T_{acc,t}
 \]
 
-The sequence distinguishes the initial state, the accessible transformations, the transformation actually realised, the resulting state and the accessible space under the new conditions. The arrows organise the analysis; they should not be read as a universal causal law. The relationship between a realised transformation, the successor state and subsequent accessibility must be examined in each case.
+\[
+T_{acc,t}\rightarrow T_{real,t}\rightarrow S_{t+1}
+\]
+
+\[
+(S_{t+1},C_{t+1},L_{t+1})\rightarrow T_{acc,t+1}
+\]
+
+This sequence provides an analytical organisation of observations, not a universal dynamic or a claim that every state transition results exclusively from a transformation realised within the system. Changes in context and external conditions may also modify the accessible space.
 
 Where transformations can be identified consistently across two points in time, change can be described using several indicators:
 
@@ -218,20 +225,31 @@ Where transformations can be identified consistently across two points in time, 
 A_t &= |T_{acc,t}| \\
 A_{t+1} &= |T_{acc,t+1}| \\
 G_t &= |T_{acc,t+1} \setminus T_{acc,t}| \\
-L_t &= |T_{acc,t} \setminus T_{acc,t+1}| \\
+Q_t &= |T_{acc,t} \setminus T_{acc,t+1}| \\
 P_t &= |T_{acc,t} \cap T_{acc,t+1}| \\
-R_t &= G_t + L_t \\
-D_t &= A_{t+1}-A_t = G_t-L_t
+R_t &= G_t + Q_t \\
+D_t &= A_{t+1}-A_t = G_t-Q_t
 \end{aligned}
 \]
 
-Here, \(A_t\) and \(A_{t+1}\) are the initial and successor cardinalities; \(G_t\) counts added identities; \(L_t\), removed identities; \(P_t\), persistent identities; \(R_t\), total identity turnover; and \(D_t\), the net change in cardinality. These quantities describe different aspects of change: net change alone does not reveal how many identities have been replaced, while turnover does not indicate whether the space has increased or decreased overall.
+Here, \(A_t\) and \(A_{t+1}\) are the initial and successor cardinalities; \(G_t\) counts added identities; \(Q_t\), removed identities; \(P_t\), persistent identities; \(R_t\), the combined volume of added and removed identities; and \(D_t\), the net change in cardinality. These quantities describe different aspects of change: net change alone does not reveal how many identities have been replaced, while the combined volume of added and removed identities does not indicate whether the space has increased or decreased overall.
+
+These quantities are related by the following identities:
+
+\[
+A_{t+1}=P_t+G_t
+\]
+\[
+A_t=P_t+Q_t
+\]
+
+They show that the successor cardinality consists of persistent and added transformations, while the initial cardinality consists of persistent and removed transformations. \(R_t\) is not a normalised turnover rate: it expresses the absolute total of added and removed identities. It should therefore not be compared directly across spaces of very different sizes as though it were a relative measure.
 
 There is no need to reduce all dynamics to a single indicator. A system may retain the same number of transformations while undergoing substantial substitution. Another may expand its space by adding options that barely alter the trajectories it can actually follow. The choice of descriptors should respond to the analytical question, data quality and domain semantics. None of these descriptors is, by itself, a score of quality, capability or value.
 
-Some analyses also examine **potential one-step reach**: the set of structurally possible successor states under a specified representation. This construct is not equivalent to observed execution or effective runtime reachability. Available evidence shows that changes in the accessible space and changes in this potential reach can be distinguished; they should therefore not be treated as the same quantity.
+Some analyses also examine **potential one-step reach**: the set of structurally possible successor states from a given state, under a specified representation and set of transition rules. Its composition and cardinality depend on how states and transitions are defined in the model. This construct is not equivalent to observed execution or effective runtime reachability. Available evidence shows that changes in the accessible space and changes in potential one-step reach can be distinguished; they should therefore not be treated as the same quantity.
 
-Cross-domain comparison requires an additional precaution. The same analytical structure may be usable in different systems without assuming that their specific transformations are equivalent. Consistency should be sought in the role played by the concepts—state, accessibility, realisation and successor state—not by imposing identical labels on different phenomena.
+Cross-domain comparison requires an additional precaution. The same analytical structure may be usable in different systems without assuming that their specific transformations are equivalent. Consistency should be sought in the role played by the concepts—state, accessibility, realisation and successor state—not by imposing identical labels on different phenomena. Equivalence between mechanisms or effects must be established through domain-specific evidence.
 
 ## 7. What bounded evidence shows—and what it does not
 
