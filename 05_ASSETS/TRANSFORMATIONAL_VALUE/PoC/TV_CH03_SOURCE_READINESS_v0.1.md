@@ -2,9 +2,9 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.13  
+**Version:** 0.14  
 **Date:** 2026-11-26  
-**Status:** SOURCE RECONCILED — BILINGUAL DRAFTS UPDATED; EDITORIAL REVIEW PENDING  
+**Status:** CROSS-DOMAIN EVIDENCE NOTE DRAFTED; RUST TEMPORAL EVIDENCE BLOCKED FOR PUBLIC REUSE; EDITORIAL REVIEW PENDING  
 **Branch:** `strategy/transformational-value-learning`  
 **Related specification:** `PoC/TRANSFORMATIONAL_VALUE_LEARNING_PUBLISHING_POC_v0.1.md`
 
@@ -540,10 +540,49 @@ The Spanish and English drafts preserve the same nine-section structure and evid
 
 ### 14.3 Remaining publication prerequisites
 
-1. Create reader-facing research records for the two TGCV-generated computational analyses (the 36-transition cross-domain study and the 516,061-pair temporal software-package analysis), including methods, operational definitions, data provenance, limitations and reproducibility information. Internal repository paths alone are not suitable reader-facing references.
-2. Complete a subject-matter review of the revised claims, numerical statements, operational definitions and references.
-3. Complete native editorial review in each language and a final bilingual equivalence review.
-4. Review the glossary entry and complete both language versions of the diagram caption and alternative text.
-5. Keep both drafts at `draft` until the applicable editorial and evidence gates are passed.
+1. The bilingual reader-facing note for the 36-transition cross-domain operationalisation has been drafted as `TV-LR-001`; it remains `draft` pending subject-matter, editorial, licensing and reproducibility-package review.
+2. Do not create or publish a reader-facing evidence note for the 516,061-pair Rust temporal analysis yet. Its scientific closure in the RMA does not override the separate data-admission and reuse restrictions described in §15. Internal repository paths alone are not suitable reader-facing references.
+3. Complete a subject-matter review of the revised claims, numerical statements, operational definitions and references.
+4. Complete native editorial review in each language and a final bilingual equivalence review.
+5. Review the glossary entry and complete both language versions of the diagram caption and alternative text.
+6. Keep the chapter and research note at `draft` until the applicable editorial and evidence gates are passed.
 
 No change has been made to the scientific claim matrix, RMA, TGCV Core, experiment status or execution authorization.
+
+
+---
+
+## 15. Publication and reuse boundary for the temporal software-ecosystem analysis — v0.14
+
+### 15.1 Scientific result versus permission to reuse
+
+The canonical RMA v3.38 records the temporal software-ecosystem analysis as scientifically closed bounded structural empirical evidence. Its reported population is 516,061 adjacent package-version pairs, with 438,203 non-persistent pairs (approximately 84.91%) under the frozen one-step operationalisation. This is a scientific-result status, not a blanket publication or data-reuse authorisation.
+
+### 15.2 Separate data-admission and privacy disposition
+
+The canonical governance record `00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_ADMISSION_CHAIN_RECONCILIATION_REVIEW_001.md` records:
+- the retained local ZIP matches the published full-dataset Figshare item by filename, size and MD5;
+- the published dataset item declares CC0;
+- a historical admission-sequence deviation occurred and was not retroactively cured;
+- the field-level privacy/identifiability assessment did not grant clearance;
+- the existing derived structural artifact was not cleared for scientific reuse or longitudinal inference;
+- further scientific processing and empirical reuse remain blocked pending a prospective decision covering exact retained fields, privacy/identifiability, minimisation, access/retention and permitted reuse.
+
+The relevant prospective control proposal is explicitly **not an admission decision**. A public dataset licence does not itself resolve privacy, identifiability, permitted-use or historical sequencing questions.
+
+### 15.3 Editorial disposition for Chapter 3
+
+The 516,061-pair analysis is therefore excluded from reader-facing Chapter 3 content and from the public research-note set for now. Both native-language chapter drafts have been updated to v0.4 to remove that paragraph. Their other evidence sections remain draft and continue to require scientific and editorial review.
+
+No data have been accessed, downloaded, reprocessed or re-executed in this editorial step. No scientific result, claim status, RMA, Evidence→Claim Matrix, TGCV Core or execution authorisation has been changed.
+
+### 15.4 Bilingual cross-domain evidence note
+
+A native-language pair has been created for the bounded two-domain operationalisation analysis:
+
+- `learning-resources/research-notes/es/observar-la-reconfiguracion-del-espacio-de-transformaciones-en-dos-dominios.md`
+- `learning-resources/research-notes/en/observing-transformation-space-reconfiguration-across-two-domains.md`
+
+Both share content ID `TV-LR-001` and remain `draft`. The note includes the negative VisitAll representational-gain result, the bounded PRISM reconstruction result, and the explicit limits on causality, value, universality and public reproducibility. The underlying source repositories are pinned in the central reference registry. The standalone executors and all derived transition records are not yet packaged for public independent reproduction, so the note must not imply that they are.
+
+No change has been made to scientific governance or experiment execution.
