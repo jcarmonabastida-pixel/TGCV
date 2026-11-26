@@ -1,7 +1,7 @@
 # TRANSFORMATIONAL VALUE — Book & Learning Master Architecture
 
 **Identifier:** TGCV-TV-LEARNING-MASTER-001  
-**Version:** 0.3  
+**Version:** 0.4  
 **Date:** 2026-11-26  
 **Status:** STRATEGIC ARCHITECTURE — WORKING DOCUMENT; detailed contents proposal available for review  
 **Branch:** `strategy/transformational-value-learning`  
@@ -691,3 +691,18 @@ Approved proper names and framework/product labels remain unchanged. Other title
 ### Version history
 
 - **v0.3 — 2026-11-26:** Established native Spanish and English authorship as a mandatory editorial requirement for every book and Learning content unit, including parity, metadata, review and terminology controls.
+
+
+## 18. Content model and editorial workflow — subordinate specification
+
+The proposed repository structure, stable content IDs, metadata, native bilingual pairing, glossary and reference registries, editorial workflow, contribution routing and versioning model are specified in:
+
+**[TRANSFORMATIONAL_VALUE_CONTENT_MODEL_EDITORIAL_WORKFLOW_v0.1.md](TRANSFORMATIONAL_VALUE_CONTENT_MODEL_EDITORIAL_WORKFLOW_v0.1.md)**
+
+This subordinate specification translates the governing principles of this master architecture into an authoring and maintenance model. It does not select a publishing framework, approve licences, authorise public release or supersede TGCV scientific governance or VALUE methodological governance.
+
+**Current status:** proposal for review. A representative proof of concept should be completed before the full repository structure is populated or large-scale chapter drafting begins.
+
+### Version history
+
+- **v0.4 — 2026-11-26:** Added the Content Model & Editorial Workflow subordinate specification, covering repository layout, stable IDs, bilingual native authoring, metadata, terminology, references, assets, editorial and contribution workflows, versioning and proof-of-concept requirements.
