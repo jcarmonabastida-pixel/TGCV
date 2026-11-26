@@ -943,3 +943,36 @@ This is an execution/observability failure, not a statistical failure and not ev
 5. Run deterministic tests and a bounded single-case observability check before considering a repeat of the full six-dataset batch. Do not automatically repeat the full batch with the same opaque runner.
 
 **Decision:** pause the six-dataset batch. First repair observability/checkpointing and localize the dominant stage. Tier-A, Tier-B and causal C10-S remain unauthorized.
+
+
+## 47. Observability repair — implementation committed; single-case diagnostic running
+
+The opaque six-dataset run is replaced, for the next diagnostic step only, by a **single M30/R20, W=1/5 development case** using dataset index 0 from the already predeclared development-only seed schedule. This is a runtime/observability check, not a new statistical sample, method comparison or calibration. It does not change the original six-dataset protocol or authorize resuming that batch.
+
+### Implementation
+
+- `c10s_f5_rational_score_polynomials.py`: opt-in root-isolation telemetry, disabled unless `TGCV_C10S_ROOT_PROGRESS_PATH` is set. Events record start, degree, Sturm-sequence length, maximum integer coefficient bit length, processed/queued intervals, current depth, isolated/unresolved counts and elapsed time. Telemetry failures are swallowed as diagnostics only and cannot change mathematical statuses.
+- `run_c10s_f5_pointwise_lr_dev_stress.py`: flushed stage-level JSONL events; atomic checkpoints after seed audit, each completed profile and each dataset; single-case/component selection; 60-second repeating `faulthandler` stack snapshots; preserves exact calculation budgets and all inferential logic.
+- Workflow: 60-minute job ceiling, an explicit 50-minute command ceiling to leave time for artifact upload, and `if: always()` upload of final output, progress JSONL, root-isolation JSONL and checkpoint (including partial files after a controlled timeout).
+- Tests cover seed provenance, exact target definitions, JSONL progress, atomic partial checkpoint and opt-in root telemetry.
+
+Relevant commits:
+- Root telemetry: `24e6a1bd2aa59823dabb6c2e8d63e4cf8cc7e7b5`
+- Checkpoint/stage telemetry runner: `3b8b037e18aed5047b144b914cd041e845236b78`
+- Checkpoint tests: `2b9667d62b9fe3f9dc044e1c38d094baec78b8a4`
+- Workflow: `e6cfb70e1b3ff7ceda5e84cacc23160798cb9182`
+- Newline serialization correction: `494e72c00630450482601070016b1fb43a91aecd` (root telemetry) and `734b49724ed3670e66a0aeb71a6efe9fe6d55511` (runner)
+- Root telemetry regression test: `ed41155d39896ec53864c5dcd392d30bf227553b`
+
+### Verification and execution
+
+- The existing constrained-profile deterministic regression workflow [45911630817](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45911630817) completed SUCCESS on the root-telemetry code revision.
+- The first pointwise workflow [45911630496](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45911630496) failed because its earlier checkout serialized JSONL/checkpoint newlines as literal backslash-n text. This was corrected in the subsequent commits; it produced no numerical run.
+- Two pointwise workflow instances were triggered by successive code commits: [45911636811](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45911636811) and [45911655879](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45911655879). Both passed dependency installation, compilation and deterministic seed/provenance tests; the latter also passed the new telemetry/checkpoint tests. Both are currently in the single M30/R20 W-profile diagnostic step. They use the same predeclared dataset seed and are duplicate diagnostic executions caused by successive commits, not independent samples. No inference will be pooled across them; retain one artifact as the diagnostic record and disregard the duplicate for statistical purposes.
+- Existing regression/smoke workflows triggered by the shared root-isolator source path are also running on the same research branch: M30/R20 robustness, adaptive boundary-B and width-2^-8 cross-cell/root-census. These are regression checks of the changed exact-isolator module, not new calibration or confirmatory runs.
+
+The single-case profile has not yet produced a final artifact. Until its progress/root JSONL or final checkpoint is retrieved, the location and rate of computation remain unknown. The telemetry repair is implemented but not yet empirically demonstrated on a completed profile.
+
+### Interpretation boundary
+
+No Tier-A/Tier-B/causal execution. No LR cutoff, confidence-set inversion, coverage, Wilson interval or acceptance-rate calculation. The original six-dataset stress remains paused. Do not treat duplicate runs as additional samples.
