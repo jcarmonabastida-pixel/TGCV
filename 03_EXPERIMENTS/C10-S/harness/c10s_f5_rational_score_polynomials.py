@@ -1260,7 +1260,7 @@ def _c10s_root_progress_event(event):
     record = {"event": event, "monotonic_seconds": perf_counter()}
     try:
         with open(path, "a", encoding="utf-8") as stream:
-            stream.write(json.dumps(record, sort_keys=True, allow_nan=False) + "\\n")
+            stream.write(json.dumps(record, sort_keys=True, allow_nan=False) + "\n")
             stream.flush()
     except OSError:
         # Diagnostics must not change the mathematical result or status.
