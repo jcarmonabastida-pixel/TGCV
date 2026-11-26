@@ -35,7 +35,7 @@ def _integer_coefficient_sizes(sequence):
     }
 
 
-def install_sturm_call_instrumentation(profile_module, rational_module):
+def install_sturm_call_instrumentation(profile_module, rational_module, *, variation_evaluator=None):
     """Patch one profile module and its rational helpers; return records/restore."""
     records = []
     active = {"record": None}
@@ -74,8 +74,12 @@ def install_sturm_call_instrumentation(profile_module, rational_module):
 
     def timed_variations(sequence, point):
         started = perf_counter()
-        result = originals["variations"](sequence, point)
         record = active["record"]
+        if variation_evaluator is None:
+            result = originals["variations"](sequence, point)
+        else:
+            stats = record.setdefault("variation_stats", {}) if record is not None else {}
+            result = variation_evaluator(sequence, point, stats=stats)
         if record is not None:
             record["variation_calls"] += 1
             record["variation_seconds"] += perf_counter() - started
@@ -90,6 +94,7 @@ def install_sturm_call_instrumentation(profile_module, rational_module):
             "integer_scalings": [],
             "variation_calls": 0,
             "variation_seconds": 0.0,
+            "variation_stats": {},
         }
         records.append(record)
         previous = active["record"]
@@ -131,3 +136,91 @@ def install_sturm_call_instrumentation(profile_module, rational_module):
         rational_module._uni_sign_variations_integer = originals["variations"]
 
     return records, restore
+
+
+def sign_variations_integer_certified_fixedpoint(sequence, point, *, stats=None):
+    """Exact signs via certified fixed-point intervals, exact fallback if ambiguous.
+
+    This is a development prototype. It uses no floating point: each Horner
+    step encloses the exact value in integer units of 2**precision. A sign is
+    accepted only when the interval excludes zero. Non-dyadic/out-of-domain
+    points and ambiguous polynomial signs use the existing exact homogeneous
+    integer-Horner calculation.
+    """
+    x = Fraction(point)
+    if x < 0 or x > 1:
+        return _exact_sign_variations(sequence, x)
+    numerator, denominator = x.numerator, x.denominator
+    if denominator & (denominator - 1):
+        return _exact_sign_variations(sequence, x)
+
+    signs = []
+    certified = {128: 0, 256: 0}
+    exact_fallback = 0
+    for polynomial in sequence:
+        if not polynomial:
+            continue
+        sign = None
+        for precision in (128, 256):
+            scale = 1 << precision
+            lower = int(polynomial[-1]) * scale
+            upper = lower
+            for coefficient in reversed(polynomial[:-1]):
+                lower = (lower * numerator) // denominator + int(coefficient) * scale
+                product_upper = upper * numerator
+                upper = -((-product_upper) // denominator) + int(coefficient) * scale
+            if lower > 0:
+                sign = 1
+                certified[precision] += 1
+                break
+            if upper < 0:
+                sign = -1
+                certified[precision] += 1
+                break
+        if sign is None:
+            exact_fallback += 1
+            sign = _exact_integer_polynomial_sign(
+                polynomial, numerator, denominator,
+            )
+        if sign:
+            signs.append(sign)
+
+    if stats is not None:
+        stats["certified_128"] = stats.get("certified_128", 0) + certified[128]
+        stats["certified_256"] = stats.get("certified_256", 0) + certified[256]
+        stats["exact_fallback_polynomials"] = (
+            stats.get("exact_fallback_polynomials", 0) + exact_fallback
+        )
+        stats["evaluated_polynomials"] = (
+            stats.get("evaluated_polynomials", 0) + len(sequence)
+        )
+    return sum(left != right for left, right in zip(signs, signs[1:]))
+
+
+def _exact_integer_polynomial_sign(polynomial, numerator, denominator):
+    value = int(polynomial[-1])
+    denominator_power = denominator
+    for coefficient in reversed(polynomial[:-1]):
+        value = value * numerator + int(coefficient) * denominator_power
+        denominator_power *= denominator
+    return 1 if value > 0 else (-1 if value < 0 else 0)
+
+
+def _exact_sign_variations(sequence, point):
+    x = Fraction(point)
+    return _exact_sign_variations_numerator_denominator(
+        sequence, x.numerator, x.denominator,
+    )
+
+
+def _exact_sign_variations_numerator_denominator(sequence, numerator, denominator):
+    signs = []
+    for polynomial in sequence:
+        if not polynomial:
+            continue
+        sign = _exact_integer_polynomial_sign(
+            polynomial, numerator, denominator,
+        )
+        if sign:
+            signs.append(sign)
+    return sum(left != right for left, right in zip(signs, signs[1:]))
