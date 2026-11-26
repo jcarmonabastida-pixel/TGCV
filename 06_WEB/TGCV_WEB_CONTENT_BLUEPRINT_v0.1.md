@@ -1,7 +1,7 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 4.6
+**Version:** 4.7
 **Date:** 2026-11-26  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
@@ -896,3 +896,51 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Restores Contact as the eighth planned first-release destination and P09 as a planned P0 page.
 - Distinguishes the planned navigation and Home invitation from page implementation and activation of the monitored communication channel, which await the domain-associated account.
 - Removes the previous interpretation that deferring the Contact page's creation removed Contact from the website architecture.
+
+
+## 19. Global footer — Legal & Licensing content specification (2026-11-26)
+
+**Purpose:** provide persistent access to site-use policies, research-content licensing and software/third-party notices without implying that one licence covers the whole TGCV ecosystem.
+
+### 19.1 Footer groups and destinations
+
+| Footer group | Destination | Content / publication condition |
+|---|---|---|
+| Explore TGCV | Principal section links and **Contact** | Contact remains in the planned navigation/footer and Home invitation. Do not imply that its deferred page or communication channel is live. |
+| Legal | **Terms of Use** | Site-use conditions, scope and responsibilities; draft only until reviewed against the actual site and services. |
+| Legal | **Privacy Policy** | Actual data controller/contact details, purposes, legal bases, recipients/processors, retention and rights, as applicable; do not invent details. |
+| Legal | **Cookie Policy** | Actual cookies/trackers and consent behaviour, based on a verified technical audit; do not publish generic claims about cookies. |
+| Open Research & Software | **Research Content License** | Explains which original research/editorial assets carry which licence, with asset-level exclusions and third-party rights. |
+| Open Research & Software | **Software Licenses** | Lists the licence selected for each demonstrator/playground repository or package, with links to the applicable LICENSE and notices. |
+| Open Research & Software | **Third-Party Licenses & Attributions** | Credits and licence notices for dependencies, datasets, models, images, fonts and other third-party assets. |
+
+The Spanish site may translate generic group descriptions and policy explanations, but must preserve approved proper names and official licence names. The footer should not label a candidate or draft licence as active.
+
+### 19.2 Candidate licensing model — not yet adopted
+
+- **Original research/editorial content:** evaluate **CC BY 4.0** for eligible publications, explanatory content and diagrams. Confirm authorship, rights ownership, third-party content and exclusions before applying it.
+- **Software:** evaluate **MIT License** or **Apache License 2.0** per code repository/package. MIT is a concise permissive option; Apache 2.0 may be preferred where explicit patent provisions are important. Select one licence for each codebase through an explicit repository-level decision; do not assume both apply.
+- **Third-party assets and data:** preserve each upstream licence and its attribution, notice, share-alike, redistribution, privacy or other conditions. A TGCV licence cannot grant rights TGCV does not hold.
+- **No blanket licence:** do not apply CC BY to code, or MIT/Apache to research prose, by default. Terms of Use, Privacy Policy and Cookie Policy are separate from all these licences.
+
+These are candidate choices for review, not adopted licences, legal advice or permission to redistribute any current asset. No download/reuse promise should be made until the exact asset, version, rights and licence notice have been checked.
+
+### 19.3 Release gates and ownership of truth
+
+Before enabling each footer link:
+1. identify the exact policy, repository, package or asset it governs;
+2. verify ownership and third-party rights, including dependencies and embedded material;
+3. adopt and attach the relevant licence text/notices to the repository or asset where applicable;
+4. ensure the linked page accurately describes scope, exclusions and effective status;
+5. review legal policies against the deployed site's actual data collection, hosting, analytics, cookies, forms and contact arrangements;
+6. verify the destination and bilingual equivalence.
+
+A repository being public, or a file being technically accessible, does not by itself establish an open licence or publication permission. Legal-policy publication requires appropriate review for the actual operation of the site; do not fabricate controller details, contact channels, cookie inventories or data practices.
+
+**Current status:** footer architecture defined; policy pages and licence decisions remain planned / not yet adopted. This specification does not approve any licence or legal text and does not change publication permissions for existing research assets or demonstrators.
+
+
+### v4.7 — 2026-11-26
+- Adds the global Legal & Licensing footer structure, separating site-use policies, research-content licensing, software licences and third-party attributions.
+- Records CC BY 4.0, MIT and Apache 2.0 as candidate options only; no licence or legal policy is adopted or approved by this planning update.
+- Defines asset-level rights checks and publication gates, preserving Contact as a planned footer destination without implying a live channel.
