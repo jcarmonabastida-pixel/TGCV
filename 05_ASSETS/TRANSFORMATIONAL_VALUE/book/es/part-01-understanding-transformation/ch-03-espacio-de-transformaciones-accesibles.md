@@ -322,7 +322,7 @@ La relación entre cambios en el espacio accesible y creación de valor permanec
 ### Preguntas para la reflexión
 
 1. Piensa en un sistema que conozcas. ¿Qué transformaciones están disponibles para su realización hoy que no lo estaban hace un año? ¿Qué condiciones cambiaron?
-2. ¿Cómo distinguirías una transformación técnicamente posible de una transformación realmente accesible en las condiciones del sistema?
+2. ¿Cómo distinguirías una transformación técnicamente factible en principio de una transformación realmente accesible en las condiciones del sistema?
 3. ¿Podría cambiar profundamente el espacio accesible sin variar el número total de transformaciones? Construye un ejemplo.
 4. ¿Qué información necesitarías para determinar si una transformación estaba accesible antes de que se realizara?
 5. ¿Qué errores cometerías si utilizaras los resultados observados para definir retrospectivamente la accesibilidad?
