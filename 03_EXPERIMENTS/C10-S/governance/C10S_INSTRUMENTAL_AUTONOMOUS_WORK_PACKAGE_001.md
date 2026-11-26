@@ -182,3 +182,14 @@ The design derives the constrained nuisance geometry for the two actual function
 The central unresolved issue is statistical, not just computational: no LR cutoff is currently justified for weak identification and boundary cases. A routine Wilks cutoff is not assumed. Before any M2 simulation, the profile maxima, branches, boundaries, topology, global-maximum reconciliation and grid convergence need deterministic tests, and a prospective development calibration/validation design must be defensible.
 
 **M2 disposition:** DESIGN CANDIDATE ONLY — not implemented, calibrated or selected. No M2 simulation has been run. No Tier-A/Tier-B/C10 authorization has been created or consumed.
+
+
+## 12. Repository-level F5 profile reuse audit completed
+
+A direct source audit of the existing beta-binomial likelihood diagnostics, MCSE profile implementation and finite-R oracle is recorded in \`C10S_F5_COMPONENT_PROFILE_LIKELIHOOD_DESIGN_REVIEW_DRAFT_001.md\` §§10–12.
+
+Key consequence: the existing MCSE profile is not a W/B interval implementation and must not be copied as if it were one. Its finite nuisance scan uses truncated log-concentration ranges and its own documentation disclaims certified global topology. The likelihood diagnostics also use bounded primary optimizer coordinates and do not certify the unrestricted global maximum. The exact finite-R oracle remains an independent truth/moment oracle only.
+
+The M2 design now specifies compact nuisance coordinates for the W and B constrained profiles, with the two concentration limits evaluated analytically. This removes arbitrary mathematical tail truncation but does not confer numerical globality. Adaptive refinement, branch/maxima stability, independent likelihood checks and fail-closed unresolved states remain mandatory before coding or simulation.
+
+**Current disposition unchanged:** M2 design-only; no M2 implementation/simulation, no LR cutoff selection, no Tier-A/Tier-B/C10 authorization.
