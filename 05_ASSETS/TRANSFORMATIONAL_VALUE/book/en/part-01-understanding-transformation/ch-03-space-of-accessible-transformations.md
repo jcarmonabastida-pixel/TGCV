@@ -5,7 +5,7 @@ title: "The Space of Accessible Transformations"
 language: en
 content_type: chapter
 status: draft
-version: 0.1
+version: 0.2
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -147,6 +147,8 @@ No level should be defined retrospectively from the next. The realisation of a t
 
 The distinction also works in the opposite direction. A transformation may be accessible but not realised because there is no demand, because a decision is deliberately made not to act, because of uncertainty or opportunity costs, or because the system prioritises another trajectory. Non-realisation does not necessarily show that the transformation was inaccessible.
 
+In some domains, it is also necessary to distinguish the **adoption or use** of a service or capability from its structural availability. The fact that infrastructure or a service is available does not mean that people or organisations will use it. Observed use may be relevant to the analysis of a trajectory or outcome, but it should not automatically be used to define which transformations were accessible.
+
 This separation avoids two symmetrical errors: treating every possibility as an action, and treating every observed action as if it exhausted the system's possibilities.
 
 ## 5. How an accessible space can change
@@ -157,6 +159,8 @@ The accessible transformation space need not remain constant. It can change when
 - **Contraction:** some transformations cease to be available.
 - **Reconfiguration:** the composition of the space changes even though its total size remains the same.
 - **Substitution:** some transformations cease to be accessible and others take their place.
+
+The term **latent possibilities** is sometimes used for transformations that are already accessible but have not yet been realised. It should be used carefully: it does not refer to a mysterious capability or a merely imaginable possibility. It is meaningful only where the accessibility conditions can be justified independently. A transformation that becomes accessible for the first time may be described as newly enabled; one that no longer meets the relevant conditions ceases to belong to the accessible space.
 
 Suppose that, at an initial point, the system has transformations (A), (B), (C) and (D) available. Later, (C) and (D) are no longer accessible, while (E) and (F) become accessible:
 
