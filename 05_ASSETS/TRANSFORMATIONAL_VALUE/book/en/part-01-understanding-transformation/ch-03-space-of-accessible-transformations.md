@@ -5,7 +5,7 @@ title: "The Space of Accessible Transformations"
 language: en
 content_type: chapter
 status: draft
-version: 0.2
+version: 0.3
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -26,7 +26,10 @@ related:
   - TV-CH-04
   - TV-CH-05
   - TV-CH-06
-references: []
+references:
+  - TV-REF-001
+  - TV-REF-002
+  - TV-REF-003
 epistemic_status:
   - analytical_definition
   - bounded_empirical_evidence
@@ -37,6 +40,11 @@ source_assets:
   - 03_EXPERIMENTS/TR-131/execution/TR131_TRANSFORMATION_SPACE_DYNAMICS_FORMAL_SPEC_001.md
   - 03_EXPERIMENTS/TR-131/execution/TR131_TRANSFORMATION_SPACE_DYNAMICS_ANALYSIS_001.md
   - 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md
+  - 00_GOVERNANCE/rma/TGCV_RMA_v3.38.md
+  - 00_GOVERNANCE/SIP/TGCV_C09_CLAIM_LEVEL_CONSOLIDATION_RECORD_001.md
+  - 00_GOVERNANCE/SIP/C10C002_BOUNDED_CAUSAL_EXPERIMENT_CLOSURE_001.md
+  - 00_GOVERNANCE/SIP/TGCV_MT5_DYNAMIC_TRANSFORMATION_SPACE_RECONSTRUCTION_RESULT_001.md
+  - 03_EXPERIMENTS/EXT-1.1_Rust/execution/RUST-DYN-2_SCIENTIFIC_INTEGRATION_CLOSURE_v01.md
   - 00_GOVERNANCE/SIP/TGCV_CROSS_DOMAIN_END_TO_END_ACCESSIBILITY_OUTCOME_VALUE_MAP_001.md
 license: null
 ---
@@ -91,7 +99,7 @@ A transformation is accessible when the relevant conditions for its realisation 
 T_{acc}=F(S,C,L)
 \]
 
-Here, (S) denotes the relevant state or configuration of the system; (C), the contextual conditions being considered; and (L), the constraints, resources and operational conditions that matter to the analysis. The notation does not make each element an independent entity. It expresses that accessibility is assessed in relation to a specified configuration and set of conditions.
+Here, \\(S\\) denotes the relevant state or configuration of the system; \\(C\\), the contextual conditions being considered; and \\(L\\), the constraints, resources and operational conditions that matter to the analysis. The notation does not make each element an independent entity. It expresses that accessibility is assessed in relation to a specified configuration and set of conditions.
 
 An accessibility predicate can be defined for each candidate transformation:
 
@@ -115,7 +123,7 @@ For this reason, the accessibility criterion should be declared before examining
 
 ## 3. The accessible transformation space
 
-Once candidate transformations have been delimited and an accessibility criterion specified, we can represent the set—or structure—of transformations the system can perform under the conditions being considered. We call this representation the **accessible transformation space**, denoted by (T_{acc}).
+Once candidate transformations have been delimited and an accessibility criterion specified, we can represent the set—or structure—of transformations the system can perform under the conditions being considered. We call this representation the **accessible transformation space**, denoted by \\(T_{acc}\\).
 
 The word *space* does not necessarily imply a geometric space or a collection that must be exhaustively enumerated. It refers to an analytical structure of delimited possibilities. Depending on the domain, that structure may be represented through sets, relations, functions, admissibility states or other suitable forms.
 
@@ -133,7 +141,7 @@ Nor should it be confused with a general measure of capability. A system may hav
 
 ## 4. Accessibility is not execution
 
-Consider a system that can perform four transformations: (A), (B), (C) and (D). Their presence in its accessible space does not mean that all four will be realised. The system may choose (B), take no action, postpone a decision or follow a different trajectory at another time.
+Consider a system that can perform four transformations: \\(A\\), \\(B\\), \\(C\\) and \\(D\\). Their presence in its accessible space does not mean that all four will be realised. The system may choose (B), take no action, postpone a decision or follow a different trajectory at another time.
 
 Five levels should be kept distinct:
 
@@ -194,45 +202,65 @@ S_t \rightarrow T_{acc,t} \rightarrow T_{real,t}
 \rightarrow S_{t+1} \rightarrow T_{acc,t+1}
 \]
 
-The sequence distinguishes the initial state, the accessible transformations, the transformation actually realised, the resulting state and the accessible space under the new conditions.
+The sequence distinguishes the initial state, the accessible transformations, the transformation actually realised, the resulting state and the accessible space under the new conditions. The arrows organise the analysis; they should not be read as a universal causal law. The relationship between a realised transformation, the successor state and subsequent accessibility must be examined in each case.
 
-The arrows organise the analysis; they should not be read as a universal causal law. In particular, the relationship between a realised transformation, the successor state and subsequent accessibility must be examined in each case. The representation helps formulate questions and test relationships, but it does not replace the evidence needed to answer them.
+Where transformations can be identified consistently across two points in time, change can be described using several indicators:
 
-When transformations can be identified across time, change can be described using a small set of quantities. Let (A_t) denote the number of accessible transformations at the initial point, (G_t) the added identities, (L_t) the removed identities and (P_t) the persistent identities. The net change in size is the difference between the number of elements in the successor space and the initial space. Identity turnover, by contrast, considers additions and removals together.
+\[
+\begin{aligned}
+A_t &= |T_{acc,t}| \\
+A_{t+1} &= |T_{acc,t+1}| \\
+G_t &= |T_{acc,t+1} \setminus T_{acc,t}| \\
+L_t &= |T_{acc,t} \setminus T_{acc,t+1}| \\
+P_t &= |T_{acc,t} \cap T_{acc,t+1}| \\
+R_t &= G_t + L_t \\
+D_t &= A_{t+1}-A_t = G_t-L_t
+\end{aligned}
+\]
 
-There is no need to reduce all dynamics to a single indicator. Doing so may conceal important differences. A system may retain the same number of accessible transformations while undergoing substantial substitution. Another may expand its space by adding options that barely change the trajectories it can actually follow. The choice of descriptors should respond to the analytical question, data quality and domain semantics.
+Here, \(A_t\) and \(A_{t+1}\) are the initial and successor cardinalities; \(G_t\) counts added identities; \(L_t\), removed identities; \(P_t\), persistent identities; \(R_t\), total identity turnover; and \(D_t\), the net change in cardinality. These quantities describe different aspects of change: net change alone does not reveal how many identities have been replaced, while turnover does not indicate whether the space has increased or decreased overall.
+
+There is no need to reduce all dynamics to a single indicator. A system may retain the same number of transformations while undergoing substantial substitution. Another may expand its space by adding options that barely alter the trajectories it can actually follow. The choice of descriptors should respond to the analytical question, data quality and domain semantics. None of these descriptors is, by itself, a score of quality, capability or value.
+
+Some analyses also examine **potential one-step reach**: the set of structurally possible successor states under a specified representation. This construct is not equivalent to observed execution or effective runtime reachability. Available evidence shows that changes in the accessible space and changes in this potential reach can be distinguished; they should therefore not be treated as the same quantity.
 
 Cross-domain comparison requires an additional precaution. The same analytical structure may be usable in different systems without assuming that their specific transformations are equivalent. Consistency should be sought in the role played by the concepts—state, accessibility, realisation and successor state—not by imposing identical labels on different phenomena.
 
 ## 7. What bounded evidence shows—and what it does not
 
-The available evidence illustrates different levels of support that should not be conflated.
+The available evidence comes from distinct studies and analyses. It is not one combined test, and their sample sizes or scopes cannot be pooled. Each result addresses a different question.
 
-**Operationalisation in two computational domains.** A bounded study reconstructed 36 transition records across two structurally different domains. Validation found no invalid records, and an independent mathematical audit found no discrepancies in the calculated descriptors. Both domains showed changes in the identity of accessible transformations. In one, identities were substituted without a change in the total number of transformations. This supports the bounded proposition that a common transition-level representation can operationalise changes in the space in the cases examined. It does not establish universal validity, superiority over other representations or applicability in every domain.
+**A common representation across two computational domains.** A bounded study reconstructed 36 transitions across two structurally different domains. Validation found no invalid records, and an independent mathematical audit found no discrepancies in the calculated descriptors. Both domains showed changes in the identity of accessible transformations. In one, identities were replaced without a change in the total number; in the other, some net reductions were also observed. The result supports the operationalisation of a common transition-level representation in the cases examined. It does not establish that the representation is universal, superior to alternatives or applicable in every domain.
 
-**Bounded causal evidence concerning subsequent trajectories.** In a study of the randomised expansion of a rural financial-services network, the intervention changed local infrastructure and structural access to certain services. The consolidated evidence provides bounded causal support for the proposition that accessibility changes can affect subsequent trajectories in that setting. The result must remain within the limits of the study: it does not establish a general law or demonstrate that accessibility change necessarily creates value.
+**Temporal dynamics in software systems.** A separate analysis of successive software-package versions examined 516,061 adjacent temporal pairs. Approximately 84.91% showed some change in the composition of the accessible space. Most of these changes were identity reconfigurations rather than simple expansion or contraction. The analysis also identified many cases in which the accessible space changed while potential one-step reach did not, as well as cases in which the cardinality of that reach remained constant while its membership changed. Within the representation and time horizon examined, these results show that the accessible space, potential reach and their cardinalities are distinguishable objects. They do not establish effective runtime reachability, longer-horizon trajectories, causality, adoption, downstream outcomes or value creation.
 
-**A case of partial identification.** In the reconstruction of an urban street-paving intervention, candidate functions—such as enabling vehicle, pedestrian or bicycle movement—could be specified in advance, and longitudinal connectivity changes could be reconstructed. However, the data did not permit independent identification of the complete accessibility predicate or the full transformation space. The case shows why an observed physical change does not automatically amount to an identified change in (T_{acc}).
+**Bounded causal evidence concerning subsequent trajectories.** An experimental evaluation of rural financial-services expansion in southern India used randomised branch openings to change local infrastructure for access to formal financial services. TGCV's consolidated evidence interprets this structural intervention as an expansion of accessibility and finds bounded causal support that it affected subsequent household trajectories in the setting studied. The interpretation keeps structural access separate from later use of financial products and from observed changes in employment, economic activity and income. This is evidence for a bounded relationship in a specific setting; it does not establish that every accessibility change produces a trajectory change, or that accessibility is its only cause.
+
+**A non-detectable causal result in urban infrastructure.** A second TGCV analysis used the replication data from an experiment involving infrastructure investment in urban neighbourhoods in Mexico. On the basis of a bounded structural feasibility operationalisation—six infrastructure dimensions and twelve elementary opening or closure families—it estimated the effect of treatment assignment on the net cardinality change of that set, not on a complete reconstruction of the accessible transformation space. The estimate was not statistically detectable: the effect was approximately \(-0.031\) (clustered standard error: 0.165; p-value: 0.849), and the 95% confidence interval included both negative and positive effects. Wild-cluster-bootstrap inference also did not detect an effect. This does not show that the true effect is exactly zero or refute the general proposition. Possible interference between units remains unresolved, and minimal structural feasibility is not a complete mechanistic identification of the accessibility predicate. This TGCV analysis has its own estimand and must not be confused with the original authors' published results on infrastructure access, housing investment or property values.
+
+**A case of partial identification in street paving.** In the experimental study of residential street paving in Acayucan, Mexico, candidate functions—such as enabling vehicle, pedestrian and bicycle movement—could be specified in advance, and longitudinal changes in connectivity could be reconstructed. However, the data did not permit independent identification of the complete accessibility predicate or reconstruction of the full accessible transformation space. The case shows why a physical intervention and an observed change in connectivity do not automatically amount to an identified change in \(T_{acc}\).
 
 **A synthetic illustration of non-equivalence.** In a controlled synthetic environment, an intervention changed the accessible space while the specified realised trajectory remained unchanged and the value outcome defined for that exercise did not change. This illustration shows that the analytical levels can vary independently under particular rules. It is not evidence about real-world behaviour and does not demonstrate that accessibility changes generally have no effect on trajectories or value.
 
-Taken together, these results support certain bounded operations and relationships. They do not demonstrate a universal theory of transformation dynamics, establish that every accessibility change modifies a trajectory, or resolve the relationship between accessibility and value.
+Taken together, these results support bounded operations and relationships: representing changes in identity, distinguishing accessibility from potential reach, and a bounded causal relationship with subsequent trajectories in one real-world setting. They also show limits of identification and non-detectable results. They do not demonstrate a universal theory of transformation dynamics or resolve the relationship between accessibility and value.
 
 ## 8. Limits, assumptions and open questions
 
 Analysing the accessible transformation space depends on decisions that must be made visible.
 
-**System boundary.** If the system boundary is inappropriate, decisive external conditions may be omitted, or capabilities that depend on other actors and infrastructure may be attributed to the system itself.
+**System boundary and candidate universe.** If the system boundary is inappropriate, decisive external conditions may be omitted, or capabilities that depend on other actors and infrastructure may be attributed to the system itself. The candidate transformation universe must be delimited in a way that is defensible for the question being studied. It will not always be possible to enumerate every conceivable transformation; the analysis must explain what is included, what is excluded and why the operational closure is sufficient for its stated purpose.
 
-**Transformation identity.** To compare spaces over time, we need to know when a transformation persists, when it changes and when it should be treated as a different transformation. This is not always straightforward.
+**Transformation identity and equivalence.** To compare spaces over time, we need to know when a transformation persists, when it changes and when it should be treated as different. Across domains, labels cannot be equated automatically: a common analytical structure does not imply semantic identity between transformations.
 
-**Accessibility criterion.** The predicate must be independent of realisation and downstream outcomes. If it is constructed from what happened, the analysis risks becoming circular.
+**Accessibility criterion.** The predicate must be defined independently of realisation and downstream outcomes. If it is constructed from what happened, the analysis risks becoming circular. Structural availability must also be distinguished from adoption or actual use.
 
-**Operational closure.** It is not always possible to enumerate every conceivable transformation. The analysis must state which universe was considered, why it is appropriate and what lies outside it.
+**Interference and external dependence.** A transformation may depend on other systems, actors, networks or infrastructure. An intervention assigned to one unit may affect other units or depend on shared conditions. If these dependencies are unobserved or cannot be ruled out, they limit causal interpretation and must be stated.
+
+**Measurement and scalarisation.** Cardinality is only one descriptor. It can conceal substitution, changes in identity and semantic differences. Reducing the space to one number may be useful for a specific estimand, but it is not equivalent to measuring its full structure. Results based on a scalar operationalisation must be interpreted within that boundary.
 
 **Cross-domain heterogeneity.** A common analytical structure does not mean that mechanisms, transformations or their meanings are identical across systems. Generality must be tested, not assumed.
 
-**Relationship with trajectories.** Bounded causal evidence exists that accessibility changes can affect subsequent trajectories in one studied context. The generality of this relationship, and the conditions under which it holds, remain open questions.
+**Relationship with trajectories.** Bounded causal evidence exists that a structural expansion of accessibility affected subsequent trajectories in one studied setting. Other analyses provide structural or methodological evidence, but do not all identify a causal relationship. The generality of the relationship, and the conditions under which it holds, remain open questions.
 
 **Relationship with value.** Value requires an additional evaluation: which outcomes count, for whom, against which criteria and over what time horizon. The fact that a transformation is accessible—or even realised—does not determine the value of its consequences. The causal or predictive relationship between changes in the accessible space and changes in value remains open.
 
@@ -242,13 +270,15 @@ These limitations do not make the concept unusable. They define the conditions u
 
 The accessible transformation space represents which transformations a system can perform under a specified state and set of conditions. It is derived from the relevant system configuration and an explicit accessibility criterion; it is neither an independent cause nor an unlimited list of imaginable possibilities.
 
-Its composition may change through expansion, contraction, reconfiguration or substitution. For this reason, observing only the number of transformations may be insufficient: it also matters which transformations appear, which disappear and which persist.
+Its composition may change through expansion, contraction, reconfiguration or substitution. For this reason, observing only the number of transformations may be insufficient: it also matters which transformations appear, which disappear and which persist. Nor should accessible-space dynamics be confused with changes in the potential reach of successor states or with observed execution.
+
+The available evidence provides bounded methodological support for representing these changes and bounded causal support for a relationship with subsequent trajectories in one real-world setting. It also includes non-detectable results and cases where accessibility can only be partially identified. These differences matter: not all evidence answers the same question or permits the same conclusion.
 
 The fundamental distinction must be maintained throughout the analysis:
 
 **accessibility is not realisation; realisation is not trajectory; trajectory is not outcome; outcome is not automatically value.**
 
-The available evidence provides bounded support for operationalising the space and for certain relationships with subsequent trajectories. It does not justify generalising those findings to all systems or claiming that expanding possibilities necessarily creates value.
+The relationship between changes in the accessible space and value creation remains open and requires further evidence and evaluation.
 
 ### Reflection questions
 
@@ -265,4 +295,8 @@ The accessible space depends on conditions, resources, relationships and constra
 
 ## References and further reading
 
-Full bibliographic references for the empirical studies described and the supporting conceptual work will be added after their primary records and relevance have been verified. This is a working draft, not a publication-approved version.
+- Field, E., & Pande, R. *Evaluating the economic impacts of rural banking: experimental evidence from southern India*. 3ie Impact Evaluation Report 85. https://doi.org/10.23846/OW3IE85
+- McIntosh, C., Alegría, T., Ordóñez, G., & Zenteno, R. (2018). The Neighborhood Impacts of Local Infrastructure Investment: Evidence from Urban Mexico. *American Economic Journal: Applied Economics, 10*(3), 263–286. https://doi.org/10.1257/app.20160429
+- Gonzalez-Navarro, M., & Quintana-Domeque, C. (2016). Paving Streets for the Poor: Experimental Analysis of Infrastructure Effects. *The Review of Economics and Statistics, 98*(2), 254–267. https://doi.org/10.1162/REST_a_00553. Replication data: https://doi.org/10.7910/DVN/6TC8RO
+
+The TGCV computational analyses cited in this chapter must have public research, methodology and provenance records before final editorial approval. Until then, their results remain traceable project evidence in the working documentation, not external publications.
