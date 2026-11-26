@@ -13,7 +13,9 @@ from c10s_f5_component_profile_score import (
     f5_component_profile_score_polynomial,
     f5_isolate_component_profile_score_roots,
     f5_component_profile_maximum_enclosure,
+    f5_component_profile_lr_statistic,
 )
+from c10s_f5_rational_score_polynomials import beta_binomial_global_mle_certificate
 
 
 COUNTS = (0, 1, 2, 3, 4, 5, 1, 3, 4, 2)
@@ -134,6 +136,49 @@ class F5ConstrainedProfileScoreTests(unittest.TestCase):
                     math.exp(direct.log_likelihood),
                     float(upper) * (1.0 + 1e-10),
                 )
+
+
+    def test_lr_statistic_enclosure_uses_certified_unrestricted_maximum(self):
+        histogram = {0: 1, 1: 2, 2: 2, 3: 2, 4: 2, 5: 1}
+        global_certificate = beta_binomial_global_mle_certificate(
+            R, histogram, max_refinements=1, projection_bits=12,
+            max_projection_depth=40, max_lift_intervals=100,
+            max_lift_depth=20, max_mu_depth=10,
+            source_revision="0123456789abcdef0123456789abcdef01234567",
+        )
+        self.assertIn(
+            global_certificate["status"],
+            {
+                "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED",
+                "GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED",
+                "GLOBAL_CO_MAXIMIZERS_CERTIFIED",
+            },
+        )
+        for component in ("W", "B"):
+            result = f5_component_profile_lr_statistic(
+                R, histogram, component=component, target=Fraction(1, 20),
+                global_certificate=global_certificate,
+                root_isolation_width=Fraction(1, 2**48),
+                log_series_terms=60,
+            )
+            self.assertEqual(result["status"], "LR_STATISTIC_ENCLOSED")
+            ratio_lo, ratio_hi = result["likelihood_ratio_bounds"]
+            lr_lo, lr_hi = result["lr_statistic_bounds"]
+            self.assertGreaterEqual(ratio_lo, 1)
+            self.assertGreaterEqual(ratio_hi, ratio_lo)
+            self.assertGreaterEqual(lr_lo, 0)
+            self.assertGreaterEqual(lr_hi, lr_lo)
+
+    def test_log_fraction_interval_is_rational_and_brackets_known_values(self):
+        from c10s_f5_component_profile_score import _log_positive_fraction_interval
+        lo, hi = _log_positive_fraction_interval(Fraction(2), terms=80)
+        self.assertLess(lo, hi)
+        self.assertGreater(lo, Fraction(69, 100))
+        self.assertLess(hi, Fraction(70, 100))
+        reciprocal_lo, reciprocal_hi = _log_positive_fraction_interval(
+            Fraction(1, 2), terms=80,
+        )
+        self.assertEqual((reciprocal_lo, reciprocal_hi), (-hi, -lo))
 
     def test_polynomial_is_reproducible_and_target_is_exact_binary_rational(self):
         first = f5_component_profile_score_polynomial(
