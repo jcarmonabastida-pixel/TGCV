@@ -37,3 +37,22 @@ references:
     url: "https://doi.org/10.1162/REST_a_00553"
     replication_source: "Harvard Dataverse, DOI 10.7910/DVN/6TC8RO"
     note: "Primary study for the Acayucan street-paving case. TGCV's partial-identification assessment is a separate methodological reconstruction."
+
+  - id: TV-REF-004
+    type: dataset_repository
+    authors:
+      - Potassco
+    year: null
+    title: "PDDL instances covering the International Planning Competitions"
+    publication: "GitHub repository, pinned revision cf19edf7c53d1540ddbb396c642595e0926ee552"
+    url: "https://github.com/potassco/pddl-instances/tree/cf19edf7c53d1540ddbb396c642595e0926ee552"
+    note: "Source repository for the grid-visit planning instance used in the bounded cross-domain operationalisation analysis. Source revision is pinned; no licence is asserted here."
+  - id: TV-REF-005
+    type: model_repository
+    authors:
+      - PRISM Model Checker project
+    year: null
+    title: "PRISM Benchmark Suite — synchronous leader-election model"
+    publication: "GitHub repository, pinned revision 59ee49c031dbdfdb1e606edcdd643410de32192b"
+    url: "https://github.com/prismmodelchecker/prism-benchmarks/blob/59ee49c031dbdfdb1e606edcdd643410de32192b/models/dtmcs/leader_sync/leader_sync3_2.pm"
+    note: "Source fixture for the bounded probabilistic coordination model used in the cross-domain analysis. Source revision is pinned; no licence is asserted here."
