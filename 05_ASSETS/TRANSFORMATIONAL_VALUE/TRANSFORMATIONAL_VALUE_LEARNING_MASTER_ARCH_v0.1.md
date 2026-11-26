@@ -1,13 +1,13 @@
 # TRANSFORMATIONAL VALUE — Book & Learning Master Architecture
 
 **Identifier:** TGCV-TV-LEARNING-MASTER-001  
-**Version:** 0.5  
+**Version:** 0.6  
 **Date:** 2026-11-26  
 **Status:** STRATEGIC ARCHITECTURE — WORKING DOCUMENT; detailed contents proposal available for review  
 **Branch:** `strategy/transformational-value-learning`  
 **Canonical location:** `05_ASSETS/TRANSFORMATIONAL_VALUE/TRANSFORMATIONAL_VALUE_LEARNING_MASTER_ARCH_v0.1.md`
 
-> This document establishes the strategic, editorial, knowledge, learning-experience and future community architecture for the reference work *Transformational Value* and its public Learning environment. It authorises planning and content development only. It does not authorise scientific changes, declare VALUE validated, establish a recognised standard, or authorise website implementation or publication.
+> This document establishes the strategic, editorial, knowledge, learning-experience and future community architecture for the reference work *Transformational Value* and its public Learning environment. It authorises planning and content development, plus the narrowly bounded local PoC preview specified in §22. It does not authorise scientific changes, declare VALUE validated, establish a recognised standard, or authorise production website implementation or publication.
 
 ---
 
@@ -715,3 +715,48 @@ The `05_ASSETS/TRANSFORMATIONAL_VALUE/` root is reserved for the three governing
 ## 21. Version history
 
 - **v0.5 — 2026-11-26:** Established the clean repository-root convention: three governing documents only; PoC artefacts under `PoC/`; book content and shared resources in the architecture-defined directory tree.
+
+## 22. Limited authorisation — Learning Publishing PoC preview
+
+**Decision:** The project owner explicitly authorised this limited amendment on 2026-11-26.
+
+This section supersedes the blanket prohibition on website implementation only to the narrow extent stated below. It authorises implementation and testing of a **temporary, local, non-production preview solely to complete the existing Learning Publishing PoC**.
+
+### 22.1 Permitted work
+
+- Build the minimum preview needed to render the existing Chapter 3 content package in Spanish and English.
+- Render and assess the existing shared conceptual diagram, its captions and alternative text in both languages.
+- Test the PoC requirements for desktop and mobile layouts, navigation, language pairing, links, metadata and accessibility.
+- Evaluate one or more candidate technologies for this bounded test, including Starlight if useful, without treating a successful trial as a framework selection.
+- Use local execution and temporary, non-public test artefacts. A temporary private preview may be used only if technically necessary and without creating a production service or recurring cost.
+
+### 22.2 Explicit exclusions
+
+This authorisation does **not** permit:
+
+- production website implementation, migration or launch;
+- public release or indexing of the preview;
+- purchase or registration of a domain, paid hosting, subscriptions or other deployment services;
+- selection or approval of the final publishing framework;
+- expansion beyond the existing PoC content package or creation of the complete Learning website;
+- changes to TGCV scientific governance, scientific claims, VALUE status or the epistemic status of any evidence;
+- changes to the approved chapter content except separately authorised editorial corrections.
+
+### 22.3 Technical and governance controls
+
+- Keep the preview isolated from the production TGCV website and from unrelated prototypes.
+- Preserve GitHub as the canonical source of content and governance.
+- Work only on the designated Learning editorial branch; do not write to `main`.
+- Reuse the existing chapter, glossary, reference and diagram assets; do not recreate them.
+- Keep content independent of the preview technology.
+- Record the chosen test setup, commands, versions, actual test results, limitations and any unresolved defects in the PoC workspace.
+- Do not claim a test passed unless it was actually executed and its result inspected.
+- Stop before any action that would breach the exclusions above.
+
+### 22.4 Exit condition
+
+This limited authorisation remains in force only for completing and documenting the PoC preview and its tests. Completion of the PoC does not itself authorise production implementation, public release, migration or final framework selection. Those require separate explicit decisions.
+
+### Version history
+
+- **v0.6 — 2026-11-26:** Added owner-authorised, narrowly bounded permission for a local, non-production Learning PoC preview and its desktop, mobile, bilingual, diagram and accessibility tests. Production implementation, public release, paid deployment and final framework selection remain unauthorised.
