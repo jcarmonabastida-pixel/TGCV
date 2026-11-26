@@ -204,3 +204,23 @@ A separate research-branch workflow \`.github/workflows/c10-s-f1-profile-static-
 **F1 disposition:** implementation present; deterministic test run pending; LR cutoff calibration pending.  
 **F5 disposition:** M1-PCT rejected for Tier-A; M2 component profile remains design-only.  
 **Confirmatory execution:** none.
+
+
+## 14. F1 profile deterministic workflow result — PASS
+
+**Workflow run:** [45829318708](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45829318708)  
+**Workflow commit:** \`aa735f9faa173376b4443b4444ee1e57880b51a6\`  
+**Job:** \`f1-profile-deterministic-tests\` — SUCCESS
+
+Verified steps:
+- checkout exact commit: PASS;
+- pinned Python 3.12.10 setup: PASS;
+- hash-locked dependency installation: PASS;
+- compile implementation and dependencies: PASS;
+- F1 profile deterministic suite: **51/51 tests PASS**.
+
+The test suite includes interval-path fixtures for all six frozen F1 cells, root/polynomial diagnostics, tangency and unresolved-root cases, scale equivariance, ordered finite interval endpoints, LR endpoint equation checks, and typed abstentions for unresolved nuisance searches.
+
+This is deterministic software/numerical verification only. The six-cell fixture test uses one synthetic sample per cell and checks that the numerical path returns an ordered interval or typed abstention; it is not repeated-sampling coverage calibration. No LR cutoff is validated by this run.
+
+**F1 disposition:** implementation and deterministic tests PASS; statistical cutoff calibration/validation remains open.
