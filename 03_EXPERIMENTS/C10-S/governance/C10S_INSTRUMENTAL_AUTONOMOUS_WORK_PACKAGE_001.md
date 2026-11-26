@@ -171,3 +171,14 @@ M1-PCT emission was 4% (2/50) in M10/R5 and 100% (50/50) in M30/R20. In M10/R5, 
 **Gate C disposition:** M1-PCT fails M10/R5 emission. The development result discriminates against this candidate; no further M1 tuning is authorized by the work package.  
 **Next operation:** static design review of a minimal component-profile-likelihood candidate for F5 functionals W and B, reusing the existing likelihood/derivative and exact finite-R oracle assets. The existing MCSE profile implementation is not a W/B interval method. Boundary, weak-identification, non-unique nuisance, disconnected-set and LR-cutoff behaviour must be resolved before any new development simulation.  
 **Tier-A/Tier-B/C10 execution:** not launched, not authorized. No thresholds changed; no canonical/main files modified.
+
+
+## 11. F5 component-profile candidate — static design review opened
+
+**Design draft:** \`03_EXPERIMENTS/C10-S/design/C10S_F5_COMPONENT_PROFILE_LIKELIHOOD_DESIGN_REVIEW_DRAFT_001.md\`
+
+The design derives the constrained nuisance geometry for the two actual functionals W and B, retains both mean branches, and explicitly includes the \`kappa -> 0\` two-point and \`kappa -> infinity\` binomial likelihood limits. It reuses the existing analytic beta-binomial likelihood/derivatives, MCSE-profile numerical patterns (without mislabelling them as W/B intervals), and exact finite-R oracle.
+
+The central unresolved issue is statistical, not just computational: no LR cutoff is currently justified for weak identification and boundary cases. A routine Wilks cutoff is not assumed. Before any M2 simulation, the profile maxima, branches, boundaries, topology, global-maximum reconciliation and grid convergence need deterministic tests, and a prospective development calibration/validation design must be defensible.
+
+**M2 disposition:** DESIGN CANDIDATE ONLY — not implemented, calibrated or selected. No M2 simulation has been run. No Tier-A/Tier-B/C10 authorization has been created or consumed.
