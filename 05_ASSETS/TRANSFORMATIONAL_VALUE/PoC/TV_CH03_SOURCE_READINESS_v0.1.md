@@ -2,7 +2,7 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.6  
+**Version:** 0.7  
 **Date:** 2026-11-26  
 **Status:** SOURCE REVIEW COMPLETE — READY FOR BOUNDED BILINGUAL DRAFTING  
 **Branch:** `strategy/transformational-value-learning`  
@@ -327,9 +327,9 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 - [x] Incomplete-identification case and its methodological boundary reviewed.
 - [x] Current Evidence-to-Claim Matrix v1.47 reviewed.
 - [x] Value-linkage non-claim recorded.
-- [ ] Canonical glossary IDs checked and allocated.
-- [ ] Diagram asset ID allocated.
-- [ ] Chapter outline approved for drafting.
+- [x] Canonical glossary ID checked against repository search and allocated: `TV-TERM-001` (draft bilingual entry).
+- [x] Diagram asset ID checked against repository search and allocated: `TV-DIA-001` (editable Mermaid source and asset record created).
+- [ ] Chapter outline approved for drafting by the project owner.
 - [ ] Native Spanish and English drafts created.
 - [ ] Editorial, subject and bilingual reviews completed.
 
@@ -343,20 +343,24 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 - **v0.2 — 2026-11-26:** Relocated under `PoC/` and updated its related-specification path.
 
 
-## 12. Separation between reader-facing language and internal traceability
-
-This document is an internal editorial working record, not a chapter intended for publication. Its source inventory in Section 2 retains repository paths, source titles, version labels and retrieval details so that editors can locate and audit the evidence. Those identifiers are metadata for editorial traceability; they are not recommended vocabulary for the book.
-
-Outside that source inventory, the explanatory discussion and proposed chapter outline use descriptive language rather than internal experiment labels. The public chapter must describe each study by its research design, domain, observations, result and limitations. It must not cite a study by an internal experiment code as if that code were its name.
-
-Where a source title or repository path contains an internal identifier, retain it only as a locator in this working document or in a non-reader-facing reference record. A public bibliography should use a meaningful published title and stable public reference wherever available. If no public source exists, cite the programme or responsible authorship with a transparent description of the underlying material; do not expose internal codes in the narrative.
-
-**Version history**
-
-- **v0.4 — 2026-11-26:** Rewrote explanatory sections and chapter-outline guidance to use reader-comprehensible descriptions instead of internal experiment and analytical-artefact acronyms. Explicitly restricted remaining internal identifiers to the editorial source inventory and traceability metadata.
 
 
-- **v0.5 — 2026-11-26:** Removed further internal dataset and workstream labels from the explanatory evidence discussion. Other research is now described by substantive topic and may be included only where its findings and evidence status are relevant.
+## 13. Pilot content package setup
 
+The initial content identities and working assets have now been created on the Learning branch:
 
-- **v0.6 — 2026-11-26:** Replaced internal study and analytical-artefact acronyms in source-inventory descriptions with meaningful titles and descriptions. Internal codes remain only where embedded in repository paths, filenames or source URLs required for auditability.
+| Item | Stable ID | Location | State |
+|---|---|---|---|
+| Chapter 3 | `TV-CH-03` | `book/es/` and `book/en/` (registered target paths) | Planned; no chapter prose drafted |
+| Accessible transformation space glossary entry | `TV-TERM-001` | `glossary/es/` and `glossary/en/` | Draft in both languages |
+| Chapter 3 sequence diagram | `TV-DIA-001` | `assets/diagrams/TV-DIA-001/` | Draft editable Mermaid source |
+| Content registry | — | `metadata/content-registry.yml` | Initial registry created |
+| Terminology registry | — | `metadata/terminology.yml` | Initial bilingual term record created |
+
+The identifiers were searched in the repository before allocation; no existing occurrence of `TV-TERM-001` or `TV-DIA-001` was found. The two glossary definitions are working drafts and are not approved terminology. The diagram is an analytical teaching aid, not a causal model: its labels explicitly distinguish accessibility, realisation, trajectory, outcome and Value.
+
+**Next gate:** project-owner review of the proposed nine-section Chapter 3 outline in §6, followed by any required adjustments. Only after that review should the paired chapter drafts be created. The source-readiness decision remains bounded and does not constitute approval of the chapter's final wording or claims.
+
+## 14. Version history
+
+- **v0.7 — 2026-11-26:** Allocated and checked the first glossary and diagram IDs; created the bilingual glossary draft, editable diagram source, asset record, content registry and terminology record. Recorded chapter-outline approval as the remaining pre-drafting gate.
