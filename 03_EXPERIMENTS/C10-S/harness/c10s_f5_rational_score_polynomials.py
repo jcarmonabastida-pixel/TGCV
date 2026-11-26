@@ -1210,6 +1210,8 @@ def _uni_sturm_integer_sequence(sequence):
 
 def _uni_sign_variations_integer(sequence, point):
     """Exact Sturm signs using homogeneous integer Horner evaluation (no Fraction gcds)."""
+    from fractions import Fraction
+
     x = Fraction(point)
     numerator, denominator = x.numerator, x.denominator
     signs = []
