@@ -582,3 +582,27 @@ For the dominant call, exact sign evaluation fell from 651.150 s to 522.910 s. A
 **Disposition:** retain the fixed-point interval evaluator as a research prototype. It is not yet promoted into the production implementation and does not establish profile topology, coverage, LR-cutoff calibration or Tier-A readiness.
 
 **Next operation:** test a signed primitive-integer polynomial remainder sequence (PRS) to construct the Sturm sequence directly over integers. The sign of each remainder must be proven equivalent to the rational Euclidean remainder up to a strictly positive scale; a positive-content reduction is allowed, but arbitrary sign normalization is not. Add exact sign-variation parity tests against the current rational Sturm sequence over dyadic and adversarial fixtures, then benchmark the combined integer-PRS plus certified fixed-point evaluator on the same M30/R20 W fixture. Keep the existing rational implementation as the reference and fallback. No coverage simulation, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
+
+
+## 33. Signed primitive-integer Sturm PRS prototype — exact parity PASS; limited end-to-end gain
+
+**Workflow:** [45858989479](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45858989479) — SUCCESS  
+**Tested commit:** `91374956c702272fc2afc9ede4e4e54ea653bda4`  
+**Tests:** 4/4 exact parity tests PASS (7.267 s).
+
+A development-only signed primitive-integer pseudo-remainder sequence (PRS) was added. It constructs the Sturm chain directly over integer coefficients. Each pseudo-remainder is corrected for the sign of the divisor leading coefficient and reduced only by positive integer content, so each term is a strictly positive multiple of the corresponding rational Euclidean Sturm term. The existing rational Sturm sequence remains the reference implementation.
+
+The deterministic tests compare sequence lengths and exact sign variations against the rational reference over dyadic grids, including polynomials with large coefficients and positive/negative leading coefficients. All four tests pass.
+
+On the same M30/R20 W fixture, combined with the certified fixed-point sign evaluator:
+- global certificate: `GLOBAL_INTERIOR_MAXIMUM_CERTIFIED` (33.274 s);
+- profile: `LR_STATISTIC_ENCLOSED`, `PROFILE_MAXIMUM_ENCLOSED`;
+- 3 candidates, 1 interior stationary point;
+- dominant isolation: `ISOLATION_COMPLETE`, 3,372 processed intervals, 1 exact root, 122 isolating intervals, 0 unresolved;
+- total profile runtime: **720.064 s**.
+
+The two large Sturm sequence builds fell from 123.164 s in the fixed-point-only run to 47.123 s with integer PRS (about 62% lower). Integer conversion became effectively zero-cost. However, the measured sign-variation stage was 578.667 s in this run versus 522.910 s in the fixed-point-only run; this variation is not evidence that the new sign evaluator is intrinsically slower, but it prevents attributing the end-to-end improvement to sign evaluation. Overall runtime is only about 1.7% below the fixed-point-only run and 22.3% below the original per-call baseline. The prototype therefore establishes an exact alternative sequence construction and a material reduction in sequence-build time, but not a sufficient end-to-end performance solution.
+
+**Disposition:** retain the signed integer PRS as a parity-tested development candidate, not yet as the production implementation. The combined profile remains computationally expensive and no coverage, topology, or cutoff-calibration claim follows.
+
+**Next operation:** test whether a coarser *exact isolating interval width* can reduce subdivision/sign-evaluation cost while preserving complete root census, exact interval enclosure, and `LR_STATISTIC_ENCLOSED`. Start with a bounded M30/R20 W comparison at width (2^{-24}) against the current (2^{-40}) fixture. The width change must not alter any statistical acceptance threshold; if likelihood/LR enclosures become too wide or any root becomes unresolved, retain the tighter width. No coverage simulation, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
