@@ -176,10 +176,22 @@ def f5_component_profile_score_polynomial(
     ]
     stripped = list(univariate)
     removed = 0
+    removed_factor_sign_on_feasible_domain = 1
     while len(stripped) > 1:
         common = _uni_gcd(stripped, q_boundary)
         if len(common) <= 1:
             break
+        # The monic gcd may have either sign on the feasible interval.
+        # Its sign is constant there because all its roots are feasibility
+        # endpoints. Evaluate at mu=1/2, which is strictly feasible.
+        half_value = sum(
+            coefficient * (Fraction(1, 2) ** degree)
+            for degree, coefficient in enumerate(common)
+        )
+        if half_value == 0:
+            raise F5ConstrainedScoreError("BOUNDARY_FACTOR_SIGN_UNRESOLVED")
+        if half_value < 0:
+            removed_factor_sign_on_feasible_domain *= -1
         quotient, remainder = _uni_divmod(stripped, common)
         if any(remainder):
             raise F5ConstrainedScoreError("BOUNDARY_FACTOR_REMOVAL_NOT_EXACT")
@@ -188,7 +200,8 @@ def f5_component_profile_score_polynomial(
     # Preserve the sign of the original derivative numerator. The shared
     # primitive helper normalizes the leading coefficient positive, which is
     # suitable for root isolation but would otherwise erase score orientation.
-    orientation = 1 if stripped[-1] > 0 else -1
+    orientation = (1 if stripped[-1] > 0 else -1)
+    orientation *= removed_factor_sign_on_feasible_domain
     primitive = _primitive_integer_polynomial(stripped)
     coefficients = tuple(orientation * value for value in primitive)
     if coefficients == (0,):
