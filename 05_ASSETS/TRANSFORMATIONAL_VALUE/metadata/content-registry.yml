@@ -33,7 +33,9 @@ content:
     title:
       es: "De las condiciones del sistema al siguiente espacio de transformaciones accesibles"
       en: "From system conditions to the next accessible transformation space"
-    source: assets/diagrams/TV-DIA-001/source/accessible-transformation-space-sequence.mmd
+    sources:
+      es: assets/diagrams/TV-DIA-001/source/accessible-transformation-space-sequence.es.mmd
+      en: assets/diagrams/TV-DIA-001/source/accessible-transformation-space-sequence.mmd
     status: draft
 
   - content_id: TV-LR-001
