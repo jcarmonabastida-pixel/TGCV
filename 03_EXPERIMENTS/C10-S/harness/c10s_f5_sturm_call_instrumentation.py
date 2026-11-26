@@ -224,3 +224,90 @@ def _exact_sign_variations_numerator_denominator(sequence, numerator, denominato
         if sign:
             signs.append(sign)
     return sum(left != right for left, right in zip(signs, signs[1:]))
+
+
+def _primitive_integer_preserve_sign(values):
+    """Clear rational denominators/content without changing polynomial sign."""
+    from math import gcd, lcm
+
+    items = [Fraction(value) for value in values]
+    denominator = 1
+    for value in items:
+        denominator = lcm(denominator, value.denominator)
+    integers = [
+        value.numerator * (denominator // value.denominator)
+        for value in items
+    ]
+    content = 0
+    for value in integers:
+        content = gcd(content, abs(value))
+    if content:
+        integers = [value // content for value in integers]
+    while len(integers) > 1 and integers[-1] == 0:
+        integers.pop()
+    return integers or [0]
+
+
+def _signed_primitive_pseudo_remainder(dividend, divisor):
+    """Return a positive multiple of the Q-remainder, with its sign preserved."""
+    from math import gcd
+
+    remainder = list(dividend)
+    divisor = list(divisor)
+    if len(divisor) <= 1:
+        return [0]
+    leading = divisor[-1]
+    steps = 0
+    while len(remainder) >= len(divisor) and any(remainder):
+        shift = len(remainder) - len(divisor)
+        pivot = remainder[-1]
+        scaled = [leading * value for value in remainder]
+        for index, value in enumerate(divisor):
+            scaled[shift + index] -= pivot * value
+        while len(scaled) > 1 and scaled[-1] == 0:
+            scaled.pop()
+        content = 0
+        for value in scaled:
+            content = gcd(content, abs(value))
+        if content:
+            scaled = [value // content for value in scaled]
+        remainder = scaled
+        steps += 1
+    if not any(remainder):
+        return [0]
+    # Each pseudo-division step multiplies the Q-remainder by lc(divisor).
+    # Correct only that possible negative scale; content divisions are positive.
+    if leading < 0 and steps % 2:
+        remainder = [-value for value in remainder]
+    return remainder
+
+
+def primitive_integer_sturm_sequence(poly):
+    """Build a Sturm sequence directly over Z, preserving rational Sturm signs.
+
+    Every term is a positive scalar multiple of the corresponding rational
+    Sturm term. This is a development prototype, not yet the production path.
+    """
+    values = [Fraction(value) for value in poly]
+    while len(values) > 1 and values[-1] == 0:
+        values.pop()
+    if not values or all(value == 0 for value in values):
+        raise ValueError("ZERO_POLYNOMIAL_HAS_NO_STURM_SEQUENCE")
+    leading = values[-1]
+    monic = [value / leading for value in values]
+    first = _primitive_integer_preserve_sign(monic)
+    if len(first) <= 1:
+        return (tuple(first),)
+    derivative = [
+        index * monic[index] for index in range(1, len(monic))
+    ]
+    second = _primitive_integer_preserve_sign(derivative)
+    sequence = [first, second]
+    while any(sequence[-1]):
+        remainder = _signed_primitive_pseudo_remainder(
+            sequence[-2], sequence[-1],
+        )
+        if not any(remainder):
+            break
+        sequence.append([-value for value in remainder])
+    return tuple(tuple(item) for item in sequence)
