@@ -216,7 +216,8 @@ jobs:
           EXPECTED_REPOSITORY_ID: ${{ github.repository_id }}
         run: |
           set -euo pipefail
-          MANIFEST="03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json"
+          MANIFEST="$GITHUB_WORKSPACE/03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json"
+          test -f "$MANIFEST" || { echo "::error::G7 resource profile manifest not found: $MANIFEST"; exit 1; }
           ARCHIVE="$RUNNER_TEMP/resource-profile.zip"
           METADATA="$RUNNER_TEMP/resource-profile-artifact-metadata.json"
           mkdir -p "$RUNNER_TEMP/resource-profile"
@@ -240,12 +241,15 @@ jobs:
         env:
           PLAN_JSON: ${{ runner.temp }}/g7-resource-profile-validation.json
         run: |
+          set -euo pipefail
+          MANIFEST="$GITHUB_WORKSPACE/03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json"
+          test -f "$MANIFEST" || { echo "::error::G7 resource profile manifest not found: $MANIFEST"; exit 1; }
           PROFILE_JSON="$(find "$RUNNER_TEMP/resource-profile" -type f -name 'c10s-f5-g7-resource-profile.json' -print -quit)"
           test -n "$PROFILE_JSON"
           python validate_c10s_f5_g7_resource_profile.py \
             --profile "$PROFILE_JSON" \
-            --manifest ../fixtures/g7_resource_profile_v1_1/manifest.json \
-            --root ../../.. \
+            --manifest "$MANIFEST" \
+            --root "$GITHUB_WORKSPACE" \
             --output-json "$RUNNER_TEMP/g7-resource-profile-validation.json"
           python - <<'PY' >> "$GITHUB_OUTPUT"
           import json, os
@@ -259,7 +263,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/g7-resource-plan"
           cp "$RUNNER_TEMP/g7-resource-profile-validation.json" "$RUNNER_TEMP/g7-resource-plan/"
           cp "$PROFILE_JSON" "$RUNNER_TEMP/g7-resource-plan/resource-profile.json"
-          cp ../fixtures/g7_resource_profile_v1_1/manifest.json "$RUNNER_TEMP/g7-resource-plan/resource-profile-manifest.json"
+          cp "$MANIFEST" "$RUNNER_TEMP/g7-resource-plan/resource-profile-manifest.json"
       - name: Upload validated resource plan and immutable profile (no recomputation)
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
