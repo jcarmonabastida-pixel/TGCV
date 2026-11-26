@@ -102,7 +102,7 @@ Una transformación es accesible cuando se satisfacen las condiciones relevantes
 T_{acc}=F(S,C,L)
 \]
 
-Aquí, \(S\) representa el estado o configuración relevante del sistema; \(C\), las condiciones contextuales consideradas; y \(L\), las restricciones, los recursos y las condiciones operativas que intervienen en el análisis. El estado del sistema constituye el punto de partida ontológico. Las condiciones contextuales y los elementos recogidos en \\(L\\) se incorporan para evaluar la accesibilidad en cada caso; no se postulan como entidades ontológicas independientes ni deben confundirse con el propio espacio de transformaciones.
+Aquí, \(S\) representa el estado o configuración relevante del sistema; \(C\), las condiciones contextuales consideradas; y \(L\), las restricciones, los recursos y las condiciones operativas que intervienen en el análisis. El estado del sistema constituye el punto de partida ontológico. Las condiciones contextuales y los elementos recogidos en \(L\) se incorporan para evaluar la accesibilidad en cada caso; no se postulan como entidades ontológicas independientes ni deben confundirse con el propio espacio de transformaciones.
 
 Para cada transformación candidata puede definirse un predicado de accesibilidad:
 
@@ -112,7 +112,7 @@ Para cada transformación candidata puede definirse un predicado de accesibilida
 
 El predicado debe establecerse de manera independiente de los resultados posteriores. No sería válido definir una transformación como accesible simplemente porque observamos que tuvo éxito, ni concluir que estaba disponible porque el sistema acabó obteniendo un resultado favorable. Eso introduciría razonamiento retrospectivo y confundiría las condiciones de partida con lo que ocurrió después.
 
-La evaluación del predicado puede estar sujeta a incertidumbre o limitaciones de información. Por ello, es necesario distinguir entre una transformación cuya accesibilidad se ha establecido, otra cuya falta de accesibilidad se ha establecido y una tercera cuya condición no puede determinarse con la evidencia disponible. La ausencia de evidencia suficiente no debe interpretarse automáticamente como evidencia de ausencia de accesibilidad.
+El predicado expresa una condición de accesibilidad, pero la evidencia disponible puede no permitir evaluarla de forma concluyente. En la práctica, el análisis debe distinguir entre una transformación cuya accesibilidad se ha establecido, otra cuya falta de accesibilidad se ha establecido y una tercera cuya condición no puede determinarse con la información disponible. Esta última situación no equivale a asignar al predicado un valor de cero: indica que no se ha podido establecer si la condición se cumple. La ausencia de evidencia suficiente no debe interpretarse automáticamente como evidencia de ausencia de accesibilidad.
 
 La accesibilidad puede depender de varias dimensiones:
 
