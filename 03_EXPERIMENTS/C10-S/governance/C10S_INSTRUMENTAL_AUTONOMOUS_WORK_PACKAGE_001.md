@@ -526,3 +526,35 @@ Call counts: score polynomial 1; root isolation 4; likelihood enclosure 1; bound
 **Important:** this is a successful computational diagnostic, not a coverage result. The output remains a fixed-target LR enclosure; it does not certify confidence-set topology across the target axis. Total runtime is somewhat higher than the earlier uninstrumented W run (805.6 s), as expected from the profiling wrapper and instrumentation overhead; the stage shares identify the bottleneck reliably enough to focus the next experiment.
 
 **Next bounded step:** split the four root-isolation calls into per-call measurements (polynomial degree, Sturm sequence length, coefficient bit-size, processed intervals, isolated roots, unresolved intervals, and elapsed time). Then inspect exact sequence construction and sign-variation evaluation costs. Optimise only the dominant sub-operation, retaining exact arithmetic and fail-closed resource statuses. Do not start coverage calibration or Tier-A.
+
+
+## 31. M30/R20 W per-call Sturm instrumentation — PASS; sign evaluation dominates
+
+**Workflow:** [45853526656](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45853526656) — SUCCESS  
+**Tested commit:** `2de26f48d29b02928ce5d38b0e7ce609246bc96e`  
+**Job:** `m30r20-w-per-call-sturm-profile` — SUCCESS
+
+The observational instrumentation completed the same M30/R20 W fixed-target profile. Global certificate: `GLOBAL_INTERIOR_MAXIMUM_CERTIFIED` (36.891 s). Profile: `LR_STATISTIC_ENCLOSED`, `PROFILE_MAXIMUM_ENCLOSED`, 3 candidates, 1 interior stationary point. Total profile time: **927.246 s**. All numerical return values were passed through unchanged.
+
+Four root-isolation calls were observed:
+
+| Call | Input degree | Elapsed | Processed intervals | Isolated roots | Unresolved |
+|---|---:|---:|---:|---:|---:|
+| 1 — stationary score factor | 179 | 829.485 s | 3,372 | 1 exact + 122 intervals | 0 |
+| 2 — feasible-domain endpoints | 2 | 0.0013 s | 81 | 2 intervals | 0 |
+| 3 — exact endpoint factor | 2 | 0.00008 s | 0 | 2 exact | 0 |
+| 4 — second endpoint factor | 2 | 0.0013 s | 81 | 2 intervals | 0 |
+
+The dominant call constructed two Sturm sequences, of lengths 180 and 179. Across those sequences:
+- 32,400 rational coefficients;
+- maximum numerator/denominator bit lengths of approximately 26,910/27,384 bits;
+- sequence construction: 167.706 s total;
+- conversion to primitive integer sequences: 0.917 s total;
+- exact sign-variation evaluation: **651.150 s across 3,253 evaluations**;
+- remaining isolation work: 9.711 s.
+
+Thus sign-variation evaluation consumes approximately **78.5% of the dominant isolation call** and 70.2% of the full profile. The other three calls are negligible. The dominant polynomial input itself has degree 179, 180 coefficients, maximum numerator bit length 665 and denominator bit length 643. The call ended `ISOLATION_COMPLETE`, with no unresolved intervals.
+
+**Interpretation:** the next optimisation target is the exact integer sign-variation evaluator, not polynomial construction, integer scaling, or interval queue management. The current evaluator uses homogeneous Horner arithmetic at rational dyadic subdivision points. A development-only alternative may exploit the exact power-of-two denominator structure (integer shifts rather than repeated denominator-power multiplication), but it must first pass exact sign-parity tests against the current implementation over endpoint, dyadic and adversarial polynomial fixtures. No floating-point sign decisions, approximate pruning, altered isolation widths, or relaxed resource limits are permitted.
+
+**Next operation:** implement and benchmark a narrowly scoped exact dyadic sign-evaluation alternative, with deterministic parity tests and a bounded M30/R20 W comparison. Record per-call and end-to-end timings, unchanged root census/status, and exact parity. If the alternative does not materially improve runtime, retain the current implementation. No coverage simulation, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
