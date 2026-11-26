@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/c10-s-f5-lr-runtime-probe.yml'
       - '03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_lr_runtime.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_f5_rational_score_polynomials.py'
       - '03_EXPERIMENTS/C10-S/harness/c10s_f5_component_profile_score.py'
       - '03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py'
       - '03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock'
@@ -35,6 +36,9 @@ jobs:
       - name: Compile runtime probe
         working-directory: 03_EXPERIMENTS/C10-S/harness
         run: python -B -m py_compile profile_c10s_f5_lr_runtime.py c10s_f5_component_profile_score.py c10s_f5_rational_score_polynomials.py
+      - name: Run rational Sturm deterministic tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -B -m unittest -v test_c10s_f5_rational_score_polynomials
       - name: Run bounded deterministic runtime probe
         working-directory: 03_EXPERIMENTS/C10-S/harness
         run: python -B profile_c10s_f5_lr_runtime.py
