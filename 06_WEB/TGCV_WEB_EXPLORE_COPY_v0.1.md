@@ -1,7 +1,7 @@
 # TGCV — Explore Copy
 
 **Identifier:** TGCV-WEB-EXPLORE-COPY-001  
-**Version:** 1.0  
+**Version:** 1.1  
 **Date:** 2026-11-25  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md`  
@@ -15,7 +15,7 @@ This document contains the Spanish and English working copy for the first Explor
 
 Explore starts where Home leaves off. Home introduces the idea that a system's possibilities can change; Explore deepens the explanation by examining how candidate transformations are assessed for accessibility, how that assessment depends on system boundaries and conditions, and what accessibility does—and does not—tell us. It is written primarily for people who research, design, develop or engineer systems, while remaining understandable to interested visitors outside those fields.
 
-The software-migration scenario is an illustrative editorial example. It is not an existing execution, validated application, Juguete Colectivo feature or C10-S result.
+The software-migration scenario is an illustrative editorial example. It is not an existing execution, a validated application or a feature of an existing TGCV demonstrator.
 
 # 2. Spanish version
 
@@ -329,3 +329,7 @@ TGCV investigates whether and how changes in accessible transformations may cont
 - **0.8 — 2026-11-25:** Rewrites the Spanish and English TI explanation to distinguish the developing capability concept from Systems Thinking, Systems Engineering, AI and the TGCV research programme; clarifies intended function without implying validation.
 - **0.9 — 2026-11-25:** Clarifies in both languages that the visible accessibility/execution/outcome/value sequence is an analytical distinction, not a complete causal explanation.
 - **1.0 — 2026-11-25:** Adds a distinct Value Construction route in both languages, separating conceptual/research deepening from the complementary applied VALUE framework and stating their non-validated relationship.
+
+### v1.1 — 2026-11-26
+- Removes internal demonstrator and execution labels from the visitor-facing explanatory copy.
+- Preserves the illustrative-only status of the software-migration example and its conceptual distinction from Research evidence.
