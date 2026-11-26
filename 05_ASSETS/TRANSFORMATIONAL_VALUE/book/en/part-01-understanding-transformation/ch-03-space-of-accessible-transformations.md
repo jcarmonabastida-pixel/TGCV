@@ -5,7 +5,7 @@ title: "The Space of Accessible Transformations"
 language: en
 content_type: chapter
 status: draft
-version: 0.7
+version: 0.8
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -75,7 +75,7 @@ By the end of this chapter, you should be able to:
 
 ## 1. Why look at transformations a system can access?
 
-Consider an organisation that has so far delivered a service only in person. It then introduces a digital platform, trains some of its staff, obtains permission to operate through another channel and adapts its processes. The organisation may continue serving customers in person. Yet its situation has changed: transformations that were not previously available under the same conditions may now be accessible. It may be able to serve customers remotely, coordinate distributed teams or provide certain services beyond its former operating hours.
+Consider an organisation that has so far delivered a service only in person. It then introduces a digital platform, trains some of its staff, obtains permission to operate through another channel and adapts its processes. The organisation may continue serving customers in person. Yet its situation has changed: transformations that were not previously available under the same conditions may now be accessible. It may be able to serve customers remotely, coordinate distributed teams or provide certain services beyond its former operating hours. Whether each of these transformations is genuinely accessible depends on whether the specific conditions required for its realisation are satisfied. Having a platform or permission is not enough if the necessary capabilities, resources or operational integration are missing.
 
 If we observed only the activities actually performed, we could describe what the organisation had done. We would not fully capture the structural change: some transformations have become accessible.
 
@@ -84,7 +84,7 @@ The distinction matters across many kinds of systems. Infrastructure may enable 
 In each case, two questions should be kept separate:
 
 1. Which transformations has the system actually realised?
-2. Which transformations could it realise under the conditions being considered, regardless of whether it eventually does so?
+2. Which transformations are available for the system to realise under the conditions being considered, regardless of whether they are eventually realised?
 
 The second question is not a wish list or an unlimited catalogue of imaginable possibilities. It concerns transformations defined precisely enough for their accessibility to be assessed in relation to the system and its conditions.
 
