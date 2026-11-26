@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 3.5  
+**Version:** 3.6  
 **Date:** 2026-11-26  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -890,3 +890,31 @@ The page is an orientation layer, not a substitute for Research's scientific acc
 - Restores Contact as the eighth planned first-release navigation destination and preserves its place in the sitemap.
 - Clarifies that implementation of the Contact page and activation of its monitored communication channel are deferred until the domain-associated account is available; this does not remove Contact from the planned website.
 - Synchronises Home Experience v1.9 and Home Copy v1.7.
+
+
+## 26. Global footer — Legal & Licensing (2026-11-26)
+
+**Decision:** add a site-wide footer group titled **Legal & Licensing** (Spanish explanatory label may be *Legal y licencias*; retain the approved English navigation and proper names). The footer complements, but does not replace, the primary navigation. It must distinguish site-use policies from licences governing individual research and software materials.
+
+### 26.1 Footer information groups
+
+- **Explore TGCV:** links to the principal website destinations, including **Contact**. Contact remains a planned destination and Home invitation; its page/channel must not be represented as operational until a real monitored channel exists.
+- **Legal:** **Terms of Use**, **Privacy Policy** and **Cookie Policy**. These are separate policy documents, not content licences. Their publication depends on the actual website functionality, data processing, hosting, analytics and cookie use.
+- **Open Research & Software:** **Research Content License**, **Software Licenses** and **Third-Party Licenses & Attributions**. These destinations explain the licence applicable to specific assets or repositories; they do not imply that every research asset or software component is openly licensed.
+
+### 26.2 Licence allocation principles
+
+- **Research and editorial content:** consider **Creative Commons Attribution 4.0 International (CC BY 4.0)** for original TGCV research publications, explanatory text, diagrams and other eligible content, subject to a rights and third-party-material review. CC BY must not be applied indiscriminately to software, datasets or material whose rights are not controlled.
+- **Demonstrators and playground software:** choose a software licence per repository/package. **MIT License** is a candidate for a simple permissive grant. **Apache License 2.0** is an alternative where its express patent provisions and fuller terms are desired. Do not assign both to the same codebase by default; make and record an explicit choice for each repository.
+- **Third-party material:** dependencies, libraries, datasets, models, images, fonts and other external assets retain their own applicable licences and attribution/redistribution conditions. Record these in a third-party notices/attributions register.
+- Creative Commons licences are not a substitute for software licences. Terms of Use do not override or silently replace the licence attached to a specific asset.
+
+### 26.3 Publication and governance conditions
+
+The footer may reserve the planned destinations before their documents are ready, but must not present draft policies or candidate licences as effective. A licence becomes operative only when explicitly adopted and attached to the relevant repository, package or content asset, with its notice and required attribution files in place. Legal policies must be reviewed against the real operating website and applicable requirements before publication. No licence choice or legal text is approved by this architecture decision alone.
+
+
+### v3.6 — 2026-11-26
+- Adds the global Legal & Licensing footer structure, separating site-use policies, research-content licensing, software licences and third-party attributions.
+- Records CC BY 4.0, MIT and Apache 2.0 as candidate options only; no licence or legal policy is adopted or approved by this planning update.
+- Defines asset-level rights checks and publication gates, preserving Contact as a planned footer destination without implying a live channel.
