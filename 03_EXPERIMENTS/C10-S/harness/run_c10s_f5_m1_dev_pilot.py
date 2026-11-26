@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import asdict
 import hashlib
 import json
 import math
@@ -26,6 +27,7 @@ from c10s_f5_functional_refit_bootstrap import (
     fitted_functional_refit_percentile_bootstrap,
 )
 
+PILOT_ID = "C10S_F5_M1_DEV_PILOT_001"
 SCHEDULE_ID = "C10S_F5_M1_DEV_PILOT_SEEDS_1.0"
 SEED_NAMESPACE = "c10s_f5_m1_dev_pilot_v1"
 F5_CELLS = ("F5_beta22_M10_R5", "F5_beta22_M30_R20")
@@ -54,6 +56,13 @@ def historical_seed_roster() -> set[int]:
         "f5_endpoint_sensitivity_b1000", "f5_endpoint_sensitivity_b4000",
     )
     for cell in F5_CELLS:
+        for i in range(1000):
+            for stream in ("dataset", "C0_bootstrap", "C5_bootstrap"):
+                legacy_payload = (
+                    f"C10S_F5_G7_TIERA_SEEDS_1.0|c10s_f5_g7_holdout_v1|"
+                    f"{stream}|{cell}|{i}"
+                ).encode("utf-8")
+                values.add(int.from_bytes(hashlib.sha256(legacy_payload).digest()[:8], "big"))
         for i in range(5000):
             for stream in b2_streams:
                 values.add(derive_b2_seed(stream, cell, i))
@@ -125,7 +134,7 @@ def run_pilot(output_path: Path) -> dict:
             "valid_replicates": result.valid_replicates,
             "failed_replicates": result.failed_replicates,
             "failure_counts": result.failure_counts,
-            "original_fit": result.original_fit,
+            "original_fit": asdict(result.original_fit),
             "replicate_records": result.replicate_records,
             "truth_within": spec.true_within,
             "truth_between": spec.true_between,
@@ -156,6 +165,7 @@ def run_pilot(output_path: Path) -> dict:
         }
     payload = {
         "schema": "C10S-F5-M1-PCT-DEV-PILOT-1.0",
+        "pilot_id": PILOT_ID,
         "scope": "DEVELOPMENT_ONLY_SMOKE_PILOT_NOT_TIER_A_NOT_CONFIRMATORY",
         "method_id": METHOD_ID, "fit_contract_id": FIT_CONTRACT_ID,
         "schedule_id": SCHEDULE_ID, "seed_namespace": SEED_NAMESPACE,
