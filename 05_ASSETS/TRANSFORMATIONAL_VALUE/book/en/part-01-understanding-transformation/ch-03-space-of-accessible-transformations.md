@@ -146,9 +146,9 @@ Nor should it be confused with a general measure of capability. A system may hav
 
 ## 4. Accessibility is not execution
 
-Consider a system that can perform four transformations: \(A\), \(B\), \(C\) and \(D\). Their presence in its accessible space does not mean that all four will be realised. The system may choose (B), take no action, postpone a decision or follow a different trajectory at another time.
+Consider a system for which four transformations, \(A\), \(B\), \(C\) and \(D\), are available. Their presence in its accessible space does not mean that any of them will necessarily be realised. The system may choose (B), take no action, postpone a decision or follow a different trajectory at another time.
 
-Five levels should be kept distinct:
+Five related but non-equivalent analytical levels should be kept distinct:
 
 1. **Accessibility:** which transformations are available under the specified conditions.
 2. **Realisation:** which transformation actually occurs.
@@ -156,7 +156,7 @@ Five levels should be kept distinct:
 4. **Outcome:** a specific consequence in the domain being considered.
 5. **Value:** an evaluation of that consequence against relevant criteria, actors and time horizons.
 
-No level should be defined retrospectively from the next. The realisation of a transformation may confirm that certain conditions held in that instance, but it does not automatically reconstruct the full space of alternatives. Similarly, a favourable outcome does not by itself demonstrate that every preceding transformation was accessible or that a particular change in the accessible space caused the outcome.
+No level should be defined retrospectively from the next. The observed realisation of a transformation provides evidence that it could be carried out under the specific conditions of that case. However, it does not automatically reconstruct the full space of alternatives or, by itself, demonstrate that the accessibility criterion has been correctly specified. Similarly, a favourable outcome does not by itself demonstrate that every preceding transformation was accessible or that a particular change in the accessible space caused the outcome.
 
 The distinction also works in the opposite direction. A transformation may be accessible but not realised because there is no demand, because a decision is deliberately made not to act, because of uncertainty or opportunity costs, or because the system prioritises another trajectory. Non-realisation does not necessarily show that the transformation was inaccessible.
 
