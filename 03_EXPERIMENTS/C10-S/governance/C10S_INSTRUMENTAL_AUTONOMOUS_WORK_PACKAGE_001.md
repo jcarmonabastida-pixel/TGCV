@@ -673,3 +673,22 @@ Profile runtimes were 253.396 s (interior B), 240.772 s (boundary-only W), and 2
 **Disposition:** the (2^{-16}) numerical-width candidate has now passed bounded M30/R20 W and B interior profiles and a boundary-only W/B fixture. This is computational/root-census robustness evidence only. It does not validate repeated-sampling coverage, LR cutoff calibration, confidence-set topology over the target axis, or any Tier-A cell.
 
 **Next operation:** exercise the same implementation/width on the M10/R5 F5 fixture for both W and B, including an endpoint-only boundary histogram. Then reconcile resource use and the numerical tolerance across the two F5 Tier-A cells before designing any repeated-sampling development calibration. No coverage simulation, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
+
+
+## 37. M10/R5 W/B and endpoint-only boundary robustness at (2^{-16}) — PASS
+
+**Workflow:** [45866730907](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45866730907) — SUCCESS  
+**Tested commit:** `04e7d4d5e098b017c13b3cf362be0bc6d0c162d4`  
+**Fixtures:** M10/R5 interior histogram `{0:1, 1:2, 2:2, 3:2, 4:2, 5:1}` and endpoint-only histogram `{0:5, 5:5}); exact signed integer PRS, certified fixed-point signs and width (2^{-16}).
+
+All four bounded profiles completed with `LR_STATISTIC_ENCLOSED` and `PROFILE_MAXIMUM_ENCLOSED`:
+- interior W: 0.843 s; 3 candidates, 1 interior stationary point; dominant degree 35, 204 intervals processed, 1 exact root + 26 isolating intervals, 0 unresolved;
+- interior B: 1.181 s; 3 candidates, 1 interior stationary point; dominant degree 53, 34 intervals processed, 1 exact root + 2 isolating intervals, 0 unresolved;
+- endpoint-only W: 0.828 s; global certificate `GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED`; 3 candidates, 1 interior stationary point; dominant degree 33, 246 intervals processed, 1 exact root + 30 isolating intervals, 0 unresolved;
+- endpoint-only B: 1.067 s; global certificate `GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED`; 5 candidates, 3 interior stationary points; dominant degree 49, 34 intervals processed, 1 exact root + 2 isolating intervals, 0 unresolved.
+
+All auxiliary endpoint isolation calls also completed. No unresolved interval or silent boundary-to-interior recoding occurred.
+
+**Disposition:** the (2^{-16}) implementation candidate has now completed M10/R5 W/B interior and endpoint-only boundary fixtures, and M30/R20 W/B interior and boundary-only fixtures. This supports computational portability across the two F5 Tier-A sample-size cells and both components, but it is still a small set of deterministic histogram fixtures. It does not validate repeated-sampling coverage, cutoff calibration, or confidence-set topology across the full target domain.
+
+**Next operation:** assess whether a wider exact root-isolation width (initially (2^{-8})) further reduces M30/R20 W runtime without changing complete root census or producing materially wider likelihood/LR enclosures. If the width fails closed or widens the LR enclosure too much for useful classification, retain (2^{-16}). Then begin a bounded, explicitly development-only comparison of candidate F5 interval methods against known DGP truth, without using Tier-A confirmatory or exposed holdout data. No coverage simulation under frozen Tier-A criteria, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
