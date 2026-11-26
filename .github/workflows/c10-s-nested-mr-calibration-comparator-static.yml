@@ -48,7 +48,8 @@ on:
       - '03_EXPERIMENTS/C10-S/design/C10S_F5_G7_TIERA_PROSPECTIVE_PROTOCOL_001.md'
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_fitted_beta_binomial_bootstrap.py'
       - '03_EXPERIMENTS/C10-S/harness/c10s_f5_functional_refit_bootstrap.py'
-      - '03_EXPERIMENTS/C10-S/harness/test_c10s_f5_functional_refit_bootstrap.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_f5_functional_refit_bootstrap.py run_c10s_f5_m1_dev_pilot.py'
+      - '03_EXPERIMENTS/C10-S/harness/run_c10s_f5_m1_dev_pilot.py'
       - '03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py'
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_likelihood_diagnostics.py'
       - '03_EXPERIMENTS/C10-S/harness/c10s_f1_between_profile_likelihood.py'
@@ -137,3 +138,33 @@ jobs:
         env:
           PYTHONDONTWRITEBYTECODE: '1'
         run: python -B -m unittest -v test_c10s_gaussian_variance_oracles test_c10s_beta_binomial_variance_oracles test_c10s_variance_comparison_interface test_c10s_f1_exact_pivotal_candidate test_c10s_fitted_beta_binomial_bootstrap test_c10s_f5_functional_refit_bootstrap test_c10s_f5_g7_tiera_calibration test_c10s_f5_g7_tiera_authorization test_c10s_f5_beta_binomial_likelihood_diagnostics test_c10s_f1_between_profile_likelihood test_c10s_f1_near_degenerate_interval test_c10s_nested_mr_comparative_inference_engine test_c10s_nested_mr_comparative_holdout test_c10s_nested_mr_comparative_resource_preflight test_c10s_nested_mr_comparative_holdout_authorization test_c10s_post_holdout_f1_f5_resource_preflight test_c10s_post_holdout_f5_b2_b3_development_calibration test_c10s_post_holdout_f5_b2_b3_development_calibration_authorization test_c10s_f5_g7_shard_execution test_c10s_f5_g7_resource_profile
+
+  m1-development-pilot:
+    if: github.ref == 'refs/heads/research/c10s-instrumental-autonomous-workpackage-20261126' && contains(github.event.head_commit.message, '[RUN_M1_PILOT]')
+    needs: gaussian-oracle-static-tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+      - name: Run bounded M1-PCT development-only pilot
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -B run_c10s_f5_m1_dev_pilot.py --execute-development-pilot --output ${{ runner.temp }}/c10s-f5-m1-pilot.json
+      - name: Upload development-only pilot artifact
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-m1-development-pilot
+          path: ${{ runner.temp }}/c10s-f5-m1-pilot.json
+          if-no-files-found: error
+          retention-days: 30
