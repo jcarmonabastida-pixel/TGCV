@@ -272,3 +272,20 @@ It constructs an exact univariate integer score polynomial for a fixed within ta
 The paired tests compare the exact polynomial's sign against an independently evaluated analytic constrained score for W and B, and exercise exact root isolation. A dedicated pinned-dependency static workflow has been added. It does not generate synthetic datasets or perform coverage/calibration.
 
 **M2 status:** algebraic score-polynomial prototype implemented; deterministic workflow run pending. It is not yet a profile-likelihood maximum certificate, likelihood-value ordering, LR confidence set, calibrated method or Tier-A candidate. Those remain separate gates.
+
+
+## 18. F5 M2 constrained-score deterministic verification — PASS
+
+**Workflow:** [45831295559](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45831295559) — SUCCESS  
+**Tested commit:** \`2cb6db946ec1604865fc198969c36dfcd80c1f62\`  
+**Tests:** **30/30 PASS** in 16.972 s.
+
+The new exact constrained-score tests passed:
+- sign agreement between the exact W/B score polynomials and independently evaluated analytic constrained likelihood derivatives;
+- root isolation with all returned roots classified strictly inside the feasible \`mu*(1-mu)>target\` domain;
+- deterministic polynomial construction and exact binary-rational target handling;
+- invalid component/target fail-closed behaviour.
+
+The test harness initially overflowed while converting very large exact integer polynomial coefficients to float. This was a test-evaluation defect, not an algorithm failure; the check now evaluates the polynomial with exact \`Fraction\` arithmetic. The first run had already shown that the Sturm root-isolation test itself passed. The bounded rerun then passed all 30 tests, including the F5 likelihood score/Hessian/boundary regression suite.
+
+**M2 status:** exact constrained score numerator construction and complete one-dimensional root isolation now have deterministic test evidence. The code still does not evaluate/order constrained profile likelihood maxima, produce LR confidence sets, calibrate cutoffs or establish Tier-A eligibility.
