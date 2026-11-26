@@ -1,0 +1,77 @@
+name: C10-S instrumental F1-F5 — read-only static tests
+
+on:
+  push:
+    branches:
+      - research/c10s-instrumental-autonomous-workpackage-20261126
+    paths:
+      - '.github/workflows/c10s-instrumental-static-tests.yml'
+      - '03_EXPERIMENTS/C10-S/harness/**'
+
+permissions:
+  contents: read
+
+jobs:
+  instrumental-static-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+
+      - name: Compile the F1-F5 inferential components and tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: >
+          python -m py_compile
+          c10s_gaussian_variance_oracles.py
+          test_c10s_gaussian_variance_oracles.py
+          c10s_beta_binomial_variance_oracles.py
+          test_c10s_beta_binomial_variance_oracles.py
+          c10s_variance_comparison_interface.py
+          test_c10s_variance_comparison_interface.py
+          c10s_f1_exact_pivotal_candidate.py
+          test_c10s_f1_exact_pivotal_candidate.py
+          c10s_f1_between_profile_likelihood.py
+          c10s_f1_independent_root_isolator.py
+          test_c10s_f1_independent_root_isolator.py
+          test_c10s_f1_between_profile_likelihood.py
+          test_c10s_f1_near_degenerate_interval.py
+          c10s_fitted_beta_binomial_bootstrap.py
+          test_c10s_fitted_beta_binomial_bootstrap.py
+          c10s_f5_beta_binomial_likelihood_diagnostics.py
+          test_c10s_f5_beta_binomial_likelihood_diagnostics.py
+          c10s_f5_rational_score_polynomials.py
+          c10s_nested_mr_comparative_inference_engine.py
+          test_c10s_nested_mr_comparative_inference_engine.py
+
+      - name: Run read-only deterministic inferential unit tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: >
+          python -B -m unittest -v
+          test_c10s_gaussian_variance_oracles
+          test_c10s_beta_binomial_variance_oracles
+          test_c10s_variance_comparison_interface
+          test_c10s_f1_exact_pivotal_candidate
+          test_c10s_f1_independent_root_isolator
+          test_c10s_f1_between_profile_likelihood
+          test_c10s_f1_near_degenerate_interval
+          test_c10s_fitted_beta_binomial_bootstrap
+          test_c10s_f5_beta_binomial_likelihood_diagnostics
+          test_c10s_nested_mr_comparative_inference_engine
