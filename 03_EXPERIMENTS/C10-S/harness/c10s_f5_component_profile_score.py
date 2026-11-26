@@ -9,7 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from fractions import Fraction
 import math
-from typing import Mapping
+from typing import Callable, Mapping, Sequence
 
 from c10s_f5_rational_score_polynomials import (
     _a, _b, _c, _add, _mul, _scale,
@@ -1010,6 +1010,10 @@ def f5_component_profile_confidence_set(
     if (
         isinstance(likelihood_ratio_cutoff, bool)
         or not isinstance(likelihood_ratio_cutoff, (int, float, Fraction))
+        or (
+            isinstance(likelihood_ratio_cutoff, float)
+            and not math.isfinite(likelihood_ratio_cutoff)
+        )
     ):
         raise F5ConstrainedScoreError("LR_CUTOFF_MUST_BE_FINITE_AND_POSITIVE")
     cutoff = (
