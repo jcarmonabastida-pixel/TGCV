@@ -127,119 +127,260 @@ def _profile_summary(result: dict, elapsed: float) -> dict:
     }
 
 
-def run_stress(output_path: Path) -> dict:
-    if len(SOURCE_REVISION) != 40 or any(c not in "0123456789abcdef" for c in SOURCE_REVISION):
-        raise StressPilotError("EXACT_GITHUB_SOURCE_REVISION_REQUIRED")
-    seed_rows, seed_audit = build_seed_audit()
-    specs = {spec.cell_id: spec for spec in tier_a_specs()}
-    results = []
+def _append_event(path: Path, event: str, **fields) -> None:
+    record = {
+        "event": event,
+        "utc": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),
+        **fields,
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps(record, sort_keys=True, allow_nan=False) + "\\n")
+        stream.flush()
 
-    for cell, index, seed in seed_rows:
-        spec = specs[cell]
-        started_dataset = perf_counter()
-        rows = generate_holdout_dataset(spec, index, seed_override=seed)
-        counts = [sum(int(value) for value in row) for row in rows]
-        histogram = dict(sorted(Counter(counts).items()))
-        rows_digest = hashlib.sha256(
-            json.dumps(rows, separators=(",", ":"), allow_nan=False).encode()
-        ).hexdigest()
-        certificate_started = perf_counter()
-        certificate = beta_binomial_global_mle_certificate(
-            spec.r, histogram, max_refinements=1, projection_bits=12,
-            max_projection_depth=40, max_lift_intervals=100,
-            max_lift_depth=20, max_mu_depth=10,
-            source_revision=SOURCE_REVISION,
-        )
-        certificate_elapsed = perf_counter() - certificate_started
-        component_results = {}
-        for component, target in TARGETS.items():
-            profile_started = perf_counter()
-            result = f5_component_profile_lr_statistic(
-                spec.r, histogram, component=component, target=target,
-                global_certificate=certificate,
-                root_isolation_width=WIDTH,
-                max_depth=140, max_intervals=5000, log_series_terms=80,
-            )
-            component_results[component] = _profile_summary(
-                result, perf_counter() - profile_started,
-            )
-        results.append({
-            "cell_id": cell,
-            "dataset_index": index,
-            "dataset_seed": seed,
-            "counts": counts,
-            "count_histogram": histogram,
-            "rows_sha256": rows_digest,
-            "global_certificate_status": certificate.get("status"),
-            "global_certificate_refinement_history": [
-                {
-                    "refinement": item.get("refinement"),
-                    "projection_width": str(item.get("projection_width")),
-                    "census_status": item.get("census_status"),
-                }
-                for item in certificate.get("refinement_history", [])
-            ],
-            "global_certificate_elapsed_seconds": round(certificate_elapsed, 6),
-            "dataset_generation_elapsed_seconds": round(perf_counter() - started_dataset - certificate_elapsed, 6),
-            "components": component_results,
-        })
 
-    summaries = {}
-    for cell in F5_CELLS:
-        cell_rows = [item for item in results if item["cell_id"] == cell]
-        summaries[cell] = {}
-        for component in TARGETS:
-            items = [item["components"][component] for item in cell_rows]
-            enclosed = [item for item in items if item["status"] == "LR_STATISTIC_ENCLOSED"]
-            midpoints = [
-                (float(item["lr_statistic_bounds"][0]["approx_decimal"])
-                 + float(item["lr_statistic_bounds"][1]["approx_decimal"])) / 2
-                for item in enclosed
-            ]
-            summaries[cell][component] = {
-                "profile_evaluations": len(items),
-                "lr_enclosed_count": len(enclosed),
-                "typed_status_counts": dict(sorted(Counter(item["status"] for item in items).items())),
-                "median_lr_midpoint_descriptive": median(midpoints) if midpoints else None,
-                "lr_midpoint_range_descriptive": [min(midpoints), max(midpoints)] if midpoints else None,
-                "mean_runtime_seconds": sum(item["elapsed_seconds"] for item in items) / len(items),
-            }
-
+def _write_checkpoint(path: Path, *, source_revision: str, seed_audit: dict,
+                      results: list, completed_stage: str, complete: bool) -> None:
     payload = {
-        "schema": "C10S-F5-POINTWISE-LR-DEV-STRESS-1.0",
+        "schema": "C10S-F5-POINTWISE-LR-DEV-STRESS-CHECKPOINT-1.0",
         "pilot_id": PILOT_ID,
-        "source_revision": SOURCE_REVISION,
+        "source_revision": source_revision,
         "scope": "DEVELOPMENT_ONLY_POINTWISE_LR_DIAGNOSTIC_NOT_CALIBRATION_NOT_CONFIRMATORY",
-        "schedule_id": SCHEDULE_ID,
-        "seed_namespace": SEED_NAMESPACE,
-        "k_per_cell": K_PER_CELL,
-        "targets": {key: str(value) for key, value in TARGETS.items()},
-        "root_isolation_width": str(WIDTH),
-        "global_certificate_budgets": {
-            "max_refinements": 1, "projection_bits": 12,
-            "max_projection_depth": 40, "max_lift_intervals": 100,
-            "max_lift_depth": 20, "max_mu_depth": 10,
-        },
         "seed_collision_audit": seed_audit,
-        "coverage_adjudication": "NOT_PERFORMED",
-        "lr_cutoff_calibration": "NOT_PERFORMED",
-        "confidence_set_inversion": "NOT_PERFORMED",
-        "summaries": summaries,
+        "completed_stage": completed_stage,
+        "complete": complete,
+        "completed_datasets": len(results),
         "datasets": results,
     }
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
-    return payload
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(
+        json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\\n",
+        encoding="utf-8",
+    )
+    temporary.replace(path)
 
+
+def run_stress(
+    output_path: Path, *, progress_path: Path, checkpoint_path: Path,
+    cell_filter: str | None = None, component_filter: str | None = None,
+) -> dict:
+    import faulthandler
+    import sys
+
+    if len(SOURCE_REVISION) != 40 or any(c not in "0123456789abcdef" for c in SOURCE_REVISION):
+        raise StressPilotError("EXACT_GITHUB_SOURCE_REVISION_REQUIRED")
+    if cell_filter is not None and cell_filter not in F5_CELLS:
+        raise StressPilotError("UNKNOWN_SINGLE_CASE_CELL")
+    if component_filter is not None and component_filter not in TARGETS:
+        raise StressPilotError("UNKNOWN_SINGLE_CASE_COMPONENT")
+
+    seed_rows, seed_audit = build_seed_audit()
+    specs = {spec.cell_id: spec for spec in tier_a_specs()}
+    selected = [
+        item for item in seed_rows
+        if (cell_filter is None or item[0] == cell_filter)
+    ]
+    if cell_filter is not None:
+        selected = selected[:1]
+    results = []
+    root_progress_path = progress_path.with_suffix(progress_path.suffix + ".roots.jsonl")
+    os.environ["TGCV_C10S_ROOT_PROGRESS_PATH"] = str(root_progress_path)
+    faulthandler.enable(file=sys.stderr)
+    faulthandler.dump_traceback_later(60, repeat=True, file=sys.stderr)
+    _append_event(
+        progress_path, "RUN_START", source_revision=SOURCE_REVISION,
+        selected_datasets=len(selected), selected_components=(
+            [component_filter] if component_filter else list(TARGETS)
+        ), seed_collision_audit=seed_audit,
+    )
+    _write_checkpoint(
+        checkpoint_path, source_revision=SOURCE_REVISION, seed_audit=seed_audit,
+        results=results, completed_stage="SEED_AUDIT", complete=False,
+    )
+
+    try:
+        for cell, index, seed in selected:
+            spec = specs[cell]
+            dataset_started = perf_counter()
+            _append_event(progress_path, "DATASET_START", cell_id=cell, dataset_index=index, seed=seed)
+            rows = generate_holdout_dataset(spec, index, seed_override=seed)
+            counts = [sum(int(value) for value in row) for row in rows]
+            histogram = dict(sorted(Counter(counts).items()))
+            rows_digest = hashlib.sha256(
+                json.dumps(rows, separators=(",", ":"), allow_nan=False).encode()
+            ).hexdigest()
+            _append_event(
+                progress_path, "DATASET_COMPLETE", cell_id=cell,
+                dataset_index=index, rows_sha256=rows_digest,
+                generation_elapsed_seconds=round(perf_counter() - dataset_started, 6),
+                distinct_count_bins=len(histogram),
+            )
+
+            _append_event(progress_path, "GLOBAL_CERTIFICATE_START", cell_id=cell, dataset_index=index)
+            certificate_started = perf_counter()
+            certificate = beta_binomial_global_mle_certificate(
+                spec.r, histogram, max_refinements=1, projection_bits=12,
+                max_projection_depth=40, max_lift_intervals=100,
+                max_lift_depth=20, max_mu_depth=10,
+                source_revision=SOURCE_REVISION,
+            )
+            certificate_elapsed = perf_counter() - certificate_started
+            _append_event(
+                progress_path, "GLOBAL_CERTIFICATE_COMPLETE", cell_id=cell,
+                dataset_index=index, status=certificate.get("status"),
+                elapsed_seconds=round(certificate_elapsed, 6),
+            )
+
+            component_results = {}
+            components = [component_filter] if component_filter else list(TARGETS)
+            for component in components:
+                target = TARGETS[component]
+                _append_event(
+                    progress_path, "PROFILE_START", cell_id=cell,
+                    dataset_index=index, component=component, target=str(target),
+                )
+                profile_started = perf_counter()
+                result = f5_component_profile_lr_statistic(
+                    spec.r, histogram, component=component, target=target,
+                    global_certificate=certificate,
+                    root_isolation_width=WIDTH,
+                    max_depth=140, max_intervals=5000, log_series_terms=80,
+                )
+                summary = _profile_summary(result, perf_counter() - profile_started)
+                component_results[component] = summary
+                _append_event(
+                    progress_path, "PROFILE_COMPLETE", cell_id=cell,
+                    dataset_index=index, component=component,
+                    status=summary.get("status"),
+                    root_isolation_status=summary.get("root_isolation_status"),
+                    elapsed_seconds=summary.get("elapsed_seconds"),
+                )
+                partial_dataset = {
+                    "cell_id": cell, "dataset_index": index, "dataset_seed": seed,
+                    "counts": counts, "count_histogram": histogram,
+                    "rows_sha256": rows_digest,
+                    "global_certificate_status": certificate.get("status"),
+                    "global_certificate_elapsed_seconds": round(certificate_elapsed, 6),
+                    "components": dict(component_results),
+                }
+                _write_checkpoint(
+                    checkpoint_path, source_revision=SOURCE_REVISION,
+                    seed_audit=seed_audit, results=results + [partial_dataset],
+                    completed_stage=f"{cell}:{index}:{component}", complete=False,
+                )
+
+            results.append({
+                "cell_id": cell, "dataset_index": index, "dataset_seed": seed,
+                "counts": counts, "count_histogram": histogram,
+                "rows_sha256": rows_digest,
+                "global_certificate_status": certificate.get("status"),
+                "global_certificate_refinement_history": [
+                    {
+                        "refinement": item.get("refinement"),
+                        "projection_width": str(item.get("projection_width")),
+                        "census_status": item.get("census_status"),
+                    }
+                    for item in certificate.get("refinement_history", [])
+                ],
+                "global_certificate_elapsed_seconds": round(certificate_elapsed, 6),
+                "dataset_generation_elapsed_seconds": round(perf_counter() - dataset_started - certificate_elapsed, 6),
+                "components": component_results,
+            })
+            _write_checkpoint(
+                checkpoint_path, source_revision=SOURCE_REVISION,
+                seed_audit=seed_audit, results=results,
+                completed_stage=f"{cell}:{index}:DATASET_COMPLETE", complete=False,
+            )
+
+        summaries = {}
+        for cell in F5_CELLS:
+            cell_rows = [item for item in results if item["cell_id"] == cell]
+            if not cell_rows:
+                continue
+            summaries[cell] = {}
+            for component in ( [component_filter] if component_filter else list(TARGETS) ):
+                items = [
+                    item["components"][component] for item in cell_rows
+                    if component in item["components"]
+                ]
+                enclosed = [item for item in items if item["status"] == "LR_STATISTIC_ENCLOSED"]
+                midpoints = [
+                    (float(item["lr_statistic_bounds"][0]["approx_decimal"])
+                     + float(item["lr_statistic_bounds"][1]["approx_decimal"])) / 2
+                    for item in enclosed
+                ]
+                summaries[cell][component] = {
+                    "profile_evaluations": len(items),
+                    "lr_enclosed_count": len(enclosed),
+                    "typed_status_counts": dict(sorted(Counter(item["status"] for item in items).items())),
+                    "median_lr_midpoint_descriptive": median(midpoints) if midpoints else None,
+                    "lr_midpoint_range_descriptive": [min(midpoints), max(midpoints)] if midpoints else None,
+                    "mean_runtime_seconds": sum(item["elapsed_seconds"] for item in items) / len(items),
+                }
+
+        payload = {
+            "schema": "C10S-F5-POINTWISE-LR-DEV-STRESS-1.0",
+            "pilot_id": PILOT_ID,
+            "source_revision": SOURCE_REVISION,
+            "scope": "DEVELOPMENT_ONLY_POINTWISE_LR_DIAGNOSTIC_NOT_CALIBRATION_NOT_CONFIRMATORY",
+            "schedule_id": SCHEDULE_ID,
+            "seed_namespace": SEED_NAMESPACE,
+            "k_per_cell": K_PER_CELL,
+            "selected_cell": cell_filter,
+            "selected_component": component_filter,
+            "targets": {key: str(value) for key, value in TARGETS.items()},
+            "root_isolation_width": str(WIDTH),
+            "global_certificate_budgets": {
+                "max_refinements": 1, "projection_bits": 12,
+                "max_projection_depth": 40, "max_lift_intervals": 100,
+                "max_lift_depth": 20, "max_mu_depth": 10,
+            },
+            "seed_collision_audit": seed_audit,
+            "coverage_adjudication": "NOT_PERFORMED",
+            "lr_cutoff_calibration": "NOT_PERFORMED",
+            "confidence_set_inversion": "NOT_PERFORMED",
+            "summaries": summaries,
+            "datasets": results,
+        }
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(
+            json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\\n",
+            encoding="utf-8",
+        )
+        _write_checkpoint(
+            checkpoint_path, source_revision=SOURCE_REVISION, seed_audit=seed_audit,
+            results=results, completed_stage="RUN_COMPLETE", complete=True,
+        )
+        _append_event(progress_path, "RUN_COMPLETE", completed_datasets=len(results))
+        return payload
+    except BaseException as exc:
+        _append_event(
+            progress_path, "RUN_ABORTED", exception_type=type(exc).__name__,
+            exception=str(exc),
+        )
+        raise
+    finally:
+        faulthandler.cancel_dump_traceback_later()
+        os.environ.pop("TGCV_C10S_ROOT_PROGRESS_PATH", None)
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--execute-development-stress", action="store_true")
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--progress", type=Path, required=True)
+    parser.add_argument("--checkpoint", type=Path, required=True)
+    parser.add_argument("--single-case", choices=F5_CELLS)
+    parser.add_argument("--component", choices=tuple(TARGETS))
     args = parser.parse_args()
     if not args.execute_development_stress:
         raise StressPilotError("EXPLICIT_DEVELOPMENT_STRESS_FLAG_REQUIRED")
-    result = run_stress(args.output)
+    if args.component and not args.single_case:
+        raise StressPilotError("COMPONENT_FILTER_REQUIRES_SINGLE_CASE")
+    result = run_stress(
+        args.output, progress_path=args.progress, checkpoint_path=args.checkpoint,
+        cell_filter=args.single_case, component_filter=args.component,
+    )
     print(json.dumps({
         "schema": result["schema"],
         "source_revision": result["source_revision"],
