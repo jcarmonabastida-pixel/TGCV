@@ -163,6 +163,7 @@ def _fit_count_vector(
             audit_status=audit.status,
             independent_optimizer_success=audit.independent_optimizer_success,
             independent_optimizer_message=audit.independent_optimizer_message,
+            independent_optimizer_role="SECONDARY_DIAGNOSTIC_ONLY",
             independent_log_likelihood=audit.independent_log_likelihood,
             independent_score_norm=audit.independent_score_norm,
             starts=tuple(asdict(item) for item in audit.starts),
