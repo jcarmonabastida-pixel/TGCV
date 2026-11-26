@@ -32,6 +32,11 @@ from c10s_f5_rational_score_polynomials import (
     _beta_binomial_likelihood_enclosure,
     _f5_input_provenance,
     _uni_gcd,
+    _uni_sturm_sequence,
+    _uni_sturm_integer_sequence,
+    _uni_sign_variations_integer,
+    _uni_sign_variations,
+    _uni_isolate_squarefree_unit_roots,
     _divide_sparse_by_axis_factor,
     beta_binomial_global_mle_certificate,
 )
@@ -74,6 +79,40 @@ def _denominators(r, mu, kappa):
 
 
 class RationalScorePolynomialTests(unittest.TestCase):
+    def test_integer_sturm_variations_match_fraction_reference(self):
+        polynomials = (
+            [Fraction(-1, 3), Fraction(0), Fraction(1)],
+            [Fraction(1, 7), Fraction(-5, 3), Fraction(2), Fraction(-1, 5)],
+            [Fraction(1), Fraction(-2), Fraction(1)],
+        )
+        points = (
+            Fraction(0), Fraction(1, 17), Fraction(1, 2),
+            Fraction(7, 11), Fraction(1),
+        )
+        for polynomial in polynomials:
+            sequence = _uni_sturm_sequence(polynomial)
+            integer_sequence = _uni_sturm_integer_sequence(sequence)
+            for point in points:
+                with self.subTest(polynomial=polynomial, point=point):
+                    self.assertEqual(
+                        _uni_sign_variations_integer(integer_sequence, point),
+                        _uni_sign_variations(sequence, point),
+                    )
+
+    def test_integer_sturm_isolation_preserves_exact_root_census(self):
+        polynomial = [Fraction(-1, 2), Fraction(0), Fraction(1)]
+        reference = _uni_isolate_squarefree_unit_roots(
+            polynomial, width=Fraction(1, 2**20),
+            max_depth=100, max_intervals=1000,
+        )
+        self.assertEqual(reference["status"], "ISOLATION_COMPLETE")
+        self.assertEqual(reference["exact_roots"], ())
+        self.assertEqual(len(reference["isolating_intervals"]), 1)
+        interval = reference["isolating_intervals"][0]
+        self.assertEqual(interval["root_count"], 1)
+        self.assertLessEqual(interval["interval"][0], Fraction(1, 2))
+        self.assertGreaterEqual(interval["interval"][1], Fraction(1, 2))
+
     def test_primitive_integer_gcd_matches_exact_fraction_gcd(self):
         # Both polynomials contain x-1/2; their remaining factors differ.
         left = [Fraction(1, 2), Fraction(-7, 4), Fraction(1), Fraction(1)]
