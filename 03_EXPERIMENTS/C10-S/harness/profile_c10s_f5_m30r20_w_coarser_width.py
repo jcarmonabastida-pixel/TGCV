@@ -17,10 +17,17 @@ R = 20
 HISTOGRAM = {0: 1, 2: 2, 5: 4, 8: 5, 10: 6, 12: 5, 15: 4, 18: 2, 20: 1}
 
 
-def _fraction_pair(values):
+def _fraction_summary(values):
     if values is None:
         return None
-    return [str(value) for value in values]
+    output = []
+    for value in values:
+        output.append({
+            "approx_decimal": format(float(value), ".16g"),
+            "numerator_bits": abs(value.numerator).bit_length(),
+            "denominator_bits": value.denominator.bit_length(),
+        })
+    return output
 
 
 def main() -> None:
@@ -69,9 +76,9 @@ def main() -> None:
         "profile_seconds": round(total_seconds, 6),
         "root_isolation_calls": records,
         "lr_status": result.get("status"),
-        "lr_statistic_bounds": _fraction_pair(result.get("lr_statistic_bounds")),
+        "lr_statistic_bounds": _fraction_summary(result.get("lr_statistic_bounds")),
         "profile_status": result.get("profile", {}).get("status"),
-        "profile_likelihood_bounds": _fraction_pair(result.get("profile_likelihood_bounds")),
+        "profile_likelihood_bounds": _fraction_summary(result.get("profile_likelihood_bounds")),
         "candidate_count": result.get("profile", {}).get("candidate_count"),
         "interior_stationary_count": result.get("profile", {}).get("interior_stationary_count"),
         "sturm_builder": "SIGNED_PRIMITIVE_INTEGER_PSEUDO_REMAINDER_SEQUENCE",
