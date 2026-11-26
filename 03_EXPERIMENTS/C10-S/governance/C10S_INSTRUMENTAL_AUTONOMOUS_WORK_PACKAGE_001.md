@@ -909,3 +909,37 @@ The first run passed:
 The data-run process reached exact LR result serialization and failed because Python 3.12's default decimal integer-to-string safety limit (4,300 digits) was exceeded when formatting an exact rational bound. This is a reporting/serialization defect, not an optimizer, root-isolation, global-certificate or statistical result. The failed run produced no completed JSON artifact and no result was used for method selection or inference.
 
 The correction preserves the exact rational values by encoding numerator and denominator as hexadecimal integers, while retaining decimal approximations and bit lengths. It does not change data generation, seeds, likelihood/profile calculations, numerical budgets or any inferential rule. The rerun uses the same predeclared development-only seed schedule for reproducibility; these data remain development-only and are not eligible as confirmatory holdout data.
+
+
+## 46. F5 pointwise LR stress execution cancelled at 180-minute job limit — NO STATISTICAL RESULT
+
+**Workflow:** [45875891931](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45875891931) — `cancelled`  
+**Exact source revision:** `eebcecb69260f721ed0d00d0ec32de3a1bba8053`  
+**Run start:** 2026-11-26 18:26:07 UTC  
+**Cancellation:** 2026-11-26 21:26:25 UTC  
+**Elapsed:** 180 minutes 18 seconds (the job's configured 180-minute timeout; user observed approximately four hours).
+
+### Verified execution facts
+
+- Dependency installation: PASS.
+- Python compilation: PASS.
+- Seed/provenance unit tests: 3/3 PASS; the audit checked 137k+ historical unique seed values and found zero collisions for the six predeclared stress seeds.
+- The development stress command started at 18:26:33 UTC.
+- The stress step remained active until the runner was terminated by cancellation. GitHub log ends with `The operation was canceled` and cleanup terminates the Python process.
+- Artifact upload was skipped; no final JSON result or per-dataset result was produced.
+
+### Root-cause boundary
+
+The current runner is serial and emits no intermediate progress records or checkpoints. It writes its JSON result only after all six datasets and twelve pointwise profiles have completed. Consequently, the retained logs do not establish which dataset/stage consumed the time, nor whether the process was making progress at the time of cancellation. It would be unsound to attribute the full delay to Sturm isolation, the global-MLE certificate, or any particular cell without further instrumentation.
+
+This is an execution/observability failure, not a statistical failure and not evidence for or against the LR method. No profile status, LR bound, coverage, or method comparison can be reported from this run.
+
+### Required correction before another run
+
+1. Add flushed, structured progress events before and after each dataset generation, global-MLE certificate, W profile, and B profile.
+2. Persist an append-only progress/checkpoint file after each completed stage/dataset, and upload it with `if: always()` so cancellation does not erase completed partial diagnostics.
+3. Add periodic stack snapshots (e.g. `faulthandler`) while a stage is active; where feasible, add read-only counters inside the exact root-isolation queue so degree, Sturm-sequence length, processed/queued intervals, depth and elapsed time can be observed without repeating the calculation.
+4. Preserve all inferential budgets, exact arithmetic, fail-closed statuses, the six-seed predeclared schedule, and the development-only boundary. Do not solve runtime by loosening root-isolation precision, reducing exactness, changing LR rules, or silently skipping difficult samples.
+5. Run deterministic tests and a bounded single-case observability check before considering a repeat of the full six-dataset batch. Do not automatically repeat the full batch with the same opaque runner.
+
+**Decision:** pause the six-dataset batch. First repair observability/checkpointing and localize the dominant stage. Tier-A, Tier-B and causal C10-S remain unauthorized.
