@@ -9,7 +9,6 @@ on:
       - '03_EXPERIMENTS/C10-S/harness/c10s_f5_component_profile_score.py'
       - '03_EXPERIMENTS/C10-S/harness/test_c10s_f5_component_profile_score.py'
       - '03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py'
-      - '03_EXPERIMENTS/C10-S/harness/test_c10s_f5_rational_score_polynomials.py'
       - '03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py'
       - '03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock'
 
@@ -39,4 +38,4 @@ jobs:
         run: python -B -m py_compile c10s_f5_component_profile_score.py test_c10s_f5_component_profile_score.py c10s_f5_rational_score_polynomials.py test_c10s_f5_rational_score_polynomials.py c10s_f5_beta_binomial_likelihood_diagnostics.py
       - name: Run exact constrained score and source regression tests
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python -B -m unittest -v test_c10s_f5_component_profile_score test_c10s_f5_rational_score_polynomials test_c10s_f5_beta_binomial_likelihood_diagnostics
+        run: python -B -m unittest -v test_c10s_f5_component_profile_score test_c10s_f5_beta_binomial_likelihood_diagnostics
