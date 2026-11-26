@@ -1,12 +1,17 @@
 from __future__ import annotations
 
+import json
+import tempfile
 import unittest
+from pathlib import Path
 
 from run_c10s_f5_pointwise_lr_dev_stress import (
     K_PER_CELL,
     TARGETS,
     build_seed_audit,
     derive_stress_seed,
+    _append_event,
+    _write_checkpoint,
 )
 
 
@@ -31,6 +36,28 @@ class F5PointwiseLRDevelopmentStressTests(unittest.TestCase):
     def test_targets_are_exact_f5_beta22_functionals(self):
         self.assertEqual(str(TARGETS["W"]), "1/5")
         self.assertEqual(str(TARGETS["B"]), "1/20")
+
+    def test_progress_events_are_flushed_jsonl(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "progress.jsonl"
+            _append_event(path, "PROFILE_START", cell_id="M30R20", component="W")
+            record = json.loads(path.read_text(encoding="utf-8").splitlines()[0])
+            self.assertEqual(record["event"], "PROFILE_START")
+            self.assertEqual(record["component"], "W")
+            self.assertIn("utc", record)
+
+    def test_checkpoint_is_atomically_persisted_with_partial_state(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "checkpoint.json"
+            _write_checkpoint(
+                path, source_revision="a" * 40,
+                seed_audit={"status": "PASS"}, results=[],
+                completed_stage="SEED_AUDIT", complete=False,
+            )
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            self.assertFalse(payload["complete"])
+            self.assertEqual(payload["completed_stage"], "SEED_AUDIT")
+            self.assertFalse(path.with_suffix(".json.tmp").exists())
 
 
 if __name__ == "__main__":
