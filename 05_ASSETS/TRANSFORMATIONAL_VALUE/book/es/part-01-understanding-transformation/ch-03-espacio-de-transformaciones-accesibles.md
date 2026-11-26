@@ -5,7 +5,7 @@ title: "El espacio de transformaciones accesibles"
 language: es
 content_type: chapter
 status: draft
-version: 0.11
+version: 0.12
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -168,27 +168,27 @@ Esta separación evita dos errores simétricos: tratar toda posibilidad como si 
 
 ## 5. Cómo puede cambiar un espacio accesible
 
-El espacio de transformaciones accesibles no tiene por qué permanecer constante. Puede cambiar cuando se modifica el estado del sistema o alguna de las condiciones relevantes. El cambio puede adoptar distintas formas:
+El espacio de transformaciones accesibles no tiene por qué permanecer constante. Puede cambiar cuando se modifica el estado del sistema o alguna de las condiciones relevantes. El cambio puede describirse atendiendo a distintas dimensiones, que no son necesariamente excluyentes:
 
-- **Expansión:** aparecen transformaciones accesibles que antes no lo eran.
+- **Expansión:** se incorporan transformaciones que antes no eran accesibles.
 - **Contracción:** algunas transformaciones dejan de estar disponibles.
-- **Reconfiguración:** cambia la composición del espacio, aunque su tamaño total permanezca igual.
-- **Sustitución:** unas transformaciones dejan de ser accesibles y otras ocupan su lugar.
+- **Reconfiguración:** cambia la composición del espacio, con independencia de que su tamaño total aumente, disminuya o permanezca igual.
+- **Sustitución:** unas transformaciones dejan de ser accesibles mientras otras se incorporan.
 
-En ocasiones se habla de **posibilidades latentes** para referirse a transformaciones que ya son accesibles, pero todavía no se han realizado. El término debe usarse con cuidado: no designa una capacidad misteriosa ni una posibilidad meramente imaginable. Solo tiene sentido si las condiciones de accesibilidad pueden justificarse de forma independiente. Una transformación que se vuelve accesible por primera vez puede describirse como recién habilitada; una que deja de cumplir las condiciones relevantes deja de formar parte del espacio accesible.
+En ocasiones se habla de **posibilidades latentes** para referirse a transformaciones que ya forman parte del espacio accesible, pero todavía no se han realizado. El término debe utilizarse con cuidado: no designa una capacidad misteriosa ni una posibilidad meramente imaginable. Solo tiene sentido cuando las condiciones que hacen accesible la transformación pueden justificarse de forma independiente de su realización. Una transformación que se incorpora al espacio accesible puede describirse como recién habilitada; una que deja de cumplir las condiciones relevantes deja de formar parte de él.
 
-Por ejemplo, supongamos que en un primer momento el sistema tiene accesibles las transformaciones (A), (B), (C) y (D). Más adelante, (C) y (D) dejan de estar disponibles, mientras que (E) y (F) pasan a ser accesibles:
+Por ejemplo, supongamos que en un primer momento el sistema tiene accesibles las transformaciones \\(A\\), \\(B\\), \\(C\\) y \\(D\\). Más adelante, \\(C\\) y \\(D\\) dejan de estar disponibles, mientras que \\(E\\) y \\(F\\) pasan a ser accesibles:
 
-\[
-T_{acc,t}=\{A,B,C,D\}
-\]
-\[
-T_{acc,t+1}=\{A,B,E,F\}
-\]
+\\[
+T_{acc,t}=\\{A,B,C,D\\}
+\\]
+\\[
+T_{acc,t+1}=\\{A,B,E,F\\}
+\\]
 
-Ambos espacios contienen cuatro transformaciones. Si observáramos únicamente su tamaño, concluiríamos que nada ha cambiado. Sin embargo, la composición es diferente: dos transformaciones persisten, dos desaparecen y dos nuevas se incorporan. Ha habido reconfiguración con conservación de cardinalidad.
+Ambos espacios contienen cuatro transformaciones. Si comparáramos únicamente sus cardinalidades, concluiríamos que el tamaño del espacio no ha cambiado. Sin embargo, esa comparación ocultaría una modificación de su composición: dos transformaciones persisten, dos desaparecen y dos nuevas se incorporan. Ha habido reconfiguración con conservación de cardinalidad.
 
-Esta observación introduce una distinción importante: **el número de transformaciones no describe por sí solo la identidad ni la estructura del espacio**. Dos espacios de igual tamaño pueden contener transformaciones diferentes. Y un aumento del número no implica necesariamente una mejora: las nuevas transformaciones podrían ser irrelevantes, costosas, perjudiciales o menos valiosas para determinados actores.
+Esta observación introduce una distinción importante: **el número de transformaciones no describe por sí solo la identidad ni la estructura del espacio**. Dos espacios de igual tamaño pueden contener transformaciones diferentes. Un aumento del número de transformaciones accesibles tampoco permite concluir que el cambio sea favorable. Las nuevas opciones podrían tener escasa relevancia, exigir recursos adicionales o producir consecuencias desfavorables para determinados actores. Su valoración requiere un análisis posterior que no puede deducirse de la mera expansión del espacio.
 
 En análisis donde las transformaciones pueden identificarse de forma consistente, es útil distinguir:
 
