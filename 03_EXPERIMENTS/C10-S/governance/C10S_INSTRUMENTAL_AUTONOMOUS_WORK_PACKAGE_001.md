@@ -500,3 +500,29 @@ The profiler reuses the same fixed M30/R20 histogram and exact global-MLE certif
 It records call counts and the unchanged LR/profile status, candidate count and stationary-root count. This is a bounded development-only diagnostic; it does not estimate coverage, tune a cutoff, or alter the exact method.
 
 **Workflow correction:** the first workflow revision (run 45848914002) failed at checkout because the generated YAML contained a literal backslash before \`\${{ github.sha }}\`; Python and the statistical script were skipped. The checkout expression was corrected and verified in the current workflow. The corrected run is [45848960349](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45848960349), currently queued/running. No statistical result is available until its job completes.
+
+
+## 30. M30/R20 W stage instrumentation — PASS; root isolation is dominant
+
+**Workflow:** [45848960349](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45848960349) — SUCCESS  
+**Commit tested:** \`5526ddccf53126d5282778a31ef49261d4ad957e\`  
+**Job:** \`m30r20-w-stage-profile\` — SUCCESS
+
+The fixed M30/R20 W profile completed with the same exact fixture and target \(1/20\). Global certificate: \`GLOBAL_INTERIOR_MAXIMUM_CERTIFIED\` (36.937 s). Profile: \`LR_STATISTIC_ENCLOSED\`, \`PROFILE_MAXIMUM_ENCLOSED\`, 3 candidates, 1 interior stationary point.
+
+Measured profile time: **925.034 s** (15 min 25 s), with 894.134 s accounted by the instrumented production stage boundaries:
+
+| Stage | Time | Share of total |
+|---|---:|---:|
+| Exact Sturm root isolation | 825.760 s | 89.3% |
+| Score-polynomial construction/substitution | 68.323 s | 7.4% |
+| Candidate likelihood enclosure | 0.005 s | negligible |
+| Boundary profiles | 0.002 s | negligible |
+| LR logarithm enclosure | 0.043 s | negligible |
+| Unattributed runtime | 30.900 s | 3.3% |
+
+Call counts: score polynomial 1; root isolation 4; likelihood enclosure 1; boundary profiles 2; log enclosure 2. Root isolation consumes about 92.4% of the instrumented time. Therefore the next optimisation target is **not** likelihood evaluation or the score-polynomial builder: it is the exact Sturm isolation path. The earlier hypothesis that score construction dominated M30/R20 is superseded by this direct measurement.
+
+**Important:** this is a successful computational diagnostic, not a coverage result. The output remains a fixed-target LR enclosure; it does not certify confidence-set topology across the target axis. Total runtime is somewhat higher than the earlier uninstrumented W run (805.6 s), as expected from the profiling wrapper and instrumentation overhead; the stage shares identify the bottleneck reliably enough to focus the next experiment.
+
+**Next bounded step:** split the four root-isolation calls into per-call measurements (polynomial degree, Sturm sequence length, coefficient bit-size, processed intervals, isolated roots, unresolved intervals, and elapsed time). Then inspect exact sequence construction and sign-variation evaluation costs. Optimise only the dominant sub-operation, retaining exact arithmetic and fail-closed resource statuses. Do not start coverage calibration or Tier-A.
