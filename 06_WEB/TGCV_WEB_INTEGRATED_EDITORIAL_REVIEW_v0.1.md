@@ -1,7 +1,7 @@
 # TGCV — Integrated Editorial Review of the First Website Release
 
 **Identifier:** TGCV-WEB-INTEGRATED-REVIEW-001  
-**Version:** 0.4  
+**Version:** 0.6  
 **Date:** 2026-11-26  
 **Status:** INTEGRATED EDITORIAL REVIEW — WORKING RECORD; NOT PUBLICATION APPROVAL  
 **Branch:** `strategy/tgcv-web-master`  
@@ -25,7 +25,7 @@ The seven substantive research and application sections form a coherent editoria
 
 The conceptual architecture is coherent at the level of role and epistemic status. The website must not imply a linear causal story from TGCV through TI and VALUE to value creation. The sections are related, but they are not equivalent and are not stages in a validated process.
 
-**Disposition:** the seven substantive sections remain suitable for continued content refinement. About now has an Experience/Copy pair (v0.3) following a focused editorial pass that reduced duplication with Research, uses neutral programme voice in both languages and removes any implied Contact route. It remains a working draft and has not yet undergone user approval. The expanded eight-destination set is **not ready for publication approval**. Contact is deferred until a domain-associated account or other real, monitored communication channel is available.
+**Disposition:** the seven substantive sections remain suitable for continued content refinement. About now has an Experience/Copy pair (v0.3) following a focused editorial pass that reduced duplication with Research, uses neutral programme voice in both languages and removes any implied Contact route. It remains a working draft and has not yet undergone user approval. The first public release is a seven-destination set plus About; Contact is a planned future destination and is deferred until a domain-associated account or other real, monitored communication channel is available. Several cross-document corrections remain in progress, so the set is **not ready for publication approval**.
 
 ## 2. Integrated narrative and boundary review
 
@@ -78,7 +78,7 @@ the cross-domain mapping demonstrator remains bounded synthetic methodological e
 
 ## 3. Cross-document corrections made
 
-1. **First-release navigation:** Information Architecture now records the approved eight destinations in order: Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction, Labs & Applications, About and Contact. Systems Thinking is transversal; Community is not a top-level first-release destination.
+1. **First-release navigation:** Contact is deferred and is not an active first-release navigation item or Home/footer link. The seven active destinations are Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction, Labs & Applications and About. Systems Thinking is transversal; Community is not a top-level first-release destination.
 2. **Information Architecture authorities:** corrected stale Explore and Research version references; corrected Systems Engineering references that pointed to non-current v0.2 filenames; added current Value Construction and Labs & Applications page authorities.
 3. **Content Blueprint:** synchronized parent versions and corrected page identifiers to P08 About / Governance and P09 Contact / Participate.
 4. **Labs & Applications Copy:** advanced to v0.4; removed specific TGCV Full Chain Demo operational feature claims pending exact package/interface verification; corrected its Blueprint dependency.
@@ -90,13 +90,14 @@ No scientific document, `main` branch artifact, evidence claim, experiment, exec
 
 | Section | Experience | Copy | Current status |
 |---|---|---|---|
-| Home | v1.7 | v1.5 | Working draft; not publication-approved |
-| Explore | v1.1 | v1.0 | Working draft; not publication-approved |
+| Home | v1.8 | v1.6 | Working draft; not publication-approved |
+| Explore | v1.2 | v1.1 | Working draft; not publication-approved |
 | Research | v0.9 | v0.9 | Working draft; evidence snapshot must be refreshed |
-| Systems Engineering | v0.1 | v0.1 | Working specification / first bilingual draft |
+| Systems Engineering | v0.2 | v0.2 | Working specification / technically reviewed bilingual draft |
 | Transformational Intelligence | v0.1 | v0.2 | Working specification / bilingual draft |
-| Value Construction | v0.3 | v0.2 | Working specification / bilingual draft |
-| Labs & Applications | v0.5 | v0.4 | Working specification / bilingual draft |
+| Value Construction | v0.3 | v0.3 | Working specification / bilingual draft |
+| Labs & Applications | v0.8 | v0.8 | Working specification / bilingual draft |
+| About | v0.3 | v0.3 | Working draft; user review pending |
 
 Strategic indexes:
 - Information Architecture: v2.6
@@ -166,3 +167,11 @@ These are editorial and terminology changes only. They do not alter the underlyi
 - Synchronises the About authorities to Experience/Copy v0.3 after the final Spanish/English voice check.
 - Confirms no first-person plural formulations remain in the Spanish or English public copy, and no Contact channel or formal participation process is implied.
 - About remains a working draft; no publication approval is implied.
+
+## v0.6 — 2026-11-26: cross-page naming, Contact and dependency corrections
+
+- Removes the internal demonstrator codename and execution labels from the Home and Explore visitor-facing copy/specifications.
+- Preserves **TGCV Full Chain Demo** unchanged in both language versions; retains **TGCV Cross Domain Demo**, **TGCV Playground**, **Value Explorer** and **ValueLabsOS Preview** as approved public names.
+- Removes the Home Contact call-to-action and Contact footer link. Contact is not part of the active first-release navigation and remains a planned future destination pending a real, monitored domain-associated channel.
+- Synchronises current Experience/Copy and parent-document references for Home, Explore, Research, Value Construction and Labs & Applications.
+- Records these corrections as editorial/IA changes only; no scientific claim, asset maturity, publication permission or execution status is upgraded.
