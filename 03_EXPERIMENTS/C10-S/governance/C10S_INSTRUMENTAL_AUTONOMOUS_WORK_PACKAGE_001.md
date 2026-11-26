@@ -378,3 +378,29 @@ The algorithm explicitly reports \`topology_certified=false\`: a component narro
 **Logic tests:** 36/36 PASS in 70.276 s, workflow [45834076442](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45834076442). The tests use synthetic LR evaluator fixtures to verify preservation of two disconnected components, conservative crossing brackets, and fail-closed handling of an ambiguous cutoff classification. They do not execute the full statistical inversion on simulated data.
 
 A separate single-fixture full-inversion smoke run is in progress to check the actual fixed-target LR pipeline end to end. No calibration or confirmatory run is involved.
+
+
+## 25. F5 full LR inversion smoke — execution PASS, performance gate OPEN
+
+**Workflow:** [45834226441](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45834226441) — SUCCESS  
+**Tested commit:** \`c35d430b36ef519d2bbab93fc3b9cea49ad8b103\`  
+**Job:** \`f5-profile-lr-inversion-smoke\` — SUCCESS  
+**Single full-inversion test runtime:** 410.438 seconds (6 min 50.4 s).
+
+The smoke test executed the end-to-end fixed-target LR pipeline for one synthetic M10/R5 histogram, W component, five scan-grid points and one bisection step. Pinned dependency installation, compilation and the test all passed. This establishes that the integrated path can complete for one bounded fixture.
+
+**Important scope limitation:** the smoke test asserts only that the returned status is one of the three expected grid-scan statuses, that \`topology_certified\` is false, and that at least five target evaluations occurred. It does not assert the numerical confidence-set endpoints against a known answer, nor validate coverage, topology, or cutoff calibration. It is an execution smoke, not a statistical validation.
+
+**Performance finding:** 410.4 seconds for one W-only fixture at a five-node grid is not a viable demonstrated throughput for a multi-cell, multi-component development calibration with nested-grid/topology diagnostics. The current implementation is therefore not ready for repeated-sampling development calibration. Do not expand grid size, run B, or multiply cells until profiling identifies the dominant costs and a bounded optimisation materially reduces runtime without weakening exactness or fail-closed behaviour.
+
+**Next operation:** deterministic performance profiling of the single-target path, separating:
+1. exact unrestricted global-MLE certificate construction (reused once per dataset);
+2. constrained score-polynomial construction;
+3. Sturm root isolation;
+4. candidate likelihood enclosure and rational refinement;
+5. LR logarithm enclosure;
+6. repeated target evaluations and bisection.
+
+Use a development-only microbenchmark on the existing fixture, report per-stage timings and exactness/status parity, and avoid any coverage simulation. Consider caching only mathematically identical immutable subresults (e.g. data-specific score numerators or the unrestricted certificate); never reuse a result across different target values where the target changes the constrained polynomial. If a substantial speedup cannot be achieved without compromising certification, report the candidate as computationally impractical and reconsider a simpler statistically defensible route.
+
+**M2 disposition:** exact fixed-target profile/LR layers and grid inversion logic exist; deterministic logic tests pass (36/36) and one end-to-end smoke passes. The inversion remains numerically scanned with \`topology_certified=false\`, its end-to-end result assertions are minimal, and the measured runtime is a blocking performance concern. No coverage calibration or method selection has occurred. Tier-A/Tier-B/C10 execution remains not launched and not authorized.
