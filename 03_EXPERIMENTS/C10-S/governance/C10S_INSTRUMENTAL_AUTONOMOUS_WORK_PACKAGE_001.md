@@ -307,3 +307,20 @@ The M2 module now extends exact score-polynomial construction/root isolation wit
 The new test checks both W and B and verifies that the certified upper likelihood bound dominates an independent dense-grid evaluation along each constrained curve. The existing F5 score/Hessian/boundary regression tests also pass in the same workflow.
 
 **M2 status:** deterministic constrained profile-maximum enclosure implemented and tested. This is not yet a likelihood-ratio statistic, confidence set, cutoff calibration, or Tier-A method. The unrestricted global likelihood maximum still needs to be bound/reconciled with the existing exact global-MLE certificate, and LR inversion/topology remains open.
+
+
+## 20. F5 M2 likelihood-ratio statistic enclosure — PASS
+
+**Workflow:** [45832387827](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45832387827) — SUCCESS  
+**Tested commit:** \`6d2429387578339c23d293a8aa42a2ad56c375bd\`  
+**Tests:** **33/33 PASS** in 55.284 s.
+
+The M2 module now combines:
+1. the existing exact unrestricted beta-binomial global-MLE certificate (interior winner, boundary supremum or certified co-maximizers);
+2. the exact constrained W/B stationary-root census and endpoint likelihood enclosures;
+3. rational likelihood-ratio bounds from the two likelihood enclosures;
+4. a rational atanh-series logarithm enclosure with an explicit remainder bound, producing exact rational bounds for the LR statistic without floating-point log rounding.
+
+The deterministic test constructs a nondegenerate M10/R5 histogram, obtains the existing exact global-MLE certificate, and successfully encloses the LR statistic for both W and B. The log-series test checks rational bounds for \(\log 2\) and \(\log(1/2)\).
+
+**M2 status:** a fixed-target F5 LR-statistic enclosure is now implemented and deterministic-tested. The remaining major inferential component is LR confidence-set inversion over the full W/B target domain, including topology, endpoint inclusion and stable component enumeration. The LR cutoff still requires the frozen development calibration/validation design; no cutoff has been selected.
