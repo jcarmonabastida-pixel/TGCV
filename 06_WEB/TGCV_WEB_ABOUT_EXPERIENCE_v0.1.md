@@ -1,12 +1,12 @@
-# TGCV — About Page Experience v0.1
+# TGCV — About Page Experience v0.2
 
 **Identifier:** TGCV-WEB-ABOUT-EXP-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-26  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
 **Page:** P08 — About  
-**Parent documents:** Web Master Brief v1.9; Information Architecture v3.0; Content Blueprint v4.1; Integrated Editorial Review v0.2.  
+**Parent documents:** Web Master Brief v1.9; Information Architecture v3.1; Content Blueprint v4.2; Integrated Editorial Review v0.3.  
 **Source basis:** TGCV-EXT-VP-001 Vision Paper v0.3; current Web Master Brief identity and governance boundaries; Information Architecture §3.10; Content Blueprint P08.
 
 > This document specifies the visitor experience for About. It does not establish an organisation, institutional affiliation, team structure, external board, formal consortium or community. It does not change scientific governance, scientific claims, evidence status, publication permissions or execution authorisations.
@@ -26,6 +26,8 @@ It should not repeat the scientific explanation in Research, the conceptual intr
 **Primary visitor outcome:** understand TGCV as an evolving applied-research and innovation programme, its central research concern, its interdisciplinary orientation and the principles used to distinguish research questions, methods, evidence, prototypes and applications.
 
 **Secondary visitor outcome:** understand what the programme does not claim about its institutional status, scientific maturity or practical results.
+
+The page should remain concise. It should not reproduce Research's detailed account of the scientific object, analytical chain, evidence portfolio or falsifiability questions; it should explain why those distinctions matter to the programme's public conduct.
 
 ## 2. Audience and depth
 
@@ -124,7 +126,7 @@ Do not expose internal repository paths, decision IDs, execution identifiers or 
 
 State that TGCV is evolving. Its concepts, methods and evidence are subject to examination, comparison and revision. Some questions remain open, and findings may narrow the programme's claims as well as support them.
 
-Invite thoughtful engagement without implying a formal membership, contribution, funding, collaboration or participation process. Any practical route to make contact belongs to the separate Contact destination and must be published only when a real, monitored channel is ready.
+Do not add a direct contact call-to-action while the Contact destination is deferred. The page may state that the programme is open to critical discussion, but must not imply a functioning submission, membership, funding, collaboration or participation process. The Contact destination will be reconsidered when a domain-associated account or other real, monitored communication channel is available.
 
 ## 4. Relationship to the rest of the website
 
@@ -163,7 +165,10 @@ The About Experience is acceptable when:
 8. The page complements rather than duplicates Research, Explore and Value Construction.
 9. The Spanish and English copy preserve the same claims and limits.
 10. No unavailable Contact or participation route is implied.
+11. The page remains an orientation layer and does not duplicate Research's detailed scientific account.
+12. The copy does not rely on first-person plural language that could imply an unverified team or organisational structure.
 
 ## 7. Change record
 
-- **v0.1 — 2026-11-26:** first About Experience specification, reconstructed from the current Web Master Brief, Information Architecture, Content Blueprint, Integrated Editorial Review and Vision Paper v0.3. Establishes the visitor narrative, evidence and organisational boundaries. No scientific claim, governance state, affiliation or publication permission is changed.
+- **v0.1 — 2026-11-26:** first About Experience specification.
+- **v0.2 — 2026-11-26:** focused editorial review clarifies the concise orientation role, prevents duplication of Research, removes any implied Contact CTA while that destination is deferred, and requires neutral programme voice rather than language suggesting an unverified team. No scientific claim, governance state, affiliation or publication permission is changed.
