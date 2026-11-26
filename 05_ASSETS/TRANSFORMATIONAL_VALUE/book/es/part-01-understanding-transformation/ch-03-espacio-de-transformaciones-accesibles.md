@@ -5,7 +5,7 @@ title: "El espacio de transformaciones accesibles"
 language: es
 content_type: chapter
 status: draft
-version: 0.7
+version: 0.8
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -75,7 +75,7 @@ Al terminar el capítulo podrás:
 
 ## 1. ¿Por qué estudiar las transformaciones a las que puede acceder un sistema?
 
-Imagina una organización que hasta ahora solo presta un servicio de forma presencial. En un momento dado incorpora una plataforma digital, forma a parte de su personal, obtiene autorización para operar en otro canal y adapta sus procesos. La organización todavía puede seguir atendiendo a sus clientes presencialmente. Sin embargo, ahora existen transformaciones que antes no estaban disponibles en las mismas condiciones: atender a distancia, coordinar equipos distribuidos o prestar determinados servicios fuera del horario habitual.
+Imagina una organización que hasta ahora solo presta un servicio de forma presencial. En un momento dado incorpora una plataforma digital, forma a parte de su personal, obtiene autorización para operar en otro canal y adapta sus procesos. La organización todavía puede seguir atendiendo a sus clientes presencialmente. Sin embargo, estos cambios pueden ampliar las transformaciones a las que la organización tiene acceso. Por ejemplo, podrían hacer viable la atención a distancia, la coordinación de equipos distribuidos o la prestación de determinados servicios fuera del horario habitual. Que cada una de estas transformaciones sea realmente accesible dependerá de que se satisfagan las condiciones específicas necesarias para llevarla a cabo: no basta con disponer de una plataforma o de una autorización si faltan capacidades, recursos o integración operativa.
 
 Si observáramos únicamente las actividades realizadas, podríamos describir qué ha hecho la organización. Pero no captaríamos por completo el cambio estructural que ha tenido lugar: algunas transformaciones han pasado a estar a su alcance.
 
