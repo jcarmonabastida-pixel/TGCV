@@ -1187,6 +1187,47 @@ def _uni_sign_variations(sequence, point):
     return sum(left != right for left, right in zip(signs, signs[1:]))
 
 
+def _uni_sturm_integer_sequence(sequence):
+    """Scale each rational Sturm polynomial to primitive integer coefficients."""
+    from math import gcd, lcm
+
+    output = []
+    for polynomial in sequence:
+        values = _uni_trim(polynomial)
+        denominator = 1
+        for value in values:
+            denominator = lcm(denominator, Fraction(value).denominator)
+        integers = [int(Fraction(value) * denominator) for value in values]
+        common = 0
+        for value in integers:
+            common = gcd(common, abs(value))
+        if common:
+            integers = [value // common for value in integers]
+        output.append(tuple(integers))
+    return tuple(output)
+
+
+def _uni_sign_variations_integer(sequence, point):
+    """Exact Sturm signs using homogeneous integer Horner evaluation (no Fraction gcds)."""
+    x = Fraction(point)
+    numerator, denominator = x.numerator, x.denominator
+    signs = []
+    for polynomial in sequence:
+        degree = len(polynomial) - 1
+        if degree < 0:
+            continue
+        value = polynomial[-1]
+        denominator_power = denominator
+        for coefficient in reversed(polynomial[:-1]):
+            value = value * numerator + coefficient * denominator_power
+            denominator_power *= denominator
+        if value > 0:
+            signs.append(1)
+        elif value < 0:
+            signs.append(-1)
+    return sum(left != right for left, right in zip(signs, signs[1:]))
+
+
 def _uni_sturm_root_count(sequence, left, right):
     if _uni_evaluate(sequence[0], left) == 0 or _uni_evaluate(sequence[0], right) == 0:
         raise ValueError("STURM_INTERVAL_ENDPOINT_IS_ROOT")
@@ -1238,14 +1279,22 @@ def _uni_isolate_squarefree_unit_roots(
             break
 
         sequence = _uni_sturm_sequence(current)
-        total = _uni_sturm_root_count(sequence, Fraction(0), Fraction(1))
-        queue = deque([(Fraction(0), Fraction(1), 0, total)])
+        integer_sequence = _uni_sturm_integer_sequence(sequence)
+        left_endpoint = Fraction(0)
+        right_endpoint = Fraction(1)
+        left_variations = _uni_sign_variations_integer(integer_sequence, left_endpoint)
+        right_variations = _uni_sign_variations_integer(integer_sequence, right_endpoint)
+        total = left_variations - right_variations
+        queue = deque([(
+            left_endpoint, right_endpoint, 0, total,
+            left_variations, right_variations,
+        )])
         intervals = []
         unresolved = []
         discovered_rational_root = None
 
         while queue:
-            left, right, depth, count = queue.popleft()
+            left, right, depth, count, left_variations, right_variations = queue.popleft()
             if count == 0:
                 continue
             processed += 1
@@ -1261,7 +1310,7 @@ def _uni_isolate_squarefree_unit_roots(
                     "root_count": n,
                     "depth": d,
                     "state": "NOT_PROCESSED_INTERVAL_BUDGET",
-                } for a, b, d, n in queue if n)
+                } for a, b, d, n, _, _ in queue if n)
                 return {
                     "status": "RESOURCE_LIMIT_WITH_REMAINDER",
                     "exact_roots": tuple(sorted(exact_roots)),
@@ -1289,12 +1338,21 @@ def _uni_isolate_squarefree_unit_roots(
             if _uni_evaluate(current, midpoint) == 0:
                 discovered_rational_root = midpoint
                 break
-            left_count = _uni_sturm_root_count(sequence, left, midpoint)
-            right_count = _uni_sturm_root_count(sequence, midpoint, right)
+            midpoint_variations = _uni_sign_variations_integer(
+                integer_sequence, midpoint,
+            )
+            left_count = left_variations - midpoint_variations
+            right_count = midpoint_variations - right_variations
             if left_count:
-                queue.append((left, midpoint, depth + 1, left_count))
+                queue.append((
+                    left, midpoint, depth + 1, left_count,
+                    left_variations, midpoint_variations,
+                ))
             if right_count:
-                queue.append((midpoint, right, depth + 1, right_count))
+                queue.append((
+                    midpoint, right, depth + 1, right_count,
+                    midpoint_variations, right_variations,
+                ))
 
         if discovered_rational_root is not None:
             exact_roots.append(discovered_rational_root)
