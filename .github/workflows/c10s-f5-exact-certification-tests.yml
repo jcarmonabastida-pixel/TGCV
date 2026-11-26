@@ -5,6 +5,7 @@ on:
     branches:
       - research/c10s-f5-g7-canonical-mle-v1.1-20261122
       - research/c10s-f5-g7-auth-manifest-generator-20261126-001
+      - research/c10s-f5-g7-preflight-path-fix-20261126
     paths:
       - .github/workflows/c10s-f5-exact-certification-tests.yml
       - 03_EXPERIMENTS/C10-S/harness/**
