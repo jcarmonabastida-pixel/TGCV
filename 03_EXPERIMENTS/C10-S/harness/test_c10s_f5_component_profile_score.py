@@ -12,6 +12,7 @@ from c10s_f5_component_profile_score import (
     F5ConstrainedScoreError,
     f5_component_profile_score_polynomial,
     f5_isolate_component_profile_score_roots,
+    f5_component_profile_maximum_enclosure,
 )
 
 
@@ -98,6 +99,41 @@ class F5ConstrainedProfileScoreTests(unittest.TestCase):
                     lo, hi = root.isolating_interval
                     self.assertGreater(lo * (1 - lo), polynomial.target)
                     self.assertGreater(hi * (1 - hi), polynomial.target)
+
+
+    def test_profile_maximum_enclosure_dominates_independent_dense_grid(self):
+        for component in ("W", "B"):
+            result = f5_component_profile_maximum_enclosure(
+                R, HISTOGRAM, component=component, target=Fraction(1, 20),
+                root_isolation_width=Fraction(1, 2**48),
+            )
+            self.assertEqual(result["status"], "PROFILE_MAXIMUM_ENCLOSED")
+            lower, upper = result["profile_likelihood_bounds"]
+            self.assertGreater(lower, 0)
+            self.assertGreaterEqual(upper, lower)
+            self.assertEqual(result["candidate_count"], 2 + result["interior_stationary_count"])
+
+            # Independent likelihood evaluations along the constrained curve
+            # must all lie below the certified profile-maximum upper bound.
+            for index in range(41):
+                mu = 0.2 + 0.6 * index / 40
+                q = mu * (1.0 - mu)
+                target = 0.05
+                if q <= target:
+                    continue
+                kappa = (
+                    target / (q - target) if component == "W"
+                    else (q - target) / target
+                )
+                eta = math.log(mu / (1.0 - mu))
+                xi = math.log(kappa)
+                direct = beta_binomial_loglik_score_hessian(
+                    COUNTS, R, mean_logit=eta, log_concentration=xi,
+                )
+                self.assertLessEqual(
+                    math.exp(direct.log_likelihood),
+                    float(upper) * (1.0 + 1e-10),
+                )
 
     def test_polynomial_is_reproducible_and_target_is_exact_binary_rational(self):
         first = f5_component_profile_score_polynomial(
