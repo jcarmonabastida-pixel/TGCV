@@ -225,7 +225,6 @@ def f5_isolate_component_profile_score_roots(
         raise F5ConstrainedScoreError("SCORE_POLYNOMIAL_COEFFICIENTS_MISSING")
 
     target = polynomial.target
-    boundary = [ -target, Fraction(1), Fraction(-1) ]
     roots: list[F5ConstrainedScoreRoot] = []
     unresolved: list[tuple[Fraction, Fraction]] = []
     processed = 0
@@ -256,9 +255,17 @@ def f5_isolate_component_profile_score_roots(
                 roots.append(F5ConstrainedScoreRoot(
                     multiplicity, None, (left, right), "FEASIBLE_INTERIOR",
                 ))
-            elif max(left_value, right_value) < 0:
-                continue
             else:
+                # q(mu)-target is concave. Its maximum on an interval is at
+                # mu=1/2 when the interval contains that point, otherwise at
+                # one of the interval endpoints.
+                maximum_value = max(left_value, right_value)
+                if left <= Fraction(1, 2) <= right:
+                    maximum_value = max(
+                        maximum_value, Fraction(1, 4) - target,
+                    )
+                if maximum_value < 0:
+                    continue
                 unresolved.append((left, right))
 
     if unresolved:
