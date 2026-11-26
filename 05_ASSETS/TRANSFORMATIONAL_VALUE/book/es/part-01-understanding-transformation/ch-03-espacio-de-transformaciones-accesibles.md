@@ -5,7 +5,7 @@ title: "El espacio de transformaciones accesibles"
 language: es
 content_type: chapter
 status: draft
-version: 0.1
+version: 0.2
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -147,6 +147,8 @@ Ningún nivel debe definirse retrospectivamente a partir del siguiente. La reali
 
 La diferencia también opera en sentido inverso. Una transformación puede ser accesible y no realizarse por falta de demanda, por una decisión deliberada, por incertidumbre, por costes de oportunidad o porque el sistema prioriza otra trayectoria. La no realización no demuestra necesariamente que la transformación fuera inaccesible.
 
+En algunos dominios también es necesario distinguir la **adopción o utilización** de un servicio o una capacidad de su disponibilidad estructural. Que una infraestructura o un servicio estén disponibles no significa que las personas u organizaciones los utilicen. La utilización observada puede ser relevante para estudiar una trayectoria o un resultado, pero no debe emplearse automáticamente para definir qué transformaciones eran accesibles.
+
 Esta separación evita dos errores simétricos: tratar toda posibilidad como si fuera una acción y tratar toda acción observada como si agotara las posibilidades del sistema.
 
 ## 5. Cómo puede cambiar un espacio accesible
@@ -157,6 +159,8 @@ El espacio de transformaciones accesibles no tiene por qué permanecer constante
 - **Contracción:** algunas transformaciones dejan de estar disponibles.
 - **Reconfiguración:** cambia la composición del espacio, aunque su tamaño total permanezca igual.
 - **Sustitución:** unas transformaciones dejan de ser accesibles y otras ocupan su lugar.
+
+En ocasiones se habla de **posibilidades latentes** para referirse a transformaciones que ya son accesibles, pero todavía no se han realizado. El término debe usarse con cuidado: no designa una capacidad misteriosa ni una posibilidad meramente imaginable. Solo tiene sentido si las condiciones de accesibilidad pueden justificarse de forma independiente. Una transformación que se vuelve accesible por primera vez puede describirse como recién habilitada; una que deja de cumplir las condiciones relevantes deja de formar parte del espacio accesible.
 
 Por ejemplo, supongamos que en un primer momento el sistema tiene accesibles las transformaciones (A), (B), (C) y (D). Más adelante, (C) y (D) dejan de estar disponibles, mientras que (E) y (F) pasan a ser accesibles:
 
