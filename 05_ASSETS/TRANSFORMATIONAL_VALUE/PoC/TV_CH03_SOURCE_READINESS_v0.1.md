@@ -2,7 +2,7 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.16  
+**Version:** 0.17  
 **Date:** 2026-11-26  
 **Status:** BILINGUAL CHAPTER AND SUPPORTING ASSETS UPDATED; RUST TEMPORAL EVIDENCE BLOCKED FOR PUBLIC REUSE; REVIEW PENDING  
 **Branch:** `strategy/transformational-value-learning`  
@@ -360,6 +360,7 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 - **v0.14 — 2026-11-26:** Created the bilingual cross-domain evidence note and updated the content model for research notes. A separate canonical data-admission/privacy restriction was identified for the temporal software-ecosystem analysis; that result was removed from both reader-facing chapter drafts and withheld from public evidence publication pending prospective reuse clearance.
 - **v0.15 — 2026-11-26:** Updated the bilingual glossary definitions to state the independent accessibility-criterion requirement and completed first-draft Spanish/English captions and alternative text for the shared diagram. Both glossary entries and the diagram remain in draft status.
 - **v0.16 — 2026-11-26:** Updated both Chapter 3 drafts to v0.5 to state explicitly that the grid-planning example did not demonstrate distinct representational gain over its native state/action model. This preserves the negative result alongside the bounded two-domain operationalisation finding.
+- **v0.17 — 2026-11-26:** Refined both versions of the cross-domain evidence note to document source-state/successor-state derivation and the exact independent reconstruction concordance: the 21-node/20-edge grid tree, 25 PRISM reconstruction rows per executor with zero deviations, and the independent 36-record descriptor audit.
 
 ## 12. Pilot content package setup
 
@@ -630,3 +631,17 @@ Both native-language Chapter 3 drafts have been updated to v0.5. The cross-domai
 The paragraph retains the bounded positive methodological finding: a common transition-level structure could be operationalised in two structurally different computational domains without equating their transformation identities. It does not imply superiority, universal validity, causality or value linkage.
 
 This change prevents the chapter from presenting the cross-domain result as an unqualified representational advance. Both drafts remain `draft`; no scientific claim status or canonical research record has been changed.
+
+
+---
+
+## 18. Cross-domain evidence note — reconstruction detail review v0.17
+
+The Spanish and English versions of `TV-LR-001` have been updated to v0.2. The method description now makes explicit that the initial accessible space is derived from the source state and the successor space is recomputed from the reconstructed successor state.
+
+The note also records the exact reconstruction checks supporting the secondary comparison:
+- the two independent grid-planning reconstructions agreed on the 21-node, 20-edge tree;
+- the two independent probabilistic-model executors each reconstructed 25 records, with matching source-fixture identity and zero structural deviations;
+- the independent mathematical audit checked all 36 comparative transition records and found zero descriptor mismatches.
+
+These are reconstruction and methodological-integrity findings. They do not establish representational superiority, universal validity, causality or value linkage. Both language versions remain `draft`.
