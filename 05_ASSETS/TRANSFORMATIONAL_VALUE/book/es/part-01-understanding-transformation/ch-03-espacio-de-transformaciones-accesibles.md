@@ -81,23 +81,23 @@ Estudiar ese espacio permite describir una dimensión del cambio que no queda re
 
 ## 2. De las transformaciones candidatas a las accesibles
 
-El punto de partida es un conjunto de transformaciones candidatas. Una transformación candidata, que representaremos por \\(\\tau\\), describe un cambio identificable que podría producirse en el sistema. Su formulación debe ser suficientemente concreta para que podamos preguntar qué condiciones permitirían realizarla.
+El punto de partida es un conjunto de transformaciones candidatas. Una transformación candidata, que representaremos por \(\tau\), describe un cambio identificable que podría producirse en el sistema. Su formulación debe ser suficientemente concreta para que podamos preguntar qué condiciones permitirían realizarla.
 
 No toda transformación imaginable debe incorporarse al análisis. El universo de candidatas se delimita en función del sistema estudiado, la pregunta de investigación y el nivel de detalle necesario. En algunos casos será posible enumerar las alternativas relevantes. En otros, bastará con definir una familia de transformaciones y un procedimiento explícito para identificar cuáles cumplen las condiciones de accesibilidad.
 
 Una transformación es accesible cuando se satisfacen las condiciones relevantes para su realización. En el modelo analítico actual, el espacio se representa como una función del estado del sistema y de las condiciones y restricciones pertinentes:
 
-\\[
+\[
 T_{acc}=F(S,C,L)
-\\]
+\]
 
 Aquí, (S) representa el estado o configuración relevante del sistema; (C), las condiciones contextuales consideradas; y (L), las restricciones, recursos y condiciones operativas que intervienen en el análisis. La notación no pretende convertir cada elemento en una entidad independiente: expresa que la accesibilidad se evalúa en relación con una configuración y unas condiciones especificadas.
 
 Para cada transformación candidata puede definirse un predicado de accesibilidad:
 
-\\[
-\\tau \\in T_{acc} \\quad \\text{si y solo si} \\quad P_{\\tau}(S,C,L)=1
-\\]
+\[
+\tau \in T_{acc} \quad \text{si y solo si} \quad P_{\tau}(S,C,L)=1
+\]
 
 El predicado debe establecerse de manera independiente de los resultados posteriores. No sería válido definir una transformación como accesible simplemente porque observamos que tuvo éxito, ni concluir que estaba disponible porque el sistema acabó obteniendo un resultado favorable. Eso introduciría razonamiento retrospectivo y confundiría las condiciones de partida con lo que ocurrió después.
 
@@ -160,12 +160,12 @@ El espacio de transformaciones accesibles no tiene por qué permanecer constante
 
 Por ejemplo, supongamos que en un primer momento el sistema tiene accesibles las transformaciones (A), (B), (C) y (D). Más adelante, (C) y (D) dejan de estar disponibles, mientras que (E) y (F) pasan a ser accesibles:
 
-\\[
-T_{acc,t}=\\{A,B,C,D\\}
-\\]
-\\[
-T_{acc,t+1}=\\{A,B,E,F\\}
-\\]
+\[
+T_{acc,t}=\{A,B,C,D\}
+\]
+\[
+T_{acc,t+1}=\{A,B,E,F\}
+\]
 
 Ambos espacios contienen cuatro transformaciones. Si observáramos únicamente su tamaño, concluiríamos que nada ha cambiado. Sin embargo, la composición es diferente: dos transformaciones persisten, dos desaparecen y dos nuevas se incorporan. Ha habido reconfiguración con conservación de cardinalidad.
 
@@ -185,10 +185,10 @@ Estas son descripciones estructurales, no puntuaciones de calidad. La forma adec
 
 Para estudiar la evolución temporal podemos comparar el espacio accesible en dos momentos sucesivos. Una secuencia analítica útil es:
 
-\\[
-S_t \\rightarrow T_{acc,t} \\rightarrow T_{real,t}
-\\rightarrow S_{t+1} \\rightarrow T_{acc,t+1}
-\\]
+\[
+S_t \rightarrow T_{acc,t} \rightarrow T_{real,t}
+\rightarrow S_{t+1} \rightarrow T_{acc,t+1}
+\]
 
 La secuencia distingue el estado inicial, las transformaciones accesibles, la transformación que efectivamente se realiza, el estado resultante y el espacio accesible bajo las nuevas condiciones.
 
