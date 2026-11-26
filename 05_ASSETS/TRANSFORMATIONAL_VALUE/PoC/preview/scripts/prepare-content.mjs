@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFile } from "node:child_process";
@@ -35,7 +35,7 @@ for (const item of sources) {
   const chapterSource = resolve(contentRoot, item.chapter);
   const canonicalChapterText = await readFile(chapterSource, "utf8");
   // Mark the generated preview page as a Starlight draft; preserve canonical status metadata.
-  const chapterText = canonicalChapterText.replace(/^(---\\r?\\n[\\s\\S]*?\\nstatus:\\s*draft\\s*\\n)/, "$1draft: true\\n");
+  const chapterText = canonicalChapterText.replace(/^(---\r?\n[\s\S]*?\nstatus:\s*draft\s*\n)/, "$1draft: true\n");
   const diagramSource = resolve(contentRoot, item.diagram);
   const diagramText = await readFile(diagramSource, "utf8");
 
@@ -54,10 +54,16 @@ for (const item of sources) {
   await execFileAsync("mmdc", ["-i", desktopSource, "-o", desktopSvg, "-b", "transparent"]);
   await execFileAsync("mmdc", ["-i", mobileSource, "-o", mobileSvg, "-b", "transparent"]);
 
+  const alt = item.lang === "es"
+    ? "Diagrama con seis nodos de proceso o entrada: estado del sistema y condiciones relevantes iniciales; espacio de transformaciones accesibles; transformación realizada; estado sucesor del sistema; nuevas condiciones relevantes; y siguiente espacio de transformaciones accesibles. Una flecha continua conecta el estado inicial con la evaluación del espacio accesible. Una flecha discontinua indica que una transformación accesible puede realizarse o no. Si se realiza, conduce al estado sucesor. El siguiente espacio se evalúa a partir del estado sucesor y, de forma independiente, de las nuevas condiciones relevantes. Una conexión no direccional y etiquetada vincula el espacio accesible con una nota que distingue accesibilidad, realización, trayectoria, resultado y valor. Las flechas representan relaciones analíticas, no una ley causal universal."
+    : "A diagram with six process or input nodes: initial system state and relevant conditions; accessible transformation space; realised transformation; successor system state; next relevant conditions; and next accessible transformation space. A solid arrow connects the initial state to the evaluation of the accessible space. A dashed arrow indicates that an accessible transformation may or may not be realised. If realised, it leads to the successor state. The next space is evaluated from the successor state and, independently, from the next relevant conditions. A non-directional labelled connector links the accessible space to a note distinguishing accessibility, realisation, trajectory, outcome and value. The arrows represent analytical relationships, not a universal causal law.";
+  const caption = item.lang === "es"
+    ? "El espacio de transformaciones accesibles se evalúa a partir del estado del sistema y de las condiciones relevantes. Una transformación accesible puede realizarse o no; si se realiza, conduce a un estado sucesor. El siguiente espacio accesible se evalúa considerando tanto ese estado como las nuevas condiciones relevantes."
+    : "The accessible transformation space is evaluated from the system state and relevant conditions. An accessible transformation may or may not be realised; if it is, it leads to a successor state. The next accessible space is evaluated from both that state and the next relevant conditions.";
   const figure = `
-\n\n## TV-DIA-001\n\n<figure class="poc-diagram">\n  <picture>\n    <source media="(max-width: 700px)" srcset="/diagrams/${item.lang}/diagram-mobile.svg" />\n    <img src="/diagrams/${item.lang}/diagram-desktop.svg" alt="${item.lang === "es" ? "Diagrama del espacio de transformaciones accesibles; la descripción completa está disponible en el texto que acompaña al diagrama." : "Diagram of the accessible transformation space; the full description is provided in the accompanying text."}" />\n  </picture>\n  <figcaption>${item.lang === "es" ? "El espacio accesible se evalúa desde el estado del sistema y las condiciones relevantes; la realización es posible, no necesaria." : "The accessible space is evaluated from system state and relevant conditions; realisation is possible, not necessary."}</figcaption>\n</figure>\n`;
+\n\n<figure class="poc-diagram">\n  <picture>\n    <source media="(max-width: 700px)" srcset="/diagrams/${item.lang}/diagram-mobile.svg" />\n    <img src="/diagrams/${item.lang}/diagram-desktop.svg" alt="${alt}" />\n  </picture>\n  <figcaption>${caption}</figcaption>\n</figure>\n`;
 
-  const target = resolve(pageDir, "chapter-03.mdx");
+  const target = resolve(pageDir, "chapter-03.md");
   await writeFile(target, chapterText + figure, "utf8");
 }
 
@@ -74,6 +80,6 @@ This is a local, non-production technical preview for the bilingual Chapter 3 pu
 
 [${linkLabel}](./chapter-03/)
 `;
-  await writeFile(resolve(outputRoot, item.lang, "index.mdx"), landing, "utf8");
+  await writeFile(resolve(outputRoot, item.lang, "index.md"), landing, "utf8");
 }
 console.log("Prepared paired bilingual Chapter 3 pages and responsive diagram variants.");
