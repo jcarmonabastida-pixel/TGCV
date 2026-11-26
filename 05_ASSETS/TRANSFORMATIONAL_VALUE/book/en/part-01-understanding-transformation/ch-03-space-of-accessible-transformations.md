@@ -5,7 +5,7 @@ title: "The Space of Accessible Transformations"
 language: en
 content_type: chapter
 status: draft
-version: 0.3
+version: 0.4
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -26,6 +26,7 @@ related:
   - TV-CH-04
   - TV-CH-05
   - TV-CH-06
+  - TV-LR-001
 references:
   - TV-REF-001
   - TV-REF-002
@@ -231,8 +232,6 @@ Cross-domain comparison requires an additional precaution. The same analytical s
 The available evidence comes from distinct studies and analyses. It is not one combined test, and their sample sizes or scopes cannot be pooled. Each result addresses a different question.
 
 **A common representation across two computational domains.** A bounded study reconstructed 36 transitions across two structurally different domains. Validation found no invalid records, and an independent mathematical audit found no discrepancies in the calculated descriptors. Both domains showed changes in the identity of accessible transformations. In one, identities were replaced without a change in the total number; in the other, some net reductions were also observed. The result supports the operationalisation of a common transition-level representation in the cases examined. It does not establish that the representation is universal, superior to alternatives or applicable in every domain.
-
-**Temporal dynamics in software systems.** A separate analysis of successive software-package versions examined 516,061 adjacent temporal pairs. Approximately 84.91% showed some change in the composition of the accessible space. Most of these changes were identity reconfigurations rather than simple expansion or contraction. The analysis also identified many cases in which the accessible space changed while potential one-step reach did not, as well as cases in which the cardinality of that reach remained constant while its membership changed. Within the representation and time horizon examined, these results show that the accessible space, potential reach and their cardinalities are distinguishable objects. They do not establish effective runtime reachability, longer-horizon trajectories, causality, adoption, downstream outcomes or value creation.
 
 **Bounded causal evidence concerning subsequent trajectories.** An experimental evaluation of rural financial-services expansion in southern India used randomised branch openings to change local infrastructure for access to formal financial services. TGCV's consolidated evidence interprets this structural intervention as an expansion of accessibility and finds bounded causal support that it affected subsequent household trajectories in the setting studied. The interpretation keeps structural access separate from later use of financial products and from observed changes in employment, economic activity and income. This is evidence for a bounded relationship in a specific setting; it does not establish that every accessibility change produces a trajectory change, or that accessibility is its only cause.
 
