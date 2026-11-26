@@ -404,3 +404,32 @@ The smoke test executed the end-to-end fixed-target LR pipeline for one syntheti
 Use a development-only microbenchmark on the existing fixture, report per-stage timings and exactness/status parity, and avoid any coverage simulation. Consider caching only mathematically identical immutable subresults (e.g. data-specific score numerators or the unrestricted certificate); never reuse a result across different target values where the target changes the constrained polynomial. If a substantial speedup cannot be achieved without compromising certification, report the candidate as computationally impractical and reconsider a simpler statistically defensible route.
 
 **M2 disposition:** exact fixed-target profile/LR layers and grid inversion logic exist; deterministic logic tests pass (36/36) and one end-to-end smoke passes. The inversion remains numerically scanned with \`topology_certified=false\`, its end-to-end result assertions are minimal, and the measured runtime is a blocking performance concern. No coverage calibration or method selection has occurred. Tier-A/Tier-B/C10 execution remains not launched and not authorized.
+
+
+## 26. Exact integer Sturm optimisation — runtime probe PASS
+
+**Workflow:** [45839559807](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45839559807) — SUCCESS  
+**Commit:** \`5dcd6a22da9da980825c5220371603ee4d6b0ae8\`  
+**Job:** \`f5-lr-runtime-probe\` — SUCCESS
+
+The full deterministic suite completed **102/102 tests PASS** (185.679 s). This includes:
+- integer Sturm sign variations exactly matching the rational reference on the test grid;
+- exact root-census/isolation parity on the irrational-root fixture;
+- the pre-existing rational polynomial, boundary, global-MLE, resultant, Bernstein/Krawczyk and resource-abstention tests.
+
+Bounded fixed-target benchmark, same M10/R5 histogram and target as the pre-optimisation probe:
+
+| Stage | Before (s) | After (s) |
+|---|---:|---:|
+| Unrestricted global MLE certificate | 0.193 | 0.141 |
+| W fixed-target LR statistic | 27.765 | 1.718 |
+| B fixed-target LR statistic | 8.230 | 2.322 |
+| W+B | 35.995 | 4.040 |
+
+The observed speedups are approximately 16.2x for W, 3.5x for B, and 8.9x for W+B. Both components returned \`LR_STATISTIC_ENCLOSED\`, with profile status \`PROFILE_MAXIMUM_ENCLOSED\` and three candidates. The certificate returned \`GLOBAL_INTERIOR_MAXIMUM_CERTIFIED\`.
+
+The dominant cost has shifted: the profile now spends most time constructing/substituting the exact component score polynomial (617k Fraction operations for W; ~1.05m for B). Root isolation is no longer dominant in this fixture (0.448 s W; ~0.203 s B). Thus the integer Sturm change addressed the measured root-count bottleneck, but it does not make the entire exact profile calculation free.
+
+**Disposition:** accept this optimisation as a successful exact-arithmetic performance improvement for the tested fixture. Do not infer broad throughput, confidence-set topology, interval coverage, or calibration validity from this one fixture and deterministic tests.
+
+**Next gate:** rerun the end-to-end fixed-target LR inversion smoke on the optimised commit and compare runtime/status/output structure with the pre-optimisation 410.4 s smoke. Then run a bounded set of independent synthetic fixtures (including M30/R20 and boundary/degenerate cases) for execution robustness and fail-closed behaviour only. No repeated-sampling coverage calibration yet. Keep Tier-A/Tier-B/C10 causal execution unlaunched and unauthorized.
