@@ -5,7 +5,7 @@ title: "El espacio de transformaciones accesibles"
 language: es
 content_type: chapter
 status: draft
-version: 0.2
+version: 0.3
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -26,7 +26,10 @@ related:
   - TV-CH-04
   - TV-CH-05
   - TV-CH-06
-references: []
+references:
+  - TV-REF-001
+  - TV-REF-002
+  - TV-REF-003
 epistemic_status:
   - analytical_definition
   - bounded_empirical_evidence
@@ -37,6 +40,11 @@ source_assets:
   - 03_EXPERIMENTS/TR-131/execution/TR131_TRANSFORMATION_SPACE_DYNAMICS_FORMAL_SPEC_001.md
   - 03_EXPERIMENTS/TR-131/execution/TR131_TRANSFORMATION_SPACE_DYNAMICS_ANALYSIS_001.md
   - 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md
+  - 00_GOVERNANCE/rma/TGCV_RMA_v3.38.md
+  - 00_GOVERNANCE/SIP/TGCV_C09_CLAIM_LEVEL_CONSOLIDATION_RECORD_001.md
+  - 00_GOVERNANCE/SIP/C10C002_BOUNDED_CAUSAL_EXPERIMENT_CLOSURE_001.md
+  - 00_GOVERNANCE/SIP/TGCV_MT5_DYNAMIC_TRANSFORMATION_SPACE_RECONSTRUCTION_RESULT_001.md
+  - 03_EXPERIMENTS/EXT-1.1_Rust/execution/RUST-DYN-2_SCIENTIFIC_INTEGRATION_CLOSURE_v01.md
   - 00_GOVERNANCE/SIP/TGCV_CROSS_DOMAIN_END_TO_END_ACCESSIBILITY_OUTCOME_VALUE_MAP_001.md
 license: null
 ---
@@ -91,7 +99,7 @@ Una transformación es accesible cuando se satisfacen las condiciones relevantes
 T_{acc}=F(S,C,L)
 \]
 
-Aquí, (S) representa el estado o configuración relevante del sistema; (C), las condiciones contextuales consideradas; y (L), las restricciones, recursos y condiciones operativas que intervienen en el análisis. La notación no pretende convertir cada elemento en una entidad independiente: expresa que la accesibilidad se evalúa en relación con una configuración y unas condiciones especificadas.
+Aquí, \(S\) representa el estado o configuración relevante del sistema; \(C\), las condiciones contextuales consideradas; y \(L\), las restricciones, los recursos y las condiciones operativas que intervienen en el análisis. La notación no pretende convertir cada elemento en una entidad independiente: expresa que la accesibilidad se evalúa en relación con una configuración y unas condiciones especificadas.
 
 Para cada transformación candidata puede definirse un predicado de accesibilidad:
 
@@ -115,7 +123,7 @@ Por eso es importante declarar el criterio de accesibilidad antes de examinar lo
 
 ## 3. El espacio de transformaciones accesibles
 
-Una vez delimitadas las transformaciones candidatas y definido el criterio de accesibilidad, podemos representar el conjunto —o estructura— de transformaciones que el sistema puede realizar bajo las condiciones consideradas. A esa representación la llamamos **espacio de transformaciones accesibles**, y la expresamos como (T_{acc}).
+Una vez delimitadas las transformaciones candidatas y definido el criterio de accesibilidad, podemos representar el conjunto —o estructura— de transformaciones que el sistema puede realizar bajo las condiciones consideradas. A esa representación la llamamos **espacio de transformaciones accesibles**, y la expresamos como \(T_{acc}\).
 
 La palabra *espacio* no implica necesariamente un espacio geométrico ni una colección que deba enumerarse por completo. Designa una estructura analítica de posibilidades delimitadas. Según el dominio, esa estructura podrá representarse mediante conjuntos, relaciones, funciones, estados de admisibilidad u otras formas adecuadas.
 
@@ -133,7 +141,7 @@ Tampoco debe confundirse con una medida general de capacidad. Un sistema puede t
 
 ## 4. Accesibilidad no significa ejecución
 
-Consideremos un sistema que puede realizar cuatro transformaciones: (A), (B), (C) y (D). Que las cuatro formen parte de su espacio accesible no significa que vaya a realizar las cuatro. Puede elegir (B), no actuar, posponer una decisión o realizar una transformación distinta en otro momento.
+Consideremos un sistema que puede realizar cuatro transformaciones: \(A\), \(B\), \(C\) y \(D\). Que las cuatro formen parte de su espacio accesible no significa que vaya a realizar las cuatro. Puede elegir (B), no actuar, posponer una decisión o realizar una transformación distinta en otro momento.
 
 Conviene mantener separados cinco niveles:
 
@@ -194,45 +202,65 @@ S_t \rightarrow T_{acc,t} \rightarrow T_{real,t}
 \rightarrow S_{t+1} \rightarrow T_{acc,t+1}
 \]
 
-La secuencia distingue el estado inicial, las transformaciones accesibles, la transformación que efectivamente se realiza, el estado resultante y el espacio accesible bajo las nuevas condiciones.
+La secuencia distingue el estado inicial, las transformaciones accesibles, la transformación que efectivamente se realiza, el estado resultante y el espacio accesible bajo las nuevas condiciones. Las flechas organizan la observación; no deben interpretarse como una ley causal universal. La relación entre una transformación realizada, el estado sucesor y la accesibilidad posterior debe examinarse en cada caso.
 
-Las flechas organizan la observación; no deben interpretarse como una ley causal universal. En particular, la relación entre una transformación realizada, el estado sucesor y la accesibilidad posterior debe examinarse en cada caso. La representación permite formular preguntas y contrastar relaciones, pero no sustituye la evidencia necesaria para responderlas.
+Cuando las transformaciones pueden identificarse de forma consistente entre dos momentos, podemos describir el cambio mediante varios indicadores:
 
-Cuando las transformaciones pueden identificarse entre momentos, podemos describir el cambio mediante un pequeño conjunto de cantidades. Si (A_t) representa el número de transformaciones accesibles al inicio, (G_t) las identidades añadidas, (L_t) las retiradas y (P_t) las persistentes, entonces el cambio neto de tamaño es la diferencia entre el número de elementos del espacio sucesor y el inicial. La rotación de identidades, en cambio, recoge las incorporaciones y retiradas consideradas conjuntamente.
+\[
+\begin{aligned}
+A_t &= |T_{acc,t}| \\
+A_{t+1} &= |T_{acc,t+1}| \\
+G_t &= |T_{acc,t+1} \setminus T_{acc,t}| \\
+L_t &= |T_{acc,t} \setminus T_{acc,t+1}| \\
+P_t &= |T_{acc,t} \cap T_{acc,t+1}| \\
+R_t &= G_t + L_t \\
+D_t &= A_{t+1}-A_t = G_t-L_t
+\end{aligned}
+\]
 
-No es necesario reducir toda la dinámica a un único indicador. De hecho, hacerlo puede ocultar diferencias relevantes. Un sistema puede mantener el mismo número de transformaciones y, aun así, experimentar una sustitución profunda. Otro puede ampliar el espacio incorporando opciones que apenas modifican las trayectorias que realmente puede seguir. La selección de descriptores debe responder a la pregunta analítica, a la calidad de los datos y a la semántica del dominio.
+Aquí, \(A_t\) y \(A_{t+1}\) son las cardinalidades inicial y sucesora; \(G_t\), las identidades incorporadas; \(L_t\), las retiradas; \(P_t\), las que persisten; \(R_t\), la rotación total de identidades; y \(D_t\), el cambio neto de cardinalidad. Estas cantidades describen aspectos distintos: el cambio neto no revela por sí solo cuántas identidades se han sustituido, y la rotación no indica si el espacio ha aumentado o disminuido en términos netos.
 
-La comparación entre dominios exige una precaución adicional. Puede ser posible utilizar la misma estructura analítica en sistemas diferentes sin asumir que sus transformaciones concretas son equivalentes. La consistencia debe buscarse en el papel que desempeñan los conceptos —estado, accesibilidad, realización, estado sucesor— y no en imponer etiquetas idénticas a fenómenos distintos.
+No es necesario reducir toda la dinámica a un único indicador. Un sistema puede mantener el mismo número de transformaciones y, aun así, experimentar una sustitución profunda. Otro puede ampliar el espacio incorporando opciones que apenas modifican las trayectorias que realmente puede seguir. La selección de descriptores debe responder a la pregunta analítica, a la calidad de los datos y a la semántica del dominio. Ninguno de estos descriptores constituye por sí mismo una puntuación de calidad, capacidad o valor.
+
+En algunos análisis puede estudiarse también el **alcance potencial a un paso**: el conjunto de estados sucesores estructuralmente posibles bajo una representación determinada. Este objeto no equivale a la ejecución observada ni a la alcanzabilidad efectiva en tiempo de ejecución. La evidencia disponible muestra que el cambio del espacio accesible y el cambio de ese alcance potencial pueden distinguirse; por tanto, no deben tratarse como una misma magnitud.
+
+La comparación entre dominios exige una precaución adicional. Puede ser posible utilizar la misma estructura analítica en sistemas diferentes sin asumir que sus transformaciones concretas son equivalentes. La consistencia debe buscarse en el papel que desempeñan los conceptos —estado, accesibilidad, realización y estado sucesor— y no en imponer etiquetas idénticas a fenómenos distintos.
 
 ## 7. Qué muestra la evidencia acotada y qué no demuestra
 
-La evidencia disponible permite ilustrar distintos niveles de apoyo, que conviene no mezclar.
+La evidencia disponible procede de estudios y análisis distintos. No constituye una única prueba ni permite combinar sus tamaños muestrales o alcances. Cada resultado responde a una pregunta diferente.
 
-**Operacionalización en dos dominios computacionales.** Un estudio acotado reconstruyó 36 registros de transición en dos dominios estructuralmente diferentes. La validación no encontró registros inválidos y una auditoría matemática independiente no encontró discrepancias en los descriptores calculados. En ambos dominios se observaron cambios en la identidad de las transformaciones accesibles. En uno de ellos hubo sustitución de identidades sin cambio en el número total de transformaciones. Este resultado respalda que una representación común de transición puede operacionalizar cambios del espacio en esos casos examinados. No demuestra que la representación sea universal, superior a otras ni válida en cualquier dominio.
+**Una representación común en dos dominios computacionales.** Un estudio acotado reconstruyó 36 transiciones en dos dominios estructuralmente diferentes. La validación no encontró registros inválidos y una auditoría matemática independiente no encontró discrepancias en los descriptores calculados. En ambos dominios se observaron cambios en la identidad de las transformaciones accesibles. En uno hubo sustitución de identidades sin cambio en el número total; en el otro se observaron, además, algunas reducciones netas. El resultado respalda la operacionalización de una representación común de transición en esos casos examinados. No demuestra que la representación sea universal, superior a otras ni válida en cualquier dominio.
 
-**Evidencia causal acotada sobre trayectorias posteriores.** En un estudio de expansión aleatorizada de una red de servicios financieros rurales, la intervención modificó la infraestructura local y el acceso estructural a determinados servicios. La evidencia consolidada ofrece apoyo causal acotado a que los cambios de accesibilidad pueden afectar trayectorias posteriores en ese contexto. El resultado debe mantenerse dentro de los límites del estudio: no establece una ley general ni demuestra que el cambio de accesibilidad produzca necesariamente valor.
+**Dinámica temporal en sistemas de software.** Un análisis separado de versiones sucesivas de paquetes de software examinó 516.061 pares temporales adyacentes. En aproximadamente el 84,91 % se observó algún cambio en la composición del espacio accesible. La mayoría de esos cambios correspondió a reconfiguraciones de identidad, no a una simple expansión o contracción. El análisis también identificó numerosos casos en los que cambiaba el espacio accesible sin que cambiara el alcance potencial a un paso, así como casos en los que ese alcance mantenía su cardinalidad pero cambiaba su composición. Estos resultados muestran, dentro de la representación y el horizonte temporal examinados, que el espacio accesible, el alcance potencial y su cardinalidad son objetos distinguibles. No demuestran alcanzabilidad efectiva en tiempo de ejecución, trayectorias de horizonte más largo, causalidad, adopción, resultados posteriores ni creación de valor.
 
-**Un caso de identificación parcial.** En la reconstrucción de una intervención de pavimentación urbana se pudieron especificar de antemano funciones candidatas —como facilitar desplazamientos de vehículos, peatones o bicicletas— y reconstruir cambios longitudinales de conectividad. Sin embargo, los datos no permitieron identificar de forma independiente el predicado completo de accesibilidad ni reconstruir todo el espacio de transformaciones. El caso muestra por qué un cambio físico observado no equivale automáticamente a una modificación identificada de (T_{acc}).
+**Evidencia causal acotada sobre trayectorias posteriores.** En una evaluación experimental de expansión de servicios financieros rurales en el sur de India, la asignación aleatoria de aperturas de sucursales modificó la infraestructura local de acceso a servicios financieros formales. La consolidación de la evidencia de TGCV interpreta esa intervención estructural como una ampliación de la accesibilidad y encuentra apoyo causal acotado a que esa ampliación afectó trayectorias posteriores de los hogares en el contexto estudiado. La interpretación mantiene separados el acceso estructural, la utilización posterior de productos financieros y los cambios observados en empleo, actividad económica e ingresos. Es evidencia de una relación acotada en un entorno concreto; no establece que cualquier cambio de accesibilidad produzca una modificación de trayectoria, ni que la accesibilidad sea su única causa.
 
-**Una ilustración sintética de no equivalencia.** En un entorno sintético controlado, una intervención modificó el espacio accesible mientras la trayectoria realizada especificada permanecía igual y el resultado de valor definido para ese ejercicio no cambiaba. Esta ilustración sirve para mostrar que los niveles analíticos pueden variar de manera independiente bajo determinadas reglas. No es evidencia de comportamiento real ni demuestra que las modificaciones de accesibilidad carezcan de efectos sobre trayectorias o valor en general.
+**Un resultado causal no detectable en infraestructura urbana.** Un segundo análisis de TGCV utilizó los datos de replicación de un experimento de inversión en infraestructura en barrios urbanos de México. Sobre una reconstrucción estructural acotada —seis dimensiones de infraestructura y doce familias elementales de apertura o cierre— se estimó el efecto de la asignación del tratamiento sobre el cambio neto en el número de transformaciones accesibles. La estimación no fue estadísticamente detectable: el efecto estimado fue aproximadamente \(-0,031\), con un intervalo de confianza del 95 % que incluía valores negativos y positivos. Por tanto, el resultado no demuestra que el efecto verdadero sea exactamente cero ni refuta la hipótesis general. La inferencia también está limitada por la posible interferencia entre unidades y por la ausencia de una identificación completa del predicado de accesibilidad. Este análisis de TGCV tiene un estimando propio y no debe confundirse con los resultados publicados por los autores del estudio original sobre acceso a infraestructura, inversión en vivienda o valor inmobiliario.
 
-En conjunto, estos resultados respaldan algunas operaciones y relaciones delimitadas. No demuestran una teoría universal de la dinámica de transformaciones, ni establecen que todo cambio de accesibilidad modifique una trayectoria, ni resuelven la relación entre accesibilidad y valor.
+**Un caso de identificación parcial en pavimentación urbana.** En el estudio experimental de pavimentación de calles residenciales en Acayucan, México, fue posible especificar funciones candidatas —como facilitar desplazamientos de vehículos, peatones o bicicletas— y reconstruir cambios longitudinales de conectividad. Sin embargo, los datos no permitieron identificar de forma independiente el predicado completo de accesibilidad ni reconstruir todo el espacio de transformaciones accesibles. El caso muestra por qué una intervención física y un cambio observado de conectividad no equivalen automáticamente a una modificación identificada de \(T_{acc}\).
+
+**Una ilustración sintética de no equivalencia.** En un entorno sintético controlado, una intervención modificó el espacio accesible mientras la trayectoria realizada especificada permanecía igual y el resultado de valor definido para ese ejercicio no cambiaba. Esta ilustración muestra que los niveles analíticos pueden variar de manera independiente bajo determinadas reglas. No es evidencia de comportamiento real ni demuestra que las modificaciones de accesibilidad carezcan de efectos sobre trayectorias o valor en general.
+
+En conjunto, estos resultados respaldan operaciones y relaciones delimitadas: la representación de cambios de identidad, la distinción entre accesibilidad y alcance potencial, y una relación causal acotada con trayectorias posteriores en un contexto real. También muestran límites de identificación y resultados no detectables. No demuestran una teoría universal de la dinámica de transformaciones ni resuelven la relación entre accesibilidad y valor.
 
 ## 8. Límites, supuestos y preguntas abiertas
 
 El análisis del espacio de transformaciones accesibles depende de decisiones que deben hacerse visibles.
 
-**Delimitación del sistema.** Si los límites del sistema son inadecuados, pueden omitirse condiciones externas decisivas o atribuirse al sistema capacidades que dependen de otros actores e infraestructuras.
+**Delimitación del sistema y del universo de candidatas.** Si los límites del sistema son inadecuados, pueden omitirse condiciones externas decisivas o atribuirse al sistema capacidades que dependen de otros actores e infraestructuras. El universo de transformaciones debe delimitarse de forma justificable para la pregunta estudiada. No siempre es posible enumerar todas las transformaciones concebibles; el análisis debe explicar qué incluye, qué deja fuera y por qué ese cierre operacional es suficiente para el propósito declarado.
 
-**Identidad de las transformaciones.** Para comparar espacios a lo largo del tiempo necesitamos saber cuándo una transformación persiste, cuándo cambia y cuándo debe considerarse una transformación distinta. Esta decisión no siempre es trivial.
+**Identidad y equivalencia de las transformaciones.** Para comparar espacios a lo largo del tiempo necesitamos saber cuándo una transformación persiste, cuándo cambia y cuándo debe considerarse distinta. Entre dominios, las etiquetas no pueden equipararse automáticamente: una estructura analítica común no implica identidad semántica de las transformaciones.
 
-**Criterio de accesibilidad.** El predicado debe ser independiente de la realización y de los resultados posteriores. Si se construye a partir de lo que ocurrió, el análisis corre el riesgo de ser circular.
+**Criterio de accesibilidad.** El predicado debe definirse con independencia de la realización y de los resultados posteriores. Si se construye a partir de lo que ocurrió, el análisis corre el riesgo de ser circular. También debe distinguirse la disponibilidad estructural de la adopción o utilización efectiva.
 
-**Cierre operacional.** No siempre es posible enumerar todas las transformaciones concebibles. El análisis debe declarar qué universo se ha considerado, por qué resulta adecuado y qué queda fuera.
+**Interferencia y dependencia externa.** Una transformación puede depender de otros sistemas, actores, redes o infraestructuras. Una intervención asignada a una unidad puede afectar a otras unidades o depender de condiciones compartidas. Si esas dependencias no se observan o no pueden descartarse, limitan la interpretación causal y deben declararse.
+
+**Medición y escalarización.** La cardinalidad es solo un descriptor. Puede ocultar sustituciones, cambios de identidad y diferencias semánticas. Reducir el espacio a una cifra puede ser útil para un estimando concreto, pero no equivale a medir toda su estructura. Los resultados basados en una operacionalización escalar deben interpretarse dentro de esa delimitación.
 
 **Heterogeneidad entre dominios.** Una estructura analítica común no implica que los mecanismos, las transformaciones o sus significados sean iguales en todos los sistemas. La generalidad debe probarse, no presuponerse.
 
-**Relación con las trayectorias.** Existe evidencia causal acotada de que cambios de accesibilidad pueden afectar trayectorias posteriores en un contexto estudiado. La generalidad de esa relación y las condiciones bajo las cuales se mantiene siguen siendo cuestiones abiertas.
+**Relación con las trayectorias.** Existe evidencia causal acotada de que una expansión estructural de accesibilidad afectó trayectorias posteriores en un contexto estudiado. Otros análisis aportan evidencia estructural o metodológica, pero no todos identifican una relación causal. La generalidad de la relación y las condiciones bajo las cuales se mantiene siguen siendo cuestiones abiertas.
 
 **Relación con el valor.** El valor requiere una evaluación adicional: qué resultados cuentan, para quién, con qué criterios y en qué horizonte temporal. Que una transformación sea accesible, o incluso que se realice, no determina por sí mismo el valor de sus consecuencias. La relación causal o predictiva entre cambios en el espacio accesible y cambios en el valor continúa abierta.
 
@@ -242,13 +270,15 @@ Estas limitaciones no hacen inútil el concepto. Definen las condiciones bajo la
 
 El espacio de transformaciones accesibles representa qué transformaciones puede realizar un sistema bajo un estado y unas condiciones especificadas. Se deriva de la configuración relevante del sistema y de un criterio explícito de accesibilidad; no es una causa independiente ni una lista ilimitada de posibilidades imaginables.
 
-Su composición puede cambiar mediante expansión, contracción, reconfiguración o sustitución. Por eso, observar únicamente el número de transformaciones puede ser insuficiente: también importa qué transformaciones aparecen, cuáles desaparecen y cuáles permanecen.
+Su composición puede cambiar mediante expansión, contracción, reconfiguración o sustitución. Por eso, observar únicamente el número de transformaciones puede ser insuficiente: también importa qué transformaciones aparecen, cuáles desaparecen y cuáles permanecen. La dinámica del espacio accesible tampoco debe confundirse con el cambio en el alcance potencial de estados sucesores ni con la ejecución observada.
+
+La evidencia disponible ofrece apoyo metodológico acotado para representar estos cambios y apoyo causal acotado para una relación con trayectorias posteriores en un contexto real. También contiene resultados no detectables y casos en los que la accesibilidad solo puede identificarse parcialmente. Estas diferencias importan: no toda evidencia responde a la misma pregunta ni permite el mismo tipo de conclusión.
 
 La distinción fundamental debe conservarse a lo largo de todo el análisis:
 
 **accesibilidad no es realización; realización no es trayectoria; trayectoria no es resultado; resultado no es automáticamente valor.**
 
-La evidencia disponible aporta apoyo acotado a la operacionalización del espacio y a determinadas relaciones con trayectorias posteriores. No autoriza a generalizar esos resultados a todos los sistemas ni a afirmar que la ampliación de posibilidades produce necesariamente valor.
+La relación entre cambios en el espacio accesible y creación de valor permanece abierta y requiere evidencia y evaluación adicionales.
 
 ### Preguntas para la reflexión
 
@@ -265,4 +295,8 @@ El espacio accesible depende de condiciones, recursos, relaciones y restriccione
 
 ## Referencias y lecturas adicionales
 
-Las referencias bibliográficas completas de los estudios empíricos descritos y de los trabajos conceptuales de apoyo se incorporarán tras verificar sus registros primarios y su pertinencia para una edición pública. Esta versión es un borrador de trabajo, no una versión aprobada para publicación.
+- Field, E., & Pande, R. (2018). *Evaluating the economic impacts of rural banking: experimental evidence from southern India*. 3ie Impact Evaluation Report 85. https://doi.org/10.23846/OW3IE85
+- McIntosh, C., Alegría, T., Ordóñez, G., & Zenteno, R. (2018). The Neighborhood Impacts of Local Infrastructure Investment: Evidence from Urban Mexico. *American Economic Journal: Applied Economics, 10*(3), 263–286. https://doi.org/10.1257/app.20160429
+- Gonzalez-Navarro, M., & Quintana-Domeque, C. (2016). Paving Streets for the Poor: Experimental Analysis of Infrastructure Effects. *The Review of Economics and Statistics, 98*(2), 254–267. https://doi.org/10.1162/REST_a_00553. Replication data: https://doi.org/10.7910/DVN/6TC8RO
+
+Los análisis computacionales propios de TGCV citados en este capítulo deberán contar con registros públicos de investigación, metodología y procedencia antes de la aprobación editorial final. Hasta entonces, sus resultados se mantienen como evidencia de proyecto trazable en la documentación de trabajo, no como publicaciones externas.
