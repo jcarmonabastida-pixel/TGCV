@@ -652,3 +652,24 @@ The displayed LR enclosure remains approximately [68.60849784569649, 68.60849785
 **Disposition:** retain (2^{-16}) as the leading numerical-width candidate for this M30/R20 W fixture. It is not yet a globally frozen tolerance: M30/R20 B, boundary/degenerate fixtures, other Tier-A cells and LR-inversion topology still require verification.
 
 **Next operation:** run the same M30/R20 histogram for component B at (2^{-16}), then exercise explicit boundary/degenerate fixtures under the same signed integer PRS and certified sign evaluator. Preserve typed unresolved/abstention states; do not infer general validity from W alone. No coverage simulation, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
+
+
+## 36. M30/R20 B and boundary robustness at (2^{-16}) — PASS
+
+**Workflow:** [45864483072](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45864483072) — SUCCESS  
+**Tested commit:** `306ff8db11adfbf8dbc28d982d1a4ada63d9ff6f`  
+**Fixtures:** original M30/R20 interior histogram and boundary-only histogram `{0:15, 20:15}), with exact signed integer PRS, certified fixed-point signs and root-isolation width (2^{-16}).
+
+All three bounded profiles completed:
+
+| Fixture | Component | Global certificate | LR / profile result | Dominant isolation |
+|---|---|---|---|---|
+| M30/R20 interior | B | `GLOBAL_INTERIOR_MAXIMUM_CERTIFIED` | `LR_STATISTIC_ENCLOSED` / `PROFILE_MAXIMUM_ENCLOSED` | degree 263; 34 processed; 1 exact root + 2 intervals; 0 unresolved |
+| M30/R20 boundary-only | W | `GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED` | `LR_STATISTIC_ENCLOSED` / `PROFILE_MAXIMUM_ENCLOSED` | degree 177; 484 processed; 1 exact root + 106 intervals; 0 unresolved |
+| M30/R20 boundary-only | B | `GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED` | `LR_STATISTIC_ENCLOSED` / `PROFILE_MAXIMUM_ENCLOSED` | degree 259; 1 processed; 1 exact root; 0 unresolved |
+
+Profile runtimes were 253.396 s (interior B), 240.772 s (boundary-only W), and 240.788 s (boundary-only B). Each returned 3 candidates and 1 interior stationary point. The boundary-only fixture was therefore not silently treated as an ordinary interior-MLE case: the global certificate explicitly returned the boundary-supremum state, and both component profiles still completed with exact LR enclosures.
+
+**Disposition:** the (2^{-16}) numerical-width candidate has now passed bounded M30/R20 W and B interior profiles and a boundary-only W/B fixture. This is computational/root-census robustness evidence only. It does not validate repeated-sampling coverage, LR cutoff calibration, confidence-set topology over the target axis, or any Tier-A cell.
+
+**Next operation:** exercise the same implementation/width on the M10/R5 F5 fixture for both W and B, including an endpoint-only boundary histogram. Then reconcile resource use and the numerical tolerance across the two F5 Tier-A cells before designing any repeated-sampling development calibration. No coverage simulation, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
