@@ -2,7 +2,7 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.8  
+**Version:** 0.9  
 **Date:** 2026-11-26  
 **Status:** SOURCE REVIEW COMPLETE — READY FOR BOUNDED BILINGUAL DRAFTING  
 **Branch:** `strategy/transformational-value-learning`  
@@ -194,23 +194,25 @@ This supports the bounded statement that a common transition-level analytical re
 
 Use the current evidence register as the controlling account of the finding; use the analytical study of transformation-space dynamics for definitions of the descriptive measures.
 
-### 4.2 A bounded real-world study — evidence concerning subsequent trajectories
+### 4.2 A bounded real-world causal study — accessibility and subsequent trajectories
 
-The current evidence register classifies this as a closed, identified contribution within the studied setting. The bounded result supports the proposition that a randomized intervention affecting structural accessibility influenced subsequent household and economic trajectories in that setting.
+The current Evidence-to-Claim Matrix v1.47 records **bounded empirical causal support** for the proposition that accessibility changes can causally affect subsequent trajectories in a studied setting. The material case concerns randomized early expansion of a rural financial-services network. The intervention changed the local service infrastructure and introduced structural access to formal financial services; the accessibility representation was kept separate from subsequent take-up and household/economic variables.
 
-The chapter may use this as a carefully bounded example of why accessibility and downstream trajectories are analytically connected. It must not imply that this establishes a universal effect or a causal `ΔT_acc → Value` relationship.
+The chapter may use this as the principal real-world example of a bounded accessibility-to-trajectory relationship. It must describe the result as specific to the studied setting and intervention. It does not establish universal generality, a universal transformation-space metric, or a causal/predictive relationship between accessibility change and Value.
 
-### 4.3 A case of incomplete identification — an important methodological boundary
+### 4.3 A bounded real-world boundary case — partial identification of transformation space
 
-The current evidence register classifies this as a bounded methodological reconstruction in which only part of the transformation-space dynamics could be identified.
+The current evidence register also includes a reconstruction of a street-paving intervention in Mexico. Candidate transformation functions can be specified from the intervention's ex-ante functional description, and longitudinal structural/connectivity changes can be reconstructed. However, the available evidence does not independently identify the full accessibility predicate, complete `T_acc` or `ΔT_acc`.
 
-It is useful precisely because candidate transformation functions and longitudinal structural/connectivity changes can be described, while a complete accessibility predicate and `T_acc` remain unidentified. This teaches why observed structural change, treatment, take-up, realised configuration or conventional outcomes cannot simply be relabelled as accessibility.
+This case is useful because it demonstrates that an observed infrastructure intervention and a change in physical connectivity do not, by themselves, establish which transformations were accessible. The chapter must not present it as positive evidence of a fully reconstructed transformation-space change or as a causal accessibility-to-trajectory result.
 
-This case should be used to illustrate a methodological boundary, not as positive evidence that the full change in the accessible transformation space has been reconstructed.
+### 4.4 Synthetic and cross-domain methodological evidence
 
-### 4.4 Other evidence
+The bounded cross-domain computational study contains 36 transition records across two structurally different domains. Its reconstruction and independent descriptor audit report no invalid records and no descriptor mismatches. It supports the bounded operationalisation of a common transition-level representation while preserving domain-specific transformation semantics; it does not establish universal domain independence, representational superiority or a claim-level upgrade.
 
-The wider research programme contains additional studies across different operational settings, including work on system interaction, infrastructure and later-stage experimental questions. These studies should be mentioned only when their substantive findings clarify a specific concept in this chapter and when their evidence status has been checked against the current authoritative records. Do not identify them by internal project, work-package or experiment codes. The pilot chapter should not become an exhaustive catalogue of research activity; more detailed evidence belongs in the Research section and the book's research and evidence guide.
+A separate paired synthetic study shows that a controlled increase in the specified accessible transformation space can coexist with an unchanged realised trajectory and no change in the specified Value outcome. This is a useful teaching illustration of non-equivalence, not real-world causal evidence or proof that accessibility changes generally leave trajectories or Value unchanged.
+
+The chapter should use only evidence that clarifies a specific concept. It must not become an exhaustive catalogue of research activity; more detailed evidence belongs in the Research section and the book's research and evidence guide.
 
 ---
 
@@ -263,6 +265,13 @@ This is a drafting outline, not a replacement for the approved detailed TOC. It 
 
 9. **Synthesis and reflection**  
    Reinforce the central distinctions and prepare the reader for Chapter 4.
+
+The nine headings above are the approved macro-structure. They must retain the substantive coverage of the detailed contents proposal without turning this chapter into a duplicate of adjacent chapters. In particular:
+- Section 2 should cover candidate transformations, admissibility, and the conditional/contextual character of accessibility, including capability, resources, knowledge, permissions and practical readiness only insofar as they determine whether a transformation is accessible.
+- Section 3 should explain the derived analytical representation and its boundaries; it should not attempt to provide the full treatment of conditions, relations and constraints reserved for Chapter 4.
+- Sections 4–6 should distinguish accessibility from execution, describe time-dependent reconfiguration and introduce descriptive comparison without turning the measures into a universal score.
+- Section 7 should integrate the bounded cross-domain operationalisation, the bounded real-world causal accessibility-to-trajectory evidence, the partial-identification boundary case and the synthetic non-equivalence illustration.
+- Section 8 should state the open generality and Value questions explicitly. The current matrix records C09 as bounded empirical causal support for accessibility changes affecting subsequent trajectories, while the relationship between accessibility change and Value remains open.
 
 ---
 
@@ -343,6 +352,7 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 - **v0.2 — 2026-11-26:** Relocated under `PoC/` and updated its related-specification path.
 - **v0.7 — 2026-11-26:** Allocated and checked the first glossary and diagram IDs; created the bilingual glossary draft, editable diagram source, asset record, content registry and terminology record. Recorded chapter-outline approval as the remaining pre-drafting gate.
 - **v0.8 — 2026-11-26:** Recorded the project owner's approval of the nine-section Chapter 3 drafting outline. Paired Spanish and English drafting is now the next production step.
+- **v0.9 — 2026-11-26:** Reconciled the evidence section and drafting guidance against the current Evidence-to-Claim Matrix v1.47. Distinguished bounded causal accessibility-to-trajectory support, partial identification, cross-domain operationalisation and synthetic non-equivalence; mapped detailed TOC themes into the approved nine-section macro-structure.
 
 ## 12. Pilot content package setup
 
@@ -358,4 +368,4 @@ The initial content identities and working assets have now been created on the L
 
 The identifiers were searched in the repository before allocation; no existing occurrence of `TV-TERM-001` or `TV-DIA-001` was found. The two glossary definitions are working drafts and are not approved terminology. The diagram is an analytical teaching aid, not a causal model: its labels explicitly distinguish accessibility, realisation, trajectory, outcome and Value.
 
-**Next gate:** prepare the paired Spanish and English chapter drafts against the approved nine-section outline in §6. The project owner approved this outline on 2026-11-26. Drafting must remain bounded by the source base, evidence qualifications and editorial controls recorded above. Approval of the outline does not approve the chapter wording, its claims, the glossary entry or the diagram for publication.
+**Next gate:** prepare the paired Spanish and English chapter drafts against the approved nine-section outline in §6, using the evidence reconciliation in §4 and the current Evidence-to-Claim Matrix v1.47 as the controlling claim-status source. The project owner approved the outline on 2026-11-26. Approval of the outline does not approve the chapter wording, its claims, the glossary entry or the diagram for publication.
