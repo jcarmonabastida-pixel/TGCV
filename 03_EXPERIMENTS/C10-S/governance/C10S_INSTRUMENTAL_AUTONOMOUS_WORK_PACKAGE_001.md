@@ -240,3 +240,16 @@ The F5 likelihood-diagnostic tests specifically passed independent finite-differ
 The F1 profile's dedicated workflow separately passed 51/51 tests on commit \`aa735f9faa173376b4443b4444ee1e57880b51a6\`. The later commits changed documentation/workflow metadata only; no F1/F5 statistical implementation source changed after the 220-test run.
 
 **Static gate disposition:** F1 profile deterministic implementation/tests PASS; F5 likelihood/optimizer/oracle deterministic implementation/tests PASS. These runs do not constitute repeated-sampling coverage calibration, resource preflight, or confirmatory evidence.
+
+
+## 16. F5 M2 algebraic route refinement
+
+Inspection of \`c10s_f5_rational_score_polynomials.py\` found reusable exact integer score numerators \`N_mu,N_kappa\`, Sturm/root-isolation machinery, rational likelihood enclosures, and \`beta_binomial_global_mle_certificate\`, which certifies the unrestricted likelihood winner or returns a typed unresolved/boundary state.
+
+The preferred constrained W/B profile route is now to derive an exact univariate score polynomial after substituting:
+- \`kappa_W(mu;w) = w / (mu*(1-mu)-w)\`;
+- \`kappa_B(mu;b) = (mu*(1-mu)-b) / b\`.
+
+The feasible mean interval is \`[(1-sqrt(1-4v))/2, (1+sqrt(1-4v))/2]\` for target \`v\in(0,1/4)\). Both mean branches are represented in one interval. The concentration-limit endpoints are binomial for W and two-point mixture for B. Complete root isolation plus rational likelihood enclosures could enumerate and order every constrained stationary candidate without a generic local optimizer.
+
+This is a more promising and potentially simpler exact route than adapting the existing finite-grid MCSE profile. The derivation and reuse proposal are in design-review §§14–15. It remains a design candidate; no M2 code, numerical profile or simulation has been run.
