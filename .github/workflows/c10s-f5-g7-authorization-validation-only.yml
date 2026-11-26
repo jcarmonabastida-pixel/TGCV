@@ -15,14 +15,14 @@ jobs:
     timeout-minutes: 15
     env:
       AUTH_BRANCH: research/c10s-f5-g7-auth-C10S-F5-G7-20261126-001
-      AUTH_SHA: d11665eb9f6f7e8c19520aa937990a698250b935
+      AUTH_SHA: 05ae4830f7f01f2a8850382b48028c07d8bf4bb9
       AUTH_PATH: 00_GOVERNANCE/authorizations/C10S_F5_G7_TIERA_CALIBRATION_AUTHORIZATION.json
       G7_WORKFLOW_PATH: .github/workflows/c10-s-f5-g7-tiera-calibration-v3.yml
     steps:
       - name: Checkout immutable authorization commit and full Git history
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
-          ref: d11665eb9f6f7e8c19520aa937990a698250b935
+          ref: 05ae4830f7f01f2a8850382b48028c07d8bf4bb9
           fetch-depth: 0
           persist-credentials: false
       - name: Set up pinned Python
@@ -80,7 +80,7 @@ jobs:
       - name: Run fail-closed authorization validator only
         shell: bash
         env:
-          WORKFLOW_COMMIT: d11665eb9f6f7e8c19520aa937990a698250b935
+          WORKFLOW_COMMIT: 05ae4830f7f01f2a8850382b48028c07d8bf4bb9
           WORKFLOW_BRANCH: research/c10s-f5-g7-auth-C10S-F5-G7-20261126-001
         run: |
           set -euo pipefail
