@@ -5,7 +5,7 @@ title: "El espacio de transformaciones accesibles"
 language: es
 content_type: chapter
 status: draft
-version: 0.14
+version: 0.15
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
