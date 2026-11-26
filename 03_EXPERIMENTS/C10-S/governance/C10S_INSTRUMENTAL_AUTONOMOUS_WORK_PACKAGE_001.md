@@ -714,3 +714,25 @@ The displayed LR enclosure remains approximately [68.60849784569649, 68.60849785
 **Disposition:** (2^{-8}) is now the fastest tested exact width for this M30/R20 W fixture, with the same displayed likelihood/LR enclosure and complete root census. It remains a fixture-specific numerical candidate, not a frozen global tolerance.
 
 **Next operation:** test (2^{-8}) on M30/R20 B and the boundary-only W/B fixture. If root census, LR enclosure and typed boundary status remain complete, compare the computational profile across all four F5 Tier-A cells before selecting the prospective width. No coverage simulation, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
+
+
+## 38. Wider exact isolation width (2^-8) on M30/R20 W — PASS; cross-cell validation underway
+
+**Workflow:** [45866970919](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45866970919) — SUCCESS  
+**Tested commit:** `2a03a39a870732c5ecd66cccf996f209205b1586`  
+**Fixture:** same M30/R20 W interior histogram, target (1/20), signed primitive-integer PRS and certified fixed-point sign evaluator.
+
+At exact isolating width (2^-8):
+- global MLE certificate: `GLOBAL_INTERIOR_MAXIMUM_CERTIFIED`;
+- profile: `LR_STATISTIC_ENCLOSED`, `PROFILE_MAXIMUM_ENCLOSED`;
+- 3 candidates, 1 interior stationary point;
+- total profile runtime: **161.478 s**, versus 208.962 s at (2^-16), approximately 22.7% faster;
+- dominant isolation: `ISOLATION_COMPLETE`, 314 processed intervals, 1 exact root, 122 isolating intervals, 0 unresolved;
+- the two nontrivial endpoint calls each processed 17 intervals and completed; the exact endpoint-factor call found 2 exact roots;
+- dominant isolation call: 76.903 s; signed integer Sturm sequence construction 47.148 s total; certified sign evaluation 29.355 s over 195 variation calls / 34,907 polynomial evaluations; 89 exact sign fallbacks.
+
+The displayed LR-statistic enclosure remains [68.60849784569649, 68.60849785926779], and the profile-likelihood enclosure remains approximately 2.322290881315881e-54 at both displayed endpoints, matching the (2^-16) result to the displayed precision. Exact rational bounds were retained in both runs. This is a fixed-fixture numerical comparison, not a coverage or cutoff-calibration result.
+
+**Disposition:** (2^-8) is now the leading runtime candidate for M30/R20 W. It reduces interval processing and runtime while preserving the complete root census and a narrow exact LR enclosure in this fixture. It is not yet frozen across components, boundary cases or the full target domain.
+
+**Next operation:** verify (2^-8) on M30/R20 B interior and W/B boundary-only fixtures, plus M10/R5 W/B interior and endpoint-only boundary fixtures. The combined bounded cross-cell workflow is [45867663492](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45867663492). Require every global certificate, LR/profile enclosure and root-isolation call to complete; no silent SKIPPED or unresolved state. If these pass, assess a small development-only repeated-sampling comparison against known DGP truth, using fresh development seeds and no exposed/confirmatory holdout data. No coverage simulation under frozen Tier-A criteria, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
