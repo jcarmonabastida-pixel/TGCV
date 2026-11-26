@@ -2,9 +2,9 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.17  
+**Version:** 0.18  
 **Date:** 2026-11-26  
-**Status:** BILINGUAL CHAPTER AND SUPPORTING ASSETS UPDATED; RUST TEMPORAL EVIDENCE BLOCKED FOR PUBLIC REUSE; REVIEW PENDING  
+**Status:** BILINGUAL CHAPTER INCLUDES CLOSED RUST TEMPORAL EVIDENCE; REVIEW PENDING  
 **Branch:** `strategy/transformational-value-learning`  
 **Related specification:** `PoC/TRANSFORMATIONAL_VALUE_LEARNING_PUBLISHING_POC_v0.1.md`
 
@@ -645,3 +645,47 @@ The note also records the exact reconstruction checks supporting the secondary c
 - the independent mathematical audit checked all 36 comparative transition records and found zero descriptor mismatches.
 
 These are reconstruction and methodological-integrity findings. They do not establish representational superiority, universal validity, causality or value linkage. Both language versions remain `draft`.
+
+
+---
+
+## 19. Reinstatement of the closed Rust temporal evidence — v0.18
+
+### 19.1 Separation of evidence objects
+
+The earlier editorial disposition in §§14.2 and 15.3 conflated two distinct objects and is superseded for the purpose of Chapter 3:
+
+1. **The bounded temporal software-ecosystem analysis documented in the scientific integration closure.** This result is scientifically closed as bounded structural empirical evidence. Its primary execution and mandatory replay agree at structured-result level. The exact local dataset archive was matched to the published Figshare file by filename, size and MD5, and the published dataset item declares CC0.
+2. **The separate Ω-primary (U_t)-derived operationalisation and its further scientific reuse.** This is the object subject to the prospective admission process and independent technical and security review. Its governance status does not retroactively invalidate, suspend or prohibit documentation of the already closed temporal analysis in item 1.
+
+The admission review for item 2 must not be used as an editorial exclusion rule for item 1. Conversely, documenting item 1 does not constitute admission or authorisation of item 2, its derived artefacts, or any further processing.
+
+### 19.2 Chapter revisions
+
+Both native-language Chapter 3 drafts have been updated to v0.6. Section 7 now includes the bounded Rust temporal findings:
+
+- 516,061 adjacent temporal package-version pairs;
+- 438,203 non-persistent pairs (approximately 84.91%);
+- 77,858 persistence, 8,295 expansion, 3,786 contraction and 426,122 reconfiguration cases;
+- 159,921 pairs with accessible-space change but no one-step potential-reach change;
+- 278,282 pairs with changes in both;
+- 266,201 pairs with equal potential-reach cardinality but different membership;
+- identical primary and mandatory replay structured results.
+
+The prose explicitly limits the result to the frozen representation and one-step horizon. It does not claim runtime reachability, longer-horizon trajectory sufficiency, causality, prediction, outcomes, Value or universal validity.
+
+### 19.3 Bilingual research note and source registration
+
+A bilingual reader-facing research note has been created as `TV-LR-002`:
+- `learning-resources/research-notes/es/analisis-temporal-de-un-ecosistema-de-paquetes-de-software.md`
+- `learning-resources/research-notes/en/temporal-analysis-of-a-software-package-ecosystem.md`
+
+The note documents the question, unit of analysis, operational scope, all principal counts, structured-result replay concordance, source-file identity check and scientific limits. It does not expose internal workstream, run, gate, branch or repository-path identifiers.
+
+The published Figshare dataset item has been added to the central bibliography as `TV-REF-006`, and the bilingual note has been added to the content registry. Both note versions and both chapter versions remain `draft`.
+
+### 19.4 Current editorial disposition
+
+The Rust temporal evidence is part of the Chapter 3 evidence composition and is not blocked by the separate Ω-primary admission review. The earlier instruction to exclude this analysis from reader-facing Chapter 3 content is superseded.
+
+Remaining work is scientific and editorial review of the chapter and note, verification of all references, and bilingual equivalence review. No change has been made to the RMA, Evidence-to-Claim Matrix, TGCV Core, scientific claim status, or the separate Ω-primary admission decision.
