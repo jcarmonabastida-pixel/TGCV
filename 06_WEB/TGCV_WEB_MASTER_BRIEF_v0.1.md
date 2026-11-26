@@ -1,7 +1,7 @@
 # TGCV — Web Master Brief
 **Identificador:** TGCV-WEB-MASTER-001  
-**Versión:** 1.8  
-**Fecha:** 2026-11-24  
+**Versión:** 1.9  
+**Fecha:** 2026-11-26  
 **Estado:** STRATEGIC WEB MASTER — WORKING DOCUMENT  
 **Rama:** `strategy/tgcv-web-master`  
 **Base de referencia:** GitHub `main`, estado consultado el 23-11-2026  
@@ -1275,6 +1275,7 @@ For all first-release website Experience and Copy documents, approved proper nam
 No naming change is authorised by editorial preference alone. When in doubt, retain the approved proper name and add a separate explanatory description.
 
 
-### v1.9 — 2026-11-25
+### v1.9 — 2026-11-26
 - Establishes a mandatory bilingual naming rule: approved proper names and navigation labels are not translated or renamed without the user's explicit authorisation.
 - Distinguishes translatable descriptive copy from protected names and requires a Spanish/English naming check plus GitHub verification for editorial changes.
+- Header version/date aligned with this persisted revision.
