@@ -763,3 +763,303 @@ def f5_component_profile_lr_statistic(
         ),
         "profile": profile,
     }
+
+
+def _classify_profile_lr_result(
+    result: Mapping[str, object], cutoff: Fraction,
+) -> str:
+    status = result.get("status")
+    if status == "LR_STATISTIC_INFINITE":
+        return "OUT"
+    if status != "LR_STATISTIC_ENCLOSED":
+        return "AMBIGUOUS"
+    bounds = result.get("lr_statistic_bounds")
+    if not isinstance(bounds, (tuple, list)) or len(bounds) != 2:
+        return "AMBIGUOUS"
+    lower, upper = bounds
+    if upper <= cutoff:
+        return "IN"
+    if lower > cutoff:
+        return "OUT"
+    return "AMBIGUOUS"
+
+
+def _scan_profile_lr_grid(
+    nodes: Sequence[Fraction], *,
+    cutoff: Fraction,
+    evaluate: Callable[[Fraction], Mapping[str, object]],
+    max_bisection_steps: int = 6,
+) -> dict[str, object]:
+    """Retain every grid-detected LR component and bracket each crossing.
+
+    This is explicitly a numerical topology scan, not a proof that a finer
+    component was not missed between two rejected grid nodes.
+    """
+    ordered = tuple(sorted(set(nodes)))
+    if len(ordered) < 3 or ordered[0] != 0 or ordered[-1] != Fraction(1, 4):
+        raise F5ConstrainedScoreError("LR_GRID_MUST_COVER_CLOSED_FUNCTIONAL_DOMAIN")
+    if any(not 0 <= value <= Fraction(1, 4) for value in ordered):
+        raise F5ConstrainedScoreError("LR_GRID_TARGET_OUTSIDE_CLOSED_DOMAIN")
+    if type(max_bisection_steps) is not int or max_bisection_steps < 0:
+        raise F5ConstrainedScoreError("MAX_BISECTION_STEPS_MUST_BE_NONNEGATIVE_INTEGER")
+
+    cache: dict[Fraction, tuple[str, Mapping[str, object]]] = {}
+
+    def classify(value: Fraction) -> str:
+        if value not in cache:
+            result = evaluate(value)
+            cache[value] = (_classify_profile_lr_result(result, cutoff), result)
+        return cache[value][0]
+
+    for value in ordered:
+        if classify(value) == "AMBIGUOUS":
+            return {
+                "status": "UNRESOLVED_GRID_CUTOFF_CLASSIFICATION",
+                "grid": ordered,
+                "evaluated": tuple((v, cache[v][0]) for v in ordered if v in cache),
+                "target_evaluations": len(cache),
+                "topology_certified": False,
+            }
+
+    def refine_lower(outside: Fraction, inside: Fraction):
+        for _ in range(max_bisection_steps):
+            midpoint = (outside + inside) / 2
+            state = classify(midpoint)
+            if state == "IN":
+                inside = midpoint
+            elif state == "OUT":
+                outside = midpoint
+            else:
+                return None
+        return outside, inside
+
+    def refine_upper(inside: Fraction, outside: Fraction):
+        for _ in range(max_bisection_steps):
+            midpoint = (inside + outside) / 2
+            state = classify(midpoint)
+            if state == "IN":
+                inside = midpoint
+            elif state == "OUT":
+                outside = midpoint
+            else:
+                return None
+        return inside, outside
+
+    accepted = [classify(value) == "IN" for value in ordered]
+    components = []
+    brackets = []
+    index = 0
+    while index < len(ordered):
+        if not accepted[index]:
+            index += 1
+            continue
+        start = index
+        while index + 1 < len(ordered) and accepted[index + 1]:
+            index += 1
+        end = index
+
+        if start == 0:
+            lower = Fraction(0)
+            lower_bracket = (Fraction(0), Fraction(0))
+        else:
+            refined = refine_lower(ordered[start - 1], ordered[start])
+            if refined is None:
+                return {
+                    "status": "UNRESOLVED_LOWER_CROSSING",
+                    "grid": ordered, "target_evaluations": len(cache),
+                    "topology_certified": False,
+                }
+            lower, inside_lower = refined
+            lower_bracket = (lower, inside_lower)
+
+        if end == len(ordered) - 1:
+            upper = Fraction(1, 4)
+            upper_bracket = (Fraction(1, 4), Fraction(1, 4))
+        else:
+            refined = refine_upper(ordered[end], ordered[end + 1])
+            if refined is None:
+                return {
+                    "status": "UNRESOLVED_UPPER_CROSSING",
+                    "grid": ordered, "target_evaluations": len(cache),
+                    "topology_certified": False,
+                }
+            inside_upper, upper = refined
+            upper_bracket = (inside_upper, upper)
+
+        components.append((lower, upper))
+        brackets.append({
+            "lower_outside_inside": lower_bracket,
+            "upper_inside_outside": upper_bracket,
+        })
+        index += 1
+
+    if not components:
+        status = "EMPTY_LR_SET_ON_NUMERICAL_GRID"
+    elif len(components) == 1:
+        status = "GRID_DETECTED_SINGLE_COMPONENT_BRACKETED"
+    else:
+        status = "GRID_DETECTED_DISCONNECTED_COMPONENTS_BRACKETED"
+    return {
+        "status": status,
+        "confidence_components": tuple(components),
+        "crossing_brackets": tuple(brackets),
+        "grid": ordered,
+        "grid_states": tuple((value, cache[value][0]) for value in ordered),
+        "target_evaluations": len(cache),
+        "max_bisection_steps": max_bisection_steps,
+        "topology_certified": False,
+        "topology_caveat": (
+            "A component narrower than the scan spacing can be missed; "
+            "nested-grid convergence is a separate required diagnostic."
+        ),
+    }
+
+
+def _global_mle_functional_centers(
+    global_certificate: Mapping[str, object], component: str,
+) -> tuple[Fraction, ...] | None:
+    status = global_certificate.get("status")
+    if status == "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED":
+        candidates = [global_certificate.get("winner")]
+    elif status in {
+        "GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED",
+        "GLOBAL_CO_MAXIMIZERS_CERTIFIED",
+    }:
+        winner = global_certificate.get("winner")
+        winners = global_certificate.get("winners")
+        candidates = (
+            [winner] if isinstance(winner, Mapping)
+            else list(winners) if isinstance(winners, (tuple, list))
+            else []
+        )
+    else:
+        return None
+
+    census = global_certificate.get("census")
+    boundaries = (
+        census.get("boundary_likelihoods", {})
+        if isinstance(census, Mapping) else {}
+    )
+    centers = []
+    for candidate in candidates:
+        if not isinstance(candidate, Mapping):
+            return None
+        if candidate.get("kind") == "INTERIOR_STATIONARY_ROOT":
+            box = candidate.get("parameter_box")
+            if not isinstance(box, (tuple, list)) or len(box) != 2:
+                return None
+            mu_bounds, t_bounds = box
+            q_min, q_max = _q_bounds(tuple(mu_bounds))
+            t_lo, t_hi = t_bounds
+            if component == "W":
+                lo, hi = q_min * t_lo, q_max * t_hi
+            else:
+                lo, hi = q_min * (1 - t_hi), q_max * (1 - t_lo)
+            centers.append((lo + hi) / 2)
+            continue
+
+        boundary = candidate.get("boundary")
+        if boundary in {"mu_zero", "mu_one"}:
+            centers.append(Fraction(0))
+            continue
+        if boundary in {"kappa_zero", "kappa_infinity"}:
+            record = boundaries.get(boundary)
+            if not isinstance(record, Mapping):
+                return None
+            mean = record.get("profile_mean")
+            if not isinstance(mean, Fraction):
+                return None
+            q = mean * (1 - mean)
+            if component == "W":
+                centers.append(q if boundary == "kappa_infinity" else Fraction(0))
+            else:
+                centers.append(q if boundary == "kappa_zero" else Fraction(0))
+            continue
+        return None
+
+    if not centers:
+        return None
+    return tuple(sorted(set(
+        min(Fraction(1, 4), max(Fraction(0), value))
+        for value in centers
+    )))
+
+
+def f5_component_profile_confidence_set(
+    r: int, count_histogram: Mapping[int, int], *,
+    component: str, likelihood_ratio_cutoff,
+    global_certificate: Mapping[str, object] | None = None,
+    scan_grid_points: int = 17,
+    max_bisection_steps: int = 6,
+    root_isolation_width: Fraction = Fraction(1, 2**64),
+    max_depth: int = 180,
+    max_intervals: int = 10000,
+    max_fraction_bits: int = 200000,
+    log_series_terms: int = 100,
+) -> dict[str, object]:
+    """Numerically invert the exact fixed-target LR enclosure on [0,1/4].
+
+    All detected connected components are retained and crossings are
+    conservatively bracketed. The scan is not a proof of global topology;
+    nested-grid convergence is mandatory before method selection.
+    """
+    if component not in {"W", "B"}:
+        raise F5ConstrainedScoreError("COMPONENT_MUST_BE_W_OR_B")
+    if type(scan_grid_points) is not int or scan_grid_points < 5:
+        raise F5ConstrainedScoreError("SCAN_GRID_POINTS_MUST_BE_INTEGER_GE_5")
+    if (
+        isinstance(likelihood_ratio_cutoff, bool)
+        or not isinstance(likelihood_ratio_cutoff, (int, float, Fraction))
+    ):
+        raise F5ConstrainedScoreError("LR_CUTOFF_MUST_BE_FINITE_AND_POSITIVE")
+    cutoff = (
+        likelihood_ratio_cutoff
+        if isinstance(likelihood_ratio_cutoff, Fraction)
+        else Fraction.from_float(float(likelihood_ratio_cutoff))
+        if isinstance(likelihood_ratio_cutoff, float)
+        else Fraction(likelihood_ratio_cutoff)
+    )
+    if cutoff <= 0:
+        raise F5ConstrainedScoreError("LR_CUTOFF_MUST_BE_FINITE_AND_POSITIVE")
+
+    if global_certificate is None:
+        global_certificate = beta_binomial_global_mle_certificate(
+            r, count_histogram,
+        )
+    centers = _global_mle_functional_centers(global_certificate, component)
+    if centers is None:
+        return {
+            "status": "GLOBAL_MLE_FUNCTIONAL_CENTER_UNRESOLVED",
+            "global_mle_status": global_certificate.get("status"),
+            "topology_certified": False,
+        }
+    uniform = tuple(
+        Fraction(index, 4 * (scan_grid_points - 1))
+        for index in range(scan_grid_points)
+    )
+    nodes = tuple(sorted(set(uniform + centers)))
+
+    def evaluate(target_value: Fraction):
+        return f5_component_profile_lr_statistic(
+            r, count_histogram, component=component, target=target_value,
+            global_certificate=global_certificate,
+            root_isolation_width=root_isolation_width,
+            max_depth=max_depth, max_intervals=max_intervals,
+            max_fraction_bits=max_fraction_bits,
+            log_series_terms=log_series_terms,
+        )
+
+    scan = _scan_profile_lr_grid(
+        nodes, cutoff=cutoff, evaluate=evaluate,
+        max_bisection_steps=max_bisection_steps,
+    )
+    return {
+        **scan,
+        "component": component,
+        "likelihood_ratio_cutoff": cutoff,
+        "global_mle_status": global_certificate.get("status"),
+        "global_mle_functional_centers": centers,
+        "scan_grid_points": scan_grid_points,
+        "root_isolation_width": root_isolation_width,
+        "method_status": "NUMERICAL_PROFILE_LR_INVERSION_CANDIDATE",
+    }
