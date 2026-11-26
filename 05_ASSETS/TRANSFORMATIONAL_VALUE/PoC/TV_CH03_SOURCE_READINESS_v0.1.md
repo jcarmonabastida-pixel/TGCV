@@ -2,7 +2,7 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.5  
+**Version:** 0.6  
 **Date:** 2026-11-26  
 **Status:** SOURCE REVIEW COMPLETE — READY FOR BOUNDED BILINGUAL DRAFTING  
 **Branch:** `strategy/transformational-value-learning`  
@@ -58,20 +58,20 @@ Sources below were retrieved from GitHub `main` on 2026-11-26. GitHub remains th
 - **Use in chapter:** formal separation of accessibility, realisation, trajectory, outcome and value; independently specified accessibility mapping; domain-appropriate comparison; formal boundaries and falsification conditions.
 - **Important boundaries:** this is a candidate formal specification, not an experiment or claim of novelty. It states that `T_acc` must not be defined from `T_real`, future outcomes or Value; no universal metric is assumed.
 
-### S4 — Transformation-Space Dynamics Analysis (TSDA), Formal Analytical Artefact 001
+### S4 — Analytical study of transformation-space dynamics, formal analysis
 
 - **File:** `03_EXPERIMENTS/TR-131/execution/TR131_TRANSFORMATION_SPACE_DYNAMICS_ANALYSIS_001.md`
 - **URL:** https://github.com/jcarmonabastida-pixel/TGCV/blob/main/03_EXPERIMENTS/TR-131/execution/TR131_TRANSFORMATION_SPACE_DYNAMICS_ANALYSIS_001.md
 - **Retrieved revision:** `6e44453788dcffd0d5fca9166864f8c0779d40f7`
-- **Use in chapter:** transition-level analytical unit, identity-set change, descriptors, reconfiguration classes and bounded V007 evidence.
-- **Important boundaries:** TSDA is descriptive, not a causal theory, value model, intelligence construct or universal capability score. Its descriptors are not quality rankings.
+- **Use in chapter:** transition-level analytical unit, changes in transformation identity, descriptive measures, reconfiguration classes and the bounded cross-domain evidence.
+- **Important boundaries:** the analysis is descriptive, not a causal theory, value model, intelligence construct or universal capability score. Its measures are not quality rankings.
 
-### S5 — TR-131 Transformation-Space Dynamics → Transformational Intelligence continuity record
+### S5 — Continuity record linking transformation-space dynamics and Transformational Intelligence
 
 - **File:** `03_EXPERIMENTS/TR-131/execution/TR131_TRANSFORMATION_SPACE_DYNAMICS_TO_TRANSFORMATIONAL_INTELLIGENCE_CONTINUITY_001.md`
 - **URL:** https://github.com/jcarmonabastida-pixel/TGCV/blob/main/03_EXPERIMENTS/TR-131/execution/TR131_TRANSFORMATION_SPACE_DYNAMICS_TO_TRANSFORMATIONAL_INTELLIGENCE_CONTINUITY_001.md
 - **Retrieved revision:** `2e8d5d170542933de5407009c1674bd8a765aa86`
-- **Use in chapter:** context for the corrected V007 representation and the analytical shift toward studying transformation-space dynamics.
+- **Use in chapter:** context for the corrected representation of the cross-domain study and the analytical shift toward studying transformation-space dynamics.
 - **Important boundaries:** the record explicitly preserves an open hypothesis for Transformational Intelligence and separates it from Value. Do not turn the TI hypothesis into a conclusion of Chapter 3.
 
 ### S6 — TGCV Vision Paper v0.2
@@ -87,7 +87,7 @@ Sources below were retrieved from GitHub `main` on 2026-11-26. GitHub remains th
 - **File:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`
 - **URL:** https://github.com/jcarmonabastida-pixel/TGCV/blob/main/00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md
 - **Retrieved revision:** `5fccfc99af7172b6a2777c93bdbeddd8d4997de8`
-- **Use in chapter:** current claim-level and material-evidence boundaries; especially TR-131/V007, MT5, KGFS/C09 and the distinction between evidence propagation and claim upgrade.
+- **Use in chapter:** current claim-level and material-evidence boundaries; especially the bounded cross-domain operationalisation, the real-world trajectory study, the incomplete-identification case and the distinction between evidence propagation and claim upgrade.
 - **Important boundaries:** the matrix is cumulative. Evidence propagation is not a claim upgrade. The matrix's current scientific position and claim table take precedence over older summaries in earlier source artefacts when describing current claim status.
 
 ### S8 — Cross-Domain End-to-End Accessibility → Execution → Outcome / Value Map 001
@@ -357,3 +357,6 @@ Where a source title or repository path contains an internal identifier, retain 
 
 
 - **v0.5 — 2026-11-26:** Removed further internal dataset and workstream labels from the explanatory evidence discussion. Other research is now described by substantive topic and may be included only where its findings and evidence status are relevant.
+
+
+- **v0.6 — 2026-11-26:** Replaced internal study and analytical-artefact acronyms in source-inventory descriptions with meaningful titles and descriptions. Internal codes remain only where embedded in repository paths, filenames or source URLs required for auditability.
