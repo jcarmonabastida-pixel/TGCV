@@ -5,7 +5,7 @@ title: "The Space of Accessible Transformations"
 language: en
 content_type: chapter
 status: draft
-version: 0.6
+version: 0.7
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -275,7 +275,7 @@ The accessible transformation space represents which transformations a system ca
 
 Its composition may change through expansion, contraction, reconfiguration or substitution. For this reason, observing only the number of transformations may be insufficient: it also matters which transformations appear, which disappear and which persist. Nor should accessible-space dynamics be confused with changes in the potential reach of successor states or with observed execution.
 
-The available evidence provides bounded methodological support for representing these changes and bounded causal support for a relationship with subsequent trajectories in one real-world setting. It also includes non-detectable results and cases where accessibility can only be partially identified. These differences matter: not all evidence answers the same question or permits the same conclusion.
+The available evidence provides bounded methodological support for representing these changes and bounded causal support for a relationship with subsequent trajectories in one real-world setting. The temporal software-package analysis also shows that changes in accessible space and one-step potential reach are empirically distinguishable under the operationalisation examined. The evidence also includes non-detectable results and cases where accessibility can only be partially identified. These differences matter: not all evidence answers the same question or permits the same conclusion.
 
 The fundamental distinction must be maintained throughout the analysis:
 
@@ -301,5 +301,6 @@ The accessible space depends on conditions, resources, relationships and constra
 - Field, E., & Pande, R. *Evaluating the economic impacts of rural banking: experimental evidence from southern India*. 3ie Impact Evaluation Report 85. https://doi.org/10.23846/OW3IE85
 - McIntosh, C., Alegría, T., Ordóñez, G., & Zenteno, R. (2018). The Neighborhood Impacts of Local Infrastructure Investment: Evidence from Urban Mexico. *American Economic Journal: Applied Economics, 10*(3), 263–286. https://doi.org/10.1257/app.20160429
 - Gonzalez-Navarro, M., & Quintana-Domeque, C. (2016). Paving Streets for the Poor: Experimental Analysis of Infrastructure Effects. *The Review of Economics and Statistics, 98*(2), 254–267. https://doi.org/10.1162/REST_a_00553. Replication data: https://doi.org/10.7910/DVN/6TC8RO
+- Figshare. *Full dataset* [historical Rust software-package ecosystem dataset]. https://springernature.figshare.com/articles/dataset/Full_dataset/21345990. Declared licence: CC0.
 
-The TGCV computational analyses cited in this chapter must have public research, methodology and provenance records before final editorial approval. Until then, their results remain traceable project evidence in the working documentation, not external publications.
+The TGCV computational analyses cited in this chapter are documented through companion research notes describing their sources, methods, results and limits. These notes are project research documentation and should not be confused with independent external publications.
