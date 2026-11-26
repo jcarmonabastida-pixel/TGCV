@@ -1,0 +1,10 @@
+{
+  "actor": "jcarmonabastida-pixel",
+  "approved_code_commit": "3c1355d70d88c39b3085c86d10520e74cb45f64c",
+  "authorization_branch": "research/c10s-f5-g7-auth-C10S-F5-G7-3c1355d70d88",
+  "authorization_commit": "0743f0973292bdd26bd37c1da6a8d76dd9fd02c2",
+  "authorization_id": "C10S-F5-G7-3c1355d70d88",
+  "consumed_by": "GITHUB_ACTIONS_AUTHORIZATION_GATE",
+  "run_id": 45736995385,
+  "schema": "TGCV-C10S-G7-AUTHORIZATION-CONSUMED-001"
+}
