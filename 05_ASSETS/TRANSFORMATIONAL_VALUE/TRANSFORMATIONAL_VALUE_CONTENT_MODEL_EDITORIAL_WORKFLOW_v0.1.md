@@ -1,7 +1,7 @@
 # TRANSFORMATIONAL VALUE — Content Model & Editorial Workflow
 
 **Identifier:** TGCV-TV-CONTENT-MODEL-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-26  
 **Status:** CONTENT ARCHITECTURE PROPOSAL — FOR REVIEW  
 **Governing document:** `TRANSFORMATIONAL_VALUE_LEARNING_MASTER_ARCH_v0.1.md`  
@@ -592,3 +592,51 @@ Spanish and English book content must be stored in their respective language tre
 ## 21. Version history
 
 - **v0.2 — 2026-11-26:** Formalised the repository directory layout, reserved the root for three governing documents, and assigned PoC artefacts to `PoC/`.
+
+
+## 22. Public-facing terminology and internal research identifiers
+
+The book is written for readers who are not expected to know TGCV's internal research organisation, experiment labels, repository structure or artefact naming conventions. Internal identifiers must therefore never be used as unexplained public-facing terminology.
+
+### 22.1 Reader-facing rule
+
+- Do not introduce internal project, experiment, work-package, dataset, run, gate, evidence-record or document codes in chapter titles, headings, explanatory prose, diagrams, captions, callouts, summaries or learning exercises.
+- Replace them with a meaningful name or a concise description of the underlying work, method, result or evidence.
+- For example, do not write **“TR-131/V007 demonstrates…”**. Prefer **“A cross-domain study of transformation-space dynamics, conducted in two computational domains, illustrates…”** and then explain precisely what was examined and what the result supports.
+- Do not expect readers to understand labels such as experiment numbers, internal evidence IDs, commit hashes, branch names or repository paths.
+- Do not invent a polished-sounding public name for an internal artefact unless that name has been deliberately approved. A precise descriptive phrase is preferable.
+
+### 22.2 Where internal identifiers may remain
+
+Internal identifiers may be retained in:
+- source maps and editorial working documents;
+- private or technical traceability records;
+- repository paths and filenames;
+- bibliographic/source metadata where needed to locate the authoritative artefact;
+- footnotes or technical appendices only when the identifier is genuinely necessary for reproducibility, and then with a plain-language explanation.
+
+A source identifier in an internal reference record does not need to appear in the reader-facing citation. Public references should use the work's meaningful title, author or responsible programme, date, and an accessible stable location where publication is appropriate.
+
+### 22.3 Acronyms and abbreviations
+
+An acronym is acceptable in reader-facing content only when at least one of these conditions applies:
+1. it is widely established in the relevant discipline and useful to the reader;
+2. it is an approved public name or term used consistently by the book;
+3. it is introduced at first use with its full form, a clear definition and a reason to reuse it.
+
+Avoid creating an acronym for a phrase used only a few times. Do not expose internal shorthand merely because it appears in source artefacts. Distinguish public concepts and recognised technical notation (for example, (T_{acc}), once explained) from repository-generated codes.
+
+### 22.4 Editorial review check
+
+For every chapter and learning resource, reviewers must ask:
+- Would a reader outside the TGCV programme understand every acronym and named label?
+- Does each code carry genuine explanatory value, or is it merely an internal lookup key?
+- Can the code be replaced by a meaningful description without losing scientific precision?
+- If an internal identifier is essential for traceability, is it kept in the source metadata rather than the main narrative?
+- Are public names and technical terms used consistently in both languages?
+
+**Acceptance rule:** unexplained internal research identifiers in reader-facing content are a publication defect and must be removed before approval.
+
+## 23. Version history
+
+- **v0.3 — 2026-11-26:** Added a binding editorial rule separating reader-facing terminology from internal TGCV research and repository identifiers, including acronym policy and review checks.
