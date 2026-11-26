@@ -400,9 +400,10 @@ def run_f5_bank(
             raise F5DevelopmentCalibrationError("COMPARISON_DATASET_OR_DESIGN_MISMATCH")
         if {comparison.baseline.method_id, *(item.method_id for item in comparison.candidates)} != set(IMPLEMENTED_METHODS["F5"]):
             raise F5DevelopmentCalibrationError("F5_METHOD_ROSTER_MISMATCH")
+        c5_method_id = IMPLEMENTED_METHODS["F5"][1]
         c5_candidate = next(
             item for item in comparison.candidates
-            if item.method_id == "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"
+            if item.method_id == c5_method_id
         )
         if c5_candidate.comparison.mcse_interval is not None:
             raise F5DevelopmentCalibrationError("F5_MCSE_INTERVAL_OUTSIDE_FROZEN_SCOPE")
