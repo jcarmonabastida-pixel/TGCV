@@ -301,11 +301,15 @@ These limitations do not make the concept unusable. They define the conditions u
 
 ## 9. Synthesis and reflection
 
-The accessible transformation space represents which transformations a system can perform under a specified state and set of conditions. It is derived from the relevant system configuration and an explicit accessibility criterion; it is neither an independent cause nor an unlimited list of imaginable possibilities.
+The accessible transformation space represents which transformations are available for realisation by a system under a specified state and set of conditions. It is derived from the relevant system configuration and an explicit accessibility criterion; it is neither an independent cause nor an unlimited list of imaginable possibilities.
 
 Its composition may change through expansion, contraction, reconfiguration or substitution. For this reason, observing only the number of transformations may be insufficient: it also matters which transformations appear, which disappear and which persist. Nor should accessible-space dynamics be confused with changes in the potential reach of successor states or with observed execution.
 
-The available evidence provides bounded methodological support for representing these changes and bounded causal support for a relationship with subsequent trajectories in one real-world setting. The temporal software-package analysis also shows that changes in accessible space and one-step potential reach are empirically distinguishable under the operationalisation examined. The evidence also includes non-detectable results and cases where accessibility can only be partially identified. These differences matter: not all evidence answers the same question or permits the same conclusion.
+The evidence examined provides results of different kinds. The temporal analysis of a software-package ecosystem shows that changes in the accessible space and in one-step potential reach can differ under the operationalisation examined. The study across two computational domains shows that a common transition structure can be operationalised in those cases, without demonstrating representational superiority or universal validity. A rural financial-services intervention provides bounded causal evidence concerning subsequent changes in household trajectories, attributable to the intervention package as implemented and within that context.
+
+Other cases delimit what cannot yet be identified. The urban infrastructure analysis did not detect an effect for the structural estimand examined; the street-paving study permitted partial identification but did not allow the full accessible transformation space to be reconstructed. The synthetic illustration, in turn, shows that accessibility, trajectory and value can vary independently under a specified construction, but does not establish that this pattern is frequent in real systems.
+
+These results do not constitute a single test, nor can their inferential scope be combined. Each addresses a different question and supports a different type of inference.
 
 The fundamental distinction must be maintained throughout the analysis:
 
@@ -315,8 +319,8 @@ The relationship between changes in the accessible space and value creation rema
 
 ### Reflection questions
 
-1. Think of a system you know. Which transformations can it perform today that it could not perform a year ago? Which conditions changed?
-2. How would you distinguish a technically possible transformation from one that is genuinely accessible under the system's conditions?
+1. Think of a system you know. Which transformations are available for it to realise today that were not available a year ago? Which conditions changed?
+2. How would you distinguish a transformation that is technically feasible in principle from one that is genuinely accessible under the system's conditions?
 3. Could the accessible space change substantially without changing its total number of transformations? Construct an example.
 4. What information would you need to determine whether a transformation was accessible before it was realised?
 5. What errors might arise if you used observed outcomes to define accessibility retrospectively?
