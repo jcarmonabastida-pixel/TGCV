@@ -153,7 +153,7 @@ jobs:
           AUTHORIZATION_ID="C10S-F5-G7-${GITHUB_SHA:0:12}"
           AUTHORIZATION_BRANCH="research/c10s-f5-g7-auth-${AUTHORIZATION_ID}"
           export AUTHORIZATION_ID AUTHORIZATION_BRANCH
-          DISPATCH_WORKFLOW_GIT_BLOB="$(gh api "repos/$GITHUB_REPOSITORY/contents/.github/workflows/c10-s-f5-g7-tiera-calibration-v3.yml?ref=main" --jq '.sha')"
+          DISPATCH_WORKFLOW_GIT_BLOB="$(gh api "repos/$GITHUB_REPOSITORY/contents/.github/workflows/c10-s-f5-g7-tiera-calibration-v3.yml?ref=$GITHUB_SHA" --jq '.sha')"
           export DISPATCH_WORKFLOW_GIT_BLOB
           mkdir -p "$RUNNER_TEMP/g7-authorization-draft"
           python - <<'PY'
