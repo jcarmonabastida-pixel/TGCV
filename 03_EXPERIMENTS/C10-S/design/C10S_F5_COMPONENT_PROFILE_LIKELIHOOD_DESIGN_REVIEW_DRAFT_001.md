@@ -196,3 +196,59 @@ The repository tree confirms that \`c10s_f1_between_profile_likelihood.py\` alre
 This corrects any possible ambiguity in the work-package shorthand: F1 raw-between is not awaiting profile-likelihood implementation. Its remaining work is a bounded code/test reconciliation and a defensible cutoff calibration/validation for the frozen F1 DGP family. The profile's explicit family guard, nuisance certification, boundary abstentions and scale-equivariance tests are useful controls. They do not establish coverage calibration or Tier-A readiness.
 
 A separate deterministic-only GitHub Actions workflow, \`.github/workflows/c10-s-f1-profile-static-tests.yml\`, has been added on the research branch to compile the F1 profile assets and run their unit tests. It performs no simulation, calibration, or confirmatory execution.
+
+
+## 14. Stronger route found: exact one-dimensional constrained score polynomial
+
+The F5 rational-score/certificate code provides a more promising route than a generic two-dimensional optimizer and should be assessed before implementing the earlier compactified-grid proposal.
+
+Let \(q(\mu)=\mu(1-\mu)\). The actual functionals satisfy:
+\[
+W=q\frac{\kappa}{1+\kappa},\qquad B=q\frac{1}{1+\kappa}.
+\]
+For a fixed \(w\in(0,1/4)\), the constraint is equivalent to:
+\[
+\kappa_W(\mu;w)=\frac{w}{q(\mu)-w},
+\quad \mu\in[\mu_-(w),\mu_+(w)],
+\quad \mu_\pm(w)=\frac{1\pm\sqrt{1-4w}}{2}.
+\]
+The two mean branches are represented together by this single closed \(\mu\)-interval. The interior has \(q>w\); both endpoints are the analytic \(\kappa\to\infty\) binomial limits.
+
+For a fixed \(b\in(0,1/4)\):
+\[
+\kappa_B(\mu;b)=\frac{q(\mu)-b}{b},
+\quad \mu\in[\mu_-(b),\mu_+(b)],
+\]
+with \(q>b\) in the interior. Both endpoints are the analytic \(\kappa\to0\) two-point-mixture limits.
+
+Differentiating the constrained likelihood gives:
+\[
+\frac{d\ell_W}{d\mu}
+=S_\mu+S_\kappa\left[-\frac{w(1-2\mu)}{(q-w)^2}\right],
+\qquad
+\frac{d\ell_B}{d\mu}
+=S_\mu+S_\kappa\left[\frac{1-2\mu}{b}\right],
+\]
+where \(S_\mu=\partial\ell/\partial\mu\) and \(S_\kappa=\partial\ell/\partial\kappa\).
+
+The existing \`beta_binomial_score_numerators(r, histogram)\` returns exact integer bivariate numerators \(N_\mu,N_\kappa\) for these rational scores. Their denominators are strictly positive in the open beta-binomial parameter domain. Substituting \(\kappa_W(\mu;w)\) or \(\kappa_B(\mu;b)\), multiplying by the positive denominators and clearing powers of \(q-w\) or \(b\), yields a univariate polynomial in \(\mu\) with exact rational coefficients (the floating target can be converted to its exact binary rational representation).
+
+Consequences:
+1. Every interior stationary point of the fixed-W or fixed-B constrained likelihood is a real root of a finite univariate polynomial.
+2. Existing exact Sturm/root-isolation primitives can potentially isolate every such root in \((0,1)\); roots are then filtered against the feasible \(q>w\) or \(q>b\) domain. A root interval that cannot be classified relative to a feasibility endpoint must trigger refinement or abstention.
+3. The constrained profile maximum is among all isolated stationary roots and the two analytic concentration-limit endpoints. No generic local optimizer or arbitrary \(\log\kappa\) cutoff is required to enumerate candidates.
+4. Candidate likelihood values can be enclosed by mapping each isolated \(\mu\)-root interval into a rational \((\mu,t)\) box and reusing the existing exact likelihood-enclosure machinery. Refine boxes until one candidate's lower likelihood bound exceeds all other candidate upper bounds; otherwise return \`PROFILE_MAXIMUM_ORDER_UNRESOLVED\`.
+5. The existing \`beta_binomial_global_mle_certificate\` already certifies the unrestricted likelihood winner or returns typed boundary/unresolved status. It is a candidate source for \(\ell_{\max}\), subject to reuse-contract and resource review; it does not itself solve the constrained W/B profiles.
+
+This route is algebraically more faithful to the model than a numerical grid over compactified concentration. It should be the preferred M2 implementation candidate **if** the exact substitution, root isolation, interval mapping and likelihood ordering can be implemented with modest reuse of existing primitives. It is not yet implemented or verified.
+
+Special cases \(w=0\), \(b=0\), \(w=1/4\), \(b=1/4\), and flat/identically-zero constrained score polynomials require separate explicit boundary/degeneracy handling. The endpoints \(\mu_\pm\) are algebraic; root isolation and likelihood enclosures must not silently replace them with unverified rounded values.
+
+## 15. Revised M2 preference
+
+Prefer, in order:
+1. exact constrained-score polynomial + complete one-dimensional root isolation + interval likelihood ordering;
+2. if exact algebraic reuse proves impractical, compactified adaptive numerical profiling with strict fail-closed unresolved states;
+3. do not fall back to a generic multi-start optimizer alone.
+
+The unrestricted exact global-MLE certificate, constrained profile maximum and LR inversion are three separate numerical/statistical tasks. Passing one does not certify the others.
