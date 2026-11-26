@@ -59,18 +59,19 @@ for (const item of sources) {
   await writeFile(target, chapterText + figure, "utf8");
 }
 
-const landing = `---
-title: "Transformational Value — Chapter 3 PoC"
+for (const item of sources) {
+  const title = item.lang === "es" ? "Vista previa de aprendizaje" : "Learning preview";
+  const linkLabel = item.lang === "es" ? "Abrir el capítulo 3" : "Open Chapter 3";
+  const landing = `---
+title: "${title}"
 ---
 
-# Transformational Value — Learning preview
+# Transformational Value — Chapter 3 PoC
 
-This is a local, non-production technical preview for the Chapter 3 publishing PoC.
+This is a local, non-production technical preview for the bilingual Chapter 3 publishing PoC.
 
-- [Español](/es/chapter-03/)
-- [English](/en/chapter-03/)
-
-The preview is generated from the canonical Markdown and Mermaid sources. Generated pages and diagrams are disposable build artefacts; do not edit them directly.
+[${linkLabel}](./chapter-03/)
 `;
-await writeFile(resolve(outputRoot, "index.mdx"), landing, "utf8");
-console.log("Prepared bilingual Chapter 3 preview content and responsive diagram variants.");
+  await writeFile(resolve(outputRoot, item.lang, "index.mdx"), landing, "utf8");
+}
+console.log("Prepared paired bilingual Chapter 3 pages and responsive diagram variants.");
