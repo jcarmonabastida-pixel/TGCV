@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 3.4  
+**Version:** 3.5  
 **Date:** 2026-11-26  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -60,7 +60,7 @@ The approved first-release navigation is:
 7. **About** — purpose, scope and governance.
 8. **Contact** — only a real, monitored contact route with proportionate privacy information.
 
-Systems Thinking is transversal, not a separate first-release destination. Do not expose Community as a top-level destination or publish empty/placeholder pages. Contact must not be advertised until a real monitored channel is available.
+Systems Thinking is transversal, not a separate first-release destination. Do not expose Community as a top-level destination or publish empty/placeholder pages. Contact remains a planned first-release destination; its page content and live communication channel are prepared when the domain-associated account is available. Do not publish provisional contact details or a non-operational form.
 
 ### 2.2 First-release sitemap
 
@@ -521,7 +521,7 @@ Research and Labs & Applications are activity spaces: Research develops knowledg
 
 ### 16.3 First-release navigation
 
-The seven active top-level destinations for the first public release are:
+The planned first-release top-level navigation contains eight destinations:
 1. **Explore** — conceptual entry, accessible explanation and the central software-migration example.
 2. **Research** — TGCV, research questions, methods, experiments, evidence and limits.
 3. **Systems Engineering** — engineering practices and their relation to the TGCV research object.
@@ -529,8 +529,9 @@ The seven active top-level destinations for the first public release are:
 5. **Value Construction** — VALUE as an applied framework complementary to TGCV, its lifecycle and a clearly labelled fictional clinic case.
 6. **Labs & Applications** — bounded demonstrators, synthetic methodological work and exploratory application contexts.
 7. **About** — purpose, scope, governance and accurate programme context.
+8. **Contact** — questions, corrections and initial conversations; page content and live channel to be prepared when the domain-associated account is available.
 
-**Contact** is a planned future destination, not an active first-release navigation item. Do not publish a Contact link, placeholder page, form or provisional address until a domain-associated account or another real, monitored communication channel is available.
+**Contact** is a planned first-release destination. Its page content and live communication channel are to be developed when the domain-associated account is available. Do not publish a provisional address or a non-operational form. The fact that its implementation is pending does not remove Contact from the planned site structure.
 
 Systems Thinking is transversal, not a separate first-release page: introduce it on Home, explain its role in Explore and develop its methods/foundations in Research. Do not retain Community as a top-level first-release destination. Do not publish empty destinations.
 
@@ -884,3 +885,8 @@ The page is an orientation layer, not a substitute for Research's scientific acc
 - Defers Contact from the first public-release navigation and removes it from active Home visitor routes until a domain-associated account or another real, monitored channel is available.
 - Synchronises Home v1.8/v1.6, Explore v1.2/v1.1, Labs & Applications v0.8/v0.8 and Value Construction Copy v0.3 references.
 - Preserves Contact as a planned future destination, not a live or placeholder route.
+
+### v3.5 — 2026-11-26
+- Restores Contact as the eighth planned first-release navigation destination and preserves its place in the sitemap.
+- Clarifies that implementation of the Contact page and activation of its monitored communication channel are deferred until the domain-associated account is available; this does not remove Contact from the planned website.
+- Synchronises Home Experience v1.9 and Home Copy v1.7.
