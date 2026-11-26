@@ -58,6 +58,25 @@ jobs:
         run: |
           set -euo pipefail
           python -m py_compile 03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_tiera_authorization.py 03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_source_inventory.py
+      - name: Derive canonical source bindings and report DRAFT discrepancies
+        run: |
+          set -euo pipefail
+          python 03_EXPERIMENTS/C10-S/harness/build_c10s_f5_g7_authorization_manifest.py \
+            --root . \
+            --approved-code-commit "$AUTH_SHA" \
+            --output-json "$RUNNER_TEMP/g7-authorization-manifest-bindings.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          auth=json.loads(Path(os.environ["AUTH_PATH"]).read_text(encoding="utf-8"))
+          bindings=json.loads(Path(os.environ["RUNNER_TEMP"], "g7-authorization-manifest-bindings.json").read_text(encoding="utf-8"))
+          hashes=bindings["source_hashes"]
+          mismatch={k:{"authorization":auth.get(k),"canonical":v} for k,v in hashes.items() if auth.get(k)!=v}
+          print("CANONICAL_BINDING_MISMATCHES="+json.dumps(mismatch,sort_keys=True))
+          print("CANONICAL_EXECUTION_SOURCE_ROOT="+bindings["execution_source_manifest_sha256"])
+          print("CANONICAL_COMPUTE_PATH_DIGEST="+bindings["compute_path_content_sha256"])
+          PY
+
       - name: Run fail-closed authorization validator only
         shell: bash
         env:
@@ -68,6 +87,7 @@ jobs:
           python 03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_tiera_authorization.py --authorization "$AUTH_PATH" --root . --workflow-commit "$WORKFLOW_COMMIT" --branch "$WORKFLOW_BRANCH" --output-json "$RUNNER_TEMP/validated-g7-authorization.json"
           cat "$RUNNER_TEMP/validated-g7-authorization.json"
       - name: Upload read-only validation result
+        if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: c10s-f5-g7-authorization-validation-3efca7e-${{ github.run_id }}
