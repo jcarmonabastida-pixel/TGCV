@@ -252,3 +252,30 @@ Prefer, in order:
 3. do not fall back to a generic multi-start optimizer alone.
 
 The unrestricted exact global-MLE certificate, constrained profile maximum and LR inversion are three separate numerical/statistical tasks. Passing one does not certify the others.
+
+
+## 16. Implemented M2 profile maximum and LR-statistic enclosure
+
+The research harness now contains the first two inferential layers of the exact constrained-profile route in \`c10s_f5_component_profile_score.py\`:
+
+1. \`f5_component_profile_score_polynomial\` constructs the exact univariate W/B constrained score numerator.
+2. \`f5_isolate_component_profile_score_roots\` isolates all roots in \((0,1)\) and retains only feasible interior roots.
+3. \`f5_component_profile_maximum_enclosure\` evaluates all stationary candidates plus both analytic concentration-limit endpoints. Interior candidates reuse the existing outward-rounded rational likelihood enclosure; W endpoints use the exact binomial limit; B endpoints use the exact two-point limit.
+4. \`f5_component_profile_lr_statistic\` combines the constrained profile-maximum enclosure with the existing exact unrestricted global-MLE certificate. It computes a rational interval for the likelihood ratio and encloses its logarithm with an atanh series and explicit rational remainder.
+
+The deterministic workflow evidence is:
+- profile score/root/maximum tests: 31/31 PASS, run [45831943819](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45831943819);
+- LR statistic tests using a certified nondegenerate M10/R5 global MLE and both W and B: 33/33 PASS, run [45832387827](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45832387827);
+- the broader exact rational-score/global-MLE primitive suite also passed 130/130 on run [45831286314](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45831286314).
+
+These are deterministic numerical/algebra checks, not repeated-sampling calibration. The method still lacks a confidence-set inversion across the full target domain and any calibrated LR cutoff.
+
+## 17. Endpoint profile likelihoods now covered by the maximum evaluator
+
+For the fixed-functional domain endpoints:
+- \(W=0\): the constrained supremum is the \(\kappa\to0\) two-point mixture profile (including degenerate mean corners);
+- \(B=0\): the constrained supremum is the \(\kappa\to\infty\) binomial profile;
+- \(W=1/4\): the closure point is \(\mu=1/2,\kappa\to\infty\), evaluated as the binomial likelihood at \(\mu=1/2\);
+- \(B=1/4\): the closure point is \(\mu=1/2,\kappa\to0\), evaluated as the two-point likelihood at \(\mu=1/2\).
+
+The current \`f5_component_profile_maximum_enclosure\` supports interior targets \(0<v<1/4\). The four exact endpoint cases above have been derived but are not yet integrated into the public profile/LR functions. They must be added before confidence-set inversion over the closed parameter range can be considered complete.
