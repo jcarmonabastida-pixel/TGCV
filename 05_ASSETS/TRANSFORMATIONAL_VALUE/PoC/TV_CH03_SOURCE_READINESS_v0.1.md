@@ -2,7 +2,7 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.18  
+**Version:** 0.19  
 **Date:** 2026-11-26  
 **Status:** BILINGUAL CHAPTER INCLUDES CLOSED RUST TEMPORAL EVIDENCE; REVIEW PENDING  
 **Branch:** `strategy/transformational-value-learning`  
@@ -658,7 +658,7 @@ The earlier editorial disposition in §§14.2 and 15.3 conflated two distinct ob
 1. **The bounded temporal software-ecosystem analysis documented in the scientific integration closure.** This result is scientifically closed as bounded structural empirical evidence. Its primary execution and mandatory replay agree at structured-result level. The exact local dataset archive was matched to the published Figshare file by filename, size and MD5, and the published dataset item declares CC0.
 2. **The separate Ω-primary (U_t)-derived operationalisation and its further scientific reuse.** This is the object subject to the prospective admission process and independent technical and security review. Its governance status does not retroactively invalidate, suspend or prohibit documentation of the already closed temporal analysis in item 1.
 
-The admission review for item 2 must not be used as an editorial exclusion rule for item 1. Conversely, documenting item 1 does not constitute admission or authorisation of item 2, its derived artefacts, or any further processing.
+The admission review for item 2 must not be used as an editorial exclusion rule for item 1. Conversely, documenting item 1 does not constitute admission or authorisation of item 2, its derived artefacts, or any further processing. The reader-facing chapter and research note use the one-step potential-reach notation \\(Reach^{1}_{pot}\\) and state its structural, non-runtime interpretation explicitly.
 
 ### 19.2 Chapter revisions
 
@@ -689,3 +689,19 @@ The published Figshare dataset item has been added to the central bibliography a
 The Rust temporal evidence is part of the Chapter 3 evidence composition and is not blocked by the separate Ω-primary admission review. The earlier instruction to exclude this analysis from reader-facing Chapter 3 content is superseded.
 
 Remaining work is scientific and editorial review of the chapter and note, verification of all references, and bilingual equivalence review. No change has been made to the RMA, Evidence-to-Claim Matrix, TGCV Core, scientific claim status, or the separate Ω-primary admission decision.
+
+
+---
+
+## 20. Final evidence wording and bibliography check — v0.19
+
+The Chapter 3 drafts have been updated to v0.7. The Rust temporal evidence is now integrated in three places in both languages:
+- Section 7, as a distinct bounded empirical result between the two-domain methodological study and the real-world causal evidence;
+- Section 9, in the synthesis of what the evidence supports;
+- the bibliography, through the published Figshare dataset record.
+
+The text now identifies one-step potential reach as \\(Reach^{1}_{pot}\\), preserving the distinction between a structural successor construct and observed runtime reachability. It retains the full denominators and category counts, the primary/replay structured-result agreement, and the explicit limits on causality, prediction, longer-horizon trajectories, outcomes, Value and universal validity.
+
+The bilingual research note remains `TV-LR-002`, version 0.1, in `draft`. Its source-file provenance statement is limited to the documented filename, size and MD5 match with the published Figshare item. The CC0 declaration is attributed to the dataset item and is not extended to derived software or artefacts.
+
+Both Chapter 3 drafts remain `draft`. No scientific claim status, RMA, Evidence-to-Claim Matrix, TGCV Core, Ω-primary admission disposition or execution authorisation has been changed.
