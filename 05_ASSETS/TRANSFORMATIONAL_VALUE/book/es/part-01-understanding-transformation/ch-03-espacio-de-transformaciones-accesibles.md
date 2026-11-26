@@ -5,7 +5,7 @@ title: "El espacio de transformaciones accesibles"
 language: es
 content_type: chapter
 status: draft
-version: 0.10
+version: 0.11
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -148,9 +148,9 @@ Tampoco debe confundirse con una medida general de capacidad. Un sistema puede t
 
 ## 4. Accesibilidad no significa ejecución
 
-Consideremos un sistema que puede realizar cuatro transformaciones: \(A\), \(B\), \(C\) y \(D\). Que las cuatro formen parte de su espacio accesible no significa que vaya a realizar las cuatro. Puede elegir (B), no actuar, posponer una decisión o realizar una transformación distinta en otro momento.
+Consideremos un sistema que tiene disponibles cuatro transformaciones: \\(A\\), \\(B\\), \\(C\\) y \\(D\\). Que las cuatro formen parte de su espacio accesible no significa que vaya a realizar ninguna de ellas. Puede elegir \\(B\\), no actuar, posponer una decisión o seguir otra trayectoria.
 
-Conviene mantener separados cinco niveles:
+Conviene mantener separados cinco niveles analíticos relacionados entre sí, pero no equivalentes:
 
 1. **Accesibilidad:** qué transformaciones están disponibles bajo las condiciones especificadas.
 2. **Realización:** qué transformación ocurre efectivamente.
@@ -158,7 +158,7 @@ Conviene mantener separados cinco niveles:
 4. **Resultado:** qué consecuencia específica aparece en el dominio considerado.
 5. **Valor:** cómo se evalúa esa consecuencia atendiendo a criterios, actores y horizontes temporales pertinentes.
 
-Ningún nivel debe definirse retrospectivamente a partir del siguiente. La realización de una transformación puede confirmar que ciertas condiciones se dieron en ese caso, pero no permite reconstruir automáticamente todo el espacio de alternativas. Del mismo modo, un resultado favorable no demuestra por sí solo que todas las transformaciones previas fueran accesibles ni que una modificación concreta del espacio causara ese resultado.
+Ningún nivel debe definirse retrospectivamente a partir del siguiente. La realización observada de una transformación aporta evidencia de que pudo llevarse a cabo bajo las condiciones concretas de ese caso. Sin embargo, no permite reconstruir automáticamente todo el espacio de alternativas ni demuestra, por sí sola, que el criterio de accesibilidad se haya especificado correctamente. Del mismo modo, un resultado favorable no demuestra que todas las transformaciones previas fueran accesibles ni que una modificación concreta del espacio causara ese resultado.
 
 La diferencia también opera en sentido inverso. Una transformación puede ser accesible y no realizarse por falta de demanda, por una decisión deliberada, por incertidumbre, por costes de oportunidad o porque el sistema prioriza otra trayectoria. La no realización no demuestra necesariamente que la transformación fuera inaccesible.
 
