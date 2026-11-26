@@ -26,7 +26,7 @@ permissions:
 jobs:
   pointwise-lr-development-stress:
     runs-on: ubuntu-24.04
-    timeout-minutes: 180
+    timeout-minutes: 60
     steps:
       - name: Checkout exact commit
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -49,11 +49,24 @@ jobs:
         run: python -B -m unittest -v test_c10s_f5_pointwise_lr_dev_stress
       - name: Run bounded pointwise LR development stress
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python -B run_c10s_f5_pointwise_lr_dev_stress.py --execute-development-stress --output ${{ runner.temp }}/c10s-f5-pointwise-lr-dev-stress.json
-      - name: Upload development-only result
+        run: >-
+          timeout --signal=TERM --kill-after=60s 50m
+          python -B run_c10s_f5_pointwise_lr_dev_stress.py
+          --execute-development-stress
+          --single-case F5_beta22_M30_R20
+          --component W
+          --output ${{ runner.temp }}/c10s-f5-pointwise-lr-dev-stress.json
+          --progress ${{ runner.temp }}/c10s-f5-pointwise-lr-progress.jsonl
+          --checkpoint ${{ runner.temp }}/c10s-f5-pointwise-lr-checkpoint.json
+      - name: Upload development-only diagnostics, including partial state
+        if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
-          name: c10s-f5-pointwise-lr-development-stress
-          path: ${{ runner.temp }}/c10s-f5-pointwise-lr-dev-stress.json
-          if-no-files-found: error
+          name: c10s-f5-pointwise-lr-observability-single-case
+          path: |
+            ${{ runner.temp }}/c10s-f5-pointwise-lr-dev-stress.json
+            ${{ runner.temp }}/c10s-f5-pointwise-lr-progress.jsonl
+            ${{ runner.temp }}/c10s-f5-pointwise-lr-progress.jsonl.roots.jsonl
+            ${{ runner.temp }}/c10s-f5-pointwise-lr-checkpoint.json
+          if-no-files-found: warn
           retention-days: 30
