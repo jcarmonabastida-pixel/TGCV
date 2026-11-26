@@ -2,9 +2,9 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.15  
+**Version:** 0.16  
 **Date:** 2026-11-26  
-**Status:** BILINGUAL DRAFTS AND SUPPORTING ASSETS UPDATED; RUST TEMPORAL EVIDENCE BLOCKED FOR PUBLIC REUSE; REVIEW PENDING  
+**Status:** BILINGUAL CHAPTER AND SUPPORTING ASSETS UPDATED; RUST TEMPORAL EVIDENCE BLOCKED FOR PUBLIC REUSE; REVIEW PENDING  
 **Branch:** `strategy/transformational-value-learning`  
 **Related specification:** `PoC/TRANSFORMATIONAL_VALUE_LEARNING_PUBLISHING_POC_v0.1.md`
 
@@ -359,6 +359,7 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 - **v0.13 — 2026-11-26:** Created the central bibliography registry with three verified primary-source records and updated both native-language Chapter 3 drafts to v0.3 against the reconciled evidence. Recorded the matched evidence coverage and the remaining public-provenance requirement for TGCV-generated computational analyses. Both language versions remain `draft`; no scientific claim status changed.
 - **v0.14 — 2026-11-26:** Created the bilingual cross-domain evidence note and updated the content model for research notes. A separate canonical data-admission/privacy restriction was identified for the temporal software-ecosystem analysis; that result was removed from both reader-facing chapter drafts and withheld from public evidence publication pending prospective reuse clearance.
 - **v0.15 — 2026-11-26:** Updated the bilingual glossary definitions to state the independent accessibility-criterion requirement and completed first-draft Spanish/English captions and alternative text for the shared diagram. Both glossary entries and the diagram remain in draft status.
+- **v0.16 — 2026-11-26:** Updated both Chapter 3 drafts to v0.5 to state explicitly that the grid-planning example did not demonstrate distinct representational gain over its native state/action model. This preserves the negative result alongside the bounded two-domain operationalisation finding.
 
 ## 12. Pilot content package setup
 
@@ -618,3 +619,14 @@ The Mermaid source remains language-neutral and unchanged. The diagram and both 
 ### 16.3 Remaining review
 
 The glossary and diagram now have complete first-draft reader-facing text in both languages. They still require subject-matter review, native editorial review, final comparison with the chapter wording, rendered accessibility checks and explicit licence decisions before approval or publication.
+
+
+---
+
+## 17. Chapter evidence wording — v0.16
+
+Both native-language Chapter 3 drafts have been updated to v0.5. The cross-domain evidence paragraph now explicitly reports that the grid-planning case did not demonstrate distinct representational gain because its accessible transformations and changes were fully reconstructible from the domain-native state/action model.
+
+The paragraph retains the bounded positive methodological finding: a common transition-level structure could be operationalised in two structurally different computational domains without equating their transformation identities. It does not imply superiority, universal validity, causality or value linkage.
+
+This change prevents the chapter from presenting the cross-domain result as an unqualified representational advance. Both drafts remain `draft`; no scientific claim status or canonical research record has been changed.
