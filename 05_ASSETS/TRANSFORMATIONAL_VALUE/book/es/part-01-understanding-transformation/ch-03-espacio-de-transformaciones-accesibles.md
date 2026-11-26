@@ -5,7 +5,7 @@ title: "El espacio de transformaciones accesibles"
 language: es
 content_type: chapter
 status: draft
-version: 0.15
+version: 0.16
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -303,11 +303,15 @@ Estas limitaciones no hacen inútil el concepto. Definen las condiciones bajo la
 
 ## 9. Síntesis y reflexión
 
-El espacio de transformaciones accesibles representa qué transformaciones puede realizar un sistema bajo un estado y unas condiciones especificadas. Se deriva de la configuración relevante del sistema y de un criterio explícito de accesibilidad; no es una causa independiente ni una lista ilimitada de posibilidades imaginables.
+El espacio de transformaciones accesibles representa qué transformaciones están disponibles para su realización por un sistema bajo un estado y unas condiciones especificadas. Se deriva de la configuración relevante del sistema y de un criterio explícito de accesibilidad; no es una causa independiente ni una lista ilimitada de posibilidades imaginables.
 
 Su composición puede cambiar mediante expansión, contracción, reconfiguración o sustitución. Por eso, observar únicamente el número de transformaciones puede ser insuficiente: también importa qué transformaciones aparecen, cuáles desaparecen y cuáles permanecen. La dinámica del espacio accesible tampoco debe confundirse con el cambio en el alcance potencial de estados sucesores ni con la ejecución observada.
 
-La evidencia disponible ofrece apoyo metodológico acotado para representar estos cambios y apoyo causal acotado para una relación con trayectorias posteriores en un contexto real. El análisis temporal del ecosistema de paquetes muestra, además, que los cambios en el espacio accesible y en el alcance potencial de un paso son empíricamente distinguibles en la operacionalización examinada. También hay resultados no detectables y casos en los que la accesibilidad solo puede identificarse parcialmente. Estas diferencias importan: no toda evidencia responde a la misma pregunta ni permite el mismo tipo de conclusión.
+La evidencia examinada aporta resultados de naturaleza diferente. El análisis temporal de un ecosistema de paquetes de software muestra que los cambios en el espacio accesible y en el alcance potencial a un paso pueden diferir bajo la operacionalización estudiada. El estudio en dos dominios computacionales muestra que una estructura común de transición puede operacionalizarse en esos casos, sin demostrar superioridad representacional ni validez universal. Una intervención experimental de expansión del acceso a servicios financieros rurales aporta evidencia causal acotada sobre cambios posteriores en las trayectorias de los hogares, atribuibles al paquete de intervención tal como fue implementado y en aquel contexto.
+
+Otros casos delimitan lo que todavía no puede identificarse: el análisis de infraestructura urbana no detectó un efecto en el estimando estructural examinado; el estudio de pavimentación permitió una identificación parcial, pero no reconstruir el espacio completo de transformaciones accesibles. Por su parte, la ilustración sintética muestra que accesibilidad, trayectoria y valor pueden variar independientemente bajo una construcción especificada, pero no establece que ese patrón sea frecuente en sistemas reales.
+
+Estos resultados no constituyen una única prueba ni permiten combinar sus alcances. Cada uno responde a una pregunta diferente y admite un tipo de inferencia distinto.
 
 La distinción fundamental debe conservarse a lo largo de todo el análisis:
 
@@ -317,7 +321,7 @@ La relación entre cambios en el espacio accesible y creación de valor permanec
 
 ### Preguntas para la reflexión
 
-1. Piensa en un sistema que conozcas. ¿Qué transformaciones puede realizar hoy que no podía realizar hace un año? ¿Qué condiciones cambiaron?
+1. Piensa en un sistema que conozcas. ¿Qué transformaciones están disponibles para su realización hoy que no lo estaban hace un año? ¿Qué condiciones cambiaron?
 2. ¿Cómo distinguirías una transformación técnicamente posible de una transformación realmente accesible en las condiciones del sistema?
 3. ¿Podría cambiar profundamente el espacio accesible sin variar el número total de transformaciones? Construye un ejemplo.
 4. ¿Qué información necesitarías para determinar si una transformación estaba accesible antes de que se realizara?
@@ -327,6 +331,7 @@ La relación entre cambios en el espacio accesible y creación de valor permanec
 ### Transición al siguiente capítulo
 
 El espacio accesible depende de condiciones, recursos, relaciones y restricciones. El siguiente capítulo examina esos elementos con mayor detalle y muestra cómo interactúan para habilitar o limitar las transformaciones de un sistema.
+
 
 ## Referencias y lecturas adicionales
 
