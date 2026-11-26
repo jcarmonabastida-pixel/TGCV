@@ -433,3 +433,24 @@ The dominant cost has shifted: the profile now spends most time constructing/sub
 **Disposition:** accept this optimisation as a successful exact-arithmetic performance improvement for the tested fixture. Do not infer broad throughput, confidence-set topology, interval coverage, or calibration validity from this one fixture and deterministic tests.
 
 **Next gate:** rerun the end-to-end fixed-target LR inversion smoke on the optimised commit and compare runtime/status/output structure with the pre-optimisation 410.4 s smoke. Then run a bounded set of independent synthetic fixtures (including M30/R20 and boundary/degenerate cases) for execution robustness and fail-closed behaviour only. No repeated-sampling coverage calibration yet. Keep Tier-A/Tier-B/C10 causal execution unlaunched and unauthorized.
+
+
+## 27. Post-optimisation full LR inversion smoke — PASS
+
+**Workflow:** [45840355272](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45840355272) — SUCCESS  
+**Tested commit:** \`10678360fc456506cfd42b28cb7c748d77eb0f20\`  
+**Job:** \`f5-profile-lr-inversion-smoke\` — SUCCESS  
+**Environment:** Ubuntu 24.04, CPython 3.12.10, hash-locked dependencies.
+
+The full bounded smoke completed successfully. The single test ran in 12.548 s (measured internal inversion time 12.356572 s), versus 410.4 s in the pre-optimisation smoke: approximately 33.2x faster.
+
+Fixture: M10/R5 histogram \`{0:1, 1:2, 2:2, 3:2, 4:2, 5:1}\`, component W, LR cutoff 3.84, five scan-grid points and at most one bisection step. Result:
+- status: \`GRID_DETECTED_SINGLE_COMPONENT_BRACKETED\`;
+- target evaluations: 7;
+- \`topology_certified=false\`.
+
+This is a material execution/performance improvement. It does **not** certify the global topology or completeness of the confidence set, endpoint coverage, cutoff calibration, or inferential validity. A detected bracket on a finite numerical grid is not a topological certificate.
+
+**Next operation:** run a small, predeclared robustness suite on independent synthetic fixtures, including an M30/R20 histogram, boundary/degenerate histograms and both W/B components where defined. The objective is computational robustness and fail-closed classification only; do not estimate coverage or tune any cutoff. Keep this suite small and bounded. Record fixture definitions, statuses, resource abstentions, and runtimes. If an exact global certificate or profile cannot be established, retain the unresolved status rather than silently dropping the fixture.
+
+Tier-A/Tier-B and causal C10-S execution remain unlaunched and unauthorized.
