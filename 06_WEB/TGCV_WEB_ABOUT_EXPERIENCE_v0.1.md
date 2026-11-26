@@ -1,12 +1,12 @@
-# TGCV — About Page Experience v0.2
+# TGCV — About Page Experience v0.3
 
 **Identifier:** TGCV-WEB-ABOUT-EXP-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-26  
 **Status:** EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
 **Page:** P08 — About  
-**Parent documents:** Web Master Brief v1.9; Information Architecture v3.1; Content Blueprint v4.2; Integrated Editorial Review v0.3.  
+**Parent documents:** Web Master Brief v1.9; Information Architecture v3.2; Content Blueprint v4.3; Integrated Editorial Review v0.4.  
 **Source basis:** TGCV-EXT-VP-001 Vision Paper v0.3; current Web Master Brief identity and governance boundaries; Information Architecture §3.10; Content Blueprint P08.
 
 > This document specifies the visitor experience for About. It does not establish an organisation, institutional affiliation, team structure, external board, formal consortium or community. It does not change scientific governance, scientific claims, evidence status, publication permissions or execution authorisations.
@@ -171,4 +171,5 @@ The About Experience is acceptable when:
 ## 7. Change record
 
 - **v0.1 — 2026-11-26:** first About Experience specification.
-- **v0.2 — 2026-11-26:** focused editorial review clarifies the concise orientation role, prevents duplication of Research, removes any implied Contact CTA while that destination is deferred, and requires neutral programme voice rather than language suggesting an unverified team. No scientific claim, governance state, affiliation or publication permission is changed.
+- **v0.2 — 2026-11-26:** focused editorial review clarifies the concise orientation role, prevents duplication of Research, removes any implied Contact CTA while that destination is deferred, and requires neutral programme voice rather than language suggesting an unverified team.
+- **v0.3 — 2026-11-26:** synchronises parent references with Information Architecture v3.2, Content Blueprint v4.3 and Integrated Editorial Review v0.4; reinforces the Contact deferral condition. No scientific claim, governance state, affiliation or publication permission is changed.
