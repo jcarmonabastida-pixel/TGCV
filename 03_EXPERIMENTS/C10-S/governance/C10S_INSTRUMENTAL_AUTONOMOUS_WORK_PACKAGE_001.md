@@ -454,3 +454,29 @@ This is a material execution/performance improvement. It does **not** certify th
 **Next operation:** run a small, predeclared robustness suite on independent synthetic fixtures, including an M30/R20 histogram, boundary/degenerate histograms and both W/B components where defined. The objective is computational robustness and fail-closed classification only; do not estimate coverage or tune any cutoff. Keep this suite small and bounded. Record fixture definitions, statuses, resource abstentions, and runtimes. If an exact global certificate or profile cannot be established, retain the unresolved status rather than silently dropping the fixture.
 
 Tier-A/Tier-B and causal C10-S execution remain unlaunched and unauthorized.
+
+
+## 28. M30/R20 independent robustness smoke — execution PASS, performance warning
+
+**Workflow:** [45842033055](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45842033055) — SUCCESS  
+**Commit:** \`c01ee7d3adbea272bd9bdc61c2a0da2966c3a0c6\`  
+**Job:** \`m30r20-robustness\` — SUCCESS
+
+The workflow first failed on commit \`7592bec36d2bb2a7506635e524e7d1fbdc78ce1f\` because its checkout expression had a literal backslash before \`\${{ github.sha }}\`; this was a workflow-only failure before Python setup or statistical execution. The expression was corrected and the rerun checked out the exact commit successfully.
+
+The corrected run completed dependency installation, compilation, and both fixed-target component profiles. Fixture: M30/R20, \(n=30\), \(r=20\), histogram \`{0:1, 2:2, 5:4, 8:5, 10:6, 12:5, 15:4, 18:2, 20:1}\), target \(1/20\).
+
+| Stage | Result | Runtime |
+|---|---|---:|
+| Global certificate | \`GLOBAL_INTERIOR_MAXIMUM_CERTIFIED\` | 33.365 s |
+| W fixed-target LR | \`LR_STATISTIC_ENCLOSED\`; profile \`PROFILE_MAXIMUM_ENCLOSED\`; 3 candidates | 805.552 s |
+| B fixed-target LR | \`LR_STATISTIC_ENCLOSED\`; profile \`PROFILE_MAXIMUM_ENCLOSED\`; 3 candidates | 246.418 s |
+| W+B | both enclosed | 1,051.971 s |
+
+**Interpretation:** execution robustness and fail-closed status are demonstrated for this single interior M30/R20 fixture. This is not a coverage or calibration result. The exact profile method is still computationally expensive at M30/R20: one target takes about 13.4 minutes for W and 4.1 minutes for B. The 9x overall speedup measured on M10/R5 does not generalise to this larger fixture in terms of acceptable throughput. The profile's candidate count and enclosed status do not certify confidence-set topology or endpoints over the target axis.
+
+**Disposition:** retain the exact method as a viable correctness-oriented candidate, but mark M30/R20 throughput as an unresolved computational risk. Do not start repeated-sampling coverage work or Tier-A until this risk is bounded or a defensible resource policy is specified without relaxing inferential guarantees.
+
+**Next bounded engineering step:** instrument a single M30/R20 W profile to separate time spent in score-polynomial construction/substitution, exact root isolation, profile candidate evaluation and LR enclosure. Reuse the already computed global certificate and fixed fixture; no repeated-sampling, no cutoff tuning, no coverage estimates. Then target only the dominant operation for optimisation. Preserve exact arithmetic and fail-closed abstention. Add a B profile only if the W instrumentation indicates a shared bottleneck. After that, run boundary/degenerate fixtures as status/abstention tests, not coverage calibration.
+
+Tier-A/Tier-B and causal C10-S execution remain unlaunched and unauthorized.
