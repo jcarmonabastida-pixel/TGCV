@@ -350,3 +350,14 @@ The constrained profile maximum now supports the full closed functional domain:
 Exact zero likelihood at a constrained endpoint is propagated as \`LR_STATISTIC_INFINITE\`, not as a numerical failure. Tests cover interior-count and endpoint-only histograms and verify the corresponding exact rational likelihoods. The same run re-exercised the LR statistic enclosure and F5 likelihood score/Hessian regressions.
 
 **M2 status:** fixed-target LR-statistic enclosure now covers both interior and closed-domain endpoint targets. Full LR confidence-set inversion and topology remain unimplemented.
+
+
+## 23. F5 closed-domain endpoint and infinite-LR tests — PASS
+
+**Workflow:** [45832976732](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45832976732) — SUCCESS  
+**Tested commit:** \`09fa43914a4f407f545dd5ef017196a7c8c1e217\`  
+**Tests:** **34/34 PASS** in 72.183 s.
+
+This run verifies all four W/B functional-domain endpoints, exact endpoint likelihoods for interior-count and endpoint-only histograms, and propagation of an exactly zero constrained profile likelihood as an infinite LR statistic. The LR-statistic enclosure and F5 analytic likelihood regression tests also pass.
+
+**M2 status:** fixed-target LR calculation is now defined on the closed interval [0,1/4]. No full confidence-set inversion or coverage calibration has been performed.
