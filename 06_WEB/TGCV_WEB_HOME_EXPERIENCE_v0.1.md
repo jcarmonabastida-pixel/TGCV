@@ -1,7 +1,7 @@
 # TGCV — Home Experience Specification
 
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 1.7  
+**Version:** 1.8  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21  
@@ -138,7 +138,7 @@ The explanatory point is the change in accessibility caused by a change in condi
 
 Accessibility still does not establish that the operation is executed, succeeds, produces a favourable outcome or creates value. Do not invent detailed technical parameters that are not needed to explain the concept.
 
-Use this example as an explanatory illustration only. It is not an existing execution, a validated application, a feature of Juguete Colectivo or evidence from C10-S.
+Use this example as an explanatory illustration only. It is not an existing execution, a validated application or a feature of an existing TGCV demonstrator.
 
 ## 7. Conceptual sequence on Home
 
@@ -216,13 +216,12 @@ Approved first-release navigation:
 - **Value Construction**
 - Labs & Applications
 - About
-- Contact
 
 Systems Thinking is transversal: Home, Explore and Research. It has no independent first-release page.
 
 Home should offer a primary route to Explore and clear, direct routes to Research, Systems Engineering, Transformational Intelligence, Value Construction and Labs & Applications. Value Construction must appear as an explicit destination in the ecosystem map and in the Home interest/navigation list; mentioning it only in explanatory prose or the footer is insufficient. Visitors may enter any destination directly; no mandatory linear journey is imposed.
 
-Explore must take the Home example as its starting point and add conceptual depth: clarify how candidate transformations are distinguished from accessible ones, how accessibility depends on a defined system boundary and conditions, and how accessibility differs from execution, outcome and value. Do not replay the full Home narrative. About explains purpose, scope and governance without implying a staffed institute, external board or formal consortium. Contact is shown only when a real monitored channel and proportionate privacy information are in place.
+Explore must take the Home example as its starting point and add conceptual depth: clarify how candidate transformations are distinguished from accessible ones, how accessibility depends on a defined system boundary and conditions, and how accessibility differs from execution, outcome and value. Do not replay the full Home narrative. About explains purpose, scope and governance without implying a staffed institute, external board or formal consortium. Contact is deferred from the first release until a domain-associated account or another real, monitored channel and proportionate privacy information are available.
 
 ## 11. Languages
 
@@ -270,7 +269,7 @@ The first Home does not require a custom simulator, interactive widget or future
 
 The visual language may use system boundaries, nodes, components, transformation links, conditions, branching trajectories and before/after accessibility patterns. Show both opening and restriction/reconfiguration; do not depict possibility expansion as inherently positive.
 
-Do not imply that the future Playground is available. Do not duplicate Juguete Colectivo with a second miniature simulator on Home.
+Do not imply that the future TGCV Playground is available. Do not duplicate the existing TGCV Full Chain Demo with a second miniature simulator on Home.
 
 ## 15. Status
 
@@ -348,3 +347,8 @@ The identity and copy are directionally coherent. Publication remains blocked pe
 - Adds a concise section on five potential Business Translation application areas, TGCV's possible analytical contribution and value hypotheses to investigate.
 - Explicitly labels potential contributions as hypotheses, not demonstrated benefits or validated applications.
 - Updates the Home Copy parent reference to v1.5.
+
+### v1.8 — 2026-11-26
+- Removes internal demonstrator and execution labels from the visitor-facing migration-example specification.
+- Defers Contact from first-release Home navigation and visitor routes until a real, monitored domain-associated communication channel is available.
+- Aligns the Home experience with the user's decision not to publish a provisional Contact destination.
