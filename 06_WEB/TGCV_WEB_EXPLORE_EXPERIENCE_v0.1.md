@@ -1,11 +1,11 @@
 # TGCV — Explore Experience Specification
 
 **Identifier:** TGCV-WEB-EXPLORE-001  
-**Version:** 1.1  
+**Version:** 1.2  
 **Date:** 2026-11-25  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21–22  
-**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`, §12–13; Home Experience v1.7; Home Copy v1.5  
+**Related:** `06_WEB/TGCV_WEB_INFORMATION_ARCHITECTURE_v0.1.md`, §16–17; `06_WEB/TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md`, §12–13; Home Experience v1.8; Home Copy v1.6  
 **Copy:** `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — v1.0  
 **Branch:** `strategy/tgcv-web-master`
 
@@ -173,7 +173,7 @@ These destinations must be populated with accurate, useful content before their 
 - Prefer a small set of static, accessible diagrams or annotated states.
 - No bespoke interactive simulator is required for the germinal release.
 - Keep the same software-migration example consistent across sections and languages.
-- Label the example as illustrative; it is not an executed experiment, validated application, Juguete Colectivo feature or C10-S result.
+- Label the example as illustrative; it is not an executed experiment, validated application, feature of an existing TGCV demonstrator.
 - Distinguish source and target environments, the changed condition and the resulting accessibility status.
 - Show that possibilities can open, close or be reconfigured; do not imply that more accessible transformations are always better.
 - Do not imply autonomous change: conditions may change through intervention, system dynamics or the surrounding environment.
@@ -213,7 +213,7 @@ Do not:
 - imply that the system must autonomously initiate changes in its possibilities;
 - equate TGCV with Transformational Intelligence;
 - present TI as a validated discipline, product or generally demonstrated capability;
-- present the illustrative migration as an existing execution, application, experiment or Juguete Colectivo function.
+- present the illustrative migration as an existing execution, application, experiment or function of an existing TGCV demonstrator.
 
 The page is an introductory explanation, not a formal definition of TGCV's transformation space or a substitute for Research.
 
@@ -267,3 +267,7 @@ Before publication:
 - **0.9 — 2026-11-25:** Clarifies Transformational Intelligence as an integrative capability concept under development; distinguishes its intended role from Systems Thinking, Systems Engineering, AI and the TGCV research programme, and avoids implying an operational or validated capability.
 - **1.0 — 2026-11-25:** Explicitly states that Accessibility → Execution → Outcome → Value is an analytical distinction rather than a complete causal model; trajectory remains represented across states and transformations.
 - **1.1 — 2026-11-25:** Adds Value Construction as a clearly differentiated applied-framework cross-connection, not a fourth conceptual deepening route or a causal continuation of Explore.
+
+### v1.2 — 2026-11-26
+- Removes internal prototype/execution labels from the visitor-facing migration-example requirements.
+- Synchronises Home dependencies to Experience v1.8 and Copy v1.6.
