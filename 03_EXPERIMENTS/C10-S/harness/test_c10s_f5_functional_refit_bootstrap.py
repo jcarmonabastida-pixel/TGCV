@@ -91,6 +91,7 @@ class F5FunctionalRefitBootstrapTests(unittest.TestCase):
             audit_status="INDEPENDENT_OPTIMIZER_UNRESOLVED",
             independent_optimizer_success=False,
             independent_optimizer_message="test diagnostic only",
+            independent_optimizer_role="SECONDARY_DIAGNOSTIC_ONLY",
             independent_log_likelihood=None, independent_score_norm=None,
             starts=({"success": True},), failure_reason=None,
         )
