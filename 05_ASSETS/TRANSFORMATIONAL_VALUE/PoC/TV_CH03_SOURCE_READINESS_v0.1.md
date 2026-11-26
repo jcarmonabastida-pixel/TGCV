@@ -143,7 +143,7 @@ These levels must not be defined retrospectively from a later level. A system ca
 
 Explain that a change in transformation-space structure can be sign-neutral and may involve expansion, contraction, reconfiguration or substitution. Equal cardinality does not imply identical transformation membership.
 
-TSDA provides the following descriptors where the domain representation supports them:
+The analytical study of transformation-space dynamics provides the following descriptive measures where the domain representation supports them:
 
 - `A_t`: source accessibility cardinality;
 - `A_t+1`: successor accessibility cardinality;
@@ -155,7 +155,7 @@ TSDA provides the following descriptors where the domain representation supports
 
 The chapter should introduce the meaning, not overload the reader with every notation at once. A worked example and a diagram should carry the explanation.
 
-The six TSDA descriptive configurations are:
+The six descriptive configurations are:
 - stability;
 - identity turnover with cardinality conservation;
 - net increase with turnover;
@@ -339,7 +339,7 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 
 ## 11. Version history
 
-- **v0.1 — 2026-11-26:** First source-readiness review for Chapter 3, based on current `main` Core, ARM v0.2, TR-131 formal and analytical artefacts, Vision Paper, Evidence-to-Claim Matrix v1.47 and cross-domain evidence map.
+- **v0.1 — 2026-11-26:** First source-readiness review for Chapter 3, based on the current core model, architectural research map, formal and analytical studies of transformation-space dynamics, vision paper, evidence register and cross-domain evidence map.
 - **v0.2 — 2026-11-26:** Relocated under `PoC/` and updated its related-specification path.
 
 
