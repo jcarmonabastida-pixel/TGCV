@@ -1,11 +1,11 @@
 # TGCV — Integrated Editorial Review of the First Website Release
 
 **Identifier:** TGCV-WEB-INTEGRATED-REVIEW-001  
-**Version:** 0.6  
+**Version:** 0.7  
 **Date:** 2026-11-26  
 **Status:** INTEGRATED EDITORIAL REVIEW — WORKING RECORD; NOT PUBLICATION APPROVAL  
 **Branch:** `strategy/tgcv-web-master`  
-**Scope:** Home, Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction, Labs & Applications and About. Contact readiness remains a separate conditional decision.  
+**Scope:** Home, Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction, Labs & Applications, About and the planned Contact destination. Contact page implementation and live channel readiness remain pending.  
 **Authority boundary:** Editorial and information-architecture review only. This record does not change scientific definitions, evidence status, asset publication permissions, execution authorization or the canonical scientific repository state.
 
 ---
@@ -25,7 +25,7 @@ The seven substantive research and application sections form a coherent editoria
 
 The conceptual architecture is coherent at the level of role and epistemic status. The website must not imply a linear causal story from TGCV through TI and VALUE to value creation. The sections are related, but they are not equivalent and are not stages in a validated process.
 
-**Disposition:** the seven substantive sections remain suitable for continued content refinement. About now has an Experience/Copy pair (v0.3) following a focused editorial pass that reduced duplication with Research, uses neutral programme voice in both languages and removes any implied Contact route. It remains a working draft and has not yet undergone user approval. The first public release comprises Home, Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction, Labs & Applications and About. The active top-level navigation has seven items (Explore through About); Contact is a planned future destination deferred until a domain-associated account or other real, monitored communication channel is available. Several cross-document corrections remain in progress, so the set is **not ready for publication approval**.
+**Disposition:** the seven substantive sections remain suitable for continued content refinement. About now has an Experience/Copy pair (v0.3) following a focused editorial pass that reduced duplication with Research, uses neutral programme voice in both languages and removes any implied Contact route. It remains a working draft and has not yet undergone user approval. The planned first-release website comprises Home, Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction, Labs & Applications, About and Contact. Contact remains part of the site architecture and navigation; only its page implementation and live communication channel are deferred until the domain-associated account is available. Several cross-document corrections remain in progress, so the set is **not ready for publication approval**.
 
 ## 2. Integrated narrative and boundary review
 
@@ -78,7 +78,7 @@ the cross-domain mapping demonstrator remains bounded synthetic methodological e
 
 ## 3. Cross-document corrections made
 
-1. **First-release navigation:** Contact is deferred and is not an active first-release navigation item or Home/footer link. The seven active destinations are Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction, Labs & Applications and About. Systems Thinking is transversal; Community is not a top-level first-release destination.
+1. **First-release navigation:** Contact is the eighth planned destination and remains part of the website architecture. Its page implementation and live communication channel are deferred until the domain-associated account is available; this does not remove it from navigation planning or Home's visitor invitation. Systems Thinking is transversal; Community is not a top-level first-release destination.
 2. **Information Architecture authorities:** corrected stale Explore and Research version references; corrected Systems Engineering references that pointed to non-current v0.2 filenames; added current Value Construction and Labs & Applications page authorities.
 3. **Content Blueprint:** synchronized parent versions and corrected page identifiers to P08 About / Governance and P09 Contact / Participate.
 4. **Labs & Applications Copy:** advanced to v0.4; removed specific TGCV Full Chain Demo operational feature claims pending exact package/interface verification; corrected its Blueprint dependency.
@@ -110,7 +110,7 @@ Strategic indexes:
 3. **Research evidence:** refresh public evidence statements and linked briefs against current canonical STATUS, RMA, Evidence→Claim Matrix, traceability and source records; verify disclosure permissions for each asset.
 4. **Application-Fit:** verify each context description, source attribution and maturity label against current source records. Do not promote a candidate to a qualified application by editorial wording.
 5. **About:** review Experience v0.2 and bilingual Copy v0.2 for factual accuracy, narrative fit, bilingual equivalence and compliance with the naming rule. The draft must not imply a staffed institute, external board, formal consortium or other unverified organisational structure.
-6. **Contact:** deferred by user decision until a domain-associated account or another real, monitored communication channel is available. Do not publish a provisional address, form or participation mechanism.
+6. **Contact:** the user deferred creation of the Contact section until a domain-associated account is available. Contact remains a planned site destination and Home call-to-action. Do not publish a provisional address, non-operational form or unsupported participation mechanism.
 7. **Bilingual and link QA:** check Spanish/English conceptual equivalence, every internal/external destination, asset references, terminology and accessibility.
 8. **Visitor comprehension:** simulated editorial reviews are not tests with real visitors. Real-user testing is desirable before or after launch according to the release plan; its absence alone is not a scientific validation failure.
 
@@ -127,7 +127,7 @@ This editorial review does not establish:
 
 ## 7. Next editorial operation
 
-Continue the integrated editorial pass across the seven substantive pages and About, checking narrative progression, conceptual consistency, bilingual equivalence, official naming, evidence maturity, cross-links and document dependencies. About has passed a focused editorial revision but remains pending user review. The next detailed pass should concentrate on Research and its hand-offs with Explore, Systems Engineering, Transformational Intelligence and Labs & Applications. Contact remains deferred and is not part of this editorial release pass. No page is approved for publication.
+Continue the integrated editorial pass across the substantive pages and About, checking narrative progression, conceptual consistency, bilingual equivalence, official naming, evidence maturity, cross-links and document dependencies. About has passed a focused editorial revision but remains pending user review. The next detailed pass should concentrate on Research and its hand-offs with Explore, Systems Engineering, Transformational Intelligence and Labs & Applications. Contact remains a planned destination; its dedicated page is deferred until the domain-associated account is available. No page is approved for publication.
 
 
 ## v0.2 reader-facing terminology correction — 2026-11-25
@@ -175,3 +175,10 @@ These are editorial and terminology changes only. They do not alter the underlyi
 - Removes the Home Contact call-to-action and Contact footer link. Contact is not part of the active first-release navigation and remains a planned future destination pending a real, monitored domain-associated channel.
 - Synchronises current Experience/Copy and parent-document references for Home, Explore, Research, Value Construction and Labs & Applications.
 - Records these corrections as editorial/IA changes only; no scientific claim, asset maturity, publication permission or execution status is upgraded.
+
+## v0.7 — 2026-11-26: Contact architecture restored
+
+- Corrects the previous interpretation of the user's decision: Contact page creation is postponed until the domain-associated account is available; Contact itself remains part of the planned website and first-release navigation.
+- Restores Contact in Home's visitor invitation and footer destination list.
+- Distinguishes the planned Contact destination from publication of an operational email address, form or communication channel.
+- No publication approval or live Contact functionality is implied.
