@@ -225,6 +225,7 @@ def f1_profile_between_confidence_set(
             or likelihood_difference > 1e-7
             or polynomial.status != "POLYNOMIAL_ROOTS_ISOLATED"
             or diagnostic.unresolved_tangential_candidates > 0
+            or diagnostic.polynomial_scan_discordant
             or diagnostic.independent_boundary_sensitive
             or diagnostic.optimizer_error is not None
             or not polynomial.positive_roots
