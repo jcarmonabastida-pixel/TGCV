@@ -81,23 +81,23 @@ Studying this space describes a dimension of change that cannot be reduced to ob
 
 ## 2. From candidate transformations to accessible transformations
 
-The starting point is a set of candidate transformations. We use \\(\\tau\\) to denote a candidate: an identifiable change that could occur in the system. It must be specified clearly enough to ask what conditions would allow it to be realised.
+The starting point is a set of candidate transformations. We use \(\tau\) to denote a candidate: an identifiable change that could occur in the system. It must be specified clearly enough to ask what conditions would allow it to be realised.
 
 Not every imaginable transformation belongs in the analysis. The candidate universe is delimited according to the system under study, the research question and the required level of detail. In some cases, the relevant alternatives can be enumerated. In others, it may be sufficient to define a family of transformations and an explicit procedure for identifying which ones meet the accessibility conditions.
 
 A transformation is accessible when the relevant conditions for its realisation are satisfied. In the current analytical model, the space is represented as a function of system state and relevant conditions and constraints:
 
-\\[
+\[
 T_{acc}=F(S,C,L)
-\\]
+\]
 
 Here, (S) denotes the relevant state or configuration of the system; (C), the contextual conditions being considered; and (L), the constraints, resources and operational conditions that matter to the analysis. The notation does not make each element an independent entity. It expresses that accessibility is assessed in relation to a specified configuration and set of conditions.
 
 An accessibility predicate can be defined for each candidate transformation:
 
-\\[
-\\tau \\in T_{acc} \\quad \\text{if and only if} \\quad P_{\\tau}(S,C,L)=1
-\\]
+\[
+\tau \in T_{acc} \quad \text{if and only if} \quad P_{\tau}(S,C,L)=1
+\]
 
 The predicate must be specified independently of downstream outcomes. It would be invalid to define a transformation as accessible simply because we observe that it succeeded, or to conclude that it was available because the system eventually achieved a favourable result. That would introduce retrospective reasoning and confuse starting conditions with what happened afterwards.
 
@@ -160,12 +160,12 @@ The accessible transformation space need not remain constant. It can change when
 
 Suppose that, at an initial point, the system has transformations (A), (B), (C) and (D) available. Later, (C) and (D) are no longer accessible, while (E) and (F) become accessible:
 
-\\[
-T_{acc,t}=\\{A,B,C,D\\}
-\\]
-\\[
-T_{acc,t+1}=\\{A,B,E,F\\}
-\\]
+\[
+T_{acc,t}=\{A,B,C,D\}
+\]
+\[
+T_{acc,t+1}=\{A,B,E,F\}
+\]
 
 Both spaces contain four transformations. Looking only at their size would suggest that nothing changed. Their composition, however, is different: two transformations persist, two disappear and two new ones are added. Reconfiguration has occurred while cardinality is conserved.
 
@@ -185,10 +185,10 @@ These are structural descriptions, not quality scores. The appropriate way to co
 
 To study change over time, we can compare the accessible space at two successive points. One useful analytical sequence is:
 
-\\[
-S_t \\rightarrow T_{acc,t} \\rightarrow T_{real,t}
-\\rightarrow S_{t+1} \\rightarrow T_{acc,t+1}
-\\]
+\[
+S_t \rightarrow T_{acc,t} \rightarrow T_{real,t}
+\rightarrow S_{t+1} \rightarrow T_{acc,t+1}
+\]
 
 The sequence distinguishes the initial state, the accessible transformations, the transformation actually realised, the resulting state and the accessible space under the new conditions.
 
