@@ -341,11 +341,9 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 
 - **v0.1 — 2026-11-26:** First source-readiness review for Chapter 3, based on the current core model, architectural research map, formal and analytical studies of transformation-space dynamics, vision paper, evidence register and cross-domain evidence map.
 - **v0.2 — 2026-11-26:** Relocated under `PoC/` and updated its related-specification path.
+- **v0.7 — 2026-11-26:** Allocated and checked the first glossary and diagram IDs; created the bilingual glossary draft, editable diagram source, asset record, content registry and terminology record. Recorded chapter-outline approval as the remaining pre-drafting gate.
 
-
-
-
-## 13. Pilot content package setup
+## 12. Pilot content package setup
 
 The initial content identities and working assets have now been created on the Learning branch:
 
@@ -360,7 +358,3 @@ The initial content identities and working assets have now been created on the L
 The identifiers were searched in the repository before allocation; no existing occurrence of `TV-TERM-001` or `TV-DIA-001` was found. The two glossary definitions are working drafts and are not approved terminology. The diagram is an analytical teaching aid, not a causal model: its labels explicitly distinguish accessibility, realisation, trajectory, outcome and Value.
 
 **Next gate:** project-owner review of the proposed nine-section Chapter 3 outline in §6, followed by any required adjustments. Only after that review should the paired chapter drafts be created. The source-readiness decision remains bounded and does not constitute approval of the chapter's final wording or claims.
-
-## 14. Version history
-
-- **v0.7 — 2026-11-26:** Allocated and checked the first glossary and diagram IDs; created the bilingual glossary draft, editable diagram source, asset record, content registry and terminology record. Recorded chapter-outline approval as the remaining pre-drafting gate.
