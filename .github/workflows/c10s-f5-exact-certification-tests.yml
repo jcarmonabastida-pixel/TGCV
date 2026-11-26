@@ -150,6 +150,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          AUTHORIZATION_ID="C10S-F5-G7-${GITHUB_SHA:0:12}"
+          AUTHORIZATION_BRANCH="research/c10s-f5-g7-auth-${AUTHORIZATION_ID}"
+          export AUTHORIZATION_ID AUTHORIZATION_BRANCH
           DISPATCH_WORKFLOW_GIT_BLOB="$(gh api "repos/$GITHUB_REPOSITORY/contents/.github/workflows/c10-s-f5-g7-tiera-calibration-v3.yml?ref=main" --jq '.sha')"
           export DISPATCH_WORKFLOW_GIT_BLOB
           mkdir -p "$RUNNER_TEMP/g7-authorization-draft"
@@ -163,8 +166,8 @@ jobs:
           template = {
               "schema": "TGCV-C10S-F5-G7-TIERA-AUTH-002",
               "status": "DRAFT",
-              "authorization_id": "C10S-F5-G7-20261126-001",
-              "authorization_branch": "research/c10s-f5-g7-auth-C10S-F5-G7-20261126-001",
+              "authorization_id": os.environ["AUTHORIZATION_ID"],
+              "authorization_branch": os.environ["AUTHORIZATION_BRANCH"],
               "scope": "C10S_F5_G7_TIERA_PROSPECTIVE_CALIBRATION_ONLY",
               "g7_tiera_calibration_authorized": False,
               "approval_channel": "GITHUB_WORKFLOW_DISPATCH",
