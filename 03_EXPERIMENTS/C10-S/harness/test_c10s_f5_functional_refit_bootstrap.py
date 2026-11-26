@@ -1,4 +1,5 @@
 import unittest
+from types import SimpleNamespace
 from dataclasses import replace
 from unittest.mock import patch
 
@@ -124,6 +125,31 @@ class F5FunctionalRefitBootstrapTests(unittest.TestCase):
         self.assertIsNone(result.within_interval)
         self.assertIsNone(result.between_interval)
         self.assertEqual(result.failure_counts, (("NO_ADMISSIBLE_PRIMARY_FIT", 1),))
+
+    def test_no_admissible_primary_fit_retains_secondary_optimizer_role(self):
+        audit = SimpleNamespace(
+            status="NO_ADMISSIBLE_PRIMARY_FIT",
+            selected_mean_logit=None,
+            selected_log_concentration=None,
+            selected_log_likelihood=None,
+            selected_score_norm=None,
+            profile_log_concentration_curvature=None,
+            profile_minus_binomial_limit=None,
+            profile_minus_two_point_limit=None,
+            independent_optimizer_success=False,
+            independent_optimizer_message="NOT_RUN_NO_ADMISSIBLE_PRIMARY_FIT",
+            independent_log_likelihood=None,
+            independent_score_norm=None,
+            starts=(),
+        )
+        with patch(
+            "c10s_f5_functional_refit_bootstrap.audit_beta_binomial_count_fit",
+            return_value=audit,
+        ):
+            fit = _fit_count_vector([1, 2, 3], 5)
+        self.assertEqual(fit.status, "NO_ADMISSIBLE_PRIMARY_FIT")
+        self.assertEqual(fit.independent_optimizer_role, "SECONDARY_DIAGNOSTIC_ONLY")
+        self.assertEqual(fit.failure_reason, "NO_FINITE_SUCCESSFUL_ANALYTIC_GRADIENT_START")
 
     def test_original_fit_failure_abstains_before_bootstrap(self):
         result = fitted_functional_refit_percentile_bootstrap(
