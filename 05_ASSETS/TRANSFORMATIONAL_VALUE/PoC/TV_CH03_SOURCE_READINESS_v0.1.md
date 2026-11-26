@@ -2,7 +2,7 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.4  
+**Version:** 0.5  
 **Date:** 2026-11-26  
 **Status:** SOURCE REVIEW COMPLETE — READY FOR BOUNDED BILINGUAL DRAFTING  
 **Branch:** `strategy/transformational-value-learning`  
@@ -183,7 +183,7 @@ The proposition that realised transformations and resulting states may alter fut
 
 The current evidence register classifies the cross-domain study as **closed, bounded methodological evidence**.
 
-- 36 records: 20 VisitAll and 16 PRISM.
+- 36 records across two computational domains (20 in one domain and 16 in the other).
 - The computational validation reported no invalid records.
 - The independent mathematical audit reports 36 checked records and zero descriptor mismatches.
 - Both domains exhibit transformation-identity turnover.
@@ -210,7 +210,7 @@ This case should be used to illustrate a methodological boundary, not as positiv
 
 ### 4.4 Other evidence
 
-The cross-domain map includes SWIM, IT-G1 and several C10 cases. They may be referenced briefly where they illuminate a specific distinction, but the pilot chapter should not become an exhaustive catalogue of TGCV experiments. More detailed evidence belongs in Research pages and the book's research/evidence guide.
+The wider research programme contains additional studies across different operational settings, including work on system interaction, infrastructure and later-stage experimental questions. These studies should be mentioned only when their substantive findings clarify a specific concept in this chapter and when their evidence status has been checked against the current authoritative records. Do not identify them by internal project, work-package or experiment codes. The pilot chapter should not become an exhaustive catalogue of research activity; more detailed evidence belongs in the Research section and the book's research and evidence guide.
 
 ---
 
@@ -354,3 +354,6 @@ Where a source title or repository path contains an internal identifier, retain 
 **Version history**
 
 - **v0.4 — 2026-11-26:** Rewrote explanatory sections and chapter-outline guidance to use reader-comprehensible descriptions instead of internal experiment and analytical-artefact acronyms. Explicitly restricted remaining internal identifiers to the editorial source inventory and traceability metadata.
+
+
+- **v0.5 — 2026-11-26:** Removed further internal dataset and workstream labels from the explanatory evidence discussion. Other research is now described by substantive topic and may be included only where its findings and evidence status are relevant.
