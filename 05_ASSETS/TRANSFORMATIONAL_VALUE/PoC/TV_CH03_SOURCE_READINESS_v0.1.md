@@ -2,7 +2,7 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.7  
+**Version:** 0.8  
 **Date:** 2026-11-26  
 **Status:** SOURCE REVIEW COMPLETE — READY FOR BOUNDED BILINGUAL DRAFTING  
 **Branch:** `strategy/transformational-value-learning`  
@@ -329,7 +329,7 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 - [x] Value-linkage non-claim recorded.
 - [x] Canonical glossary ID checked against repository search and allocated: `TV-TERM-001` (draft bilingual entry).
 - [x] Diagram asset ID checked against repository search and allocated: `TV-DIA-001` (editable Mermaid source and asset record created).
-- [ ] Chapter outline approved for drafting by the project owner.
+- [x] Chapter outline approved for drafting by the project owner on 2026-11-26.
 - [ ] Native Spanish and English drafts created.
 - [ ] Editorial, subject and bilingual reviews completed.
 
@@ -342,6 +342,7 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 - **v0.1 — 2026-11-26:** First source-readiness review for Chapter 3, based on the current core model, architectural research map, formal and analytical studies of transformation-space dynamics, vision paper, evidence register and cross-domain evidence map.
 - **v0.2 — 2026-11-26:** Relocated under `PoC/` and updated its related-specification path.
 - **v0.7 — 2026-11-26:** Allocated and checked the first glossary and diagram IDs; created the bilingual glossary draft, editable diagram source, asset record, content registry and terminology record. Recorded chapter-outline approval as the remaining pre-drafting gate.
+- **v0.8 — 2026-11-26:** Recorded the project owner's approval of the nine-section Chapter 3 drafting outline. Paired Spanish and English drafting is now the next production step.
 
 ## 12. Pilot content package setup
 
@@ -357,4 +358,4 @@ The initial content identities and working assets have now been created on the L
 
 The identifiers were searched in the repository before allocation; no existing occurrence of `TV-TERM-001` or `TV-DIA-001` was found. The two glossary definitions are working drafts and are not approved terminology. The diagram is an analytical teaching aid, not a causal model: its labels explicitly distinguish accessibility, realisation, trajectory, outcome and Value.
 
-**Next gate:** project-owner review of the proposed nine-section Chapter 3 outline in §6, followed by any required adjustments. Only after that review should the paired chapter drafts be created. The source-readiness decision remains bounded and does not constitute approval of the chapter's final wording or claims.
+**Next gate:** prepare the paired Spanish and English chapter drafts against the approved nine-section outline in §6. The project owner approved this outline on 2026-11-26. Drafting must remain bounded by the source base, evidence qualifications and editorial controls recorded above. Approval of the outline does not approve the chapter wording, its claims, the glossary entry or the diagram for publication.
