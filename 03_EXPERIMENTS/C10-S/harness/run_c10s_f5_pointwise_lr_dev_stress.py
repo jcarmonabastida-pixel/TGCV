@@ -95,6 +95,11 @@ def _fraction_pair(bounds):
         "approx_decimal": format(float(value), ".16g"),
         "numerator_bits": abs(value.numerator).bit_length(),
         "denominator_bits": value.denominator.bit_length(),
+    } if isinstance(value, Fraction) else {
+        "exact": str(value),
+        "approx_decimal": str(value),
+        "numerator_bits": None,
+        "denominator_bits": None,
     } for value in bounds]
 
 
