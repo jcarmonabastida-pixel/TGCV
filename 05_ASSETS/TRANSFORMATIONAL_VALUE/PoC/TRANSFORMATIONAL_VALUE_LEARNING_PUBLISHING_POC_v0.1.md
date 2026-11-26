@@ -1,7 +1,7 @@
 # TRANSFORMATIONAL VALUE — Learning Publishing Proof of Concept
 
 **Identifier:** TGCV-TV-POC-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-26  
 **Status:** PROPOSED VALIDATION SPECIFICATION — NOT IMPLEMENTATION AUTHORISATION  
 **Branch:** `strategy/transformational-value-learning`  
@@ -436,3 +436,4 @@ The PoC must not silently resolve the following:
 ## 16. Version history
 
 - **v0.1 — 2026-11-26:** Initial bounded PoC specification covering bilingual content, content model, navigation, visual asset governance, framework-neutral evaluation, validation, acceptance criteria and staged decision gates.
+- **v0.2 — 2026-11-26:** Aligned the directory example and location references with the dedicated `PoC/` workspace and the canonical repository layout.
