@@ -361,3 +361,20 @@ Exact zero likelihood at a constrained endpoint is propagated as \`LR_STATISTIC_
 This run verifies all four W/B functional-domain endpoints, exact endpoint likelihoods for interior-count and endpoint-only histograms, and propagation of an exactly zero constrained profile likelihood as an infinite LR statistic. The LR-statistic enclosure and F5 analytic likelihood regression tests also pass.
 
 **M2 status:** fixed-target LR calculation is now defined on the closed interval [0,1/4]. No full confidence-set inversion or coverage calibration has been performed.
+
+
+## 24. F5 LR confidence-set grid inversion — implementation and deterministic logic tests
+
+The M2 harness now includes \`f5_component_profile_confidence_set\`. It:
+- obtains the global-MLE functional target (or targets for certified co-maximizers) from the exact global certificate;
+- evaluates the exact fixed-target LR enclosure on a uniform target grid over the closed [0,1/4] domain, including the MLE target;
+- classifies each target as definitely IN, definitely OUT, or unresolved against a caller-supplied cutoff;
+- retains every grid-detected connected component;
+- refines each detected IN/OUT crossing by exact-target LR evaluations and returns conservative outside brackets;
+- fails closed when any target classification or crossing remains ambiguous.
+
+The algorithm explicitly reports \`topology_certified=false\`: a component narrower than the scan spacing can be missed. Nested-grid convergence is still required as a separate diagnostic and does not by itself prove global topology.
+
+**Logic tests:** 36/36 PASS in 70.276 s, workflow [45834076442](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45834076442). The tests use synthetic LR evaluator fixtures to verify preservation of two disconnected components, conservative crossing brackets, and fail-closed handling of an ambiguous cutoff classification. They do not execute the full statistical inversion on simulated data.
+
+A separate single-fixture full-inversion smoke run is in progress to check the actual fixed-target LR pipeline end to end. No calibration or confirmatory run is involved.
