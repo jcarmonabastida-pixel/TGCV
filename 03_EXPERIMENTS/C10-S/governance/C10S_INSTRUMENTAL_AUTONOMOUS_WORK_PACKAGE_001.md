@@ -606,3 +606,27 @@ The two large Sturm sequence builds fell from 123.164 s in the fixed-point-only 
 **Disposition:** retain the signed integer PRS as a parity-tested development candidate, not yet as the production implementation. The combined profile remains computationally expensive and no coverage, topology, or cutoff-calibration claim follows.
 
 **Next operation:** test whether a coarser *exact isolating interval width* can reduce subdivision/sign-evaluation cost while preserving complete root census, exact interval enclosure, and `LR_STATISTIC_ENCLOSED`. Start with a bounded M30/R20 W comparison at width (2^{-24}) against the current (2^{-40}) fixture. The width change must not alter any statistical acceptance threshold; if likelihood/LR enclosures become too wide or any root becomes unresolved, retain the tighter width. No coverage simulation, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
+
+
+## 34. Coarser exact root-isolation width — PASS; substantial runtime reduction
+
+**Workflow:** [45862410768](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45862410768) — SUCCESS  
+**Tested commit:** `be32e062aa4bce33fec5ef8ec6e72c55e1eca845`  
+**Fixture:** same M30/R20 W histogram, target (1/20), signed integer PRS plus certified fixed-point sign evaluator.
+
+The exact root-isolation width was changed from (2^{-40}) to (2^{-24}). This changes only the maximum width of rational isolating intervals; it does not approximate root counts, alter the LR cutoff, or weaken any statistical acceptance criterion. Likelihood and LR bounds continue to be computed by exact rational enclosures.
+
+Result:
+- profile: `LR_STATISTIC_ENCLOSED`, `PROFILE_MAXIMUM_ENCLOSED`;
+- 3 candidates, 1 interior stationary point;
+- dominant isolation: `ISOLATION_COMPLETE`, 1,420 processed intervals, 1 exact root, 122 isolating intervals, 0 unresolved;
+- the other two nontrivial endpoint calls each processed 49 intervals and completed; the exact endpoint-factor call found 2 exact roots;
+- total profile runtime: **342.267 s**, versus 720.064 s at (2^{-40}) with the same combined prototypes (about 52.5% lower), and 927.246 s in the original (2^{-40}) rational-sequence baseline (about 63% lower).
+
+The dominant call took 242.616 s. Its two integer Sturm sequence builds took 48.701 s; certified sign evaluation took 190.902 s across 1,301 variation calls and 232,881 polynomial evaluations. Of these, 229,595 signs were certified at 128 bits, 3,197 at 256 bits, and 89 used exact fallback. No unresolved interval was introduced.
+
+The LR statistic enclosure was approximately [68.60849784569649, 68.60849785926779]; the profile likelihood enclosure was approximately (2.322290881315881\times10^{-54}) at both displayed endpoints. The output retains exact rational bounds; the decimals above are diagnostic display only. The interval is finite and narrow for this fixture. No LR cutoff is selected or validated by this result.
+
+**Disposition:** (2^{-24}) is a promising numerical-precision candidate for the M30/R20 W profile. It preserves complete root census and exact LR enclosure for this one fixture while materially reducing computation. It is not yet frozen for all cells, estimands or boundary cases.
+
+**Next operation:** run a further bounded width-sensitivity comparison at (2^{-16}), using the same fixture and exact arithmetic, to determine whether additional speed is available without changing the root census or making the LR enclosure operationally ambiguous. If the wider intervals materially weaken the enclosure, retain (2^{-24}). Then test the selected width on M30/R20 B and boundary/degenerate fixtures before considering any broader development comparison. No coverage simulation, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
