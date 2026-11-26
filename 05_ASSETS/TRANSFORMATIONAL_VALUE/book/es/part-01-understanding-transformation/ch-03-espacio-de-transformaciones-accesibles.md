@@ -5,7 +5,7 @@ title: "El espacio de transformaciones accesibles"
 language: es
 content_type: chapter
 status: draft
-version: 0.6
+version: 0.7
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -275,7 +275,7 @@ El espacio de transformaciones accesibles representa qué transformaciones puede
 
 Su composición puede cambiar mediante expansión, contracción, reconfiguración o sustitución. Por eso, observar únicamente el número de transformaciones puede ser insuficiente: también importa qué transformaciones aparecen, cuáles desaparecen y cuáles permanecen. La dinámica del espacio accesible tampoco debe confundirse con el cambio en el alcance potencial de estados sucesores ni con la ejecución observada.
 
-La evidencia disponible ofrece apoyo metodológico acotado para representar estos cambios y apoyo causal acotado para una relación con trayectorias posteriores en un contexto real. También contiene resultados no detectables y casos en los que la accesibilidad solo puede identificarse parcialmente. Estas diferencias importan: no toda evidencia responde a la misma pregunta ni permite el mismo tipo de conclusión.
+La evidencia disponible ofrece apoyo metodológico acotado para representar estos cambios y apoyo causal acotado para una relación con trayectorias posteriores en un contexto real. El análisis temporal del ecosistema de paquetes muestra, además, que los cambios en el espacio accesible y en el alcance potencial de un paso son empíricamente distinguibles en la operacionalización examinada. También hay resultados no detectables y casos en los que la accesibilidad solo puede identificarse parcialmente. Estas diferencias importan: no toda evidencia responde a la misma pregunta ni permite el mismo tipo de conclusión.
 
 La distinción fundamental debe conservarse a lo largo de todo el análisis:
 
@@ -301,5 +301,6 @@ El espacio accesible depende de condiciones, recursos, relaciones y restriccione
 - Field, E., & Pande, R. *Evaluating the economic impacts of rural banking: experimental evidence from southern India*. 3ie Impact Evaluation Report 85. https://doi.org/10.23846/OW3IE85
 - McIntosh, C., Alegría, T., Ordóñez, G., & Zenteno, R. (2018). The Neighborhood Impacts of Local Infrastructure Investment: Evidence from Urban Mexico. *American Economic Journal: Applied Economics, 10*(3), 263–286. https://doi.org/10.1257/app.20160429
 - Gonzalez-Navarro, M., & Quintana-Domeque, C. (2016). Paving Streets for the Poor: Experimental Analysis of Infrastructure Effects. *The Review of Economics and Statistics, 98*(2), 254–267. https://doi.org/10.1162/REST_a_00553. Replication data: https://doi.org/10.7910/DVN/6TC8RO
+- Figshare. *Full dataset* [conjunto de datos histórico del ecosistema de paquetes de Rust]. https://springernature.figshare.com/articles/dataset/Full_dataset/21345990. Licencia declarada: CC0.
 
-Los análisis computacionales propios de TGCV citados en este capítulo deberán contar con registros públicos de investigación, metodología y procedencia antes de la aprobación editorial final. Hasta entonces, sus resultados se mantienen como evidencia de proyecto trazable en la documentación de trabajo, no como publicaciones externas.
+Los análisis computacionales propios de TGCV citados en este capítulo se documentan mediante notas de investigación complementarias que describen sus fuentes, métodos, resultados y límites. Estas notas son documentación de investigación del proyecto y no deben confundirse con publicaciones externas independientes.
