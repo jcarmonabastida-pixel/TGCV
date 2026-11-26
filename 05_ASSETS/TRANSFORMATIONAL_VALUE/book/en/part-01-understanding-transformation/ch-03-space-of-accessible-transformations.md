@@ -5,7 +5,7 @@ title: "The Space of Accessible Transformations"
 language: en
 content_type: chapter
 status: draft
-version: 0.8
+version: 0.9
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -94,7 +94,7 @@ Studying this space describes a dimension of change that cannot be reduced to ob
 
 The starting point is a set of candidate transformations. We use \(\tau\) to denote a candidate: an identifiable change that could occur in the system. It must be specified clearly enough to ask what conditions would allow it to be realised.
 
-Not every imaginable transformation belongs in the analysis. The candidate universe is delimited according to the system under study, the research question and the required level of detail. In some cases, the relevant alternatives can be enumerated. In others, it may be sufficient to define a family of transformations and an explicit procedure for identifying which ones meet the accessibility conditions.
+Not every imaginable transformation belongs in the analysis. The candidate universe is delimited according to the system under study, the research question and the required level of detail. The candidate universe must also be defined in terms of the system boundary, the time horizon and the granularity used to describe each transformation. These parameters determine which alternatives are included in the analysis and how they can be compared. In some cases, the relevant alternatives can be enumerated. In others, it may be sufficient to define a family of transformations and an explicit procedure for identifying which ones meet the accessibility conditions.
 
 A transformation is accessible when the relevant conditions for its realisation are satisfied. In the current analytical model, the space is represented as a function of system state and relevant conditions and constraints:
 
@@ -102,7 +102,7 @@ A transformation is accessible when the relevant conditions for its realisation 
 T_{acc}=F(S,C,L)
 \]
 
-Here, \(S\) denotes the relevant state or configuration of the system; \(C\), the contextual conditions being considered; and \(L\), the constraints, resources and operational conditions that matter to the analysis. The notation does not make each element an independent entity. It expresses that accessibility is assessed in relation to a specified configuration and set of conditions.
+Here, \(S\) denotes the relevant state or configuration of the system; \(C\), the contextual conditions being considered; and \(L\), the constraints, resources and operational conditions relevant to the analysis. The system state provides the ontological starting point. Contextual conditions and the elements represented by \(L\) are included to assess accessibility in each case; they are not posited as independent ontological entities and must not be confused with the transformation space itself.
 
 An accessibility predicate can be defined for each candidate transformation:
 
@@ -111,6 +111,8 @@ An accessibility predicate can be defined for each candidate transformation:
 \]
 
 The predicate must be specified independently of downstream outcomes. It would be invalid to define a transformation as accessible simply because we observe that it succeeded, or to conclude that it was available because the system eventually achieved a favourable result. That would introduce retrospective reasoning and confuse starting conditions with what happened afterwards.
+
+The predicate expresses an accessibility condition, but the available evidence may not allow it to be assessed conclusively. In practice, the analysis must distinguish between a transformation whose accessibility has been established, one whose inaccessibility has been established, and one whose status cannot be determined from the available information. The latter does not mean assigning the predicate a value of zero: it means that whether the condition is satisfied has not been established. Insufficient evidence must not automatically be interpreted as evidence that accessibility is absent.
 
 Accessibility may depend on several dimensions:
 
