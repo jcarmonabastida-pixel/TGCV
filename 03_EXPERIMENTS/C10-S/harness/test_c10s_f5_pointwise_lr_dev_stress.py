@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
 
+from c10s_f5_rational_score_polynomials import _c10s_root_progress_event
 from run_c10s_f5_pointwise_lr_dev_stress import (
     K_PER_CELL,
     TARGETS,
@@ -58,6 +60,22 @@ class F5PointwiseLRDevelopmentStressTests(unittest.TestCase):
             self.assertFalse(payload["complete"])
             self.assertEqual(payload["completed_stage"], "SEED_AUDIT")
             self.assertFalse(path.with_suffix(".json.tmp").exists())
+
+    def test_root_isolation_telemetry_is_opt_in_and_jsonl(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "roots.jsonl"
+            previous = os.environ.get("TGCV_C10S_ROOT_PROGRESS_PATH")
+            try:
+                os.environ["TGCV_C10S_ROOT_PROGRESS_PATH"] = str(path)
+                _c10s_root_progress_event({"phase": "TEST", "degree": 4})
+            finally:
+                if previous is None:
+                    os.environ.pop("TGCV_C10S_ROOT_PROGRESS_PATH", None)
+                else:
+                    os.environ["TGCV_C10S_ROOT_PROGRESS_PATH"] = previous
+            record = json.loads(path.read_text(encoding="utf-8").splitlines()[0])
+            self.assertEqual(record["event"]["phase"], "TEST")
+            self.assertEqual(record["event"]["degree"], 4)
 
 
 if __name__ == "__main__":
