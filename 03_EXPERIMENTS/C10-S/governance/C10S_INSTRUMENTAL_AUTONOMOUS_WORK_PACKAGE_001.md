@@ -869,3 +869,26 @@ Root isolation reported `ISOLATION_COMPLETE` with zero unresolved intervals in e
 This confirms the consolidated adaptive runner reproduces the earlier pointwise diagnostic. It does **not** calibrate either diagnostic cutoff, establish confidence-set topology, or demonstrate coverage. In particular, the M30/R20 boundary calculation remains computationally expensive.
 
 **Decision:** retain the historically validated adaptive module as the sole adaptive LR implementation. Proceed to bounded development-only robustness work only after inspecting the exact F5 DGP/seed generator and defining what is being tested; do not treat these two constructed boundary fixtures as a sampling stress test. Tier-A, Tier-B and causal C10-S remain unauthorized.
+
+
+## 44. Predeclared F5 pointwise LR development stress — execution launched
+
+**Protocol:** `03_EXPERIMENTS/C10-S/diagnostics/C10S_F5_POINTWISE_LR_DEVELOPMENT_STRESS_PROTOCOL_001.md`  
+**Protocol commit:** `208ca18a68c60552c5e3851c714ad6eb26acf3ce`  
+**Runner commit:** `760bcf1a22630e669b23508825d4633c07d8c7ba`  
+**Output robustness fix:** `2a14c52916094d6ce935aae78f55604011f08300`  
+**Tests commit:** `54aa724a1c1821039511a417783323711c0e5034`  
+**Workflow commit:** `0e977904113f5598445688dd92c72a5f7fda667d`  
+**Workflow:** [45875735310](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45875735310) — launched; result pending.
+
+The bounded protocol is frozen before the data run:
+- three fresh datasets per F5 beta22 cell (M10/R5 and M30/R20), six total;
+- new SHA-256 seed schedule/namespace, checked against reconstructed historical B2/B3/G7/comparative-holdout schedules and all consumed dataset/bootstrap/replicate seeds from the executed M1 pilot;
+- complete count vectors retained and fingerprinted;
+- exact unrestricted global-MLE certificate followed by exact pointwise W=1/5 and B=1/20 profile-LR enclosures at root-isolation width 2^{-8};
+- fixed certificate budgets and typed unresolved states retained; no retries with altered budgets;
+- artifact output records LR rational enclosures, status, root/candidate counts, hashes and runtimes.
+
+The known W/B values are used only as evaluation targets for the pointwise LR statistic, not in unrestricted fitting. There is no LR cutoff, classification, confidence-set inversion, coverage/Wilson adjudication or method selection. The six-dataset K is solely a computational/numerical behaviour probe, not a calibration sample.
+
+The runner requires the exact GitHub source revision and explicit `--execute-development-stress` flag. The workflow performs hash-locked dependency installation, compilation, seed/provenance tests, the bounded run and artifact upload. No Tier-A, Tier-B or causal C10-S authorization is inferred or requested.
