@@ -238,7 +238,7 @@ jobs:
           EXPECTED_REPOSITORY_ID: ${{ github.repository_id }}
         run: |
           set -euo pipefail
-          MANIFEST="03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json"
+          MANIFEST="../fixtures/g7_resource_profile_v1_1/manifest.json"
           ARCHIVE="$RUNNER_TEMP/resource-profile.zip"
           METADATA="$RUNNER_TEMP/resource-profile-artifact-metadata.json"
           mkdir -p "$RUNNER_TEMP/resource-profile"
@@ -250,7 +250,7 @@ jobs:
             --output "$ARCHIVE"
           python verify_c10s_f5_g7_resource_profile_artifact.py \
             --archive "$ARCHIVE" \
-            --manifest fixtures/g7_resource_profile_v1_1/manifest.json \
+            --manifest "$MANIFEST" \
             --artifact-metadata "$METADATA" \
             --output-json "$RUNNER_TEMP/verified-resource-profile-artifact.json" \
             --extract-profile "$RUNNER_TEMP/resource-profile/c10s-f5-g7-resource-profile.json" \
