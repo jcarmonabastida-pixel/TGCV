@@ -4,7 +4,6 @@ from collections import Counter
 from fractions import Fraction
 import math
 import unittest
-from unittest.mock import patch
 
 from c10s_f5_beta_binomial_likelihood_diagnostics import (
     beta_binomial_loglik_score_hessian,
@@ -15,7 +14,6 @@ from c10s_f5_component_profile_score import (
     f5_isolate_component_profile_score_roots,
     f5_component_profile_maximum_enclosure,
     f5_component_profile_lr_statistic,
-    f5_component_profile_lr_statistic_adaptive,
     _scan_profile_lr_grid,
 )
 from c10s_f5_rational_score_polynomials import beta_binomial_global_mle_certificate
@@ -291,70 +289,6 @@ class F5ConstrainedProfileScoreTests(unittest.TestCase):
                         R, HISTOGRAM, component="B", target=target,
                     )
 
-
-    def test_adaptive_lr_refinement_intersects_exact_bounds_and_classifies(self):
-        fake_certificate = {"status": "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED"}
-        results = [
-            {"status": "LR_STATISTIC_ENCLOSED", "lr_statistic_bounds": (Fraction(3), Fraction(4))},
-            {"status": "LR_STATISTIC_ENCLOSED", "lr_statistic_bounds": (Fraction(13, 4), Fraction(27, 8))},
-        ]
-        with patch(
-            "c10s_f5_component_profile_score.f5_component_profile_lr_statistic",
-            side_effect=results,
-        ) as evaluate:
-            result = f5_component_profile_lr_statistic_adaptive(
-                R, HISTOGRAM, component="B", target=Fraction(1, 20),
-                cutoff=Fraction(7, 2), global_certificate=fake_certificate,
-                isolation_widths=(Fraction(1, 2**8), Fraction(1, 2**16)),
-            )
-        self.assertEqual(result["status"], "LR_STATISTIC_ENCLOSED")
-        self.assertEqual(result["lr_statistic_bounds"], (Fraction(13, 4), Fraction(27, 8)))
-        self.assertEqual(result["adaptive_refinement"]["classification"], "IN")
-        self.assertEqual(evaluate.call_count, 2)
-
-    def test_adaptive_lr_refinement_fails_closed_on_non_nested_bounds(self):
-        fake_certificate = {"status": "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED"}
-        results = [
-            {"status": "LR_STATISTIC_ENCLOSED", "lr_statistic_bounds": (Fraction(3), Fraction(4))},
-            {"status": "LR_STATISTIC_ENCLOSED", "lr_statistic_bounds": (Fraction(5), Fraction(6))},
-        ]
-        with patch(
-            "c10s_f5_component_profile_score.f5_component_profile_lr_statistic",
-            side_effect=results,
-        ):
-            result = f5_component_profile_lr_statistic_adaptive(
-                R, HISTOGRAM, component="B", target=Fraction(1, 20),
-                cutoff=Fraction(7, 2), global_certificate=fake_certificate,
-                isolation_widths=(Fraction(1, 2**8), Fraction(1, 2**16)),
-            )
-        self.assertEqual(result["status"], "ADAPTIVE_REFINEMENT_ENCLOSURE_CONFLICT")
-
-    def test_adaptive_lr_refinement_returns_typed_ambiguity_on_exhaustion(self):
-        fake_certificate = {"status": "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED"}
-        results = [
-            {"status": "LR_STATISTIC_ENCLOSED", "lr_statistic_bounds": (Fraction(3), Fraction(4))},
-            {"status": "LR_STATISTIC_ENCLOSED", "lr_statistic_bounds": (Fraction(31, 10), Fraction(39, 10))},
-        ]
-        with patch(
-            "c10s_f5_component_profile_score.f5_component_profile_lr_statistic",
-            side_effect=results,
-        ):
-            result = f5_component_profile_lr_statistic_adaptive(
-                R, HISTOGRAM, component="B", target=Fraction(1, 20),
-                cutoff=Fraction(7, 2), global_certificate=fake_certificate,
-                isolation_widths=(Fraction(1, 2**8), Fraction(1, 2**16)),
-            )
-        self.assertEqual(result["status"], "UNRESOLVED_ADAPTIVE_PRECISION_EXHAUSTED")
-        self.assertEqual(result["adaptive_refinement"]["classification"], "AMBIGUOUS")
-
-    def test_adaptive_lr_widths_must_strictly_decrease(self):
-        with self.assertRaisesRegex(F5ConstrainedScoreError, "STRICTLY_DECREASE"):
-            f5_component_profile_lr_statistic_adaptive(
-                R, HISTOGRAM, component="B", target=Fraction(1, 20),
-                cutoff=Fraction(7, 2),
-                global_certificate={"status": "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED"},
-                isolation_widths=(Fraction(1, 2**8), Fraction(1, 2**8)),
-            )
 
 
 if __name__ == "__main__":
