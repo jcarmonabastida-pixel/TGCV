@@ -193,3 +193,14 @@ Key consequence: the existing MCSE profile is not a W/B interval implementation 
 The M2 design now specifies compact nuisance coordinates for the W and B constrained profiles, with the two concentration limits evaluated analytically. This removes arbitrary mathematical tail truncation but does not confer numerical globality. Adaptive refinement, branch/maxima stability, independent likelihood checks and fail-closed unresolved states remain mandatory before coding or simulation.
 
 **Current disposition unchanged:** M2 design-only; no M2 implementation/simulation, no LR cutoff selection, no Tier-A/Tier-B/C10 authorization.
+
+
+## 13. F1 raw-between static verification path added
+
+The existing F1 raw-between profile-likelihood implementation has been located and inspected. It is implemented (not merely a candidate sketch), F1-family guarded, and uses nuisance score-polynomial isolation plus optimizer/score cross-checks and root-based LR endpoint inversion. The cutoff is caller-supplied and has not been calibrated; no Tier-A inference follows.
+
+A separate research-branch workflow \`.github/workflows/c10-s-f1-profile-static-tests.yml\` now runs only pinned-dependency compilation and deterministic unit tests for the F1 profile and its numerical dependencies. It does not execute a simulation or calibration. Its run result will be used to distinguish implementation/test integrity from the still-open cutoff calibration.
+
+**F1 disposition:** implementation present; deterministic test run pending; LR cutoff calibration pending.  
+**F5 disposition:** M1-PCT rejected for Tier-A; M2 component profile remains design-only.  
+**Confirmatory execution:** none.
