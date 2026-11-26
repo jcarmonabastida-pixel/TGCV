@@ -333,3 +333,20 @@ The exact constrained W/B profile-maximum and LR-statistic layers are recorded i
 The broader exact rational-score/global-MLE suite passed 130/130 tests on run \`45831286314\`; the M2 score/root/maximum suite passed 31/31 on \`45831943819\`; the M2 LR suite passed 33/33 on \`45832387827\`.
 
 **Remaining M2 work:** integrate the four functional-domain endpoints into the profile/LR API; implement full target-domain LR confidence-set inversion while retaining all components and failing closed on unresolved topology; test disconnected/one-sided/empty sets and endpoint inclusion. Then assess resource cost. No calibration or numerical simulation has been run.
+
+
+## 22. F5 closed-domain endpoints — PASS
+
+**Workflow:** [45832976732](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45832976732) — SUCCESS  
+**Tested commit:** \`09fa43914a4f407f545dd5ef017196a7c8c1e217\`  
+**Tests:** **34/34 PASS** in 72.183 s.
+
+The constrained profile maximum now supports the full closed functional domain:
+- W=0 via the profiled two-point limit;
+- B=0 via the profiled binomial limit;
+- W=1/4 via the binomial limit at mu=1/2;
+- B=1/4 via the two-point limit at mu=1/2.
+
+Exact zero likelihood at a constrained endpoint is propagated as \`LR_STATISTIC_INFINITE\`, not as a numerical failure. Tests cover interior-count and endpoint-only histograms and verify the corresponding exact rational likelihoods. The same run re-exercised the LR statistic enclosure and F5 likelihood score/Hessian regressions.
+
+**M2 status:** fixed-target LR-statistic enclosure now covers both interior and closed-domain endpoint targets. Full LR confidence-set inversion and topology remain unimplemented.
