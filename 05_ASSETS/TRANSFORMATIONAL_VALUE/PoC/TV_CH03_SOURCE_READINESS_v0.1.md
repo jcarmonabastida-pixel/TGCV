@@ -2,7 +2,7 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.10  
+**Version:** 0.11  
 **Date:** 2026-11-26  
 **Status:** SOURCE REVIEW COMPLETE — READY FOR BOUNDED BILINGUAL DRAFTING  
 **Branch:** `strategy/transformational-value-learning`  
@@ -339,7 +339,7 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 - [x] Canonical glossary ID checked against repository search and allocated: `TV-TERM-001` (draft bilingual entry).
 - [x] Diagram asset ID checked against repository search and allocated: `TV-DIA-001` (editable Mermaid source and asset record created).
 - [x] Chapter outline approved for drafting by the project owner on 2026-11-26.
-- [x] Native Spanish and English first drafts created (v0.1; both remain in draft status).
+- [x] Native Spanish and English first drafts created and refined (v0.2; both remain in draft status).
 - [ ] Editorial, subject and bilingual reviews completed.
 
 **Gate 0 disposition:** source readiness is sufficient to proceed to the content package. The remaining unchecked items are production tasks, not blockers to the source-readiness decision.
@@ -354,6 +354,7 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 - **v0.8 — 2026-11-26:** Recorded the project owner's approval of the nine-section Chapter 3 drafting outline. Paired Spanish and English drafting is now the next production step.
 - **v0.9 — 2026-11-26:** Reconciled the evidence section and drafting guidance against the current Evidence-to-Claim Matrix v1.47. Distinguished bounded causal accessibility-to-trajectory support, partial identification, cross-domain operationalisation and synthetic non-equivalence; mapped detailed TOC themes into the approved nine-section macro-structure.
 - **v0.10 — 2026-11-26:** Created the first native Spanish and English Chapter 3 drafts, registered both as `draft`, and retained the bilingual editorial and subject-matter reviews as pending.
+- **v0.11 — 2026-11-26:** Refined both drafts to make the distinction between structural availability and adoption/use explicit, and to clarify the meaning and limits of latent accessible possibilities. Both language versions remain in draft status.
 
 ## 12. Pilot content package setup
 
@@ -361,7 +362,7 @@ The initial content identities and working assets have now been created on the L
 
 | Item | Stable ID | Location | State |
 |---|---|---|---|
-| Chapter 3 | `TV-CH-03` | `book/es/` and `book/en/` (registered target paths) | First native drafts v0.1 created; editorial review pending |
+| Chapter 3 | `TV-CH-03` | `book/es/` and `book/en/` (registered target paths) | Native drafts v0.2 created; editorial review pending |
 | Accessible transformation space glossary entry | `TV-TERM-001` | `glossary/es/` and `glossary/en/` | Draft in both languages |
 | Chapter 3 sequence diagram | `TV-DIA-001` | `assets/diagrams/TV-DIA-001/` | Draft editable Mermaid source |
 | Content registry | — | `metadata/content-registry.yml` | Initial registry created |
