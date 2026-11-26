@@ -810,3 +810,23 @@ The combined adaptive-refinement and integer-Sturm parity workflow passed **18 d
 **Bounded real-fixture diagnostic:** [45869809771](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45869809771) was launched for the two previously wide boundary-B enclosures (M30/R20 boundary-only B and M10/R5 endpoint-only B), with diagnostic cutoffs chosen inside their coarse (2^{-8}) enclosures. The purpose is to verify that adaptive refinement narrows the pointwise LR enclosure enough to classify IN/OUT or returns the typed unresolved state. These diagnostic cutoffs are not calibrated and are not proposed as Tier-A cutoffs. At this record's update, the workflow remained in progress.
 
 **Next operation:** inspect the two real-fixture adaptive outcomes. If successful, perform a bounded repeated-sampling development stress test under known F5 DGP truth, using fresh development-only seeds, to inspect adaptive classification, abstention and resource costs. Do not treat this as coverage calibration. No Tier-A confirmatory run, Tier-B, LR-cutoff calibration, or causal C10-S execution is authorized by this step.
+
+
+## 41. Bounded adaptive exact LR refinement — PASS
+
+**Workflow:** [45869537215](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45869537215) — SUCCESS  
+**Tested commit:** `5da226e59ee21ce128238b307849ebb4fc53ae29`  
+**Tests:** 5/5 adaptive-logic tests PASS.
+
+A development-only adaptive wrapper now evaluates exact LR enclosures at widths (2^{-8}), (2^{-16}), (2^{-24}), then (2^{-40}), stopping as soon as the caller-supplied cutoff is classified. It checks exact nesting at every refinement and returns typed states for classification, unresolved inner profiles, non-nested enclosures, and refinement-budget exhaustion. It does not alter the cutoff or statistical acceptance criteria.
+
+Three bounded cases completed:
+- **M30/R20 boundary-only B, cutoff 48:** (2^{-8}) was correctly `AMBIGUOUS` with LR bounds approximately [47.28196416, 49.38149181]. At (2^{-16}), the nested enclosure tightened to [48.27830487, 48.28649337] and classified `OUT`. Profile times: 156.60 s and 157.31 s.
+- **M10/R5 endpoint-only B, cutoff 16:** (2^{-8}) was `AMBIGUOUS` with [15.76065472, 16.46049727]. At (2^{-16}), the nested enclosure tightened to [16.09276829, 16.09549779] and classified `OUT`. Profile times: 0.623 s and 0.671 s.
+- **M30/R20 interior B, cutoff 1:** the (2^{-8}) enclosure [0.02735816, 0.02735818] classified `IN` immediately in 165.38 s.
+
+Every root-isolation call in all refinements returned `ISOLATION_COMPLETE` with zero unresolved intervals. The adaptive logic verified exact enclosure nesting and did not force a classification while the cutoff lay inside the interval.
+
+**Disposition:** the adaptive refinement rule is a viable development candidate for avoiding unnecessarily fine root isolation while preserving fail-closed classification. It does not itself establish coverage, LR-cutoff calibration, full confidence-set topology, or readiness for Tier-A.
+
+**Next operation:** reconcile the current F5 numerical candidate and adaptive wrapper against the full C10-S contracts; then design a small development-only repeated-sampling stress comparison with known DGP truth, fresh development seeds, and no confirmatory/exposed holdout data. Keep adaptive refinement and its width schedule explicitly provisional until performance, interval nesting and boundary behavior are verified across more DGP configurations. No Tier-A confirmatory run, Tier-B, or causal C10-S execution is authorized by this step.
