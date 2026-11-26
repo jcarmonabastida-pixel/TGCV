@@ -14,6 +14,7 @@ from c10s_f5_component_profile_score import (
     f5_isolate_component_profile_score_roots,
     f5_component_profile_maximum_enclosure,
     f5_component_profile_lr_statistic,
+    _scan_profile_lr_grid,
 )
 from c10s_f5_rational_score_polynomials import beta_binomial_global_mle_certificate
 
@@ -223,6 +224,48 @@ class F5ConstrainedProfileScoreTests(unittest.TestCase):
             b_quarter_endpoint["profile_likelihood_bounds"],
             (Fraction(1, 2**10), Fraction(1, 2**10)),
         )
+
+
+    def test_lr_grid_scan_preserves_disconnected_components_and_brackets_crossings(self):
+        def evaluator(target):
+            accepted = (
+                Fraction(1, 50) <= target <= Fraction(2, 25)
+                or Fraction(4, 25) <= target <= Fraction(11, 50)
+            )
+            value = Fraction(0) if accepted else Fraction(10)
+            return {
+                "status": "LR_STATISTIC_ENCLOSED",
+                "lr_statistic_bounds": (value, value),
+            }
+
+        grid = tuple(Fraction(i, 64) for i in range(17))
+        result = _scan_profile_lr_grid(
+            grid, cutoff=Fraction(384, 100), evaluate=evaluator,
+            max_bisection_steps=6,
+        )
+        self.assertEqual(
+            result["status"], "GRID_DETECTED_DISCONNECTED_COMPONENTS_BRACKETED",
+        )
+        self.assertEqual(len(result["confidence_components"]), 2)
+        self.assertFalse(result["topology_certified"])
+        first, second = result["confidence_components"]
+        self.assertLess(first[0], Fraction(1, 50))
+        self.assertGreater(first[1], Fraction(2, 25))
+        self.assertLess(second[0], Fraction(4, 25))
+        self.assertGreater(second[1], Fraction(11, 50))
+
+    def test_lr_grid_scan_fails_closed_on_ambiguous_cutoff_classification(self):
+        def evaluator(target):
+            value = (Fraction(3), Fraction(4)) if target == Fraction(1, 8) else (Fraction(0), Fraction(0))
+            return {"status": "LR_STATISTIC_ENCLOSED", "lr_statistic_bounds": value}
+
+        result = _scan_profile_lr_grid(
+            tuple(Fraction(i, 16) for i in range(5)),
+            cutoff=Fraction(7, 2), evaluate=evaluator,
+            max_bisection_steps=2,
+        )
+        self.assertEqual(result["status"], "UNRESOLVED_GRID_CUTOFF_CLASSIFICATION")
+        self.assertFalse(result["topology_certified"])
 
     def test_polynomial_is_reproducible_and_target_is_exact_binary_rational(self):
         first = f5_component_profile_score_polynomial(
