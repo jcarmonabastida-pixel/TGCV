@@ -1,7 +1,7 @@
 # TRANSFORMATIONAL VALUE — Detailed Table of Contents (Working Proposal)
 
 **Identifier:** TGCV-TV-TOC-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-26  
 **Status:** EDITORIAL PROPOSAL — FOR STRUCTURAL REVIEW  
 **Governing document:** `05_ASSETS/TRANSFORMATIONAL_VALUE/TRANSFORMATIONAL_VALUE_LEARNING_MASTER_ARCH_v0.1.md`  
@@ -440,6 +440,23 @@ Each chapter should use a consistent but adaptable pattern:
 
 Not every chapter needs all twelve elements. The template is a quality guide, not a rigid form.
 
+## 3.1 Native Spanish and English authoring — applies to every chapter and section
+
+Every content unit in this table of contents is to be developed as two natively authored language versions: Spanish and English. This is not a workflow in which one complete manuscript is written first and the other language is translated afterwards.
+
+For each chapter and section:
+- define the same learning purpose, conceptual scope and evidence boundary in both languages;
+- compose the Spanish version naturally in Spanish and the English version naturally in English;
+- preserve equivalent reasoning, depth, examples, references, caveats and learning objectives, without forcing literal sentence-by-sentence correspondence;
+- use the shared terminology register for technical concepts, approved equivalents and terms intentionally retained in English;
+- keep approved framework, lifecycle, product and proper names unchanged;
+- review each language version independently for clarity, accuracy, tone and didactic quality, then perform a cross-language equivalence review;
+- track the status of each language independently and do not mark a chapter complete until both versions meet the agreed publication criteria.
+
+This requirement applies equally to front matter, chapter titles and headings, glossary, captions, diagrams, exercises, case studies, references, navigation labels and back matter. Where a title is an approved proper name, it remains unchanged; ordinary descriptive headings should be written naturally in each language.
+
+The eventual content repository should pair the two versions through a stable shared content ID and explicit language metadata. The detailed folder and metadata convention will be specified separately before large-scale drafting.
+
 ## 4. Cross-cutting editorial requirements
 
 ### 4.1 Terminology discipline
@@ -518,3 +535,4 @@ These questions should be resolved before treating the contents as approved:
 ## 8. Version history
 
 - **v0.1 — 2026-11-26:** First detailed table-of-contents proposal, including chapter purposes, section-level breakdown, chapter template, content dependencies and structural review questions.
+- **v0.2 — 2026-11-26:** Added native Spanish and English authorship as a requirement applying to every chapter and section, with independent review and bilingual completeness controls.
