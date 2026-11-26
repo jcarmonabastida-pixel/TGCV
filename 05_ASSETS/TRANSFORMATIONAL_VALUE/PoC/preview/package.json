@@ -1,0 +1,20 @@
+{
+  "name": "transformational-value-learning-poc-preview",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "prepare:content": "node scripts/prepare-content.mjs",
+    "dev": "npm run prepare:content && astro dev",
+    "build": "npm run prepare:content && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.34.0",
+    "astro": "^5.14.0",
+    "katex": "^0.16.22"
+  },
+  "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^11.10.0"
+  }
+}
