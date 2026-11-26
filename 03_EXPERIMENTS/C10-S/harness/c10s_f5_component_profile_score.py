@@ -17,6 +17,7 @@ from c10s_f5_rational_score_polynomials import (
     _primitive_integer_polynomial, _uni_gcd, _uni_divmod,
     _uni_squarefree_factors, _uni_isolate_squarefree_unit_roots, _uni_monic,
     _beta_binomial_likelihood_enclosure, beta_binomial_score_numerators,
+    beta_binomial_global_mle_certificate,
 )
 
 
@@ -496,4 +497,166 @@ def f5_component_profile_maximum_enclosure(
         "root_set": roots,
         "endpoint_root_set": endpoints,
         "likelihood_ordering": "MAXIMUM_OF_ALL_STATIONARY_AND_ANALYTIC_ENDPOINT_ENCLOSURES",
+    }
+
+
+def _log_positive_fraction_interval(
+    value: Fraction, *, terms: int = 100,
+) -> tuple[Fraction, Fraction]:
+    """Rigorous rational enclosure of log(value) via the atanh series."""
+    if not isinstance(value, Fraction) or value <= 0:
+        raise F5ConstrainedScoreError("LOG_ARGUMENT_MUST_BE_POSITIVE_FRACTION")
+    if type(terms) is not int or terms < 1:
+        raise F5ConstrainedScoreError("LOG_SERIES_TERMS_MUST_BE_POSITIVE_INTEGER")
+    if value == 1:
+        return Fraction(0), Fraction(0)
+    if value < 1:
+        lo, hi = _log_positive_fraction_interval(1 / value, terms=terms)
+        return -hi, -lo
+
+    def log_unit_interval(y: Fraction) -> tuple[Fraction, Fraction]:
+        # 1 <= y <= 2 gives 0 <= z=(y-1)/(y+1) <= 1/3.
+        z = (y - 1) / (y + 1)
+        z2 = z * z
+        partial = Fraction(0)
+        power = z
+        for index in range(terms):
+            partial += 2 * power / (2 * index + 1)
+            power *= z2
+        remainder = (
+            2 * power
+            / ((2 * terms + 1) * (1 - z2))
+        )
+        return partial, partial + remainder
+
+    # Find exact integer k with 1 <= value / 2**k < 2.
+    k = value.numerator.bit_length() - value.denominator.bit_length()
+    if k >= 0:
+        scaled = value / (1 << k)
+    else:
+        scaled = value * (1 << (-k))
+    if scaled < 1:
+        k -= 1
+        scaled *= 2
+    elif scaled >= 2:
+        k += 1
+        scaled /= 2
+
+    log_two = log_unit_interval(Fraction(2))
+    log_scaled = log_unit_interval(scaled)
+    if k >= 0:
+        return (
+            k * log_two[0] + log_scaled[0],
+            k * log_two[1] + log_scaled[1],
+        )
+    return (
+        k * log_two[1] + log_scaled[0],
+        k * log_two[0] + log_scaled[1],
+    )
+
+
+def f5_component_profile_lr_statistic(
+    r: int, count_histogram: Mapping[int, int], *,
+    component: str, target,
+    global_certificate: Mapping[str, object] | None = None,
+    root_isolation_width: Fraction = Fraction(1, 2**64),
+    max_depth: int = 180,
+    max_intervals: int = 10000,
+    max_fraction_bits: int = 200000,
+    log_series_terms: int = 100,
+) -> dict[str, object]:
+    """Enclose the LR statistic for a fixed W or B target.
+
+    The unrestricted maximum is taken from the existing exact global-MLE
+    certificate. The constrained profile maximum is enumerated by the exact
+    one-dimensional score polynomial and likelihood enclosures. Logarithms
+    are enclosed with a rational atanh-series remainder, not floating logs.
+    """
+    if global_certificate is None:
+        global_certificate = beta_binomial_global_mle_certificate(
+            r, count_histogram,
+        )
+    global_status = global_certificate.get("status")
+    if global_status == "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED":
+        winner = global_certificate.get("winner")
+        global_candidates = [winner] if isinstance(winner, Mapping) else []
+    elif global_status in {
+        "GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED",
+        "GLOBAL_CO_MAXIMIZERS_CERTIFIED",
+    }:
+        winners = global_certificate.get("winners")
+        global_candidates = list(winners) if isinstance(winners, (tuple, list)) else []
+    else:
+        return {
+            "status": "UNRESTRICTED_GLOBAL_MLE_UNRESOLVED",
+            "global_mle_status": global_status,
+            "global_likelihood_ordering": global_certificate.get("likelihood_ordering"),
+        }
+    if not global_candidates:
+        return {
+            "status": "UNRESTRICTED_GLOBAL_MLE_WINNER_MISSING",
+            "global_mle_status": global_status,
+        }
+    try:
+        global_lower = max(item["likelihood_bounds"][0] for item in global_candidates)
+        global_upper = max(item["likelihood_bounds"][1] for item in global_candidates)
+    except (KeyError, TypeError, ValueError):
+        return {
+            "status": "UNRESTRICTED_GLOBAL_MLE_BOUNDS_MALFORMED",
+            "global_mle_status": global_status,
+        }
+
+    profile = f5_component_profile_maximum_enclosure(
+        r, count_histogram, component=component, target=target,
+        root_isolation_width=root_isolation_width,
+        max_depth=max_depth, max_intervals=max_intervals,
+        max_fraction_bits=max_fraction_bits,
+    )
+    if profile.get("status") != "PROFILE_MAXIMUM_ENCLOSED":
+        return {
+            "status": "CONSTRAINED_PROFILE_MAXIMUM_UNRESOLVED",
+            "global_mle_status": global_status,
+            "profile": profile,
+        }
+    profile_lower, profile_upper = profile["profile_likelihood_bounds"]
+    if global_lower <= 0 or profile_lower <= 0:
+        return {
+            "status": "LR_LIKELIHOOD_LOWER_BOUND_ZERO",
+            "global_mle_status": global_status,
+            "global_likelihood_bounds": (global_lower, global_upper),
+            "profile": profile,
+        }
+
+    ratio_lower = global_lower / profile_upper
+    ratio_upper = global_upper / profile_lower
+    if ratio_upper < 1:
+        return {
+            "status": "PROFILE_LIKELIHOOD_EXCEEDS_GLOBAL_MLE_ENCLOSURE",
+            "global_mle_status": global_status,
+            "global_likelihood_bounds": (global_lower, global_upper),
+            "profile": profile,
+            "likelihood_ratio_bounds": (ratio_lower, ratio_upper),
+        }
+    ratio_lower = max(Fraction(1), ratio_lower)
+    log_lower = _log_positive_fraction_interval(
+        ratio_lower, terms=log_series_terms,
+    )[0]
+    log_upper = _log_positive_fraction_interval(
+        ratio_upper, terms=log_series_terms,
+    )[1]
+    return {
+        "status": "LR_STATISTIC_ENCLOSED",
+        "component": component,
+        "target": profile["target"],
+        "global_mle_status": global_status,
+        "global_likelihood_bounds": (global_lower, global_upper),
+        "profile_likelihood_bounds": (profile_lower, profile_upper),
+        "likelihood_ratio_bounds": (ratio_lower, ratio_upper),
+        "lr_statistic_bounds": (2 * log_lower, 2 * log_upper),
+        "log_series_terms": log_series_terms,
+        "globality_basis": (
+            "EXACT_UNRESTRICTED_GLOBAL_MLE_CERTIFICATE_PLUS_COMPLETE_"
+            "CONSTRAINED_STATIONARY_ROOT_AND_ENDPOINT_CENSUS"
+        ),
+        "profile": profile,
     }
