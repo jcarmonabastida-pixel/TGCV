@@ -46,6 +46,20 @@ References:
 
 This is a static configuration review only. It is not evidence that the project installs or builds successfully.
 
+## 3.1 Follow-up static configuration review
+
+After GitHub access was restored, the candidate configuration was checked against the current official Starlight documentation:
+
+- The configured `defaultLocale: "es"` is valid because `es` is a key in the `locales` object.
+- Locale directories are expected under the docs content root.
+- Starlight associates translated pages using the same relative filename in each locale directory, matching the generated `es/chapter-03.md` and `en/chapter-03.md` pages.
+
+Official references:
+- https://starlight.astro.build/reference/configuration/
+- https://starlight.astro.build/guides/i18n/
+
+This resolves the static concern about the locale key and page pairing. It does not prove that the configured project builds or that the language selector behaves correctly at runtime.
+
 ## 4. Runtime verification status
 
 **Not executed.**
