@@ -127,7 +127,7 @@ This editorial review does not establish:
 
 ## 7. Next editorial operation
 
-The About Experience and bilingual Copy now exist as working drafts and require a focused review. The next content operation is the **Contact readiness decision**, based on an actual monitored channel, proportionate privacy information and sustainable ownership. After the Contact decision, perform a final publication-readiness pass across all pages, links, assets, evidence labels, bilingual copy and accessibility requirements. The existence of the About drafts does not constitute editorial approval or publication approval.
+Continue the integrated editorial pass across the seven substantive pages and About, checking narrative progression, conceptual consistency, bilingual equivalence, official naming, evidence maturity, cross-links and document dependencies. About has passed a focused editorial revision but remains pending user review. The next detailed pass should concentrate on Research and its hand-offs with Explore, Systems Engineering, Transformational Intelligence and Labs & Applications. Contact remains deferred and is not part of this editorial release pass. No page is approved for publication.
 
 
 ## v0.2 reader-facing terminology correction — 2026-11-25
@@ -143,8 +143,8 @@ A further review of Labs & Applications identified that the previous visitor cop
 Current P07 authorities:
 - Experience v0.5
 - Bilingual Copy v0.4
-- Information Architecture v2.7
-- Content Blueprint v3.8
+- Information Architecture v3.4
+- Content Blueprint v4.5
 
 These are editorial and terminology changes only. They do not alter the underlying evidence, upgrade any application context, verify public asset availability or approve publication.
 
