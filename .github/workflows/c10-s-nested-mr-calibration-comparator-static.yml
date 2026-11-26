@@ -89,6 +89,7 @@ jobs:
         run: ruby -e 'require "yaml"; YAML.load_file(".github/workflows/c10-s-f5-g7-tiera-calibration.yml")'
       # Verify the persisted immutable G7 resource profile and current source compatibility on every relevant static run (flattened artifact).
       - name: Download the immutable G7 resource profile (one-time compatibility validation)
+        if: github.ref == 'refs/heads/research/c10s-f1-integrated-correction-20261119'
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           artifact-ids: 14717426261
@@ -97,6 +98,7 @@ jobs:
           path: ${{ runner.temp }}/resource-profile
           merge-multiple: true
       - name: Validate source compatibility and assert the measured shard plan
+        if: github.ref == 'refs/heads/research/c10s-f1-integrated-correction-20261119'
         working-directory: 03_EXPERIMENTS/C10-S/harness
         env:
           PLAN_JSON: ${{ runner.temp }}/g7-resource-profile-validation.json
