@@ -1,7 +1,7 @@
 # TRANSFORMATIONAL VALUE — Learning Publishing Proof of Concept
 
 **Identifier:** TGCV-TV-POC-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-26  
 **Status:** PROPOSED VALIDATION SPECIFICATION — NOT IMPLEMENTATION AUTHORISATION  
 **Branch:** `strategy/transformational-value-learning`  
@@ -437,3 +437,24 @@ The PoC must not silently resolve the following:
 
 - **v0.1 — 2026-11-26:** Initial bounded PoC specification covering bilingual content, content model, navigation, visual asset governance, framework-neutral evaluation, validation, acceptance criteria and staged decision gates.
 - **v0.2 — 2026-11-26:** Aligned the directory example and location references with the dedicated `PoC/` workspace and the canonical repository layout.
+
+
+## 17. Reader-facing terminology control
+
+The pilot must demonstrate that the book communicates research findings without requiring prior knowledge of TGCV's internal project codes.
+
+- Internal experiment and evidence identifiers (for example, TR-131 and V007) may remain in this source-readiness record for traceability.
+- They must not be presented as unexplained names in the public chapter, diagram, captions, glossary or learning interface.
+- In the chapter, describe the evidence by its substance, such as **“a bounded cross-domain study of transformation-space reconfiguration in two computational domains”**. State the domains, sample or record counts, method and limitations where relevant and supported by the source.
+- If a public-facing study name has not been approved, use a descriptive phrase rather than inventing one.
+- Acronyms used in the chapter must be discipline-standard, approved public terminology, or defined at first use and genuinely useful thereafter.
+- Preserve technical symbols such as (T_{acc}) when they are part of the conceptual model, but explain them in natural language at first use.
+- Keep internal IDs in the source map and traceability metadata, not in the reader-facing narrative.
+
+This rule applies equally to Spanish and English. Each language should use natural descriptive wording, not a literal translation of internal shorthand.
+
+**Drafting consequence:** replace reader-facing formulations such as “TR-131/V007 shows…” with a substantive description of the study and its bounded finding. Internal codes can remain in the private source note or reference metadata to preserve auditability.
+
+## 12. Version history
+
+- **v0.3 — 2026-11-26:** Added reader-facing terminology and acronym controls for the Chapter 3 content package; internal identifiers remain solely for source traceability.
