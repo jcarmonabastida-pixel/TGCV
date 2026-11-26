@@ -15,8 +15,8 @@ from c10s_f5_rational_score_polynomials import (
     _a, _b, _c, _add, _mul, _scale,
     _uni_add_exact, _uni_mul_exact, _uni_pow_exact,
     _primitive_integer_polynomial, _uni_gcd, _uni_divmod,
-    _uni_squarefree_factors, _uni_isolate_squarefree_unit_roots,
-    beta_binomial_score_numerators,
+    _uni_squarefree_factors, _uni_isolate_squarefree_unit_roots, _uni_monic,
+    _beta_binomial_likelihood_enclosure, beta_binomial_score_numerators,
 )
 
 
@@ -298,3 +298,202 @@ def f5_isolate_component_profile_score_roots(
     return F5ConstrainedScoreRootSet(
         "COMPLETE_ROOT_ISOLATION", tuple(roots), (), processed,
     )
+
+
+def _q_bounds(mu_bounds: tuple[Fraction, Fraction]) -> tuple[Fraction, Fraction]:
+    lo, hi = mu_bounds
+    q_lo = lo * (1 - lo)
+    q_hi = hi * (1 - hi)
+    minimum = min(q_lo, q_hi)
+    maximum = max(q_lo, q_hi)
+    if lo <= Fraction(1, 2) <= hi:
+        maximum = Fraction(1, 4)
+    return minimum, maximum
+
+
+def _boundary_profile_likelihood(
+    component: str, r: int, histogram: Mapping[int, int],
+    mu_bounds: tuple[Fraction, Fraction],
+) -> tuple[Fraction, Fraction]:
+    """Exact likelihood enclosure at the fixed-W/B concentration endpoint."""
+    from math import comb
+
+    lo, hi = mu_bounds
+    total_worlds = sum(histogram.values())
+    if component == "W":
+        # kappa -> infinity: product of Binomial(r, mu) count probabilities.
+        successes = sum(x * n for x, n in histogram.items())
+        failures = total_worlds * r - successes
+        combinatorial = math.prod(
+            comb(r, x) ** n for x, n in histogram.items() if n
+        )
+
+        def likelihood(mu: Fraction) -> Fraction:
+            return Fraction(combinatorial) * (mu ** successes) * ((1 - mu) ** failures)
+
+        candidates = [likelihood(lo), likelihood(hi)]
+        mode = Fraction(successes, total_worlds * r)
+        if lo <= mode <= hi:
+            candidates.append(likelihood(mode))
+        return min(candidates), max(candidates)
+
+    # kappa -> zero: only all-zero/all-R world counts have positive mass.
+    if any(n and 0 < x < r for x, n in histogram.items()):
+        return Fraction(0), Fraction(0)
+    n_zero = histogram.get(0, 0)
+    n_full = histogram.get(r, 0)
+
+    def likelihood(mu: Fraction) -> Fraction:
+        return (mu ** n_full) * ((1 - mu) ** n_zero)
+
+    candidates = [likelihood(lo), likelihood(hi)]
+    if total_worlds:
+        mode = Fraction(n_full, total_worlds)
+        if lo <= mode <= hi:
+            candidates.append(likelihood(mode))
+    return min(candidates), max(candidates)
+
+
+def f5_component_profile_maximum_enclosure(
+    r: int, count_histogram: Mapping[int, int], *,
+    component: str, target,
+    root_isolation_width: Fraction = Fraction(1, 2**64),
+    max_depth: int = 180,
+    max_intervals: int = 10000,
+    max_fraction_bits: int = 200000,
+) -> dict[str, object]:
+    """Enclose the global constrained profile likelihood at fixed W or B.
+
+    Every interior stationary point is enumerated by the exact univariate score
+    polynomial and Sturm isolation. The two analytic concentration-limit
+    endpoints are included. Likelihoods at interior root boxes use the existing
+    outward-rounded rational enclosure; endpoint likelihoods use exact
+    binomial/two-point formulas over algebraic-root intervals.
+
+    This is a profile-*maximum* enclosure only. It does not construct an LR
+    confidence set or select/calibrate a likelihood-ratio cutoff.
+    """
+    target_value = _target_fraction(target)
+    polynomial = f5_component_profile_score_polynomial(
+        r, count_histogram, component=component, target=target_value,
+    )
+    roots = f5_isolate_component_profile_score_roots(
+        polynomial, isolation_width=root_isolation_width,
+        max_depth=max_depth, max_intervals=max_intervals,
+    )
+    if roots.status not in {"COMPLETE_ROOT_ISOLATION", "COMPLETE_NO_INTERIOR_ROOTS"}:
+        return {
+            "status": "PROFILE_STATIONARY_ROOT_CENSUS_UNRESOLVED",
+            "component": component, "target": target_value,
+            "polynomial": polynomial, "root_set": roots,
+        }
+
+    # The two feasible-domain endpoints solve mu*(1-mu)=target exactly.
+    boundary_poly = _uni_monic([
+        -target_value, Fraction(1), Fraction(-1),
+    ])
+    endpoints = _uni_isolate_squarefree_unit_roots(
+        boundary_poly, width=root_isolation_width,
+        max_depth=max_depth, max_intervals=max_intervals,
+    )
+    if endpoints["status"] != "ISOLATION_COMPLETE":
+        return {
+            "status": "PROFILE_ENDPOINT_ISOLATION_UNRESOLVED",
+            "component": component, "target": target_value,
+            "polynomial": polynomial, "root_set": roots,
+            "endpoint_root_set": endpoints,
+        }
+    endpoint_intervals = []
+    for value in endpoints["exact_roots"]:
+        endpoint_intervals.append((value, value))
+    for item in endpoints["isolating_intervals"]:
+        endpoint_intervals.append(item["interval"])
+    endpoint_intervals.sort(key=lambda pair: (pair[0] + pair[1]) / 2)
+    if len(endpoint_intervals) != 2:
+        return {
+            "status": "PROFILE_ENDPOINT_COUNT_UNRESOLVED",
+            "component": component, "target": target_value,
+            "endpoint_root_set": endpoints,
+        }
+
+    candidates = []
+    for index, mu_bounds in enumerate(endpoint_intervals):
+        likelihood_bounds = _boundary_profile_likelihood(
+            component, r, count_histogram, mu_bounds,
+        )
+        candidates.append({
+            "kind": "BINOMIAL_LIMIT" if component == "W" else "TWO_POINT_LIMIT",
+            "endpoint_index": index,
+            "mu_bounds": mu_bounds,
+            "t_bounds": (Fraction(1), Fraction(1)) if component == "W"
+                        else (Fraction(0), Fraction(0)),
+            "likelihood_bounds": likelihood_bounds,
+        })
+
+    for index, root in enumerate(roots.roots):
+        if root.exact_root is not None:
+            mu_lo = mu_hi = root.exact_root
+        else:
+            mu_lo, mu_hi = root.isolating_interval
+        mu_bounds = (mu_lo, mu_hi)
+        q_min, q_max = _q_bounds(mu_bounds)
+        if q_min <= target_value:
+            return {
+                "status": "PROFILE_ROOT_BOX_NOT_STRICTLY_FEASIBLE",
+                "component": component, "target": target_value,
+                "root": root, "root_set": roots,
+            }
+        if component == "W":
+            t_bounds = (target_value / q_max, target_value / q_min)
+        else:
+            t_bounds = (
+                1 - target_value / q_min,
+                1 - target_value / q_max,
+            )
+        if not (0 < t_bounds[0] <= t_bounds[1] < 1):
+            return {
+                "status": "PROFILE_ROOT_PARAMETER_BOX_INVALID",
+                "component": component, "target": target_value,
+                "root": root, "t_bounds": t_bounds,
+            }
+        enclosure = _beta_binomial_likelihood_enclosure(
+            r, count_histogram, mu_bounds=mu_bounds,
+            t_bounds=t_bounds, max_fraction_bits=max_fraction_bits,
+        )
+        if enclosure.get("status") != "EXACT_RATIONAL_LIKELIHOOD_ENCLOSURE":
+            return {
+                "status": "PROFILE_ROOT_LIKELIHOOD_ENCLOSURE_UNRESOLVED",
+                "component": component, "target": target_value,
+                "root": root, "likelihood_enclosure": enclosure,
+            }
+        candidates.append({
+            "kind": "INTERIOR_STATIONARY_POINT",
+            "stationary_index": index,
+            "multiplicity": root.multiplicity,
+            "mu_bounds": mu_bounds,
+            "t_bounds": t_bounds,
+            "likelihood_bounds": enclosure["likelihood_bounds"],
+            "likelihood_precision_bits": enclosure["precision_bits"],
+        })
+
+    maximum_lower = max(item["likelihood_bounds"][0] for item in candidates)
+    maximum_upper = max(item["likelihood_bounds"][1] for item in candidates)
+    if maximum_lower <= 0:
+        return {
+            "status": "PROFILE_MAXIMUM_LOWER_BOUND_ZERO",
+            "component": component, "target": target_value,
+            "candidates": tuple(candidates),
+            "root_set": roots,
+        }
+    return {
+        "status": "PROFILE_MAXIMUM_ENCLOSED",
+        "component": component,
+        "target": target_value,
+        "profile_likelihood_bounds": (maximum_lower, maximum_upper),
+        "candidate_count": len(candidates),
+        "interior_stationary_count": len(roots.roots),
+        "candidates": tuple(candidates),
+        "root_set": roots,
+        "endpoint_root_set": endpoints,
+        "likelihood_ordering": "MAXIMUM_OF_ALL_STATIONARY_AND_ANALYTIC_ENDPOINT_ENCLOSURES",
+    }
