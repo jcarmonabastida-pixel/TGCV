@@ -1,7 +1,7 @@
 # TRANSFORMATIONAL VALUE — Book & Learning Master Architecture
 
 **Identifier:** TGCV-TV-LEARNING-MASTER-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-26  
 **Status:** STRATEGIC ARCHITECTURE — WORKING DOCUMENT; detailed contents proposal available for review  
 **Branch:** `strategy/transformational-value-learning`  
@@ -304,7 +304,7 @@ Not all page types need to be populated at launch.
 - Search across published Learning content, if feasible within the chosen platform.
 - Cross-links and references.
 - Clear content version/date.
-- Bilingual-ready content architecture.
+- Paired Spanish and English content authored natively in each language, with independent review and publication status.
 
 **Later enhancements**
 - Reading progress or bookmarks.
@@ -377,6 +377,25 @@ The architecture should support reusable and centrally maintained:
 - recurring methodological patterns.
 
 A concept should have one preferred canonical definition, with other pages linking to it rather than silently creating conflicting definitions.
+
+### 6.5 Bilingual authoring strategy
+
+Spanish and English are two original editorial languages of the book and Learning content. Each section must be conceived and written natively in both languages, not drafted in one language and subsequently translated as the standard production workflow.
+
+This is a governing editorial requirement, not merely a future localisation option.
+
+- Every published content unit must have a Spanish version and an English version with equivalent scope, depth, structure, examples, references and learning objectives.
+- Authors should write each language version directly and naturally for its intended readership. The two versions should express the same concepts and claims, but need not follow identical sentence structures or literal wording.
+- Translation tools may assist review, terminology checks or drafting, but machine translation or post-hoc translation must not substitute for native editorial authorship and review.
+- Both language versions must share a stable content ID and have explicit language metadata, while retaining language-specific filenames, URLs and publication status.
+- The content model must support language parity tracking: draft, editorial review, subject review, approved and published, independently for each language.
+- A section should not be represented as fully bilingual when only one language version is complete. Where publication is staged, the availability and status of each language must be clear.
+- Spanish and English versions must be reviewed for conceptual equivalence, technical accuracy, tone, terminology and evidence qualifications.
+- A shared terminology register should record preferred terms, definitions, approved equivalents, terms intentionally retained in English and names that must not be translated.
+- Official names, product names, framework labels, lifecycle phase names and other explicitly approved proper names must remain exactly as approved. Explanatory prose and descriptive headings should be written naturally in the language of the page.
+- Changes to a concept or claim must trigger review of both language versions; a substantive change must not silently leave the other language outdated.
+
+The final repository layout and metadata schema will be defined in the content-model specification. The architecture should support paired language files without duplicating the conceptual identity of a content unit.
 
 ### 6.5 Bilingual strategy
 
@@ -657,3 +676,18 @@ The detailed contents document is subordinate to this master architecture. It ma
 ### Version history
 
 - **v0.2 — 2026-11-26:** Added the detailed table-of-contents specification and updated the decision register to reflect that structural review is now the next action.
+
+
+## 17. Native Spanish and English authoring — governing requirement
+
+The book and all Learning content units must be authored natively in Spanish and English. The language versions are parallel original editorial works with equivalent meaning, scope and quality; one is not merely a translation of the other.
+
+This requirement applies to every content level: front matter, parts, chapters, sections, glossary entries, examples, exercises, case studies, captions, diagrams, navigation labels and supporting resources. Shared identifiers and metadata should connect language counterparts, while each language retains its own natural expression.
+
+The content model must make bilingual completeness and review status visible. No content unit may be described as fully bilingual while one language version is missing, materially incomplete or awaiting required review.
+
+Approved proper names and framework/product labels remain unchanged. Other titles and explanatory content should be composed naturally in Spanish or English as appropriate.
+
+### Version history
+
+- **v0.3 — 2026-11-26:** Established native Spanish and English authorship as a mandatory editorial requirement for every book and Learning content unit, including parity, metadata, review and terminology controls.
