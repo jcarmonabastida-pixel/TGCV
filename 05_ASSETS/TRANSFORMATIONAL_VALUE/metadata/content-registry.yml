@@ -35,3 +35,21 @@ content:
       en: "From system conditions to the next accessible transformation space"
     source: assets/diagrams/TV-DIA-001/source/accessible-transformation-space-sequence.mmd
     status: draft
+
+  - content_id: TV-LR-001
+    content_type: learning_resource
+    title:
+      es: "Observar la reconfiguración del espacio de transformaciones en dos dominios"
+      en: "Observing transformation-space reconfiguration across two domains"
+    paths:
+      es: learning-resources/research-notes/es/observar-la-reconfiguracion-del-espacio-de-transformaciones-en-dos-dominios.md
+      en: learning-resources/research-notes/en/observing-transformation-space-reconfiguration-across-two-domains.md
+    status:
+      es: draft
+      en: draft
+    related:
+      - TV-CH-03
+    references:
+      - TV-REF-004
+      - TV-REF-005
+    epistemic_status: bounded_methodological_evidence
