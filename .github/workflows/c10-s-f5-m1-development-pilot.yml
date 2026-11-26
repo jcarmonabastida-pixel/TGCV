@@ -35,7 +35,7 @@ jobs:
           python-version: '3.12.10'
       - name: Install hash-locked dependencies
         working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+        run: 'python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock'
       - name: Compile M1-PCT pilot and tests
         working-directory: 03_EXPERIMENTS/C10-S/harness
         run: python -B -m py_compile c10s_f5_functional_refit_bootstrap.py test_c10s_f5_functional_refit_bootstrap.py run_c10s_f5_m1_dev_pilot.py
