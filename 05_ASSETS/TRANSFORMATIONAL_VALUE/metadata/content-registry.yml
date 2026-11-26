@@ -10,8 +10,8 @@ content:
       es: book/es/part-01-understanding-transformation/ch-03-espacio-de-transformaciones-accesibles.md
       en: book/en/part-01-understanding-transformation/ch-03-space-of-accessible-transformations.md
     status:
-      es: planned
-      en: planned
+      es: draft
+      en: draft
     source_readiness: bounded_drafting_ready
     glossary_terms:
       - TV-TERM-001
