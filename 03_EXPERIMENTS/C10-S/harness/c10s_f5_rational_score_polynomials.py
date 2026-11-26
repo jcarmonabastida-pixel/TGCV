@@ -1189,6 +1189,7 @@ def _uni_sign_variations(sequence, point):
 
 def _uni_sturm_integer_sequence(sequence):
     """Scale each rational Sturm polynomial to primitive integer coefficients."""
+    from fractions import Fraction
     from math import gcd, lcm
 
     output = []
