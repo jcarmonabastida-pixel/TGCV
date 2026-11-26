@@ -5,7 +5,7 @@
 **Date:** 2026-11-26  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
-**Parent documents:** Web Master Brief v1.9; Information Architecture v3.2; Home Experience v1.7; Home Copy v1.5; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.2; Systems Engineering Copy v0.2; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.3; Value Construction Copy v0.3; Labs & Applications Experience v0.7; Labs & Applications Copy v0.7; About Experience v0.2; About Copy v0.2.
+**Parent documents:** Web Master Brief v1.9; Information Architecture v3.2; Home Experience v1.7; Home Copy v1.5; Explore Experience v1.1; Explore Copy v1.0; Research Experience v0.9; Research Copy v0.9; Systems Engineering Experience v0.2; Systems Engineering Copy v0.2; Transformational Intelligence Experience v0.1; Transformational Intelligence Copy v0.2; Value Construction Experience v0.3; Value Construction Copy v0.3; Labs & Applications Experience v0.7; Labs & Applications Copy v0.7; About Experience v0.3; About Copy v0.3.
 
 **Purpose:** Define the minimum coherent content set for the first publishable TGCV germinal website, identify reusable source assets, specify new editorial work, and protect scientific/evidence boundaries.
 
@@ -883,3 +883,7 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Updates About Experience and Copy to v0.2 after focused editorial review: reduces overlap with Research, uses neutral programme voice and removes any implied Contact route.
 - Records Contact as deferred until a domain-associated account or other real, monitored communication channel is available.
 - Synchronises parent references to Web Master Brief v1.9 and Information Architecture v3.2; no publication approval is implied.
+
+### v4.4 — 2026-11-26
+- Synchronises P08 About Experience and bilingual Copy references to v0.3 after final Spanish/English editorial consistency checks.
+- Confirms that the About copy uses neutral programme voice, preserves approved names and does not imply a Contact channel or formal participation process.
