@@ -1,0 +1,18 @@
+schema_version: 0.1
+terms:
+  - term_id: TV-TERM-001
+    concept: accessible_transformation_space
+    preferred:
+      es: "espacio de transformaciones accesibles"
+      en: "accessible transformation space"
+    definition:
+      es: "Representación analítica del conjunto de transformaciones que un sistema puede realizar bajo un estado y unas condiciones relevantes especificados. No equivale al conjunto de transformaciones efectivamente realizadas ni describe por sí sola una trayectoria o un resultado."
+      en: "An analytical representation of the set of transformations a system can perform under a specified state and relevant conditions. It is not the set of transformations actually realised, nor does it by itself describe a trajectory or an outcome."
+    symbols:
+      - "T_acc"
+    related_terms: []
+    status: draft
+    source_basis:
+      - "TGCV Core current"
+      - "Chapter 3 source-readiness record"
+    notes: "Draft definitions for editorial review; not yet approved for publication."
