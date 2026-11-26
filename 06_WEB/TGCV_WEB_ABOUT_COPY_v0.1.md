@@ -1,12 +1,12 @@
-# TGCV — About Page Copy v0.1
+# TGCV — About Page Copy v0.2
 
 **Identifier:** TGCV-WEB-ABOUT-COPY-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-26  
 **Status:** BILINGUAL EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
 **Page:** P08 — About  
-**Parent documents:** About Experience v0.1; Web Master Brief v1.9; Information Architecture v3.0; Content Blueprint v4.1.
+**Parent documents:** About Experience v0.2; Web Master Brief v1.9; Information Architecture v3.1; Content Blueprint v4.2; Integrated Editorial Review v0.3.
 
 > This copy preserves approved names in both languages. It does not establish institutional, organisational or scientific claims beyond the source documents.
 
@@ -20,7 +20,7 @@
 
 **TGCV — Transformaciones Generativas y Construcción de Valor** es un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.
 
-Investigamos cómo las condiciones de un sistema determinan qué transformaciones están a su alcance, cómo cambian esas posibilidades y qué puede ocurrir después. Nos interesa comprender si esta perspectiva puede representarse y estudiarse en distintos dominios sin perder el significado propio de cada uno.
+El programa investiga cómo las condiciones de un sistema determinan qué transformaciones están a su alcance, cómo cambian esas posibilidades y qué puede ocurrir después. También examina si esta perspectiva puede representarse y estudiarse en distintos dominios sin perder el significado propio de cada uno.
 
 ## ¿Por qué existe TGCV?
 
@@ -38,7 +38,7 @@ La posible contribución de esos cambios a los resultados posteriores y al valor
 
 El trabajo combina perspectivas y prácticas de distintos ámbitos, entre ellos **Systems Thinking**, **Systems Engineering**, el análisis de espacios de transformación, el modelado y la experimentación.
 
-Nuestra aproximación se apoya en algunos principios:
+La aproximación del programa se apoya en algunos principios:
 
 - Definir el sistema, sus condiciones relevantes y la pregunta que se quiere investigar.
 - Hacer explícitas, cuando el dominio y la evidencia lo permiten, las transformaciones candidatas y las condiciones que determinan su accesibilidad.
@@ -60,18 +60,18 @@ No todos los materiales o avances tienen el mismo alcance. Por eso distinguimos 
 - **Contextos de aplicación exploratorios**, que señalan dónde podría ser relevante investigar, pero no equivalen a aplicaciones validadas.
 - **Resultados y valor**, que requieren observación y evaluación explícitas; no se deducen automáticamente de la ampliación de posibilidades.
 
-Presentamos cada trabajo de acuerdo con lo que se ha definido, construido, probado o documentado, sin atribuirle un alcance mayor que el respaldado por su evidencia.
+Cada trabajo se describe de acuerdo con lo que se ha definido, construido, probado o documentado, sin atribuirle un alcance mayor que el respaldado por su evidencia.
 
 ## Transparencia y responsabilidad
 
-Queremos que el alcance de cada afirmación pueda comprenderse y examinarse. Para ello:
+El compromiso de transparencia consiste en hacer comprensible y examinable el alcance de cada afirmación:
 
-- Identificamos con claridad qué es cada material y cuál es su estado.
-- Diferenciamos las decisiones vigentes de las propuestas en desarrollo y de los antecedentes.
-- Conservamos la procedencia y la información de versión de los materiales que se hacen públicos.
-- Explicamos la base y los límites de las afirmaciones.
-- Corregimos los errores relevantes y actualizamos las descripciones públicas cuando cambia el estado del trabajo.
-- Mantenemos separadas la comunicación del programa, la exploración de aplicaciones y la evaluación científica de sus afirmaciones.
+- Se identifica con claridad qué es cada material y cuál es su estado.
+- Se diferencian las decisiones vigentes de las propuestas en desarrollo y de los antecedentes.
+- Se conserva la procedencia y la información de versión de los materiales que se hacen públicos.
+- Se explican la base y los límites de las afirmaciones.
+- Se corrigen los errores relevantes y se actualizan las descripciones públicas cuando cambia el estado del trabajo.
+- Se mantienen separadas la comunicación del programa, la exploración de aplicaciones y la evaluación científica de sus afirmaciones.
 
 No presentamos una demostración, un prototipo o una oportunidad de aplicación como prueba de una hipótesis científica que todavía debe investigarse.
 
@@ -79,7 +79,7 @@ No presentamos una demostración, un prototipo o una oportunidad de aplicación 
 
 TGCV está en desarrollo. Sus conceptos, métodos y evidencias se someten a examen, comparación y revisión. Algunas preguntas siguen abiertas y la investigación puede tanto respaldar como limitar el alcance de sus planteamientos.
 
-Nos interesa el diálogo riguroso con personas y organizaciones que quieran comprender estas preguntas, señalar problemas relevantes o explorar posibles contextos de investigación. Esta invitación no constituye por sí misma un programa formal de colaboración o participación.
+El programa permanece abierto al análisis crítico de estas preguntas y a la identificación de problemas y contextos de investigación relevantes. No existe por ahora un procedimiento formal de colaboración o participación.
 
 **Para profundizar:** Explore · Research · Systems Engineering · Transformational Intelligence · Value Construction · Labs & Applications.
 
@@ -93,7 +93,7 @@ Nos interesa el diálogo riguroso con personas y organizaciones que quieran comp
 
 **TGCV — Generative Transformations and Value Construction** is a programme of applied research and innovation exploring how expanding the transformations available to systems may contribute to value construction.
 
-We investigate how a system's conditions determine which transformations are accessible to it, how those possibilities change and what may follow. We are interested in whether this perspective can be represented and examined across different domains without losing the meaning specific to each one.
+The programme investigates how a system's conditions determine which transformations are accessible to it, how those possibilities change and what may follow. It also examines whether this perspective can be represented and studied across different domains without losing the meaning specific to each one.
 
 ## Why does TGCV exist?
 
@@ -111,7 +111,7 @@ Whether such changes contribute to later outcomes and value remains an open rese
 
 The work brings together perspectives and practices from different fields, including **Systems Thinking**, **Systems Engineering**, transformation-space analysis, modelling and experimentation.
 
-Our approach is guided by several principles:
+The programme's approach is guided by several principles:
 
 - Define the system, its relevant conditions and the question being investigated.
 - Make candidate transformations and the conditions determining their accessibility explicit where the domain and evidence allow.
@@ -133,18 +133,18 @@ Not all materials or advances have the same scope. We therefore distinguish betw
 - **Exploratory application contexts**, which indicate where research may be relevant but are not validated applications.
 - **Outcomes and value**, which require explicit observation and evaluation; they cannot be inferred automatically from expanded possibilities.
 
-We describe each piece of work according to what has been defined, built, tested or documented, without attributing a broader scope than its evidence supports.
+Each piece of work is described according to what has been defined, built, tested or documented, without attributing a broader scope than its evidence supports.
 
 ## Transparency and responsibility
 
-We want the scope of each claim to be understandable and open to examination. To support this:
+The programme's transparency commitment is to make the scope of each claim understandable and open to examination:
 
-- We identify what each material is and make its status clear.
-- We distinguish current decisions from developing proposals and historical material.
-- We preserve provenance and version information for materials made public.
-- We explain the basis and limitations of claims.
-- We correct material errors and update public descriptions when the status of the work changes.
-- We keep programme communication, application exploration and scientific assessment of claims distinct.
+- Each material is identified and its status made clear.
+- Current decisions are distinguished from developing proposals and historical material.
+- Provenance and version information are preserved for materials made public.
+- The basis and limitations of claims are explained.
+- Material errors are corrected and public descriptions are updated when the status of the work changes.
+- Programme communication, application exploration and scientific assessment of claims are kept distinct.
 
 We do not present a demonstration, prototype or application opportunity as proof of a scientific hypothesis that still needs to be investigated.
 
@@ -152,7 +152,7 @@ We do not present a demonstration, prototype or application opportunity as proof
 
 TGCV is evolving. Its concepts, methods and evidence are subject to examination, comparison and revision. Some questions remain open, and research may support or narrow the scope of its propositions.
 
-We welcome thoughtful dialogue with people and organisations interested in understanding these questions, identifying relevant problems or exploring possible research contexts. This invitation does not, by itself, constitute a formal collaboration or participation programme.
+The programme remains open to critical examination of these questions and to identifying relevant problems and research contexts. No formal collaboration or participation process is currently in place.
 
 **Explore further:** Explore · Research · Systems Engineering · Transformational Intelligence · Value Construction · Labs & Applications.
 
@@ -171,4 +171,5 @@ We welcome thoughtful dialogue with people and organisations interested in under
 
 ## Change record
 
-- **v0.1 — 2026-11-26:** first bilingual About copy, based on About Experience v0.1 and the current strategic source documents. Preserves the open scientific questions, evidence boundaries and organisational limits. Not publication approval.
+- **v0.1 — 2026-11-26:** first bilingual About copy.
+- **v0.2 — 2026-11-26:** focused editorial review reduces overlap with Research, replaces first-person plural formulations with neutral programme voice, removes any implied contact route and preserves the scientific and organisational boundaries. Not publication approval.
