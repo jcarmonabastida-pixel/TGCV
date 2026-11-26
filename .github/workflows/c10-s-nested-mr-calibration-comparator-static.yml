@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - research/c10s-f1-integrated-correction-20261119
+      - research/c10s-instrumental-autonomous-workpackage-20261126
     paths:
       - '.github/workflows/c10-s-nested-mr-calibration-comparator-static.yml'
       - '.github/workflows/c10-s-f5-g7-tiera-calibration.yml'
