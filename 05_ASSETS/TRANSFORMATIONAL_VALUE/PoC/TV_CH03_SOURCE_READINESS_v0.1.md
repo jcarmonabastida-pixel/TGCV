@@ -2,9 +2,9 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.14  
+**Version:** 0.15  
 **Date:** 2026-11-26  
-**Status:** CROSS-DOMAIN EVIDENCE NOTE DRAFTED; RUST TEMPORAL EVIDENCE BLOCKED FOR PUBLIC REUSE; EDITORIAL REVIEW PENDING  
+**Status:** BILINGUAL DRAFTS AND SUPPORTING ASSETS UPDATED; RUST TEMPORAL EVIDENCE BLOCKED FOR PUBLIC REUSE; REVIEW PENDING  
 **Branch:** `strategy/transformational-value-learning`  
 **Related specification:** `PoC/TRANSFORMATIONAL_VALUE_LEARNING_PUBLISHING_POC_v0.1.md`
 
@@ -544,8 +544,8 @@ The Spanish and English drafts preserve the same nine-section structure and evid
 2. Do not create or publish a reader-facing evidence note for the 516,061-pair Rust temporal analysis yet. Its scientific closure in the RMA does not override the separate data-admission and reuse restrictions described in §15. Internal repository paths alone are not suitable reader-facing references.
 3. Complete a subject-matter review of the revised claims, numerical statements, operational definitions and references.
 4. Complete native editorial review in each language and a final bilingual equivalence review.
-5. Review the glossary entry and complete both language versions of the diagram caption and alternative text.
-6. Keep the chapter and research note at `draft` until the applicable editorial and evidence gates are passed.
+5. Subject the revised glossary definitions, diagram captions and alternative text to subject-matter and native-language editorial review.
+6. Keep the chapter, research note, glossary entry and diagram at `draft` until the applicable editorial, licensing and evidence gates are passed.
 
 No change has been made to the scientific claim matrix, RMA, TGCV Core, experiment status or execution authorization.
 
@@ -586,3 +586,33 @@ A native-language pair has been created for the bounded two-domain operationalis
 Both share content ID `TV-LR-001` and remain `draft`. The note includes the negative VisitAll representational-gain result, the bounded PRISM reconstruction result, and the explicit limits on causality, value, universality and public reproducibility. The underlying source repositories are pinned in the central reference registry. The standalone executors and all derived transition records are not yet packaged for public independent reproduction, so the note must not imply that they are.
 
 No change has been made to scientific governance or experiment execution.
+
+
+---
+
+## 16. Glossary and diagram supporting assets — v0.15
+
+### 16.1 Bilingual glossary
+
+The Spanish and English glossary entries for `TV-TERM-001` have been updated to v0.2. Both now:
+- define the accessible transformation space as a set or structure derived from system state and relevant conditions through an explicit accessibility criterion;
+- require that the criterion be specified independently of realised transformations and downstream outcomes;
+- distinguish the accessible space from candidate transformations, realised transformations, trajectories, outcomes and value;
+- use the mathematical notation \\(T_{acc}\\) consistently.
+
+Both language versions remain `draft`; the central terminology registry has been aligned with the revised definitions.
+
+### 16.2 Shared diagram
+
+The shared diagram record `TV-DIA-001` has been updated to v0.2. It now includes:
+- stable asset identity, version, status, owner, source and provenance;
+- a Spanish and an English caption;
+- Spanish and English alternative text describing the five-stage sequence and the meaning of the solid and dashed arrows;
+- explicit disclosure that the arrows represent an analytical sequence, not a universal causal law;
+- outstanding publication checks for rendering, accessibility and licensing.
+
+The Mermaid source remains language-neutral and unchanged. The diagram and both language variants remain `draft`.
+
+### 16.3 Remaining review
+
+The glossary and diagram now have complete first-draft reader-facing text in both languages. They still require subject-matter review, native editorial review, final comparison with the chapter wording, rendered accessibility checks and explicit licence decisions before approval or publication.
