@@ -180,10 +180,10 @@ En ocasiones se habla de **posibilidades latentes** para referirse a transformac
 Por ejemplo, supongamos que en un primer momento el sistema tiene accesibles las transformaciones \(A\), \(B\), \(C\) y \(D\). Más adelante, \(C\) y \(D\) dejan de estar disponibles, mientras que \(E\) y \(F\) pasan a ser accesibles:
 
 \[
-T_{acc,t}=\\{A,B,C,D\\}
+T_{acc,t}=\{A,B,C,D\}
 \]
 \[
-T_{acc,t+1}=\\{A,B,E,F\\}
+T_{acc,t+1}=\{A,B,E,F\}
 \]
 
 Ambos espacios contienen cuatro transformaciones. Si comparáramos únicamente sus cardinalidades, concluiríamos que el tamaño del espacio no ha cambiado. Sin embargo, esa comparación ocultaría una modificación de su composición: dos transformaciones persisten, dos desaparecen y dos nuevas se incorporan. Ha habido reconfiguración con conservación de cardinalidad.
