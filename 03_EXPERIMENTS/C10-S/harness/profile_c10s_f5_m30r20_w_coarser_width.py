@@ -57,7 +57,7 @@ def main() -> None:
         result = profile.f5_component_profile_lr_statistic(
             R, HISTOGRAM, component="W", target=Fraction(1, 20),
             global_certificate=certificate,
-            root_isolation_width=Fraction(1, 2**24),
+            root_isolation_width=Fraction(1, 2**16),
             max_depth=140, max_intervals=5000,
             log_series_terms=80,
         )
@@ -68,11 +68,11 @@ def main() -> None:
         rational._uni_sturm_integer_sequence = original_integer
 
     payload = {
-        "stage": "M30_R20_W_coarser_exact_isolation_width",
+        "stage": "M30_R20_W_coarsest_exact_isolation_width",
         "fixture": "M30_R20",
         "component": "W",
         "target": "1/20",
-        "root_isolation_width": "2^-24",
+        "root_isolation_width": "2^-16",
         "profile_seconds": round(total_seconds, 6),
         "root_isolation_calls": records,
         "lr_status": result.get("status"),
