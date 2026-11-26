@@ -26,7 +26,7 @@ npm run build
 npm run preview
 ```
 
-The preview is local. Do not deploy it or publish its output.
+The preview is local. Do not deploy it or publish its output. The generator maps the canonical `status: draft` metadata to Starlight `draft: true`; chapter pages should be available in development and excluded from production output.
 
 ## Source-of-truth behaviour
 
@@ -34,14 +34,14 @@ The preview is local. Do not deploy it or publish its output.
 
 Generated files are disposable. Do not edit them manually and do not commit generated output. The Mermaid desktop source is preserved; the mobile variant is derived by changing only the flow direction from LR to TB. The generated SVGs must be inspected to confirm that the graph structure and labels remain intact.
 
-The chapter content is copied without editorial rewriting. The preview appends a diagram figure with paired caption and alternative text; this placement and wording remain provisional until checked against the canonical diagram README and chapter context.
+The chapter content is copied without editorial rewriting. The generated preview adds a responsive diagram figure with a language-paired caption and a direction-neutral alternative text. Confirm its placement and verify that the wording matches the canonical diagram README.
 
 ## Current limitations
 
 - No dependency installation, build, browser rendering or accessibility test has yet been run.
-- The current frontmatter may require a Starlight-compatible schema adapter; do not alter canonical metadata to silence a build error.
-- Mathematical rendering has not yet been configured or verified. The current scaffold deliberately leaves this as a test item rather than claiming KaTeX support is complete.
-- The language switch and navigation are minimal; verify that Starlight generates the expected locale routes.
+- A Starlight content schema extension preserves additional canonical TGCV metadata in generated pages; the actual metadata parse still needs a successful build to verify it.
+- KaTeX rendering is configured through `remark-math` and `rehype-katex`, but inline and display equations have not yet been verified in a browser.
+- The two locale pages use the same relative page slug so Starlight can pair them. Verify the language selector and route behaviour in a browser.
 - SVG accessibility, diagram legibility, keyboard navigation, contrast and mobile layout remain unverified.
 
 ## Test record
