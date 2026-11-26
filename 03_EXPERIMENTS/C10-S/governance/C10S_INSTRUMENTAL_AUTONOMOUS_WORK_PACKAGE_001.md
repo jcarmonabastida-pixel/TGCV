@@ -480,3 +480,23 @@ The corrected run completed dependency installation, compilation, and both fixed
 **Next bounded engineering step:** instrument a single M30/R20 W profile to separate time spent in score-polynomial construction/substitution, exact root isolation, profile candidate evaluation and LR enclosure. Reuse the already computed global certificate and fixed fixture; no repeated-sampling, no cutoff tuning, no coverage estimates. Then target only the dominant operation for optimisation. Preserve exact arithmetic and fail-closed abstention. Add a B profile only if the W instrumentation indicates a shared bottleneck. After that, run boundary/degenerate fixtures as status/abstention tests, not coverage calibration.
 
 Tier-A/Tier-B and causal C10-S execution remain unlaunched and unauthorized.
+
+
+## 29. M30/R20 W stage instrumentation — queued/running
+
+**Profiler:** \`harness/profile_c10s_f5_m30r20_w_stages.py\`  
+**Workflow:** [45848960349](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45848960349)  
+**Code commit:** \`8be6d89505e63d93f7f3c28d9c2226c5aa0dadfd\`  
+**Corrected workflow commit:** \`5526ddccf53126d5282778a31ef49261d4ad957e\`
+
+The profiler reuses the same fixed M30/R20 histogram and exact global-MLE certificate, then runs one W fixed-target profile at target 1/20. It times disjoint production-stage boundaries:
+- exact constrained score-polynomial construction/substitution;
+- all Sturm root-isolation calls (including feasible-root and endpoint isolations);
+- interior candidate likelihood enclosures;
+- analytic boundary profile likelihoods;
+- rational LR logarithm enclosure;
+- total elapsed time and unattributed overhead.
+
+It records call counts and the unchanged LR/profile status, candidate count and stationary-root count. This is a bounded development-only diagnostic; it does not estimate coverage, tune a cutoff, or alter the exact method.
+
+**Workflow correction:** the first workflow revision (run 45848914002) failed at checkout because the generated YAML contained a literal backslash before \`\${{ github.sha }}\`; Python and the statistical script were skipped. The checkout expression was corrected and verified in the current workflow. The corrected run is [45848960349](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45848960349), currently queued/running. No statistical result is available until its job completes.
