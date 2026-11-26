@@ -754,3 +754,34 @@ Each profile returned 3 candidates and 1 interior stationary point. All auxiliar
 **Disposition:** (2^{-8}) has now passed the M30/R20 W and B interior fixtures and the boundary-only W/B fixture. It reduces the dominant root-isolation work substantially relative to (2^{-16}), without loss of root-census completion in these cases. This remains deterministic computational evidence, not a coverage or cutoff-validation result.
 
 **Next operation:** run M10/R5 W/B and endpoint-only boundary fixtures at (2^{-8}). If those also complete, the numerical candidate will have been exercised across both F5 Tier-A sample-size cells, both components and the tested boundary cases. Then move to a bounded development-only DGP stress comparison, keeping all data separate from confirmatory and exposed holdout data. No coverage simulation under frozen Tier-A criteria, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
+
+
+## 40. Cross-cell F5 width (2^{-8}) robustness — PASS; enclosure-width caveat retained
+
+**Workflow:** [45867663492](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45867663492) — SUCCESS  
+**Tested commit:** `71a3dc7c3b01a6a1f844bee6e33e0fbf078a3ad1`  
+**Scope:** seven bounded fixed-histogram profiles, M10/R5 and M30/R20, W and B components, interior and endpoint/boundary-only cases. Exact signed integer PRS, certified fixed-point sign evaluation, width (2^{-8}).
+
+All seven returned `LR_STATISTIC_ENCLOSED` and `PROFILE_MAXIMUM_ENCLOSED`; all recorded root-isolation calls returned `ISOLATION_COMPLETE` with zero unresolved intervals.
+
+| Fixture | Component | Global MLE state | Profile time | Dominant root census |
+|---|---|---|---:|---|
+| M30/R20 interior | B | interior maximum | 164.59 s | degree 263; 18 processed; 1 exact + 2 intervals |
+| M30/R20 boundary-only | W | boundary supremum | 148.62 s | degree 177; 252 processed; 1 exact + 106 intervals |
+| M30/R20 boundary-only | B | boundary supremum | 156.78 s | degree 259; 1 processed; 1 exact |
+| M10/R5 interior | W | interior maximum | 0.48 s | degree 35; 96 processed; 1 exact + 26 intervals |
+| M10/R5 interior | B | interior maximum | 0.72 s | degree 53; 18 processed; 1 exact + 2 intervals |
+| M10/R5 endpoint-only | W | boundary supremum | 0.47 s | degree 33; 94 processed; 1 exact + 30 intervals |
+| M10/R5 endpoint-only | B | boundary supremum | 0.63 s | degree 49; 18 processed; 1 exact + 2 intervals |
+
+Candidate counts were 3 in six cases and 5 for M10/R5 endpoint-only B (3 interior stationary points). Boundary global-MLE states remained explicit.
+
+**Important qualification — finite is not necessarily tight enough for classification.** The exact LR enclosures were not uniformly narrow:
+- M30/R20 boundary-only B: approximately [47.282, 49.381], with profile-likelihood enclosure approximately [(1.76\times10^{-20}), (5.03\times10^{-20})];
+- M10/R5 endpoint-only B: approximately [15.761, 16.460], with profile-likelihood enclosure approximately [(2.60\times10^{-7}), (3.69\times10^{-7})].
+
+Other cases had much tighter displayed LR enclosures. Thus (2^{-8}) preserves complete root census and returns rigorous finite enclosures on these fixtures, but a caller-supplied LR cutoff near a wide enclosure may still yield an ambiguous classification. The method must retain fail-closed ambiguity and refine the interval width adaptively where required. No cutoff or coverage claim follows from this workflow.
+
+**Disposition:** (2^{-8}) is the leading starting width for development profiling across both F5 sample-size cells, both components and the tested boundary cases. It is not a globally frozen precision setting. The boundary-B cases show that fixed width alone is insufficient to guarantee useful LR classification.
+
+**Next operation:** introduce a bounded exact adaptive-refinement rule driven by the caller-supplied LR cutoff: begin at (2^{-8}), refine only ambiguous enclosures (for example to (2^{-16}), then tighter if needed), and stop only when the interval is classified or a declared resource bound is reached, returning a typed unresolved state on exhaustion. Test exact monotonic enclosure nesting and parity against the fixed-width reference on the seven fixtures. Only after that, design a small development-only repeated-sampling stress comparison using fresh development seeds. No Tier-A confirmatory coverage run, Tier-B, LR-cutoff calibration, or causal C10-S execution is authorized by this step.
