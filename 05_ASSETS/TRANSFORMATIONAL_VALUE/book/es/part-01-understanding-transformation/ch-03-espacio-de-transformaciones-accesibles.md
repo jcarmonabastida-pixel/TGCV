@@ -5,7 +5,7 @@ title: "El espacio de transformaciones accesibles"
 language: es
 content_type: chapter
 status: draft
-version: 0.4
+version: 0.5
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -231,7 +231,7 @@ La comparación entre dominios exige una precaución adicional. Puede ser posibl
 
 La evidencia disponible procede de estudios y análisis distintos. No constituye una única prueba ni permite combinar sus tamaños muestrales o alcances. Cada resultado responde a una pregunta diferente.
 
-**Una representación común en dos dominios computacionales.** Un estudio acotado reconstruyó 36 transiciones en dos dominios estructuralmente diferentes. La validación no encontró registros inválidos y una auditoría matemática independiente no encontró discrepancias en los descriptores calculados. En ambos dominios se observaron cambios en la identidad de las transformaciones accesibles. En uno hubo sustitución de identidades sin cambio en el número total; en el otro se observaron, además, algunas reducciones netas. El resultado respalda la operacionalización de una representación común de transición en esos casos examinados. No demuestra que la representación sea universal, superior a otras ni válida en cualquier dominio.
+**Una representación común en dos dominios computacionales.** Un estudio acotado reconstruyó 36 transiciones en dos dominios estructuralmente diferentes. La validación no encontró registros inválidos y una auditoría matemática independiente no encontró discrepancias en los descriptores calculados. En ambos dominios se observaron cambios en la identidad de las transformaciones accesibles. En el modelo de coordinación probabilística, las identidades cambiaron sin variar la cardinalidad; en el dominio de planificación en cuadrícula también hubo rotación de identidades y algunas reducciones netas. La auditoría específica de este último dominio mostró que sus cambios podían reconstruirse completamente a partir del modelo nativo de estados y acciones: no demostró una ganancia representacional distinta. En conjunto, el resultado respalda la posibilidad de operacionalizar una estructura común de transición en esos dos casos, no su superioridad ni su validez universal.
 
 **Evidencia causal acotada sobre trayectorias posteriores.** En una evaluación experimental de expansión de servicios financieros rurales en el sur de India, la asignación aleatoria de aperturas de sucursales modificó la infraestructura local de acceso a servicios financieros formales. La consolidación de la evidencia de TGCV interpreta esa intervención estructural como una ampliación de la accesibilidad y encuentra apoyo causal acotado a que esa ampliación afectó trayectorias posteriores de los hogares en el contexto estudiado. La interpretación mantiene separados el acceso estructural, la utilización posterior de productos financieros y los cambios observados en empleo, actividad económica e ingresos. Es evidencia de una relación acotada en un entorno concreto; no establece que cualquier cambio de accesibilidad produzca una modificación de trayectoria, ni que la accesibilidad sea su única causa.
 
