@@ -10,7 +10,7 @@ created: 2026-11-26
 updated: 2026-11-26
 authors: []
 reviewers: []
-summary: "Explains how to represent the transformations a system can perform under specified conditions, and why accessibility, realisation, trajectory, outcome and value must remain distinct."
+summary: "Explains how to represent the transformations available for realisation by a system under specified conditions, and why accessibility, realisation, trajectory, outcome and value must remain distinct."
 part: TV-P1
 chapter: TV-CH-03
 parent_id: TV-P1-OV
