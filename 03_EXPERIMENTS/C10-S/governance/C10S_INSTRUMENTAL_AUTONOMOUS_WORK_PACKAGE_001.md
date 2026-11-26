@@ -253,3 +253,22 @@ The preferred constrained W/B profile route is now to derive an exact univariate
 The feasible mean interval is \`[(1-sqrt(1-4v))/2, (1+sqrt(1-4v))/2]\` for target \`v\in(0,1/4)\). Both mean branches are represented in one interval. The concentration-limit endpoints are binomial for W and two-point mixture for B. Complete root isolation plus rational likelihood enclosures could enumerate and order every constrained stationary candidate without a generic local optimizer.
 
 This is a more promising and potentially simpler exact route than adapting the existing finite-grid MCSE profile. The derivation and reuse proposal are in design-review §§14–15. It remains a design candidate; no M2 code, numerical profile or simulation has been run.
+
+
+## 17. F5 M2 constrained-score algebra prototype added
+
+New research-only module:
+\`03_EXPERIMENTS/C10-S/harness/c10s_f5_component_profile_score.py\`
+
+It constructs an exact univariate integer score polynomial for a fixed within target W or raw-between target B by:
+- reusing the existing exact bivariate beta-binomial score numerators;
+- constructing the corresponding exact positive score denominators;
+- substituting \`kappa_W(mu;w)=w/(mu*(1-mu)-w)\` or \`kappa_B(mu;b)=(mu*(1-mu)-b)/b\`;
+- clearing denominators using exact rational arithmetic;
+- removing factors belonging only to the analytic concentration-limit endpoints;
+- square-free decomposing and Sturm-isolating candidate roots on \`mu in (0,1)\`;
+- retaining only roots strictly inside the feasible \`mu*(1-mu)>target\` interval and returning an unresolved status if a root interval cannot be classified.
+
+The paired tests compare the exact polynomial's sign against an independently evaluated analytic constrained score for W and B, and exercise exact root isolation. A dedicated pinned-dependency static workflow has been added. It does not generate synthetic datasets or perform coverage/calibration.
+
+**M2 status:** algebraic score-polynomial prototype implemented; deterministic workflow run pending. It is not yet a profile-likelihood maximum certificate, likelihood-value ordering, LR confidence set, calibrated method or Tier-A candidate. Those remain separate gates.
