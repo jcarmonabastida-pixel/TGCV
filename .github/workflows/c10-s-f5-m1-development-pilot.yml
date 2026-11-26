@@ -1,0 +1,54 @@
+name: C10-S F5 M1-PCT development-only pilot
+
+on:
+  push:
+    branches:
+      - research/c10s-instrumental-autonomous-workpackage-20261126
+    paths:
+      - '.github/workflows/c10-s-f5-m1-development-pilot.yml'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_f5_functional_refit_bootstrap.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_f5_functional_refit_bootstrap.py'
+      - '03_EXPERIMENTS/C10-S/harness/run_c10s_f5_m1_dev_pilot.py'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py'
+      - '03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_comparative_holdout.py'
+      - '03_EXPERIMENTS/C10-S/harness/run_c10s_post_holdout_f5_b2_b3_development_calibration.py'
+      - '03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_tiera_calibration.py'
+      - '03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock'
+
+permissions:
+  contents: read
+
+jobs:
+  m1-development-pilot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+      - name: Compile M1-PCT pilot and tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -B -m py_compile c10s_f5_functional_refit_bootstrap.py test_c10s_f5_functional_refit_bootstrap.py run_c10s_f5_m1_dev_pilot.py
+      - name: Run deterministic M1-PCT tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -B -m unittest -v test_c10s_f5_functional_refit_bootstrap
+      - name: Run bounded development-only pilot
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -B run_c10s_f5_m1_dev_pilot.py --execute-development-pilot --output ${{ runner.temp }}/c10s-f5-m1-pilot.json
+      - name: Upload development-only pilot artifact
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-m1-development-pilot
+          path: ${{ runner.temp }}/c10s-f5-m1-pilot.json
+          if-no-files-found: error
+          retention-days: 30
