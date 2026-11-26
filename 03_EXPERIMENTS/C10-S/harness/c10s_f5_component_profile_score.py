@@ -433,6 +433,8 @@ def f5_component_profile_maximum_enclosure(
     if type(r) is not int or r < 2:
         raise F5ConstrainedScoreError("R_MUST_BE_INTEGER_GE_2")
     target_value = _target_fraction_closed(target)
+    # Reuse the canonical histogram validator even on closed-domain endpoints.
+    beta_binomial_score_numerators(r, count_histogram)
     if target_value in {Fraction(0), Fraction(1, 4)}:
         endpoint_value, endpoint_kind = _exact_endpoint_profile_likelihood(
             r, count_histogram, component=component, target=target_value,
@@ -700,7 +702,27 @@ def f5_component_profile_lr_statistic(
             "profile": profile,
         }
     profile_lower, profile_upper = profile["profile_likelihood_bounds"]
-    if global_lower <= 0 or profile_lower <= 0:
+    if global_lower <= 0:
+        return {
+            "status": "LR_LIKELIHOOD_LOWER_BOUND_ZERO",
+            "global_mle_status": global_status,
+            "global_likelihood_bounds": (global_lower, global_upper),
+            "profile": profile,
+        }
+    if profile_upper == 0:
+        return {
+            "status": "LR_STATISTIC_INFINITE",
+            "component": component,
+            "target": profile["target"],
+            "global_mle_status": global_status,
+            "global_likelihood_bounds": (global_lower, global_upper),
+            "profile_likelihood_bounds": (profile_lower, profile_upper),
+            "likelihood_ratio_bounds": None,
+            "lr_statistic_bounds": (math.inf, math.inf),
+            "reason": "CONSTRAINED_PROFILE_LIKELIHOOD_IS_EXACTLY_ZERO",
+            "profile": profile,
+        }
+    if profile_lower <= 0:
         return {
             "status": "LR_LIKELIHOOD_LOWER_BOUND_ZERO",
             "global_mle_status": global_status,
