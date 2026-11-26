@@ -110,8 +110,9 @@ class RationalScorePolynomialTests(unittest.TestCase):
         self.assertEqual(len(reference["isolating_intervals"]), 1)
         interval = reference["isolating_intervals"][0]
         self.assertEqual(interval["root_count"], 1)
-        self.assertLessEqual(interval["interval"][0], Fraction(1, 2))
-        self.assertGreaterEqual(interval["interval"][1], Fraction(1, 2))
+        self.assertLess(interval["interval"][0] ** 2, Fraction(1, 2))
+        self.assertGreater(interval["interval"][1] ** 2, Fraction(1, 2))
+        self.assertLessEqual(interval["interval"][1] - interval["interval"][0], Fraction(1, 2**20))
 
     def test_primitive_integer_gcd_matches_exact_fraction_gcd(self):
         # Both polynomials contain x-1/2; their remaining factors differ.
