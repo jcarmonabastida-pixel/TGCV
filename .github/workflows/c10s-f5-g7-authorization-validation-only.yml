@@ -1,0 +1,76 @@
+name: C10-S F5 G7 authorization validation only (non-consuming)
+on:
+  push:
+    branches:
+      - 'research/c10s-f5-g7-validation-only-*'
+    paths:
+      - '.github/workflows/c10s-f5-g7-authorization-validation-only.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  validate-authorization-only:
+    name: Validate exact one-use authorization without consuming it
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      AUTH_BRANCH: research/c10s-f5-g7-auth-C10S-F5-G7-20261126-001
+      AUTH_SHA: 0dc8504c01395b864f1b0f613c1ce8890e89cb5c
+      AUTH_PATH: 00_GOVERNANCE/authorizations/C10S_F5_G7_TIERA_CALIBRATION_AUTHORIZATION.json
+      G7_WORKFLOW_PATH: .github/workflows/c10-s-f5-g7-tiera-calibration-v3.yml
+    steps:
+      - name: Checkout immutable authorization commit and full Git history
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: 0dc8504c01395b864f1b0f613c1ce8890e89cb5c
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Verify authorization ref, dispatch workflow identity and unused status
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$AUTH_SHA"
+          remote_sha="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$AUTH_BRANCH" --jq '.object.sha')"
+          test "$remote_sha" = "$AUTH_SHA"
+          expected_workflow_blob="$(python -c 'import json,os; print(json.load(open(os.environ["AUTH_PATH"], encoding="utf-8"))["dispatch_workflow_git_blob_sha"])')"
+          actual_workflow_blob="$(gh api "repos/$GITHUB_REPOSITORY/contents/$G7_WORKFLOW_PATH?ref=main" --jq '.sha')"
+          test -n "$expected_workflow_blob"
+          test "$actual_workflow_blob" = "$expected_workflow_blob"
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/c10-s-f5-g7-tiera-calibration-v3.yml/runs?branch=$AUTH_BRANCH&event=workflow_dispatch&per_page=100" > "$RUNNER_TEMP/prior-g7-runs.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          data=json.loads(Path(os.environ["RUNNER_TEMP"], "prior-g7-runs.json").read_text(encoding="utf-8"))
+          prior=[r for r in data.get("workflow_runs", []) if r.get("head_branch")==os.environ["AUTH_BRANCH"] and r.get("event")=="workflow_dispatch"]
+          if prior:
+              raise SystemExit("AUTHORIZATION_ALREADY_DISPATCHED: "+", ".join(str(x.get("id")) for x in prior))
+          print("AUTHORIZATION_REF=PASS")
+          print("DISPATCH_WORKFLOW_IDENTITY=PASS")
+          print("PRIOR_G7_DISPATCHES=NONE")
+          PY
+      - name: Compile validator modules without running tests
+        run: |
+          set -euo pipefail
+          python -m py_compile 03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_tiera_authorization.py 03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_source_inventory.py
+      - name: Run fail-closed authorization validator only
+        shell: bash
+        env:
+          WORKFLOW_COMMIT: 0dc8504c01395b864f1b0f613c1ce8890e89cb5c
+          WORKFLOW_BRANCH: research/c10s-f5-g7-auth-C10S-F5-G7-20261126-001
+        run: |
+          set -euo pipefail
+          python 03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_tiera_authorization.py --authorization "$AUTH_PATH" --root . --workflow-commit "$WORKFLOW_COMMIT" --branch "$WORKFLOW_BRANCH" --output-json "$RUNNER_TEMP/validated-g7-authorization.json"
+          cat "$RUNNER_TEMP/validated-g7-authorization.json"
+      - name: Upload read-only validation result
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-authorization-validation-3efca7e-${{ github.run_id }}
+          path: ${{ runner.temp }}/validated-g7-authorization.json
+          if-no-files-found: error
+          retention-days: 30
