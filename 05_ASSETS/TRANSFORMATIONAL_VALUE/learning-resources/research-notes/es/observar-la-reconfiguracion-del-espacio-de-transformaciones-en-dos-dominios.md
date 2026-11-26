@@ -5,7 +5,7 @@ title: "Observar la reconfiguración del espacio de transformaciones en dos domi
 language: es
 content_type: learning_resource
 status: draft
-version: 0.1
+version: 0.2
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -65,7 +65,7 @@ S_t \rightarrow T_{acc,t} \rightarrow T_{real,t}
 
 A partir de los espacios accesibles en los dos estados se derivaron descriptores de persistencia, identidades incorporadas, identidades retiradas, rotación y cambio neto de cardinalidad. Las operaciones de conjuntos se realizaron dentro de cada dominio; la comparación entre dominios se limitó a la estructura de los descriptores.
 
-La evidencia de origen ya estaba congelada. El análisis comparativo fue una elaboración secundaria de esos registros, no una nueva ejecución científica. Se utilizaron reconstrucciones independientes para contrastar la consistencia de los registros de origen y una auditoría matemática independiente para revisar los descriptores derivados.
+La evidencia de origen ya estaba congelada. El análisis comparativo fue una elaboración secundaria de esos registros, no una nueva ejecución científica. En cada transición, el espacio accesible inicial se derivó del estado de origen y el espacio sucesor se volvió a calcular a partir del estado sucesor reconstruido. Las reconstrucciones independientes de la cuadrícula coincidieron en la estructura del árbol de 21 nodos y 20 aristas. En el modelo probabilístico, los dos ejecutores reconstruyeron 25 registros cada uno, con coincidencia de la huella de la fuente y cero desviaciones estructurales. Una auditoría matemática independiente revisó después los 36 registros comparativos y sus descriptores derivados.
 
 ## Resultados
 
