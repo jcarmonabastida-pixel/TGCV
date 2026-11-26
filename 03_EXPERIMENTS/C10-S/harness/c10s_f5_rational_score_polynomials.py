@@ -213,6 +213,46 @@ def _bernstein_integer_basis(degree: int, lower, upper):
     return tuple(basis), denominator
 
 
+def _univariate_bernstein_numerators(
+    power_coefficients: Mapping[int, object],
+    lower,
+    upper,
+) -> tuple[tuple[object, ...], int]:
+    """Transform exact univariate power coefficients using the cached basis.
+
+    The common denominator is positive, so callers that only need a sign can
+    inspect the numerators directly. Reusing the cached integer basis avoids
+    rebuilding binomial/power expansions for every conditional-mean witness.
+    """
+    from fractions import Fraction
+
+    if not isinstance(power_coefficients, Mapping):
+        raise ValueError("UNIVARIATE_POWER_COEFFICIENT_MAPPING_REQUIRED")
+    if any(type(power) is not int or power < 0 for power in power_coefficients):
+        raise ValueError("NONNEGATIVE_INTEGER_POWER_INDICES_REQUIRED")
+    coefficients = {
+        power: _exact_fraction(value)
+        for power, value in power_coefficients.items()
+        if value != 0
+    }
+    if not coefficients:
+        # Preserve the zero polynomial as an explicit zero Bernstein
+        # coefficient. An empty tuple would make all(...) vacuously true and
+        # incorrectly certify both strict signs at an exact root witness.
+        return (Fraction(0),), 1
+    degree = max(coefficients)
+    basis, denominator = _bernstein_integer_basis(degree, lower, upper)
+    numerators = tuple(
+        sum(
+            (coefficients.get(power, Fraction(0)) * basis[power][index]
+             for power in range(degree + 1)),
+            Fraction(0),
+        )
+        for index in range(degree + 1)
+    )
+    return numerators, denominator
+
+
 def _bernstein_integer_matrix(
     poly: Poly,
     mu_bounds: tuple[object, object],
@@ -1997,8 +2037,6 @@ def conditional_mean_tube_and_concentration_exclusion(
     is not valid for arbitrary unrelated polynomial pairs.
     """
     from fractions import Fraction
-    from math import comb
-
     if type(max_mu_depth) is not int or not 1 <= max_mu_depth <= 16:
         raise ValueError("MAX_MU_DEPTH_MUST_BE_INTEGER_1_TO_16")
     if not isinstance(t_bounds, tuple) or len(t_bounds) != 2:
@@ -2057,24 +2095,12 @@ def conditional_mean_tube_and_concentration_exclusion(
                 endpoint_multiplicity += 1
         if not coeffs:
             return 0
-        degree = max(coeffs)
-        # Substitute t=t_lo+(t_hi-t_lo)*u in the power basis.
-        transformed = [Fraction(0) for _ in range(degree + 1)]
-        for power, coefficient in coeffs.items():
-            for j in range(power + 1):
-                transformed[j] += (
-                    coefficient * comb(power, j) * t_lo**(power-j)
-                    * (t_hi-t_lo)**j
-                )
-        bernstein = []
-        for i in range(degree + 1):
-            value = Fraction(0)
-            for j in range(i + 1):
-                value += transformed[j] * Fraction(comb(i, j), comb(degree, j))
-            bernstein.append(value)
-        if all(value > 0 for value in bernstein):
+        bernstein_numerators, _ = _univariate_bernstein_numerators(
+            coeffs, t_lo, t_hi
+        )
+        if all(value > 0 for value in bernstein_numerators):
             sign = 1
-        elif all(value < 0 for value in bernstein):
+        elif all(value < 0 for value in bernstein_numerators):
             sign = -1
         else:
             return 0
@@ -2815,6 +2841,168 @@ def _f5_input_provenance(
     }
 
 
+def refine_krawczyk_root_box(
+    poly_p: Poly,
+    poly_q: Poly,
+    parameter_box,
+    *,
+    max_iterations: int = 12,
+    max_width=None,
+) -> dict[str, object]:
+    """Locate a certified root enclosure efficiently with exact rational Newton + Krawczyk.
+
+    Rational Newton steps only locate a small candidate box. They do not
+    establish existence or uniqueness. The final candidate is accepted only
+    when an exact Krawczyk inclusion/contraction certificate proves exactly
+    one common root in that box. The candidate is a subset of the original
+    already-certified enclosure, so it encloses the same unique root.
+    """
+    from fractions import Fraction
+
+    if type(max_iterations) is not int or max_iterations < 0:
+        raise ValueError("ROOT_BOX_MAX_ITERATIONS_INVALID")
+    target = Fraction(1, 2 ** 32) if max_width is None else _exact_fraction(max_width)
+    if target <= 0:
+        raise ValueError("ROOT_BOX_MAX_WIDTH_MUST_BE_POSITIVE")
+    if not isinstance(parameter_box, (tuple, list)) or len(parameter_box) != 2:
+        raise ValueError("ROOT_BOX_MALFORMED")
+    try:
+        original = tuple(
+            tuple(_exact_fraction(value) for value in axis)
+            for axis in parameter_box
+        )
+    except ValueError:
+        raise ValueError("ROOT_BOX_NOT_EXACT_RATIONAL") from None
+    if any(len(axis) != 2 or axis[0] > axis[1] for axis in original):
+        raise ValueError("ROOT_BOX_INTERVAL_INVALID")
+    original_widths = tuple(axis[1] - axis[0] for axis in original)
+    if all(width <= target for width in original_widths):
+        return {
+            "status": "ROOT_BOX_PRECISION_CERTIFIED",
+            "parameter_box": original,
+            "iterations": 0,
+            "widths": original_widths,
+            "max_width": target,
+            "method": "EXISTING_EXACT_KRAWCZYK_ENCLOSURE",
+        }
+    if any(axis[0] == axis[1] for axis in original):
+        return {
+            "status": "ROOT_BOX_REFINEMENT_STALLED",
+            "parameter_box": original,
+            "iterations": 0,
+            "widths": original_widths,
+            "max_width": target,
+            "method": "EXACT_RATIONAL_DYADIC_NEWTON_LOCATOR_PLUS_KRAWCZYK_CERTIFICATE",
+        }
+
+    derivatives = (
+        (_poly_derivative(poly_p, 0), _poly_derivative(poly_p, 1)),
+        (_poly_derivative(poly_q, 0), _poly_derivative(poly_q, 1)),
+    )
+    point = tuple((axis[0] + axis[1]) / 2 for axis in original)
+    newton_iterations = 0
+    # Newton is only a locator; its iterates need not retain unbounded rational
+    # denominator growth. Round each exact iterate to a fixed dyadic grid, then
+    # let the final Krawczyk inclusion/contraction proof decide acceptance.
+    # 2^-64 locator resolution is comfortably finer than the 2^-32 box contract.
+    locator_scale = 1 << 64
+
+    def dyadic_locator(value):
+        scaled_numerator = value.numerator * locator_scale
+        quotient, remainder = divmod(scaled_numerator, value.denominator)
+        if 2 * remainder >= value.denominator:
+            quotient += 1
+        return Fraction(quotient, locator_scale)
+
+    for iteration in range(max_iterations):
+        values = (
+            _poly_evaluate_rational(poly_p, *point),
+            _poly_evaluate_rational(poly_q, *point),
+        )
+        jacobian = tuple(tuple(
+            _poly_evaluate_rational(derivatives[row][column], *point)
+            for column in range(2)
+        ) for row in range(2))
+        determinant = (
+            jacobian[0][0] * jacobian[1][1]
+            - jacobian[0][1] * jacobian[1][0]
+        )
+        if determinant == 0:
+            break
+        step = (
+            (jacobian[1][1] * values[0] - jacobian[0][1] * values[1]) / determinant,
+            (-jacobian[1][0] * values[0] + jacobian[0][0] * values[1]) / determinant,
+        )
+        exact_next_point = (point[0] - step[0], point[1] - step[1])
+        if any(
+            exact_next_point[axis] < original[axis][0]
+            or exact_next_point[axis] > original[axis][1]
+            for axis in range(2)
+        ):
+            break
+        next_point = tuple(dyadic_locator(value) for value in exact_next_point)
+        if any(
+            next_point[axis] < original[axis][0]
+            or next_point[axis] > original[axis][1]
+            for axis in range(2)
+        ):
+            break
+        unchanged = next_point == point
+        point = next_point
+        newton_iterations = iteration + 1
+        if unchanged or max(abs(step[0]), abs(step[1])) <= target / 16:
+            break
+
+    # Candidate radii are exact powers of two and never exceed the declared
+    # per-axis width bound. A successful Krawczyk test is the only acceptance.
+    for radius_power in (40, 38, 36, 34, 33):
+        radius = Fraction(1, 2 ** radius_power)
+        candidate = tuple(
+            (
+                max(original[axis][0], point[axis] - radius),
+                min(original[axis][1], point[axis] + radius),
+            )
+            for axis in range(2)
+        )
+        widths = tuple(axis[1] - axis[0] for axis in candidate)
+        if (
+            any(axis[0] >= axis[1] for axis in candidate)
+            or any(width > target for width in widths)
+        ):
+            continue
+        certificate = krawczyk_certify_unique_root(
+            poly_p, poly_q,
+            mu_bounds=candidate[0],
+            t_bounds=candidate[1],
+        )
+        if certificate.get("status") == "CERTIFIED_UNIQUE_ROOT":
+            return {
+                "status": "ROOT_BOX_PRECISION_CERTIFIED",
+                "parameter_box": candidate,
+                "iterations": newton_iterations,
+                "widths": widths,
+                "max_width": target,
+                "method": "EXACT_RATIONAL_NEWTON_SEED_PLUS_KRAWCZYK_CERTIFICATE",
+                "krawczyk_certificate": {
+                    "status": certificate["status"],
+                    "contraction_bound": str(certificate["contraction_bound"]),
+                    "krawczyk_box": tuple(
+                        tuple(str(value) for value in axis)
+                        for axis in certificate["krawczyk_box"]
+                    ),
+                },
+            }
+
+    return {
+        "status": "ROOT_BOX_PRECISION_INSUFFICIENT",
+        "parameter_box": original,
+        "iterations": newton_iterations,
+        "widths": original_widths,
+        "max_width": target,
+        "method": "EXACT_RATIONAL_NEWTON_SEED_PLUS_KRAWCZYK_CERTIFICATE",
+    }
+
+
 def beta_binomial_global_mle_certificate(
     r: int,
     count_histogram: Mapping[int, int],
@@ -2907,12 +3095,52 @@ def beta_binomial_global_mle_certificate(
 
         competitors = []
         interior_index = 0
+        score_polynomials = None
         for lift_record in census.get("interior_stationary_candidates", []):
             lift = lift_record["lift_result"]
             for certified in lift["certified_simple_root_intervals"]:
                 # The Krawczyk image is a valid (usually tighter) enclosure
                 # of the unique root, unlike the full subdivision input box.
                 root_box = certified["root_certificate"]["krawczyk_box"]
+                if score_polynomials is None:
+                    raw_score_mu, raw_score_kappa = beta_binomial_score_numerators(
+                        r, count_histogram,
+                    )
+                    compactified_mu = compactify_concentration(raw_score_mu)
+                    compactified_kappa = compactify_concentration(raw_score_kappa)
+                    stripped_scores = _strip_axis_content_factors_outside_open_unit_domain(
+                        compactified_mu, compactified_kappa,
+                    )
+                    if stripped_scores.get("status") != "NO_REAL_INTERIOR_AXIS_CONTENT_FACTORS":
+                        return {
+                            "status": "GLOBAL_MLE_ROOT_BOX_PRECISION_INSUFFICIENT",
+                            "census": census,
+                            "root_box_refinement": {
+                                "status": "ROOT_SCORE_POLYNOMIAL_RECONSTRUCTION_FAILED",
+                                "disposition": stripped_scores,
+                            },
+                            "refinement_history": history,
+                            "likelihood_ordering": "NOT_CERTIFIED",
+                        }
+                    score_polynomials = (
+                        stripped_scores["poly_p"],
+                        stripped_scores["poly_q"],
+                    )
+                refined_root_box = refine_krawczyk_root_box(
+                    score_polynomials[0], score_polynomials[1],
+                    root_box,
+                    max_iterations=12,
+                    max_width=Fraction(1, 2 ** 32),
+                )
+                if refined_root_box.get("status") != "ROOT_BOX_PRECISION_CERTIFIED":
+                    return {
+                        "status": "GLOBAL_MLE_ROOT_BOX_PRECISION_INSUFFICIENT",
+                        "census": census,
+                        "root_box_refinement": refined_root_box,
+                        "refinement_history": history,
+                        "likelihood_ordering": "NOT_CERTIFIED",
+                    }
+                root_box = refined_root_box["parameter_box"]
                 enclosure = _beta_binomial_likelihood_enclosure(
                     r, count_histogram,
                     mu_bounds=root_box[0],
@@ -2932,6 +3160,12 @@ def beta_binomial_global_mle_certificate(
                     "candidate_id": f"interior-{interior_index}",
                     "kind": "INTERIOR_STATIONARY_ROOT",
                     "parameter_box": root_box,
+                    "root_box_refinement": {
+                        "status": refined_root_box["status"],
+                        "iterations": refined_root_box["iterations"],
+                        "widths": tuple(str(value) for value in refined_root_box["widths"]),
+                        "max_width": str(refined_root_box["max_width"]),
+                    },
                     "likelihood_bounds": (lower, upper),
                     "attained_in_open_domain": True,
                 })

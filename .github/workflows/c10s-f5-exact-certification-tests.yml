@@ -1,60 +1,259 @@
-name: C10-S F5 deterministic certification
+name: C10-S F5 deterministic certification (partitioned)
 
 on:
   push:
     branches:
-      - research/c10s-f1-integrated-correction-20261119
+      - research/c10s-f5-g7-canonical-mle-v1.1-20261122
+      - research/c10s-f5-g7-auth-manifest-generator-20261126-001
+      - research/c10s-f5-g7-preflight-path-fix-20261126
     paths:
-      - 03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py
-      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_rational_score_polynomials.py
-      - 03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py
-      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_likelihood_diagnostics.py
-      - 03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_mcse_profile.py
-      - 03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_mcse_profile.py
+      - .github/workflows/c10s-f5-exact-certification-tests.yml
+      - 03_EXPERIMENTS/C10-S/harness/**
 
+# Keep only the newest validation for this branch. Older queued/running
+# snapshots are superseded because they test obsolete code and can block the
+# targeted regression run indefinitely.
 concurrency:
   group: c10s-f5-deterministic-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: read
 
+env:
+  OPENBLAS_NUM_THREADS: '1'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  NUMEXPR_NUM_THREADS: '1'
+  VECLIB_MAXIMUM_THREADS: '1'
+  PYTHONDONTWRITEBYTECODE: '1'
+
 jobs:
-  f5-tests:
+  compile:
+    name: Compile F5/G7 source and test modules
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 20
     steps:
-      - name: Checkout research snapshot
+      - name: Checkout immutable research snapshot
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-
-      - name: Set up Python
+      - name: Set up pinned Python
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
         with:
-          python-version: "3.12.10"
-
-      - name: Install locked dependencies
-        working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: |
-          python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
-
-      - name: Compile F5 modules
+          python-version: '3.12.10'
+      - name: Compile F5 and G7 modules
         working-directory: 03_EXPERIMENTS/C10-S/harness
         run: |
           python -m py_compile \
-            c10s_f5_rational_score_polynomials.py \
-            test_c10s_f5_rational_score_polynomials.py \
-            c10s_f5_beta_binomial_likelihood_diagnostics.py \
-            test_c10s_f5_beta_binomial_likelihood_diagnostics.py \
-            c10s_f5_beta_binomial_mcse_profile.py \
-            test_c10s_f5_beta_binomial_mcse_profile.py
+            c10s_f5_rational_score_polynomials.py test_c10s_f5_rational_score_polynomials.py \
+            run_c10s_f5_unittest_partition.py \
+            c10s_f5_beta_binomial_likelihood_diagnostics.py test_c10s_f5_beta_binomial_likelihood_diagnostics.py \
+            c10s_f5_beta_binomial_mcse_profile.py test_c10s_f5_beta_binomial_mcse_profile.py \
+            c10s_fitted_beta_binomial_bootstrap.py test_c10s_fitted_beta_binomial_bootstrap.py \
+            c10s_nested_mr_comparative_inference_engine.py test_c10s_nested_mr_comparative_inference_engine.py \
+            run_c10s_f5_g7_tiera_calibration.py run_c10s_f5_g7_resource_shard.py aggregate_c10s_f5_g7_resource_shards.py create_c10s_f5_g7_resource_profile_manifest.py test_c10s_f5_g7_resource_shards.py c10s_f5_g7_shard_execution.py \
+            test_c10s_f5_g7_shard_execution.py aggregate_c10s_f5_g7_tiera_shards.py \
+            test_c10s_f5_g7_tiera_calibration.py test_c10s_f5_g7_tiera_authorization.py \
+            profile_c10s_f5_g7_resource_preflight_parallel.py validate_c10s_f5_g7_resource_profile.py create_c10s_f5_g7_resource_profile_manifest.py \
+            validate_c10s_f5_g7_tiera_authorization.py build_c10s_f5_g7_authorization_manifest.py execute_c10s_f5_g7_tiera_shard.py \
+            test_c10s_f5_g7_resource_profile.py verify_c10s_f5_g7_resource_profile_artifact.py test_c10s_f5_g7_resource_profile_artifact.py
 
-      - name: Run deterministic F5 suites only
+  deterministic-tests:
+    if: github.ref_name != 'research/c10s-f5-g7-auth-manifest-generator-20261126-001'
+    name: F5 deterministic module partition
+    needs: compile
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - module: test_c10s_f5_rational_score_polynomials
+            selection: exclude
+            test_names: test_m30_r20_full_domain_bernstein_route_avoids_large_resultant,test_m30_r20_global_mle_orders_interior_and_boundary_candidates
+            partition: rational-core-regression
+          - module: test_c10s_f5_rational_score_polynomials
+            selection: only
+            test_names: test_m30_r20_global_mle_orders_interior_and_boundary_candidates
+            partition: m30-global-mle-performance
+          - module: test_c10s_fitted_beta_binomial_bootstrap
+            selection: all
+            test_names: ''
+            partition: fitted-bootstrap-regression
+          - module: test_c10s_f5_g7_resource_profile
+            selection: all
+            test_names: ''
+            partition: g7-resource-profile-regression
+          - module: test_c10s_f5_g7_resource_profile_artifact
+            selection: all
+            test_names: ''
+            partition: g7-resource-profile-artifact-regression
+          - module: test_c10s_f5_g7_resource_shards
+            selection: all
+            test_names: ''
+            partition: g7-resource-shard-regression
+          - module: test_c10s_f5_g7_tiera_authorization
+            selection: all
+            test_names: ''
+            partition: g7-authorization-regression
+    steps:
+      - name: Checkout immutable research snapshot
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up pinned Python with dependency cache
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+          cache: pip
+          cache-dependency-path: 03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock
+      - name: Install hash-locked dependencies
         working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: >-
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+      - name: Run auditable isolated test selection
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          TEST_MODULE: ${{ matrix.module }}
+          TEST_SELECTION: ${{ matrix.selection }}
+          TEST_NAMES: ${{ matrix.test_names }}
         run: |
-          python -B -m unittest -v \
-            test_c10s_f5_rational_score_polynomials \
-            test_c10s_f5_beta_binomial_likelihood_diagnostics \
-            test_c10s_f5_beta_binomial_mcse_profile
+          python -B run_c10s_f5_unittest_partition.py \
+            --module "$TEST_MODULE" \
+            --selection "$TEST_SELECTION" \
+            --test-names "$TEST_NAMES"
+
+  authorization-manifest-draft:
+    if: github.ref_name == 'research/c10s-f5-g7-canonical-mle-v1.1-20261122'
+    name: Build non-authorizing G7 DRAFT from immutable Git tree
+    needs: compile
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact research snapshot with Git history
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Materialize an explicitly non-authorizing DRAFT template
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          AUTHORIZATION_ID="C10S-F5-G7-${GITHUB_SHA:0:12}"
+          AUTHORIZATION_BRANCH="research/c10s-f5-g7-auth-${AUTHORIZATION_ID}"
+          export AUTHORIZATION_ID AUTHORIZATION_BRANCH
+          DISPATCH_WORKFLOW_GIT_BLOB="$(gh api "repos/$GITHUB_REPOSITORY/contents/.github/workflows/c10-s-f5-g7-tiera-calibration-v3.yml?ref=$GITHUB_SHA" --jq '.sha')"
+          export DISPATCH_WORKFLOW_GIT_BLOB
+          mkdir -p "$RUNNER_TEMP/g7-authorization-draft"
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path.cwd().parents[2]
+          profile_path = root / "03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json"
+          protocol_path = root / "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_TIERA_PROSPECTIVE_PROTOCOL_002.md"
+          profile = json.loads(profile_path.read_text(encoding="utf-8"))
+          template = {
+              "schema": "TGCV-C10S-F5-G7-TIERA-AUTH-002",
+              "status": "DRAFT",
+              "authorization_id": os.environ["AUTHORIZATION_ID"],
+              "authorization_branch": os.environ["AUTHORIZATION_BRANCH"],
+              "scope": "C10S_F5_G7_TIERA_PROSPECTIVE_CALIBRATION_ONLY",
+              "g7_tiera_calibration_authorized": False,
+              "approval_channel": "GITHUB_WORKFLOW_DISPATCH",
+              "tier_b_authorized": False,
+              "c10_scientific_execution_authorized": False,
+              "primary_replay_required": True,
+              "protocol_id": "C10S-F5-G7-TIERA-PROSPECTIVE-001",
+              "protocol_version": "1.1",
+              "protocol_sha256": hashlib.sha256(protocol_path.read_bytes()).hexdigest(),
+              "cells": ["F5_beta22_M10_R5", "F5_beta22_M30_R20"],
+              "k_per_cell": 1000,
+              "c0_bootstrap_replicates": 1000,
+              "c5_bootstrap_replicates": 1000,
+              "resource_preflight_k_per_cell": 100,
+              "execution_architecture_id": "C10S-F5-G7-EXECUTION-ARCHITECTURE-002",
+              "max_job_minutes": 150,
+              "max_parallel_jobs": 20,
+              "seed_schedule_id": "C10S_F5_G7_TIERA_SEEDS_1.1",
+              "holdout_seed_namespace": "c10s_f5_g7_holdout_v1_1",
+              "resource_seed_namespace": "c10s_f5_g7_resource_v1_1",
+              "resource_profile_run_id": profile["profile_run_id"],
+              "resource_profile_artifact_id": profile["profile_artifact_id"],
+              "resource_profile_source_commit": profile["profile_source_commit"],
+              "resource_profile_sha256": profile["profile_json_sha256"],
+              "resource_profile_artifact_archive_sha256": profile["profile_artifact_archive_sha256"],
+              "resource_profile_scope": profile["profile_scope"],
+              "resource_profile_seed_namespace": profile["seed_namespace"],
+              "resource_profile_repository_full_name": profile["profile_repository_full_name"],
+              "resource_profile_repository_id": profile["profile_repository_id"],
+              "resource_profile_manifest_sha256": hashlib.sha256(profile_path.read_bytes()).hexdigest(),
+              "dispatch_workflow_git_blob_sha": os.environ["DISPATCH_WORKFLOW_GIT_BLOB"],
+          }
+          out = Path(os.environ["RUNNER_TEMP"]) / "g7-authorization-draft"
+          (out / "authorization-template.json").write_text(json.dumps(template, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+          PY
+      - name: Generate canonical manifest bindings and DRAFT authorization
+        working-directory: .
+        run: |
+          python 03_EXPERIMENTS/C10-S/harness/build_c10s_f5_g7_authorization_manifest.py \
+            --root . \
+            --approved-code-commit "$GITHUB_SHA" \
+            --output-json "$RUNNER_TEMP/g7-authorization-draft/manifest-bindings.json" \
+            --draft-template "$RUNNER_TEMP/g7-authorization-draft/authorization-template.json" \
+            --output-draft-authorization "$RUNNER_TEMP/g7-authorization-draft/authorization-draft.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ["RUNNER_TEMP"]) / "g7-authorization-draft"
+          draft = json.loads((root / "authorization-draft.json").read_text(encoding="utf-8"))
+          assert draft["status"] == "DRAFT"
+          assert draft["g7_tiera_calibration_authorized"] is False
+          assert "approved_at_utc" not in draft and "expires_utc" not in draft
+          print("G7_DRAFT_STATUS=DRAFT")
+          print("G7_DRAFT_AUTHORIZATION_FLAG=false")
+          print("G7_DRAFT_SOURCE_COMMIT=" + draft["approved_code_commit"])
+          print("G7_DRAFT_EXECUTION_SOURCE_SHA256=" + draft["execution_source_manifest_sha256"])
+          print("G7_DRAFT_COMPUTE_PATH_SHA256=" + draft["compute_path_content_sha256"])
+          print("G7_DRAFT_SOURCE_HASH_COUNT=" + str(len([k for k in draft if k.endswith("_sha256") and k not in {"execution_source_manifest_sha256", "compute_path_content_sha256", "protocol_sha256", "resource_profile_sha256", "resource_profile_artifact_archive_sha256", "resource_profile_manifest_sha256"}])))
+          print(json.dumps(draft, sort_keys=True, indent=2))
+          PY
+      - name: Upload non-authorizing DRAFT and canonical bindings
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-authorization-draft-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/g7-authorization-draft/manifest-bindings.json
+            ${{ runner.temp }}/g7-authorization-draft/authorization-draft.json
+          if-no-files-found: error
+          retention-days: 30
+
+  authorization-manifest-regression:
+    if: github.ref_name == 'research/c10s-f5-g7-auth-manifest-generator-20261126-001'
+    name: G7 authorization manifest builder regression
+    needs: compile
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout immutable research snapshot
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Run complete authorization regression module
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -B -m unittest -v test_c10s_f5_g7_tiera_authorization

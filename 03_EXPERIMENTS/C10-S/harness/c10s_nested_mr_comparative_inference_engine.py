@@ -42,7 +42,7 @@ ENGINE_ID = "C10S_NESTED_MR_COMPARATIVE_INFERENCE_ENGINE_1.1"
 C0_METHOD_ID = "C0_FROZEN_V002_NESTED_PERCENTILE_1.2"
 IMPLEMENTED_METHODS = {
     "F1": (C0_METHOD_ID, "C1_F1_EXACT_PIVOTAL_1.0"),
-    "F5": (C0_METHOD_ID, "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"),
+    "F5": (C0_METHOD_ID, "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1"),
 }
 
 
@@ -757,7 +757,7 @@ def adjudicate_profile_diagnostics(
     eligible = abstained = not_evaluated = 0
     for record in records:
         expected_method = (
-            "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"
+            "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1"
             if family == "F5" else "C1_F1_EXACT_PIVOTAL_1.0"
         )
         candidate = next(

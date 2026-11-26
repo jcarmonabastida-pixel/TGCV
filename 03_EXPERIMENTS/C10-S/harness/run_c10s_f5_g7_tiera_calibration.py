@@ -23,10 +23,10 @@ from run_c10s_nested_mr_comparative_holdout import (
 )
 
 PROTOCOL_ID = "C10S-F5-G7-TIERA-PROSPECTIVE-001"
-PROTOCOL_VERSION = "1.0"
-SEED_SCHEDULE_ID = "C10S_F5_G7_TIERA_SEEDS_1.0"
-HOLDOUT_NAMESPACE = "c10s_f5_g7_holdout_v1"
-RESOURCE_NAMESPACE = "c10s_f5_g7_resource_v1"
+PROTOCOL_VERSION = "1.1"
+SEED_SCHEDULE_ID = "C10S_F5_G7_TIERA_SEEDS_1.1"
+HOLDOUT_NAMESPACE = "c10s_f5_g7_holdout_v1_1"
+RESOURCE_NAMESPACE = "c10s_f5_g7_resource_v1_1"
 EXPECTED_CELLS = ("F5_beta22_M10_R5", "F5_beta22_M30_R20")
 K_PER_CELL = 1000
 C0_B = 1000
@@ -60,6 +60,21 @@ def f5_specs():
 
 
 def validate_seed_separation(k: int = K_PER_CELL) -> None:
+    legacy_g7_seen: set[int] = set()
+    for cell_id in EXPECTED_CELLS:
+        for replicate in range(k):
+            for stream in ("dataset", "C0_bootstrap", "C5_bootstrap"):
+                legacy_payload = (
+                    f"C10S_F5_G7_TIERA_SEEDS_1.0|c10s_f5_g7_holdout_v1|"
+                    f"{stream}|{cell_id}|{replicate}"
+                ).encode("utf-8")
+                legacy_value = int.from_bytes(
+                    hashlib.sha256(legacy_payload).digest()[:8], "big"
+                )
+                if legacy_value in legacy_g7_seen:
+                    raise F5G7Error("G7_LEGACY_V1_SEED_COLLISION")
+                legacy_g7_seen.add(legacy_value)
+
     seen: set[int] = set()
     for cell_id in EXPECTED_CELLS:
         for replicate in range(k):
@@ -67,20 +82,22 @@ def validate_seed_separation(k: int = K_PER_CELL) -> None:
                 value = derive_seed(HOLDOUT_NAMESPACE, stream, cell_id, replicate)
                 if value in seen:
                     raise F5G7Error("G7_SEED_COLLISION_WITHIN_HOLDOUT_NAMESPACE")
+                if value in legacy_g7_seen:
+                    raise F5G7Error("G7_SEED_COLLISION_WITH_CONSUMED_G7_V1_HOLDOUT")
                 seen.add(value)
-                legacy_stream = stream
-                legacy = derive_holdout_seed(legacy_stream, cell_id, replicate)
+                legacy = derive_holdout_seed(stream, cell_id, replicate)
                 if value == legacy:
                     raise F5G7Error("G7_SEED_COLLISION_WITH_CONSUMED_V1_HOLDOUT")
                 v002_stream = "fixture_dataset" if stream == "dataset" else "bootstrap"
                 if value == derive_v002_seed(v002_stream, cell_id, replicate):
                     raise F5G7Error("G7_SEED_COLLISION_WITH_ORIGINAL_V002_TIERA")
+
     resource_seen: set[int] = set()
     for cell_id in EXPECTED_CELLS:
         for replicate in range(RESOURCE_K_PER_CELL):
             for stream in ("dataset", "C0_bootstrap", "C5_bootstrap"):
                 value = derive_seed(RESOURCE_NAMESPACE, stream, cell_id, replicate)
-                if value in resource_seen or value in seen:
+                if value in resource_seen or value in seen or value in legacy_g7_seen:
                     raise F5G7Error("G7_RESOURCE_SEED_COLLISION")
                 v002_stream = "fixture_dataset" if stream == "dataset" else "bootstrap"
                 if value == derive_v002_seed(v002_stream, cell_id, replicate):
@@ -89,16 +106,21 @@ def validate_seed_separation(k: int = K_PER_CELL) -> None:
 
 
 def run_cell(spec, *, k: int, c0_b: int, c5_b: int,
-             seed_namespace: str, adjudicate: bool) -> dict[str, Any]:
+             seed_namespace: str, adjudicate: bool,
+             replicate_start: int = 0) -> dict[str, Any]:
     if spec.family != "F5" or spec.cell_id not in EXPECTED_CELLS:
         raise F5G7Error("G7_ACCEPTS_ONLY_FROZEN_F5_BETA22_CELLS")
     if type(k) is not int or k < 1 or type(c0_b) is not int or c0_b < 100:
         raise F5G7Error("INVALID_G7_K_OR_C0_B")
     if type(c5_b) is not int or c5_b < 100:
         raise F5G7Error("INVALID_G7_C5_B")
+    if type(replicate_start) is not int or replicate_start < 0:
+        raise F5G7Error("INVALID_G7_REPLICATE_START")
+    if replicate_start + k > (RESOURCE_K_PER_CELL if seed_namespace == RESOURCE_NAMESPACE else K_PER_CELL):
+        raise F5G7Error("G7_REPLICATE_RANGE_OUT_OF_BOUNDS")
     comparisons, truths, records = [], [], []
     seed_sets = {name: set() for name in ("dataset", "C0_bootstrap", "C5_bootstrap")}
-    for replicate in range(k):
+    for replicate in range(replicate_start, replicate_start + k):
         dataset_id = f"{PROTOCOL_VERSION}:{seed_namespace}:{spec.cell_id}:{replicate:06d}"
         seeds = {
             name: derive_seed(seed_namespace, name, spec.cell_id, replicate)
@@ -235,7 +257,7 @@ def adjudicate_g7_metrics(primary_summary: dict[str, Any]) -> dict[str, Any]:
         for target in ("within", "between"):
             match = next((
                 item for item in metrics
-                if item.get("method_id") == "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"
+                if item.get("method_id") == "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1"
                 and item.get("target") == target
             ), None)
             if match is None:

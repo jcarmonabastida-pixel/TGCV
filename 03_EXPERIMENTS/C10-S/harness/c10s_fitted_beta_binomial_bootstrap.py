@@ -191,10 +191,60 @@ def fit_beta_binomial_counts(counts: Sequence[int], r: int) -> BetaBinomialFit:
     )
 
 
+def fit_beta_binomial_counts_from_certified_box(
+    counts: Sequence[int], r: int, parameter_box, *, production_starts=(),
+) -> BetaBinomialFit:
+    """Construct the canonical fit from the rational midpoint of a certified root box."""
+    from fractions import Fraction
+
+    values = tuple(counts)
+    if type(r) is not int or r < 2 or len(values) < 2:
+        raise BetaBinomialFitError("CERTIFIED_FIT_INPUT_INVALID")
+    if (not isinstance(parameter_box, (tuple, list)) or len(parameter_box) != 2
+            or any(not isinstance(axis, (tuple, list)) or len(axis) != 2 for axis in parameter_box)):
+        raise BetaBinomialFitError("CERTIFIED_ROOT_BOX_MALFORMED")
+    try:
+        mu_lo, mu_hi = (Fraction(value) for value in parameter_box[0])
+        t_lo, t_hi = (Fraction(value) for value in parameter_box[1])
+    except (TypeError, ValueError, ZeroDivisionError):
+        raise BetaBinomialFitError("CERTIFIED_ROOT_BOX_NOT_RATIONAL") from None
+    if not (0 < mu_lo <= mu_hi < 1 and 0 < t_lo <= t_hi < 1):
+        raise BetaBinomialFitError("CERTIFIED_ROOT_BOX_OUTSIDE_OPEN_DOMAIN")
+    max_width = Fraction(1, 2 ** 32)
+    if mu_hi - mu_lo > max_width or t_hi - t_lo > max_width:
+        raise BetaBinomialFitError("CERTIFIED_ROOT_BOX_PRECISION_INSUFFICIENT")
+    mu_exact = (mu_lo + mu_hi) / 2
+    t_exact = (t_lo + t_hi) / 2
+    kappa_exact = t_exact / (1 - t_exact)
+    alpha_exact = mu_exact * kappa_exact
+    beta_exact = (1 - mu_exact) * kappa_exact
+    mean, concentration = float(mu_exact), float(kappa_exact)
+    alpha, beta = float(alpha_exact), float(beta_exact)
+    x = np.asarray(values, dtype=float)
+    if (x.ndim != 1 or not np.all(np.isfinite(x)) or np.any(x < 0)
+            or np.any(x > r) or not np.all(x == np.floor(x))):
+        raise BetaBinomialFitError("CERTIFIED_FIT_COUNTS_INVALID")
+    log_choose = gammaln(r + 1.0) - gammaln(x + 1.0) - gammaln(r - x + 1.0)
+    log_likelihood = float(np.sum(
+        log_choose + betaln(x + alpha, r - x + beta) - betaln(alpha, beta)
+    ))
+    if (not all(math.isfinite(v) for v in (mean, concentration, alpha, beta, log_likelihood))
+            or min(mean, concentration, alpha, beta) <= 0 or mean >= 1):
+        raise BetaBinomialFitError("CERTIFIED_FIT_NUMERIC_REPRESENTATION_INVALID")
+    return BetaBinomialFit(
+        alpha=alpha, beta=beta, mean_probability=mean, concentration=concentration,
+        log_likelihood=log_likelihood, converged=True, boundary=False,
+        boundary_reasons=(),
+        optimizer_message="EXACT_GLOBAL_CERTIFICATE_KRAWCZYK_BOX_RATIONAL_MIDPOINT",
+        selected_start_index=-1, production_starts=tuple(production_starts),
+    )
+
+
 def build_production_analytic_reconciliation(
     fit: BetaBinomialFit | None,
     audit: BetaBinomialOptimizerAudit | None,
     *, audit_error: str | None = None, production_starts=(),
+    fit_origin: str = "L-BFGS-B_FINITE_DIFFERENCE",
 ) -> dict:
     """Retain direct P/A terminal comparisons without inventing a tolerance."""
     production = None
@@ -202,8 +252,9 @@ def build_production_analytic_reconciliation(
     direct = None
     if fit is not None or production_starts:
         production = {
-            "optimizer": "L-BFGS-B_FINITE_DIFFERENCE",
-            "selected_start_index": fit.selected_start_index if fit is not None else None,
+            "optimizer": fit_origin,
+            "fit_origin": fit_origin,
+            "selected_start_index": (fit.selected_start_index if fit is not None and fit_origin == "L-BFGS-B_FINITE_DIFFERENCE" else None),
             "selected_alpha": fit.alpha if fit is not None else None,
             "selected_beta": fit.beta if fit is not None else None,
             "selected_mean_probability": fit.mean_probability if fit is not None else None,
@@ -212,7 +263,7 @@ def build_production_analytic_reconciliation(
             "selected_mean_logit": math.log(fit.mean_probability / (1.0 - fit.mean_probability)) if fit is not None else None,
             "selected_log_concentration": math.log(fit.concentration) if fit is not None else None,
             "selected_termination_message": fit.optimizer_message if fit is not None else None,
-            "selected_success": fit.converged if fit is not None else False,
+            "selected_success": (fit.converged if fit is not None and fit_origin == "L-BFGS-B_FINITE_DIFFERENCE" else None),
             "boundary": fit.boundary if fit is not None else None,
             "boundary_reasons": list(fit.boundary_reasons) if fit is not None else [],
             "starts": [asdict(item) for item in (fit.production_starts if fit is not None else production_starts)],
@@ -346,114 +397,167 @@ def fitted_beta_binomial_parametric_bootstrap(
         raise BetaBinomialFitError("F5_REQUIRES_BERNOULLI_0_1_INNER_CONTRIBUTIONS")
     counts = np.sum(matrix, axis=1).astype(int)
 
-    # Diagnostic-only parallel audit. It does not select or replace the C5
-    # fit below, and its failure never changes the candidate interval path.
+    global_certificate_summary = None
     optimizer_audit = None
     optimizer_audit_error = None
-    try:
-        optimizer_audit = audit_beta_binomial_count_fit(counts, r)
-    except (F5LikelihoodDiagnosticError, ArithmeticError, ValueError) as exc:
-        optimizer_audit_error = f"{type(exc).__name__}:{exc}"
+    reconciliation = None
 
-    try:
-        fit = fit_beta_binomial_counts(counts, r)
-    except BetaBinomialFitError as exc:
-        return FittedBetaBinomialBootstrapResult(
-            comparison=replace(
-                observed, method_id="F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0",
-                abstention_reason=str(exc),
-                provenance=observed.provenance + (("fit_status", "ABSTAINED"),),
-            ),
-            fit=None, bootstrap_replicates=bootstrap_replicates,
-            valid_mcse_replicates=0, valid_mcse_rate=0.0,
-            confidence_level=confidence_level, bootstrap_seed=bootstrap_seed,
-            failure_reason=str(exc),
-            optimizer_audit=optimizer_audit,
-            optimizer_audit_error=optimizer_audit_error,
-            production_analytic_reconciliation=build_production_analytic_reconciliation(
-                None, optimizer_audit, audit_error=optimizer_audit_error,
-                production_starts=exc.production_starts,
-            ),
-        )
-    reconciliation = build_production_analytic_reconciliation(
-        fit, optimizer_audit, audit_error=optimizer_audit_error,
-    )
-    global_certificate_summary = None
     if require_global_mle_certificate:
+        # Exact global classification precedes every floating-point optimizer.
         try:
-            histogram = Counter(int(value) for value in counts)
             certificate = beta_binomial_global_mle_certificate(
-                r, histogram, source_revision=os.environ.get("GITHUB_SHA"),
+                r, Counter(int(value) for value in counts),
+                max_refinements=3,
+                source_revision=os.environ.get("GITHUB_SHA"),
             )
             certificate_status = certificate.get("status", "MISSING_STATUS")
             winner = certificate.get("winner", {})
             parameter_box = winner.get("parameter_box")
+            parameter_box_widths = None
+            precision_ok = False
+            if (
+                isinstance(parameter_box, (tuple, list))
+                and len(parameter_box) == 2
+                and all(isinstance(axis, (tuple, list)) and len(axis) == 2 for axis in parameter_box)
+            ):
+                from fractions import Fraction
+                parameter_box_widths = [
+                    Fraction(axis[1]) - Fraction(axis[0]) for axis in parameter_box
+                ]
+                precision_ok = all(
+                    width <= Fraction(1, 2 ** 32) for width in parameter_box_widths
+                )
+            disposition_status = (
+                "GLOBAL_MLE_ROOT_BOX_PRECISION_INSUFFICIENT"
+                if certificate_status == "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED" and not precision_ok
+                else certificate_status
+            )
             source_revision = (
                 certificate.get("census", {}).get("input_provenance", {}).get("source_revision")
             )
-            inside_certified_box = False
-            if (
-                certificate_status == "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED"
+            valid_interior = (
+                disposition_status == "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED"
                 and winner.get("kind") == "INTERIOR_STATIONARY_ROOT"
                 and isinstance(parameter_box, (tuple, list))
                 and len(parameter_box) == 2
-            ):
-                mu_bounds, t_bounds = parameter_box
-                fitted_t = fit.concentration / (1.0 + fit.concentration)
-                inside_certified_box = (
-                    float(mu_bounds[0]) <= fit.mean_probability <= float(mu_bounds[1])
-                    and float(t_bounds[0]) <= fitted_t <= float(t_bounds[1])
-                )
+            )
             global_certificate_summary = {
-                "status": certificate_status,
+                "status": disposition_status,
+                "certificate_status": certificate_status,
                 "winner_kind": winner.get("kind"),
+                "parameter_box_widths": (
+                    [str(value) for value in parameter_box_widths]
+                    if parameter_box_widths is not None else None
+                ),
                 "parameter_box": (
-                    [[str(v) for v in bounds] for bounds in parameter_box]
+                    [[str(value) for value in bounds] for bounds in parameter_box]
                     if isinstance(parameter_box, (tuple, list)) and len(parameter_box) == 2
                     else None
                 ),
-                "optimizer_inside_certified_root_box": inside_certified_box,
-                "globality_basis": certificate.get("globality_basis"),
+                "canonical_fit_rule": "RATIONAL_MIDPOINT_OF_EXACT_KRAWCZYK_ROOT_BOX",
                 "source_revision": source_revision,
+                "globality_basis": certificate.get("globality_basis"),
             }
+            if not valid_interior:
+                reason = "F5_GLOBAL_MLE_NOT_CERTIFIED:" + str(disposition_status)
+                comparison = replace(
+                    observed, method_id="F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1",
+                    abstention_reason=reason,
+                    provenance=observed.provenance + (
+                        ("fit_status", "GLOBAL_MLE_CERTIFICATION_ABSTENTION"),
+                        ("global_mle_certificate_status", str(disposition_status)),
+                    ),
+                )
+                return FittedBetaBinomialBootstrapResult(
+                    comparison=comparison, fit=None,
+                    bootstrap_replicates=bootstrap_replicates,
+                    valid_mcse_replicates=0, valid_mcse_rate=0.0,
+                    confidence_level=confidence_level, bootstrap_seed=bootstrap_seed,
+                    failure_reason=reason,
+                    global_mle_certificate=global_certificate_summary,
+                )
         except Exception as exc:
             global_certificate_summary = {
                 "status": "GLOBAL_MLE_CERTIFICATE_ERROR",
                 "error": f"{type(exc).__name__}:{exc}",
-                "optimizer_inside_certified_root_box": False,
+                "canonical_fit_rule": "RATIONAL_MIDPOINT_OF_EXACT_KRAWCZYK_ROOT_BOX",
             }
-        reconciliation["global_mle_certificate"] = global_certificate_summary
-        if (
-            global_certificate_summary.get("status") != "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED"
-            or global_certificate_summary.get("optimizer_inside_certified_root_box") is not True
-        ):
-            reason = (
-                "F5_GLOBAL_MLE_NOT_CERTIFIED:"
-                + str(global_certificate_summary.get("status"))
-            )
+            reason = "F5_GLOBAL_MLE_NOT_CERTIFIED:GLOBAL_MLE_CERTIFICATE_ERROR"
             comparison = replace(
-                observed, method_id="F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0",
+                observed, method_id="F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1",
                 abstention_reason=reason,
                 provenance=observed.provenance + (
                     ("fit_status", "GLOBAL_MLE_CERTIFICATION_ABSTENTION"),
-                    ("global_mle_certificate_status", str(global_certificate_summary.get("status"))),
+                    ("global_mle_certificate_status", "GLOBAL_MLE_CERTIFICATE_ERROR"),
                 ),
             )
             return FittedBetaBinomialBootstrapResult(
-                comparison=comparison, fit=fit,
+                comparison=comparison, fit=None,
                 bootstrap_replicates=bootstrap_replicates,
                 valid_mcse_replicates=0, valid_mcse_rate=0.0,
                 confidence_level=confidence_level, bootstrap_seed=bootstrap_seed,
-                failure_reason=reason, optimizer_audit=optimizer_audit,
-                optimizer_audit_error=optimizer_audit_error,
-                production_analytic_reconciliation=reconciliation,
+                failure_reason=reason,
                 global_mle_certificate=global_certificate_summary,
             )
+
+        # Optimizers are retained as diagnostics only; their success, values
+        # and termination messages never select or veto the certified fit.
+        production_starts = ()
+        try:
+            diagnostic_fit = fit_beta_binomial_counts(counts, r)
+            production_starts = diagnostic_fit.production_starts
+        except BetaBinomialFitError as exc:
+            production_starts = exc.production_starts
+        try:
+            optimizer_audit = audit_beta_binomial_count_fit(counts, r)
+        except (F5LikelihoodDiagnosticError, ArithmeticError, ValueError) as exc:
+            optimizer_audit_error = f"{type(exc).__name__}:{exc}"
+        fit = fit_beta_binomial_counts_from_certified_box(
+            counts, r, parameter_box, production_starts=production_starts,
+        )
+        reconciliation = build_production_analytic_reconciliation(
+            fit, optimizer_audit, audit_error=optimizer_audit_error,
+            fit_origin="EXACT_GLOBAL_CERTIFICATE_KRAWCZYK_BOX_MIDPOINT",
+        )
+        reconciliation["global_mle_certificate"] = global_certificate_summary
+    else:
+        # Development-only path retained for historical comparisons.
+        try:
+            fit = fit_beta_binomial_counts(counts, r)
+        except BetaBinomialFitError as exc:
+            try:
+                optimizer_audit = audit_beta_binomial_count_fit(counts, r)
+            except (F5LikelihoodDiagnosticError, ArithmeticError, ValueError) as diagnostic_exc:
+                optimizer_audit_error = f"{type(diagnostic_exc).__name__}:{diagnostic_exc}"
+            return FittedBetaBinomialBootstrapResult(
+                comparison=replace(
+                    observed, method_id="F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1",
+                    abstention_reason=str(exc),
+                    provenance=observed.provenance + (("fit_status", "ABSTAINED"),),
+                ),
+                fit=None, bootstrap_replicates=bootstrap_replicates,
+                valid_mcse_replicates=0, valid_mcse_rate=0.0,
+                confidence_level=confidence_level, bootstrap_seed=bootstrap_seed,
+                failure_reason=str(exc), optimizer_audit=optimizer_audit,
+                optimizer_audit_error=optimizer_audit_error,
+                production_analytic_reconciliation=build_production_analytic_reconciliation(
+                    None, optimizer_audit, audit_error=optimizer_audit_error,
+                    production_starts=exc.production_starts,
+                ),
+            )
+        try:
+            optimizer_audit = audit_beta_binomial_count_fit(counts, r)
+        except (F5LikelihoodDiagnosticError, ArithmeticError, ValueError) as exc:
+            optimizer_audit_error = f"{type(exc).__name__}:{exc}"
+        reconciliation = build_production_analytic_reconciliation(
+            fit, optimizer_audit, audit_error=optimizer_audit_error,
+        )
+
     if fit.boundary:
         reason = "BETA_BINOMIAL_MLE_BOUNDARY:" + ",".join(fit.boundary_reasons)
         return FittedBetaBinomialBootstrapResult(
             comparison=replace(
-                observed, method_id="F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0",
+                observed, method_id="F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1",
                 abstention_reason=reason,
                 provenance=observed.provenance + (("fit_status", "BOUNDARY_ABSTENTION"),),
             ),
@@ -498,17 +602,6 @@ def fitted_beta_binomial_parametric_bootstrap(
         ("fit_alpha", format(fit.alpha, ".17g")),
         ("fit_beta", format(fit.beta, ".17g")),
         ("fit_log_likelihood", format(fit.log_likelihood, ".17g")),
-        ("optimizer_audit_status", (
-            optimizer_audit.status if optimizer_audit is not None
-            else "DIAGNOSTIC_UNAVAILABLE"
-        )),
-        ("optimizer_audit_error", optimizer_audit_error or "NONE"),
-        ("optimizer_audit_ll_difference", (
-            format(optimizer_audit.absolute_log_likelihood_difference, ".17g")
-            if optimizer_audit is not None
-            and optimizer_audit.absolute_log_likelihood_difference is not None
-            else "UNAVAILABLE"
-        )),
         ("bootstrap_rng", "PCG64"),
         ("bootstrap_seed", str(bootstrap_seed)),
         ("bootstrap_replicates", str(bootstrap_replicates)),
@@ -519,7 +612,7 @@ def fitted_beta_binomial_parametric_bootstrap(
     )
     comparison = replace(
         observed,
-        method_id="F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0",
+        method_id="F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1",
         within_interval=within_interval,
         between_interval=between_interval,
         mcse_interval=mcse_interval,

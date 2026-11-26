@@ -1,0 +1,20 @@
+{
+  "C0_B": 1000,
+  "C5_B": 1000,
+  "K_per_cell": 100,
+  "coverage_adjudication": "NOT_PERFORMED",
+  "profile_artifact_archive_sha256": "14e317a6f38d9934dc0903b4b038da5ffc580c9bb076d26dbcc6e47cfe568e21",
+  "profile_artifact_expires_at": "2027-02-22T09:28:39Z",
+  "profile_artifact_id": 14908914198,
+  "profile_artifact_name": "c10s-f5-g7-resource-profile-v1-1",
+  "profile_json_sha256": "005ef265fa7dd8812c2572d9187cc7943c365506dc8e1169f1883487c0094d9f",
+  "profile_run_id": 45365559253,
+  "profile_run_url": "https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45365559253",
+  "profile_schema": "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-002",
+  "profile_scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT",
+  "profile_source_commit": "8b62b89a78681cc39bdd4c0cbb76c43ef073c1e9",
+  "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-003",
+  "seed_namespace": "c10s_f5_g7_resource_v1_1",
+  "profile_repository_full_name": "jcarmonabastida-pixel/TGCV",
+  "profile_repository_id": 1348691577
+}

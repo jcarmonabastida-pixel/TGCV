@@ -1088,3 +1088,26 @@ The validation surfaced and resolved three engineering/test-harness issues befor
 3. The target-specific truth adversarial fixture had an incorrect state description: `enabled=False` with `ADMIT` becomes compliant when the g_A0 rule changes admission to `NO_ADMISSION`. The fixture now uses `enabled=True` with `NO_ADMISSION`, so both policy potentials remain non-compliant and the target-only contrast is genuinely zero. The test now asserts the target history's two potential means and contrast separately, while source-history contrasts remain +0.5. This corrects the fixture, not the estimand, DGP roster or scientific parameters.
 
 This is deterministic software-contract evidence only. It does not generate calibration/evaluation banks, run Monte Carlo, estimate scientific effects, or authorize confirmatory/scientific execution. The legacy `a_f_post/d_f_opening` fields remain non-authoritative for typed focal truth; no change to `main`.
+
+### F5 G7 — canonical certified beta-binomial fit and replay correction v1.1 (2026-11-22)
+
+**Status:** IMPLEMENTATION DRAFT / DETERMINISTIC SOFTWARE VALIDATION IN PROGRESS / NO RESOURCE PREFLIGHT OR HOLDOUT AUTHORIZED.
+
+The consumed v1.0 run [44969714756](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/44969714756) completed its 40 primary and 40 replay shards but failed exact replay adjudication: eight shard pairs had different full-record digests, with seven M10/R5 records changing between optimizer nonconvergence and exact boundary-supremum certification. The artifact-level diagnosis is persisted in [PR #118](https://github.com/jcarmonabastida-pixel/TGCV/pull/118).
+
+The v1.1 implementation draft:
+- makes the exact global beta-binomial certificate authoritative before any floating-point optimizer;
+- contracts each certified Krawczyk root box with exact rational arithmetic to width at most (2^{-32}) on both compactified axes, otherwise abstaining;
+- derives the canonical bootstrap fit from the rational midpoint of the refined root box;
+- retains L-BFGS-B and analytic-gradient optimizer outputs as diagnostics only;
+- stores diagnostic outputs in an independently hashed shard sidecar, separate from the scientific record digest;
+- retains the same-runner clean-source primary/replay topology and all frozen G7 scientific acceptance criteria;
+- uses a new v1.1 seed schedule and disjoint holdout/resource namespaces because the v1.0 bank is consumed;
+- restricts the new resource-only preflight to timing/scheduling data, without inspecting interval emission, certificate status or coverage.
+
+Versioned drafts:
+- [G7 prospective protocol v1.1](design/C10S_F5_G7_TIERA_PROSPECTIVE_PROTOCOL_002.md)
+- [G7 execution architecture v1.1](design/C10S_F5_G7_EXECUTION_ARCHITECTURE_002.md)
+- [Implementation PR #119](https://github.com/jcarmonabastida-pixel/TGCV/pull/119)
+
+No new G7 holdout, calibration bank, coverage adjudication or C10 scientific execution has been launched. The previous one-use authorization is consumed and cannot authorize v1.1. A fresh timing-only resource profile and a new explicit one-use authorization are required before any v1.1 holdout.

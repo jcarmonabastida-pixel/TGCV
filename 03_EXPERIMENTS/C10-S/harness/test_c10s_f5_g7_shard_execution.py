@@ -28,7 +28,7 @@ class F5G7ShardExecutionTests(unittest.TestCase):
             "status": "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED",
             "winner": {
                 "kind": "INTERIOR_STATIONARY_ROOT",
-                "parameter_box": ((0, 1), (0, 1)),
+                "parameter_box": ((0.4, 0.4000000001), (0.4, 0.4000000001)),
             },
             "globality_basis": (
                 "COMPLETE_INTERIOR_STATIONARY_CENSUS_PLUS_ALL_BOUNDARY_PROFILES_AND_CORNER_LIMITS"
@@ -59,8 +59,18 @@ class F5G7ShardExecutionTests(unittest.TestCase):
                 replicate_count=3, c0_b=100, c5_b=100,
                 source_commit="d" * 40,
             )
-        self.assertEqual(shard["records"], monolithic["records"])
-        self.assertEqual(shard["records_digest"], records_digest(monolithic["records"]))
+        expected_records = json.loads(json.dumps(monolithic["records"]))
+        for record in expected_records:
+            for candidate in record["comparison"]["candidates"]:
+                candidate["diagnostics"] = []
+        self.assertEqual(shard["records"], expected_records)
+        self.assertEqual(shard["records_digest"], records_digest(expected_records))
+        self.assertEqual(len(shard["optimizer_diagnostics"]), len(expected_records))
+        from c10s_f5_g7_shard_execution import diagnostics_digest
+        self.assertEqual(
+            shard["optimizer_diagnostics_digest"],
+            diagnostics_digest(shard["optimizer_diagnostics"]),
+        )
         self.assertEqual(
             adjudicate_serialized_records(shard["records"]),
             monolithic["metrics"],
@@ -84,6 +94,10 @@ class F5G7ShardExecutionTests(unittest.TestCase):
             )
         self.assertEqual(primary["records"], replay["records"])
         self.assertEqual(primary["records_digest"], replay["records_digest"])
+        self.assertEqual(
+            primary["optimizer_diagnostics_digest"],
+            replay["optimizer_diagnostics_digest"],
+        )
 
     def test_nonzero_shard_uses_global_replicate_ids_and_seed_schedule(self):
         env_patch, cert_patch, c0_patch, c5_patch = self._patches()
@@ -149,8 +163,8 @@ class F5G7ShardExecutionTests(unittest.TestCase):
                         encoding="utf-8",
                     )
             profile = {
-                "schema": "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-001",
-                "scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_NO_COVERAGE_NO_HOLDOUT",
+                "schema": "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-002",
+                "scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT",
                 "seed_namespace": g7.RESOURCE_NAMESPACE,
                 "K_per_cell": 100,
                 "C0_B": g7.C0_B,
@@ -165,7 +179,7 @@ class F5G7ShardExecutionTests(unittest.TestCase):
             profile_path.write_text(json.dumps(profile), encoding="utf-8")
             profile_manifest_path = root / "resource-profile-manifest.json"
             profile_manifest_path.write_text(json.dumps({
-                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-001",
+                "schema": "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-002",
                 "profile_run_id": 44926453920,
                 "profile_artifact_id": 123456789,
                 "profile_source_commit": source_commit,
@@ -188,6 +202,19 @@ class F5G7ShardExecutionTests(unittest.TestCase):
             )
             self.assertTrue((root / "result" / "g7_result.json").is_file())
             self.assertTrue((root / "result" / "run_manifest.json").is_file())
+
+
+    def test_optimizer_diagnostics_are_separate_from_scientific_record_digest(self):
+        from c10s_f5_g7_shard_execution import diagnostics_digest
+        records = [{"dataset_id": "d1", "comparison": {"interval": [0.1, 0.2]}}]
+        first_diagnostics = [{"dataset_id": "d1", "method_id": "F5", "items": [["optimizer", "CONVERGED"]]}]
+        second_diagnostics = [{"dataset_id": "d1", "method_id": "F5", "items": [["optimizer", "ABNORMAL_TERMINATION"]]}]
+        self.assertEqual(records_digest(records), records_digest(records))
+        self.assertNotEqual(
+            diagnostics_digest(first_diagnostics),
+            diagnostics_digest(second_diagnostics),
+        )
+
 
 
 if __name__ == "__main__":

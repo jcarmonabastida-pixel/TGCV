@@ -11,44 +11,14 @@ import subprocess
 
 AUTH_PATH = "00_GOVERNANCE/authorizations/C10S_F5_G7_TIERA_CALIBRATION_AUTHORIZATION.json"
 BRANCH_PREFIX = "research/c10s-f5-g7-auth-"
-PROTOCOL_PATH = "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_TIERA_PROSPECTIVE_PROTOCOL_001.md"
-RESOURCE_PROFILE_MANIFEST_PATH = "03_EXPERIMENTS/C10-S/diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_001.json"
-SOURCE_HASH_PATHS = {
-    "execution_architecture_sha256": "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_EXECUTION_ARCHITECTURE_001.md",
-    "resource_profile_manifest_sha256": RESOURCE_PROFILE_MANIFEST_PATH,
-    "resource_profile_validator_sha256": "03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_resource_profile.py",
-    "resource_profile_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_resource_profile.py",
-    "resource_profile_script_sha256": "03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_resource_preflight_parallel.py",
-    "shard_execution_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_shard_execution.py",
-    "shard_cli_sha256": "03_EXPERIMENTS/C10-S/harness/execute_c10s_f5_g7_tiera_shard.py",
-    "shard_aggregator_sha256": "03_EXPERIMENTS/C10-S/harness/aggregate_c10s_f5_g7_tiera_shards.py",
-    "shard_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_shard_execution.py",
-    "protocol_sha256": PROTOCOL_PATH,
-    "runner_sha256": "03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_tiera_calibration.py",
-    "fitter_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_fitted_beta_binomial_bootstrap.py",
-    "engine_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py",
-    "certificate_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py",
-    "fixtures_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py",
-    "legacy_comparator_runner_sha256": "03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_comparative_holdout.py",
-    "dependency_lock_sha256": "03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock",
-    "executor_sha256": "03_EXPERIMENTS/C10-S/harness/execute_c10s_f5_g7_tiera_calibration.py",
-    "validator_sha256": "03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_tiera_authorization.py",
-    "workflow_sha256": ".github/workflows/c10-s-f5-g7-tiera-calibration.yml",
-    "static_workflow_sha256": ".github/workflows/c10-s-nested-mr-calibration-comparator-static.yml",
-    "runner_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_tiera_calibration.py",
-    "authorization_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_tiera_authorization.py",
-    "variance_interface_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_variance_comparison_interface.py",
-    "f5_likelihood_diagnostics_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py",
-    "f1_candidate_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f1_exact_pivotal_candidate.py",
-    "gaussian_oracle_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_gaussian_variance_oracles.py",
-    "beta_binomial_oracle_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_beta_binomial_variance_oracles.py",
-    "f1_profile_sha256": "03_EXPERIMENTS/C10-S/harness/c10s_f1_between_profile_likelihood.py",
-    "fitter_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_fitted_beta_binomial_bootstrap.py",
-    "engine_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_inference_engine.py",
-    "legacy_runner_test_sha256": "03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_holdout.py",
-}
+PROTOCOL_PATH = "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_TIERA_PROSPECTIVE_PROTOCOL_002.md"
+RESOURCE_PROFILE_MANIFEST_PATH = "03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json"
+from c10s_f5_g7_source_inventory import execution_source_hash_paths, build_manifests
+
+SOURCE_HASH_PATHS = execution_source_hash_paths()
+
 PROTOCOL_ID = "C10S-F5-G7-TIERA-PROSPECTIVE-001"
-PROTOCOL_VERSION = "1.0"
+PROTOCOL_VERSION = "1.1"
 AUTH_SCHEMA = "TGCV-C10S-F5-G7-TIERA-AUTH-002"
 EXPECTED_CELLS = ("F5_beta22_M10_R5", "F5_beta22_M30_R20")
 
@@ -63,6 +33,22 @@ def sha256_file(path: Path) -> str:
 
 def git(*args: str) -> str:
     return subprocess.check_output(["git", *args], text=True).strip()
+
+
+def validate_source_manifest_hashes(auth: dict, source_manifests: dict) -> None:
+    compute_manifest = source_manifests["compute_path"]
+    execution_manifest = source_manifests["execution_source"]
+    execution_hashes = {item["path"]: item["sha256"] for item in execution_manifest["entries"]}
+    expected_paths = set(SOURCE_HASH_PATHS.values())
+    if set(execution_hashes) != expected_paths:
+        raise ValueError("execution source inventory and manifest path set mismatch")
+    if auth.get("execution_source_manifest_sha256") != execution_manifest["root_sha256"]:
+        raise ValueError("execution_source_manifest_sha256 mismatch")
+    if auth.get("compute_path_content_sha256") != compute_manifest["content_sha256"]:
+        raise ValueError("compute_path_content_sha256 mismatch")
+    for key, relative in SOURCE_HASH_PATHS.items():
+        if auth.get(key) != execution_hashes.get(relative):
+            raise ValueError(f"{key} mismatch for immutable Git tree path {relative}")
 
 
 def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
@@ -80,8 +66,8 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
         raise ValueError("G7 scope mismatch")
     if auth.get("g7_tiera_calibration_authorized") is not True:
         raise ValueError("explicit G7 calibration authorization required")
-    if auth.get("approved_by") != "USER_EXPLICIT_APPROVAL":
-        raise ValueError("approved_by must record explicit user approval")
+    if auth.get("approval_channel") != "GITHUB_WORKFLOW_DISPATCH":
+        raise ValueError("approval_channel must identify explicit GitHub workflow_dispatch")
     if auth.get("tier_b_authorized") is not False or auth.get("c10_scientific_execution_authorized") is not False:
         raise ValueError("Tier B and C10 causal execution must remain false")
     if auth.get("primary_replay_required") is not True:
@@ -103,26 +89,28 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
         raise ValueError("G7 frozen K/B mismatch")
     if auth.get("resource_preflight_k_per_cell") != 100:
         raise ValueError("G7 resource preflight K mismatch")
-    if auth.get("execution_architecture_id") != "C10S-F5-G7-EXECUTION-ARCHITECTURE-001":
+    if auth.get("execution_architecture_id") != "C10S-F5-G7-EXECUTION-ARCHITECTURE-002":
         raise ValueError("G7 staged execution architecture mismatch")
     if (auth.get("max_job_minutes"), auth.get("max_parallel_jobs")) != (150, 20):
         raise ValueError("G7 execution budget or parallelism mismatch")
     profile_manifest = json.loads((root / RESOURCE_PROFILE_MANIFEST_PATH).read_text(encoding="utf-8"))
-    if profile_manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-001":
+    if profile_manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-003":
         raise ValueError("G7 resource profile manifest schema mismatch")
     if (
         auth.get("resource_profile_run_id") != profile_manifest.get("profile_run_id")
         or auth.get("resource_profile_artifact_id") != profile_manifest.get("profile_artifact_id")
         or auth.get("resource_profile_source_commit") != profile_manifest.get("profile_source_commit")
+        or auth.get("resource_profile_repository_full_name") != profile_manifest.get("profile_repository_full_name")
+        or auth.get("resource_profile_repository_id") != profile_manifest.get("profile_repository_id")
         or auth.get("resource_profile_artifact_archive_sha256") != profile_manifest.get("profile_artifact_archive_sha256")
         or auth.get("resource_profile_sha256") != profile_manifest.get("profile_json_sha256")
-        or auth.get("resource_profile_scope") != "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_NO_COVERAGE_NO_HOLDOUT"
-        or auth.get("resource_profile_seed_namespace") != "c10s_f5_g7_resource_v1"
+        or auth.get("resource_profile_scope") != "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT"
+        or auth.get("resource_profile_seed_namespace") != "c10s_f5_g7_resource_v1_1"
     ):
         raise ValueError("G7 resource profile provenance mismatch")
-    if auth.get("seed_schedule_id") != "C10S_F5_G7_TIERA_SEEDS_1.0":
+    if auth.get("seed_schedule_id") != "C10S_F5_G7_TIERA_SEEDS_1.1":
         raise ValueError("G7 seed schedule mismatch")
-    if auth.get("holdout_seed_namespace") != "c10s_f5_g7_holdout_v1" or auth.get("resource_seed_namespace") != "c10s_f5_g7_resource_v1":
+    if auth.get("holdout_seed_namespace") != "c10s_f5_g7_holdout_v1_1" or auth.get("resource_seed_namespace") != "c10s_f5_g7_resource_v1_1":
         raise ValueError("G7 seed namespace mismatch")
     code_commit = auth.get("approved_code_commit")
     if not isinstance(code_commit, str) or not re.fullmatch(r"[0-9a-f]{40}", code_commit):
@@ -135,10 +123,25 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
     changed = git("diff-tree", "--no-commit-id", "--name-only", "-r", workflow_commit).splitlines()
     if changed != [AUTH_PATH]:
         raise ValueError("authorization commit may change only the G7 authorization JSON")
-    for key, relative in SOURCE_HASH_PATHS.items():
-        if auth.get(key) != sha256_file(root / relative):
-            raise ValueError(f"{key} mismatch for {relative}")
+    # The pinned resource profile must originate in the approved code history.
+    try:
+        git("merge-base", "--is-ancestor", profile_manifest["profile_source_commit"], code_commit)
+    except subprocess.CalledProcessError as exc:
+        raise ValueError("G7 resource profile source commit is not an ancestor of approved code commit") from exc
+    # The authorization commit changes only the authorization JSON. Bind all source
+    # identities to its immutable approved-code parent to avoid a self-referential digest.
+    source_manifests = build_manifests(root, code_commit)
+    validate_source_manifest_hashes(auth, source_manifests)
+    profile_compute_manifest = build_manifests(
+        root, profile_manifest["profile_source_commit"],
+        roles=("compute_path",), inventory_commit=code_commit,
+    )["compute_path"]
+    if profile_compute_manifest["content_sha256"] != source_manifests["compute_path"]["content_sha256"]:
+        raise ValueError("resource profile compute-path content differs from approved code commit")
+    execution_manifest = source_manifests["execution_source"]
     return {
+        "execution_source_manifest_sha256": execution_manifest["root_sha256"],
+        "compute_path_content_sha256": source_manifests["compute_path"]["content_sha256"],
         "authorization_id": authorization_id,
         "authorization_sha256": sha256_file(path),
         "approved_code_commit": code_commit,
@@ -148,7 +151,9 @@ def validate(path: Path, root: Path, workflow_commit: str, branch: str) -> dict:
         "c0_bootstrap_replicates": 1000,
         "c5_bootstrap_replicates": 1000,
         "resource_preflight_k_per_cell": 100,
-        "execution_architecture_id": "C10S-F5-G7-EXECUTION-ARCHITECTURE-001",
+        "execution_architecture_id": "C10S-F5-G7-EXECUTION-ARCHITECTURE-002",
+        "resource_profile_repository_full_name": profile_manifest["profile_repository_full_name"],
+        "resource_profile_repository_id": profile_manifest["profile_repository_id"],
         "resource_profile_run_id": auth["resource_profile_run_id"],
         "resource_profile_artifact_id": auth["resource_profile_artifact_id"],
         "resource_profile_source_commit": auth["resource_profile_source_commit"],

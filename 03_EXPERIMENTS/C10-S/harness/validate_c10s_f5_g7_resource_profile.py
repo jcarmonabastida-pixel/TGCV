@@ -11,23 +11,16 @@ from pathlib import Path
 
 import run_c10s_f5_g7_tiera_calibration as g7
 
-PROFILE_SCHEMA = "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-001"
-PROFILE_SCOPE = "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_NO_COVERAGE_NO_HOLDOUT"
-PROFILE_SOURCE_PATHS = (
-    "03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py",
-    "03_EXPERIMENTS/C10-S/harness/c10s_fitted_beta_binomial_bootstrap.py",
-    "03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py",
-    "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py",
-    "03_EXPERIMENTS/C10-S/harness/c10s_variance_comparison_interface.py",
-    "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py",
-    "03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_tiera_calibration.py",
-    "03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_resource_preflight_parallel.py",
-    "03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock",
-)
+PROFILE_SCHEMA = "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-002"
+PROFILE_SCOPE = "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT"
+from c10s_f5_g7_source_inventory import compute_path_paths, build_manifests
+
+PROFILE_SOURCE_PATHS = compute_path_paths()
+
 MAX_PARALLEL = 20
-JOB_SETUP_OVERHEAD_SECONDS = 300
+JOB_SETUP_OVERHEAD_SECONDS = 900  # Conservative 15-minute per-phase engineering reserve.
 JOB_BUDGET_SECONDS = 9000  # 150 minutes; workflow hard timeout is 165 minutes.
-CANDIDATE_SHARD_SIZES = (25, 40, 50, 100)
+CANDIDATE_SHARD_SIZES = (8, 10, 20, 25, 40, 50, 100)
 
 
 def sha256_bytes(value: bytes) -> str:
@@ -39,15 +32,17 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
     profile_sha = sha256_bytes(profile_bytes)
     profile = json.loads(profile_bytes)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    if manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-001":
+    if manifest.get("schema") != "C10S-F5-G7-RESOURCE-PROFILE-MANIFEST-003":
         raise ValueError("G7_RESOURCE_PROFILE_MANIFEST_SCHEMA_MISMATCH")
     if manifest.get("profile_json_sha256") != profile_sha:
         raise ValueError("G7_RESOURCE_PROFILE_JSON_DIGEST_MISMATCH")
     source_commit = manifest.get("profile_source_commit")
     if not isinstance(source_commit, str) or not re.fullmatch(r"[0-9a-f]{40}", source_commit):
         raise ValueError("G7_RESOURCE_PROFILE_SOURCE_COMMIT_INVALID")
-    if manifest.get("profile_run_id") != 44926453920:
-        raise ValueError("G7_RESOURCE_PROFILE_RUN_ID_MISMATCH")
+    if type(manifest.get("profile_run_id")) is not int or manifest["profile_run_id"] <= 0:
+        raise ValueError("G7_RESOURCE_PROFILE_RUN_ID_INVALID")
+    if type(manifest.get("profile_artifact_id")) is not int or manifest["profile_artifact_id"] <= 0:
+        raise ValueError("G7_RESOURCE_PROFILE_ARTIFACT_ID_INVALID")
     if not re.fullmatch(r"[0-9a-f]{64}", manifest.get("profile_artifact_archive_sha256", "")):
         raise ValueError("G7_RESOURCE_PROFILE_ARCHIVE_DIGEST_INVALID")
     if not re.fullmatch(r"[0-9a-f]{64}", manifest.get("profile_json_sha256", "")):
@@ -60,6 +55,7 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
         or profile.get("C0_B") != g7.C0_B
         or profile.get("C5_B") != g7.C5_B
         or profile.get("coverage_adjudication") != "NOT_PERFORMED"
+        or profile.get("source_commit") != source_commit
     ):
         raise ValueError("G7_RESOURCE_PROFILE_PROTOCOL_MISMATCH")
     if profile.get("wall_elapsed_seconds", JOB_BUDGET_SECONDS + 1) > JOB_BUDGET_SECONDS:
@@ -75,20 +71,20 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
         if not all(isinstance(latency.get(key), (int, float)) and latency[key] > 0 for key in ("mean", "p95", "p99", "max")):
             raise ValueError(f"G7_RESOURCE_PROFILE_LATENCY_SUMMARY_INVALID:{cell_id}")
 
-    # The resource sample is reusable only while the measured compute path is byte-identical.
+    # Compare compute-path manifests generated from immutable Git trees.
+    current_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+    current_compute = build_manifests(root, current_commit, roles=("compute_path",), inventory_commit=current_commit)["compute_path"]
+    measured_compute = build_manifests(root, source_commit, roles=("compute_path",), inventory_commit=current_commit)["compute_path"]
+    if tuple(item["path"] for item in current_compute["entries"]) != PROFILE_SOURCE_PATHS:
+        raise ValueError("G7_COMPUTE_PATH_INVENTORY_MANIFEST_MISMATCH")
     ancestor = subprocess.run(
         ["git", "merge-base", "--is-ancestor", source_commit, "HEAD"],
         cwd=root, check=False,
     )
     if ancestor.returncode != 0:
         raise ValueError("G7_RESOURCE_PROFILE_SOURCE_NOT_ANCESTOR")
-    for relative in PROFILE_SOURCE_PATHS:
-        previous = subprocess.check_output(
-            ["git", "show", f"{source_commit}:{relative}"], cwd=root
-        )
-        current = (root / relative).read_bytes()
-        if sha256_bytes(previous) != sha256_bytes(current):
-            raise ValueError(f"G7_RESOURCE_PROFILE_COMPUTE_PATH_CHANGED:{relative}")
+    if measured_compute["content_sha256"] != current_compute["content_sha256"]:
+        raise ValueError("G7_RESOURCE_PROFILE_COMPUTE_PATH_CHANGED")
 
     # Use the worst observed per-dataset latency, not only the mean or p95.
     max_observed_dataset_seconds = max(
@@ -97,37 +93,53 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
     candidate_projections = []
     for size in CANDIDATE_SHARD_SIZES:
         per_cell = {}
-        phase_upper = 0.0
+        total_jobs = 0
+        total_runner_compute_seconds = 0.0
+        paired_job_runtimes = []
         safe = True
         for cell_id in g7.EXPECTED_CELLS:
             shard_count = math.ceil(g7.K_PER_CELL / size)
-            waves = math.ceil(shard_count / MAX_PARALLEL)
-            shard_runtime = (
+            phase_shard_runtime = (
                 size * cells[cell_id]["latency_seconds"]["max"]
                 + JOB_SETUP_OVERHEAD_SECONDS
             )
-            safe = safe and shard_runtime <= JOB_BUDGET_SECONDS
-            phase_component = waves * shard_runtime
-            phase_upper += phase_component
+            # Each matrix job runs primary and clean-source replay sequentially.
+            # max-parallel is shared by the entire matrix, not reset per cell.
+            paired_job_runtime = 2 * phase_shard_runtime
+            safe = safe and paired_job_runtime <= JOB_BUDGET_SECONDS
+            total_jobs += shard_count
+            total_runner_compute_seconds += shard_count * paired_job_runtime
+            paired_job_runtimes.append(paired_job_runtime)
             per_cell[cell_id] = {
                 "shards": shard_count,
-                "waves": waves,
-                "max_observed_shard_runtime_seconds": shard_runtime,
-                "conservative_phase_wall_seconds": phase_component,
+                "max_observed_phase_shard_runtime_seconds": phase_shard_runtime,
+                "max_observed_primary_replay_job_runtime_seconds": paired_job_runtime,
+                "aggregate_primary_replay_compute_seconds": shard_count * paired_job_runtime,
             }
+
+        # Graham's list-scheduling bound: W/m + (1 - 1/m) * p_max.
+        # This is conservative for a single shared pool of MAX_PARALLEL matrix
+        # jobs and avoids incorrectly granting each cell its own 20 runners.
+        max_paired_job_runtime = max(paired_job_runtimes)
+        wall_lower_bound = total_runner_compute_seconds / MAX_PARALLEL
+        wall_scheduling_tail = (1 - 1 / MAX_PARALLEL) * max_paired_job_runtime
+        conservative_wall = wall_lower_bound + wall_scheduling_tail
         candidate_projections.append({
             "datasets_per_shard": size,
-            "safe_under_150_minute_job_budget": safe,
-            "jobs_per_phase": sum(item["shards"] for item in per_cell.values()),
-            "conservative_primary_plus_replay_wall_seconds": 2 * phase_upper,
+            "safe_primary_replay_pair_under_150_minute_job_budget": safe,
+            "shard_tasks_per_phase": total_jobs,
+            "primary_replay_aggregate_compute_hours": total_runner_compute_seconds / 3600,
+            "shared_matrix_wall_workload_lower_bound_seconds": wall_lower_bound,
+            "shared_matrix_list_scheduling_tail_bound_seconds": wall_scheduling_tail,
+            "conservative_primary_plus_replay_wall_seconds": conservative_wall,
             "per_cell": per_cell,
         })
     safe_projections = [
         item for item in candidate_projections
-        if item["safe_under_150_minute_job_budget"]
+        if item["safe_primary_replay_pair_under_150_minute_job_budget"]
     ]
     if not safe_projections:
-        raise ValueError("G7_NO_SHARD_SIZE_MEETS_150_MINUTE_JOB_BUDGET")
+        raise ValueError("G7_NO_PRIMARY_REPLAY_SHARD_PAIR_MEETS_150_MINUTE_JOB_BUDGET")
     # Minimize the conservative end-to-end wall estimate, not the number of jobs.
     selected = min(
         safe_projections,
@@ -137,6 +149,34 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
         ),
     )
     shard_size = selected["datasets_per_shard"]
+
+    # Explicitly expose the unmeasured setup allowance as an assumption.
+    # Sensitivity is computed from the already-frozen K=100 resource sample;
+    # it does not run or inspect any scientific datasets.
+    setup_sensitivity = []
+    for overhead in (300, 600, 900):
+        scenario_jobs = []
+        scenario_work = 0.0
+        scenario_safe = True
+        for cell_id in g7.EXPECTED_CELLS:
+            shard_count = math.ceil(g7.K_PER_CELL / shard_size)
+            paired = 2 * (
+                shard_size * cells[cell_id]["latency_seconds"]["max"] + overhead
+            )
+            scenario_safe = scenario_safe and paired <= JOB_BUDGET_SECONDS
+            scenario_jobs.append(paired)
+            scenario_work += shard_count * paired
+        scenario_tail = (1 - 1 / MAX_PARALLEL) * max(scenario_jobs)
+        setup_sensitivity.append({
+            "per_phase_setup_allowance_seconds": overhead,
+            "max_paired_job_seconds": max(scenario_jobs),
+            "within_150_minute_job_budget": scenario_safe,
+            "shared_pool_list_scheduling_bound_seconds": scenario_work / MAX_PARALLEL + scenario_tail,
+            "interpretation": "ENGINEERING_ASSUMPTION_NOT_MEASURED" if overhead == JOB_SETUP_OVERHEAD_SECONDS else "SENSITIVITY_SCENARIO",
+        })
+
+    profile_k = profile["K_per_cell"]
+    p99_sample_max_exceedance_probability = 1 - (0.99 ** profile_k)
 
     shard_matrix = []
     for cell_id in g7.EXPECTED_CELLS:
@@ -157,6 +197,8 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
     )
     return {
         "schema": "TGCV-C10S-F5-G7-RESOURCE-PROFILE-VALIDATION-001",
+        "compute_path_manifest_sha256": current_compute["root_sha256"],
+        "compute_path_content_sha256": current_compute["content_sha256"],
         "profile_run_id": manifest["profile_run_id"],
         "profile_source_commit": source_commit,
         "profile_json_sha256": profile_sha,
@@ -167,8 +209,15 @@ def validate(profile_path: Path, manifest_path: Path, root: Path) -> dict:
         "max_parallel_jobs": MAX_PARALLEL,
         "job_budget_seconds": JOB_BUDGET_SECONDS,
         "job_setup_overhead_seconds": JOB_SETUP_OVERHEAD_SECONDS,
+        "job_setup_overhead_status": "ENGINEERING_RESERVE_NOT_EMPIRICALLY_MEASURED",
+        "job_setup_overhead_sensitivity": setup_sensitivity,
+        "resource_sample_k_per_cell": profile_k,
+        "probability_sample_max_exceeds_true_p99_under_iid_assumption": p99_sample_max_exceedance_probability,
+        "runtime_extrapolation_status": "CONDITIONAL_K100_SAMPLE_MAX_IS_NOT_A_K1000_HARD_BOUND",
         "shard_matrix": shard_matrix,
-        "shard_jobs_per_phase": len(shard_matrix),
+        "shard_tasks_per_phase": len(shard_matrix),
+        "matrix_job_count": len(shard_matrix),
+        "job_topology": "ONE_MATRIX_JOB_EXECUTES_PRIMARY_AND_CLEAN_SOURCE_REPLAY_SEQUENTIALLY",
         "candidate_shard_projections": candidate_projections,
         "selected_shard_projection": selected,
         "primary_plus_replay_conservative_wall_seconds": primary_replay_upper,

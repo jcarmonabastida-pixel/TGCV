@@ -1,0 +1,418 @@
+{
+  "schema": "TGCV-C10S-F5-G7-SOURCE-INVENTORY-001",
+  "version": 2,
+  "description": "Single typed source of truth for G7 compute-path and execution-source file identities. Hash manifests are derived from Git tree blobs.",
+  "paths": [
+    {
+      "path": ".github/workflows/c10-s-f5-g7-tiera-calibration.yml",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "workflow_sha256"
+    },
+    {
+      "path": ".github/workflows/c10-s-nested-mr-calibration-comparator-static.yml",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "static_workflow_sha256"
+    },
+    {
+      "path": ".github/workflows/c10s-f5-exact-certification-tests.yml",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "deterministic_validation_workflow_sha256"
+    },
+    {
+      "path": ".github/workflows/c10s-f5-g7-resource-profile.yml",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "resource_profile_workflow_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_EXECUTION_ARCHITECTURE_002.md",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "execution_architecture_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_INTEGRATED_GATE_CLOSURE_SPECIFICATION_001.md",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "gate_closure_specification_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_TIERA_PROSPECTIVE_PROTOCOL_002.md",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "protocol_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "resource_profile_manifest_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/profile_artifact.zip.b64",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "resource_profile_artifact_fixture_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/aggregate_c10s_f5_g7_resource_shards.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "resource_profile_shard_aggregator_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/aggregate_c10s_f5_g7_tiera_shards.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "shard_aggregator_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/build_c10s_f5_g7_authorization_manifest.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "authorization_manifest_generator_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_beta_binomial_variance_oracles.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "beta_binomial_oracle_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_f1_between_profile_likelihood.py",
+      "roles": [
+        "execution_source",
+        "compute_path"
+      ],
+      "authorization_hash_key": "f1_profile_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_f1_exact_pivotal_candidate.py",
+      "roles": [
+        "execution_source",
+        "compute_path"
+      ],
+      "authorization_hash_key": "f1_candidate_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_f1_independent_root_isolator.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "f1_independent_root_isolator_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_f1_root_adjudication.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "f1_root_adjudication_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "f5_likelihood_diagnostics_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_mcse_profile.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "f5_mcse_profile_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_shard_execution.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "shard_execution_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_source_inventory.json",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "source_inventory_json_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_f5_g7_source_inventory.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "source_inventory_module_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "certificate_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_fitted_beta_binomial_bootstrap.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "fitter_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_gaussian_variance_oracles.py",
+      "roles": [
+        "execution_source",
+        "compute_path"
+      ],
+      "authorization_hash_key": "gaussian_oracle_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_comparative_inference_engine.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "engine_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "fixtures_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/c10s_variance_comparison_interface.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "variance_interface_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/create_c10s_f5_g7_resource_profile_manifest.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "resource_profile_manifest_generator_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/execute_c10s_f5_g7_tiera_calibration.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "executor_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/execute_c10s_f5_g7_tiera_shard.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "shard_cli_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/profile_c10s_f5_g7_resource_preflight_parallel.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "resource_profile_script_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "dependency_lock_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_resource_shard.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "resource_profile_shard_runner_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_tiera_calibration.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "runner_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/run_c10s_f5_unittest_partition.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "unittest_partition_runner_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_comparative_holdout.py",
+      "roles": [
+        "execution_source",
+        "compute_path"
+      ],
+      "authorization_hash_key": "legacy_comparator_runner_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_f1_independent_root_isolator.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "f1_independent_root_isolator_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_f1_root_adjudication.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "f1_root_adjudication_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_likelihood_diagnostics.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "f5_likelihood_diagnostics_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_beta_binomial_mcse_profile.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "f5_mcse_profile_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_resource_profile_artifact.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "resource_profile_artifact_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_resource_profile.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "resource_profile_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_resource_shards.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "resource_shards_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_shard_execution.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "shard_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_tiera_authorization.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "authorization_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_g7_tiera_calibration.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "runner_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_f5_rational_score_polynomials.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "rational_score_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_fitted_beta_binomial_bootstrap.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "fitter_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_holdout.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "legacy_runner_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_c10s_nested_mr_comparative_inference_engine.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "engine_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/test_theta_a_nested_mc_precision.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "theta_a_nested_mc_precision_test_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/theta_a_nested_mc_precision.py",
+      "roles": [
+        "compute_path",
+        "execution_source"
+      ],
+      "authorization_hash_key": "theta_a_nested_mc_precision_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_resource_profile.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "resource_profile_validator_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/validate_c10s_f5_g7_tiera_authorization.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "validator_sha256"
+    },
+    {
+      "path": "03_EXPERIMENTS/C10-S/harness/verify_c10s_f5_g7_resource_profile_artifact.py",
+      "roles": [
+        "execution_source"
+      ],
+      "authorization_hash_key": "resource_profile_artifact_verifier_sha256"
+    }
+  ]
+}

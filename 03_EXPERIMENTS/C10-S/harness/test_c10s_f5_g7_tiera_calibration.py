@@ -33,7 +33,7 @@ class F5G7CalibrationTests(unittest.TestCase):
             "status": "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED",
             "winner": {
                 "kind": "INTERIOR_STATIONARY_ROOT",
-                "parameter_box": ((0, 1), (0, 1)),
+                "parameter_box": ((0.4, 0.4000000001), (0.4, 0.4000000001)),
             },
             "globality_basis": "COMPLETE_INTERIOR_STATIONARY_CENSUS_PLUS_ALL_BOUNDARY_PROFILES_AND_CORNER_LIMITS",
             "census": {"input_provenance": {"source_revision": "d" * 40}},
@@ -61,7 +61,7 @@ class F5G7CalibrationTests(unittest.TestCase):
             "status": "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED",
             "winner": {
                 "kind": "INTERIOR_STATIONARY_ROOT",
-                "parameter_box": ((0, 1), (0, 1)),
+                "parameter_box": ((0.4, 0.4000000001), (0.4, 0.4000000001)),
             },
             "globality_basis": "COMPLETE_INTERIOR_STATIONARY_CENSUS_PLUS_ALL_BOUNDARY_PROFILES_AND_CORNER_LIMITS",
             "census": {"input_provenance": {"source_revision": "e" * 40}},
@@ -103,7 +103,7 @@ class F5G7CalibrationTests(unittest.TestCase):
                 "datasets_completed": 1000,
                 "metrics": [
                     {
-                        "method_id": "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0",
+                        "method_id": "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.1",
                         "target": target,
                         "n_datasets": 1000,
                         "conditional_coverage": 0.95,

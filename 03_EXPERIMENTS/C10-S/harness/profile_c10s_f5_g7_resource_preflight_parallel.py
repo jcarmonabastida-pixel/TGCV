@@ -10,12 +10,11 @@ import math
 import resource
 import statistics
 import time
-from collections import Counter, defaultdict
+from collections import defaultdict
 from pathlib import Path
 
 import run_c10s_f5_g7_tiera_calibration as g7
 
-METHOD_ID = "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"
 MAX_PARALLEL = 20
 SHARD_SIZES = (25, 40, 50, 100)
 
@@ -40,11 +39,6 @@ def profile(output: Path) -> dict:
         result = original(*args, **kwargs)
         elapsed = time.perf_counter() - started
         cell_id = current["cell_id"]
-        candidate = next(
-            item for item in result.candidates if item.method_id == METHOD_ID
-        )
-        comparison = candidate.comparison
-        provenance = dict(comparison.provenance)
         dataset_id = kwargs.get("dataset_id")
         if dataset_id is None and len(args) > 1:
             dataset_id = args[1]
@@ -52,12 +46,6 @@ def profile(output: Path) -> dict:
         observations[cell_id].append({
             "dataset_id": dataset_id,
             "wall_seconds": elapsed,
-            "global_mle_certificate_status": provenance.get(
-                "global_mle_certificate_status", "MISSING"
-            ),
-            "within_interval_emitted": comparison.within_interval is not None,
-            "between_interval_emitted": comparison.between_interval is not None,
-            "abstention_reason": comparison.abstention_reason,
         })
         return result
 
@@ -81,14 +69,6 @@ def profile(output: Path) -> dict:
                 "cell_id": spec.cell_id,
                 "datasets_completed": result["datasets_completed"],
                 "coverage_adjudication": result["coverage_adjudication"],
-                "certificate_status_counts": dict(Counter(
-                    row["global_mle_certificate_status"]
-                    for row in observations[spec.cell_id]
-                )),
-                "interval_emission_counts": {
-                    "within": sum(row["within_interval_emitted"] for row in observations[spec.cell_id]),
-                    "between": sum(row["between_interval_emitted"] for row in observations[spec.cell_id]),
-                },
                 "latency_seconds": {
                     "mean": statistics.fmean(timings[spec.cell_id]),
                     "median": statistics.median(timings[spec.cell_id]),
@@ -130,8 +110,8 @@ def profile(output: Path) -> dict:
         })
 
     payload = {
-        "schema": "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-001",
-        "scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_NO_COVERAGE_NO_HOLDOUT",
+        "schema": "C10S-F5-G7-RESOURCE-PREFLIGHT-PARALLEL-PROFILE-002",
+        "scope": "RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_TIMING_ONLY_NO_OUTCOME_INSPECTION_NO_COVERAGE_NO_HOLDOUT",
         "seed_namespace": g7.RESOURCE_NAMESPACE,
         "K_per_cell": g7.RESOURCE_K_PER_CELL,
         "C0_B": g7.C0_B,
@@ -146,9 +126,9 @@ def profile(output: Path) -> dict:
         },
         "coverage_adjudication": "NOT_PERFORMED",
         "interpretation": (
-            "Resource-only timing and shard scheduling evidence. Certificate statuses "
-            "and interval emission are recorded as execution diagnostics, not coverage. "
-            "No holdout, method selection, or calibration claim."
+            "Resource-only timing and shard scheduling evidence. No certificate status, interval "
+            "emission, coverage outcome or method-selection result is inspected or retained. "
+            "No holdout or calibration claim."
         ),
     }
     output.parent.mkdir(parents=True, exist_ok=True)
