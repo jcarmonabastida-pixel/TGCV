@@ -2,11 +2,11 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-26  
 **Status:** SOURCE REVIEW COMPLETE — READY FOR BOUNDED BILINGUAL DRAFTING  
 **Branch:** `strategy/transformational-value-learning`  
-**Related specification:** `TRANSFORMATIONAL_VALUE_LEARNING_PUBLISHING_POC_v0.1.md`
+**Related specification:** `PoC/TRANSFORMATIONAL_VALUE_LEARNING_PUBLISHING_POC_v0.1.md`
 
 > This is an editorial source-readiness record. It does not modify TGCV scientific governance, authorise scientific execution, upgrade a claim, or establish that the full TGCV research programme is empirically validated.
 
@@ -340,3 +340,4 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 ## 11. Version history
 
 - **v0.1 — 2026-11-26:** First source-readiness review for Chapter 3, based on current `main` Core, ARM v0.2, TR-131 formal and analytical artefacts, Vision Paper, Evidence-to-Claim Matrix v1.47 and cross-domain evidence map.
+- **v0.2 — 2026-11-26:** Relocated under `PoC/` and updated its related-specification path.
