@@ -892,3 +892,20 @@ The bounded protocol is frozen before the data run:
 The known W/B values are used only as evaluation targets for the pointwise LR statistic, not in unrestricted fitting. There is no LR cutoff, classification, confidence-set inversion, coverage/Wilson adjudication or method selection. The six-dataset K is solely a computational/numerical behaviour probe, not a calibration sample.
 
 The runner requires the exact GitHub source revision and explicit `--execute-development-stress` flag. The workflow performs hash-locked dependency installation, compilation, seed/provenance tests, the bounded run and artifact upload. No Tier-A, Tier-B or causal C10-S authorization is inferred or requested.
+
+
+## 45. Pointwise LR stress runner — serialization defect isolated; technical rerun queued
+
+**First run:** [45875735310](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45875735310) — FAILED in result serialization, not in seed validation or numerical inference.  
+**Runner commit:** `0e977904113f5598445688dd92c72a5f7fda667d`  
+**Rerun:** [45875891931](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45875891931) — QUEUED.  
+**Serialization-only correction commit:** `eebcecb69260f721ed0d00d0ec32de3a1bba8053`.
+
+The first run passed:
+- pinned dependency installation;
+- Python compilation;
+- all 3 deterministic seed/provenance tests, including a zero-collision audit against the reconstructed historical schedules.
+
+The data-run process reached exact LR result serialization and failed because Python 3.12's default decimal integer-to-string safety limit (4,300 digits) was exceeded when formatting an exact rational bound. This is a reporting/serialization defect, not an optimizer, root-isolation, global-certificate or statistical result. The failed run produced no completed JSON artifact and no result was used for method selection or inference.
+
+The correction preserves the exact rational values by encoding numerator and denominator as hexadecimal integers, while retaining decimal approximations and bit lengths. It does not change data generation, seeds, likelihood/profile calculations, numerical budgets or any inferential rule. The rerun uses the same predeclared development-only seed schedule for reproducibility; these data remain development-only and are not eligible as confirmatory holdout data.
