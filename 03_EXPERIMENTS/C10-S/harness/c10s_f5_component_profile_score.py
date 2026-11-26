@@ -355,6 +355,60 @@ def _boundary_profile_likelihood(
     return min(candidates), max(candidates)
 
 
+
+
+def _target_fraction_closed(value) -> Fraction:
+    if isinstance(value, bool):
+        raise F5ConstrainedScoreError("TARGET_MUST_BE_FINITE_RATIONAL")
+    if isinstance(value, Fraction):
+        result = value
+    elif isinstance(value, int):
+        result = Fraction(value)
+    elif isinstance(value, float) and math.isfinite(value):
+        result = Fraction.from_float(value)
+    else:
+        raise F5ConstrainedScoreError("TARGET_MUST_BE_FINITE_RATIONAL")
+    if not 0 <= result <= Fraction(1, 4):
+        raise F5ConstrainedScoreError("TARGET_MUST_LIE_IN_CLOSED_ZERO_TO_ONE_QUARTER")
+    return result
+
+
+def _exact_endpoint_profile_likelihood(
+    r: int, histogram: Mapping[int, int], *,
+    component: str, target: Fraction,
+) -> tuple[Fraction, str]:
+    from math import comb
+
+    worlds = sum(histogram.values())
+    successes = sum(x * n for x, n in histogram.items())
+    trials = worlds * r
+    combinatorial = math.prod(
+        comb(r, x) ** n for x, n in histogram.items() if n
+    )
+    has_interior = any(n and 0 < x < r for x, n in histogram.items())
+    if target == 0:
+        if component == "W":
+            # W=0 is the two-point concentration boundary, profiled over mu.
+            if has_interior:
+                return Fraction(0), "TWO_POINT_LIMIT_ZERO_WITH_INTERIOR_COUNTS"
+            n_full = histogram.get(r, 0)
+            n_zero = histogram.get(0, 0)
+            mu_hat = Fraction(n_full, worlds)
+            value = (mu_hat ** n_full) * ((1 - mu_hat) ** n_zero)
+            return value, "TWO_POINT_LIMIT_PROFILE"
+        # B=0 is the binomial concentration boundary, profiled over mu.
+        mu_hat = Fraction(successes, trials)
+        value = Fraction(combinatorial) * (mu_hat ** successes) * ((1 - mu_hat) ** (trials - successes))
+        return value, "BINOMIAL_LIMIT_PROFILE"
+    if component == "W":
+        # W=1/4: mu=1/2 and kappa -> infinity.
+        return Fraction(combinatorial, 2 ** trials), "BINOMIAL_LIMIT_MU_HALF"
+    # B=1/4: mu=1/2 and kappa -> zero.
+    if has_interior:
+        return Fraction(0), "TWO_POINT_LIMIT_ZERO_WITH_INTERIOR_COUNTS"
+    return Fraction(1, 2 ** worlds), "TWO_POINT_LIMIT_MU_HALF"
+
+
 def f5_component_profile_maximum_enclosure(
     r: int, count_histogram: Mapping[int, int], *,
     component: str, target,
@@ -374,7 +428,30 @@ def f5_component_profile_maximum_enclosure(
     This is a profile-*maximum* enclosure only. It does not construct an LR
     confidence set or select/calibrate a likelihood-ratio cutoff.
     """
-    target_value = _target_fraction(target)
+    if component not in {"W", "B"}:
+        raise F5ConstrainedScoreError("COMPONENT_MUST_BE_W_OR_B")
+    if type(r) is not int or r < 2:
+        raise F5ConstrainedScoreError("R_MUST_BE_INTEGER_GE_2")
+    target_value = _target_fraction_closed(target)
+    if target_value in {Fraction(0), Fraction(1, 4)}:
+        endpoint_value, endpoint_kind = _exact_endpoint_profile_likelihood(
+            r, count_histogram, component=component, target=target_value,
+        )
+        return {
+            "status": "PROFILE_MAXIMUM_ENCLOSED",
+            "component": component,
+            "target": target_value,
+            "profile_likelihood_bounds": (endpoint_value, endpoint_value),
+            "candidate_count": 1,
+            "interior_stationary_count": 0,
+            "candidates": ({
+                "kind": endpoint_kind,
+                "likelihood_bounds": (endpoint_value, endpoint_value),
+            },),
+            "root_set": None,
+            "endpoint_root_set": None,
+            "likelihood_ordering": "EXACT_CLOSED_DOMAIN_ENDPOINT_PROFILE",
+        }
     polynomial = f5_component_profile_score_polynomial(
         r, count_histogram, component=component, target=target_value,
     )
