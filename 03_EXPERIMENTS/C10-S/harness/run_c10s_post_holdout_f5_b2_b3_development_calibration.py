@@ -449,7 +449,10 @@ def run_f5_bank(
     if len(records) != k or len({record["dataset_id"] for record in records}) != k:
         raise F5DevelopmentCalibrationError("INCOMPLETE_OR_DUPLICATE_BANK_DENOMINATOR")
     diagnostic_gate = all(_optimizer_diagnostic_is_resolved(record["fit_diagnostics"]) for record in records)
-    c5_metrics = [metric for metric in metrics if metric["method_id"] == "F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0"]
+    c5_metrics = [
+        metric for metric in metrics
+        if metric["method_id"] == IMPLEMENTED_METHODS["F5"][1]
+    ]
     if len(metrics) != 4 or len(c5_metrics) != 2 or {metric["target"] for metric in c5_metrics} != {"within", "between"}:
         raise F5DevelopmentCalibrationError("F5_COMPONENT_METRIC_ROSTER_MISMATCH")
     component_gates = {
