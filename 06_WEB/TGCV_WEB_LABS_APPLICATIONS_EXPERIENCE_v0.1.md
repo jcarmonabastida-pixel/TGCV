@@ -1,12 +1,12 @@
 # TGCV — Labs & Applications Experience v0.7
 
 **Identifier:** TGCV-WEB-P07-EXP-001  
-**Version:** 0.7  
+**Version:** 0.8  
 **Date:** 2026-11-25  
 **Status:** WORKING EXPERIENCE SPECIFICATION — NOT PUBLICATION APPROVAL  
 **Branch:** strategy/tgcv-web-master  
 **Page:** P07 — Labs & Applications  
-**Parent documents:** Web Master Brief v1.8; Information Architecture v3.0; Content Blueprint v4.1.
+**Parent documents:** Web Master Brief v1.9; Information Architecture v3.4; Content Blueprint v4.5.
 
 ---
 
@@ -311,3 +311,8 @@ The page is editorially acceptable when:
 - Updates the document version and parent references after the approved Spanish/English public-name corrections.
 
 - **v0.7 — 2026-11-25:** aligns the Spanish public heading with TGCV Full Chain Demo and requires the description to explain that it demonstrates TGCV's full chain.
+
+### v0.8 — 2026-11-26
+- Synchronises parent references to Web Master Brief v1.9, Information Architecture v3.4 and Content Blueprint v4.5.
+- Confirms that TGCV Full Chain Demo, TGCV Cross Domain Demo, TGCV Playground, Value Explorer and ValueLabsOS Preview remain unchanged public names in both languages.
+- Records Contact as deferred from first-release Labs & Applications routes; the Application-Fit invitation is not a substitute contact mechanism.
