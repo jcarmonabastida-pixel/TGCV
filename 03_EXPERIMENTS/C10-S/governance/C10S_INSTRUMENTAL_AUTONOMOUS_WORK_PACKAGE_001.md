@@ -830,3 +830,22 @@ Every root-isolation call in all refinements returned `ISOLATION_COMPLETE` with 
 **Disposition:** the adaptive refinement rule is a viable development candidate for avoiding unnecessarily fine root isolation while preserving fail-closed classification. It does not itself establish coverage, LR-cutoff calibration, full confidence-set topology, or readiness for Tier-A.
 
 **Next operation:** reconcile the current F5 numerical candidate and adaptive wrapper against the full C10-S contracts; then design a small development-only repeated-sampling stress comparison with known DGP truth, fresh development seeds, and no confirmatory/exposed holdout data. Keep adaptive refinement and its width schedule explicitly provisional until performance, interval nesting and boundary behavior are verified across more DGP configurations. No Tier-A confirmatory run, Tier-B, or causal C10-S execution is authorized by this step.
+
+
+## 42. Adaptive LR boundary-B diagnostic — PASS for pointwise classification; no coverage/topology claim
+
+**Workflow:** [45869809771](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45869809771) — SUCCESS  
+**Job:** `140081979850` — SUCCESS
+
+Both previously ambiguous boundary-B fixtures were refined from exact isolation width (2^{-8}) to (2^{-16}); both achieved a certified pointwise `CLASSIFIED_IN` result with no unresolved precision state:
+
+| Fixture | Diagnostic cutoff (not calibrated) | LR enclosure at (2^{-8}) | LR enclosure at (2^{-16}) | Runtime |
+|---|---:|---:|---:|---:|
+| M30/R20 boundary-only B | 48.3 | [47.2819641620, 49.3814918111] | [48.2783048687, 48.2864933674] | 502.80 s |
+| M10/R5 endpoint-only B | 16.1 | [15.7606547207, 16.4604972704] | [16.0927682896, 16.0954977891] | 1.66 s |
+
+Both use a certified global boundary-supremum result. The M30/R20 profile identified 3 candidates and 1 interior stationary point; M10/R5 identified 5 candidates and 3 interior stationary points. In each case, the refined exact enclosure lies wholly below its diagnostic cutoff, hence pointwise IN.
+
+The cutoffs 48.3 and 16.1 were selected solely to exercise refinement across the coarse enclosures. They are **not calibrated LR cutoffs**, not Tier-A values, and not coverage evidence. The result establishes that the adaptive mechanism can resolve these two pointwise decisions; it does not certify the topology of a full confidence set, prove all disconnected components have been found, or establish interval coverage.
+
+**Operational implication:** retain adaptive exact refinement as a candidate computational component. The M30/R20 boundary case costs about 8.38 minutes for one refined profile; any later development stress study must account for this cost and should avoid blindly applying the finest precision to every point. No Tier-A, Tier-B, or causal C10-S execution is authorized.
