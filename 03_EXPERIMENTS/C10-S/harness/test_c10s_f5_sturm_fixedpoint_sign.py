@@ -62,3 +62,41 @@ class CertifiedFixedPointSturmSignTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+    def test_integer_prs_sequence_has_exact_rational_sturm_sign_parity(self):
+        from c10s_f5_sturm_call_instrumentation import primitive_integer_sturm_sequence
+
+        rng = random.Random(20261127)
+        polynomials = [
+            [-1, 2],
+            [1, -7, 11, -5],
+            [3, 0, -2, 0, 1],
+            [-5, 0, 0, 1],
+            [7, -3, 0, 0, -2, 1],
+        ]
+        for degree in range(2, 18):
+            coefficients = [
+                rng.getrandbits(256) * (-1 if rng.randrange(2) else 1)
+                for _ in range(degree)
+            ]
+            coefficients.append(
+                (rng.getrandbits(256) or 1) * (-1 if rng.randrange(2) else 1)
+            )
+            polynomials.append(coefficients)
+
+        for coefficients in polynomials:
+            reference = rational._uni_sturm_integer_sequence(
+                rational._uni_sturm_sequence(coefficients)
+            )
+            candidate = primitive_integer_sturm_sequence(coefficients)
+            self.assertEqual(len(candidate), len(reference))
+            for depth in range(0, 8):
+                denominator = 1 << depth
+                for numerator in range(denominator + 1):
+                    point = Fraction(numerator, denominator)
+                    self.assertEqual(
+                        rational._uni_sign_variations_integer(reference, point),
+                        rational._uni_sign_variations_integer(candidate, point),
+                        msg=f"{coefficients=} {point=}",
+                    )
