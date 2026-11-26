@@ -154,6 +154,13 @@ class F5ConstrainedProfileScoreTests(unittest.TestCase):
                 "GLOBAL_CO_MAXIMIZERS_CERTIFIED",
             },
         )
+        infinite = f5_component_profile_lr_statistic(
+            R, histogram, component="W", target=Fraction(0),
+            global_certificate=global_certificate,
+        )
+        self.assertEqual(infinite["status"], "LR_STATISTIC_INFINITE")
+        self.assertEqual(infinite["lr_statistic_bounds"], (math.inf, math.inf))
+
         for component in ("W", "B"):
             result = f5_component_profile_lr_statistic(
                 R, histogram, component=component, target=Fraction(1, 20),
@@ -179,6 +186,43 @@ class F5ConstrainedProfileScoreTests(unittest.TestCase):
             Fraction(1, 2), terms=80,
         )
         self.assertEqual((reciprocal_lo, reciprocal_hi), (-hi, -lo))
+
+
+    def test_closed_domain_profile_endpoints_use_correct_limit_likelihoods(self):
+        w_zero = f5_component_profile_maximum_enclosure(
+            R, HISTOGRAM, component="W", target=Fraction(0),
+        )
+        b_zero = f5_component_profile_maximum_enclosure(
+            R, HISTOGRAM, component="B", target=Fraction(0),
+        )
+        w_quarter = f5_component_profile_maximum_enclosure(
+            R, HISTOGRAM, component="W", target=Fraction(1, 4),
+        )
+        b_quarter = f5_component_profile_maximum_enclosure(
+            R, HISTOGRAM, component="B", target=Fraction(1, 4),
+        )
+        self.assertEqual(w_zero["profile_likelihood_bounds"], (Fraction(0), Fraction(0)))
+        self.assertGreater(b_zero["profile_likelihood_bounds"][0], 0)
+        self.assertGreater(w_quarter["profile_likelihood_bounds"][0], 0)
+        self.assertEqual(
+            b_quarter["profile_likelihood_bounds"], (Fraction(0), Fraction(0)),
+        )
+
+        endpoint_only = {0: 5, 5: 5}
+        w_zero_endpoint = f5_component_profile_maximum_enclosure(
+            R, endpoint_only, component="W", target=Fraction(0),
+        )
+        b_quarter_endpoint = f5_component_profile_maximum_enclosure(
+            R, endpoint_only, component="B", target=Fraction(1, 4),
+        )
+        self.assertEqual(
+            w_zero_endpoint["profile_likelihood_bounds"],
+            (Fraction(1, 2**10), Fraction(1, 2**10)),
+        )
+        self.assertEqual(
+            b_quarter_endpoint["profile_likelihood_bounds"],
+            (Fraction(1, 2**10), Fraction(1, 2**10)),
+        )
 
     def test_polynomial_is_reproducible_and_target_is_exact_binary_rational(self):
         first = f5_component_profile_score_polynomial(
