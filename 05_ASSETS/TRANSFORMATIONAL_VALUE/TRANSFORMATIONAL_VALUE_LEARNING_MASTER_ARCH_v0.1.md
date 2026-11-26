@@ -1,9 +1,9 @@
 # TRANSFORMATIONAL VALUE — Book & Learning Master Architecture
 
 **Identifier:** TGCV-TV-LEARNING-MASTER-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-26  
-**Status:** STRATEGIC ARCHITECTURE — WORKING DOCUMENT  
+**Status:** STRATEGIC ARCHITECTURE — WORKING DOCUMENT; detailed contents proposal available for review  
 **Branch:** `strategy/transformational-value-learning`  
 **Canonical location:** `05_ASSETS/TRANSFORMATIONAL_VALUE/TRANSFORMATIONAL_VALUE_LEARNING_MASTER_ARCH_v0.1.md`
 
@@ -587,7 +587,7 @@ The exact position of Learning in the global navigation, its relationship to Exp
 | D07 | Design for bilingual content | Yes, from the beginning | Recommended requirement |
 | D08 | Prepare future community contribution | Yes, but activate only when adoption justifies it | Strategic direction |
 | D09 | Select web framework | Defer until requirements and content architecture are clear | Open |
-| D10 | Finalise detailed table of contents | Next major work item | Open |
+| D10 | Finalise detailed table of contents | Detailed proposal created; structural review pending | In review |
 | D11 | Finalise metadata/content schema | After content model is reviewed | Open |
 | D12 | Define editorial and scientific review roles | Lightweight initial governance, explicit future scaling | Open |
 | D13 | Confirm Learning navigation placement | Update web master brief after architecture review | Open |
@@ -633,3 +633,27 @@ The web master brief remains authoritative for website scope and public navigati
 ### Version history
 
 - **v0.1 — 2026-11-26:** Initial master architecture for the *Transformational Value* reference work, Learning experience, GitHub-based knowledge source, evidence boundaries, future community evolution and phased development.
+
+
+## 16. Detailed table of contents — subordinate specification
+
+The first detailed chapter-level proposal is maintained in a separate, versioned document:
+
+**[TRANSFORMATIONAL_VALUE_DETAILED_TOC_v0.1.md](TRANSFORMATIONAL_VALUE_DETAILED_TOC_v0.1.md)**
+
+It contains:
+- the proposed reader journey and editorial logic;
+- front matter and the three-part chapter structure;
+- chapter purposes and section-level breakdowns;
+- a reusable chapter template;
+- cross-cutting editorial, evidence and bilingual requirements;
+- an initial content dependency map;
+- ten structural questions to resolve before approval.
+
+The detailed contents document is subordinate to this master architecture. It may develop chapter structure but cannot redefine the identity boundaries, scientific status, VALUE methodology or governance principles established here.
+
+**Current status:** proposed for structural review; not yet approved as the final table of contents.
+
+### Version history
+
+- **v0.2 — 2026-11-26:** Added the detailed table-of-contents specification and updated the decision register to reflect that structural review is now the next action.
