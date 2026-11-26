@@ -33,7 +33,9 @@ for (const item of sources) {
   await mkdir(assetDir, { recursive: true });
 
   const chapterSource = resolve(contentRoot, item.chapter);
-  const chapterText = await readFile(chapterSource, "utf8");
+  const canonicalChapterText = await readFile(chapterSource, "utf8");
+  // Mark the generated preview page as a Starlight draft; preserve canonical status metadata.
+  const chapterText = canonicalChapterText.replace(/^(---\\r?\\n[\\s\\S]*?\\nstatus:\\s*draft\\s*\\n)/, "$1draft: true\\n");
   const diagramSource = resolve(contentRoot, item.diagram);
   const diagramText = await readFile(diagramSource, "utf8");
 
