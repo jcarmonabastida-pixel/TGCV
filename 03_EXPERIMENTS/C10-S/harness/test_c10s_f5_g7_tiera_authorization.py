@@ -347,5 +347,15 @@ class F5G7AuthorizationTests(unittest.TestCase):
         self.assertIn("EXPECTED_REPOSITORY_ID:", workflow)
         self.assertIn("--expected-repository-id", workflow)
 
+    def test_non_authorizing_draft_identity_is_fresh_and_commit_bound(self):
+        repo_root = Path(__file__).resolve().parents[3]
+        workflow = (repo_root / ".github/workflows/c10s-f5-exact-certification-tests.yml").read_text(encoding="utf-8")
+        self.assertIn('AUTHORIZATION_ID="C10S-F5-G7-${GITHUB_SHA:0:12}"', workflow)
+        self.assertIn('AUTHORIZATION_BRANCH="research/c10s-f5-g7-auth-${AUTHORIZATION_ID}"', workflow)
+        self.assertIn('"authorization_id": os.environ["AUTHORIZATION_ID"]', workflow)
+        self.assertIn('"authorization_branch": os.environ["AUTHORIZATION_BRANCH"]', workflow)
+        self.assertNotIn('"authorization_id": "C10S-F5-G7-20261126-001"', workflow)
+        self.assertNotIn('"authorization_branch": "research/c10s-f5-g7-auth-C10S-F5-G7-20261126-001"', workflow)
+
 if __name__ == "__main__":
     unittest.main()
