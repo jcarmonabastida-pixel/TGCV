@@ -1,7 +1,7 @@
 # TRANSFORMATIONAL VALUE — Content Model & Editorial Workflow
 
 **Identifier:** TGCV-TV-CONTENT-MODEL-001  
-**Version:** 0.4  
+**Version:** 0.5  
 **Date:** 2026-11-26  
 **Status:** CONTENT ARCHITECTURE PROPOSAL — FOR REVIEW  
 **Governing document:** `TRANSFORMATIONAL_VALUE_LEARNING_MASTER_ARCH_v0.1.md`  
@@ -578,6 +578,9 @@ TRANSFORMATIONAL_VALUE/
     en/
       part-01-understanding-transformation/
   learning-resources/
+    research-notes/
+      es/
+      en/
   glossary/
   references/
   assets/
@@ -587,7 +590,7 @@ TRANSFORMATIONAL_VALUE/
   governance/
 ```
 
-Spanish and English book content must be stored in their respective language trees. Shared assets, references, metadata and terminology records must not be duplicated by language unless the resource genuinely requires language-specific variants. The `PoC/` directory is a project-validation workspace, not a fourth governing-document layer. Directories may initially contain short `README.md` orientation files; do not create empty chapter files or placeholders for all planned content. New chapter and section files are created only when their drafting gate is reached.
+Spanish and English book content must be stored in their respective language trees. Shared assets, references, metadata and terminology records must not be duplicated by language unless the resource genuinely requires language-specific variants. Bilingual research notes and evidence summaries belong under `learning-resources/research-notes/es/` and `learning-resources/research-notes/en/`, sharing a language-neutral content ID and receiving independent editorial status. Their reader-facing text must use descriptive study titles and must not expose internal experiment or repository identifiers. Internal provenance paths may be retained in metadata. The `PoC/` directory is a project-validation workspace, not a fourth governing-document layer. Directories may initially contain short `README.md` orientation files; do not create empty chapter files or placeholders for all planned content. New chapter and section files are created only when their drafting gate is reached.
 
 ## 21. Version history
 
@@ -693,3 +696,4 @@ This editorial gate controls reader-facing clarity and traceability. It does not
 
 - **v0.3 — 2026-11-26:** Added a binding editorial rule separating reader-facing terminology from internal TGCV research and repository identifiers, including acronym policy and review checks.
 - **v0.4 — 2026-11-26:** Expanded the rule to every reader-facing surface, defined internal identifiers and permitted exceptions, distinguished technical notation from repository codes, and introduced a mandatory independently recorded bilingual approval gate supported by automated checks and human review.
+- **v0.5 — 2026-11-26:** Added a bilingual `learning-resources/research-notes/` structure for reader-facing evidence notes, with independent language status, descriptive public titles and internal provenance retained only in metadata.
