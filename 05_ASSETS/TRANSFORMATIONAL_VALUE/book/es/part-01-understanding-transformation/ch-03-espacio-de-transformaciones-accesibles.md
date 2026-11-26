@@ -5,7 +5,7 @@ title: "El espacio de transformaciones accesibles"
 language: es
 content_type: chapter
 status: draft
-version: 0.3
+version: 0.4
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -26,6 +26,7 @@ related:
   - TV-CH-04
   - TV-CH-05
   - TV-CH-06
+  - TV-LR-001
 references:
   - TV-REF-001
   - TV-REF-002
@@ -231,8 +232,6 @@ La comparación entre dominios exige una precaución adicional. Puede ser posibl
 La evidencia disponible procede de estudios y análisis distintos. No constituye una única prueba ni permite combinar sus tamaños muestrales o alcances. Cada resultado responde a una pregunta diferente.
 
 **Una representación común en dos dominios computacionales.** Un estudio acotado reconstruyó 36 transiciones en dos dominios estructuralmente diferentes. La validación no encontró registros inválidos y una auditoría matemática independiente no encontró discrepancias en los descriptores calculados. En ambos dominios se observaron cambios en la identidad de las transformaciones accesibles. En uno hubo sustitución de identidades sin cambio en el número total; en el otro se observaron, además, algunas reducciones netas. El resultado respalda la operacionalización de una representación común de transición en esos casos examinados. No demuestra que la representación sea universal, superior a otras ni válida en cualquier dominio.
-
-**Dinámica temporal en sistemas de software.** Un análisis separado de versiones sucesivas de paquetes de software examinó 516.061 pares temporales adyacentes. En aproximadamente el 84,91 % se observó algún cambio en la composición del espacio accesible. La mayoría de esos cambios correspondió a reconfiguraciones de identidad, no a una simple expansión o contracción. El análisis también identificó numerosos casos en los que cambiaba el espacio accesible sin que cambiara el alcance potencial a un paso, así como casos en los que ese alcance mantenía su cardinalidad pero cambiaba su composición. Estos resultados muestran, dentro de la representación y el horizonte temporal examinados, que el espacio accesible, el alcance potencial y su cardinalidad son objetos distinguibles. No demuestran alcanzabilidad efectiva en tiempo de ejecución, trayectorias de horizonte más largo, causalidad, adopción, resultados posteriores ni creación de valor.
 
 **Evidencia causal acotada sobre trayectorias posteriores.** En una evaluación experimental de expansión de servicios financieros rurales en el sur de India, la asignación aleatoria de aperturas de sucursales modificó la infraestructura local de acceso a servicios financieros formales. La consolidación de la evidencia de TGCV interpreta esa intervención estructural como una ampliación de la accesibilidad y encuentra apoyo causal acotado a que esa ampliación afectó trayectorias posteriores de los hogares en el contexto estudiado. La interpretación mantiene separados el acceso estructural, la utilización posterior de productos financieros y los cambios observados en empleo, actividad económica e ingresos. Es evidencia de una relación acotada en un entorno concreto; no establece que cualquier cambio de accesibilidad produzca una modificación de trayectoria, ni que la accesibilidad sea su única causa.
 
