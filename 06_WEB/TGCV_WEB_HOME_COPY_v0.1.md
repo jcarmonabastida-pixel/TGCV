@@ -4,7 +4,7 @@
 **Version:** 1.7  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
-**Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md` — v1.8  
+**Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md` — v1.9  
 **Branch:** `strategy/tgcv-web-master`
 
 ---
