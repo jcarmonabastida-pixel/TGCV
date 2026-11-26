@@ -155,7 +155,7 @@ jobs:
           python - <<'PY'
           import hashlib, json, os
           from pathlib import Path
-          root = Path.cwd().parents[3]
+          root = Path.cwd().parents[2]
           profile_path = root / "03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json"
           protocol_path = root / "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_TIERA_PROSPECTIVE_PROTOCOL_002.md"
           profile = json.loads(profile_path.read_text(encoding="utf-8"))
