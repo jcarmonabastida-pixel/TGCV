@@ -271,25 +271,33 @@ Taken together, these results support bounded operations and relationships: the 
 
 ## 8. Limits, assumptions and open questions
 
-Analysing the accessible transformation space depends on decisions that must be made visible.
+Analysing the accessible transformation space depends on decisions about representation, the conditions under which the system is observed, and the limits of the available evidence. These dimensions should be distinguished: an operationalisation limitation is not equivalent to a scientific refutation, and an open question should not be presented as an established result.
 
-**System boundary and candidate universe.** If the system boundary is inappropriate, decisive external conditions may be omitted, or capabilities that depend on other actors and infrastructure may be attributed to the system itself. The candidate transformation universe must be delimited in a way that is defensible for the question being studied. It will not always be possible to enumerate every conceivable transformation; the analysis must explain what is included, what is excluded and why the operational closure is sufficient for its stated purpose.
+### Representation and operationalisation decisions
 
-**Transformation identity and equivalence.** To compare spaces over time, we need to know when a transformation persists, when it changes and when it should be treated as different. Across domains, labels cannot be equated automatically: a common analytical structure does not imply semantic identity between transformations.
+**System boundary and candidate universe.** If the system boundary is inappropriate, decisive external conditions may be omitted, or capabilities that depend on other actors and infrastructure may be attributed to the system itself. The candidate transformation universe must be delimited in a way that is defensible for the question being studied. It will not always be possible to enumerate every conceivable transformation; the analysis must explain what is included, what is excluded and why the adopted operational closure is adequate for the stated question and estimand. This justification does not make the delimited universe an exhaustive representation of all possible transformations.
 
-**Accessibility criterion.** The predicate must be defined independently of realisation and downstream outcomes. If it is constructed from what happened, the analysis risks becoming circular. Structural availability must also be distinguished from adoption or actual use.
+**Transformation identity and equivalence.** To compare spaces over time, we need to know when a transformation persists, when it changes and when it should be treated as different. Across domains, labels cannot be equated automatically: a common analytical structure does not imply semantic identity between transformations. Equivalence must be justified by considering the meaning and function of transformations in each system.
 
-**Interference and external dependence.** A transformation may depend on other systems, actors, networks or infrastructure. An intervention assigned to one unit may affect other units or depend on shared conditions. If these dependencies are unobserved or cannot be ruled out, they limit causal interpretation and must be stated.
+**Accessibility criterion and evidence assessment.** The accessibility predicate must be defined independently of realisation and downstream outcomes. Its specification should state which conditions are considered necessary, what evidence is sufficient to establish that they are met, and how indeterminate cases are handled. These rules must be fixed independently of the realisations and outcomes subsequently observed. Otherwise, there is a risk of retrospectively adapting the definition to the data. Structural availability must also be distinguished from adoption or actual use.
 
-**Measurement and scalarisation.** Cardinality is only one descriptor. It can conceal substitution, changes in identity and semantic differences. Reducing the space to one number may be useful for a specific estimand, but it is not equivalent to measuring its full structure. Results based on a scalar operationalisation must be interpreted within that boundary.
+**Measurement and scalarisation.** Cardinality is only one descriptor. It can conceal substitution, changes in identity and semantic differences. Reducing the space to one number may be useful for a specific estimand, but it is not equivalent to measuring its full structure. Results based on a scalar operationalisation must be interpreted within that boundary and not automatically extrapolated to dimensions that were not measured.
 
-**Cross-domain heterogeneity.** A common analytical structure does not mean that mechanisms, transformations or their meanings are identical across systems. Generality must be tested, not assumed.
+### Limits of observation and inference
 
-**Relationship with trajectories.** Bounded causal evidence exists that a structural expansion of accessibility affected subsequent trajectories in one studied setting. Other analyses provide structural or methodological evidence, but do not all identify a causal relationship. The generality of the relationship, and the conditions under which it holds, remain open questions.
+**External dependencies and interference.** External dependencies may form part of the conditions that make a transformation accessible, even when they lie outside the analytical boundary of the system. Separately, in causal studies, interference between units may compromise the interpretation of effects if an intervention affects units other than those to which it was assigned. These are not necessarily the same problem and cannot be resolved through a single strategy. Both require the analytical boundary, relevant dependencies and assumptions to be stated explicitly.
+
+**Cross-domain heterogeneity.** A common analytical structure does not mean that mechanisms, transformations or their meanings are identical across systems. Generality must be tested, not assumed. Transferring a criterion or result between domains requires justification of which aspects are comparable and which remain context-dependent.
+
+**Scope of the available evidence.** The studies examined do not support the same type of inference. The computational analyses provide structural and methodological evidence under bounded operationalisations. The temporal analysis of a software-package ecosystem identifies changes and differences between accessible-space composition and one-step potential reach, but does not establish effective reachability or causality. The rural financial-services intervention provides bounded causal evidence concerning subsequent trajectories in its setting. The urban infrastructure analysis does not detect an effect for the structural estimand examined, without establishing that the effect is universally null, while the street-paving case permits only partial identification. The synthetic experiment illustrates a logical possibility under a specified construction, not an empirical regularity. These differences must be preserved when assessing the evidence as a whole.
+
+### Open scientific questions
+
+**Relationship with trajectories.** Bounded causal evidence exists that a structural expansion of accessibility affected subsequent trajectories in one studied setting. Other analyses provide structural or methodological evidence, but do not all identify a causal relationship. The generality of this relationship, the mechanisms involved and the conditions under which it holds remain open questions.
 
 **Relationship with value.** Value requires an additional evaluation: which outcomes count, for whom, against which criteria and over what time horizon. The fact that a transformation is accessible—or even realised—does not determine the value of its consequences. The causal or predictive relationship between changes in the accessible space and changes in value remains open.
 
-These limitations do not make the concept unusable. They define the conditions under which it can be applied rigorously and identify the additional evidence that would be needed.
+These limitations do not make the concept unusable. They define the conditions under which it can be applied rigorously, delimit the inferences supported by the available evidence and identify the additional research that would be needed.
 
 ## 9. Synthesis and reflection
 
