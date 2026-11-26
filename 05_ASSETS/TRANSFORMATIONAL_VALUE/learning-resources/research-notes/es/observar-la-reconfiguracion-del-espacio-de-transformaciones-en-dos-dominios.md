@@ -3,7 +3,7 @@ content_id: TV-LR-001
 language_pair_id: TV-LR-001
 title: "Observar la reconfiguración del espacio de transformaciones en dos dominios"
 language: es
-content_type: learning_resource
+content_type: research_note
 status: draft
 version: 0.2
 created: 2026-11-26
