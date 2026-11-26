@@ -1,12 +1,12 @@
 # TGCV — Labs & Applications Copy v0.7
 
 **Identifier:** TGCV-WEB-P07-COPY-001  
-**Version:** 0.7  
+**Version:** 0.8  
 **Date:** 2026-11-25  
 **Status:** BILINGUAL EDITORIAL DRAFT — PENDING REVIEW; NOT PUBLICATION APPROVAL  
 **Branch:** strategy/tgcv-web-master  
-**Authoritative Experience:** TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md v0.6  
-**Content Blueprint:** TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md v4.0
+**Authoritative Experience:** TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md v0.8  
+**Content Blueprint:** TGCV_WEB_CONTENT_BLUEPRINT_v0.1.md v4.5
 
 ---
 
@@ -369,3 +369,10 @@ This invitation is intended to open a conversation and help discover potential c
 - **v0.6 — 2026-11-25:** removes Contact from the active visitor-route list until a real, monitored public channel and page are available.
 
 - **v0.7 — 2026-11-25:** uses **TGCV Full Chain Demo** as the Spanish heading and name in the descriptive paragraph, explicitly identifying it as a demonstrator of TGCV's full chain. English copy remains unchanged.
+
+## v0.8 integrated editorial correction — 2026-11-26
+
+- Retains **TGCV Full Chain Demo** unchanged as the public name in both Spanish and English; the Spanish descriptive text identifies it separately as a synthetic demonstrator of TGCV's full chain.
+- Retains **TGCV Cross Domain Demo**, **TGCV Playground**, **Value Explorer** and **ValueLabsOS Preview** as approved public names without translation.
+- Synchronises the Experience and Content Blueprint dependencies with the current branch versions.
+- Does not alter asset maturity, evidence status or publication permissions.
