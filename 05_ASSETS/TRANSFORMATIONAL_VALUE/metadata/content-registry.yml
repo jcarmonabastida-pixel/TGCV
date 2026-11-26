@@ -53,3 +53,20 @@ content:
       - TV-REF-004
       - TV-REF-005
     epistemic_status: bounded_methodological_evidence
+
+  - content_id: TV-LR-002
+    content_type: learning_resource
+    title:
+      es: "Análisis temporal de un ecosistema de paquetes de software"
+      en: "Temporal analysis of a software-package ecosystem"
+    paths:
+      es: learning-resources/research-notes/es/analisis-temporal-de-un-ecosistema-de-paquetes-de-software.md
+      en: learning-resources/research-notes/en/temporal-analysis-of-a-software-package-ecosystem.md
+    status:
+      es: draft
+      en: draft
+    related:
+      - TV-CH-03
+    references:
+      - TV-REF-006
+    epistemic_status: bounded_structural_empirical_evidence
