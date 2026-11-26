@@ -2,9 +2,9 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.12  
+**Version:** 0.13  
 **Date:** 2026-11-26  
-**Status:** SOURCE REVIEW RECONCILED AGAINST CURRENT CANONICAL EVIDENCE — READY FOR BOUNDED BILINGUAL DRAFTING  
+**Status:** SOURCE RECONCILED — BILINGUAL DRAFTS UPDATED; EDITORIAL REVIEW PENDING  
 **Branch:** `strategy/transformational-value-learning`  
 **Related specification:** `PoC/TRANSFORMATIONAL_VALUE_LEARNING_PUBLISHING_POC_v0.1.md`
 
@@ -356,6 +356,7 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 - **v0.10 — 2026-11-26:** Created the first native Spanish and English Chapter 3 drafts, registered both as `draft`, and retained the bilingual editorial and subject-matter reviews as pending.
 - **v0.11 — 2026-11-26:** Refined both drafts to make the distinction between structural availability and adoption/use explicit, and to clarify the meaning and limits of latent accessible possibilities. Both language versions remain in draft status.
 - **v0.12 — 2026-11-26:** Reconciled the evidence map against the current Evidence-to-Claim Matrix v1.47 and RMA v3.38. Added the bounded Rust temporal-pair analysis, the negative/non-detectable bounded urban-infrastructure causal test, the current C09/KGFS causal-trajectory consolidation, and clarified the separate partial-identification street-paving case. Updated the proposed evidence mix, claim boundaries and bibliographic records. No scientific claim status or experiment was changed.
+- **v0.13 — 2026-11-26:** Created the central bibliography registry with three verified primary-source records and updated both native-language Chapter 3 drafts to v0.3 against the reconciled evidence. Recorded the matched evidence coverage and the remaining public-provenance requirement for TGCV-generated computational analyses. Both language versions remain `draft`; no scientific claim status changed.
 
 ## 12. Pilot content package setup
 
@@ -495,3 +496,54 @@ The 516,061-pair result and the 36-record result are distinct evidence items and
 3. Revise Section 8 to include interference, operational closure of the candidate universe, ex-ante admissibility, domain-specific identity/equivalence and limits of scalarisation.
 4. Keep C09's bounded causal conclusion and C10's open Value relationship distinct.
 5. The Spanish and English drafts remain `draft`. This source reconciliation does not approve either draft and does not change scientific governance.
+
+
+---
+
+## 14. Bilingual draft update after evidence reconciliation — v0.13
+
+### 14.1 Central bibliography registry
+
+The central bibliography file has been created at:
+
+`references/references.yml`
+
+It assigns stable IDs to three verified primary-source records:
+
+| Reference ID | Primary source | Persistent identifier |
+|---|---|---|
+| `TV-REF-001` | Erica Field and Rohini Pande, *Evaluating the economic impacts of rural banking: experimental evidence from southern India*, 3ie Impact Evaluation Report 85 | DOI `10.23846/OW3IE85` |
+| `TV-REF-002` | Craig McIntosh, Tito Alegría, Gerardo Ordóñez and René Zenteno, *The Neighborhood Impacts of Local Infrastructure Investment: Evidence from Urban Mexico* (2018) | DOI `10.1257/app.20160429` |
+| `TV-REF-003` | Marco Gonzalez-Navarro and Climent Quintana-Domeque, *Paving Streets for the Poor: Experimental Analysis of Infrastructure Effects* (2016) | DOI `10.1162/REST_a_00553`; replication data DOI `10.7910/DVN/6TC8RO` |
+
+The official 3ie record confirms the report title, authors, report number and DOI but does not expose a publication year in the retrieved bibliographic record; no year has therefore been inferred or inserted.
+
+### 14.2 Updated native-language drafts
+
+Both drafts have been revised against the v0.12 evidence reconciliation:
+
+| Language | Path | Version | Editorial status |
+|---|---|---:|---|
+| Spanish | `book/es/part-01-understanding-transformation/ch-03-espacio-de-transformaciones-accesibles.md` | 0.3 | `draft` |
+| English | `book/en/part-01-understanding-transformation/ch-03-space-of-accessible-transformations.md` | 0.3 | `draft` |
+
+The revisions:
+- correct mathematical notation and define the temporal descriptors for added, removed, persistent and total identity turnover, as well as net cardinality change;
+- distinguish the 36-record cross-domain operationalisation from the separate 516,061-pair temporal software-package analysis;
+- incorporate the current bounded KGFS accessibility-to-trajectory causal interpretation;
+- distinguish the non-detectable urban-infrastructure estimand from the original published study's findings, and state that the TGCV operationalisation is not a complete mechanistic reconstruction of accessibility;
+- keep the Acayucan street-paving case as partial identification only;
+- retain the paired synthetic example as a logical illustration, not real-world evidence;
+- expand the limits concerning operational closure, transformation identity, interference, scalarisation, causal inference and the open Value relationship.
+
+The Spanish and English drafts preserve the same nine-section structure and evidence coverage while retaining native-language prose. This is a structural and conceptual equivalence check, not final linguistic or subject-matter approval.
+
+### 14.3 Remaining publication prerequisites
+
+1. Create reader-facing research records for the two TGCV-generated computational analyses (the 36-transition cross-domain study and the 516,061-pair temporal software-package analysis), including methods, operational definitions, data provenance, limitations and reproducibility information. Internal repository paths alone are not suitable reader-facing references.
+2. Complete a subject-matter review of the revised claims, numerical statements, operational definitions and references.
+3. Complete native editorial review in each language and a final bilingual equivalence review.
+4. Review the glossary entry and complete both language versions of the diagram caption and alternative text.
+5. Keep both drafts at `draft` until the applicable editorial and evidence gates are passed.
+
+No change has been made to the scientific claim matrix, RMA, TGCV Core, experiment status or execution authorization.
