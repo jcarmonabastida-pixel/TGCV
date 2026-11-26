@@ -29,7 +29,7 @@ It must let a first-time visitor:
 
 The germinal site must be useful without the future Playground, without a new interactive simulator, without a community platform and without an unvalidated product proposition.
 
-**First-release scope:** eight top-level destinations: Home, Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction, Labs & Applications, About and Contact. Contact is part of the planned website; preparation of its page content and activation of its live communication channel are deferred until the domain-associated account is available. Do not publish a provisional address or a non-operational form.
+**First-release scope:** the Home page plus eight top-level navigation destinations: Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction, Labs & Applications, About and Contact. Contact is part of the planned website; preparation of its page content and activation of its live communication channel are deferred until the domain-associated account is available. Do not publish a provisional address or a non-operational form.
 
 ## 1. Editorial architecture and first-release page set
 
