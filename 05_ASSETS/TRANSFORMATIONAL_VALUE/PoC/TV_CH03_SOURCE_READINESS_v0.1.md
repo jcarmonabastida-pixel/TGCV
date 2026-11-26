@@ -2,9 +2,9 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.11  
+**Version:** 0.12  
 **Date:** 2026-11-26  
-**Status:** SOURCE REVIEW COMPLETE — READY FOR BOUNDED BILINGUAL DRAFTING  
+**Status:** SOURCE REVIEW RECONCILED AGAINST CURRENT CANONICAL EVIDENCE — READY FOR BOUNDED BILINGUAL DRAFTING  
 **Branch:** `strategy/transformational-value-learning`  
 **Related specification:** `PoC/TRANSFORMATIONAL_VALUE_LEARNING_PUBLISHING_POC_v0.1.md`
 
@@ -355,6 +355,7 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 - **v0.9 — 2026-11-26:** Reconciled the evidence section and drafting guidance against the current Evidence-to-Claim Matrix v1.47. Distinguished bounded causal accessibility-to-trajectory support, partial identification, cross-domain operationalisation and synthetic non-equivalence; mapped detailed TOC themes into the approved nine-section macro-structure.
 - **v0.10 — 2026-11-26:** Created the first native Spanish and English Chapter 3 drafts, registered both as `draft`, and retained the bilingual editorial and subject-matter reviews as pending.
 - **v0.11 — 2026-11-26:** Refined both drafts to make the distinction between structural availability and adoption/use explicit, and to clarify the meaning and limits of latent accessible possibilities. Both language versions remain in draft status.
+- **v0.12 — 2026-11-26:** Reconciled the evidence map against the current Evidence-to-Claim Matrix v1.47 and RMA v3.38. Added the bounded Rust temporal-pair analysis, the negative/non-detectable bounded urban-infrastructure causal test, the current C09/KGFS causal-trajectory consolidation, and clarified the separate partial-identification street-paving case. Updated the proposed evidence mix, claim boundaries and bibliographic records. No scientific claim status or experiment was changed.
 
 ## 12. Pilot content package setup
 
@@ -371,3 +372,126 @@ The initial content identities and working assets have now been created on the L
 The identifiers were searched in the repository before allocation; no existing occurrence of `TV-TERM-001` or `TV-DIA-001` was found. The two glossary definitions are working drafts and are not approved terminology. The diagram is an analytical teaching aid, not a causal model: its labels explicitly distinguish accessibility, realisation, trajectory, outcome and Value.
 
 **Next gate:** review both Chapter 3 drafts for conceptual accuracy, evidence traceability, completeness against the detailed contents proposal, and native-language quality/equivalence. Verify the primary bibliographic records and add central reference IDs; then review the glossary definition and diagram captions/alternative text. Both language versions remain drafts and are not approved for publication.
+
+
+---
+
+## 13. Evidence reconciliation against the current canonical state — v0.12
+
+This section supersedes any earlier evidence-selection wording in Sections 2, 4, 5 and 6 where it omits the material evidence or distinctions recorded below. The governing scientific position is the current Evidence-to-Claim Matrix v1.47 together with RMA v3.38, not an earlier candidate-level assessment or an older source-map snapshot.
+
+### 13.1 Current claim boundary
+
+The current canonical position is:
+
+- **C09 — bounded empirical causal support:** accessibility changes causally affect subsequent trajectories in the KGFS experimental setting, with bounded complementary structural and trajectory evidence from SWIM and RUST-DYN-2.
+- **C10 — Value relationship remains open:** no causal relationship from accessibility change to Value is established.
+- The bounded results below do not establish universal validity, superiority, originality, a universal scalar metric, or validation of the complete TGCV chain.
+
+Evidence propagation and claim-level upgrading remain separate. The cases below must be described at their individual evidentiary levels.
+
+### 13.2 Bounded cross-domain operationalisation — 36 transition records
+
+The existing cross-domain result remains useful as a compact teaching example of a common transition-level representation across two structurally distinct computational domains:
+
+- 36 records in total: 20 from one domain and 16 from the other.
+- No invalid records in the computational validation.
+- 36 records checked in the independent mathematical descriptor audit, with zero descriptor mismatches.
+- One domain exhibits identity turnover with cardinality conservation; the other includes identity turnover and net reductions.
+
+It supports bounded operationalisation of the analytical representation in those examined domains. It does not establish causal effects, general domain independence, superiority, intelligence or Value linkage.
+
+**Canonical source:** `03_EXPERIMENTS/TR-131/execution/TR131_TRANSFORMATION_SPACE_DYNAMICS_ANALYSIS_001.md` (retrieved revision `6e44453788dcffd0d5fca9166864f8c0779d40f7`).
+
+### 13.3 Temporal dynamics in software packages — 516,061 adjacent pairs
+
+A separate empirical analysis of package-version histories provides a much larger bounded observation of transformation-space dynamics:
+
+- 516,061 adjacent temporal pairs at horizon H=1.
+- 438,203 pairs (approximately 84.91%) are classified as non-persistent.
+- Classification counts: 77,858 persistence; 8,295 expansion; 3,786 contraction; 426,122 reconfiguration.
+- In 159,921 pairs, `ΔT_acc ≠ 0` while bounded potential one-step Reach does not change (ND-1).
+- In 278,282 pairs, both `ΔT_acc` and bounded potential one-step Reach change (ND-2).
+- In 266,201 pairs, Reach cardinality is equal while Reach membership differs (ND-4).
+
+The result supports, within the frozen software-package representation and H=1, the empirical distinction between changes in the accessible transformation set and changes in bounded potential one-step Reach. It also shows why cardinality alone cannot represent identity. It does **not** establish observed runtime reachability, H>1 trajectory sufficiency, causal effects, adoption, downstream outcomes, Value, predictive superiority or validity across domains.
+
+This is a separate analysis from the 36-record, two-domain operationalisation study. The two must not be merged into a single sample or presented as replications of the same design.
+
+**Canonical source:** `03_EXPERIMENTS/EXT-1.1_Rust/execution/RUST-DYN-2_SCIENTIFIC_INTEGRATION_CLOSURE_v01.md` (retrieved revision `f93d678cfaebf870451f89f6074b9fa50e70c183`). The result is a TGCV analysis of a frozen software-package dataset, not a standalone external publication.
+
+### 13.4 Real-world causal accessibility-to-trajectory evidence — rural financial services
+
+The current C09 claim-level consolidation recognises bounded empirical causal support in the KGFS rural-banking setting. The randomized intervention was the early expansion of a rural financial-services branch network. The TGCV representation treats the structural introduction of local access to formal loans, savings, insurance and tailored financial advice as the accessibility intervention, separately from later take-up and household/economic variables.
+
+The consolidated interpretation is that the randomized structural expansion produced causally identified subsequent changes in household/economic trajectories over the observed post-intervention period. This is the decisive real-world causal layer for C09, complemented by bounded SWIM trajectory-linkage evidence and RUST-DYN-2 structural evidence.
+
+The chapter must keep the conclusion bounded to this intervention and study setting. It must not imply that every accessibility change causes a trajectory change, that accessibility is the sole determinant, that the effect generalises unchanged to other domains, or that Value has been causally established.
+
+**Primary bibliographic record:** Erica Field and Rohini Pande, *Evaluating the economic impacts of rural banking: experimental evidence from southern India*, 3ie Impact Evaluation Report 85, DOI: `10.23846/OW3IE85`. The 3ie publication record identifies the evaluation of increased access to formal financial services through the Kshetriya Gramin Financial Services delivery model.
+
+**Canonical claim-level source:** `00_GOVERNANCE/SIP/TGCV_C09_CLAIM_LEVEL_CONSOLIDATION_RECORD_001.md` (retrieved revision `71433bfb44411443df7ac4d09bda4152d048594c`). The earlier KGFS D5-A and trajectory-bridge records are supporting provenance; the claim-level consolidation governs the current C09 interpretation.
+
+### 13.5 Negative/non-detectable bounded causal test — urban infrastructure in Mexico
+
+A separate TGCV reanalysis of the OpenICPSR 113705 V1 replication package reconstructed a bounded structural transformation space from six infrastructure dimensions and a frozen universe of 12 elementary opening/closure transformation families. It then estimated the pre-specified ITT effect of randomized treatment assignment on the net cardinality change of that bounded space, using 342 polygons and municipality-clustered inference.
+
+Primary estimate:
+
+- `β_ITT = −0.0314`
+- Cluster standard error: `0.1646`
+- Normal-reference p-value: `0.8486`
+- 95% normal-reference confidence interval: `[−0.3540, 0.2912]`
+- Wild-cluster-bootstrap p-value: `0.8354`
+- 95% wild-cluster-bootstrap interval: `[−0.3087, 0.2458]`
+
+The result is a **negative/non-detectable bounded causal result** for the frozen estimand and operationalisation. It is not evidence that the true effect is exactly zero, does not refute TGCV, and does not establish that the treatment had no structural effects. The interval remains compatible with effects in both directions. Interference across municipalities remains unresolved; the mechanistic ex-ante accessibility predicate is also an evidence gap. No Value regression was performed.
+
+Crucially, this is a TGCV secondary reconstruction and causal test using the published study's replication package. It must not be confused with the original paper's reported programme effects on infrastructure access, housing investment or property values. The chapter should make clear that the TGCV result concerns its separately frozen structural estimand, not a reinterpretation of the original authors' headline outcomes.
+
+**Primary bibliographic record:** Craig McIntosh, Tito Alegría, Gerardo Ordóñez and René Zenteno (2018), “The Neighborhood Impacts of Local Infrastructure Investment: Evidence from Urban Mexico,” *American Economic Journal: Applied Economics*, 10(3), 263–286. DOI: `10.1257/app.20160429`. Replication package: OpenICPSR 113705 V1.
+
+**Canonical TGCV closure:** `00_GOVERNANCE/SIP/C10C002_BOUNDED_CAUSAL_EXPERIMENT_CLOSURE_001.md` (retrieved revision `aefcaee8b23034a9a4a274456d988e4d4b5aea4b`).
+
+### 13.6 Partial-identification boundary — street paving and connectivity
+
+The Acayucan, Mexico street-paving case is distinct from the urban-infrastructure study in Section 13.5. Its primary source is González-Navarro and Quintana-Domeque, *Paving Streets for the Poor: Experimental Analysis of Infrastructure Effects*, with replication source Harvard Dataverse DOI `10.7910/DVN/6TC8RO`.
+
+The source permits ex-ante specification of candidate functions associated with vehicle, pedestrian and cyclist access, parking and commercial delivery, and longitudinal reconstruction of structural/connectivity change. However, the available evidence does not independently identify the full accessibility predicate, complete `T_acc`, or `ΔT_acc`. Several observed variables are downstream outcomes or resource states and cannot be used to define accessibility.
+
+Use this as a methodological boundary case: an intervention and observed connectivity change do not by themselves identify the full accessible transformation space. Do not present it as positive identification of complete `T_acc` or as causal accessibility-to-trajectory evidence.
+
+**Canonical source:** `00_GOVERNANCE/SIP/TGCV_MT5_DYNAMIC_TRANSFORMATION_SPACE_RECONSTRUCTION_RESULT_001.md` (retrieved revision `a6c0df22a8b6426b19e0cab67e62038681c8f1f5`).
+
+### 13.7 Paired synthetic non-equivalence illustration
+
+Retain the paired synthetic example as a teaching illustration: the specified accessible transformation space increases while the frozen realised trajectory and specified Value outcome remain unchanged. It demonstrates logical non-equivalence within that construction. It is not real-world evidence, does not show that accessibility changes generally leave trajectories or Value unchanged, and does not refute the bounded C09 result.
+
+### 13.8 Recommended evidence composition for Chapter 3
+
+The chapter should not become an experiment catalogue. Each case must have a distinct explanatory function:
+
+| Teaching function | Evidence to use | Reader-facing interpretation |
+|---|---|---|
+| Show a common operational representation across structurally different domains | 36-record cross-domain study | Bounded methodological operationalisation |
+| Show that cardinality misses identity and that accessibility change differs from potential one-step Reach change | 516,061 adjacent software-package pairs | Bounded structural empirical analysis at H=1 |
+| Show a real-world causal accessibility-to-trajectory relation | Rural financial-services branch expansion | Bounded empirical causal support in one studied setting |
+| Show that a pre-specified structural causal test can return a non-detectable result | Urban infrastructure in Mexico | Negative/non-detectable result for one frozen structural estimand; not zero-effect proof or refutation |
+| Show the boundary between candidate functions, connectivity change and identified accessibility | Street paving in Acayucan | Partial identification only |
+| Show non-equivalence between accessibility, realisation, trajectory and Value | Paired synthetic construction | Logical/teaching illustration, not empirical generalisation |
+
+Use only the cases necessary to make these distinctions clear. A compact evidence table or short boxed case summaries may be preferable to six full narrative case studies.
+
+### 13.9 Bibliographic and public-exposure controls
+
+The primary publication records for the rural-banking evaluation, the urban-infrastructure experiment and the street-paving experiment should be included in the chapter bibliography, with stable DOI or repository records. The two TGCV-generated computational analyses should be cited as bounded project evidence through their public-facing research artefact pages where available; internal workstream IDs, run identifiers, gate labels, branch names and private paths must not appear in reader-facing chapter prose, figures, captions, alt text, glossary, navigation or downloads.
+
+The 516,061-pair result and the 36-record result are distinct evidence items and must have separate citations and denominators. The urban Mexico published study and the TGCV secondary reanalysis must also be cited and described separately. No citation to the published study alone can be used as if it were the source of the TGCV-specific `ΔT_acc*` estimate.
+
+### 13.10 Consequences for drafting
+
+1. Revise Section 7 to integrate the evidence functions in Section 13.8, without turning it into an exhaustive catalogue.
+2. Revise Sections 5–6 to distinguish set identity, cardinality, identity turnover and bounded potential one-step Reach. Do not imply that Reach is observed runtime execution.
+3. Revise Section 8 to include interference, operational closure of the candidate universe, ex-ante admissibility, domain-specific identity/equivalence and limits of scalarisation.
+4. Keep C09's bounded causal conclusion and C10's open Value relationship distinct.
+5. The Spanish and English drafts remain `draft`. This source reconciliation does not approve either draft and does not change scientific governance.
