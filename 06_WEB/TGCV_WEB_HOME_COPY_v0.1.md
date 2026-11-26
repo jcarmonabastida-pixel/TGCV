@@ -1,7 +1,7 @@
 # TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 1.6  
+**Version:** 1.7  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
 **Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md` — v1.8  
@@ -162,11 +162,14 @@ Conoce VALUE, un framework aplicado complementario a TGCV para explorar oportuni
 **Labs & Applications**  
 Consulta demostradores, experimentos y contextos exploratorios, con su alcance y estado claramente indicados.
 
+**Contact**  
+Cuando quieras plantear una pregunta, compartir una observación o explorar una posible conversación sobre TGCV, podrás dirigirte a Contact.
+
 ## 2.8 Cierre e invitación
 
 ### Empieza por explorar lo que un sistema puede llegar a hacer.
 
-Puedes acercarte a este trabajo desde sus ideas fundamentales, sus preguntas de investigación, la ingeniería de sistemas, la inteligencia transformacional o el framework aplicado de construcción de valor.
+Puedes acercarte a este trabajo desde sus ideas fundamentales, sus preguntas de investigación, la ingeniería de sistemas, la inteligencia transformacional o el framework aplicado de construcción de valor. También puedes dirigirte a **Contact** para plantear una pregunta o iniciar una conversación cuando la sección esté disponible.
 
 **Acción principal:** Explora el enfoque → Explore.
 
@@ -179,7 +182,9 @@ Puedes acercarte a este trabajo desde sus ideas fundamentales, sus preguntas de 
 
 Un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.
 
-Explore · Research · Systems Engineering · Transformational Intelligence · Value Construction · Labs & Applications · About
+Explore · Research · Systems Engineering · Transformational Intelligence · Value Construction · Labs & Applications · About · Contact
+
+La sección Contact forma parte de la arquitectura prevista del sitio. Su contenido y canal de comunicación se habilitarán cuando esté disponible la cuenta asociada al dominio; no se publicará una dirección provisional ni un formulario sin canal operativo.
 
 Los conceptos, hipótesis, demostraciones sintéticas y evidencias empíricas se identifican por separado. Una demostración técnica no constituye por sí sola una validación científica.
 
@@ -330,11 +335,14 @@ Discover VALUE, an applied framework complementary to TGCV for exploring opportu
 **Labs & Applications**  
 Explore demonstrators, experiments and exploratory application contexts, with their scope and status clearly stated.
 
+**Contact**  
+When you want to ask a question, share an observation or explore a possible conversation about TGCV, you will be able to use Contact.
+
 ## 3.8 Closing invitation
 
 ### Start by exploring what a system may become able to do.
 
-You can approach this work through its core ideas, its research questions, systems engineering, transformational intelligence or the applied framework for value construction.
+You can approach this work through its core ideas, its research questions, systems engineering, transformational intelligence or the applied framework for value construction. You can also use **Contact** to ask a question or start a conversation once that section is available.
 
 **Primary action:** Explore the approach → Explore.
 
@@ -347,7 +355,9 @@ You can approach this work through its core ideas, its research questions, syste
 
 A programme of applied research and innovation exploring how expanding the transformations available to systems may contribute to value construction.
 
-Explore · Research · Systems Engineering · Transformational Intelligence · Value Construction · Labs & Applications · About
+Explore · Research · Systems Engineering · Transformational Intelligence · Value Construction · Labs & Applications · About · Contact
+
+The Contact section is part of the planned website architecture. Its content and communication channel will be enabled when the domain-associated account is available; no provisional address or form without an operational channel will be published.
 
 Concepts, hypotheses, synthetic demonstrations and empirical evidence are identified separately. A technical demonstration does not, by itself, constitute scientific validation.
 
@@ -461,3 +471,8 @@ The approved narrative order is opening question → discovery → second questi
 - Removes the internal demonstrator codename from both language versions.
 - Removes the Contact call-to-action and Contact footer link in line with the user's decision to defer that destination until a domain-associated communication channel is available.
 - Preserves the approved public names and the illustrative-only status of the migration example.
+
+### v1.7 — 2026-11-26
+- Restores Contact as a planned Home destination and retains a clear visitor-facing invitation to use it once the section is available.
+- Clarifies that Contact page content and the live communication channel will be prepared when the domain-associated account is available; no provisional address or non-operational form is promised.
+- Restores Contact to the Spanish and English footer destination lists.
