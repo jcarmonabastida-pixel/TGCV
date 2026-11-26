@@ -1,7 +1,7 @@
 # TRANSFORMATIONAL VALUE — Content Model & Editorial Workflow
 
 **Identifier:** TGCV-TV-CONTENT-MODEL-001  
-**Version:** 0.3  
+**Version:** 0.4  
 **Date:** 2026-11-26  
 **Status:** CONTENT ARCHITECTURE PROPOSAL — FOR REVIEW  
 **Governing document:** `TRANSFORMATIONAL_VALUE_LEARNING_MASTER_ARCH_v0.1.md`  
@@ -596,47 +596,100 @@ Spanish and English book content must be stored in their respective language tre
 
 ## 22. Public-facing terminology and internal research identifiers
 
-The book is written for readers who are not expected to know TGCV's internal research organisation, experiment labels, repository structure or artefact naming conventions. Internal identifiers must therefore never be used as unexplained public-facing terminology.
+This is a book-wide editorial rule for every reader-facing component of *TRANSFORMATIONAL VALUE*, not a rule limited to the pilot chapter or to scientific research summaries. Readers are not expected to understand TGCV's internal research organisation, experiment labels, workstreams, repository structure or artefact naming conventions.
 
-### 22.1 Reader-facing rule
+### 22.1 Scope: all reader-facing surfaces
 
-- Do not introduce internal project, experiment, work-package, dataset, run, gate, evidence-record or document codes in chapter titles, headings, explanatory prose, diagrams, captions, callouts, summaries or learning exercises.
-- Replace them with a meaningful name or a concise description of the underlying work, method, result or evidence.
-- For example, do not write **“TR-131/V007 demonstrates…”**. Prefer **“A cross-domain study of transformation-space dynamics, conducted in two computational domains, illustrates…”** and then explain precisely what was examined and what the result supports.
-- Do not expect readers to understand labels such as experiment numbers, internal evidence IDs, commit hashes, branch names or repository paths.
-- Do not invent a polished-sounding public name for an internal artefact unless that name has been deliberately approved. A precise descriptive phrase is preferable.
+The rule applies independently to the Spanish and English versions and to every surface that a reader may encounter, including:
 
-### 22.2 Where internal identifiers may remain
+- book and part titles, chapter and section titles, headings and subheadings;
+- body text, examples, case studies, exercises, questions, summaries and callouts;
+- tables, charts, diagrams, labels, legends, captions, figure notes and alternative text;
+- glossary entries, sidebars, navigation labels, page summaries and search descriptions;
+- public bibliographies, footnotes, endnotes, acknowledgements and appendices;
+- downloadable reader-facing resources and content embedded in demonstrations.
 
-Internal identifiers may be retained in:
-- source maps and editorial working documents;
-- private or technical traceability records;
-- repository paths and filenames;
-- bibliographic/source metadata where needed to locate the authoritative artefact;
-- footnotes or technical appendices only when the identifier is genuinely necessary for reproducibility, and then with a plain-language explanation.
+A code is not acceptable merely because it appears outside the main prose. If it is visible to the reader, it is in scope.
 
-A source identifier in an internal reference record does not need to appear in the reader-facing citation. Public references should use the work's meaningful title, author or responsible programme, date, and an accessible stable location where publication is appropriate.
+### 22.2 What counts as an internal identifier
 
-### 22.3 Acronyms and abbreviations
+Internal identifiers include, without limitation, names or codes for:
 
-An acronym is acceptable in reader-facing content only when at least one of these conditions applies:
-1. it is widely established in the relevant discipline and useful to the reader;
-2. it is an approved public name or term used consistently by the book;
-3. it is introduced at first use with its full form, a clear definition and a reason to reuse it.
+- experiments, studies, workstreams, projects and research packages;
+- gates, milestones, runs, jobs, cohorts, test fixtures and benchmark cells;
+- datasets, evidence records, claim records and internal evaluation outputs;
+- repository documents, branches, commits, workflows, scripts and implementation artefacts;
+- internal teams, review processes, issue numbers and operational tracking records.
 
-Avoid creating an acronym for a phrase used only a few times. Do not expose internal shorthand merely because it appears in source artefacts. Distinguish public concepts and recognised technical notation (for example, (T_{acc}), once explained) from repository-generated codes.
+Examples include short alphanumeric codes, project-specific acronyms, run numbers, commit hashes, branch names and filenames. The list is illustrative, not exhaustive: the test is whether the label is an internal lookup key rather than a meaningful reader-facing concept.
 
-### 22.4 Editorial review check
+### 22.3 Reader-facing treatment
 
-For every chapter and learning resource, reviewers must ask:
-- Would a reader outside the TGCV programme understand every acronym and named label?
-- Does each code carry genuine explanatory value, or is it merely an internal lookup key?
-- Can the code be replaced by a meaningful description without losing scientific precision?
-- If an internal identifier is essential for traceability, is it kept in the source metadata rather than the main narrative?
-- Are public names and technical terms used consistently in both languages?
+- Replace internal identifiers with a precise, meaningful name or a concise description of the underlying study, method, result, evidence or limitation.
+- Explain what was examined, under what conditions, and what the evidence does and does not support. Do not substitute a code with a vague promotional label.
+- Do not invent a polished public name for an internal artefact unless that name has been deliberately approved through the relevant governance.
+- Do not imply that an internal study label is a recognised scientific term, a public product name or an established method.
+- Preserve scientific precision and qualifications when rewriting. Removing a code must not remove provenance, scope or limitations.
 
-**Acceptance rule:** unexplained internal research identifiers in reader-facing content are a publication defect and must be removed before approval.
+For example, instead of writing “TR-131/V007 demonstrates…”, describe the relevant study in ordinary language, state the examined setting and result, and cite an accessible public source where one exists. If no public source exists, do not make an internal artefact appear to be a published reference.
+
+### 22.4 Permitted internal use and exceptional public disclosure
+
+Internal identifiers may remain in non-reader-facing material where needed for operational traceability, including:
+
+- source maps, editorial working files and private review records;
+- repository paths, filenames, metadata and internal registries;
+- private evidence and claim traceability records;
+- source references that allow editors to locate the authoritative artefact.
+
+Their presence in internal metadata or a source path does not authorise their reproduction in the public-facing citation or narrative.
+
+A public technical appendix, reproducibility package or formal citation may retain an identifier only when it is genuinely necessary for independent verification and no stable descriptive reference is sufficient. Such an exception must:
+1. be approved by the relevant scientific or methodological authority, as applicable;
+2. explain the identifier in plain language at first use;
+3. state why disclosure is necessary;
+4. avoid exposing unrelated internal codes or operational details; and
+5. be recorded in the editorial review record for each affected language version.
+
+An exception is not created merely because an identifier is present in a source document.
+
+### 22.5 Acronyms, abbreviations and technical notation
+
+Acronyms and abbreviations may appear in reader-facing content only when at least one of the following applies:
+
+1. the abbreviation is widely established in the relevant discipline and materially helps the reader;
+2. it is an approved public name or term used consistently by the book; or
+3. it is a necessary recurring concept, introduced at first use with its full form and a clear definition.
+
+Avoid creating acronyms for phrases used only once or a few times. Do not expose internal shorthand merely because it appears in source artefacts. Do not assume that an acronym familiar to the author is familiar to the intended reader.
+
+Recognised technical symbols and notation belonging to the conceptual framework (for example, (T_{acc}), once defined) are not repository identifiers. They may be used where they improve precision, provided that they are explained and applied consistently. A project-specific code does not become a technical term simply by being formatted as a symbol or acronym.
+
+Spanish and English versions must make their own first-use explanations natural to each language. An acronym retained in one language is not automatically appropriate in the other.
+
+### 22.6 Mandatory bilingual editorial gate
+
+Before a language version can move to `approved`, reviewers must complete and record the following check for that version. Spanish and English must be checked independently; passing one does not imply that the other passes.
+
+- [ ] Inspect every reader-facing surface listed in §22.1, not only the chapter body.
+- [ ] Identify acronyms, abbreviations, alphanumeric codes, named experiments, internal labels and opaque references.
+- [ ] For each item, determine whether it is an established disciplinary term, an approved public name, necessary technical notation or an internal identifier.
+- [ ] Remove or replace internal identifiers with precise reader-facing descriptions unless a documented exception under §22.4 applies.
+- [ ] Check that retained acronyms are defined at first use and genuinely useful to the reader.
+- [ ] Check diagrams, tables, captions, legends, alternative text, glossary, navigation, references and downloadable material as well as prose.
+- [ ] Check that public terminology is consistent with the terminology register and that Spanish and English express equivalent concepts naturally.
+- [ ] Record any permitted exception, its rationale, approving authority and affected locations.
+- [ ] Re-run the check after substantive edits that may introduce or expose new labels.
+
+Automated searches and linting should support this review by flagging likely codes, unexplained capitalised terms and patterns from internal registries. They are aids, not substitutes for semantic human review; a clean automated scan alone is not evidence of compliance.
+
+### 22.7 Approval rule
+
+An unexplained internal identifier, opaque project-specific acronym or unjustified internal label on any reader-facing surface is an editorial defect. The affected language version must not be approved until it is removed or an explicit exception is documented and approved. The bilingual content unit is complete only when both language versions independently pass this gate.
+
+This editorial gate controls reader-facing clarity and traceability. It does not certify the truth, validity or epistemic status of the underlying scientific or methodological claims.
 
 ## 23. Version history
 
 - **v0.3 — 2026-11-26:** Added a binding editorial rule separating reader-facing terminology from internal TGCV research and repository identifiers, including acronym policy and review checks.
+- **v0.4 — 2026-11-26:** Expanded the rule to every reader-facing surface, defined internal identifiers and permitted exceptions, distinguished technical notation from repository codes, and introduced a mandatory independently recorded bilingual approval gate supported by automated checks and human review.
