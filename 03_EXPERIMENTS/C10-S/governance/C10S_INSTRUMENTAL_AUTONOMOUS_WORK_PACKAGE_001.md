@@ -630,3 +630,25 @@ The LR statistic enclosure was approximately [68.60849784569649, 68.608497859267
 **Disposition:** (2^{-24}) is a promising numerical-precision candidate for the M30/R20 W profile. It preserves complete root census and exact LR enclosure for this one fixture while materially reducing computation. It is not yet frozen for all cells, estimands or boundary cases.
 
 **Next operation:** run a further bounded width-sensitivity comparison at (2^{-16}), using the same fixture and exact arithmetic, to determine whether additional speed is available without changing the root census or making the LR enclosure operationally ambiguous. If the wider intervals materially weaken the enclosure, retain (2^{-24}). Then test the selected width on M30/R20 B and boundary/degenerate fixtures before considering any broader development comparison. No coverage simulation, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
+
+
+## 35. Exact root-isolation width (2^{-16}) — PASS on M30/R20 W
+
+**Workflow:** [45863571577](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45863571577) — SUCCESS  
+**Tested commit:** `3e669d7addf8f9fbbb1f580ea74bce8700c2a402`  
+**Fixture:** same M30/R20 W histogram and target (1/20), with signed integer PRS and certified fixed-point signs.
+
+At exact isolating width (2^{-16}):
+- profile: `LR_STATISTIC_ENCLOSED`, `PROFILE_MAXIMUM_ENCLOSED`;
+- 3 candidates, 1 interior stationary point;
+- dominant isolation: `ISOLATION_COMPLETE`, 528 processed intervals, 1 exact root, 122 isolating intervals, 0 unresolved;
+- the two nontrivial endpoint calls each processed 33 intervals and completed; the exact endpoint-factor call found 2 exact roots;
+- total profile runtime: **208.962 s**.
+
+Relative to (2^{-24}), runtime fell by about 39%; relative to the (2^{-40}) combined-prototype run, it fell by about 71%. The dominant isolation call took 109.082 s, with 48.627 s in the two integer Sturm sequence builds and 59.636 s in 409 sign-variation evaluations (73,213 polynomial evaluations). There were 89 exact sign fallbacks; all isolation calls completed.
+
+The displayed LR enclosure remains approximately [68.60849784569649, 68.60849785926779], and the profile-likelihood enclosure remains approximately (2.322290881315881\times10^{-54}) at both displayed endpoints. The displayed bounds match the (2^{-24}) run to the shown precision; exact rational bounds remain in the computation. This is a fixed-fixture numerical result, not a coverage or calibration result.
+
+**Disposition:** retain (2^{-16}) as the leading numerical-width candidate for this M30/R20 W fixture. It is not yet a globally frozen tolerance: M30/R20 B, boundary/degenerate fixtures, other Tier-A cells and LR-inversion topology still require verification.
+
+**Next operation:** run the same M30/R20 histogram for component B at (2^{-16}), then exercise explicit boundary/degenerate fixtures under the same signed integer PRS and certified sign evaluator. Preserve typed unresolved/abstention states; do not infer general validity from W alone. No coverage simulation, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
