@@ -736,3 +736,21 @@ The displayed LR-statistic enclosure remains [68.60849784569649, 68.608497859267
 **Disposition:** (2^-8) is now the leading runtime candidate for M30/R20 W. It reduces interval processing and runtime while preserving the complete root census and a narrow exact LR enclosure in this fixture. It is not yet frozen across components, boundary cases or the full target domain.
 
 **Next operation:** verify (2^-8) on M30/R20 B interior and W/B boundary-only fixtures, plus M10/R5 W/B interior and endpoint-only boundary fixtures. The combined bounded cross-cell workflow is [45867663492](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45867663492). Require every global certificate, LR/profile enclosure and root-isolation call to complete; no silent SKIPPED or unresolved state. If these pass, assess a small development-only repeated-sampling comparison against known DGP truth, using fresh development seeds and no exposed/confirmatory holdout data. No coverage simulation under frozen Tier-A criteria, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
+
+
+## 39. M30/R20 B and boundary robustness at (2^{-8}) — PASS
+
+**Workflow:** [45867640403](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45867640403) — SUCCESS  
+**Tested commit:** `be579c62f836e91cad6306d093e9b7a6bab071a2`  
+**Fixture:** same M30/R20 interior and boundary-only histograms as §36, now at width (2^{-8}), using signed integer PRS and certified fixed-point signs.
+
+All three profiles completed:
+- interior B: `GLOBAL_INTERIOR_MAXIMUM_CERTIFIED`, `LR_STATISTIC_ENCLOSED`, `PROFILE_MAXIMUM_ENCLOSED`; 146.300 s; dominant degree 263, 18 intervals processed, 1 exact root + 2 isolating intervals, 0 unresolved;
+- boundary-only W: `GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED`, `LR_STATISTIC_ENCLOSED`, `PROFILE_MAXIMUM_ENCLOSED`; 128.084 s; dominant degree 177, 252 intervals processed, 1 exact root + 106 isolating intervals, 0 unresolved;
+- boundary-only B: `GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED`, `LR_STATISTIC_ENCLOSED`, `PROFILE_MAXIMUM_ENCLOSED`; 138.773 s; dominant degree 259, 1 interval processed, 1 exact root, 0 unresolved.
+
+Each profile returned 3 candidates and 1 interior stationary point. All auxiliary endpoint calls completed. The boundary global-supremum state remained explicit.
+
+**Disposition:** (2^{-8}) has now passed the M30/R20 W and B interior fixtures and the boundary-only W/B fixture. It reduces the dominant root-isolation work substantially relative to (2^{-16}), without loss of root-census completion in these cases. This remains deterministic computational evidence, not a coverage or cutoff-validation result.
+
+**Next operation:** run M10/R5 W/B and endpoint-only boundary fixtures at (2^{-8}). If those also complete, the numerical candidate will have been exercised across both F5 Tier-A sample-size cells, both components and the tested boundary cases. Then move to a bounded development-only DGP stress comparison, keeping all data separate from confirmatory and exposed holdout data. No coverage simulation under frozen Tier-A criteria, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
