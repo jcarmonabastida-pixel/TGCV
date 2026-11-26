@@ -849,3 +849,23 @@ Both use a certified global boundary-supremum result. The M30/R20 profile identi
 The cutoffs 48.3 and 16.1 were selected solely to exercise refinement across the coarse enclosures. They are **not calibrated LR cutoffs**, not Tier-A values, and not coverage evidence. The result establishes that the adaptive mechanism can resolve these two pointwise decisions; it does not certify the topology of a full confidence set, prove all disconnected components have been found, or establish interval coverage.
 
 **Operational implication:** retain adaptive exact refinement as a candidate computational component. The M30/R20 boundary case costs about 8.38 minutes for one refined profile; any later development stress study must account for this cost and should avoid blindly applying the finest precision to every point. No Tier-A, Tier-B, or causal C10-S execution is authorized.
+
+
+## 43. Consolidated adaptive LR boundary-B rerun — SUCCESS
+
+**Workflow:** [45873952539](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45873952539) — SUCCESS  
+**Job:** `140096174245` — SUCCESS  
+**Workflow commit:** `46f0306b98989eb38214bf84282b66cd444ec759`
+
+This rerun verifies the consolidated runner against the historically validated adaptive module (the duplicate adaptive implementation and duplicate test workflow were removed). Both boundary-B fixtures again resolved after exactly one refinement step, from width 1/256 to 1/65536:
+
+| Fixture | LR cutoff (diagnostic only) | LR enclosure at 1/256 | LR enclosure at 1/65536 | Classification |
+|---|---:|---:|---:|---|
+| M30/R20 boundary-only B | 48.3 | [47.2819641620, 49.3814918111] | [48.2783048687, 48.2864933674] | IN |
+| M10/R5 endpoint-only B | 16.1 | [15.7606547207, 16.4604972704] | [16.0927682896, 16.0954977891] | IN |
+
+Root isolation reported `ISOLATION_COMPLETE` with zero unresolved intervals in every reported call. For M30/R20, the profile required about 180 seconds at each of the two widths; for M10/R5, 0.745 and 0.802 seconds. The global certificates were `GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED`; final profile statuses were `PROFILE_MAXIMUM_ENCLOSED`.
+
+This confirms the consolidated adaptive runner reproduces the earlier pointwise diagnostic. It does **not** calibrate either diagnostic cutoff, establish confidence-set topology, or demonstrate coverage. In particular, the M30/R20 boundary calculation remains computationally expensive.
+
+**Decision:** retain the historically validated adaptive module as the sole adaptive LR implementation. Proceed to bounded development-only robustness work only after inspecting the exact F5 DGP/seed generator and defining what is being tested; do not treat these two constructed boundary fixtures as a sampling stress test. Tier-A, Tier-B and causal C10-S remain unauthorized.
