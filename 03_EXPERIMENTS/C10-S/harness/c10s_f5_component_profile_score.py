@@ -185,7 +185,12 @@ def f5_component_profile_score_polynomial(
             raise F5ConstrainedScoreError("BOUNDARY_FACTOR_REMOVAL_NOT_EXACT")
         stripped = quotient
         removed += 1
-    coefficients = tuple(_primitive_integer_polynomial(stripped))
+    # Preserve the sign of the original derivative numerator. The shared
+    # primitive helper normalizes the leading coefficient positive, which is
+    # suitable for root isolation but would otherwise erase score orientation.
+    orientation = 1 if stripped[-1] > 0 else -1
+    primitive = _primitive_integer_polynomial(stripped)
+    coefficients = tuple(orientation * value for value in primitive)
     if coefficients == (0,):
         return F5ConstrainedScorePolynomial(
             component, target_value, (), -1, removed, "DEGENERATE_CONSTRAINED_SCORE",
