@@ -2,7 +2,7 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.9  
+**Version:** 0.10  
 **Date:** 2026-11-26  
 **Status:** SOURCE REVIEW COMPLETE — READY FOR BOUNDED BILINGUAL DRAFTING  
 **Branch:** `strategy/transformational-value-learning`  
@@ -339,7 +339,7 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 - [x] Canonical glossary ID checked against repository search and allocated: `TV-TERM-001` (draft bilingual entry).
 - [x] Diagram asset ID checked against repository search and allocated: `TV-DIA-001` (editable Mermaid source and asset record created).
 - [x] Chapter outline approved for drafting by the project owner on 2026-11-26.
-- [ ] Native Spanish and English drafts created.
+- [x] Native Spanish and English first drafts created (v0.1; both remain in draft status).
 - [ ] Editorial, subject and bilingual reviews completed.
 
 **Gate 0 disposition:** source readiness is sufficient to proceed to the content package. The remaining unchecked items are production tasks, not blockers to the source-readiness decision.
@@ -353,6 +353,7 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 - **v0.7 — 2026-11-26:** Allocated and checked the first glossary and diagram IDs; created the bilingual glossary draft, editable diagram source, asset record, content registry and terminology record. Recorded chapter-outline approval as the remaining pre-drafting gate.
 - **v0.8 — 2026-11-26:** Recorded the project owner's approval of the nine-section Chapter 3 drafting outline. Paired Spanish and English drafting is now the next production step.
 - **v0.9 — 2026-11-26:** Reconciled the evidence section and drafting guidance against the current Evidence-to-Claim Matrix v1.47. Distinguished bounded causal accessibility-to-trajectory support, partial identification, cross-domain operationalisation and synthetic non-equivalence; mapped detailed TOC themes into the approved nine-section macro-structure.
+- **v0.10 — 2026-11-26:** Created the first native Spanish and English Chapter 3 drafts, registered both as `draft`, and retained the bilingual editorial and subject-matter reviews as pending.
 
 ## 12. Pilot content package setup
 
@@ -360,7 +361,7 @@ The initial content identities and working assets have now been created on the L
 
 | Item | Stable ID | Location | State |
 |---|---|---|---|
-| Chapter 3 | `TV-CH-03` | `book/es/` and `book/en/` (registered target paths) | Planned; no chapter prose drafted |
+| Chapter 3 | `TV-CH-03` | `book/es/` and `book/en/` (registered target paths) | First native drafts v0.1 created; editorial review pending |
 | Accessible transformation space glossary entry | `TV-TERM-001` | `glossary/es/` and `glossary/en/` | Draft in both languages |
 | Chapter 3 sequence diagram | `TV-DIA-001` | `assets/diagrams/TV-DIA-001/` | Draft editable Mermaid source |
 | Content registry | — | `metadata/content-registry.yml` | Initial registry created |
@@ -368,4 +369,4 @@ The initial content identities and working assets have now been created on the L
 
 The identifiers were searched in the repository before allocation; no existing occurrence of `TV-TERM-001` or `TV-DIA-001` was found. The two glossary definitions are working drafts and are not approved terminology. The diagram is an analytical teaching aid, not a causal model: its labels explicitly distinguish accessibility, realisation, trajectory, outcome and Value.
 
-**Next gate:** prepare the paired Spanish and English chapter drafts against the approved nine-section outline in §6, using the evidence reconciliation in §4 and the current Evidence-to-Claim Matrix v1.47 as the controlling claim-status source. The project owner approved the outline on 2026-11-26. Approval of the outline does not approve the chapter wording, its claims, the glossary entry or the diagram for publication.
+**Next gate:** review both Chapter 3 drafts for conceptual accuracy, evidence traceability, completeness against the detailed contents proposal, and native-language quality/equivalence. Verify the primary bibliographic records and add central reference IDs; then review the glossary definition and diagram captions/alternative text. Both language versions remain drafts and are not approved for publication.
