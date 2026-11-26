@@ -126,6 +126,114 @@ jobs:
             --selection "$TEST_SELECTION" \
             --test-names "$TEST_NAMES"
 
+  authorization-manifest-draft:
+    if: github.ref_name == 'research/c10s-f5-g7-canonical-mle-v1.1-20261122'
+    name: Build non-authorizing G7 DRAFT from immutable Git tree
+    needs: compile
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact research snapshot with Git history
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Materialize an explicitly non-authorizing DRAFT template
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          DISPATCH_WORKFLOW_GIT_BLOB="$(gh api "repos/$GITHUB_REPOSITORY/contents/.github/workflows/c10-s-f5-g7-tiera-calibration-v3.yml?ref=main" --jq '.sha')"
+          export DISPATCH_WORKFLOW_GIT_BLOB
+          mkdir -p "$RUNNER_TEMP/g7-authorization-draft"
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path.cwd().parents[3]
+          profile_path = root / "03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json"
+          protocol_path = root / "03_EXPERIMENTS/C10-S/design/C10S_F5_G7_TIERA_PROSPECTIVE_PROTOCOL_002.md"
+          profile = json.loads(profile_path.read_text(encoding="utf-8"))
+          template = {
+              "schema": "TGCV-C10S-F5-G7-TIERA-AUTH-002",
+              "status": "DRAFT",
+              "authorization_id": "C10S-F5-G7-20261126-001",
+              "authorization_branch": "research/c10s-f5-g7-auth-C10S-F5-G7-20261126-001",
+              "scope": "C10S_F5_G7_TIERA_PROSPECTIVE_CALIBRATION_ONLY",
+              "g7_tiera_calibration_authorized": False,
+              "approval_channel": "GITHUB_WORKFLOW_DISPATCH",
+              "tier_b_authorized": False,
+              "c10_scientific_execution_authorized": False,
+              "primary_replay_required": True,
+              "protocol_id": "C10S-F5-G7-TIERA-PROSPECTIVE-001",
+              "protocol_version": "1.1",
+              "protocol_sha256": hashlib.sha256(protocol_path.read_bytes()).hexdigest(),
+              "cells": ["F5_beta22_M10_R5", "F5_beta22_M30_R20"],
+              "k_per_cell": 1000,
+              "c0_bootstrap_replicates": 1000,
+              "c5_bootstrap_replicates": 1000,
+              "resource_preflight_k_per_cell": 100,
+              "execution_architecture_id": "C10S-F5-G7-EXECUTION-ARCHITECTURE-002",
+              "max_job_minutes": 150,
+              "max_parallel_jobs": 20,
+              "seed_schedule_id": "C10S_F5_G7_TIERA_SEEDS_1.1",
+              "holdout_seed_namespace": "c10s_f5_g7_holdout_v1_1",
+              "resource_seed_namespace": "c10s_f5_g7_resource_v1_1",
+              "resource_profile_run_id": profile["profile_run_id"],
+              "resource_profile_artifact_id": profile["profile_artifact_id"],
+              "resource_profile_source_commit": profile["profile_source_commit"],
+              "resource_profile_sha256": profile["profile_json_sha256"],
+              "resource_profile_artifact_archive_sha256": profile["profile_artifact_archive_sha256"],
+              "resource_profile_scope": profile["profile_scope"],
+              "resource_profile_seed_namespace": profile["seed_namespace"],
+              "resource_profile_repository_full_name": profile["profile_repository_full_name"],
+              "resource_profile_repository_id": profile["profile_repository_id"],
+              "resource_profile_manifest_sha256": hashlib.sha256(profile_path.read_bytes()).hexdigest(),
+              "dispatch_workflow_git_blob_sha": os.environ["DISPATCH_WORKFLOW_GIT_BLOB"],
+          }
+          out = Path(os.environ["RUNNER_TEMP"]) / "g7-authorization-draft"
+          (out / "authorization-template.json").write_text(json.dumps(template, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+          PY
+      - name: Generate canonical manifest bindings and DRAFT authorization
+        working-directory: .
+        run: |
+          python 03_EXPERIMENTS/C10-S/harness/build_c10s_f5_g7_authorization_manifest.py \
+            --root . \
+            --approved-code-commit "$GITHUB_SHA" \
+            --output-json "$RUNNER_TEMP/g7-authorization-draft/manifest-bindings.json" \
+            --draft-template "$RUNNER_TEMP/g7-authorization-draft/authorization-template.json" \
+            --output-draft-authorization "$RUNNER_TEMP/g7-authorization-draft/authorization-draft.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ["RUNNER_TEMP"]) / "g7-authorization-draft"
+          draft = json.loads((root / "authorization-draft.json").read_text(encoding="utf-8"))
+          assert draft["status"] == "DRAFT"
+          assert draft["g7_tiera_calibration_authorized"] is False
+          assert "approved_at_utc" not in draft and "expires_utc" not in draft
+          print("G7_DRAFT_STATUS=DRAFT")
+          print("G7_DRAFT_AUTHORIZATION_FLAG=false")
+          print("G7_DRAFT_SOURCE_COMMIT=" + draft["approved_code_commit"])
+          print("G7_DRAFT_EXECUTION_SOURCE_SHA256=" + draft["execution_source_manifest_sha256"])
+          print("G7_DRAFT_COMPUTE_PATH_SHA256=" + draft["compute_path_content_sha256"])
+          print("G7_DRAFT_SOURCE_HASH_COUNT=" + str(len([k for k in draft if k.endswith("_sha256") and k not in {"execution_source_manifest_sha256", "compute_path_content_sha256", "protocol_sha256", "resource_profile_sha256", "resource_profile_artifact_archive_sha256", "resource_profile_manifest_sha256"}])))
+          print(json.dumps(draft, sort_keys=True, indent=2))
+          PY
+      - name: Upload non-authorizing DRAFT and canonical bindings
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-g7-authorization-draft-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/g7-authorization-draft/manifest-bindings.json
+            ${{ runner.temp }}/g7-authorization-draft/authorization-draft.json
+          if-no-files-found: error
+          retention-days: 30
+
   authorization-manifest-regression:
     if: github.ref_name == 'research/c10s-f5-g7-auth-manifest-generator-20261126-001'
     name: G7 authorization manifest builder regression
