@@ -558,3 +558,27 @@ Thus sign-variation evaluation consumes approximately **78.5% of the dominant is
 **Interpretation:** the next optimisation target is the exact integer sign-variation evaluator, not polynomial construction, integer scaling, or interval queue management. The current evaluator uses homogeneous Horner arithmetic at rational dyadic subdivision points. A development-only alternative may exploit the exact power-of-two denominator structure (integer shifts rather than repeated denominator-power multiplication), but it must first pass exact sign-parity tests against the current implementation over endpoint, dyadic and adversarial polynomial fixtures. No floating-point sign decisions, approximate pruning, altered isolation widths, or relaxed resource limits are permitted.
 
 **Next operation:** implement and benchmark a narrowly scoped exact dyadic sign-evaluation alternative, with deterministic parity tests and a bounded M30/R20 W comparison. Record per-call and end-to-end timings, unchanged root census/status, and exact parity. If the alternative does not materially improve runtime, retain the current implementation. No coverage simulation, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
+
+
+## 32. Certified fixed-point Sturm sign prototype — exact parity PASS; runtime improved
+
+**Workflow:** [45856531585](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45856531585) — SUCCESS  
+**Tested commit:** `0c049293c3909d2e0881f624b334c0137de4d1db`  
+**Tests:** 3/3 exact sign-parity tests PASS (4.593 s).
+
+A development-only sign evaluator was added without changing the production profile code. For dyadic points it uses integer fixed-point interval Horner evaluation at 128 and 256 bits; a sign is accepted only when the certified interval excludes zero. Ambiguous signs use exact homogeneous integer-Horner fallback. Non-dyadic points also use the exact fallback. No floating-point sign decision is made.
+
+The deterministic parity tests cover large integer-coefficient polynomials, dyadic grids, exact dyadic roots, endpoints and non-dyadic fallback. They pass against the existing exact integer sign-variation implementation.
+
+On the same M30/R20 W fixture, the bounded profile returned:
+- global certificate: `GLOBAL_INTERIOR_MAXIMUM_CERTIFIED` (29.497 s);
+- profile: `LR_STATISTIC_ENCLOSED`, `PROFILE_MAXIMUM_ENCLOSED`;
+- 3 candidates, 1 interior stationary point;
+- four root-isolation calls, with the dominant call still `ISOLATION_COMPLETE`, 3,372 processed intervals, 1 exact root, 122 isolating intervals and 0 unresolved intervals;
+- total profile runtime: **732.843 s**, versus 927.246 s in the preceding per-call instrumentation run (approximately 21% lower).
+
+For the dominant call, exact sign evaluation fell from 651.150 s to 522.910 s. Across 582,289 polynomial evaluations, 573,426 signs were certified at 128 bits, 8,685 at 256 bits, and only 178 required exact fallback. The sequence construction itself still took 123.164 s across the two large Sturm sequences. The optimisation is therefore a real but incomplete runtime improvement; the method remains expensive.
+
+**Disposition:** retain the fixed-point interval evaluator as a research prototype. It is not yet promoted into the production implementation and does not establish profile topology, coverage, LR-cutoff calibration or Tier-A readiness.
+
+**Next operation:** test a signed primitive-integer polynomial remainder sequence (PRS) to construct the Sturm sequence directly over integers. The sign of each remainder must be proven equivalent to the rational Euclidean remainder up to a strictly positive scale; a positive-content reduction is allowed, but arbitrary sign normalization is not. Add exact sign-variation parity tests against the current rational Sturm sequence over dyadic and adversarial fixtures, then benchmark the combined integer-PRS plus certified fixed-point evaluator on the same M30/R20 W fixture. Keep the existing rational implementation as the reference and fallback. No coverage simulation, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
