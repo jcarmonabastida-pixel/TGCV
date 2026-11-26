@@ -21,7 +21,7 @@ function normalizeMathDelimiters(markdown) {
       return part;
     }
     if (fence !== null) return part;
-    return part.replace(/\\\(/g, "$ ".trim()).replace(/\\\)/g, "$ ".trim()).replace(/\\\[/g, "$").replace(/\\\]/g, "$");
+    return part.replace(/\\\(/g, () => "$").replace(/\\\)/g, () => "$").replace(/\\\[/g, () => "$$").replace(/\\\]/g, () => "$$");
   }).join("");
 }
 
