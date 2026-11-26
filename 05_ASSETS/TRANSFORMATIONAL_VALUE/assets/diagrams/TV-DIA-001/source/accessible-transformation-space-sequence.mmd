@@ -1,0 +1,14 @@
+flowchart LR
+    A["System state and relevant conditions<br/>Sₜ, Cₜ, Lₜ"]
+    B["Accessible transformation space<br/>Tₐcc,ₜ"]
+    C["Realised transformation<br/>Tᵣₑₐₗ,ₜ"]
+    D["Successor system state<br/>Sₜ₊₁"]
+    E["Next accessible transformation space<br/>Tₐcc,ₜ₊₁"]
+
+    A -->|"analytical evaluation"| B
+    B -.->|"may or may not be realised"| C
+    C -->|"if realised, changes the state"| D
+    D -->|"analytical evaluation under next conditions"| E
+
+    N["Accessibility ≠ realisation ≠ trajectory ≠ outcome ≠ value"]
+    B --- N
