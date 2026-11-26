@@ -110,3 +110,46 @@ Passing Gate E means **READY_TO_LAUNCH_TIER_A**, not Tier-A PASS, not Tier-B aut
 - C10 scientific execution authorization: `false`.
 - Previous integrated simplification audit: `C10S_F1_F5_INTEGRATED_SIMPLIFICATION_AUDIT_001.md`.
 - No new confirmatory run is authorized by this work package.
+
+
+## 8. Progress snapshot — 2026-11-26
+
+**Current branch head after this progress record:** `5a6ef034bb71aaea067eb39b0088941bce89ecac`  
+**Exact code commit covered by the latest static test run:** `3be47b6f86e5a625b23fda7e878651cc08731cdc`
+
+### Gate A — historical/code reconciliation
+
+- **F1 within:** retain the existing exact chi-square pivot. Its prior six-cell calibration evidence remains separate from the raw-between issue.
+- **F1 raw-between:** the earlier static review has been reconciled against the current profile-likelihood source in `diagnostics/C10S_F1_PROFILE_LIKELIHOOD_RECONCILIATION_002.md`. The current path now enforces per-profile nuisance diagnostics, direct score-sign concordance, a unique nuisance maximum, and an explicit F1 family guard. The outer profile connectedness argument is documented. The LR cutoff remains uncalibrated; this candidate is not Tier-A ready.
+- **F5:** the existing B1 analytic-gradient/Hessian diagnostics, production/analytic reconciliation, finite-R likelihood and exact beta-binomial oracle are retained. The historical B2/B3 raw-artifact reconciliation remains descriptive and does not change adjudication: M10/R5 has a near-binomial concentration ridge; M30/R20 has a distinct high-concentration plug-in undercoverage pattern.
+- **F5 runner consistency:** two stale hard-coded references to method ID `F5_FITTED_BETA_BINOMIAL_PARAMETRIC_1.0` were replaced with the engine's declared `IMPLEMENTED_METHODS["F5"][1]`. This aligns the development runner with the current method roster; it does not change the fit, interval construction, frozen thresholds, or historical data.
+- **Static CI:** the read-only comparator workflow was enabled for this research branch. Latest exact-code run `45816013597` completed **SUCCESS**: compilation PASS and 211 deterministic tests PASS. The G7 resource-profile compatibility steps were SKIPPED on this branch only; their historical manifest/artifact pair has a schema mismatch with the later resource validator and remains untouched. Those steps remain enabled on the original G7 research branch.
+- An overstrict attempt to make the finite score-scan discordance flag an unconditional interval veto was reverted after the existing resolved repeated-root fixture demonstrated that the finite scan can report a false discordance. No such guard remains in the current source.
+
+**Gate A disposition:** PASS for historical provenance and deterministic code/test reconciliation; CONDITIONAL for inferential candidate validity because F1 LR calibration and F5 method selection remain open.
+
+### Gate B — minimal candidate selection
+
+- F1 within remains unchanged.
+- F1 raw-between profile likelihood is retained as the smallest existing candidate for the separate raw-between estimand; no cutoff selected.
+- F5 fixed-parameter plug-in C5 remains the incumbent comparator and is not validated. C0 remains diagnostic only, not a fallback.
+- **Provisional next F5 candidate to investigate:** M1-PCT, a refitted parametric bootstrap of the population functionals (W(\mu,\kappa)) and (B(\mu,\kappa)). M1-BASIC may remain a secondary diagnostic. This is not yet a method selection or freeze. The M2 profile-likelihood design is deferred unless the simpler M1 route cannot handle weak identification/boundary states or fails the frozen component gates.
+- The exact global-MLE certificate is not assumed to be mandatory for every bootstrap refit; its boundary handling, numerical cost and necessity must be reconciled before the M1 fit contract is fixed.
+
+**Gate B disposition:** OPEN — candidate roster narrowed, fit-state contract and method choice not frozen.
+
+### Gates C–E
+
+- **Gate C:** NOT STARTED. No new development bank or method-comparison simulation has been run in this work package. Historical B2/B3 and G7 data have not been reused for tuning.
+- **Gate D:** NOT STARTED. No prospective Tier-A protocol, seed namespace, sample-size/MCSE plan, or final adjudication dry-run is frozen.
+- **Gate E:** NOT READY. No Tier-A launch is being requested or authorized.
+
+## 9. Next autonomous operations
+
+1. Complete the bounded F5 fit-state/boundary reconciliation: determine the least costly admissible refit contract, distinguish finite-bound optimizer outcomes from the exact (\kappa\to0) and (\kappa\to\infty) likelihood limits, and document whether the exact global certificate is necessary for the proposed M1 functional bootstrap.
+2. Define the minimal M1-PCT development implementation and its fail-closed replicate-state semantics, reusing the existing likelihood, finite-R oracle, data generator and provenance contracts. Do not change M0 or the frozen C5 specification.
+3. Close F1 raw-between LR-cutoff development design, including common versus cell-specific cutoff choice, then use a fresh development-only seed namespace.
+4. Run only bounded development comparisons permitted by this work package. Record all component-wise coverage, Wilson intervals, emission/abstention, width, directional misses, MCSE and resource use. If no candidate meets the frozen gates, stop and report the exact limitation rather than weakening criteria.
+5. Freeze the smallest viable prospective Tier-A package only after Gates B–D pass. Do not dispatch it; return for the user's explicit Tier-A launch authorization.
+
+No Tier-A/Tier-B authorization was created, consumed, or changed. No main-branch or canonical-governance file was modified.
