@@ -11,6 +11,21 @@ const repoRoot = resolve(previewRoot, "../../../..");
 const contentRoot = resolve(repoRoot, "05_ASSETS/TRANSFORMATIONAL_VALUE");
 const outputRoot = resolve(previewRoot, "src/content/docs");
 
+function normalizeMathDelimiters(markdown) {
+  let fence = null;
+  return markdown.split(/(\r?\n)/).map((part) => {
+    if (part === "\n" || part === "\r\n") return part;
+    const fenceMatch = part.match(/^\s*(```|~~~)/);
+    if (fenceMatch) {
+      fence = fence === null ? fenceMatch[1] : (fence === fenceMatch[1] ? null : fence);
+      return part;
+    }
+    if (fence !== null) return part;
+    return part.replace(/\\\(/g, "$ ".trim()).replace(/\\\)/g, "$ ".trim()).replace(/\\\[/g, "$").replace(/\\\]/g, "$");
+  }).join("");
+}
+
+
 const sources = [
   {
     lang: "es",
@@ -35,7 +50,8 @@ for (const item of sources) {
   const chapterSource = resolve(contentRoot, item.chapter);
   const canonicalChapterText = await readFile(chapterSource, "utf8");
   // Mark the generated preview page as a Starlight draft; preserve canonical status metadata.
-  const chapterText = canonicalChapterText.replace(/^(---\r?\n[\s\S]*?\nstatus:\s*draft\s*\n)/, "$1draft: true\n");
+  const normalizedChapterText = normalizeMathDelimiters(canonicalChapterText);
+  const chapterText = normalizedChapterText.replace(/^(---\r?\n[\s\S]*?\nstatus:\s*draft\s*\n)/, "$1draft: true\n");
   const diagramSource = resolve(contentRoot, item.diagram);
   const diagramText = await readFile(diagramSource, "utf8");
 
