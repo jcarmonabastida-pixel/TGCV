@@ -52,3 +52,5 @@ jobs:
           path: ${{ runner.temp }}/c10s-f5-m1-pilot.json
           if-no-files-found: error
           retention-days: 30
+
+# Re-trigger M1 development-only pilot after workflow activation.
