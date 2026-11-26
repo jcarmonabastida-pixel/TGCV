@@ -99,7 +99,7 @@ A transformation is accessible when the relevant conditions for its realisation 
 T_{acc}=F(S,C,L)
 \]
 
-Here, \\(S\\) denotes the relevant state or configuration of the system; \\(C\\), the contextual conditions being considered; and \\(L\\), the constraints, resources and operational conditions that matter to the analysis. The notation does not make each element an independent entity. It expresses that accessibility is assessed in relation to a specified configuration and set of conditions.
+Here, \(S\) denotes the relevant state or configuration of the system; \(C\), the contextual conditions being considered; and \(L\), the constraints, resources and operational conditions that matter to the analysis. The notation does not make each element an independent entity. It expresses that accessibility is assessed in relation to a specified configuration and set of conditions.
 
 An accessibility predicate can be defined for each candidate transformation:
 
@@ -123,7 +123,7 @@ For this reason, the accessibility criterion should be declared before examining
 
 ## 3. The accessible transformation space
 
-Once candidate transformations have been delimited and an accessibility criterion specified, we can represent the set—or structure—of transformations the system can perform under the conditions being considered. We call this representation the **accessible transformation space**, denoted by \\(T_{acc}\\).
+Once candidate transformations have been delimited and an accessibility criterion specified, we can represent the set—or structure—of transformations the system can perform under the conditions being considered. We call this representation the **accessible transformation space**, denoted by \(T_{acc}\).
 
 The word *space* does not necessarily imply a geometric space or a collection that must be exhaustively enumerated. It refers to an analytical structure of delimited possibilities. Depending on the domain, that structure may be represented through sets, relations, functions, admissibility states or other suitable forms.
 
@@ -141,7 +141,7 @@ Nor should it be confused with a general measure of capability. A system may hav
 
 ## 4. Accessibility is not execution
 
-Consider a system that can perform four transformations: \\(A\\), \\(B\\), \\(C\\) and \\(D\\). Their presence in its accessible space does not mean that all four will be realised. The system may choose (B), take no action, postpone a decision or follow a different trajectory at another time.
+Consider a system that can perform four transformations: \(A\), \(B\), \(C\) and \(D\). Their presence in its accessible space does not mean that all four will be realised. The system may choose (B), take no action, postpone a decision or follow a different trajectory at another time.
 
 Five levels should be kept distinct:
 
