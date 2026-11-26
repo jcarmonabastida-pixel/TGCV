@@ -1,7 +1,7 @@
 # TRANSFORMATIONAL VALUE — Learning Publishing Proof of Concept
 
 **Identifier:** TGCV-TV-POC-001  
-**Version:** 0.3  
+**Version:** 0.4  
 **Date:** 2026-11-26  
 **Status:** PROPOSED VALIDATION SPECIFICATION — NOT IMPLEMENTATION AUTHORISATION  
 **Branch:** `strategy/transformational-value-learning`  
@@ -305,6 +305,10 @@ The PoC is accepted only when all mandatory criteria below are met or a deviatio
 - No unsupported scientific or methodological claim has been introduced.
 - Editorial status is maintained separately for each language.
 - The chapter is not marked approved or published merely because the preview builds.
+- Each language version independently passes the mandatory reader-facing terminology gate defined in the Content Model & Editorial Workflow §22.
+- The terminology audit covers all visible surfaces: titles, headings, prose, examples, tables, diagrams, labels, legends, captions, alt text, glossary, navigation, references, notes and downloadable material.
+- Any internal identifier retained in a reader-facing surface has a documented rationale and the required approval; otherwise it is removed or replaced by a precise description.
+- The audit records Spanish and English findings separately, including retained acronyms, technical notation and justified exceptions.
 
 ### Navigation and experience
 - The left-hand hierarchy works on desktop.
@@ -441,20 +445,45 @@ The PoC must not silently resolve the following:
 
 ## 17. Reader-facing terminology control
 
-The pilot must demonstrate that the book communicates research findings without requiring prior knowledge of TGCV's internal project codes.
+The PoC must demonstrate the book-wide terminology policy in the Content Model & Editorial Workflow §22. This is not limited to Chapter 3 prose: every reader-facing surface produced by the PoC is in scope.
 
-- Internal experiment and evidence identifiers (for example, TR-131 and V007) may remain in this source-readiness record for traceability.
-- They must not be presented as unexplained names in the public chapter, diagram, captions, glossary or learning interface.
-- In the chapter, describe the evidence by its substance, such as **“a bounded cross-domain study of transformation-space reconfiguration in two computational domains”**. State the domains, sample or record counts, method and limitations where relevant and supported by the source.
-- If a public-facing study name has not been approved, use a descriptive phrase rather than inventing one.
-- Acronyms used in the chapter must be discipline-standard, approved public terminology, or defined at first use and genuinely useful thereafter.
-- Preserve technical symbols such as (T_{acc}) when they are part of the conceptual model, but explain them in natural language at first use.
-- Keep internal IDs in the source map and traceability metadata, not in the reader-facing narrative.
+### 17.1 Required audit scope
 
-This rule applies equally to Spanish and English. Each language should use natural descriptive wording, not a literal translation of internal shorthand.
+Audit both language versions independently, including:
 
-**Drafting consequence:** replace reader-facing formulations such as “TR-131/V007 shows…” with a substantive description of the study and its bounded finding. Internal codes can remain in the private source note or reference metadata to preserve auditability.
+- chapter title, headings, subheadings and body text;
+- examples, tables, callouts, summaries and reflection questions;
+- diagram labels, legends, captions, figure notes and alternative text;
+- glossary entry and its cross-links;
+- navigation labels, page summaries and language-switch labels;
+- public references, notes and any downloadable reader-facing resource.
 
-## 12. Version history
+### 17.2 Internal identifiers and terminology
+
+- Internal experiment, study, workstream, dataset, run, gate, evidence and repository identifiers may remain in this private PoC/source-readiness documentation where needed for traceability.
+- They must not appear as unexplained names in the public chapter, diagram, captions, glossary, references or Learning interface.
+- Describe the substance of the research: what was examined, in which setting, by what method, and what the bounded result does and does not support.
+- Do not invent a public-facing study name unless it has been deliberately approved. Prefer a precise descriptive phrase.
+- Acronyms must be discipline-standard, approved public terminology, or defined at first use and genuinely useful thereafter.
+- Technical notation such as (T_{acc}) may be retained when it belongs to the conceptual model and is explained clearly.
+- An identifier retained in a public technical appendix for reproducibility requires a documented reason and approval under the governing terminology policy.
+
+### 17.3 Mandatory PoC acceptance test
+
+The PoC must include a terminology-audit record with separate Spanish and English results. For each language, the record must confirm:
+
+1. All reader-facing surfaces listed in §17.1 were inspected.
+2. Acronyms, abbreviations, alphanumeric codes and opaque labels were identified and classified.
+3. Internal identifiers were removed or replaced with precise descriptions, except for explicitly approved and explained exceptions.
+4. Retained acronyms and technical notation are defined and used consistently.
+5. The terminology register and counterpart language version were checked for conceptual consistency and natural wording.
+6. Any exception records its rationale, approving authority and affected location.
+
+Automated searches should be used to flag likely internal codes and unexplained abbreviations, but a human semantic review is still mandatory. A clean automated scan alone does not pass the test.
+
+**Acceptance rule:** if either language version contains an unexplained internal identifier on any reader-facing surface, that version fails the terminology test and cannot be marked approved. The PoC cannot be accepted as demonstrating the bilingual publishing model until both language audits pass.
+
+## 18. Version history
 
 - **v0.3 — 2026-11-26:** Added reader-facing terminology and acronym controls for the Chapter 3 content package; internal identifiers remain solely for source traceability.
+- **v0.4 — 2026-11-26:** Aligned the PoC with the book-wide terminology policy; extended the audit to every reader-facing surface and made independently recorded Spanish and English terminology checks mandatory acceptance criteria.
