@@ -1,7 +1,7 @@
 # TGCV — Home Experience Specification
 
 **Identifier:** TGCV-WEB-HOME-001  
-**Version:** 1.8  
+**Version:** 1.9  
 **Date:** 2026-11-24  
 **Status:** STRATEGIC EXPERIENCE SPECIFICATION — WORKING DRAFT  
 **Parent:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`, §21  
@@ -216,12 +216,13 @@ Approved first-release navigation:
 - **Value Construction**
 - Labs & Applications
 - About
+- Contact — planned first-release destination; page content and a live communication route are prepared when the domain-associated account is available.
 
 Systems Thinking is transversal: Home, Explore and Research. It has no independent first-release page.
 
-Home should offer a primary route to Explore and clear, direct routes to Research, Systems Engineering, Transformational Intelligence, Value Construction and Labs & Applications. Value Construction must appear as an explicit destination in the ecosystem map and in the Home interest/navigation list; mentioning it only in explanatory prose or the footer is insufficient. Visitors may enter any destination directly; no mandatory linear journey is imposed.
+Home should offer a primary route to Explore and clear, direct routes to Research, Systems Engineering, Transformational Intelligence, Value Construction, Labs & Applications and Contact. Contact remains a planned destination in the site architecture; its page content and operational communication channel are developed when the domain-associated account is available. Value Construction must appear as an explicit destination in the ecosystem map and in the Home interest/navigation list; mentioning it only in explanatory prose or the footer is insufficient. Visitors may enter any destination directly; no mandatory linear journey is imposed.
 
-Explore must take the Home example as its starting point and add conceptual depth: clarify how candidate transformations are distinguished from accessible ones, how accessibility depends on a defined system boundary and conditions, and how accessibility differs from execution, outcome and value. Do not replay the full Home narrative. About explains purpose, scope and governance without implying a staffed institute, external board or formal consortium. Contact is deferred from the first release until a domain-associated account or another real, monitored channel and proportionate privacy information are available.
+Explore must take the Home example as its starting point and add conceptual depth: clarify how candidate transformations are distinguished from accessible ones, how accessibility depends on a defined system boundary and conditions, and how accessibility differs from execution, outcome and value. Do not replay the full Home narrative. About explains purpose, scope and governance without implying a staffed institute, external board or formal consortium. Contact is a planned website section; prepare its content and activate its communication route when the domain-associated account and proportionate privacy information are available.
 
 ## 11. Languages
 
@@ -352,3 +353,7 @@ The identity and copy are directionally coherent. Publication remains blocked pe
 - Removes internal demonstrator and execution labels from the visitor-facing migration-example specification.
 - Defers Contact from first-release Home navigation and visitor routes until a real, monitored domain-associated communication channel is available.
 - Aligns the Home experience with the user's decision not to publish a provisional Contact destination.
+
+### v1.9 — 2026-11-26
+- Restores Contact to the planned first-release navigation and Home visitor routes.
+- Distinguishes the existence of the Contact destination in the website architecture from the later creation of its page content and activation of a monitored communication channel.
