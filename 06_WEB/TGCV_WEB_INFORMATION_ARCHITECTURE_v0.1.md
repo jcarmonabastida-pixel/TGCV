@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 3.1  
+**Version:** 3.2  
 **Date:** 2026-11-26  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -824,7 +824,7 @@ The page distinguishes existing demonstrators, proposed visitor experiences, fea
 
 TGCV Full Chain Demo must not be attributed specific distributable functionality until its exact package and interface have been verified together. The cross-domain mapping demonstrator remains bounded synthetic methodological evidence. In the electric-vehicle and electricity-grid demonstrator, the comparison model reused the same admissibility rule as the TGCV path and therefore was not an independent baseline. TGCV Playground, Value Explorer and ValueLabsOS Preview are proposed experiences, not available operational tools unless separately verified.
 
-The five Business Translation families are opportunity areas, not validated markets, services or applications. Application-Fit contexts remain candidates. The invitation to discover further problems is not a formal participation or intake process. Contact links may be used only when a real monitored contact route is ready.
+The five Business Translation families are opportunity areas, not validated markets, services or applications. Application-Fit contexts remain candidates. The invitation to discover further problems is not a formal participation or intake process. Contact remains deferred until a domain-associated account or another real, monitored communication channel is available; no provisional address, form or participation mechanism should be published.
 
 
 ## 25. About page experience and bilingual copy authority
@@ -871,3 +871,7 @@ The page is an orientation layer, not a substitute for Research's scientific acc
 - Defines About's role as an identity, purpose, research-principles and transparency page, with explicit organisational and evidence boundaries.
 - Synchronises P07 Experience and Copy references to v0.7.
 - Preserves Contact as conditional on a real, monitored route; no publication approval is implied.
+
+### v3.2 — 2026-11-26
+- Records the user decision to defer Contact until a domain-associated account or other real, monitored communication channel is available.
+- Updates About Experience and Copy to v0.2 after focused editorial review; no Contact CTA or implied participation process is permitted while the destination is deferred.
