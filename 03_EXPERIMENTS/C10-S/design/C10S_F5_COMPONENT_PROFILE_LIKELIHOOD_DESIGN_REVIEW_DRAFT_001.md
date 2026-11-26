@@ -129,3 +129,61 @@ If the LR cutoff cannot be calibrated with adequate precision or if the profile 
 **M2 component-profile likelihood:** DESIGN CANDIDATE ONLY — NOT IMPLEMENTED, NOT CALIBRATED, NOT SELECTED.  
 **M1-PCT:** rejected for Tier-A under its current fail-closed fit contract due 4% M10/R5 emission.  
 **Tier-A/Tier-B/C10 causal execution:** not launched and not authorized.
+
+
+## 10. Repository code audit — reuse boundaries and numerical caveats
+
+A direct source inspection was completed for the existing F5 assets.
+
+### 10.1 Likelihood and derivative asset
+
+\`c10s_f5_beta_binomial_likelihood_diagnostics.py\` already provides:
+- the exact beta-binomial count log-likelihood and analytic score/Hessian in \((\operatorname{logit}\mu,\log\kappa)\);
+- an independently parameterized analytic score/Hessian in \((\log\alpha,\log\beta)\);
+- explicit pointwise likelihood limits at \(\kappa\to0\) and \(\kappa\to\infty\);
+- multi-start bounded L-BFGS-B and independent BFGS diagnostics.
+
+But its unrestricted audit is not a global-MLE certificate. The primary optimizer is bounded to \(\eta\in[-18,18]\), \(\log\kappa\in[-12,18]\), and the independent BFGS success flag plus likelihood agreement does not prove a global maximum or exclude all boundary/interior alternatives. The code is suitable as a derivative/optimizer diagnostic and cross-check, not as the sole source of \(\ell_{\max}\) for an LR confidence set.
+
+### 10.2 Existing MCSE profile asset
+
+\`c10s_f5_beta_binomial_mcse_profile.py\` is a valuable numerical pattern, not a reusable W/B interval engine:
+- it retains both mean branches and evaluates analytic \(\kappa\to0\) and \(\kappa\to\infty\) likelihood limits;
+- it scans finite concentration grids, refines detected local maxima, and adds a Powell multi-start cross-check;
+- its finite numerical domain is nevertheless truncated (log-concentration bounds are derived using ±24 offsets), so it is not a proof that no optimum or topology lies farther into a tail;
+- its confidence-set inversion detects components from a finite target grid and refines crossings; the implementation explicitly says it cannot certify global topology, and its grid-convergence check cannot detect a component missed by both grids.
+
+Consequently, neither its profile optimiser nor its LR inversion should be copied as a certified M2 solution. Its branch handling, analytic-limit treatment, result diagnostics and test fixtures can be adapted after replacing the tail truncation and strengthening topology/globality controls.
+
+### 10.3 Exact finite-R oracle
+
+\`c10s_beta_binomial_variance_oracles.py\` computes the exact beta-binomial count PMF and finite-M moments/covariance for the W and raw-B estimators. It does not provide likelihood intervals or an LR cutoff. It should remain an independent truth and moment oracle for later coverage studies.
+
+## 11. Compactification of the nuisance search
+
+A better numerical parameterization avoids arbitrary finite log-\(\kappa\) truncation for each fixed target.
+
+For \(W=w\), define \(t=1/(1+\kappa)\). The feasible range is compact:
+\[
+0\le t\le t_{\max}(w)=\frac{1}{1+\kappa_{\min}(w)},\quad
+\kappa_{\min}(w)=\frac{w}{1/4-w}.
+\]
+The endpoint \(t=0\) is the analytic binomial limit; \(t=t_{\max}\) is \(\mu=1/2\). Interior points reconstruct \(\kappa=(1-t)/t\), \(q=w/(1-t)\), and both mean roots.
+
+For \(B=b\), define \(s=\kappa/\kappa_{\max}(b)\), where \(\kappa_{\max}(b)=1/(4b)-1\). Then \(0\le s\le1\); \(s=0\) is the analytic two-point limit and \(s=1\) is \(\mu=1/2\). Interior points reconstruct \(\kappa=s\kappa_{\max}\), \(q=b(1+\kappa)\), and both mean roots.
+
+This compactifies the *mathematical domain*, but does not by itself certify a numerical maximum. A robust evaluator must include both endpoints analytically, retain both branches, detect and refine every grid-detected local maximum, perform adaptive grid refinement, and return an unresolved status if maxima, branch winners or endpoint values are not stable. The compactified coordinate also needs careful endpoint evaluation to avoid floating-point overflow in \(\kappa=(1-t)/t\).
+
+## 12. Revised implementation gate
+
+Before coding the M2 evaluator, the implementation contract must specify:
+1. compactified nuisance coordinates above and analytic endpoint evaluation;
+2. stable beta-binomial log-likelihood evaluation near both limits (without replacing a limit by a large/small finite \(\kappa\));
+3. independent direct-likelihood and derivative checks at interior points;
+4. adversarial profile fixtures where both branches compete, and where a maximum occurs at either concentration boundary;
+5. adaptive refinement criteria for profile value, maximizing nuisance coordinate, branch identity and all detected local maxima;
+6. an explicit \`GLOBALITY_UNRESOLVED\` result whenever refinement or independent checks disagree;
+7. a separate unrestricted maximum reconciliation, not merely the bounded optimizer output from the existing diagnostic;
+8. LR inversion that preserves all components and abstains if adaptive target-grid refinement cannot establish stable topology.
+
+**Important:** this review found no existing F5 W/B profile-likelihood implementation. The MCSE profile is a separate estimand. M2 remains design-only until these contracts are encoded and tested.
