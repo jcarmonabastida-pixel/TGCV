@@ -187,3 +187,12 @@ Before coding the M2 evaluator, the implementation contract must specify:
 8. LR inversion that preserves all components and abstains if adaptive target-grid refinement cannot establish stable topology.
 
 **Important:** this review found no existing F5 W/B profile-likelihood implementation. The MCSE profile is a separate estimand. M2 remains design-only until these contracts are encoded and tested.
+
+
+## 13. F1 raw-between profile asset — status clarification
+
+The repository tree confirms that \`c10s_f1_between_profile_likelihood.py\` already implements an F1-scoped profile-likelihood interval for the raw between-world variance. It profiles the within variance, uses an analytically derived score polynomial to isolate nuisance stationary points, cross-checks polynomial score signs against the direct score, compares an independent nuisance search with a bounded optimizer, and applies a connectedness argument for the LR acceptance set. Its LR cutoff remains caller-supplied; the code does not calibrate or select that cutoff.
+
+This corrects any possible ambiguity in the work-package shorthand: F1 raw-between is not awaiting profile-likelihood implementation. Its remaining work is a bounded code/test reconciliation and a defensible cutoff calibration/validation for the frozen F1 DGP family. The profile's explicit family guard, nuisance certification, boundary abstentions and scale-equivariance tests are useful controls. They do not establish coverage calibration or Tier-A readiness.
+
+A separate deterministic-only GitHub Actions workflow, \`.github/workflows/c10-s-f1-profile-static-tests.yml\`, has been added on the research branch to compile the F1 profile assets and run their unit tests. It performs no simulation, calibration, or confirmatory execution.
