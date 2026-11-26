@@ -179,47 +179,7 @@ jobs:
             ${{ runner.temp }}/g7-dispatch-attestation.json
           if-no-files-found: error
           retention-days: 90
-      - name: Permanently consume authorization on its dedicated branch
-        if: steps.gate.outputs.approved == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          AUTHORIZATION_ID: ${{ steps.authorization.outputs.authorization_id }}
-          APPROVED_CODE_COMMIT: ${{ steps.authorization.outputs.approved_code_commit }}
-          WORKFLOW_BRANCH: ${{ github.ref_name }}
-          WORKFLOW_SHA: ${{ github.sha }}
-          RUN_ID: ${{ github.run_id }}
-          EVENT_ACTOR: ${{ github.actor }}
-        run: |
-          set -euo pipefail
-          CURRENT_SHA="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$WORKFLOW_BRANCH" --jq '.object.sha')"
-          test "$CURRENT_SHA" = "$WORKFLOW_SHA"
-          MARKER_PATH="00_GOVERNANCE/authorizations/consumed/$AUTHORIZATION_ID.json"
-          mkdir -p "$RUNNER_TEMP/g7-consumption"
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          record = {
-              "schema": "TGCV-C10S-G7-AUTHORIZATION-CONSUMED-001",
-              "authorization_id": os.environ["AUTHORIZATION_ID"],
-              "authorization_commit": os.environ["WORKFLOW_SHA"],
-              "approved_code_commit": os.environ["APPROVED_CODE_COMMIT"],
-              "authorization_branch": os.environ["WORKFLOW_BRANCH"],
-              "run_id": int(os.environ["RUN_ID"]),
-              "actor": os.environ["EVENT_ACTOR"],
-              "consumed_by": "GITHUB_ACTIONS_AUTHORIZATION_GATE",
-          }
-          Path(os.environ["RUNNER_TEMP"], "g7-consumption", "consumed.json").write_text(
-              json.dumps(record, sort_keys=True, indent=2) + "\n", encoding="utf-8"
-          )
-          PY
-          gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$MARKER_PATH" \
-            -f message="Consume one-use G7 authorization $AUTHORIZATION_ID" \
-            -f content="$(base64 -w0 "$RUNNER_TEMP/g7-consumption/consumed.json")" \
-            -f branch="$WORKFLOW_BRANCH" > "$RUNNER_TEMP/g7-consumption/create-response.json"
-          CONSUMED_COMMIT="$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["commit"]["sha"])' "$RUNNER_TEMP/g7-consumption/create-response.json")"
-          PARENT_SHA="$(gh api "repos/$GITHUB_REPOSITORY/git/commits/$CONSUMED_COMMIT" --jq '.parents[0].sha')"
-          test "$PARENT_SHA" = "$WORKFLOW_SHA"
-          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$WORKFLOW_BRANCH" --jq '.object.sha')" = "$CONSUMED_COMMIT"
+      # Authorization remains unconsumed until resource_preflight_validation succeeds.
 
   resource_preflight_validation:
     needs: authorization
@@ -308,9 +268,54 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-  primary_bank:
+
+  consume_authorization:
     needs: [authorization, resource_preflight_validation]
-    if: needs.authorization.outputs.approved == 'true' && github.run_attempt == 1
+    if: needs.authorization.outputs.approved == 'true' && needs.resource_preflight_validation.result == 'success' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Permanently consume authorization only after successful resource preflight
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUTHORIZATION_ID: ${{ needs.authorization.outputs.authorization_id }}
+          APPROVED_CODE_COMMIT: ${{ needs.authorization.outputs.approved_code_commit }}
+          WORKFLOW_BRANCH: ${{ github.ref_name }}
+          WORKFLOW_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          EVENT_ACTOR: ${{ github.actor }}
+        run: |
+          set -euo pipefail
+          CURRENT_SHA="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$WORKFLOW_BRANCH" --jq '.object.sha')"
+          test "$CURRENT_SHA" = "$WORKFLOW_SHA"
+          MARKER_PATH="00_GOVERNANCE/authorizations/consumed/$AUTHORIZATION_ID.json"
+          mkdir -p "$RUNNER_TEMP/g7-consumption"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          record = {
+              "schema": "TGCV-C10S-G7-AUTHORIZATION-CONSUMED-001",
+              "authorization_id": os.environ["AUTHORIZATION_ID"],
+              "authorization_commit": os.environ["WORKFLOW_SHA"],
+              "approved_code_commit": os.environ["APPROVED_CODE_COMMIT"],
+              "authorization_branch": os.environ["WORKFLOW_BRANCH"],
+              "run_id": int(os.environ["RUN_ID"]),
+              "actor": os.environ["EVENT_ACTOR"],
+              "consumed_by": "GITHUB_ACTIONS_POST_PREFLIGHT_GATE",
+          }
+          Path(os.environ["RUNNER_TEMP"], "g7-consumption", "consumed.json").write_text(
+              json.dumps(record, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+          )
+          PY
+          gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$MARKER_PATH"             -f message="Consume one-use G7 authorization $AUTHORIZATION_ID after preflight PASS"             -f content="$(base64 -w0 "$RUNNER_TEMP/g7-consumption/consumed.json")"             -f branch="$WORKFLOW_BRANCH" > "$RUNNER_TEMP/g7-consumption/create-response.json"
+          CONSUMED_COMMIT="$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["commit"]["sha"])' "$RUNNER_TEMP/g7-consumption/create-response.json")"
+          PARENT_SHA="$(gh api "repos/$GITHUB_REPOSITORY/git/commits/$CONSUMED_COMMIT" --jq '.parents[0].sha')"
+          test "$PARENT_SHA" = "$WORKFLOW_SHA"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$WORKFLOW_BRANCH" --jq '.object.sha')" = "$CONSUMED_COMMIT"
+
+  primary_bank:
+    needs: [authorization, resource_preflight_validation, consume_authorization]
+    if: needs.authorization.outputs.approved == 'true' && needs.consume_authorization.result == 'success' && github.run_attempt == 1
     runs-on: ubuntu-24.04
     timeout-minutes: 165
     strategy:
@@ -379,7 +384,7 @@ jobs:
           if-no-files-found: error
           retention-days: 90
   final_adjudication:
-    needs: [authorization, resource_preflight_validation, primary_bank]
+    needs: [authorization, resource_preflight_validation, consume_authorization, primary_bank]
     if: needs.authorization.outputs.approved == 'true' && github.run_attempt == 1
     runs-on: ubuntu-24.04
     timeout-minutes: 60
