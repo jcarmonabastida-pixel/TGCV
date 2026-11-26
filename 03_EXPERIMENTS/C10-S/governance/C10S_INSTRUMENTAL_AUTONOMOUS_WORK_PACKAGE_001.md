@@ -154,3 +154,20 @@ Passing Gate E means **READY_TO_LAUNCH_TIER_A**, not Tier-A PASS, not Tier-B aut
 5. Freeze the smallest viable prospective Tier-A package only after Gates B–D pass. Do not dispatch it; return for the user's explicit Tier-A launch authorization.
 
 No Tier-A/Tier-B authorization was created, consumed, or changed. No main-branch or canonical-governance file was modified.
+
+
+## 10. M1-PCT development pilot result — 2026-11-26
+
+**Result record:** `03_EXPERIMENTS/C10-S/diagnostics/C10S_F5_M1_PCT_DEVELOPMENT_PILOT_RESULT_001.md`  
+**Workflow:** [45822945892](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45822945892) — SUCCESS  
+**Code commit:** `ab32975c00b8c0c1764f3f455c11fa1092c9fe53`  
+**Artifact SHA-256:** `142915b64fb819028f2db8c59b38d0b616c96b7d7d2e1f19b52effa597665806`
+
+Gate C has now had its first bounded F5 development execution. The workflow, compilation, 9 deterministic tests, pilot execution, artifact upload and seed-collision audit all PASS as engineering/provenance checks. This is not a calibration PASS.
+
+M1-PCT emission was 4% (2/50) in M10/R5 and 100% (50/50) in M30/R20. In M10/R5, 846/4,500 bootstrap refits were non-admissible, across four distinct fit states; the fail-closed contract therefore abstained on 43/45 originally admissible datasets. The M10/R5 emission result fails the inherited >=95% requirement decisively. M30/R20 descriptive coverage (98% within; 94% raw-between) is not confirmatory and has no formal coverage adjudication. 
+
+**Gate B disposition:** M1-PCT is rejected as a Tier-A candidate under its current contract; it is not repaired by dropping failed replicates or weakening abstention.  
+**Gate C disposition:** M1-PCT fails M10/R5 emission. The development result discriminates against this candidate; no further M1 tuning is authorized by the work package.  
+**Next operation:** static design review of a minimal component-profile-likelihood candidate for F5 functionals W and B, reusing the existing likelihood/derivative and exact finite-R oracle assets. The existing MCSE profile implementation is not a W/B interval method. Boundary, weak-identification, non-unique nuisance, disconnected-set and LR-cutoff behaviour must be resolved before any new development simulation.  
+**Tier-A/Tier-B/C10 execution:** not launched, not authorized. No thresholds changed; no canonical/main files modified.
