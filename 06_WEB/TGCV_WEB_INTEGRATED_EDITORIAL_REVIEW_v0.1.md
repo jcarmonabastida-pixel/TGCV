@@ -1,7 +1,7 @@
 # TGCV — Integrated Editorial Review of the First Website Release
 
 **Identifier:** TGCV-WEB-INTEGRATED-REVIEW-001  
-**Version:** 0.3  
+**Version:** 0.4  
 **Date:** 2026-11-26  
 **Status:** INTEGRATED EDITORIAL REVIEW — WORKING RECORD; NOT PUBLICATION APPROVAL  
 **Branch:** `strategy/tgcv-web-master`  
@@ -25,7 +25,7 @@ The seven substantive research and application sections form a coherent editoria
 
 The conceptual architecture is coherent at the level of role and epistemic status. The website must not imply a linear causal story from TGCV through TI and VALUE to value creation. The sections are related, but they are not equivalent and are not stages in a validated process.
 
-**Disposition:** the seven substantive sections remain suitable for continued content refinement. About now has a first Experience/Copy pair (v0.1), but that pair is a working draft and has not yet undergone a focused editorial review. The expanded eight-destination set is **not ready for publication approval**. Contact remains conditional on operational readiness.
+**Disposition:** the seven substantive sections remain suitable for continued content refinement. About now has an Experience/Copy pair (v0.2) following a focused editorial pass that reduced duplication with Research, replaced first-person plural wording with neutral programme voice and removed any implied Contact route. It remains a working draft and has not yet undergone user approval. The expanded eight-destination set is **not ready for publication approval**. Contact is deferred until a domain-associated account or other real, monitored communication channel is available.
 
 ## 2. Integrated narrative and boundary review
 
@@ -108,8 +108,8 @@ Strategic indexes:
 2. **the cross-domain mapping demonstrator:** verify current canonical status and permission for public release of the demonstrator/evidence materials.
 3. **Research evidence:** refresh public evidence statements and linked briefs against current canonical STATUS, RMA, Evidence→Claim Matrix, traceability and source records; verify disclosure permissions for each asset.
 4. **Application-Fit:** verify each context description, source attribution and maturity label against current source records. Do not promote a candidate to a qualified application by editorial wording.
-5. **About:** review the newly created Experience v0.1 and bilingual Copy v0.1 for factual accuracy, narrative fit, bilingual equivalence and compliance with the naming rule. The draft must not imply a staffed institute, external board, formal consortium or other unverified organisational structure.
-6. **Contact:** decide whether a real monitored channel, proportionate privacy information and a sustainable response process are ready. Otherwise defer the destination or provide only an accurate available contact method.
+5. **About:** review Experience v0.2 and bilingual Copy v0.2 for factual accuracy, narrative fit, bilingual equivalence and compliance with the naming rule. The draft must not imply a staffed institute, external board, formal consortium or other unverified organisational structure.
+6. **Contact:** deferred by user decision until a domain-associated account or another real, monitored communication channel is available. Do not publish a provisional address, form or participation mechanism.
 7. **Bilingual and link QA:** check Spanish/English conceptual equivalence, every internal/external destination, asset references, terminology and accessibility.
 8. **Visitor comprehension:** simulated editorial reviews are not tests with real visitors. Real-user testing is desirable before or after launch according to the release plan; its absence alone is not a scientific validation failure.
 
@@ -154,3 +154,9 @@ These are editorial and terminology changes only. They do not alter the underlyi
 - Records explicit safeguards against unsupported claims about a staffed institute, formal company or research centre, external board, institutional affiliations, consortium, team, partners, funders or active community.
 - The About pair has not yet passed focused editorial review. No page is approved for publication.
 - Moves the next content operation to the Contact readiness decision; a public Contact destination remains conditional on a real, monitored channel.
+
+## v0.4 — 2026-11-26: About focused editorial pass and Contact deferral
+
+- Records the focused revision of About Experience/Copy to v0.2: concise orientation role, less overlap with Research, neutral programme voice and no implied Contact CTA.
+- Records the user's decision to defer Contact until a domain-associated account or another real, monitored communication channel is available.
+- About remains a working draft; no publication approval is implied.
