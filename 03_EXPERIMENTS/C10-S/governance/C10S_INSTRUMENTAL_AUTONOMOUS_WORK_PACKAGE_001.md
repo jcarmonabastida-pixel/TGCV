@@ -224,3 +224,19 @@ The test suite includes interval-path fixtures for all six frozen F1 cells, root
 This is deterministic software/numerical verification only. The six-cell fixture test uses one synthetic sample per cell and checks that the numerical path returns an ordered interval or typed abstention; it is not repeated-sampling coverage calibration. No LR cutoff is validated by this run.
 
 **F1 disposition:** implementation and deterministic tests PASS; statistical cutoff calibration/validation remains open.
+
+
+## 15. Integrated deterministic comparator suite — PASS
+
+**Workflow run:** [45822945917](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45822945917)  
+**Tested code commit:** \`ab32975c00b8c0c1764f3f455c11fa1092c9fe53\`  
+**Job:** \`gaussian-oracle-static-tests\` — SUCCESS  
+**Suite:** **220/220 tests PASS** in 44.259 s.
+
+The suite compiled and exercised the existing Gaussian and beta-binomial variance oracles, comparison interface, F1 exact pivotal candidate, F5 fitted beta-binomial bootstrap, M1 functional-refit pilot contracts, F5 analytic likelihood/score/Hessian diagnostics, F1 profile-likelihood candidate, nested M/R comparison engine, resource-preflight contracts, authorization validators and G7 shard/resource controls.
+
+The F5 likelihood-diagnostic tests specifically passed independent finite-difference checks of analytic score and Hessian, log-shape derivative checks near the boundary, exact finite-R oracle reconciliation, explicit \`kappa -> 0\` and \`kappa -> infinity\` likelihood-limit checks, and optimizer/profile diagnostic contracts.
+
+The F1 profile's dedicated workflow separately passed 51/51 tests on commit \`aa735f9faa173376b4443b4444ee1e57880b51a6\`. The later commits changed documentation/workflow metadata only; no F1/F5 statistical implementation source changed after the 220-test run.
+
+**Static gate disposition:** F1 profile deterministic implementation/tests PASS; F5 likelihood/optimizer/oracle deterministic implementation/tests PASS. These runs do not constitute repeated-sampling coverage calibration, resource preflight, or confirmatory evidence.
