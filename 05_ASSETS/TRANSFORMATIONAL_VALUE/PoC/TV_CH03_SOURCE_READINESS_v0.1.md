@@ -2,7 +2,7 @@
 
 **Content ID:** `TV-CH-03`  
 **Working title:** *The Space of Accessible Transformations* / *El espacio de transformaciones accesibles*  
-**Version:** 0.3  
+**Version:** 0.4  
 **Date:** 2026-11-26  
 **Status:** SOURCE REVIEW COMPLETE — READY FOR BOUNDED BILINGUAL DRAFTING  
 **Branch:** `strategy/transformational-value-learning`  
@@ -23,7 +23,7 @@ The authoritative source base is sufficient to explain:
 - the distinction between candidate transformations, accessible transformations, realised transformations, successor states and trajectories;
 - why accessibility change is not reducible to a change in cardinality;
 - the descriptive forms of transformation-space reconfiguration;
-- what the bounded TR-131/V007 cross-domain operationalisation demonstrates;
+- what a bounded cross-domain study demonstrates about operationalising changes in the accessible transformation space;
 - what cannot currently be inferred about Value from accessibility evidence.
 
 The chapter must not present the entire chain from accessibility change to Value as established. The downstream relationship between `ΔT_acc` and Value remains open. Nor should the chapter claim universal validity, superiority over existing formalisms, or a settled novelty result.
@@ -179,34 +179,34 @@ The proposition that realised transformations and resulting states may alter fut
 
 ## 4. Evidence that can be used
 
-### 4.1 TR-131 / V007 — bounded cross-domain operationalisation
+### 4.1 A bounded cross-domain study — operationalising changes in accessible transformations
 
-The current Evidence-to-Claim Matrix v1.47 records V007 as **closed bounded cross-domain methodological evidence**.
+The current evidence register classifies the cross-domain study as **closed, bounded methodological evidence**.
 
 - 36 records: 20 VisitAll and 16 PRISM.
-- The V007 runner reports zero invalid records.
+- The computational validation reported no invalid records.
 - The independent mathematical audit reports 36 checked records and zero descriptor mismatches.
 - Both domains exhibit transformation-identity turnover.
-- PRISM exhibits identity turnover with cardinality conservation.
-- VisitAll exhibits turnover and some net cardinality reduction.
+- One examined computational domain exhibits changes in transformation identity while preserving the total number of transformations.
+- The other examined computational domain exhibits changes in transformation identity, including some net reductions in the number of transformations.
 
 This supports the bounded statement that a common transition-level analytical representation can operationalise transformation-space reconfiguration in these two examined domains. It does not establish universal domain independence, causal value effects, superiority or Transformational Intelligence.
 
-Use the current matrix's enriched V007 section as the controlling evidence description; use the TSDA artefact for definitions of descriptors.
+Use the current evidence register as the controlling account of the finding; use the analytical study of transformation-space dynamics for definitions of the descriptive measures.
 
-### 4.2 KGFS / C09 — bounded real-world causal evidence for a downstream trajectory link
+### 4.2 A bounded real-world study — evidence concerning subsequent trajectories
 
-The current matrix records KGFS as a closed D5-A identified contribution. The bounded result supports the proposition that a randomized structural accessibility intervention affected subsequent household/economic trajectories in the studied setting.
+The current evidence register classifies this as a closed, identified contribution within the studied setting. The bounded result supports the proposition that a randomized intervention affecting structural accessibility influenced subsequent household and economic trajectories in that setting.
 
 The chapter may use this as a carefully bounded example of why accessibility and downstream trajectories are analytically connected. It must not imply that this establishes a universal effect or a causal `ΔT_acc → Value` relationship.
 
-### 4.3 MT5 — a useful boundary case
+### 4.3 A case of incomplete identification — an important methodological boundary
 
-The current matrix records MT5 as a closed partial dynamic transformation-space / bounded methodological reconstruction.
+The current evidence register classifies this as a bounded methodological reconstruction in which only part of the transformation-space dynamics could be identified.
 
 It is useful precisely because candidate transformation functions and longitudinal structural/connectivity changes can be described, while a complete accessibility predicate and `T_acc` remain unidentified. This teaches why observed structural change, treatment, take-up, realised configuration or conventional outcomes cannot simply be relabelled as accessibility.
 
-MT5 should be used as a methodological boundary example, not as positive evidence of a complete `ΔT_acc` reconstruction.
+This case should be used to illustrate a methodological boundary, not as positive evidence that the full change in the accessible transformation space has been reconstructed.
 
 ### 4.4 Other evidence
 
@@ -224,9 +224,9 @@ The chapter must not say or imply:
 - A larger transformation space necessarily means more capability, intelligence, reach or value.
 - Accessibility, execution, adoption, outcome and Value are interchangeable.
 - The entire chain `ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value` is empirically demonstrated in every domain.
-- TR-131/V007 proves causal effects or generality beyond the examined operationalisations.
-- KGFS/C09 proves `ΔT_acc → Value`.
-- TSDA is a universal scalar metric or quality score.
+- The bounded cross-domain study proves causal effects or generality beyond the operationalisations actually examined.
+- The real-world study proves a causal relationship between changes in the accessible transformation space and Value.
+- The descriptive measures of transformation-space dynamics constitute a universal scalar metric or quality score.
 - The candidate formalism is demonstrably novel or superior to planning, affordance or transition-system formalisms.
 
 Preferred formulation: TGCV investigates and formalises the structure and dynamics of transformations accessible to systems under specified conditions; current evidence supports bounded operationalisations and specific links, while wider generality and downstream Value relationships remain open to further testing.
@@ -253,10 +253,10 @@ This is a drafting outline, not a replacement for the approved detailed TOC. It 
    Explain expansion, contraction, reconfiguration and substitution; introduce identity turnover and cardinality carefully.
 
 6. **Observing transformation-space dynamics**  
-   Introduce the transition sequence and the TSDA descriptors using a small worked example.
+   Introduce the transition sequence and the descriptive measures of transformation-space dynamics using a small worked example.
 
 7. **What bounded evidence shows — and what it does not**  
-   Use V007 as the principal operationalisation example, KGFS/C09 as a bounded trajectory-linkage example and MT5 as a non-identification boundary.
+   Use the bounded cross-domain computational study as the principal operationalisation example, the bounded real-world study as an example of a link with subsequent trajectories, and the incomplete-identification case as a methodological boundary.
 
 8. **Limits, assumptions and open questions**  
    Discuss domain-specific operationalisation, transformation identity, admissibility, equivalence and the limits of downstream inference.
@@ -319,12 +319,12 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 ## 10. Readiness checklist
 
 - [x] Current TGCV Core reviewed.
-- [x] Current ARM v0.2 reviewed.
+- [x] Current architectural research map reviewed.
 - [x] Formal transformation-space specification reviewed.
-- [x] TSDA analytical artefact reviewed.
-- [x] TR-131/V007 current matrix evidence reviewed.
-- [x] C09/KGFS trajectory boundary reviewed.
-- [x] MT5 non-identification boundary reviewed.
+- [x] Analytical study of transformation-space dynamics reviewed.
+- [x] Current evidence for the bounded cross-domain computational study reviewed.
+- [x] Real-world study and its trajectory-related evidence boundary reviewed.
+- [x] Incomplete-identification case and its methodological boundary reviewed.
 - [x] Current Evidence-to-Claim Matrix v1.47 reviewed.
 - [x] Value-linkage non-claim recorded.
 - [ ] Canonical glossary IDs checked and allocated.
@@ -341,3 +341,16 @@ The Spanish equivalent for technical terms must be agreed in the terminology reg
 
 - **v0.1 — 2026-11-26:** First source-readiness review for Chapter 3, based on current `main` Core, ARM v0.2, TR-131 formal and analytical artefacts, Vision Paper, Evidence-to-Claim Matrix v1.47 and cross-domain evidence map.
 - **v0.2 — 2026-11-26:** Relocated under `PoC/` and updated its related-specification path.
+
+
+## 12. Separation between reader-facing language and internal traceability
+
+This document is an internal editorial working record, not a chapter intended for publication. Its source inventory in Section 2 retains repository paths, source titles, version labels and retrieval details so that editors can locate and audit the evidence. Those identifiers are metadata for editorial traceability; they are not recommended vocabulary for the book.
+
+Outside that source inventory, the explanatory discussion and proposed chapter outline use descriptive language rather than internal experiment labels. The public chapter must describe each study by its research design, domain, observations, result and limitations. It must not cite a study by an internal experiment code as if that code were its name.
+
+Where a source title or repository path contains an internal identifier, retain it only as a locator in this working document or in a non-reader-facing reference record. A public bibliography should use a meaningful published title and stable public reference wherever available. If no public source exists, cite the programme or responsible authorship with a transparent description of the underlying material; do not expose internal codes in the narrative.
+
+**Version history**
+
+- **v0.4 — 2026-11-26:** Rewrote explanatory sections and chapter-outline guidance to use reader-comprehensible descriptions instead of internal experiment and analytical-artefact acronyms. Explicitly restricted remaining internal identifiers to the editorial source inventory and traceability metadata.
