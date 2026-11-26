@@ -785,3 +785,28 @@ Other cases had much tighter displayed LR enclosures. Thus (2^{-8}) preserves co
 **Disposition:** (2^{-8}) is the leading starting width for development profiling across both F5 sample-size cells, both components and the tested boundary cases. It is not a globally frozen precision setting. The boundary-B cases show that fixed width alone is insufficient to guarantee useful LR classification.
 
 **Next operation:** introduce a bounded exact adaptive-refinement rule driven by the caller-supplied LR cutoff: begin at (2^{-8}), refine only ambiguous enclosures (for example to (2^{-16}), then tighter if needed), and stop only when the interval is classified or a declared resource bound is reached, returning a typed unresolved state on exhaustion. Test exact monotonic enclosure nesting and parity against the fixed-width reference on the seven fixtures. Only after that, design a small development-only repeated-sampling stress comparison using fresh development seeds. No Tier-A confirmatory coverage run, Tier-B, LR-cutoff calibration, or causal C10-S execution is authorized by this step.
+
+
+## 41. Exact adaptive LR cutoff refinement — implementation and deterministic tests PASS; boundary stress run active
+
+**Implementation commit:** `8468d78db5eb96a2d15f10ef1d50285ac9655585`  
+**Test commit:** `7ed264d3e201da056860526ff41a7a7422026dc0`  
+**Workflow:** [45869634558](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45869634558) — SUCCESS
+
+Added `f5_component_profile_lr_statistic_adaptive` to the research-only F5 profile module. It:
+- starts at exact root-isolation width (2^{-8}), then refines to (2^{-16}) and (2^{-24}) only while the caller-supplied finite LR cutoff remains inside the certified LR-statistic enclosure;
+- intersects successive exact enclosures, preserving a valid enclosure of the same statistic;
+- fails closed with `ADAPTIVE_REFINEMENT_ENCLOSURE_CONFLICT` if successive certified enclosures are disjoint;
+- returns `UNRESOLVED_ADAPTIVE_PRECISION_EXHAUSTED` rather than guessing if the cutoff remains ambiguous at the finest configured width;
+- leaves grid-based confidence-set topology explicitly uncertified. This is pointwise cutoff classification only.
+
+The combined adaptive-refinement and integer-Sturm parity workflow passed **18 deterministic tests**, including:
+- exact enclosure intersection and successful cutoff classification;
+- non-nested enclosure conflict;
+- typed ambiguity on precision exhaustion;
+- strictly decreasing width validation;
+- signed integer PRS parity against the rational Sturm reference.
+
+**Bounded real-fixture diagnostic:** [45869809771](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45869809771) was launched for the two previously wide boundary-B enclosures (M30/R20 boundary-only B and M10/R5 endpoint-only B), with diagnostic cutoffs chosen inside their coarse (2^{-8}) enclosures. The purpose is to verify that adaptive refinement narrows the pointwise LR enclosure enough to classify IN/OUT or returns the typed unresolved state. These diagnostic cutoffs are not calibrated and are not proposed as Tier-A cutoffs. At this record's update, the workflow remained in progress.
+
+**Next operation:** inspect the two real-fixture adaptive outcomes. If successful, perform a bounded repeated-sampling development stress test under known F5 DGP truth, using fresh development-only seeds, to inspect adaptive classification, abstention and resource costs. Do not treat this as coverage calibration. No Tier-A confirmatory run, Tier-B, LR-cutoff calibration, or causal C10-S execution is authorized by this step.
