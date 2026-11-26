@@ -1,7 +1,7 @@
 # TRANSFORMATIONAL VALUE — Content Model & Editorial Workflow
 
 **Identifier:** TGCV-TV-CONTENT-MODEL-001  
-**Version:** 0.1  
+**Version:** 0.2  
 **Date:** 2026-11-26  
 **Status:** CONTENT ARCHITECTURE PROPOSAL — FOR REVIEW  
 **Governing document:** `TRANSFORMATIONAL_VALUE_LEARNING_MASTER_ARCH_v0.1.md`  
@@ -554,3 +554,41 @@ The proof of concept should test whether the content model is usable by authors 
 ## 19. Version history
 
 - **v0.1 — 2026-11-26:** Initial proposal for repository organisation, stable content IDs, bilingual native authoring, metadata, glossary and references, assets, editorial workflow, GitHub contribution routing, versioning, licensing boundaries and a representative proof of concept.
+
+
+## 20. Repository directory layout
+
+The canonical root is `05_ASSETS/TRANSFORMATIONAL_VALUE/`. Keep only these three governing documents directly in that root:
+
+- `TRANSFORMATIONAL_VALUE_LEARNING_MASTER_ARCH_v0.1.md`
+- `TRANSFORMATIONAL_VALUE_DETAILED_TOC_v0.1.md`
+- `TRANSFORMATIONAL_VALUE_CONTENT_MODEL_EDITORIAL_WORKFLOW_v0.1.md`
+
+All proof-of-concept specifications, source-readiness records, test results and evaluation decisions belong under `PoC/`.
+
+The book and shared learning content follow this structure:
+
+```text
+TRANSFORMATIONAL_VALUE/
+  [three governing documents]
+  PoC/
+  book/
+    es/
+      part-01-understanding-transformation/
+    en/
+      part-01-understanding-transformation/
+  learning-resources/
+  glossary/
+  references/
+  assets/
+    diagrams/
+    images/
+  metadata/
+  governance/
+```
+
+Spanish and English book content must be stored in their respective language trees. Shared assets, references, metadata and terminology records must not be duplicated by language unless the resource genuinely requires language-specific variants. The `PoC/` directory is a project-validation workspace, not a fourth governing-document layer. Directories may initially contain short `README.md` orientation files; do not create empty chapter files or placeholders for all planned content. New chapter and section files are created only when their drafting gate is reached.
+
+## 21. Version history
+
+- **v0.2 — 2026-11-26:** Formalised the repository directory layout, reserved the root for three governing documents, and assigned PoC artefacts to `PoC/`.
