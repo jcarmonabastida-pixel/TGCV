@@ -324,3 +324,12 @@ The M2 module now combines:
 The deterministic test constructs a nondegenerate M10/R5 histogram, obtains the existing exact global-MLE certificate, and successfully encloses the LR statistic for both W and B. The log-series test checks rational bounds for \(\log 2\) and \(\log(1/2)\).
 
 **M2 status:** a fixed-target F5 LR-statistic enclosure is now implemented and deterministic-tested. The remaining major inferential component is LR confidence-set inversion over the full W/B target domain, including topology, endpoint inclusion and stable component enumeration. The LR cutoff still requires the frozen development calibration/validation design; no cutoff has been selected.
+
+
+## 21. M2 exact LR layer — deterministic verification complete
+
+The exact constrained W/B profile-maximum and LR-statistic layers are recorded in design-review §§16–17. The LR implementation reuses the existing exact unrestricted global-MLE certificate and produces rational likelihood-ratio/log-statistic enclosures. Both W and B pass the deterministic LR fixture.
+
+The broader exact rational-score/global-MLE suite passed 130/130 tests on run \`45831286314\`; the M2 score/root/maximum suite passed 31/31 on \`45831943819\`; the M2 LR suite passed 33/33 on \`45832387827\`.
+
+**Remaining M2 work:** integrate the four functional-domain endpoints into the profile/LR API; implement full target-domain LR confidence-set inversion while retaining all components and failing closed on unresolved topology; test disconnected/one-sided/empty sets and endpoint inclusion. Then assess resource cost. No calibration or numerical simulation has been run.
