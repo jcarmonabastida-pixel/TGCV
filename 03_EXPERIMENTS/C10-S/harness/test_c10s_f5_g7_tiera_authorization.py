@@ -314,8 +314,9 @@ class F5G7AuthorizationTests(unittest.TestCase):
         self.assertIn("dispatch_workflow_git_blob_sha", workflow)
         self.assertIn("WORKFLOW_COMMIT: ${{ github.sha }}", workflow)
         self.assertIn("?ref=$WORKFLOW_COMMIT", workflow)
-        rerun_guard = "if: needs.authorization.outputs.approved == 'true' && github.run_attempt == 1"
-        self.assertGreaterEqual(workflow.count(rerun_guard), 3)
+        self.assertGreaterEqual(workflow.count("github.run_attempt == 1"), 4)
+        self.assertIn("needs.resource_preflight_validation.result == 'success'", workflow)
+        self.assertIn("needs.consume_authorization.result == 'success'", workflow)
         validator_source = Path(__file__).with_name("validate_c10s_f5_g7_tiera_authorization.py").read_text(encoding="utf-8")
         self.assertIn('auth.get("approval_channel") != "GITHUB_WORKFLOW_DISPATCH"', validator_source)
         self.assertNotIn("environment:", workflow)
