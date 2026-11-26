@@ -25,7 +25,7 @@ The seven substantive research and application sections form a coherent editoria
 
 The conceptual architecture is coherent at the level of role and epistemic status. The website must not imply a linear causal story from TGCV through TI and VALUE to value creation. The sections are related, but they are not equivalent and are not stages in a validated process.
 
-**Disposition:** the seven substantive sections remain suitable for continued content refinement. About now has an Experience/Copy pair (v0.2) following a focused editorial pass that reduced duplication with Research, replaced first-person plural wording with neutral programme voice and removed any implied Contact route. It remains a working draft and has not yet undergone user approval. The expanded eight-destination set is **not ready for publication approval**. Contact is deferred until a domain-associated account or other real, monitored communication channel is available.
+**Disposition:** the seven substantive sections remain suitable for continued content refinement. About now has an Experience/Copy pair (v0.3) following a focused editorial pass that reduced duplication with Research, uses neutral programme voice in both languages and removes any implied Contact route. It remains a working draft and has not yet undergone user approval. The expanded eight-destination set is **not ready for publication approval**. Contact is deferred until a domain-associated account or other real, monitored communication channel is available.
 
 ## 2. Integrated narrative and boundary review
 
@@ -159,4 +159,10 @@ These are editorial and terminology changes only. They do not alter the underlyi
 
 - Records the focused revision of About Experience/Copy to v0.2: concise orientation role, less overlap with Research, neutral programme voice and no implied Contact CTA.
 - Records the user's decision to defer Contact until a domain-associated account or another real, monitored communication channel is available.
+- About remains a working draft; no publication approval is implied.
+
+## v0.5 — 2026-11-26: About bilingual consistency check
+
+- Synchronises the About authorities to Experience/Copy v0.3 after the final Spanish/English voice check.
+- Confirms no first-person plural formulations remain in the Spanish or English public copy, and no Contact channel or formal participation process is implied.
 - About remains a working draft; no publication approval is implied.
