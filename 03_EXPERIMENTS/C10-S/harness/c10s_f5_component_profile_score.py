@@ -580,10 +580,14 @@ def f5_component_profile_lr_statistic(
     if global_status == "GLOBAL_INTERIOR_MAXIMUM_CERTIFIED":
         winner = global_certificate.get("winner")
         global_candidates = [winner] if isinstance(winner, Mapping) else []
-    elif global_status in {
-        "GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED",
-        "GLOBAL_CO_MAXIMIZERS_CERTIFIED",
-    }:
+    elif global_status == "GLOBAL_BOUNDARY_SUPREMUM_CERTIFIED":
+        winner = global_certificate.get("winner")
+        if isinstance(winner, Mapping):
+            global_candidates = [winner]
+        else:
+            winners = global_certificate.get("winners")
+            global_candidates = list(winners) if isinstance(winners, (tuple, list)) else []
+    elif global_status == "GLOBAL_CO_MAXIMIZERS_CERTIFIED":
         winners = global_certificate.get("winners")
         global_candidates = list(winners) if isinstance(winners, (tuple, list)) else []
     else:
