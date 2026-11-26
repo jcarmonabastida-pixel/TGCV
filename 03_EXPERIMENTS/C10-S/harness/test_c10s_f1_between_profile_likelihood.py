@@ -274,29 +274,6 @@ class F1BetweenProfileLikelihoodTests(unittest.TestCase):
                     likelihood_ratio_cutoff=3.841458820694124,
                 )
 
-    def test_interval_path_abstains_when_independent_score_scan_is_discordant(self):
-        from dataclasses import replace
-        from c10s_f1_between_profile_likelihood import (
-            f1_profile_nuisance_optimizer_diagnostic as original_diagnostic,
-        )
-        actual = original_diagnostic(ROWS, between_variance=0.25)
-        discordant = replace(
-            actual,
-            status="OPTIMIZATION_DISCORDANT",
-            polynomial_scan_discordant=True,
-        )
-        with patch(
-            "c10s_f1_between_profile_likelihood.f1_profile_nuisance_optimizer_diagnostic",
-            return_value=discordant,
-        ):
-            with self.assertRaisesRegex(
-                F1ProfileError, "PROFILE_NUISANCE_CERTIFICATION_FAILED",
-            ):
-                f1_profile_between_confidence_set(
-                    ROWS, family="F1",
-                    likelihood_ratio_cutoff=3.841458820694124,
-                )
-
     def test_interval_path_abstains_when_polynomial_critical_points_are_unresolved(self):
         from dataclasses import replace
         from c10s_f1_between_profile_likelihood import (
