@@ -1,12 +1,12 @@
-# TGCV — About Page Copy v0.2
+# TGCV — About Page Copy v0.3
 
 **Identifier:** TGCV-WEB-ABOUT-COPY-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-26  
 **Status:** BILINGUAL EDITORIAL WORKING DRAFT — NOT APPROVED FOR PUBLICATION  
 **Branch:** `strategy/tgcv-web-master`  
 **Page:** P08 — About  
-**Parent documents:** About Experience v0.2; Web Master Brief v1.9; Information Architecture v3.1; Content Blueprint v4.2; Integrated Editorial Review v0.3.
+**Parent documents:** About Experience v0.3; Web Master Brief v1.9; Information Architecture v3.2; Content Blueprint v4.3; Integrated Editorial Review v0.4.
 
 > This copy preserves approved names in both languages. It does not establish institutional, organisational or scientific claims beyond the source documents.
 
@@ -51,7 +51,7 @@ TGCV no pretende sustituir las disciplinas existentes ni convertir estas perspec
 
 ## Qué significan nuestros resultados
 
-No todos los materiales o avances tienen el mismo alcance. Por eso distinguimos entre:
+No todos los materiales o avances tienen el mismo alcance. Por eso se distinguen entre:
 
 - **Preguntas de investigación**, que expresan lo que todavía se necesita comprender o contrastar.
 - **Propuestas conceptuales y metodológicas**, que organizan ideas o procedimientos que deben examinarse.
@@ -73,7 +73,7 @@ El compromiso de transparencia consiste en hacer comprensible y examinable el al
 - Se corrigen los errores relevantes y se actualizan las descripciones públicas cuando cambia el estado del trabajo.
 - Se mantienen separadas la comunicación del programa, la exploración de aplicaciones y la evaluación científica de sus afirmaciones.
 
-No presentamos una demostración, un prototipo o una oportunidad de aplicación como prueba de una hipótesis científica que todavía debe investigarse.
+Una demostración, un prototipo o una oportunidad de aplicación no se presentan como prueba de una hipótesis científica que todavía debe investigarse.
 
 ## Un programa en evolución
 
@@ -172,4 +172,5 @@ The programme remains open to critical examination of these questions and to ide
 ## Change record
 
 - **v0.1 — 2026-11-26:** first bilingual About copy.
-- **v0.2 — 2026-11-26:** focused editorial review reduces overlap with Research, replaces first-person plural formulations with neutral programme voice, removes any implied contact route and preserves the scientific and organisational boundaries. Not publication approval.
+- **v0.2 — 2026-11-26:** focused editorial review reduces overlap with Research, replaces first-person plural formulations with neutral programme voice, removes any implied contact route and preserves the scientific and organisational boundaries.
+- **v0.3 — 2026-11-26:** final bilingual consistency check removes two remaining first-person plural formulations in Spanish and synchronises parent references. Not publication approval.
