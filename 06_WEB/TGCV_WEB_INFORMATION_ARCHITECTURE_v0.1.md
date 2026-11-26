@@ -1,6 +1,6 @@
 # TGCV — Web Information Architecture
 **Identifier:** TGCV-WEB-IA-001  
-**Version:** 3.2  
+**Version:** 3.4  
 **Date:** 2026-11-26  
 **Status:** STRATEGIC DESIGN — WORKING DOCUMENT  
 **Parent reference:** `06_WEB/TGCV_WEB_MASTER_BRIEF_v0.1.md`  
@@ -521,7 +521,7 @@ Research and Labs & Applications are activity spaces: Research develops knowledg
 
 ### 16.3 First-release navigation
 
-The approved top-level navigation is:
+The seven active top-level destinations for the first public release are:
 1. **Explore** — conceptual entry, accessible explanation and the central software-migration example.
 2. **Research** — TGCV, research questions, methods, experiments, evidence and limits.
 3. **Systems Engineering** — engineering practices and their relation to the TGCV research object.
@@ -529,7 +529,8 @@ The approved top-level navigation is:
 5. **Value Construction** — VALUE as an applied framework complementary to TGCV, its lifecycle and a clearly labelled fictional clinic case.
 6. **Labs & Applications** — bounded demonstrators, synthetic methodological work and exploratory application contexts.
 7. **About** — purpose, scope, governance and accurate programme context.
-8. **Contact** — only a real, monitored contact route with proportionate privacy information.
+
+**Contact** is a planned future destination, not an active first-release navigation item. Do not publish a Contact link, placeholder page, form or provisional address until a domain-associated account or another real, monitored communication channel is available.
 
 Systems Thinking is transversal, not a separate first-release page: introduce it on Home, explain its role in Explore and develop its methods/foundations in Research. Do not retain Community as a top-level first-release destination. Do not publish empty destinations.
 
@@ -561,8 +562,8 @@ Use **Existing**, **In development** and **Exploratory** as operational content 
 
 The detailed visitor experience and bilingual copy for Explore are defined in:
 
-- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 1.1.
-- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 1.0.
+- `06_WEB/TGCV_WEB_EXPLORE_EXPERIENCE_v0.1.md` — current content version 1.2.
+- `06_WEB/TGCV_WEB_EXPLORE_COPY_v0.1.md` — current content version 1.1.
 
 Explore is the conceptual deepening after Home, not a second presentation of the same discovery. Home introduces that a system's possibilities can change; Explore asks how we determine whether a candidate transformation is accessible, relative to a defined system, boundary and set of conditions. Home's numbered conceptual sequence is a reading aid, not a universal causal chain; trajectory must be visualised as the path across states and transitions, not as a discrete stage.
 
@@ -791,7 +792,7 @@ Do not assume these versions remain current when development begins. Recheck exa
 The P06 page is specified by:
 
 - `06_WEB/TGCV_WEB_VALUE_CONSTRUCTION_EXPERIENCE_v0.1.md` — Experience v0.3.
-- `06_WEB/TGCV_WEB_VALUE_CONSTRUCTION_COPY_v0.1.md` — bilingual Copy v0.2.
+- `06_WEB/TGCV_WEB_VALUE_CONSTRUCTION_COPY_v0.1.md` — bilingual Copy v0.3.
 
 The page follows the opportunity/system-understanding-first narrative before introducing the VALUE lifecycle. It includes dedicated explanations of Capability of Value Construction (CCV) and the Systemic Value Index (IVS) as development objective / exploratory measurement proposal, not validated instruments; and the Value Discovery Sprint as an untested pilot-intervention design, not an available service. The fictional clinic case and its figures are simulated, not empirical results.
 
@@ -817,8 +818,8 @@ This authority supersedes earlier P05 working text that describes four dimension
 
 The current P07 visitor experience and bilingual working copy are:
 
-- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.7.
-- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.7.
+- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_EXPERIENCE_v0.1.md` — Experience v0.8.
+- `06_WEB/TGCV_WEB_LABS_APPLICATIONS_COPY_v0.1.md` — bilingual Copy v0.8.
 
 The page distinguishes existing demonstrators, proposed visitor experiences, featured and additional Application-Fit candidates, and broad Business Translation opportunity families. These are different content classes and must not be conflated. Asset maturity/availability is separate from evidence/test status.
 
@@ -878,3 +879,8 @@ The page is an orientation layer, not a substitute for Research's scientific acc
 
 ### v3.3 — 2026-11-26
 - Synchronises P08 About Experience and bilingual Copy references to v0.3 after the final Spanish/English editorial consistency check.
+
+### v3.4 — 2026-11-26
+- Defers Contact from the first public-release navigation and removes it from active Home visitor routes until a domain-associated account or another real, monitored channel is available.
+- Synchronises Home v1.8/v1.6, Explore v1.2/v1.1, Labs & Applications v0.8/v0.8 and Value Construction Copy v0.3 references.
+- Preserves Contact as a planned future destination, not a live or placeholder route.
