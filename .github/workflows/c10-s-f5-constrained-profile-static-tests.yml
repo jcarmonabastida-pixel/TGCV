@@ -1,0 +1,42 @@
+name: C10-S F5 constrained profile score deterministic tests
+
+on:
+  push:
+    branches:
+      - research/c10s-instrumental-autonomous-workpackage-20261126
+    paths:
+      - '.github/workflows/c10-s-f5-constrained-profile-static-tests.yml'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_f5_component_profile_score.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_f5_component_profile_score.py'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_f5_rational_score_polynomials.py'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_f5_beta_binomial_likelihood_diagnostics.py'
+      - '03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock'
+
+permissions:
+  contents: read
+
+jobs:
+  f5-constrained-profile-static-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: \${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: 'python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock'
+      - name: Compile constrained profile and score assets
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -B -m py_compile c10s_f5_component_profile_score.py test_c10s_f5_component_profile_score.py c10s_f5_rational_score_polynomials.py test_c10s_f5_rational_score_polynomials.py c10s_f5_beta_binomial_likelihood_diagnostics.py
+      - name: Run exact constrained score and source regression tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -B -m unittest -v test_c10s_f5_component_profile_score test_c10s_f5_rational_score_polynomials test_c10s_f5_beta_binomial_likelihood_diagnostics
