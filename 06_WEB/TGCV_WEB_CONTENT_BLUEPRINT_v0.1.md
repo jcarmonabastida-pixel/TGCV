@@ -100,7 +100,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 
 **Do not:** lead with value creation, AI automation, consulting services, a generic innovation promise, or a Playground that does not yet exist.
 
-**Source basis:** Home Experience v1.7 and Home Copy v1.5, aligned with the current Web Master Brief and Information Architecture. All final copy remains subject to external comprehension testing.
+**Source basis:** Home Experience v1.8 and Home Copy v1.6, aligned with the current Web Master Brief and Information Architecture. All final copy remains subject to external comprehension testing.
 
 ### P02 — Explore
 
