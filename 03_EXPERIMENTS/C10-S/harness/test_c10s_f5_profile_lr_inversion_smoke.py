@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from fractions import Fraction
+import time
 import unittest
 
 from c10s_f5_component_profile_score import f5_component_profile_confidence_set
@@ -17,6 +18,7 @@ class F5ProfileLRInversionSmokeTests(unittest.TestCase):
             max_lift_depth=20, max_mu_depth=10,
             source_revision="0123456789abcdef0123456789abcdef01234567",
         )
+        started = time.perf_counter()
         result = f5_component_profile_confidence_set(
             r, histogram, component="W",
             likelihood_ratio_cutoff=Fraction(384, 100),
@@ -36,6 +38,15 @@ class F5ProfileLRInversionSmokeTests(unittest.TestCase):
         )
         self.assertFalse(result["topology_certified"])
         self.assertGreaterEqual(result["target_evaluations"], 5)
+        elapsed = time.perf_counter() - started
+        print({
+            "status": result["status"],
+            "topology_certified": result["topology_certified"],
+            "target_evaluations": result["target_evaluations"],
+            "elapsed_seconds": round(elapsed, 6),
+            "component": "W",
+            "fixture": "M10_R5",
+        })
 
 
 if __name__ == "__main__":
