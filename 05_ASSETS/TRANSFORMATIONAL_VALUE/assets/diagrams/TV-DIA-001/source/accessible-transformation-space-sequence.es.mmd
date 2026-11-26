@@ -1,0 +1,16 @@
+flowchart LR
+    A["Estado del sistema y condiciones relevantes<br/>Sₜ, Cₜ, Lₜ"]
+    B["Espacio de transformaciones accesibles<br/>Tₐcc,ₜ"]
+    C["Transformación realizada<br/>Tᵣₑₐₗ,ₜ"]
+    D["Estado sucesor del sistema<br/>Sₜ₊₁"]
+    F["Nuevas condiciones relevantes<br/>Cₜ₊₁, Lₜ₊₁"]
+    E["Siguiente espacio de transformaciones accesibles<br/>Tₐcc,ₜ₊₁"]
+
+    A -->|"evaluación analítica"| B
+    B -.->|"puede realizarse o no"| C
+    C -->|"si se realiza, modifica el estado"| D
+    D -->|"evaluación analítica"| E
+    F -->|"también condicionan la evaluación"| E
+
+    N["Accesibilidad ≠ realización ≠ trayectoria ≠ resultado ≠ valor"]
+    B ---|"distinciones que deben preservarse"| N
