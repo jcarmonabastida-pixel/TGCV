@@ -1,10 +1,10 @@
 # TGCV — Home Copy
 
 **Identifier:** TGCV-WEB-HOME-COPY-001  
-**Version:** 1.5  
+**Version:** 1.6  
 **Date:** 2026-11-24  
 **Status:** BILINGUAL WORKING COPY — NOT APPROVED FOR PUBLICATION  
-**Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md`  
+**Parent:** `06_WEB/TGCV_WEB_HOME_EXPERIENCE_v0.1.md` — v1.8  
 **Branch:** `strategy/tgcv-web-master`
 
 ---
@@ -67,7 +67,7 @@ El cambio descrito no demuestra que la operación vaya a funcionar correctamente
 
 **Pie de ilustración:** Al cambiar una condición relevante, una operación que no estaba al alcance del sistema puede volver a ser accesible. Accesibilidad no significa ejecución ni éxito.
 
-**Nota de producción:** Este escenario es una ilustración explicativa creada para la Home. No es una ejecución ya realizada, una aplicación validada ni una función del Juguete Colectivo.
+**Nota de producción:** Este escenario es una ilustración explicativa creada para la Home. No es una ejecución ya realizada ni una aplicación validada; tampoco describe una función de un demostrador existente de TGCV.
 
 ## 2.4 De las condiciones a las trayectorias
 
@@ -172,7 +172,6 @@ Puedes acercarte a este trabajo desde sus ideas fundamentales, sus preguntas de 
 
 **Acción secundaria:** Conoce la investigación → Research.
 
-**Contacto:** Contacta con el proyecto, cuando el canal público de comunicación esté habilitado.
 
 ## 2.9 Pie de página
 
@@ -180,7 +179,7 @@ Puedes acercarte a este trabajo desde sus ideas fundamentales, sus preguntas de 
 
 Un programa de investigación aplicada e innovación sobre cómo la ampliación de las posibilidades de transformación de los sistemas puede contribuir a la construcción de valor.
 
-Explore · Research · Systems Engineering · Transformational Intelligence · Value Construction · Labs & Applications · About · Contact
+Explore · Research · Systems Engineering · Transformational Intelligence · Value Construction · Labs & Applications · About
 
 Los conceptos, hipótesis, demostraciones sintéticas y evidencias empíricas se identifican por separado. Una demostración técnica no constituye por sí sola una validación científica.
 
@@ -236,7 +235,7 @@ The change described does not establish that the operation will work correctly o
 
 **Illustration caption:** Changing a relevant condition can make an operation accessible to the system when it was previously out of reach. Accessibility does not mean execution or success.
 
-**Production note:** This scenario is an explanatory illustration created for the Home page. It is not an existing execution, a validated application or a feature of the Collective Toy.
+**Production note:** This scenario is an explanatory illustration created for the Home page. It is not an existing execution or a validated application, and it does not describe a feature of an existing TGCV demonstrator.
 
 ## 3.4 From conditions to trajectories
 
@@ -341,7 +340,6 @@ You can approach this work through its core ideas, its research questions, syste
 
 **Secondary action:** Discover the research → Research.
 
-**Contact:** Get in touch with the project once a public contact channel is available.
 
 ## 3.9 Footer
 
@@ -349,7 +347,7 @@ You can approach this work through its core ideas, its research questions, syste
 
 A programme of applied research and innovation exploring how expanding the transformations available to systems may contribute to value construction.
 
-Explore · Research · Systems Engineering · Transformational Intelligence · Value Construction · Labs & Applications · About · Contact
+Explore · Research · Systems Engineering · Transformational Intelligence · Value Construction · Labs & Applications · About
 
 Concepts, hypotheses, synthetic demonstrations and empirical evidence are identified separately. A technical demonstration does not, by itself, constitute scientific validation.
 
@@ -379,7 +377,7 @@ Efecto Ajá is a desired quality objective, not a mandatory publication conditio
 
 - Verify all links and destinations.
 - Verify the current state and availability of every linked asset.
-- Enable Contact only when a real monitored channel and privacy information are ready.
+- Contact is deferred from the first release until a domain-associated account or another real, monitored communication channel and proportionate privacy information are available.
 - Confirm complete Spanish and English content.
 - Review accessibility, responsive behaviour and maintainability.
 - Confirm that no copy implies a community, event programme, staffed laboratory, deployed application or professional Playground that does not exist.
@@ -458,3 +456,8 @@ The approved narrative order is opening question → discovery → second questi
 - Adds a concise bilingual section presenting the five potential Business Translation application areas.
 - Distinguishes TGCV's possible analytical contribution from the value hypotheses that would need to be demonstrated.
 - Explicitly states that the five areas are hypotheses, not demonstrated results or guaranteed benefits.
+
+### v1.6 — 2026-11-26
+- Removes the internal demonstrator codename from both language versions.
+- Removes the Contact call-to-action and Contact footer link in line with the user's decision to defer that destination until a domain-associated communication channel is available.
+- Preserves the approved public names and the illustrative-only status of the migration example.
