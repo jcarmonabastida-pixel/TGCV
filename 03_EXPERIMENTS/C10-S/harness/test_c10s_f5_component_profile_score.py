@@ -38,10 +38,13 @@ def _profile_derivative(component: str, target: float, mu: float) -> float:
     return score_mu + score_kappa * kappa_prime
 
 
-def _evaluate_integer_polynomial(coefficients, x: float) -> float:
-    value = 0.0
+def _evaluate_integer_polynomial(coefficients, x: float) -> Fraction:
+    # Keep the potentially very large exact integer coefficients in rational
+    # arithmetic; converting them to float can overflow before sign checking.
+    value = Fraction(0)
+    exact_x = Fraction.from_float(x)
     for coefficient in reversed(coefficients):
-        value = value * x + coefficient
+        value = value * exact_x + coefficient
     return value
 
 
@@ -63,11 +66,11 @@ class F5ConstrainedProfileScoreTests(unittest.TestCase):
                     exact_numerator = _evaluate_integer_polynomial(
                         polynomial.coefficients_ascending, mu,
                     )
-                    if abs(direct) < 1e-8 or abs(exact_numerator) < 1e-8:
+                    if abs(direct) < 1e-8 or abs(exact_numerator) < Fraction(1, 10**8):
                         continue
                     self.assertEqual(
-                        math.copysign(1.0, direct),
-                        math.copysign(1.0, exact_numerator),
+                        1 if direct > 0 else -1,
+                        1 if exact_numerator > 0 else -1,
                         msg=f"{component=} {target=} {mu=} {direct=} {exact_numerator=}",
                     )
 
