@@ -1,0 +1,59 @@
+name: C10-S F5 pointwise LR development stress
+
+on:
+  push:
+    branches:
+      - research/c10s-instrumental-autonomous-workpackage-20261126
+    paths:
+      - '.github/workflows/c10-s-f5-pointwise-lr-development-stress.yml'
+      - '03_EXPERIMENTS/C10-S/diagnostics/C10S_F5_POINTWISE_LR_DEVELOPMENT_STRESS_PROTOCOL_001.md'
+      - '03_EXPERIMENTS/C10-S/harness/run_c10s_f5_pointwise_lr_dev_stress.py'
+      - '03_EXPERIMENTS/C10-S/harness/test_c10s_f5_pointwise_lr_dev_stress.py'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_f5_adaptive_profile_lr.py'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_f5_component_profile_score.py'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_f5_rational_score_polynomials.py'
+      - '03_EXPERIMENTS/C10-S/harness/run_c10s_f5_m1_dev_pilot.py'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_f5_functional_refit_bootstrap.py'
+      - '03_EXPERIMENTS/C10-S/harness/run_c10s_nested_mr_comparative_holdout.py'
+      - '03_EXPERIMENTS/C10-S/harness/c10s_nested_mr_fixtures.py'
+      - '03_EXPERIMENTS/C10-S/harness/run_c10s_post_holdout_f5_b2_b3_development_calibration.py'
+      - '03_EXPERIMENTS/C10-S/harness/run_c10s_f5_g7_tiera_calibration.py'
+      - '03_EXPERIMENTS/C10-S/harness/requirements-vcont-integrated.lock'
+
+permissions:
+  contents: read
+
+jobs:
+  pointwise-lr-development-stress:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+      - name: Install hash-locked dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: 'python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock'
+      - name: Compile pointwise LR stress runner
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -B -m py_compile run_c10s_f5_pointwise_lr_dev_stress.py test_c10s_f5_pointwise_lr_dev_stress.py c10s_f5_adaptive_profile_lr.py c10s_f5_component_profile_score.py c10s_f5_rational_score_polynomials.py
+      - name: Run deterministic seed and provenance tests
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -B -m unittest -v test_c10s_f5_pointwise_lr_dev_stress
+      - name: Run bounded pointwise LR development stress
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -B run_c10s_f5_pointwise_lr_dev_stress.py --execute-development-stress --output ${{ runner.temp }}/c10s-f5-pointwise-lr-dev-stress.json
+      - name: Upload development-only result
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-f5-pointwise-lr-development-stress
+          path: ${{ runner.temp }}/c10s-f5-pointwise-lr-dev-stress.json
+          if-no-files-found: error
+          retention-days: 30
