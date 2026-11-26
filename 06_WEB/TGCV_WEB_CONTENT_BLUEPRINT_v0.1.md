@@ -1,7 +1,7 @@
 # TGCV — Web Content Blueprint v0.1
 
 **Identifier:** TGCV-WEB-CONTENT-001  
-**Version:** 4.5
+**Version:** 4.6
 **Date:** 2026-11-26  
 **Status:** STRATEGIC CONTENT PLAN — WORKING DOCUMENT  
 **Branch:** strategy/tgcv-web-master  
@@ -25,17 +25,17 @@ It must let a first-time visitor:
 3. distinguish the research programme from Transformational Intelligence, systems engineering and AI;
 4. inspect the current scientific position and its limits;
 5. see how the analytical perspective may be explored across different system domains;
-6. find a useful next step to explore or follow the work; a contact route is not promised in this release.
+6. find a useful next step to explore, follow the work or reach the planned Contact destination when its page and channel are available.
 
 The germinal site must be useful without the future Playground, without a new interactive simulator, without a community platform and without an unvalidated product proposition.
 
-**First-release scope:** seven substantive pages (Home, Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction and Labs & Applications) plus a compact About / Governance destination. Contact / Participate is deferred until a domain-associated account or another real, monitored communication channel is available. Do not publish a navigation item merely because it appears in the long-term ecosystem map.
+**First-release scope:** eight top-level destinations: Home, Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction, Labs & Applications, About and Contact. Contact is part of the planned website; preparation of its page content and activation of its live communication channel are deferred until the domain-associated account is available. Do not publish a provisional address or a non-operational form.
 
 ## 1. Editorial architecture and first-release page set
 
 ### 1.1 Recommended navigation
 
-**Approved first-release navigation** (supersedes the earlier working list; Contact is not active in this release):
+**Approved first-release navigation** (Contact is included as a planned destination; its implementation is deferred until the domain-associated account is available):
 1. **Explore** — understand the central idea and analytical distinctions.
 2. **Research** — TGCV, research questions, methods, evidence and limitations.
 3. **Systems Engineering** — established engineering practices and their relationship to the TGCV research object.
@@ -43,7 +43,8 @@ The germinal site must be useful without the future Playground, without a new in
 5. **Value Construction** — VALUE as a complementary applied framework, including its lifecycle and a clearly labelled fictional clinic case.
 6. **Labs & Applications** — bounded demonstrators, synthetic work and exploratory application contexts.
 7. **About** — purpose, scope and governance.
-Systems Thinking is transversal, not a separate first-release destination. Do not expose a top-level Community area or publish empty/placeholder destinations. The footer may link to research sources, evidence/governance information and the repository where appropriate. Do not link to Contact while it is deferred.
+8. **Contact** — questions, corrections and initial conversations; page content and live communication channel to be prepared when the domain-associated account is available.
+Systems Thinking is transversal, not a separate first-release destination. Do not expose a top-level Community area or publish empty/placeholder destinations. The footer may link to research sources, evidence/governance information, the repository and Contact once its destination is implemented.
 
 ### 1.2 First-release page inventory
 
@@ -56,8 +57,8 @@ Systems Thinking is transversal, not a separate first-release destination. Do no
 | P05 | Transformational Intelligence | P1 | What is TI, and how is it different from AI? | Working concept/capability labelled; no overclaim |
 | P06 | Value Construction | P1 | How can a system explore opportunities and organise decisions, action and learning to build value? | VALUE is presented as a complementary applied framework, not as validated by TGCV; fictional case labelled |
 | P07 | Labs & Applications | P1 | What can I inspect in practice, and in which domains is the perspective explored? | Every asset and case has a maturity/evidence label |
-| P08 | About / Governance | P0 | What is TGCV, why does the programme exist, and how are claims and evidence communicated? | Identity, scope and governance statements accurate; no implied Contact route |
-| P09 | Contact / Participate | Deferred | How can I ask, correct, suggest or connect? | Reconsider only when a domain-associated account or other real, monitored channel is available |
+| P08 | About / Governance | P0 | What is TGCV, why does the programme exist, and how are claims and evidence communicated? | Identity, scope and governance statements accurate |
+| P09 | Contact / Participate | P0 planned | How can I ask, correct, suggest or connect? | Page content and monitored communication channel prepared when the domain-associated account is available |
 
 P04–P07 may initially be concise pages or carefully structured sections. They must not be padded to look like mature departments. P09 may be a simple contact route, not a registration system.
 
@@ -92,7 +93,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 6. Direct visitor routes to Explore, Research, Systems Engineering, Transformational Intelligence, Value Construction and Labs & Applications.
 7. A concise section introducing the five potential Business Translation areas, what TGCV may help make visible, and the value hypotheses that would need to be demonstrated.
 8. Two or three carefully selected candidate Application-Fit contexts only if they add explanatory value; do not confuse these specific candidates with the five broad opportunity families.
-9. Direct visitor routes to relevant sections; no Contact link or placeholder while the destination is deferred.
+9. Direct visitor routes to relevant sections and a planned Contact destination; activate its link when the page is implemented, without publishing a dead link or placeholder.
 
 **Draft headline for testing:** “Understanding and engineering how systems transform.”
 
@@ -209,7 +210,7 @@ They remain possible ecosystem capabilities, not first-release commitments.
 8. End the Application-Fit area with an open invitation: TGCV is exploring different application contexts and wants to discover other problems and opportunities together with people and organisations interested in investigating them. The invitation should help visitors recognise that their own context may be relevant.
 9. Treat this invitation as an expression of interest, not a formal participation or intake process. Do not place a participation form, eligibility criteria, submission requirements, review rules, selection process, commitments or collaboration terms in Labs & Applications. These belong, if approved, in a separate Participation area/page. Whether that area and how much of it will enter the first release remain undecided. A simple Contact route may be used only if Contact is ready; it must not imply a structured participation workflow.
 10. Explain the separate dimensions of asset maturity/availability and evidence/test status.
-11. Provide routes to Research, Systems Engineering, Transformational Intelligence and Value Construction. Do not link to Contact while it is deferred.
+11. Provide routes to Research, Systems Engineering, Transformational Intelligence, Value Construction and the planned Contact destination; make the Contact link live when its page is implemented.
 
 **Required distinctions:** TGCV Full Chain Demo is not the cross-domain transformation mapping demonstrator or TGCV Playground; TGCV Playground is an exploratory visitor experience, not a general-purpose simulator; Value Explorer is not VALUE itself; ValueLabsOS Preview is a proposed digital/collaborative environment, not a released product; synthetic execution is not empirical validation; application-fit candidates are not validated applications; existing assets are not necessarily publicly downloadable; operational availability is not scientific evidence.
 
@@ -890,3 +891,8 @@ Recheck current versions, exact filenames, internal consistency, terminology and
 - Removes Contact from the active first-release navigation and marks P09 Contact / Participate as deferred until a domain-associated account or other real, monitored channel exists.
 - Synchronises current Home, Explore, Labs & Applications and Value Construction page references.
 - Requires removal of provisional Contact calls-to-action and links from public first-release copy; Contact remains a planned future destination, not a placeholder.
+
+### v4.6 — 2026-11-26
+- Restores Contact as the eighth planned first-release destination and P09 as a planned P0 page.
+- Distinguishes the planned navigation and Home invitation from page implementation and activation of the monitored communication channel, which await the domain-associated account.
+- Removes the previous interpretation that deferring the Contact page's creation removed Contact from the website architecture.
