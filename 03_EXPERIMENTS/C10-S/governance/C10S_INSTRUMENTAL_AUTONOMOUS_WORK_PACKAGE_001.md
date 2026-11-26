@@ -289,3 +289,21 @@ The new exact constrained-score tests passed:
 The test harness initially overflowed while converting very large exact integer polynomial coefficients to float. This was a test-evaluation defect, not an algorithm failure; the check now evaluates the polynomial with exact \`Fraction\` arithmetic. The first run had already shown that the Sturm root-isolation test itself passed. The bounded rerun then passed all 30 tests, including the F5 likelihood score/Hessian/boundary regression suite.
 
 **M2 status:** exact constrained score numerator construction and complete one-dimensional root isolation now have deterministic test evidence. The code still does not evaluate/order constrained profile likelihood maxima, produce LR confidence sets, calibrate cutoffs or establish Tier-A eligibility.
+
+
+## 19. F5 M2 constrained profile-maximum enclosure — PASS
+
+**Workflow:** [45831943819](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45831943819) — SUCCESS  
+**Tested commit:** \`2f9d185ac2353d60709015d527750de92b84b7b6\`  
+**Tests:** **31/31 PASS** in 28.862 s.
+
+The M2 module now extends exact score-polynomial construction/root isolation with a constrained profile-maximum enclosure:
+- isolates the two algebraic feasible-domain endpoints \`mu*(1-mu)=target\`;
+- evaluates W's \`kappa -> infinity\` binomial endpoint likelihood and B's \`kappa -> 0\` two-point endpoint likelihood with exact rational interval bounds;
+- maps each interior stationary-root interval to a compactified \`(mu,t)\` box, where \`t=kappa/(1+kappa)\`;
+- reuses the existing outward-rounded rational beta-binomial likelihood enclosure on every interior candidate;
+- encloses the constrained profile maximum by taking the maximum of all stationary-candidate and analytic-endpoint lower/upper likelihood bounds.
+
+The new test checks both W and B and verifies that the certified upper likelihood bound dominates an independent dense-grid evaluation along each constrained curve. The existing F5 score/Hessian/boundary regression tests also pass in the same workflow.
+
+**M2 status:** deterministic constrained profile-maximum enclosure implemented and tested. This is not yet a likelihood-ratio statistic, confidence set, cutoff calibration, or Tier-A method. The unrestricted global likelihood maximum still needs to be bound/reconciled with the existing exact global-MLE certificate, and LR inversion/topology remains open.
