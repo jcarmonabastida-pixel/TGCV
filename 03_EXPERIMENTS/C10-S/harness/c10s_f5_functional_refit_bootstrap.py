@@ -12,6 +12,7 @@ from dataclasses import asdict, dataclass
 import hashlib
 import json
 import math
+from numbers import Integral
 from typing import Sequence
 
 import numpy as np
@@ -26,6 +27,7 @@ from c10s_f5_beta_binomial_likelihood_diagnostics import (
 METHOD_ID = "F5_M1_FUNCTIONAL_REFIT_PARAMETRIC_BOOTSTRAP_PCT_1.0"
 FIT_CONTRACT_ID = "F5_M1_ANALYTIC_LBFGSB_BEST_SUCCESSFUL_START_1.0"
 BOUND_TOLERANCE = 2e-4
+BOUNDARY_LIKELIHOOD_ULPS = 64
 MEAN_LOGIT_BOUNDS = (-18.0, 18.0)
 LOG_CONCENTRATION_BOUNDS = (-12.0, 18.0)
 
@@ -50,6 +52,7 @@ class F5FunctionalFitRecord:
     audit_status: str
     independent_optimizer_success: bool
     independent_optimizer_message: str
+    independent_optimizer_role: str
     independent_log_likelihood: float | None
     independent_score_norm: float | None
     starts: tuple[dict, ...]
@@ -103,6 +106,21 @@ def beta_binomial_functionals(
     return within, between
 
 
+def _strictly_exceeds_available_boundary(
+    profile_minus_boundary: float | None, selected_log_likelihood: float,
+) -> bool:
+    if (
+        profile_minus_boundary is None
+        or not math.isfinite(float(profile_minus_boundary))
+        or not math.isfinite(selected_log_likelihood)
+    ):
+        return False
+    boundary_log_likelihood = selected_log_likelihood - float(profile_minus_boundary)
+    scale = max(1.0, abs(selected_log_likelihood), abs(boundary_log_likelihood))
+    tolerance = BOUNDARY_LIKELIHOOD_ULPS * np.finfo(float).eps * scale
+    return float(profile_minus_boundary) > tolerance
+
+
 def _fit_count_vector(
     counts: Sequence[int], r: int,
 ) -> F5FunctionalFitRecord:
@@ -120,6 +138,7 @@ def _fit_count_vector(
             audit_status="AUDIT_EXCEPTION",
             independent_optimizer_success=False,
             independent_optimizer_message="NOT_AVAILABLE",
+            independent_optimizer_role="SECONDARY_DIAGNOSTIC_ONLY",
             independent_log_likelihood=None, independent_score_norm=None,
             starts=(), failure_reason=f"{type(exc).__name__}:{exc}",
         )
@@ -175,14 +194,14 @@ def _fit_count_vector(
         status = "PRIMARY_FIT_NOT_STRICT_LOCAL_MAXIMUM"
         reason = "OBSERVED_HESSIAN_NOT_FINITE_NEGATIVE_DEFINITE"
     elif (
-        audit.profile_minus_binomial_limit is None
-        or not math.isfinite(float(audit.profile_minus_binomial_limit))
-        or audit.profile_minus_binomial_limit <= 0.0
+        not _strictly_exceeds_available_boundary(
+            audit.profile_minus_binomial_limit, float(audit.selected_log_likelihood),
+        )
         or (
             audit.profile_minus_two_point_limit is not None
-            and (
-                not math.isfinite(float(audit.profile_minus_two_point_limit))
-                or audit.profile_minus_two_point_limit <= 0.0
+            and not _strictly_exceeds_available_boundary(
+                audit.profile_minus_two_point_limit,
+                float(audit.selected_log_likelihood),
             )
         )
     ):
@@ -211,6 +230,7 @@ def _fit_count_vector(
         audit_status=audit.status,
         independent_optimizer_success=audit.independent_optimizer_success,
         independent_optimizer_message=audit.independent_optimizer_message,
+        independent_optimizer_role="SECONDARY_DIAGNOSTIC_ONLY",
         independent_log_likelihood=audit.independent_log_likelihood,
         independent_score_norm=audit.independent_score_norm,
         starts=tuple(asdict(item) for item in audit.starts),
@@ -244,8 +264,12 @@ def fitted_functional_refit_percentile_bootstrap(
         raise F5FunctionalBootstrapError("R_MUST_BE_INTEGER_GE_2")
     if len(values) < 2:
         raise F5FunctionalBootstrapError("AT_LEAST_TWO_WORLDS_REQUIRED")
-    if any(type(value) is not int or not 0 <= value <= r for value in values):
-        raise F5FunctionalBootstrapError("COUNTS_MUST_BE_BUILTIN_INTEGERS_IN_[0,R]")
+    if any(
+        isinstance(value, bool) or not isinstance(value, Integral)
+        or not 0 <= int(value) <= r for value in values
+    ):
+        raise F5FunctionalBootstrapError("COUNTS_MUST_BE_INTEGERS_IN_[0,R]")
+    values = tuple(int(value) for value in values)
     if type(bootstrap_replicates) is not int or bootstrap_replicates < 20:
         raise F5FunctionalBootstrapError("BOOTSTRAP_REPLICATES_MUST_BE_INTEGER_GE_20")
     if type(bootstrap_seed) is not int or not 0 <= bootstrap_seed < 2**64:
