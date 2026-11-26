@@ -692,3 +692,25 @@ All auxiliary endpoint isolation calls also completed. No unresolved interval or
 **Disposition:** the (2^{-16}) implementation candidate has now completed M10/R5 W/B interior and endpoint-only boundary fixtures, and M30/R20 W/B interior and boundary-only fixtures. This supports computational portability across the two F5 Tier-A sample-size cells and both components, but it is still a small set of deterministic histogram fixtures. It does not validate repeated-sampling coverage, cutoff calibration, or confidence-set topology across the full target domain.
 
 **Next operation:** assess whether a wider exact root-isolation width (initially (2^{-8})) further reduces M30/R20 W runtime without changing complete root census or producing materially wider likelihood/LR enclosures. If the width fails closed or widens the LR enclosure too much for useful classification, retain (2^{-16}). Then begin a bounded, explicitly development-only comparison of candidate F5 interval methods against known DGP truth, without using Tier-A confirmatory or exposed holdout data. No coverage simulation under frozen Tier-A criteria, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
+
+
+## 38. Exact root-isolation width (2^{-8}) — PASS on M30/R20 W
+
+**Workflow:** [45866970919](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45866970919) — SUCCESS  
+**Tested commit:** `2a03a39a870732c5ecd66cccf996f209205b1586`  
+**Fixture:** same M30/R20 W histogram and target (1/20), signed integer PRS plus certified fixed-point signs.
+
+At exact isolating width (2^{-8}):
+- profile: `LR_STATISTIC_ENCLOSED`, `PROFILE_MAXIMUM_ENCLOSED`;
+- 3 candidates, 1 interior stationary point;
+- dominant isolation: `ISOLATION_COMPLETE`, 314 processed intervals, 1 exact root, 122 isolating intervals, 0 unresolved;
+- the two nontrivial endpoint calls each processed 17 intervals and completed; the exact endpoint-factor call found 2 exact roots;
+- total profile runtime: **161.478 s**.
+
+Relative to (2^{-16}), runtime fell by about 22.7%; relative to the (2^{-40}) combined-prototype run, it fell by about 77.6%. The dominant isolation call took 76.903 s, including 47.148 s for the two integer Sturm sequence builds and 29.355 s for 195 sign-variation evaluations (34,907 polynomial evaluations). There were 89 exact sign fallbacks; all isolation calls completed.
+
+The displayed LR enclosure remains approximately [68.60849784569649, 68.60849785926779], and the profile-likelihood enclosure remains approximately (2.322290881315881\times10^{-54}) at both displayed endpoints, matching the (2^{-16}) and (2^{-24}) outputs to the shown precision. Exact rational bounds are retained in the computation.
+
+**Disposition:** (2^{-8}) is now the fastest tested exact width for this M30/R20 W fixture, with the same displayed likelihood/LR enclosure and complete root census. It remains a fixture-specific numerical candidate, not a frozen global tolerance.
+
+**Next operation:** test (2^{-8}) on M30/R20 B and the boundary-only W/B fixture. If root census, LR enclosure and typed boundary status remain complete, compare the computational profile across all four F5 Tier-A cells before selecting the prospective width. No coverage simulation, LR-cutoff calibration, Tier-A, Tier-B, or causal C10-S execution is authorized by this step.
