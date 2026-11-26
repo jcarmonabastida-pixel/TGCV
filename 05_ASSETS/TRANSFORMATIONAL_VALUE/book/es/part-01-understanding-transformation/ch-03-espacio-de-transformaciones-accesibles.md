@@ -5,7 +5,7 @@ title: "El espacio de transformaciones accesibles"
 language: es
 content_type: chapter
 status: draft
-version: 0.9
+version: 0.10
 created: 2026-11-26
 updated: 2026-11-26
 authors: []
@@ -128,9 +128,11 @@ Por eso es importante declarar el criterio de accesibilidad antes de examinar lo
 
 ## 3. El espacio de transformaciones accesibles
 
-Una vez delimitadas las transformaciones candidatas y definido el criterio de accesibilidad, podemos representar el conjunto —o estructura— de transformaciones que el sistema puede realizar bajo las condiciones consideradas. A esa representación la llamamos **espacio de transformaciones accesibles**, y la expresamos como \(T_{acc}\).
+Una vez delimitadas las transformaciones candidatas y definido el criterio de accesibilidad, podemos representar el conjunto —o estructura— de transformaciones que están disponibles para su realización bajo las condiciones consideradas. A esa representación la llamamos **espacio de transformaciones accesibles**, y la expresamos como \\(T_{acc}\\).
 
 La palabra *espacio* no implica necesariamente un espacio geométrico ni una colección que deba enumerarse por completo. Designa una estructura analítica de posibilidades delimitadas. Según el dominio, esa estructura podrá representarse mediante conjuntos, relaciones, funciones, estados de admisibilidad u otras formas adecuadas.
+
+En las representaciones basadas en conjuntos, las transformaciones accesibles se tratan como elementos identificables de \\(T_{acc}\\). En otros dominios puede ser necesario representar también relaciones, dependencias o restricciones entre ellas. La elección depende de la estructura del sistema y de la pregunta analítica; no debe suponerse que una representación basada únicamente en la pertenencia a un conjunto recoge toda la información relevante.
 
 Su contenido depende de tres decisiones metodológicas:
 
@@ -142,7 +144,7 @@ Estas decisiones deben ser explícitas y justificables. No siempre será posible
 
 El espacio de transformaciones accesibles es una representación derivada del estado y de las condiciones relevantes. No es una fuerza adicional que actúe sobre el sistema ni un componente ontológico independiente. Su utilidad reside en hacer analíticamente visible qué cambios están disponibles bajo una configuración determinada.
 
-Tampoco debe confundirse con una medida general de capacidad. Un sistema puede tener muchas transformaciones accesibles en un dominio y estar severamente limitado en otro. La cantidad, la diversidad, la importancia y la distribución de las transformaciones son cuestiones diferentes. Para interpretarlas necesitamos conocer el significado de cada transformación y el contexto en el que puede realizarse.
+Tampoco debe confundirse con una medida general de capacidad. Un sistema puede tener muchas transformaciones accesibles en un dominio y estar severamente limitado en otro. La cantidad, la diversidad, la importancia y la distribución de las transformaciones son cuestiones diferentes. Para interpretarlas necesitamos conocer el significado de cada transformación y el contexto en el que puede realizarse. Incluso la comparación del número de transformaciones requiere cautela: depende de cómo se haya delimitado el universo candidato y de cómo se identifiquen y agrupen las transformaciones. Una mayor cardinalidad bajo una representación no implica necesariamente una mayor capacidad del sistema.
 
 ## 4. Accesibilidad no significa ejecución
 
