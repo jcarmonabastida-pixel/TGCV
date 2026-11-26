@@ -1,0 +1,39 @@
+schema_version: 0.1
+last_updated: 2026-11-26
+references:
+  - id: TV-REF-001
+    type: impact_evaluation_report
+    authors:
+      - Erica Field
+      - Rohini Pande
+    year: 2018
+    title: "Evaluating the economic impacts of rural banking: experimental evidence from southern India"
+    publication: "3ie Impact Evaluation Report 85"
+    doi: "10.23846/OW3IE85"
+    url: "https://doi.org/10.23846/OW3IE85"
+    note: "Primary evaluation of the KGFS rural-banking intervention. TGCV's bounded accessibility-to-trajectory interpretation is documented separately in its internal research source map."
+  - id: TV-REF-002
+    type: journal_article
+    authors:
+      - Craig McIntosh
+      - Tito Alegría
+      - Gerardo Ordóñez
+      - René Zenteno
+    year: 2018
+    title: "The Neighborhood Impacts of Local Infrastructure Investment: Evidence from Urban Mexico"
+    publication: "American Economic Journal: Applied Economics, 10(3), 263–286"
+    doi: "10.1257/app.20160429"
+    url: "https://doi.org/10.1257/app.20160429"
+    note: "Published source study. The bounded TGCV secondary structural reconstruction and causal estimand are a separate analysis and must not be attributed to the article's original estimates."
+  - id: TV-REF-003
+    type: journal_article
+    authors:
+      - Marco Gonzalez-Navarro
+      - Climent Quintana-Domeque
+    year: 2016
+    title: "Paving Streets for the Poor: Experimental Analysis of Infrastructure Effects"
+    publication: "The Review of Economics and Statistics, 98(2), 254–267"
+    doi: "10.1162/REST_a_00553"
+    url: "https://doi.org/10.1162/REST_a_00553"
+    replication_source: "Harvard Dataverse, DOI 10.7910/DVN/6TC8RO"
+    note: "Primary study for the Acayucan street-paving case. TGCV's partial-identification assessment is a separate methodological reconstruction."
