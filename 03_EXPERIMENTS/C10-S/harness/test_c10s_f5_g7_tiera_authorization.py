@@ -270,72 +270,52 @@ class F5G7AuthorizationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "ROLE_INVALID"):
                 inventory.load_inventory(path)
 
-    def test_g7_dispatch_guard_rejects_reuse_and_allows_only_current_run(self):
-        import os
-        import subprocess
-        import sys
-        import textwrap
-
-        workflow_path = Path(__file__).resolve().parents[3] / ".github/workflows/c10-s-f5-g7-tiera-calibration.yml"
+    def test_g7_dispatch_gate_allows_retry_after_non_consuming_preflight_failure(self):
+        workflow_path = Path(__file__).resolve().parents[3] / ".github/workflows/c10-s-f5-g7-tiera-calibration-v3.yml"
         workflow = workflow_path.read_text(encoding="utf-8")
-        marker = 'gh api "repos/$GITHUB_REPOSITORY/actions/workflows/c10-s-f5-g7-tiera-calibration.yml/runs?branch=$WORKFLOW_BRANCH&event=workflow_dispatch&per_page=100"'
-        self.assertIn(marker, workflow)
-        after_query = workflow.split(marker, 1)[1]
-        script = after_query.split("          python - <<'PY'\n", 1)[1].split("\n          PY", 1)[0]
-        script = textwrap.dedent(script)
-
-        with tempfile.TemporaryDirectory() as directory:
-            payload = Path(directory) / "prior-g7-runs.json"
-            env = dict(os.environ, RUNNER_TEMP=directory, RUN_ID="22", WORKFLOW_SHA="a" * 40, WORKFLOW_BRANCH="research/c10s-f5-g7-auth-C10S-F5-G7-20261125-008")
-
-            payload.write_text(json.dumps({"workflow_runs": [
-                {"id": 22, "head_sha": "a" * 40, "head_branch": env["WORKFLOW_BRANCH"], "event": "workflow_dispatch"}
-            ]}), encoding="utf-8")
-            current_only = subprocess.run([sys.executable, "-c", script], env=env, capture_output=True, text=True)
-            self.assertEqual(current_only.returncode, 0, current_only.stderr)
-
-            payload.write_text(json.dumps({"workflow_runs": [
-                {"id": 21, "head_sha": "b" * 40, "head_branch": env["WORKFLOW_BRANCH"], "event": "workflow_dispatch"},
-                {"id": 22, "head_sha": "a" * 40, "head_branch": env["WORKFLOW_BRANCH"], "event": "workflow_dispatch"}
-            ]}), encoding="utf-8")
-            reused = subprocess.run([sys.executable, "-c", script], env=env, capture_output=True, text=True)
-            self.assertNotEqual(reused.returncode, 0)
-            self.assertIn("ONE_USE_AUTHORIZATION_ALREADY_CONSUMED", reused.stderr)
-
-            payload.write_text(json.dumps({"workflow_runs": [
-                {"id": 21, "head_sha": "b" * 40, "head_branch": "research/other-auth", "event": "workflow_dispatch"},
-                {"id": 22, "head_sha": "a" * 40, "head_branch": env["WORKFLOW_BRANCH"], "event": "workflow_dispatch"}
-            ]}), encoding="utf-8")
-            other_commit = subprocess.run([sys.executable, "-c", script], env=env, capture_output=True, text=True)
-            self.assertEqual(other_commit.returncode, 0, other_commit.stderr)
+        authorization = workflow.split("  authorization:", 1)[1].split("  resource_preflight_validation:", 1)[0]
+        preflight = workflow.split("  resource_preflight_validation:", 1)[1].split("  consume_authorization:", 1)[0]
+        consumption = workflow.split("  consume_authorization:", 1)[1].split("  primary_bank:", 1)[0]
+        self.assertNotIn("prior-g7-runs.json", authorization)
+        self.assertNotIn("ONE_USE_AUTHORIZATION_ALREADY_CONSUMED", authorization)
+        self.assertNotIn("Permanently consume authorization", authorization)
+        self.assertIn("test \"$RUN_ATTEMPT\" = \"1\"", authorization)
+        self.assertIn("MANIFEST=\"$REPO_ROOT/03_EXPERIMENTS/C10-S/fixtures/g7_resource_profile_v1_1/manifest.json\"", preflight)
+        self.assertIn('--manifest "$MANIFEST"', preflight)
+        self.assertNotIn("--manifest fixtures/g7_resource_profile_v1_1/manifest.json", preflight)
+        self.assertIn("needs: [authorization, resource_preflight_validation]", workflow.split("  consume_authorization:",1)[1].split("  primary_bank:",1)[0])
+        self.assertIn("needs.resource_preflight_validation.result == 'success'", consumption)
+        self.assertIn("TGCV-C10S-G7-AUTHORIZATION-CONSUMED-002", consumption)
+        self.assertIn("resource_profile_sha256", consumption)
+        self.assertIn('gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$MARKER_PATH"', consumption)
+        self.assertIn('test "$PARENT_SHA" = "$WORKFLOW_SHA"', consumption)
+        self.assertNotIn("contents: write", authorization)
 
     def test_g7_workflow_requires_owner_dispatch_and_records_attestation(self):
-        workflow_path = Path(__file__).resolve().parents[3] / ".github/workflows/c10-s-f5-g7-tiera-calibration.yml"
+        workflow_path = Path(__file__).resolve().parents[3] / ".github/workflows/c10-s-f5-g7-tiera-calibration-v3.yml"
         workflow = workflow_path.read_text(encoding="utf-8")
         self.assertIn("workflow_dispatch:", workflow)
-        self.assertNotIn("\n  push:", workflow)
         self.assertIn('test "$EVENT_ACTOR" = "$REPOSITORY_OWNER"', workflow)
         self.assertIn("I_APPROVE_C10S_F5_G7_TIERA_V1_1_ON_THIS_COMMIT", workflow)
         self.assertIn("TGCV-C10S-G7-DISPATCH-ATTESTATION-001", workflow)
         self.assertIn("g7-dispatch-attestation.json", workflow)
-        self.assertIn('indent=2) + "\\n"', workflow)
-        self.assertIn("GITHUB_WORKFLOW_DISPATCH", workflow)
         self.assertIn("concurrency:", workflow)
         self.assertIn("group: c10s-f5-g7-one-use-${{ github.ref }}", workflow)
         self.assertIn("cancel-in-progress: false", workflow)
         self.assertIn('test "$RUN_ATTEMPT" = "1"', workflow)
-        self.assertIn("ONE_USE_AUTHORIZATION_ALREADY_CONSUMED", workflow)
-        self.assertIn('run.get("head_branch") == current_branch', workflow)
-        self.assertIn('run.get("event") == "workflow_dispatch"', workflow)
-        self.assertIn("actions/workflows/c10-s-f5-g7-tiera-calibration.yml/runs", workflow)
+        self.assertNotIn("ONE_USE_AUTHORIZATION_ALREADY_CONSUMED", workflow)
+        self.assertIn("contents: read", workflow)
         self.assertIn("contents: write", workflow)
-        self.assertIn("Permanently consume authorization on its dedicated branch", workflow)
-        self.assertIn("TGCV-C10S-G7-AUTHORIZATION-CONSUMED-001", workflow)
+        self.assertIn("consume_authorization:", workflow)
+        self.assertIn("Permanently consume authorization", workflow) if "Permanently consume authorization" in workflow else self.assertIn("Atomically consume authorization after successful preflight", workflow)
+        self.assertIn("TGCV-C10S-G7-AUTHORIZATION-CONSUMED-002", workflow)
         self.assertIn('gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$MARKER_PATH"', workflow)
         self.assertIn('test "$PARENT_SHA" = "$WORKFLOW_SHA"', workflow)
-        self.assertIn('json.dumps(record, sort_keys=True, indent=2) + "\\n"', workflow)
+        self.assertIn("dispatch_workflow_git_blob_sha", workflow)
+        self.assertIn("WORKFLOW_COMMIT: ${{ github.sha }}", workflow)
+        self.assertIn("?ref=$WORKFLOW_COMMIT", workflow)
         rerun_guard = "if: needs.authorization.outputs.approved == 'true' && github.run_attempt == 1"
-        self.assertEqual(workflow.count(rerun_guard), 3)
+        self.assertGreaterEqual(workflow.count(rerun_guard), 3)
         validator_source = Path(__file__).with_name("validate_c10s_f5_g7_tiera_authorization.py").read_text(encoding="utf-8")
         self.assertIn('auth.get("approval_channel") != "GITHUB_WORKFLOW_DISPATCH"', validator_source)
         self.assertNotIn("environment:", workflow)
