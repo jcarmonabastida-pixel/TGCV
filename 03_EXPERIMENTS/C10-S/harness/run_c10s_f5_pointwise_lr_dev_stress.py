@@ -91,7 +91,10 @@ def _fraction_pair(bounds):
     if bounds is None or len(bounds) != 2:
         return None
     return [{
-        "exact": str(value),
+        "exact": {
+            "numerator_hex": ("-" if value.numerator < 0 else "") + hex(abs(value.numerator)),
+            "denominator_hex": hex(value.denominator),
+        },
         "approx_decimal": format(float(value), ".16g"),
         "numerator_bits": abs(value.numerator).bit_length(),
         "denominator_bits": value.denominator.bit_length(),
