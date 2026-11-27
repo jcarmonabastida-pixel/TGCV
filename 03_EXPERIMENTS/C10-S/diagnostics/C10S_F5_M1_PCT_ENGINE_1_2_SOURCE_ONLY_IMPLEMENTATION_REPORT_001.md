@@ -38,7 +38,7 @@ M1 MCSE intervals are not invented: they remain unavailable. The adapter reports
 
 ## 3. Test source
 
-Fourteen source-level contract tests were added, covering:
+Fifteen source-level contract tests were added, covering:
 
 - exact three-method roster;
 - preservation of C0/C5 legacy records;
@@ -46,7 +46,7 @@ Fourteen source-level contract tests were added, covering:
 - common raw point fields;
 - separation of M1 model points;
 - original-fit and bootstrap-failure abstentions;
-- truth-ID integrity;
+- truth-ID integrity, including duplicate IDs;
 - all-dataset emission denominator;
 - conditional and unconditional coverage;
 - design stratification;
