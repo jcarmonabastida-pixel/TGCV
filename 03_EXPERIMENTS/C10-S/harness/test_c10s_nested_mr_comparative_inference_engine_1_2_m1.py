@@ -151,6 +151,7 @@ class M1ChallengerContractTests(unittest.TestCase):
                 m1_bootstrap_replicates=20, m1_bootstrap_seed=33,
             )
         self.assertEqual(legacy.call_args.kwargs["bootstrap_seed"], 22)
+        self.assertFalse(legacy.call_args.kwargs["include_profile_diagnostics"])
         self.assertEqual(challenger.call_args.kwargs["bootstrap_seed"], 33)
         with self.assertRaises(m.M1ChallengerError):
             m.compare_f5_dataset(
