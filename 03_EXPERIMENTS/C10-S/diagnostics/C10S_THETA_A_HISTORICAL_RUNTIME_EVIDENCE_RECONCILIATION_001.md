@@ -155,3 +155,47 @@ The subsequent successful run `45044946102` included the missing nested-precisio
 - No new execution is authorized by this historical recovery.
 
 This closes the historical search for the prior integrated contract-suite execution. It does not remove the need for a separately authorized technical-only runtime preflight if a defensible N/M/R cost estimate is still required.
+
+
+## 8. Static preflight-path recovery — 2026-11-27
+
+The current research branch workflow inventory and direct theta_A source were inspected without dispatching a workflow, generating a seed bank, running tests, or invoking the DGP.
+
+### 8.1 Existing workflow suitability
+
+No existing workflow on `research/c10s-m1-engine12-source-only-20261127` is a reusable direct-theta_A single-replicate resource preflight:
+
+- `c10-s-focal-harness-tests.yml` is the historical integrated contract-test suite. Its manual-dispatch branch guard does not include this current research branch, and its job runs the contract suite/replay rather than one complete calibration replicate.
+- `c10-s-analyzer-monte-carlo.yml`, `c10-s-analyzer-mc-replay.yml`, `c10-s-analyzer-mc-performance-diagnostic.yml` and `c10-s-analyzer-t-cache-probe.yml` are P178/legacy Analyzer workloads, tied to other branch/source identities. They do not execute the direct theta_A DGP and must not be repurposed as its runtime proxy.
+- `c10-s-f1-profile-static-tests.yml` tests the separate F1 profile-likelihood component and is not a direct theta_A pipeline runner.
+- The remaining listed C10-S workflows target F5/G7, nested-M/R comparator, V_cont package, or other distinct workloads. Their resource measurements are not transferable to direct theta_A.
+
+### 8.2 Existing direct pipeline entrypoints
+
+The source already provides the necessary components; no second engine is justified:
+
+- `build_theta_a_candidate_scenario_roster()` declares the five candidate scenarios.
+- `build_theta_a_seed_bank()` creates the declared N×M×R seed assignments but does not invoke a Generator or DGP.
+- `ThetaACalibrationDGPFactory.execute_calibration_scenario()` builds the scenario fixture and calls the complete-world pipeline.
+- `run_theta_a_calibration_replicates()` orchestrates supplied assignments through a caller-provided world-executor callback and requires `execution_authorized=True`; it captures the actual Analyzer/Evaluator outputs.
+- The DGP path reaches `materialize_c10s_complete_world_from_dgp()`, including assignment, S3 observation, sealing, Analyzer and Evaluator.
+
+The orchestrator is a reusable library function, not a standalone CLI or a ready-to-dispatch GitHub Actions workflow. No existing workflow currently binds the callback to a bounded one-replicate technical invocation and captures stage-level resource measurements.
+
+### 8.3 Disposition and minimum next action
+
+**PRELIGHT EXECUTION PATH: BLOCKED — NO REUSABLE WORKFLOW.** The historical contract-test workflow cannot be treated as a preflight because it does not time the required pipeline; P178/F5/nested-M/R workflows cannot be substituted because they execute different workloads or estimands.
+
+A valid technical-only preflight would need a narrowly scoped execution wrapper that:
+
+1. materializes exactly one explicitly identified technical seed assignment in a separate technical namespace;
+2. executes one complete direct theta_A replicate using the existing DGP factory and orchestrator callback (no new Analyzer, DGP, or statistical engine);
+3. records wall time, CPU time and peak memory for world construction, assignment/S3 observation, Analyzer, Evaluator and capture/aggregation overhead where separable;
+4. marks all outputs as technical diagnostics, not calibration/evaluation-bank records or scientific evidence; and
+5. has a hard runtime ceiling and no automatic retry or subsequent dispatch.
+
+The current branch has no workflow implementing those steps. Creating or modifying a workflow would be a new executable path and is not authorized by the present design/recovery scope. Therefore no code or workflow was changed and no execution is proposed for immediate dispatch. Before seeking execution authorization, the smallest design decision is whether to authorize creation of this one-purpose technical wrapper, with its exact N/fixture, seed namespace, time ceiling and artifact outputs specified in advance.
+
+No numerical N/M/R calibration choice is made here. The default 32-unit fixture in the DGP factory is a software default, not an adopted scientific N. The earlier N=700/M=5/R=4/25-block/3-hour proposal remains withdrawn.
+
+**Current state:** direct theta_A pipeline components IMPLEMENTED; historical integrated contract suite EXECUTED/PASS; direct single-replicate runtime NOT MEASURED; reusable preflight workflow NOT IMPLEMENTED; scientific execution `false`; execution authorization `false`.
