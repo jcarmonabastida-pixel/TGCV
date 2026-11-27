@@ -222,7 +222,7 @@ The remaining sections are to be reviewed in order, one step at a time. No findi
 | 1.3 | Elementos, estados, propiedades y comportamientos / Elements, States, Properties and Behaviours | reviewed — decisions pending |
 | 1.4 | Actores, capacidades, recursos y dependencias / Actors, Capabilities, Resources and Dependencies | reviewed — decisions pending |
 | 1.5 | Relaciones, interacciones y estructura del sistema / Relationships, Interactions and System Structure | reviewed — decisions pending |
-| 1.6 | To be read from both manuscripts | not_reviewed |
+| 1.6 | Sistemas abiertos, entornos cambiantes y tiempo / Open Systems, Changing Environments and Time | reviewed — decisions pending |
 | 1.7 | To be read from both manuscripts | not_reviewed |
 | 1.8 | To be read from both manuscripts | not_reviewed |
 | 1.9 | To be read from both manuscripts | not_reviewed |
@@ -292,6 +292,57 @@ H. **Bilingual alignment:** apply any accepted conceptual edits independently to
 #### Candidate sources — verification pending
 
 No external source has yet been selected for this section. If a formal source is considered necessary for feedback, system structure or relationship/interaction distinctions, verify an authoritative systems-engineering or systems-dynamics reference and its exact edition and passages before recording it in the central references registry. No source is approved or attached to a claim at this stage.
+
+**Decision:** pending author review. No source has yet been formally attached to a claim.
+
+### 4.6 Section 1.6 — Sistemas abiertos, entornos cambiantes y tiempo / Open Systems, Changing Environments and Time
+
+**Review status:** reviewed; decisions pending  
+**Manuscript changes:** none
+
+#### Conceptual assessment
+
+- The section provides a coherent account of systems as bounded for analysis yet connected to their environments through exchanges. It correctly avoids treating a boundary as a barrier that eliminates external dependencies.
+- The working definition of an **open system** is suitable for this introductory chapter: exchanges of matter, energy, information, resources or services are relevant to operation. It may be useful to signal that openness is considered relative to the chosen system boundary and analytical purpose; the same system may be modelled with different boundaries and exchange sets for different questions. Avoid turning this into a rigid binary classification.
+- The distinction among inputs, outputs and exchanges is useful, but the table currently mixes exchange categories with a final row labelled “outputs to the environment” / «resultados hacia el entorno». Outputs are already part of the input/output framing, whereas the other rows classify types of flow. Consider either making the table consistently about exchange types or explicitly distinguishing inputs and outputs from the types of exchanged content. The current text defines these terms but does not fully clarify the table's mixed classification.
+- The warning that an input is not necessarily a sufficient condition for operation is important and should be retained. It connects well with section 1.4's treatment of capabilities and dependencies: availability of one required input does not guarantee that the system can perform its function.
+- The treatment of environmental change is sound and includes relevant external drivers. The reciprocal influence between system and environment is also important; retain the point that system-environment influence need not be one-way.
+- The temporal discussion correctly distinguishes short-, medium- and long-term scales as relative to the system and analytical question. It appropriately warns against interpreting a point observation as a persistent pattern. A concise clarification could distinguish the observation time, the period represented by the data and the time horizon over which a conclusion is intended to apply.
+- The discussion of disturbances and responses is useful, but **adaptation** should not be read as necessarily intentional, successful or beneficial. A system may adjust, reorganise or fail to maintain expected performance. If the term is retained, clarify that the section describes different response patterns rather than presuming that every response constitutes successful adaptation.
+- The contrast between an operational response and a more lasting transformation is valuable and relevant to the wider book. However, the text should avoid implying that duration alone defines transformation: a structural change may be rapid, and a long-lasting operational adjustment may not amount to a structural transformation. The distinction should be tied to the nature and persistence of the change, not only to elapsed time.
+- The “snapshot and moving picture” explanation is accessible and pedagogically effective. It reinforces the earlier treatment of states and behaviour and should be retained. Its value depends on maintaining the distinction between a configuration observed at one time and evidence of change or behaviour across a defined period.
+
+#### Example and bilingual-equivalence observations
+
+- The Spanish and English versions are closely aligned in structure, reasoning, examples and learning outcome. No major conceptual divergence was identified.
+- “Sistemas abiertos” / “open systems”, “entradas” / “inputs”, “salidas” / “outputs” and “intercambios” / “exchanges” are appropriate equivalents.
+- The table's final row, “Resultados hacia el entorno” / “Outputs to the environment”, is broadly equivalent but not perfectly parallel in terminology. Align the Spanish label with the chosen input/output/exchange structure.
+- The examples of drought, heatwave, regulatory change and power interruption are equivalent in substance.
+- “Perturbaciones” / “disturbances” and “adaptación” / “adaptation” are suitable equivalents, but any clarification that adaptation is not necessarily intentional or successful should be made in both texts.
+- The contrast between a temporary pump adjustment and a more lasting network redesign is equivalent. If the conceptual distinction is refined, both versions should make clear that structural nature and persistence matter more than duration alone.
+- The snapshot/time-based representation and the reflection question are equivalent and appropriately reinforce the same temporal reasoning.
+
+#### Proposed resolution
+
+A. **Openness and boundary:** retain the working definition of open systems, while briefly clarifying that relevant exchanges are identified relative to the chosen boundary and analytical purpose. Avoid treating openness as an absolute property independent of the model.
+
+B. **Inputs, outputs and exchanges:** revise the table so that its organising principle is consistent. Either classify rows by type of exchanged content and label inputs/outputs separately, or make clear that inputs and outputs are directions/roles of exchange rather than additional material categories. Harmonise the Spanish and English labels.
+
+C. **Input versus sufficiency:** retain the warning that receiving an input does not guarantee operation. Preserve the link to capabilities and dependencies developed in section 1.4 without repeating their definitions.
+
+D. **System-environment influence:** retain the bidirectional influence point and the examples of effects a system may have on its environment.
+
+E. **Temporal evidence:** preserve the relative short-, medium- and long-term scales. Consider stating explicitly the distinction among the time of observation, the period covered by evidence and the horizon to which conclusions apply.
+
+F. **Adaptation and response:** clarify that the response categories (absorbing variation, adjusting operation, reorganising, or losing expected performance) do not all imply successful adaptation. Avoid anthropomorphic or teleological wording.
+
+G. **Operational response and transformation:** retain the distinction, but do not define transformation by duration alone. Consider distinguishing temporary operating adjustments from changes in system configuration or organisation that persist, while recognising that persistence and structural significance are separate dimensions.
+
+H. **Bilingual alignment:** make any accepted changes independently in both original manuscripts, maintaining equivalent concepts, table logic and examples rather than translating one version from the other.
+
+#### Candidate sources — verification pending
+
+No external source has yet been selected for this section. If a formal source is considered necessary for open-system boundaries, system-environment exchanges, adaptation or temporal system behaviour, verify an authoritative systems-engineering, systems-theory or systems-dynamics reference and its exact edition and passages before recording it in the central references registry. No source is approved or attached to a claim at this stage.
 
 **Decision:** pending author review. No source has yet been formally attached to a claim.
 
