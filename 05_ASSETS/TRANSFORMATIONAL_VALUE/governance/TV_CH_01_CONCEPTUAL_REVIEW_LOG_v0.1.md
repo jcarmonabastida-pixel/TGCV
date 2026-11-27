@@ -257,6 +257,17 @@ Purely conceptual systems may be mentioned as representations or analytical cons
 
 **Implementation status:** decision recorded; wording not yet integrated into either manuscript. The remaining section 1.1 findings are still unresolved.
 
+**Decision 1.1-ANALYTICAL-UNIT — accepted by the author (2026-11-27).**
+
+The chapter will distinguish three concepts:
+- **System of interest:** the concrete system we seek to understand or study.
+- **Unit of analysis:** what observations or analysis are performed on; this may be the whole system, a subsystem, an actor or an interaction.
+- **Analytical perspective:** the approach from which the system is examined, for example functional, operational, organisational or temporal.
+
+**Rationale:** These concepts must not be conflated. The system being studied is distinct from the analytical scale or perspective selected to investigate it.
+
+**Implementation status:** decision recorded; wording not yet integrated into either manuscript.
+
 After the conceptual review of sections 1.1–1.9 is complete:
 1. Review the accumulated findings for consistency and dependencies across the chapter.
 2. Resolve open recommendations explicitly; do not silently convert suggestions into decisions.
