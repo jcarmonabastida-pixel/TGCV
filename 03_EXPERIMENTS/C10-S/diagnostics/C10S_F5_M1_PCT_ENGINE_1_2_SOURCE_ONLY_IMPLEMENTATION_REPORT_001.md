@@ -34,28 +34,33 @@ The versioned path:
 9. Keeps unrelated F5 profile diagnostics disabled in the legacy call, avoiding additional optimizer work unrelated to the interval challenger.
 10. Uses a separately versioned adjudicator for the exact three-method roster and paired independent truth.
 
-M1 MCSE intervals are not invented: they remain unavailable. The adapter reports that absence through the ordinary interval-abstention channel.
+M1 MCSE point and interval estimates are explicitly unavailable; the adapter reports `M1_MCSE_INTERVAL_NOT_IMPLEMENTED`. It does not reuse the common projected MCSE point estimate as an M1 estimate.
 
 ## 3. Test source
 
-Fifteen source-level contract tests were added, covering:
+Seventeen source-level contract tests were added, covering:
 
 - exact three-method roster;
 - preservation of C0/C5 legacy records;
 - unchanged M1 interval values;
 - common raw point fields;
 - separation of M1 model points;
-- original-fit and bootstrap-failure abstentions;
+- original-fit and bootstrap-failure abstentions, with model point diagnostics suppressed when the original fit is inadmissible;
 - truth-ID integrity, including duplicate IDs;
 - all-dataset emission denominator;
 - conditional and unconditional coverage;
 - design stratification;
-- distinct seed routing;
-- no overwrite of C5 identity.
+- distinct per-call seed routing and deterministic replicate-seed derivation;
+- no overwrite of C5 identity;
+- explicit M1 MCSE non-implementation and interval-provenance consistency.
 
 **Tests have not been executed.** No Python compilation, local test, GitHub Actions workflow, benchmark, simulation, calibration, holdout or scientific run has been launched.
 
-## 4. Explicit non-actions
+## 4. Remaining pre-execution requirement
+
+The adapter requires three distinct caller-supplied C0/C5/M1 seeds per dataset and preserves the seed values in the underlying method results. It does **not** establish or validate a development-versus-validation namespace manifest. That manifest, its disjointness audit, and the prospective K/B/runtime/precision justification remain mandatory before any future numerical operation. No seed namespace is authorized or created by this source-only implementation.
+
+## 5. Explicit non-actions
 
 - No changes to engine 1.1, C0, C5 or their historical records.
 - No changes to frozen Tier-A protocols or holdout data.
@@ -64,7 +69,7 @@ Fifteen source-level contract tests were added, covering:
 - No writes to `main`.
 - No method-selection or calibration claim.
 
-## 5. Next scientific decision
+## 6. Next scientific decision
 
 The next decision is **not** to expand instrumentation. First review this source-only adapter. If it is retained, separately authorize its deterministic contract tests. After those tests, the work must return to the shortest statistically defensible route for coverage/emission, bias/RMSE and precision assessment of the methods that remain viable.
 
