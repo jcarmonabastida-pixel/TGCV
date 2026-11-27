@@ -268,6 +268,18 @@ The chapter will distinguish three concepts:
 
 **Implementation status:** decision recorded; wording not yet integrated into either manuscript.
 
+**Decision 1.1-EMERGENCE — accepted by the author (2026-11-27).**
+
+The chapter will distinguish:
+- **System behaviour:** any behaviour that can be observed or inferred at the system level.
+- **Emergent behaviour:** behaviour or a property arising from the interactions and organisation of the whole, which cannot be adequately explained by examining each element independently.
+
+The text must not imply that all system behaviour is necessarily emergent.
+
+**Rationale:** This preserves emergence as an important systems concept without making it a defining feature of every system behaviour.
+
+**Implementation status:** decision recorded; wording not yet integrated into either manuscript.
+
 After the conceptual review of sections 1.1–1.9 is complete:
 1. Review the accumulated findings for consistency and dependencies across the chapter.
 2. Resolve open recommendations explicitly; do not silently convert suggestions into decisions.
