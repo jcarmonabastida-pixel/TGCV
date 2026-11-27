@@ -615,3 +615,14 @@ The author approved a common conceptual scenario for both manuscripts, with equi
 The example should remain introductory and explanatory, not become a detailed hydraulic-engineering case. Each language version should express the scenario naturally and independently while retaining the same principal elements, relationships, conditions and consequences.
 
 **Disposition after this decision phase:** decisions 5.1–5.5 are accepted. Manuscript integration, bilingual cross-review and post-integration verification remain pending. No manuscript text has been changed by recording these decisions.
+
+### 5.6 Purpose, function and objectives in section 1.2 — accepted
+
+The author approved the following working distinctions for both language versions:
+- **Purpose:** the declared or attributed reason for the system's existence.
+- **Function:** an activity or contribution performed by the system.
+- **Objectives:** intended results, which may be multiple and may conflict.
+
+The manuscripts should preserve the distinction between these concepts and should not use the terms interchangeably. The Spanish and English versions will be authored independently while retaining equivalent meaning.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
