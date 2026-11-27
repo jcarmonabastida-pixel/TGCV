@@ -50,7 +50,7 @@ Seventeen source-level contract tests were added, covering:
 - all-dataset emission denominator;
 - conditional and unconditional coverage;
 - design stratification;
-- distinct per-call seed routing and deterministic replicate-seed derivation;
+- distinct per-call seed routing;
 - no overwrite of C5 identity;
 - explicit M1 MCSE non-implementation and interval-provenance consistency.
 
@@ -58,7 +58,7 @@ Seventeen source-level contract tests were added, covering:
 
 ## 4. Remaining pre-execution requirement
 
-The adapter requires three distinct caller-supplied C0/C5/M1 seeds per dataset and preserves the seed values in the underlying method results. It does **not** establish or validate a development-versus-validation namespace manifest. That manifest, its disjointness audit, and the prospective K/B/runtime/precision justification remain mandatory before any future numerical operation. No seed namespace is authorized or created by this source-only implementation.
+The adapter requires three distinct caller-supplied C0/C5/M1 seeds per dataset and preserves the seed values in the underlying method results. The source tests cover seed routing and collision rejection within a dataset, not cross-bank namespace disjointness. It does **not** establish or validate a development-versus-validation namespace manifest. That manifest, its disjointness audit, and the prospective K/B/runtime/precision justification remain mandatory before any future numerical operation. No seed namespace is authorized or created by this source-only implementation.
 
 ## 5. Explicit non-actions
 
