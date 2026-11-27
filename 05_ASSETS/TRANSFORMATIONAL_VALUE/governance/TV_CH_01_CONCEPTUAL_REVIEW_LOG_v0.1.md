@@ -224,7 +224,7 @@ The remaining sections are to be reviewed in order, one step at a time. No findi
 | 1.5 | Relaciones, interacciones y estructura del sistema / Relationships, Interactions and System Structure | reviewed — decisions pending |
 | 1.6 | Sistemas abiertos, entornos cambiantes y tiempo / Open Systems, Changing Environments and Time | reviewed — decisions pending |
 | 1.7 | Las descripciones de sistemas son modelos: alcance, supuestos y omisiones / System Descriptions Are Models: Scope, Assumptions and Omissions | reviewed — decisions pending |
-| 1.8 | To be read from both manuscripts | not_reviewed |
+| 1.8 | De la optimización de componentes al razonamiento a escala de sistema / From Component Optimisation to System-Level Reasoning | reviewed — decisions pending |
 | 1.9 | To be read from both manuscripts | not_reviewed |
 
 Each completed step must be added to this log and committed to the same working branch before moving to the next section. Re-read and verify the updated log after each write.
@@ -395,6 +395,61 @@ H. **Editorial restraint:** do not expand this introductory section into a forma
 #### Candidate sources — verification pending
 
 No external source has yet been selected for this section. If a formal source is considered necessary for model purpose and scope, assumptions, model validation or uncertainty, verify an authoritative systems-engineering or modelling reference and its exact edition and passages before recording it in the central references registry. No source is approved or attached to a claim at this stage.
+
+**Decision:** pending author review. No source has yet been formally attached to a claim.
+
+### 4.8 Section 1.8 — De la optimización de componentes al razonamiento a escala de sistema / From Component Optimisation to System-Level Reasoning
+
+**Review status:** reviewed; decisions pending  
+**Manuscript changes:** none
+
+#### Conceptual assessment
+
+- The central argument is sound and well positioned: improving a component or subsystem does not guarantee improvement in overall system performance. The water-pump example makes the possibility of transferred costs, constraints and effects concrete without requiring advanced technical knowledge.
+- The section correctly avoids the opposite error of dismissing component optimisation. Local optimisation remains necessary; the issue is treating a local indicator as a proxy for system performance. Retain this qualification.
+- There is a terminology inconsistency between the section's framing as **system-level reasoning** and the table's definition of **system-level optimisation**. These are related but not identical. Reasoning at system level is an approach to framing and evaluating decisions; optimisation is a more specific task of selecting the best feasible option against defined criteria and constraints. The text should either define the relationship or use “system-level reasoning” consistently where it describes the broader approach.
+- The table's three levels (component, subsystem, system) are useful as analytical levels, not as a mandatory hierarchy or mutually exclusive decomposition. It may help to state that the appropriate level depends on the decision and that relevant effects can cross levels and boundaries. The existing paragraph already points in this direction.
+- The phrase “results that cross internal boundaries” / «resultados que atraviesan sus fronteras internas» is potentially imprecise: results do not necessarily cross boundaries; interactions, flows, constraints and effects may cross interfaces or boundaries between components and subsystems. Consider revising the wording in both languages.
+- The treatment of interfaces, constraints and bottleneck displacement is strong. The example correctly illustrates that resolving one constraint can reveal another, but this is not inevitable in every intervention. The conditional wording should be retained and examples should not be read as universal laws.
+- The section identifies multiple performance criteria and trade-offs, including service continuity, quality, pressure, energy, operating cost, recovery time and environmental effects. This is a valuable corrective to single-metric optimisation. Consider distinguishing **requirements** (conditions that must be met), **objectives** (outcomes to improve) and **preferences** (trade-offs that may be negotiated), as the text already begins to do. Ensure that non-negotiable safety, regulatory or service constraints are not presented as ordinary preferences.
+- The process sequence is practical and coherent. Step 1, “what the system must achieve and for whom”, should not imply that a system always has one uncontested purpose or a single beneficiary. Relevant actors may have different or conflicting needs. A concise acknowledgement of this would strengthen the connection with sections 1.2 and 1.4.
+- Step 5's “whether the improvement is sustained, shifted elsewhere or creates unintended consequences” is useful, but should not suggest that every consequence can be predicted in advance. It is an invitation to examine plausible effects and monitor actual outcomes under appropriate conditions.
+- The paragraph on the value of an improvement is important as a bridge to the book's wider subject. However, the wording “a technical improvement becomes meaningful when related to the outcomes...” should not be read as a full definition of value or as a claim that technical performance automatically creates value. The relevance of an outcome depends on whose needs are considered, which constraints apply and how benefits, costs and risks are distributed. Keep this as an introductory bridge, not a premature definition of value construction.
+- The closing idea is appropriate. No additional diagram is necessary: the existing table and six-step sequence provide sufficient visual/structural support for this section.
+
+#### Example and bilingual-equivalence observations
+
+- The Spanish and English versions are closely aligned in structure, reasoning, examples, table and practical sequence. No material conceptual divergence was identified.
+- “Optimización local” / “local optimisation”, “optimización a escala de sistema” / “system-level optimisation” and “razonamiento a escala de sistema” / “system-level reasoning” are natural equivalents, but the conceptual distinction between optimisation and reasoning should be made explicit in both versions.
+- The phrase “resultados que atraviesan sus fronteras internas” / “outcomes that cross internal boundaries” is equivalent but potentially imprecise in both languages. Revise both consistently if accepted.
+- The pump capacity, pressure, energy, maintenance and bottleneck examples are equivalent in substance.
+- “Requisitos, objetivos y preferencias” / “requirements, objectives and preferences” are appropriate equivalents. Any clarification that mandatory constraints are not negotiable preferences should be made in both.
+- “Para quién” / “for whom” is equivalent. Both versions should acknowledge that relevant actors may have different or conflicting needs if this point is added.
+- The final discussion of the value of an improvement is aligned. Any qualification that this is not yet a definition of value or proof of value creation should be expressed in both versions.
+
+#### Proposed resolution
+
+A. **Local optimisation:** retain the statement that component optimisation remains necessary. The section critiques isolated evaluation, not technical improvement at component level.
+
+B. **Optimisation versus reasoning:** distinguish system-level reasoning from system-level optimisation. Use the former for the broad decision approach; reserve the latter for explicit optimisation against defined objectives and constraints. Align the table terminology with this distinction.
+
+C. **Analytical levels:** retain component, subsystem and system as useful levels of analysis, while clarifying that they are not a compulsory hierarchy and that relevant effects may cross their interfaces.
+
+D. **Interfaces and boundaries:** revise the wording about “outcomes crossing internal boundaries” so it refers more accurately to interactions, flows, constraints or effects crossing interfaces/boundaries.
+
+E. **Constraints and trade-offs:** retain the multi-criteria discussion and distinguish mandatory requirements/constraints from objectives and negotiable preferences. Do not imply that safety, regulatory or essential service requirements can be traded away as preferences.
+
+F. **Purpose and beneficiaries:** qualify “what the system must achieve and for whom” to recognise that relevant actors may have different or conflicting needs. Preserve the link to sections 1.2 and 1.4 without duplicating them.
+
+G. **Consequences and evidence:** retain the review of sustained, displaced and unintended effects, but present it as analysis of plausible consequences followed by observation/monitoring, not as a guarantee that all effects can be predicted.
+
+H. **Bridge to value:** retain the final subsection, but make clear that technical improvement is not automatically value creation and that outcomes must be considered in relation to relevant actors, needs, constraints and distribution of benefits, costs and risks. Do not introduce a full definition of value in this chapter.
+
+I. **Bilingual alignment and editorial restraint:** apply accepted refinements independently to both original manuscripts. The existing table and process sequence are sufficient; no additional visual asset is recommended for this section.
+
+#### Candidate sources — verification pending
+
+No external source has yet been selected for this section. If a formal source is considered necessary for local versus system-level optimisation, multi-criteria decision-making or systems engineering trade-offs, verify an authoritative reference and its exact edition and passages before recording it in the central references registry. No source is approved or attached to a claim at this stage.
 
 **Decision:** pending author review. No source has yet been formally attached to a claim.
 
