@@ -152,6 +152,13 @@ class M1ChallengerContractTests(unittest.TestCase):
             )
         self.assertEqual(legacy.call_args.kwargs["bootstrap_seed"], 22)
         self.assertEqual(challenger.call_args.kwargs["bootstrap_seed"], 33)
+        with self.assertRaises(m.M1ChallengerError):
+            m.compare_f5_dataset(
+                ROWS, dataset_id="d1", target_m=2, target_r=2,
+                c0_bootstrap_replicates=100, c0_bootstrap_seed=11,
+                c5_bootstrap_replicates=100, c5_bootstrap_seed=11,
+                m1_bootstrap_replicates=20, m1_bootstrap_seed=33,
+            )
 
     def test_14_m1_cannot_overwrite_c5_identity(self):
         item = record()
