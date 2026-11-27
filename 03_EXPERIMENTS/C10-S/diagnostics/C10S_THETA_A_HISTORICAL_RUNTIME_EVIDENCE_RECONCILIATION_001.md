@@ -1,0 +1,106 @@
+# C10-S — Historical runtime evidence reconciliation for direct theta_A calibration
+
+**Record:** C10S-THETA-A-HISTORICAL-RUNTIME-RECONCILIATION-001  
+**Date:** 2026-11-27  
+**Status:** STATIC HISTORICAL AUDIT — DIRECT theta_A RUNTIME NOT ESTABLISHED  
+**Branch:** `research/c10s-m1-engine12-source-only-20261127`  
+**Scope:** Recover existing runtime/resource evidence before proposing a direct theta_A development calibration schedule.  
+**Execution:** No workflow, test, benchmark, simulation, seed generation, or scientific execution was initiated.
+
+## 1. Finding
+
+The historical GitHub Actions evidence does **not** currently establish the runtime cost of the direct theta_A calibration pipeline.
+
+There is useful measured resource evidence for other C10-S workloads (F5/G7, P178 Analyzer Monte Carlo, static integrated contract tests). These workloads differ in estimator, data path, repetition structure and/or purpose. They may inform operational caution, but their runtimes must not be extrapolated to direct theta_A calibration.
+
+The direct theta_A modules and protocol exist on the research branch, and the integrated harness workflow has included compile/contract-test coverage for them. The recovered workflow inventory does not contain a dedicated direct theta_A calibration execution workflow. No completed direct theta_A calibration run or measured per-replicate runtime was identified in the inspected records.
+
+**Consequence:** no evidence-based N/M/R schedule, block size, or per-run duration can yet be specified. The <=3-hour user preference remains a hard planning constraint, not a demonstrated runtime capability.
+
+## 2. Recovered runtime evidence — explicitly non-transferable
+
+### 2.1 F5/G7 resource-only profile
+
+Canonical manifest on main:
+`03_EXPERIMENTS/C10-S/diagnostics/C10S_F5_G7_RESOURCE_PROFILE_MANIFEST_001.json`
+
+- Profile run ID: `44926453920`
+- Profile source commit: `469ecdd6f17639d10b9142158c527727e9add303`
+- Scope: `RESOURCE_NAMESPACE_ONLY_K100_PER_CELL_NO_COVERAGE_NO_HOLDOUT`
+- Wall elapsed: 2,469.19 s (about 41.2 min)
+- Process CPU: 2,636.46 s
+- Peak RSS: 251,028 KiB
+- F5 `M10/R5`: mean 0.444 s per dataset; p95 0.864 s; max 1.005 s.
+- F5 `M30/R20`: mean 24.246 s per dataset; p95 36.014 s; p99 40.423 s; max 42.551 s.
+
+These are measurements of the F5/G7 resource-only namespace and its own computational path. The manifest explicitly excludes coverage adjudication and holdout. They are **not** direct theta_A timings and cannot be used to calculate theta_A throughput.
+
+### 2.2 F5/G7 execution examples
+
+- Run `45453940984`, F5 deterministic certification (partitioned): 5 min 33 s elapsed, successful compile and deterministic test partitions. This is a software certification/test workflow, not a calibration.
+- Run `45911630439`, F5 M30/R20 W stage profile: 16 min 24 s elapsed, successful F5 stage-profile job.
+- Run `45911630605`, F5 M30/R20 robustness smoke: 18 min 27 s elapsed, successful F5 robustness fixture.
+- Run `45976887796`, F5 M30/R20 raw-between M1 development screen: cancelled after 41 min 40 s. Its cancellation is not a statistical result or a completed runtime benchmark.
+
+All four are F5-specific. Their runtimes cannot be attributed to direct theta_A.
+
+### 2.3 P178 Analyzer Monte Carlo
+
+- Run `43083651875`, P178 Analyzer Monte Carlo validation, was cancelled after 47 min 33 s.
+- The workflow specification describes 27 cells × 10,000 replications and a clean replay, but the retrieved run record is cancelled. It is not a completed full calibration result and not a direct theta_A calibration.
+- P178's N=700 reference artefact is a historical P178 input, not a scientifically justified N choice for the direct theta_A DGP.
+
+No P178 runtime is transferred to the direct theta_A design.
+
+## 3. Direct theta_A implementation/workflow inventory
+
+The research branch contains the direct theta_A protocol, DGP factory, observation harness, Analyzer, independent Evaluator, nested M/R precision module and tests. The integrated synthetic contract workflow includes these modules in its source allowlist and compiles/tests the relevant contracts.
+
+However:
+- the integrated workflow's role is contract/test validation; it does not invoke a direct theta_A calibration over an N×M×R seed bank;
+- the F5/G7, P178 and nested-comparator workflows target other workloads or static/numerical contract checks;
+- the current direct theta_A runner iterates the supplied seed assignments sequentially;
+- the current runner does not itself provide checkpoint/resume, sharding, concurrency, timeout enforcement or partial-result persistence;
+- no dedicated direct theta_A calibration workflow or completed direct theta_A calibration run was identified in the inspected branch workflow inventory and Actions history.
+
+Therefore the previous proposed 25-block schedule and 3-hour per-run claim have no verified implementation or runtime basis.
+
+## 4. What can be reused now
+
+Reuse is possible at the component level, not by importing F5 execution plans:
+
+1. Direct theta_A Analyzer, Evaluator, DGP and calibration protocol already present on the research branch.
+2. Existing sealed-evidence and truth-separation architecture.
+3. Existing seed-bank planning/provenance and fail-closed aggregator contracts.
+4. Existing integrated contract-test workflow as evidence of prior software-level validation, where the exact run/commit is recovered and its scope is respected.
+5. Existing F5 resource measurements only as a warning that solver workload can change runtime sharply with configuration; not as a theta_A cost model.
+
+No second Analyzer, new statistical engine, new DGP family, or duplicate seed system is justified by this audit.
+
+## 5. Minimum missing evidence before a runtime proposal
+
+The next operation should first recover the exact integrated contract-test run(s) and commit provenance for the direct theta_A modules. Then determine whether an already existing, authorized, bounded direct theta_A execution record contains any usable per-world or per-replicate timing. If not, record that no such timing exists.
+
+Only after an explicit authorization for a technical-only resource preflight could a measured resource profile be considered. It must be isolated from scientific calibration, use a frozen small workload, and have a strict ceiling. This document does not authorize that preflight.
+
+The runtime profile must measure at least:
+- fixed-world construction cost;
+- one complete R replicate, including assignment and S3 observation;
+- Analyzer and Evaluator cost separately;
+- aggregation/provenance overhead;
+- peak memory and wall/CPU time;
+- repeatability of timing across a small number of technical repetitions, without interpreting them as scientific replicates.
+
+The measurement must use the exact direct theta_A code/dependency closure and a predeclared small technical fixture. It must not be used to tune scientific outcomes or to claim statistical performance.
+
+## 6. Current disposition
+
+**Direct theta_A runtime:** NOT MEASURED / NOT ESTABLISHED.  
+**N grid:** NOT JUSTIFIED.  
+**M/R values:** NOT JUSTIFIED.  
+**Execution sharding/checkpoint plan:** NOT IMPLEMENTED / NOT VERIFIED.  
+**<=3-hour constraint:** retained as a planning ceiling, not a proven feasible block size.  
+**Scientific execution:** `false`.  
+**Execution authorization:** `false`.
+
+The correct next step is a historical provenance recovery of the integrated contract-test executions and any exact direct theta_A timing artefacts. If no such runtime evidence exists, the only honest conclusion is that a separately authorized technical-only resource preflight would be needed before any calibration schedule can be costed. No new runner or orchestration layer should be built at this stage.
