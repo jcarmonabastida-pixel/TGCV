@@ -1,0 +1,22 @@
+flowchart LR
+  R["Depósito"] -->|Agua| T["Tratamiento"]
+  T -->|Agua tratada| P["Estación de bombeo"]
+  P -->|Caudal y presión| D["Red de distribución"]
+  D -->|Suministro| U["Zonas de consumo"]
+
+  D -.->|Mediciones| S["Sensores"]
+  S -.->|Señales| C["Supervisión y control"]
+  C -.->|Órdenes| P
+  C -.->|Ajustes| V["Válvulas"]
+  V --> D
+
+  E["Suministro eléctrico"] -.->|Energía| P
+  M["Mantenimiento"] -.->|Inspección y reparación| P
+  M -.->|Inspección y reparación| V
+
+  classDef physical fill:#e8f2fb,stroke:#356a91,color:#17324a
+  classDef control fill:#f5f0df,stroke:#8a7135,color:#443713
+  classDef external fill:#eeeeee,stroke:#666666,color:#222222
+  class R,T,P,D,U,V physical
+  class S,C control
+  class E,M external
