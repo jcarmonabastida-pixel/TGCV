@@ -1053,3 +1053,23 @@ The ledger reconciles the already available C0, C1, C5 comparative holdout, F5 B
 **Next operation:** targeted F5 M10/R5 diagnosis using existing records only: reconcile the concentration ridge, production-versus-analytic fit divergence, and M1-PCT abstention classes. Deliver one minimum coverage/emission candidate or a clear finding that no candidate is currently supported. No M2 expansion or broad numerical run by default.
 
 No acceptance threshold, estimand, historical result, canonical file or authorization changed. Tier-A confirmatory, Tier-B and C10 causal execution remain unauthorized.
+
+
+## 51. F5 M10/R5 coverage/emission reconciliation — 2026-11-27
+
+**Diagnostic:** `03_EXPERIMENTS/C10-S/diagnostics/C10S_F5_M10R5_COVERAGE_EMISSION_RECONCILIATION_001.md`  
+**Commit:** `4d555dff12ee5c32576f1fd3b9776ad66f3a82dd`  
+**Focus clarification commit:** `c64a7b83a41e430cff6a2153eb83bae7e06a2ebe`.
+
+The historical evidence shows that M10/R5 coverage and emission must not be conflated across methods:
+- C5 B2/B3 emitted 98.10–98.22% but overcovered within and raw-between (97.74–98.70%).
+- G7 v1.1 emitted 88.5%; its emission failure is specific to that method/contract.
+- M1-PCT emitted 2/50 (4%) under its strict refitted-bootstrap contract; this does not establish that C5 emission fails.
+
+C5's aggregate M10/R5 overcoverage masks strong conditional heterogeneity: its high fitted-concentration decile undercovers both W/B in the exposed B2/B3 diagnostic, while other concentration strata overcover. No post-hoc concentration cutoff is admissible. B3 B=1,000 versus 4,000 endpoint changes were modest and do not support increasing B as the remedy.
+
+The P/A functional reconciliation shows that production/analytic parameter differences map to negligible W/B functional differences for the vast majority of paired M10/R5 records. Further optimizer-coordinate certification is therefore not the default coverage remedy.
+
+**Next operation:** design-only comparison of (A) a boundary-aware refitted parametric bootstrap that treats every refit state without dropping/conditioning on failures, versus (B) direct W/B profile likelihood only if Route A cannot provide a defensible interval/emission contract. No simulation until one route is specified with a scientifically defensible repeated-sampling interpretation. If neither route qualifies, record `NO_SUPPORTED_F5_M10R5_CANDIDATE` and stop.
+
+No new simulation, code, workflow or method selection was performed. No historical bank was reused for tuning. No thresholds, estimands, DGPs, adjudications or authorizations changed.
