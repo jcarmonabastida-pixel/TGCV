@@ -170,3 +170,27 @@ The earlier numeric proposal is retained here only as an auditable superseded dr
 
 `scientific_execution=false`  
 `execution_authorized=false`
+
+
+## 11. Runner and N-grid source audit — 2026-11-27
+
+A further static inspection of the current direct theta_A source resolves what can and cannot be scheduled without implementation work:
+
+- `ThetaACalibrationDesign.validate()` accepts any ascending positive-integer N grid. It enforces M>=2 and R>=2. It does not declare a recommended N grid, upper bound, or resource-derived values.
+- `ThetaACalibrationDGPFactory.build_fixture()` defaults to N=32 only when no seed assignment/N is supplied. The calibration path passes N through the seed assignment. This default is a fixture convenience, not a scientifically selected calibration size.
+- `build_theta_a_seed_bank()` materializes the complete N×M×R plan in memory. It does not invoke the DGP.
+- `run_theta_a_calibration_replicates()` loops over every supplied assignment sequentially and calls the supplied world executor once per record. The function itself has no checkpoint/resume, sharding, concurrency, timeout, or partial-result persistence contract.
+- No dedicated direct theta_A calibration GitHub Actions workflow was found in the research branch tree. Existing workflows are for F5/Tier A or static comparator work and cannot be treated as a direct theta_A execution route.
+
+**Implications:** the earlier proposed 25-block sharding and three-hour per-run plan are not supported by the current runner. They would require a separately designed orchestration/checkpoint layer or an external executor with a verified contract. Do not build that layer merely to preserve the withdrawn proposal. First establish the actual per-replicate runtime/resource profile from existing complete-world execution evidence, if any; if none exists, the absence must remain explicit rather than be replaced with a speculative budget.
+
+### Updated disposition
+
+The direct theta_A statistical design is reusable and substantially implemented, but an execution-ready bounded pilot is **not yet specified**. The remaining minimum inputs are:
+1. a scientifically justified candidate N grid for this DGP (N=32 is only the code default);
+2. a defensible outer-world sampling target/contract if inferential MCSE is required;
+3. a within-world sampling contract if R-based nested inference is required;
+4. measured resource/runtime evidence and an execution route with checkpoint/recovery semantics;
+5. prospective numeric coverage, availability, width and MCSE targets, plus a stopping rule.
+
+Until these are supplied, the correct next state is **PILOT DESIGN BLOCKED — STATIC RECONCILIATION COMPLETE**, not a guessed N/M/R design. No new runner, workflow, checkpoint layer or seed bank is created by this audit.
