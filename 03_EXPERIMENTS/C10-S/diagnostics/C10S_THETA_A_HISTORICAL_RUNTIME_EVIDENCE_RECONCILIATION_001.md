@@ -186,16 +186,25 @@ The orchestrator is a reusable library function, not a standalone CLI or a ready
 
 **PREFLIGHT EXECUTION PATH: BLOCKED — NO REUSABLE WORKFLOW.** The historical contract-test workflow cannot be treated as a preflight because it does not time the required pipeline; P178/F5/nested-M/R workflows cannot be substituted because they execute different workloads or estimands.
 
-A valid technical-only preflight would need a narrowly scoped execution wrapper that:
+A further source-level constraint changes the minimum safe design. `ThetaACalibrationDesign.validate()` requires M≥2 and R≥2, while `validate_theta_a_seed_banks()` requires the complete declared scenario×N×M×R bank. Consequently, the calibration orchestrator cannot be honestly invoked with a one-row “replicate” without violating its frozen completeness contract. The preflight must not weaken that contract or fabricate a partial calibration bank.
 
-1. materializes exactly one explicitly identified technical seed assignment in a separate technical namespace;
-2. executes one complete direct theta_A replicate using the existing DGP factory and orchestrator callback (no new Analyzer, DGP, or statistical engine);
-3. records wall time, CPU time and peak memory for world construction, assignment/S3 observation, Analyzer, Evaluator and capture/aggregation overhead where separable;
-4. marks all outputs as technical diagnostics, not calibration/evaluation-bank records or scientific evidence; and
-5. has a hard runtime ceiling and no automatic retry or subsequent dispatch.
+The smallest technical-only measurement is therefore a **single end-to-end DGP fixture**, not a calibration-runner invocation:
 
-The current branch has no workflow implementing those steps. Creating or modifying a workflow would be a new executable path and is not authorized by the present design/recovery scope. Therefore no code or workflow was changed and no execution is proposed for immediate dispatch. Before seeking execution authorization, the smallest design decision is whether to authorize creation of this one-purpose technical wrapper, with its exact N/fixture, seed namespace, time ceiling and artifact outputs specified in advance.
+1. use the existing `ThetaACalibrationDGPFactory.build_fixture()` with its existing software-default N=32 and the positive identified scenario;
+2. execute the existing `run_pipeline()` path once, including direct assignment, S3 observation, sealing, Analyzer and Evaluator;
+3. use a declared technical-only fixed seed/salt and a technical output namespace, with no calibration/evaluation seed bank and no call to `run_theta_a_calibration_replicates()`;
+4. record total wall time, CPU time and peak memory, plus a profiler trace to locate dominant functions (without changing the scientific code); and
+5. mark all outputs as technical diagnostics, not calibration/evaluation-bank records or scientific evidence, with a hard runtime ceiling and no automatic retry or subsequent dispatch.
+
+This measures the dominant complete-world/analysis cost for one small technical fixture. It does **not** measure calibration-orchestrator, full-bank validation, cross-world aggregation, or N-scaling overhead; those remain unmeasured until a later governed calibration design. The technical confidence parameter, if needed to exercise interval calculation, must be labelled a software-path fixture only and must not freeze the scientific confidence level.
+
+The current branch has no workflow implementing this one-fixture measurement. Creating or modifying a workflow would be a new executable path and is not authorized by the present design/recovery scope. Therefore no code or workflow was changed and no execution is proposed for immediate dispatch. Before seeking execution authorization, the remaining design choices are the technical fixture seed/salt, a hard time ceiling, and the exact diagnostic artifact; N=32 and the positive scenario are the current minimal source-grounded candidates, not scientific design choices.
 
 No numerical N/M/R calibration choice is made here. The default 32-unit fixture in the DGP factory is a software default, not an adopted scientific N. The earlier N=700/M=5/R=4/25-block/3-hour proposal remains withdrawn.
 
 **Current state:** direct theta_A pipeline components IMPLEMENTED; historical integrated contract suite EXECUTED/PASS; direct single-replicate runtime NOT MEASURED; reusable preflight workflow NOT IMPLEMENTED; scientific execution `false`; execution authorization `false`.
+
+
+### 8.4 Calibration-runner completeness constraint
+
+Static inspection of the current protocol confirms that the calibration design validator rejects M<2 or R<2, and the seed-bank validator rejects any bank missing a declared scenario×N×M×R assignment. This is intentional fail-closed behaviour. A single technical fixture must therefore remain outside both calibration/evaluation banks and must not be routed through `run_theta_a_calibration_replicates()`. The direct DGP factory and `run_pipeline()` can still be reused for a technical-only end-to-end measurement without changing those contracts.
