@@ -1,7 +1,7 @@
 # TRANSFORMATIONAL VALUE — Book & Learning Master Architecture
 
 **Identifier:** TGCV-TV-LEARNING-MASTER-001  
-**Version:** 0.6  
+**Version:** 0.7  
 **Date:** 2026-11-26  
 **Status:** STRATEGIC ARCHITECTURE — WORKING DOCUMENT; detailed contents proposal available for review  
 **Branch:** `strategy/transformational-value-learning`  
@@ -760,3 +760,16 @@ This limited authorisation remains in force only for completing and documenting 
 ### Version history
 
 - **v0.6 — 2026-11-26:** Added owner-authorised, narrowly bounded permission for a local, non-production Learning PoC preview and its desktop, mobile, bilingual, diagram and accessibility tests. Production implementation, public release, paid deployment and final framework selection remain unauthorised.
+
+
+## 23. Chapter review and correction discipline
+
+Substantive chapter development must include a section-by-section conceptual review and a controlled correction cycle before a chapter is considered editorially complete. Findings are recorded in a persistent review record; unresolved conceptual choices are decided explicitly; accepted corrections are then integrated into both independently authored Spanish and English manuscripts; and the committed manuscripts are re-read to verify that the corrections and cross-language conceptual equivalence are present.
+
+A review log is not the manuscript and does not demonstrate that a correction has been applied. Review completion, decision resolution, manuscript integration and post-commit verification are distinct states and must be tracked separately. A chapter must not advance as complete merely because its review notes have been written.
+
+The detailed operational procedure is defined in §11.3 of the Content Model & Editorial Workflow. It governs chapter work across the book; the chapter-specific review record provides traceability but does not replace the canonical ES/EN source files.
+
+### Version history
+
+- **v0.7 — 2026-11-27:** Established section-by-section conceptual review, persistent findings, explicit decisions, bilingual manuscript integration and post-commit verification as required chapter-development discipline.
