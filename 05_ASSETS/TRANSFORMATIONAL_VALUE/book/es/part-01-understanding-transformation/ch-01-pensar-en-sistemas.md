@@ -5,7 +5,7 @@ title: "Pensar en sistemas"
 language: es
 content_type: chapter
 status: draft
-version: 0.5
+version: 0.6
 created: 2026-11-27
 updated: 2026-11-27
 authors: []
@@ -380,3 +380,74 @@ La estructura de un sistema está formada por sus elementos y por las relaciones
 Elige un sistema que conozcas y dibuja sus principales elementos y conexiones. Distingue los flujos físicos de los intercambios de información y de las dependencias. ¿Qué comportamiento sería difícil de explicar si ignoraras alguna de esas relaciones? ¿Qué conexiones importantes no aparecen en tu representación?
 
 **Diagrama de apoyo:** [TV-DIA-002 — Relaciones y estructura de una red de suministro de agua](../../../assets/diagrams/TV-DIA-002/README.md)
+
+
+## 1.6. Sistemas abiertos, entornos cambiantes y tiempo
+
+### Los sistemas no operan aislados
+
+Un sistema puede delimitarse para estudiarlo, pero eso no significa que esté aislado de lo que queda fuera de su frontera. Muchos sistemas intercambian materia, energía, información, recursos o servicios con su entorno. Se denominan **sistemas abiertos** cuando esos intercambios son relevantes para su funcionamiento.
+
+Una red de suministro de agua, por ejemplo, recibe agua de fuentes y energía para bombearla y tratarla. Entrega agua a usuarios y organizaciones, genera información sobre su operación y depende de factores externos como la disponibilidad de energía, las condiciones meteorológicas, las normas aplicables y las actividades de proveedores y servicios de mantenimiento.
+
+La frontera permite decidir qué elementos incluimos en el análisis; no elimina las relaciones que atraviesan esa frontera. Por eso, una descripción adecuada debe mostrar tanto la organización interna como los intercambios y dependencias externos que resulten relevantes para la pregunta que estamos estudiando.
+
+### Entradas, salidas e intercambios
+
+Una forma inicial de describir la relación entre un sistema y su entorno consiste en identificar sus **entradas**, **salidas** e **intercambios**. Las entradas son aquello que el sistema recibe; las salidas, aquello que entrega o produce; y los intercambios incluyen también flujos que pueden circular en ambos sentidos.
+
+| Tipo de intercambio | Ejemplo en una red de suministro de agua |
+|---|---|
+| Materia | Agua captada, tratada y distribuida; lodos o residuos derivados del tratamiento |
+| Energía | Electricidad utilizada por bombas y equipos |
+| Información | Datos de sensores, previsiones de demanda, avisos e instrucciones |
+| Recursos y servicios | Repuestos, asistencia técnica, personal especializado |
+| Resultados hacia el entorno | Agua suministrada, información de servicio y residuos gestionados |
+
+Esta clasificación es una ayuda para el análisis, no una lista universal. En algunos sistemas, los flujos financieros, normativos, biológicos o sociales también pueden ser esenciales. La selección depende del propósito y del nivel de detalle del estudio.
+
+Tampoco debemos confundir una entrada con una condición suficiente para el funcionamiento. Recibir energía, por ejemplo, no garantiza que una estación pueda bombear agua si una bomba está averiada, una válvula permanece cerrada o no hay personal autorizado para intervenir.
+
+### El entorno puede cambiar
+
+El entorno de un sistema no es necesariamente estable. Pueden variar la demanda, la disponibilidad de recursos, las condiciones físicas, las tecnologías, las normas y las expectativas de quienes utilizan el sistema.
+
+En una red de agua, una sequía prolongada puede reducir la disponibilidad de recursos hídricos; una ola de calor puede elevar la demanda; una modificación normativa puede exigir nuevos controles; y una interrupción del suministro eléctrico puede limitar temporalmente el bombeo. Estos cambios externos pueden alterar las condiciones en las que el sistema opera, incluso cuando su configuración interna no haya cambiado.
+
+La influencia también puede producirse en sentido inverso. Las decisiones y operaciones del sistema pueden modificar su entorno: una infraestructura puede afectar a los usos del suelo, al consumo energético o a los ecosistemas próximos. Por tanto, la relación sistema-entorno no siempre es unidireccional.
+
+### El tiempo forma parte de la descripción
+
+Una descripción del sistema tomada en un momento concreto no explica necesariamente su funcionamiento a lo largo del tiempo. Los estados, las relaciones, los recursos disponibles y las condiciones del entorno pueden cambiar. Para comprender un sistema dinámico necesitamos observar no solo cómo está configurado, sino también cómo evoluciona.
+
+Conviene distinguir al menos tres escalas temporales:
+
+- **Corto plazo:** variaciones operativas, ciclos diarios de demanda, respuesta a alarmas o interrupciones puntuales.
+- **Medio plazo:** mantenimiento, cambios estacionales, renovación de equipos, ajustes de procedimientos y disponibilidad de recursos.
+- **Largo plazo:** envejecimiento de infraestructuras, evolución demográfica, cambios climáticos, transformación tecnológica y modificaciones regulatorias.
+
+Estas escalas no son universales ni tienen duraciones fijas. Una variación que es rápida para una infraestructura puede ser lenta para otro sistema. Lo importante es elegir una ventana temporal adecuada a la pregunta de análisis y no confundir una observación puntual con un patrón persistente.
+
+### Perturbaciones, adaptación y evolución
+
+Los sistemas pueden responder de distintas maneras ante cambios del entorno o perturbaciones. Pueden absorber una variación sin alterar de forma apreciable su operación, ajustar su funcionamiento, reorganizar algunos elementos o perder la capacidad de prestar el servicio esperado.
+
+Por ejemplo, ante un aumento temporal de la demanda, una red puede utilizar capacidad de bombeo disponible, modificar consignas de operación o gestionar la presión en determinadas zonas. Si la demanda elevada se mantiene durante años, quizá sean necesarias actuaciones de mayor alcance, como ampliar la infraestructura, incorporar nuevas fuentes o modificar los patrones de consumo.
+
+Es útil distinguir entre una respuesta operativa y una transformación más duradera. Ajustar temporalmente una bomba no equivale a rediseñar la red; del mismo modo, una modificación estructural no garantiza por sí sola que el sistema se adapte con éxito. La respuesta debe evaluarse respecto al comportamiento esperado, las restricciones y el horizonte temporal considerado.
+
+### Una fotografía y una película del sistema
+
+Podemos describir un sistema mediante una representación de su configuración en un instante, o mediante una representación que muestre cómo cambian sus condiciones y su comportamiento a lo largo del tiempo. Ambas perspectivas son útiles, pero responden a preguntas distintas.
+
+Una descripción puntual de la red de agua puede mostrar qué depósitos, bombas y conducciones están disponibles hoy. Una descripción temporal puede mostrar cómo varían los niveles de los depósitos, la demanda, el consumo energético y las incidencias durante una semana o una estación.
+
+La perspectiva temporal también obliga a declarar cuándo se recogieron los datos, qué periodo cubren y qué acontecimientos podrían explicar los cambios observados. Sin esa información, podemos atribuir a la estructura del sistema lo que en realidad se debe a una condición temporal o a una perturbación externa.
+
+### Idea clave
+
+Los sistemas abiertos mantienen intercambios con su entorno y operan bajo condiciones que pueden cambiar. Para comprender su funcionamiento no basta con describir sus componentes y relaciones en un instante: también hay que considerar los flujos que cruzan su frontera, las variaciones del entorno y la escala temporal relevante.
+
+### Pregunta de reflexión
+
+Elige un sistema que conozcas. Identifica qué recibe y qué entrega a su entorno, qué condiciones externas pueden cambiar y en qué escalas temporales se manifiestan esos cambios. ¿Qué aspectos de su funcionamiento pasarían inadvertidos si solo lo observaras en un momento concreto?
