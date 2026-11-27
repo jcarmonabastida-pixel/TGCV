@@ -1,0 +1,192 @@
+name: C10-S direct theta_A technical-only preflight
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_technical_preflight:
+        description: "Explicitly authorize ONE technical-only N=32 fixture execution (not scientific calibration)"
+        required: true
+        type: choice
+        options:
+          - "false"
+          - "true"
+        default: "false"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: c10s-theta-a-technical-preflight
+  cancel-in-progress: false
+
+jobs:
+  technical-preflight:
+    if: github.ref == 'refs/heads/research/c10s-m1-engine12-source-only-20261127' && inputs.confirm_technical_preflight == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact dispatch commit
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dacacb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+
+      - name: Install hash-locked harness dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+
+      - name: Execute exactly one technical-only complete-world fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/c10s-theta-a-technical-preflight"
+          timeout --signal=TERM --kill-after=20s 12m python -B - <<'PY'
+          import cProfile
+          import hashlib
+          import json
+          import os
+          import platform
+          import pstats
+          import resource
+          import sys
+          import time
+          from pathlib import Path
+          from types import SimpleNamespace
+
+          harness = Path("03_EXPERIMENTS/C10-S/harness").resolve()
+          sys.path.insert(0, str(harness))
+          from theta_a_calibration_dgp import ThetaACalibrationDGPFactory
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "c10s-theta-a-technical-preflight"
+          # This is a technical-only identity/seed namespace. It is not a
+          # ThetaASeedAssignment bank row and is never passed to bank validators.
+          technical_assignment = SimpleNamespace(
+              world_id="TECH-ONLY-THETA-A-WORLD-20261128-001",
+              world_version="1",
+              dgp_id="DGP-INTERVAL-INTEGRATION-INTERACTION",
+              dgp_version="1",
+              roster_id="TECH-ONLY-THETA-A-ROSTER-20261128-001",
+              roster_version="1",
+              unit_id_prefix="TECH-UE",
+              n_units=32,
+              world_seed=20261128,
+              randomization_salt=hashlib.sha256(
+                  b"TGCV-C10S-THETA-A-TECHNICAL-PREFLIGHT-20261128-001"
+              ).hexdigest(),
+              s3_seed=20261129,
+              run_id="TECH-ONLY-THETA-A-RUN-20261128-001",
+          )
+
+          factory = ThetaACalibrationDGPFactory()
+          build_wall_start = time.perf_counter()
+          build_cpu_start = time.process_time()
+          fixture = factory.build_fixture(
+              theta_a_mode="positive",
+              seed_assignment=technical_assignment,
+              n_units=32,
+          )
+          build_wall = time.perf_counter() - build_wall_start
+          build_cpu = time.process_time() - build_cpu_start
+
+          profiler = cProfile.Profile()
+          pipeline_wall_start = time.perf_counter()
+          pipeline_cpu_start = time.process_time()
+          profiler.enable()
+          result = factory.run_pipeline(
+              fixture,
+              # Software-path setting only; not a scientific confidence-level
+              # decision and not a calibration/evaluation result.
+              theta_a_confidence_level=0.95,
+              theta_a_unit_independence_certified=True,
+          )
+          profiler.disable()
+          pipeline_wall = time.perf_counter() - pipeline_wall_start
+          pipeline_cpu = time.process_time() - pipeline_cpu_start
+
+          if result is None or result.analyzer_result is None or result.evaluator_result is None:
+              raise SystemExit("TECHNICAL_PREFLIGHT_INCOMPLETE: Analyzer/Evaluator result missing")
+
+          profile_path = out / "cprofile_top_cumulative.txt"
+          with profile_path.open("w", encoding="utf-8") as stream:
+              pstats.Stats(profiler, stream=stream).strip_dirs().sort_stats(
+                  "cumulative"
+              ).print_stats(40)
+
+          manifest = {
+              "protocol": "TGCV-C10S-THETA-A-TECHNICAL-PREFLIGHT-001",
+              "classification": "TECHNICAL_DIAGNOSTIC_ONLY_NOT_SCIENTIFIC_EVIDENCE",
+              "source_commit": os.environ.get("GITHUB_SHA"),
+              "workflow_run_id": os.environ.get("GITHUB_RUN_ID"),
+              "python": platform.python_version(),
+              "platform": platform.platform(),
+              "cpu_count": os.cpu_count(),
+              "fixture": {
+                  "scenario": "positive_identified_software_path",
+                  "n_units": 32,
+                  "identity_namespace": "TECH-ONLY-THETA-A-*",
+                  "seed_namespace": "fixed_technical_only_20261128_001",
+                  "calibration_or_evaluation_bank_row": False,
+                  "seed_bank_created": False,
+              },
+              "software_path": {
+                  "confidence_parameter": 0.95,
+                  "confidence_parameter_is_scientific_decision": False,
+                  "unit_independence_flag": True,
+                  "independence_flag_is_empirical_claim": False,
+                  "analyzer_completed": result.analyzer_result is not None,
+                  "evaluator_completed": result.evaluator_result is not None,
+                  "inference_method": result.analyzer_result.inference_method,
+              },
+              "timing_seconds": {
+                  "fixture_build_wall": build_wall,
+                  "fixture_build_cpu": build_cpu,
+                  "complete_pipeline_wall_including_cprofile_overhead": pipeline_wall,
+                  "complete_pipeline_cpu_including_cprofile_overhead": pipeline_cpu,
+              },
+              "process_peak_rss_platform_units": resource.getrusage(
+                  resource.RUSAGE_SELF
+              ).ru_maxrss,
+              "profile_file": "cprofile_top_cumulative.txt",
+              "limits": {
+                  "single_fixture_only": True,
+                  "pipeline_invocations": 1,
+                  "script_timeout_seconds": 720,
+                  "workflow_job_timeout_minutes": 15,
+                  "automatic_retry": False,
+                  "no_calibration_or_evaluation_aggregation": True,
+                  "no_scientific_evidence_claim": True,
+              },
+              "interpretation_limit": (
+                  "One N=32 technical fixture measures only the existing complete-world "
+                  "DGP/assignment/S3/sealing/Analyzer/Evaluator path. It does not measure "
+                  "seed-bank validation, calibration orchestration, cross-world aggregation, "
+                  "or N scaling. cProfile overhead is included in pipeline timing."
+              ),
+          }
+          (out / "technical_preflight_manifest.json").write_text(
+              json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          print("TECHNICAL_PREFLIGHT=COMPLETE", flush=True)
+          print(
+              f"FIXTURE_BUILD_WALL_S={build_wall:.3f} "
+              f"PIPELINE_WALL_S_PROFILED={pipeline_wall:.3f}",
+              flush=True,
+          )
+          PY
+
+      - name: Upload technical-only diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c10s-theta-a-technical-preflight-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/c10s-theta-a-technical-preflight/**
+          if-no-files-found: warn
+          retention-days: 14
