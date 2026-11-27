@@ -700,3 +700,16 @@ System **behaviour** is characterised through patterns of operation, responses o
 The wording should avoid turning this into an absolute rule: the type and amount of evidence depend on the phenomenon and the question being examined. Both manuscripts should preserve the same qualification and conceptual scope, using independently authored wording.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.14 Unknown or unavailable information and deliberate omissions in section 1.3 — accepted
+
+The author approved the following distinction for both language versions:
+
+- **Unknown or unavailable information:** aspects for which sufficient information or accessible evidence is not available.
+- **Deliberate omissions:** aspects that are known or recognised but intentionally excluded from a description or model because of its scope, purpose or chosen level of detail.
+
+Both kinds of limitation should be documented when they may affect interpretation or conclusions. They must not be conflated: one concerns an information or evidence gap; the other concerns a representational decision.
+
+Both manuscripts should preserve this distinction with independently authored wording and equivalent conceptual scope.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
