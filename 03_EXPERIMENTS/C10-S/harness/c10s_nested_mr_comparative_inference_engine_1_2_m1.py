@@ -24,6 +24,7 @@ from c10s_variance_comparison_interface import (
 )
 from c10s_f5_functional_refit_bootstrap import (
     METHOD_ID as M1_METHOD_ID,
+    FIT_CONTRACT_ID as M1_FIT_CONTRACT_ID,
     F5FunctionalRefitBootstrapResult,
     fitted_functional_refit_percentile_bootstrap,
 )
@@ -72,15 +73,18 @@ def _binary_count_vector(rows: Sequence[Sequence[float]]) -> tuple[int, ...]:
 
 
 def _m1_diagnostics(result: F5FunctionalRefitBootstrapResult) -> tuple[tuple[str, str], ...]:
+    original_fit_admissible = result.original_fit.status == "PRIMARY_ANALYTIC_INTERIOR_FIT"
     values = (
         ("m1_status", result.status),
+        ("m1_original_fit_failure_reason", result.original_fit.failure_reason or "NONE"),
+        ("m1_model_point_status", "VALID_ORIGINAL_FIT" if original_fit_admissible else "UNAVAILABLE_ORIGINAL_FIT"),
         ("m1_fit_contract_id", result.fit_contract_id),
         ("m1_original_fit_status", result.original_fit.status),
         ("m1_bootstrap_replicates", str(result.bootstrap_replicates)),
         ("m1_valid_replicates", str(result.valid_replicates)),
         ("m1_failed_replicates", str(result.failed_replicates)),
-        ("m1_point_within", "" if result.point_within is None else format(result.point_within, ".17g")),
-        ("m1_point_between", "" if result.point_between is None else format(result.point_between, ".17g")),
+        ("m1_point_within", "" if not original_fit_admissible or result.point_within is None else format(result.point_within, ".17g")),
+        ("m1_point_between", "" if not original_fit_admissible or result.point_between is None else format(result.point_between, ".17g")),
         ("m1_interval_within", repr(result.within_interval)),
         ("m1_interval_between", repr(result.between_interval)),
         ("m1_global_mle_certificate_used", str(result.global_mle_certificate_used)),
@@ -122,9 +126,25 @@ def compare_f5_dataset(
     )
     if legacy.engine_id != "C10S_NESTED_MR_COMPARATIVE_INFERENCE_ENGINE_1.1":
         raise M1ChallengerError("LEGACY_ENGINE_ID_MISMATCH")
+    if m1.method_id != M1_METHOD_ID or m1.fit_contract_id != M1_FIT_CONTRACT_ID:
+        raise M1ChallengerError("M1_METHOD_OR_FIT_CONTRACT_ID_MISMATCH")
+    if m1.status not in {"EMITTED", "ABSTAINED_ORIGINAL_FIT", "ABSTAINED_BOOTSTRAP_FIT_FAILURE"}:
+        raise M1ChallengerError("UNKNOWN_M1_RESULT_STATUS")
+    if m1.status == "EMITTED" and (m1.within_interval is None or m1.between_interval is None):
+        raise M1ChallengerError("M1_EMITTED_STATUS_REQUIRES_BOTH_COMPONENT_INTERVALS")
+    if m1.status != "EMITTED" and (m1.within_interval is not None or m1.between_interval is not None):
+        raise M1ChallengerError("M1_ABSTENTION_MUST_NOT_CARRY_COMPONENT_INTERVALS")
     legacy_ids = {legacy.baseline.method_id, *(item.method_id for item in legacy.candidates)}
-    if legacy_ids != {C0_METHOD_ID, C5_METHOD_ID}:
+    if (legacy.baseline.method_id != C0_METHOD_ID
+            or len(legacy.candidates) != 1
+            or legacy.candidates[0].method_id != C5_METHOD_ID
+            or legacy.candidates[0].comparison.method_id != C5_METHOD_ID
+            or legacy_ids != {C0_METHOD_ID, C5_METHOD_ID}
+            or legacy.unavailable_methods):
         raise M1ChallengerError("LEGACY_C0_C5_ROSTER_MISMATCH")
+    if (legacy.input_m != len(rows) or legacy.input_r != len(rows[0])
+            or legacy.target_m != target_m or legacy.target_r != target_r):
+        raise M1ChallengerError("LEGACY_DESIGN_IDENTITY_MISMATCH")
 
     m1 = fitted_functional_refit_percentile_bootstrap(
         counts, r=len(rows[0]),
@@ -145,13 +165,15 @@ def compare_f5_dataset(
         method_id=M1_METHOD_ID,
         within_interval=within_interval,
         between_interval=between_interval,
+        mcse_estimate=None,
         mcse_interval=None,
-        abstention_reason=abstention,
+        abstention_reason=("M1_MCSE_INTERVAL_NOT_IMPLEMENTED" if m1.status == "EMITTED" else abstention),
         provenance=common.provenance + (
             ("interval_method", M1_METHOD_ID),
             ("point_metric_contract", "COMMON_RAW_NESTED_MR"),
             ("m1_fit_contract_id", m1.fit_contract_id),
             ("m1_point_estimates_role", "AUXILIARY_MODEL_DIAGNOSTICS_ONLY"),
+            ("mcse_estimation_and_interval", "NOT_IMPLEMENTED"),
         ),
     )
     m, r = len(rows), len(rows[0])
@@ -177,6 +199,8 @@ def _validate_roster(record: M1ChallengerDatasetComparison) -> None:
         raise M1ChallengerError("INCOMPLETE_OR_UNEXPECTED_VERSION_1_2_ROSTER")
     if record.m1_comparison.method_id != M1_METHOD_ID:
         raise M1ChallengerError("M1_METHOD_ID_MISMATCH")
+    if record.m1_comparison.mcse_estimate is not None or record.m1_comparison.mcse_interval is not None:
+        raise M1ChallengerError("M1_MCSE_MUST_REMAIN_UNAVAILABLE")
     if record.m1_comparison.method_id == C5_METHOD_ID:
         raise M1ChallengerError("M1_MUST_NOT_OVERWRITE_C5_IDENTITY")
 
