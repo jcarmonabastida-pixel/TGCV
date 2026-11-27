@@ -713,3 +713,14 @@ Both kinds of limitation should be documented when they may affect interpretatio
 Both manuscripts should preserve this distinction with independently authored wording and equivalent conceptual scope.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+
+### 5.15 Actor scope in section 1.4 — accepted
+
+The author approved the use of **actor** in the socio-organisational sense for both language versions: a person, group or organisation that participates in the system or has a relevant influence on its functioning.
+
+Autonomous systems, software agents and other non-human elements may form part of the system, perform functions or produce effects, but they will not automatically be classified as actors in this introductory chapter. If **agent** is used in a broader technical sense, that meaning must be made explicit.
+
+This terminology choice is intended to keep the introductory vocabulary clear and avoid conflating socio-organisational analysis with the different conventions used in agent-based modelling. Both manuscripts should preserve the same scope and distinction, using natural, independently authored wording.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
