@@ -18,12 +18,19 @@ M1 = m.M1_METHOD_ID
 
 def fake_m1(status="EMITTED", within=(0.1, 0.4), between=(0.0, 0.2),
             point_within=0.25, point_between=0.05, failed=0):
+    original_admissible = status != "ABSTAINED_ORIGINAL_FIT"
     return SimpleNamespace(
-        status=status, fit_contract_id="FIT_1",
-        original_fit=SimpleNamespace(status="PRIMARY_ANALYTIC_INTERIOR_FIT"),
+        method_id=M1, status=status, fit_contract_id=m.M1_FIT_CONTRACT_ID,
+        target_m=2, target_r=2,
+        original_fit=SimpleNamespace(
+            status="PRIMARY_ANALYTIC_INTERIOR_FIT" if original_admissible else "NO_ADMISSIBLE_PRIMARY_FIT",
+            failure_reason=None if original_admissible else "NO_FINITE_SUCCESSFUL_ANALYTIC_GRADIENT_START",
+        ),
         bootstrap_replicates=20, valid_replicates=20-failed,
-        failed_replicates=failed, point_within=point_within,
-        point_between=point_between, within_interval=within if status == "EMITTED" else None,
+        failed_replicates=failed,
+        point_within=point_within if original_admissible else None,
+        point_between=point_between if original_admissible else None,
+        within_interval=within if status == "EMITTED" else None,
         between_interval=between if status == "EMITTED" else None,
         global_mle_certificate_used=False, failure_counts=(("FIT_FAIL", failed),) if failed else (),
     )
@@ -50,7 +57,7 @@ def record(dataset_id="d1", m1_status="EMITTED", interval=(0.1, 0.4)):
         within_interval=result.within_interval,
         between_interval=result.between_interval,
         mcse_interval=None,
-        abstention_reason=None if m1_status == "EMITTED" else "M1_" + m1_status,
+        abstention_reason="M1_MCSE_INTERVAL_NOT_IMPLEMENTED" if m1_status == "EMITTED" else "M1_" + m1_status,
     )
     return m.M1ChallengerDatasetComparison(
         engine_id=m.ENGINE_ID, dataset_id=dataset_id, family="F5",
@@ -89,11 +96,14 @@ class M1ChallengerContractTests(unittest.TestCase):
         self.assertEqual(item.m1_result.point_between, 0.05)
         self.assertNotEqual(item.m1_result.point_between,
                             item.m1_comparison.between_estimate_raw)
+        self.assertEqual(dict(item.m1_diagnostics)["m1_point_between"], "0.050000000000000003")
 
     def test_06_original_fit_abstention_has_no_interval(self):
         item = record(m1_status="ABSTAINED_ORIGINAL_FIT")
         self.assertIsNone(item.m1_comparison.within_interval)
         self.assertEqual(item.m1_comparison.abstention_reason, "M1_ABSTAINED_ORIGINAL_FIT")
+        self.assertEqual(dict(item.m1_diagnostics)["m1_model_point_status"], "UNAVAILABLE_ORIGINAL_FIT")
+        self.assertEqual(dict(item.m1_diagnostics)["m1_point_between"], "")
 
     def test_07_bootstrap_failure_abstains_at_dataset_level(self):
         item = record(m1_status="ABSTAINED_BOOTSTRAP_FIT_FAILURE")
@@ -168,7 +178,14 @@ class M1ChallengerContractTests(unittest.TestCase):
                 m1_bootstrap_replicates=20, m1_bootstrap_seed=33,
             )
 
-    def test_15_m1_cannot_overwrite_c5_identity(self):
+    def test_15_m1_mcse_is_explicitly_unavailable(self):
+        item = record()
+        self.assertIsNone(item.m1_comparison.mcse_estimate)
+        self.assertIsNone(item.m1_comparison.mcse_interval)
+        self.assertEqual(item.m1_comparison.abstention_reason,
+                         "M1_MCSE_INTERVAL_NOT_IMPLEMENTED")
+
+    def test_16_m1_cannot_overwrite_c5_identity(self):
         item = record()
         self.assertEqual(item.legacy_record.candidates[0].method_id, C5)
         self.assertEqual(item.m1_comparison.method_id, M1)
