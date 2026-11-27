@@ -184,7 +184,7 @@ The orchestrator is a reusable library function, not a standalone CLI or a ready
 
 ### 8.3 Disposition and minimum next action
 
-**PRELIGHT EXECUTION PATH: BLOCKED — NO REUSABLE WORKFLOW.** The historical contract-test workflow cannot be treated as a preflight because it does not time the required pipeline; P178/F5/nested-M/R workflows cannot be substituted because they execute different workloads or estimands.
+**PREFLIGHT EXECUTION PATH: BLOCKED — NO REUSABLE WORKFLOW.** The historical contract-test workflow cannot be treated as a preflight because it does not time the required pipeline; P178/F5/nested-M/R workflows cannot be substituted because they execute different workloads or estimands.
 
 A valid technical-only preflight would need a narrowly scoped execution wrapper that:
 
