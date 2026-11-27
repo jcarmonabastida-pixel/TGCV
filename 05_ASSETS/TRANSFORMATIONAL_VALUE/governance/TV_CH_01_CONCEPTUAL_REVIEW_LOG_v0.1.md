@@ -690,3 +690,13 @@ The author approved the following distinction for both language versions:
 The text should clarify that not every property needs to be represented by a variable, and that a variable may be used to observe changes in a property or condition over time. Both manuscripts should retain this conceptual distinction and use equivalent examples, with independently authored wording.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.13 System behaviour and evidence in section 1.3 — accepted
+
+The author approved the following clarification for both language versions:
+
+System **behaviour** is characterised through patterns of operation, responses or changes in state observed or inferred under specified conditions. A single observation or measurement may describe a state, but is not normally sufficient on its own to establish a pattern of behaviour. Repeated observations or other evidence appropriate to the phenomenon are generally needed.
+
+The wording should avoid turning this into an absolute rule: the type and amount of evidence depend on the phenomenon and the question being examined. Both manuscripts should preserve the same qualification and conceptual scope, using independently authored wording.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
