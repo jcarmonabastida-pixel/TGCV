@@ -280,6 +280,18 @@ The text must not imply that all system behaviour is necessarily emergent.
 
 **Implementation status:** decision recorded; wording not yet integrated into either manuscript.
 
+**Decision 1.1-OPERATIONAL-DEFINITION — accepted by the author (2026-11-27).**
+
+The following working definition is accepted as the basis for both language versions:
+
+> A system is a delimitable set of related and organised elements that interact or maintain relevant dependencies, and whose behaviour can be understood by considering both its elements and the relationships between them, within a context and over a given period.
+
+The definition does not require every system to have an explicit purpose, all system behaviours to be emergent, or all elements to interact directly.
+
+**Rationale:** This definition consolidates the agreed scope and the distinctions among system of interest, analytical unit, analytical perspective, system behaviour and emergent behaviour. It is intended as an operational introductory definition, not as a universal definition binding every discipline.
+
+**Implementation status:** decision recorded; wording not yet integrated into either manuscript.
+
 After the conceptual review of sections 1.1–1.9 is complete:
 1. Review the accumulated findings for consistency and dependencies across the chapter.
 2. Resolve open recommendations explicitly; do not silently convert suggestions into decisions.
