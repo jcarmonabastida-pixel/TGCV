@@ -5,7 +5,7 @@ title: "Pensar en sistemas"
 language: es
 content_type: chapter
 status: draft
-version: 0.6
+version: 0.7
 created: 2026-11-27
 updated: 2026-11-27
 authors: []
@@ -451,3 +451,79 @@ Los sistemas abiertos mantienen intercambios con su entorno y operan bajo condic
 ### Pregunta de reflexión
 
 Elige un sistema que conozcas. Identifica qué recibe y qué entrega a su entorno, qué condiciones externas pueden cambiar y en qué escalas temporales se manifiestan esos cambios. ¿Qué aspectos de su funcionamiento pasarían inadvertidos si solo lo observaras en un momento concreto?
+
+## 1.7. Las descripciones de sistemas son modelos: alcance, supuestos y omisiones
+
+### Describir no es reproducir toda la realidad
+
+Una descripción de un sistema no es el sistema mismo. Es una representación construida para comprender algún aspecto de él. Puede adoptar la forma de un texto, un diagrama, una tabla, un conjunto de variables, un modelo matemático o una combinación de varios recursos.
+
+Toda representación selecciona qué mostrar y qué dejar fuera. Incluso una descripción muy detallada simplifica la realidad: no incluye todos los elementos, relaciones, estados, acontecimientos y condiciones posibles. Esto no la convierte automáticamente en una descripción deficiente. La cuestión es si las decisiones de simplificación son adecuadas para el propósito del análisis y si sus límites se hacen explícitos.
+
+En una red de suministro de agua, por ejemplo, un esquema de tuberías puede ser suficiente para estudiar la conectividad entre depósitos y zonas de consumo. No bastará necesariamente para analizar la respuesta ante una interrupción eléctrica, la organización del mantenimiento o los efectos de una variación prolongada de la demanda.
+
+### El propósito determina el alcance del modelo
+
+Un modelo es una representación selectiva del sistema, construida para responder a una pregunta o apoyar una tarea. Su alcance define qué partes, relaciones, variables y condiciones se incluyen, así como el nivel de detalle con el que se representan.
+
+No existe un único modelo que resulte igualmente útil para todas las preguntas. Consideremos varias representaciones posibles de una misma red:
+
+| Pregunta de análisis | Representación útil | Aspectos que prioriza | Aspectos que puede dejar fuera |
+|---|---|---|---|
+| ¿Cómo llega el agua a cada zona? | Esquema de la red | Tuberías, depósitos, conexiones y dirección del flujo | Consumo energético, mantenimiento y organización |
+| ¿Cómo responde la red a cambios de demanda? | Modelo hidráulico u operativo | Caudales, presiones, niveles y condiciones de operación | Decisiones organizativas o impactos sociales no modelizados |
+| ¿Qué ocurre si falla el suministro eléctrico? | Modelo de dependencias y escenarios | Alimentación eléctrica, bombeo, controles y consecuencias de la interrupción | Detalles hidráulicos que no afecten a la pregunta |
+| ¿Cómo se mantiene la continuidad del servicio? | Modelo socio-técnico del servicio | Equipos, personal, procedimientos, repuestos y coordinación | Detalles de componentes que no condicionen la continuidad |
+
+Las representaciones de la tabla no son intercambiables. Cada una hace visibles determinados aspectos y facilita un tipo de razonamiento. Una puede complementar a otra cuando la pregunta exige conectar dimensiones distintas.
+
+### Supuestos: lo que damos por válido para poder analizar
+
+Para construir un modelo necesitamos adoptar supuestos. Algunos simplifican la complejidad; otros fijan condiciones de partida, establecen relaciones o permiten trabajar con información incompleta.
+
+Por ejemplo, un análisis de la red podría suponer que la demanda permanece constante durante un intervalo, que determinados equipos están disponibles o que las características de las tuberías no cambian durante el periodo estudiado. Estos supuestos pueden ser razonables para una pregunta concreta y un horizonte temporal limitado, pero dejarían de serlo en otras circunstancias.
+
+Un supuesto no debe confundirse con un hecho observado. Tampoco equivale a una incertidumbre cuantificada. Si no sabemos si una bomba estará disponible, no podemos presentar su disponibilidad como un dato confirmado simplemente porque el modelo necesite una condición de partida.
+
+Conviene registrar los supuestos que puedan influir en los resultados, explicar por qué se adoptan y señalar bajo qué condiciones dejarían de ser aceptables. Cuando sea posible, podemos comprobar cómo cambian las conclusiones al modificar los supuestos más relevantes.
+
+### Omisiones: lo que el modelo no representa
+
+Las omisiones son inevitables, pero no todas tienen la misma importancia. Dejar fuera un detalle irrelevante para la pregunta puede hacer que el modelo sea más claro y manejable. Omitir una dependencia crítica, en cambio, puede producir una explicación incompleta o una conclusión engañosa.
+
+Imaginemos que un modelo representa las bombas, tuberías y depósitos de una red, pero no incluye la dependencia de las estaciones respecto al suministro eléctrico. Puede describir adecuadamente ciertos comportamientos hidráulicos en condiciones normales y, sin embargo, resultar insuficiente para analizar la continuidad del servicio durante un apagón.
+
+Por eso, además de preguntar qué incluye una representación, debemos preguntar qué no incluye y qué consecuencias puede tener esa ausencia. Una omisión se vuelve especialmente relevante cuando podría cambiar la interpretación, las decisiones o las conclusiones del análisis.
+
+### Adecuación y límites de uso
+
+La calidad de un modelo no depende únicamente de su complejidad o del número de variables que contiene. Depende de su adecuación a la pregunta, de la calidad de la información utilizada y de la claridad con la que se declaran sus límites.
+
+Antes de utilizar una representación, conviene comprobar:
+
+- **Propósito:** ¿qué pregunta pretende responder?
+- **Alcance:** ¿qué elementos, relaciones y condiciones incluye?
+- **Nivel de detalle:** ¿es suficiente para la tarea sin introducir complejidad innecesaria?
+- **Supuestos:** ¿qué condiciones se dan por válidas y con qué justificación?
+- **Omisiones:** ¿qué aspectos relevantes no están representados?
+- **Evidencia:** ¿qué información respalda los datos y relaciones utilizados?
+- **Límites de uso:** ¿en qué situaciones no deberíamos utilizar este modelo para extraer conclusiones?
+
+Estas comprobaciones no eliminan la incertidumbre ni garantizan que el modelo sea correcto. Ayudan a evitar que una representación útil para una tarea se utilice fuera de su ámbito sin justificación.
+
+### Revisar el modelo cuando cambia la pregunta o el sistema
+
+Un modelo no debe considerarse definitivo. Puede necesitar ajustes cuando cambia el propósito del análisis, aparece nueva información, se detecta una relación omitida o el propio sistema evoluciona.
+
+Si el objetivo pasa de estudiar el flujo de agua a evaluar la resiliencia del servicio, quizá debamos incorporar dependencias energéticas, capacidades de recuperación, personal, procedimientos y coordinación con proveedores. No se trata simplemente de añadir detalle: cambia qué aspectos son relevantes para responder a la nueva pregunta.
+
+También puede ser necesario mantener varias representaciones complementarias. Un modelo hidráulico y otro socio-técnico pueden describir dimensiones diferentes de la misma infraestructura. Integrarlos requiere comprender qué pregunta responde cada uno y qué relaciones existen entre las dimensiones representadas.
+
+### Idea clave
+
+Toda descripción de un sistema es un modelo selectivo. Su utilidad depende de que el alcance, los supuestos y las omisiones sean adecuados y explícitos respecto a la pregunta que pretende responder.
+
+### Pregunta de reflexión
+
+Piensa en un sistema que conozcas y en una representación que se utilice para describirlo. ¿Qué pregunta permite responder? ¿Qué supuestos incorpora? ¿Qué aspecto importante deja fuera? ¿En qué situación podría conducir a una conclusión incompleta si se utilizara más allá de su propósito original?
+
