@@ -1,6 +1,6 @@
 # C10-S — Coverage-first execution focus 001
 
-**Status:** ACTIVE RESEARCH DIRECTION — DEVELOPMENT ONLY  
+**Status:** ACTIVE RESEARCH DIRECTION — DESIGN/RECOVERY ONLY PENDING CANONICAL ROUTING AND AUTHORIZATION  
 **Date:** 2026-11-27  
 **Branch:** `research/c10s-coverage-first-focus-20261127`  
 **Parent:** `research/c10s-instrumental-autonomous-workpackage-20261126`  
@@ -42,20 +42,11 @@ The exact global-MLE certificate improved fit classification/provenance but did 
 
 ## 3. Work scope — only the deficits
 
-### Priority 1 — F5 M10/R5: C5 coverage failure; method-specific G7/M1 emission failures
+### Closed diagnostic blocker — F5 M10/R5: no supported candidate
 
-C5 B2/B3 emitted 98.10–98.22% but overcovered both components. G7 v1.1 emitted 88.5%; M1-PCT emitted only 4%. These are different methods/contracts. The immediate task is a **coverage diagnosis and minimal candidate decision**, not a new inference architecture. Do not treat the emission failures of G7/M1 as C5 emission failures.
+The historical diagnosis is complete and persisted in `C10S_F5_M10R5_COVERAGE_EMISSION_RECONCILIATION_001.md` and `C10S_F5_M10R5_MINIMUM_METHOD_DECISION_001.md`. Disposition: `NO_SUPPORTED_F5_M10R5_CANDIDATE`. C5 B2/B3 has adequate emission but overcovers; G7 v1.1 has 88.5% emission and overcoverage; M1-PCT emits only 4% under its strict refit contract. No defensible candidate is currently supported. Do not reopen M10/R5 or relax refit/abstention rules unless new evidence identifies a specific correctable mechanism. M2 profile likelihood remains uncalibrated and is not the default route.
 
-1. Reconcile the existing G7 v1.1 and M1-PCT records by failure class and target component. Separate genuine boundary/weak-identification states from optimizer termination or numerical warnings.
-2. Use existing B2/B3 and G7 diagnostics only descriptively; do not retune against their exposed outcomes.
-3. Reconcile the existing production/analytic functional diagnostic: W/B functional differences are negligible for the vast majority of paired M10/R5 records. Do not extend optimizer certification unless a W/B coverage failure is shown to depend on it. The current M1-PCT strict refit contract has unacceptable emission; it does not license dropping failed refits.
-4. Decide, on design grounds only, whether a boundary-aware refitted bootstrap can return valid W/B intervals without conditioning on successful interior fits, dropping replicates, or concealing non-identification. Compare this only against direct W/B profile likelihood if Route A is not defensible. If neither has a clear coverage/emission contract, record NO_SUPPORTED_F5_M10R5_CANDIDATE and stop.
-5. Only after a clear candidate and failure contract exist, run a small, disjoint development-only comparison targeted at the failure mechanism. Report coverage, Wilson interval, emission, width, directional misses, fit-state counts and runtime separately for within and raw-between.
-6. Stop candidate expansion as soon as the comparison discriminates. If the candidate fails coverage or emission, preserve the failure and identify the next specific cause; do not add exact global certificates, profile topology machinery or more precision unless evidence shows that exact item is necessary to fix a coverage/emission failure.
-
-M2 component profile likelihood is **not the default next step**. Its LR cutoff is uncalibrated, its full inversion/topology work became computationally expensive, and no evidence yet shows that this complexity is necessary to solve the observed coverage problem. Keep the existing design/code as historical research; do not extend it or run it unless a simpler coverage-focused candidate is shown inadequate for a specific inferential reason.
-
-### Priority 2 — F5 M30/R20 raw-between: isolated undercoverage
+### Current next coverage target — F5 M30/R20 raw-between: isolated undercoverage
 
 Do not conflate this with M10/R5 weak-identification/emission failure.
 
@@ -108,13 +99,13 @@ The deliverable for any such refinement must be an observable improvement in cov
 
 ## 6. Work sequence and exit conditions
 
-1. **Coverage ledger:** reconcile all currently available historical results into one compact cell × component table, including the exact method/version, data status, coverage, Wilson, emission and reason for failure. No new simulation.
-2. **F5 M10/R5 diagnosis:** isolate the dominant source of under/overcoverage and abstention. Produce a short decision on the minimum candidate and why it is expected to address the observed defect.
-3. **One bounded F5 development comparison:** only if step 2 identifies a testable, defensible candidate. Use disjoint development seeds; no holdout.
-4. **F5 M30/R20 raw-between diagnosis:** targeted only to the undercoverage component.
-5. **F1 raw-between cutoff development:** reuse existing implementation; no new solver.
-6. **Prospective freeze:** only after every required component has a candidate with adequate disjoint development evidence, freeze one method per component/family, fresh seed plan, K/B and MCSE justification, workflow and adjudicator.
-7. Return to the user only when a new Tier-A launch package is genuinely ready, or when a hard scientific blocker is demonstrated. Tier-A launch still requires separate explicit user authorization.
+1. **Historical coverage ledger:** complete; do not rerun historical banks.
+2. **F5 M10/R5:** diagnosis complete; `NO_SUPPORTED_F5_M10R5_CANDIDATE`. Keep blocked unless a new, specific, defensible interval contract emerges.
+3. **F5 M30/R20 raw-between:** current target. The K=400/B=100 run `45976887796` was cancelled and produced no statistical result. The next proposed screen is K=30/B=25, one cell, existing M1-PCT contract, fresh disjoint development seeds, per-dataset checkpoints, hard 30-minute cap. This remains a proposal, not a dispatched run.
+4. **Canonical C10 recovery gate:** before any new empirical run, reconcile the canonical C10 methodological state required by `main` bootstrap and confirm applicable execution authority. The bootstrap currently routes to design/recovery only; no new run may be dispatched until this is resolved.
+5. **F1 raw-between:** afterwards, review/calibrate the existing implementation only; no new solver.
+6. **Prospective freeze:** only after all required components have adequate disjoint development evidence, freeze methods, seed plan, K/B and MCSE justification, workflow and adjudicator.
+7. Tier-A confirmatory, Tier-B and causal C10-S execution each remain subject to their separate explicit authorization.
 
 F1 within and F5 M30/R20 within are not reopened unless new evidence directly contradicts their bounded existing PASS evidence.
 
@@ -135,4 +126,4 @@ Every update must start with the coverage question:
 
 If that question has no concrete answer, do not perform the action.
 
-The historical coverage ledger is recorded in `03_EXPERIMENTS/C10-S/diagnostics/C10S_TIER_A_COVERAGE_LEDGER_001.md`. M10/R5 is blocked as `NO_SUPPORTED_F5_M10R5_CANDIDATE`. The single M30/R20 raw-between M1-PCT screen (run `45976887796`) is the one-off legacy exception currently in progress; no duplicate is allowed. All subsequent diagnostics must fit the 30-minute cap.
+The historical coverage ledger is recorded in `03_EXPERIMENTS/C10-S/diagnostics/C10S_TIER_A_COVERAGE_LEDGER_001.md`. M10/R5 is blocked as `NO_SUPPORTED_F5_M10R5_CANDIDATE`. The single M30/R20 raw-between M1-PCT screen (run `45976887796`) was cancelled by the user; GitHub confirms the calculation step was cancelled and no artifact/statistical result was produced. Do not rerun it. The proposed K=30/B=25 screen is not dispatchable until canonical C10 recovery and applicable authorization are resolved. All future development runs, if authorized, must fit the 30-minute cap.
