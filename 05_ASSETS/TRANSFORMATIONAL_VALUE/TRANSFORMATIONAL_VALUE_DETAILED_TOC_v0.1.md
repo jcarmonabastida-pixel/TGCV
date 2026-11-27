@@ -1,7 +1,7 @@
 # TRANSFORMATIONAL VALUE — Detailed Table of Contents (Working Proposal)
 
 **Identifier:** TGCV-TV-TOC-001  
-**Version:** 0.2  
+**Version:** 0.3  
 **Date:** 2026-11-26  
 **Status:** EDITORIAL PROPOSAL — FOR STRUCTURAL REVIEW  
 **Governing document:** `05_ASSETS/TRANSFORMATIONAL_VALUE/TRANSFORMATIONAL_VALUE_LEARNING_MASTER_ARCH_v0.1.md`  
@@ -536,3 +536,21 @@ These questions should be resolved before treating the contents as approved:
 
 - **v0.1 — 2026-11-26:** First detailed table-of-contents proposal, including chapter purposes, section-level breakdown, chapter template, content dependencies and structural review questions.
 - **v0.2 — 2026-11-26:** Added native Spanish and English authorship as a requirement applying to every chapter and section, with independent review and bilingual completeness controls.
+
+
+## 9. Chapter drafting, conceptual review and correction sequence
+
+The chapter template above defines reader-facing content; it does not by itself define when a chapter is editorially complete. Each substantive chapter must follow the controlled review cycle specified in the Content Model & Editorial Workflow:
+
+1. Draft the Spanish and English manuscripts as independent original texts.
+2. Review both versions section by section and record conceptual findings in a persistent, chapter-specific review record.
+3. Identify and explicitly resolve open decisions before making substantive corrections.
+4. Integrate accepted corrections into both canonical language manuscripts, preserving natural expression in each language.
+5. Re-read the committed manuscripts and verify correction coverage, conceptual equivalence, examples, qualifications, references and terminology.
+6. Record deferred findings and any remaining review requirements; proceed to the applicable editorial, subject-matter and cross-language gates only when the relevant work is complete.
+
+A review record documents findings and decisions; it does not replace the chapter text or prove that corrections have been integrated. Do not move to the next chapter on the assumption that a chapter is complete while accepted corrections remain only in its review log.
+
+### Version history
+
+- **v0.3 — 2026-11-27:** Added the chapter-level conceptual review and correction sequence, aligned with the governing Content Model & Editorial Workflow.
