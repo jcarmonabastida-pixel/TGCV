@@ -679,3 +679,14 @@ A **state** is the condition of a system or element at a specified reference mom
 The text should not conflate a state with the set of observations collected over a period. Both manuscripts should preserve this distinction with independently authored, natural wording.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.12 Properties and variables in section 1.3 — accepted
+
+The author approved the following distinction for both language versions:
+
+- **Property:** a characteristic attributed to an element or system, such as a pump's rated capacity.
+- **Variable:** a quantity or representation used to describe or track a relevant characteristic or condition, such as the flow delivered at a given moment.
+
+The text should clarify that not every property needs to be represented by a variable, and that a variable may be used to observe changes in a property or condition over time. Both manuscripts should retain this conceptual distinction and use equivalent examples, with independently authored wording.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
