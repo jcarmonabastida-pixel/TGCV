@@ -733,3 +733,17 @@ The author approved the criterion that an actor may be located inside or outside
 Both language versions should preserve this distinction and explain that the system boundary and the analytical relevance of an actor are related but separate questions. Wording should be natural and independently authored in each language.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+
+### 5.17 Individual and system-level capabilities in section 1.4 — accepted
+
+The author approved the distinction for both language versions:
+
+- **Individual capability:** the ability of an actor or component to perform an activity under specified conditions.
+- **System-level capability:** the ability of the organised whole to perform an activity or achieve an outcome through the combination and coordination of its elements.
+
+System-level capability must not be presented as the simple sum of individual capabilities. It may depend on coordination, interfaces, resources and operating conditions.
+
+Both manuscripts should preserve this distinction with natural, independently authored wording and equivalent conceptual scope.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
