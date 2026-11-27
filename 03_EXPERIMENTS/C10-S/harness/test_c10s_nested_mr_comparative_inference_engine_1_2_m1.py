@@ -64,7 +64,7 @@ def record(dataset_id="d1", m1_status="EMITTED", interval=(0.1, 0.4)):
         engine_id=m.ENGINE_ID, dataset_id=dataset_id, family="F5",
         input_m=2, input_r=2, target_m=2, target_r=2,
         legacy_record=legacy, m1_comparison=m1_comparison,
-        m1_result=result, m1_diagnostics=(),
+        m1_result=result, m1_diagnostics=m._m1_diagnostics(result),
     )
 
 
