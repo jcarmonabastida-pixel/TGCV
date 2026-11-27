@@ -243,7 +243,7 @@ In accordance with the Content Model §11.3, the next phase resolves the finding
 **Current phase:** reviewed → decisions pending.  
 **Editing authorisation:** not yet established. No manuscript changes are authorised by this status update.
 
-## 6. Resolution and manuscript integration
+## 7. Resolution and manuscript integration
 
 After the conceptual review of sections 1.1–1.9 is complete:
 1. Review the accumulated findings for consistency and dependencies across the chapter.
@@ -255,9 +255,10 @@ After the conceptual review of sections 1.1–1.9 is complete:
 
 Until that integration step is authorised and completed, the findings in this log do not alter the manuscripts or their `draft` status.
 
-## 7. Change history
+## 8. Change history
 
 - **v0.1 — 2026-11-27:** Created the Chapter 1 conceptual review record; preserved the findings, bilingual observations, proposed resolutions and unverified source candidates for sections 1.1 and 1.2; recorded that manuscript changes have not been applied.
+- **2026-11-27:** Completed the conceptual review records for sections 1.3–1.9; reconciled the completion status for all nine sections and documented the decision-resolution phase. No manuscript changes were made.
 
 ### 4.5 Section 1.5 — Relaciones, interacciones y estructura del sistema / Relationships, Interactions and System Structure
 
