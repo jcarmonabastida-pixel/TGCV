@@ -1106,3 +1106,20 @@ The prior M1 M30/R20 pilot (K=50, B=100) emitted 50/50 and had 94% descriptive r
 **Current observed state at record time:** workflow `45976887796` is `in_progress`; no result or artifact is yet available. Do not start a duplicate run. The workflow timeout is 165 minutes, below the three-hour operational ceiling. This is not Tier-A, not confirmatory, and does not authorize Tier-A, Tier-B or causal C10-S execution.
 
 No acceptance threshold, estimand, DGP, interval rule or fit-state/abstention rule was changed.
+
+
+## 54. Runtime discipline correction — 2026-11-27
+
+The K=400/B=100 M30/R20 raw-between M1-PCT development run `45976887796` was still in its compute step after approximately 95 minutes at the 11:24 Madrid check. The earlier 84-minute estimate was not reliable. This exposes an operational failure in the run-sizing forecast; elapsed time alone is not evidence of progress or scientific value.
+
+**Binding rule for subsequent development work:**
+- hard timeout `30 minutes` per run;
+- no new run may inherit the 165-minute timeout used by the current one-off legacy run;
+- use small staged diagnostic probes (typically K=25–50, B=25–50) to identify gross emission/fit-state/coverage-direction issues; explicitly state that these cannot certify coverage;
+- any escalation requires an explicit MCSE/power justification and a runtime estimate grounded in measured per-dataset cost, still fitting the 30-minute cap;
+- require dataset/stage checkpoints and progress visibility;
+- no duplicate, automatic rerun, or silent batch expansion.
+
+The current run `45976887796` is a one-off legacy exception already in progress. Do not start another run in parallel or repeat it automatically. All future workflows must use `timeout-minutes: 30`.
+
+This correction does not change statistical acceptance thresholds, estimands, historical results or execution authorization. It is an operational constraint intended to prevent long, low-observability runs from delaying the coverage work.
