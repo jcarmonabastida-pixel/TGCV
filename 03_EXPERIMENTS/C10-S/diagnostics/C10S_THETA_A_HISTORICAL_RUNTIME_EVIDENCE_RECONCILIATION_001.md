@@ -104,3 +104,54 @@ The measurement must use the exact direct theta_A code/dependency closure and a 
 **Execution authorization:** `false`.
 
 The correct next step is a historical provenance recovery of the integrated contract-test executions and any exact direct theta_A timing artefacts. If no such runtime evidence exists, the only honest conclusion is that a separately authorized technical-only resource preflight would be needed before any calibration schedule can be costed. No new runner or orchestration layer should be built at this stage.
+
+
+## 7. Exact recovery of the prior integrated theta_A contract-suite execution
+
+The historical run that had not been located in the earlier pass has now been recovered.
+
+**Run:** [45044946102 — C10-S integrated synthetic contract suite](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45044946102)  
+**Commit:** `78c2b17c6305f2a77c2f48695cae5a73f0f1de83`  
+**Branch:** `research/c10s-f1-integrated-correction-20261119`  
+**Result:** SUCCESS  
+**Run wall duration:** 58 seconds (16:38:12Z–16:39:10Z)  
+**Job:** explicitly authorized integrated synthetic contract suite; successful.
+
+The workflow executed:
+- pinned CPython 3.12.10 and hash-locked EP-02 dependencies;
+- exact source materialization for primary and clean replay;
+- compile of the integrated source/test allowlist;
+- primary run of the exact 17 test modules;
+- clean replay of the same 17 modules;
+- runtime identity and materialization manifest capture.
+
+The test module allowlist explicitly included:
+- `test_theta_a_calibration_protocol`
+- `test_theta_a_interval_observation`
+- `test_theta_a_observation_harness`
+- `test_theta_a_analyzer`
+- `test_theta_a_evaluator`
+- `test_c10s_world_pipeline_integration`
+
+The primary suite completed **356 tests in 12.436 seconds**. The clean replay completed **356 tests in 12.408 seconds**. Both succeeded. The job also completed dependency installation, materialization, compilation, integrity checks and artifact upload. The two artifacts remain available:
+- payload artifact ID `14762722989`;
+- manifest artifact ID `14762538366`.
+
+This is strong historical evidence that the integrated **contract/test suite** (including direct theta_A module tests) ran and replayed successfully in under one minute on that hosted runner and commit.
+
+**It is not a direct theta_A calibration runtime measurement.** The workflow did not build and execute an N×M×R calibration seed bank, run repeated DGP worlds, or time a complete joint assignment + S3 observation + Analyzer + Evaluator replicate. The 12.4-second test-suite duration must not be divided into or extrapolated as per-replicate cost.
+
+Two earlier trigger attempts on the same workflow failed before the successful run:
+- `45044488530` — failure, 24 seconds;
+- `45044609635` — failure, 43 seconds.
+The subsequent successful run `45044946102` included the missing nested-precision source and passed primary plus replay. A later run `45045271710` was skipped after the one-shot trigger marker had been rotated; it is not an execution result.
+
+### Revised evidence classification
+
+- Direct theta_A module compile and integrated contract tests: **EXECUTED / PASS**, with exact primary/replay provenance.
+- Direct theta_A N×M×R calibration: **NOT EXECUTED** in this recovered run.
+- Direct theta_A per-replicate runtime: **NOT MEASURED**.
+- Resource preflight for direct theta_A: **NOT EXECUTED**.
+- No new execution is authorized by this historical recovery.
+
+This closes the historical search for the prior integrated contract-suite execution. It does not remove the need for a separately authorized technical-only runtime preflight if a defensible N/M/R cost estimate is still required.
