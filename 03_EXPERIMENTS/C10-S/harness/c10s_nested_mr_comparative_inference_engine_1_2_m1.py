@@ -199,7 +199,7 @@ def _validate_roster(record: M1ChallengerDatasetComparison) -> None:
             or len(legacy.candidates) != 1
             or legacy.candidates[0].method_id != C5_METHOD_ID
             or legacy.candidates[0].comparison.method_id != C5_METHOD_ID
-            or legacy.unavailable_methods
+            or legacy.unavailable_methods != ("C2", "C3", "C4")
             or ids != F5_ROSTER or len(ids) != 3):
         raise M1ChallengerError("INCOMPLETE_OR_UNEXPECTED_VERSION_1_2_ROSTER")
     if (legacy.input_m != record.input_m or legacy.input_r != record.input_r
