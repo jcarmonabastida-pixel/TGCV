@@ -49,7 +49,7 @@ def record(dataset_id="d1", m1_status="EMITTED", interval=(0.1, 0.4)):
         engine_id="C10S_NESTED_MR_COMPARATIVE_INFERENCE_ENGINE_1.1",
         dataset_id=dataset_id, family="F5", input_m=2, input_r=2,
         target_m=2, target_r=2, baseline=baseline,
-        candidates=(CandidateOutput(C5, c5_result),), unavailable_methods=(),
+        candidates=(CandidateOutput(C5, c5_result),), unavailable_methods=("C2", "C3", "C4"),
     )
     result = fake_m1(status=m1_status, within=interval, between=(0.0, 0.2),
                      failed=2 if m1_status != "EMITTED" else 0)
