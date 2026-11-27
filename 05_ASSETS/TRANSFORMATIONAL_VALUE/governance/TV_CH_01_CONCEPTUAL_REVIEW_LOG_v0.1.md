@@ -219,9 +219,9 @@ The remaining sections are to be reviewed in order, one step at a time. No findi
 
 | Section | Spanish / English topic | Review status |
 |---|---|---|
-| 1.3 | Elementos, estados, propiedades y comportamientos / Elements, States, Properties and Behaviours | open |
-| 1.4 | Actores, capacidades, recursos y dependencias / Actors, Capabilities, Resources and Dependencies | open |
-| 1.5 | To be read from both manuscripts | not_reviewed |
+| 1.3 | Elementos, estados, propiedades y comportamientos / Elements, States, Properties and Behaviours | reviewed — decisions pending |
+| 1.4 | Actores, capacidades, recursos y dependencias / Actors, Capabilities, Resources and Dependencies | reviewed — decisions pending |
+| 1.5 | Relaciones, interacciones y estructura del sistema / Relationships, Interactions and System Structure | reviewed — decisions pending |
 | 1.6 | To be read from both manuscripts | not_reviewed |
 | 1.7 | To be read from both manuscripts | not_reviewed |
 | 1.8 | To be read from both manuscripts | not_reviewed |
@@ -244,3 +244,54 @@ Until that integration step is authorised and completed, the findings in this lo
 ## 7. Change history
 
 - **v0.1 — 2026-11-27:** Created the Chapter 1 conceptual review record; preserved the findings, bilingual observations, proposed resolutions and unverified source candidates for sections 1.1 and 1.2; recorded that manuscript changes have not been applied.
+
+### 4.5 Section 1.5 — Relaciones, interacciones y estructura del sistema / Relationships, Interactions and System Structure
+
+**Review status:** reviewed; decisions pending  
+**Manuscript changes:** none
+
+#### Conceptual assessment
+
+- The section develops a coherent progression from elements to relationships, interactions and system structure. Its central claim—that system behaviour depends on how elements are connected and coordinated, not only on their individual characteristics—is appropriate and consistent with sections 1.1–1.4.
+- The distinction between **relationship** and **interaction** is useful: a relationship identifies a relevant link, while an interaction describes something that happens through influence or action. The distinction should be retained. However, the current wording “act or influence one another” / “actúan o influyen unos sobre otros” may suggest that interaction must be reciprocal. Interactions can be directional or asymmetric; the definition should allow one element to act on or influence another.
+- The statement that a dependency can exist without continuous interaction is sound and usefully connects to section 1.4. To avoid repetition, section 1.5 should use dependency as one kind of relationship and focus on how it is represented in structure, rather than redefining it.
+- The list of relationship forms is useful and appropriately illustrative, not exhaustive. Some categories can overlap: a functional connection may also carry a physical flow or embody a dependency; coordination/authority relationships may include information exchanges. The text already notes overlap, but could say explicitly that the categories are analytical lenses, not mutually exclusive classes.
+- The section's definition of **system structure** is sound and broader than physical layout. It appropriately includes functional connections, information flows, operational dependencies and coordination mechanisms. Consider keeping the distinction between structure (the relatively enduring configuration of relationships) and interactions (activities or influences occurring through those relationships) clear without suggesting that structure is necessarily static.
+- The discussion of structure shaping behaviour is strong. The water-network failure and local optimisation examples demonstrate propagation and system-level trade-offs. The examples should remain illustrative rather than imply that every local change produces a system-wide adverse effect.
+- The feedback-loop explanation is broadly correct for an introductory chapter: an outcome returns to influence a process or its regulation. The definition could be made slightly more precise by referring to a closed chain of influence in which a change in an outcome affects subsequent operation. The distinction from a mere return arrow in a diagram is important and should remain.
+- The feedback example is understandable, but the diagram and prose should not imply that a sensor reading alone establishes the full state of the network. Measurements are information used to infer or monitor operating conditions; this nuance may be worth retaining if the section is revised.
+- The representation guidance is particularly valuable: node and edge meanings, directionality, omitted relationships and diagram scope must be explicit. This should be retained as a general modelling principle.
+
+#### Example and bilingual-equivalence observations
+
+- The Spanish and English versions are closely aligned in structure, argument, examples and learning outcome. No material conceptual divergence was identified.
+- “Relación” / “relationship” and “interacción” / “interaction” are appropriate equivalents. Both versions should make the directionality point consistently.
+- The examples of physical flow, sensor information, control action, maintenance dependency, network failure and local optimisation are equivalent in substance.
+- “Puntos de consumo” / “points of use” are broadly equivalent in this section's context. Maintain consistent naming for the water-network entities across the chapter, but no section-specific correction is essential here.
+- “Bucles de realimentación” / “feedback loops” are suitable equivalents. The definition and example should be adjusted in parallel if the author accepts the precision improvement.
+- Both versions refer to the supporting visual as TV-DIA-002. The asset README identifies it as **Draft — conceptual and visual review pending**. The chapter must not imply that the diagram is approved or publication-ready. Its status and pending checks must be respected; do not modify or remove the asset without separate explicit authorisation.
+
+#### Proposed resolution
+
+A. **Relationship and interaction:** retain the distinction, but revise the interaction definition in both languages so that an interaction may be directional or asymmetric; it need not involve reciprocal influence.
+
+B. **Relationship categories:** retain the illustrative list and state that categories may overlap and are not mutually exclusive. Keep physical flows, information flows, functional connections, dependencies and coordination/authority relationships distinguishable by their meaning in a particular model.
+
+C. **Structure and interaction:** clarify, if needed, that structure describes the configuration of relevant relationships, while interactions describe actions, exchanges or influences occurring through or changing those relationships. Avoid presenting structure as necessarily fixed.
+
+D. **Dependencies:** refer back to section 1.4 for the concept of dependency. In 1.5, focus on dependencies as a structural relationship and on their representation, avoiding unnecessary duplication.
+
+E. **Feedback:** retain the closed-loop criterion and the warning against interpreting any return arrow as feedback. Consider tightening the definition to make clear that an outcome influences subsequent operation or regulation. Preserve the possibility of both stabilising and amplifying effects without introducing a full treatment of feedback-loop taxonomy at this stage.
+
+F. **Measurements:** where the sensor example is refined, describe readings as evidence used to monitor or infer operating conditions, not as a complete representation of system state.
+
+G. **Diagram governance:** retain the TV-DIA-002 reference provisionally, but treat the visual as a draft asset. Its conceptual/visual review, bilingual rendering, accessibility, provenance/licensing and publication checks remain open under its own asset record. No change to TV-DIA-002 is authorised by this chapter review.
+
+H. **Bilingual alignment:** apply any accepted conceptual edits independently to both original manuscripts, preserving equivalent scope and examples rather than translating one version from the other.
+
+#### Candidate sources — verification pending
+
+No external source has yet been selected for this section. If a formal source is considered necessary for feedback, system structure or relationship/interaction distinctions, verify an authoritative systems-engineering or systems-dynamics reference and its exact edition and passages before recording it in the central references registry. No source is approved or attached to a claim at this stage.
+
+**Decision:** pending author review. No source has yet been formally attached to a claim.
+
