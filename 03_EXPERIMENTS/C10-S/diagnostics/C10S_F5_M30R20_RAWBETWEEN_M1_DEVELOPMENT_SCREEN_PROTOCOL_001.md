@@ -32,7 +32,7 @@ No fit-state, boundary, Hessian, or abstention rule is relaxed. The runner compu
 - Dataset indices 50–449 under a new schedule and seed namespace; the seed audit also includes all seeds from the previous M1 pilot and the historical C0/C5/B2/B3/G7 schedules.
 - No overlap with historical datasets or bootstrap streams.
 - One workflow, one artifact, no parallel duplicate.
-- The previous M1 pilot measured mean runtime approximately 12.6 seconds per M30/R20 dataset at B=100; this screen is expected to take approximately 84 minutes, within a 165-minute hard timeout and the user's preferred three-hour ceiling.
+- The previous pilot-based estimate (approximately 84 minutes for K=400/B=100) proved operationally unreliable: at the 2026-11-27 11:24 Madrid check, run `45976887796` had already spent about 95 minutes in the calculation step. Treat this as a failed runtime forecast, not as evidence of statistical progress. This K=400 run is a one-off legacy exception already in progress; do not duplicate it.
 - No B escalation or additional numerical certification.
 
 ## 4. Reported outcomes
@@ -49,11 +49,14 @@ Secondary:
 
 A promising screen requires raw-between point coverage within [93%,97%], Wilson interval containing 95%, and emission >=95%, with no unresolved numerical state. Because this is a development screen and K=400, a PASS-like result is **not Tier-A validation**; it only justifies designing a disjoint prospective validation. A failure ends this M1 route for this component unless a specific coverage result identifies a correctable cause without weakening the contract.
 
-## 5. Stop rules and governance
+## 5. Runtime policy, stop rules and governance
+
+- **For every future development run, hard timeout is 30 minutes.** Do not raise it to accommodate an oversized batch. Use a smaller diagnostic stage with explicit progress/checkpoints, then decide whether any further stage is justified.
+- A small diagnostic sample cannot establish Tier-A coverage; label it only as a screen for gross failure modes and emission/fit-state behaviour. Any subsequent larger sample requires a separate MCSE/power justification and must still fit the 30-minute budget.
 
 - No changes to estimand, DGP, frozen thresholds, interval construction, fit contract, or abstention semantics.
 - No reuse of exposed historical data for tuning.
 - No within component method selection.
 - No Tier-A confirmatory, Tier-B, or C10 causal execution.
 - No further Sturm, topology, global-certification, or generic interval work.
-- If the runner exceeds 165 minutes, the workflow times out; do not automatically rerun or expand it.
+- Current run `45976887796` retains its original 165-minute workflow timeout as a one-off legacy exception; no automatic rerun, extension or duplicate. All future workflows must use `timeout-minutes: 30`.
