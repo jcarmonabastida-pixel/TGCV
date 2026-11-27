@@ -724,3 +724,12 @@ Autonomous systems, software agents and other non-human elements may form part o
 This terminology choice is intended to keep the introductory vocabulary clear and avoid conflating socio-organisational analysis with the different conventions used in agent-based modelling. Both manuscripts should preserve the same scope and distinction, using natural, independently authored wording.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+
+### 5.16 Actors inside or outside the system boundary in section 1.4 — accepted
+
+The author approved the criterion that an actor may be located inside or outside the boundary of the system of interest. Whether an actor is included in the system description depends on the relevance of their interaction, influence or dependency in relation to the problem being analysed, not merely on their physical or organisational location.
+
+Both language versions should preserve this distinction and explain that the system boundary and the analytical relevance of an actor are related but separate questions. Wording should be natural and independently authored in each language.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
