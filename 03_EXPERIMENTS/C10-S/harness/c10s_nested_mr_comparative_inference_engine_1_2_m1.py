@@ -132,7 +132,7 @@ def compare_f5_dataset(
             or legacy.candidates[0].method_id != C5_METHOD_ID
             or legacy.candidates[0].comparison.method_id != C5_METHOD_ID
             or legacy_ids != {C0_METHOD_ID, C5_METHOD_ID}
-            or legacy.unavailable_methods):
+            or legacy.unavailable_methods != ("C2", "C3", "C4")):
         raise M1ChallengerError("LEGACY_C0_C5_ROSTER_MISMATCH")
     if (legacy.input_m != len(rows) or legacy.input_r != len(rows[0])
             or legacy.target_m != target_m or legacy.target_r != target_r):
