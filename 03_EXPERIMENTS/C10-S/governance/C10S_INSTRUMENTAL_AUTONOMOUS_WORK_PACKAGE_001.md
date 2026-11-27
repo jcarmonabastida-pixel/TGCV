@@ -1011,3 +1011,25 @@ The current implementation first constructs the Sturm sequence using `Fraction`-
 - Only after these tests pass, run one bounded development-only diagnostic to compare sequence-construction time and exact root counts. Do not launch the six-dataset batch until the single-case path completes and its checkpoint/progress artifacts reconcile.
 
 **Interpretation boundary:** this run is an engineering diagnostic only. It produces no LR statistic, profile maximum, confidence set, coverage, Wilson interval, method comparison or calibration result. It does not change the F5 candidate's inferential status. Tier-A, Tier-B and causal C10-S remain unauthorized.
+
+
+## 49. Coverage-first focus reset — 2026-11-27
+
+**Controlling focus document:** `03_EXPERIMENTS/C10-S/governance/C10S_COVERAGE_FIRST_EXECUTION_FOCUS_001.md`  
+**Branch:** `research/c10s-coverage-first-focus-20261127`  
+**Focus commit:** `c308ada74f3e507d87a3090fc0da01578cc331a5`
+
+The user explicitly redirected the work to the original blocking issue: insufficient Tier-A interval coverage. This section narrows the active work package. From this point, all operations must address a named frozen Tier-A cell/component coverage or emission deficit and define an observable coverage/emission outcome.
+
+**Priority order:**
+1. F5 M10/R5 within and raw-between: diagnose overcoverage plus 88.5% emission; do not drop failed refits or weaken abstention.
+2. F5 M30/R20 raw-between: diagnose the distinct 93.353% undercoverage; preserve its within component PASS.
+3. F1 raw-between: calibrate/review the existing profile-likelihood candidate to address conservative overcoverage; preserve F1 within unchanged.
+
+F1 within remains closed within its declared Gaussian scope. F5 M30/R20 within remains provisionally closed for its declared G7 method/DGP scope. Do not reopen either absent contradictory evidence.
+
+**Explicit stop:** no further Sturm/subresultant/rational-arithmetic precision work, global-MLE certification expansion, topology certification, generic interval/confidence-set frameworks, or F5 M2 profile inversion by default. Such work is permitted only if a documented coverage/emission failure identifies it as necessary and a simpler candidate is inadequate. A standalone mathematical exactness or software PASS is not a deliverable.
+
+**Next operation:** produce the coverage ledger from existing historical results only. No new code, simulation or workflow run is needed for that operation.
+
+No frozen acceptance rule changed. No Tier-A confirmatory, Tier-B or causal C10-S execution is authorized. No canonical/main file was modified.
