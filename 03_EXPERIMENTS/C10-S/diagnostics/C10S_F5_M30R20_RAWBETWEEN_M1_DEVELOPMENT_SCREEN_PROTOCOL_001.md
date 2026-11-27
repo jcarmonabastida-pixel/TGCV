@@ -1,6 +1,6 @@
 # C10-S — F5 M30/R20 raw-between M1 development screen protocol 001
 
-**Status:** RUNNING — DEVELOPMENT-ONLY SCREEN — NOT TIER-A / NOT CONFIRMATORY  
+**Status:** CANCELLED — NO STATISTICAL RESULT — DEVELOPMENT-ONLY SCREEN — NOT TIER-A / NOT CONFIRMATORY  
 **Date:** 2026-11-27  
 **Branch:** `research/c10s-coverage-first-focus-20261127`
 
@@ -32,7 +32,8 @@ No fit-state, boundary, Hessian, or abstention rule is relaxed. The runner compu
 - Dataset indices 50–449 under a new schedule and seed namespace; the seed audit also includes all seeds from the previous M1 pilot and the historical C0/C5/B2/B3/G7 schedules.
 - No overlap with historical datasets or bootstrap streams.
 - One workflow, one artifact, no parallel duplicate.
-- The previous pilot-based estimate (approximately 84 minutes for K=400/B=100) proved operationally unreliable: at the 2026-11-27 11:24 Madrid check, run `45976887796` had already spent about 95 minutes in the calculation step. Treat this as a failed runtime forecast, not as evidence of statistical progress. This K=400 run is a one-off legacy exception already in progress; do not duplicate it.
+- The previous pilot-based estimate (approximately 84 minutes for K=400/B=100) proved operationally unreliable. Run `45976887796` was cancelled by the user after exceeding the agreed 30-minute development-run budget.
+- The run completed setup, dependency installation and compilation; its primary calculation step was cancelled. No statistical result or usable coverage estimate was produced.
 - No B escalation or additional numerical certification.
 
 ## 4. Reported outcomes
@@ -62,6 +63,10 @@ A promising screen requires raw-between point coverage within [93%,97%], Wilson 
 - Current run `45976887796` retains its original 165-minute workflow timeout as a one-off legacy exception; no automatic rerun, extension or duplicate. All future workflows must use `timeout-minutes: 30`.
 
 
-## 6.1 Cancellation access limitation — 2026-11-27
+## 6.1 Cancellation record — 2026-11-27
 
-After the user agreed to stop the oversized run and adopt the small-sample policy, the GitHub run page was checked through an authenticated browser workflow. Run `45976887796` remained `in_progress` after more than 40 minutes. GitHub displayed `Sign in to view logs`; the Cancel workflow control was therefore unavailable in the current browser session. Cancellation was **not completed**. Do not report the run as cancelled. The user must authenticate through the connected browser profile before cancellation can be retried. No replacement run has been launched.
+GitHub Actions job audit confirms run `45976887796` concluded `cancelled`. The calculation step was cancelled and artifact upload was skipped. This is an operational cancellation only, not a statistical failure or result. No replacement run has been launched.
+
+## 7. Next operation and authorization boundary
+
+The proposed next development screen remains K=30/B=25, one cell (F5 M30/R20 raw-between), one method (existing M1-PCT), with a hard 30-minute timeout, per-dataset checkpoints, and no changes to fit/refit or abstention semantics. However, the current canonical `main` bootstrap routes the next operation to C10 methodological recovery/consolidation and declares design/recovery only, with no execution authorization. Therefore this protocol is not dispatchable until that recovery is complete and the applicable authorization is confirmed. No run may be launched merely because this research-branch protocol proposes it.
