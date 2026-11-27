@@ -126,14 +126,6 @@ def compare_f5_dataset(
     )
     if legacy.engine_id != "C10S_NESTED_MR_COMPARATIVE_INFERENCE_ENGINE_1.1":
         raise M1ChallengerError("LEGACY_ENGINE_ID_MISMATCH")
-    if m1.method_id != M1_METHOD_ID or m1.fit_contract_id != M1_FIT_CONTRACT_ID:
-        raise M1ChallengerError("M1_METHOD_OR_FIT_CONTRACT_ID_MISMATCH")
-    if m1.status not in {"EMITTED", "ABSTAINED_ORIGINAL_FIT", "ABSTAINED_BOOTSTRAP_FIT_FAILURE"}:
-        raise M1ChallengerError("UNKNOWN_M1_RESULT_STATUS")
-    if m1.status == "EMITTED" and (m1.within_interval is None or m1.between_interval is None):
-        raise M1ChallengerError("M1_EMITTED_STATUS_REQUIRES_BOTH_COMPONENT_INTERVALS")
-    if m1.status != "EMITTED" and (m1.within_interval is not None or m1.between_interval is not None):
-        raise M1ChallengerError("M1_ABSTENTION_MUST_NOT_CARRY_COMPONENT_INTERVALS")
     legacy_ids = {legacy.baseline.method_id, *(item.method_id for item in legacy.candidates)}
     if (legacy.baseline.method_id != C0_METHOD_ID
             or len(legacy.candidates) != 1
@@ -152,6 +144,14 @@ def compare_f5_dataset(
         bootstrap_seed=m1_bootstrap_seed,
         confidence_level=confidence_level,
     )
+    if m1.method_id != M1_METHOD_ID or m1.fit_contract_id != M1_FIT_CONTRACT_ID:
+        raise M1ChallengerError("M1_METHOD_OR_FIT_CONTRACT_ID_MISMATCH")
+    if m1.status not in {"EMITTED", "ABSTAINED_ORIGINAL_FIT", "ABSTAINED_BOOTSTRAP_FIT_FAILURE"}:
+        raise M1ChallengerError("UNKNOWN_M1_RESULT_STATUS")
+    if m1.status == "EMITTED" and (m1.within_interval is None or m1.between_interval is None):
+        raise M1ChallengerError("M1_EMITTED_STATUS_REQUIRES_BOTH_COMPONENT_INTERVALS")
+    if m1.status != "EMITTED" and (m1.within_interval is not None or m1.between_interval is not None):
+        raise M1ChallengerError("M1_ABSTENTION_MUST_NOT_CARRY_COMPONENT_INTERVALS")
     common = observed_nested_mr_result(rows, target_m=target_m, target_r=target_r)
     if m1.status == "EMITTED":
         within_interval, between_interval, abstention = (
