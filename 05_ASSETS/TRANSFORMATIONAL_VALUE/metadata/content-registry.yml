@@ -8,9 +8,10 @@ content:
       en: "Thinking in Systems"
     paths:
       es: book/es/part-01-understanding-transformation/ch-01-pensar-en-sistemas.md
+      en: book/en/part-01-understanding-transformation/ch-01-thinking-in-systems.md
     status:
       es: draft
-      en: planned
+      en: draft
   - content_id: TV-CH-03
     content_type: chapter
     title:
