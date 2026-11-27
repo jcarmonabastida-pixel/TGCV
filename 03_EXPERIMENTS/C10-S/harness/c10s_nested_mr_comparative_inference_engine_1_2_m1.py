@@ -205,11 +205,36 @@ def _validate_roster(record: M1ChallengerDatasetComparison) -> None:
     if (legacy.input_m != record.input_m or legacy.input_r != record.input_r
             or legacy.target_m != record.target_m or legacy.target_r != record.target_r):
         raise M1ChallengerError("LEGACY_RECORD_DESIGN_MISMATCH")
-    if record.m1_result.method_id != M1_METHOD_ID or record.m1_result.fit_contract_id != M1_FIT_CONTRACT_ID:
+    result = record.m1_result
+    if result.method_id != M1_METHOD_ID or result.fit_contract_id != M1_FIT_CONTRACT_ID:
         raise M1ChallengerError("M1_RESULT_IDENTITY_MISMATCH")
-    if (record.m1_result.target_m != record.input_m
-            or record.m1_result.target_r != record.input_r):
+    if (result.target_m != record.input_m or result.target_r != record.input_r):
         raise M1ChallengerError("M1_RESULT_INPUT_DESIGN_MISMATCH")
+    if result.status not in {"EMITTED", "ABSTAINED_ORIGINAL_FIT", "ABSTAINED_BOOTSTRAP_FIT_FAILURE"}:
+        raise M1ChallengerError("UNKNOWN_M1_RESULT_STATUS")
+    if result.status == "ABSTAINED_ORIGINAL_FIT":
+        if (result.original_fit.status == "PRIMARY_ANALYTIC_INTERIOR_FIT"
+                or result.replicate_records or result.valid_replicates or result.failed_replicates):
+            raise M1ChallengerError("M1_ORIGINAL_FIT_ABSTENTION_STATE_MISMATCH")
+    else:
+        if result.original_fit.status != "PRIMARY_ANALYTIC_INTERIOR_FIT":
+            raise M1ChallengerError("M1_BOOTSTRAP_REQUIRES_ADMISSIBLE_ORIGINAL_FIT")
+        if (len(result.replicate_records) != result.bootstrap_replicates
+                or result.valid_replicates + result.failed_replicates != result.bootstrap_replicates
+                or sum(count for _, count in result.failure_counts) != result.failed_replicates):
+            raise M1ChallengerError("M1_BOOTSTRAP_REPLICATE_ACCOUNTING_MISMATCH")
+        if result.status == "EMITTED" and result.failed_replicates != 0:
+            raise M1ChallengerError("M1_EMITTED_WITH_FAILED_REPLICATES")
+        if result.status == "ABSTAINED_BOOTSTRAP_FIT_FAILURE" and result.failed_replicates == 0:
+            raise M1ChallengerError("M1_BOOTSTRAP_ABSTENTION_WITHOUT_FAILURE")
+    if result.status == "EMITTED" and (
+        result.within_interval is None or result.between_interval is None
+    ):
+        raise M1ChallengerError("M1_EMITTED_STATUS_REQUIRES_BOTH_COMPONENT_INTERVALS")
+    if result.status != "EMITTED" and (
+        result.within_interval is not None or result.between_interval is not None
+    ):
+        raise M1ChallengerError("M1_ABSTENTION_MUST_NOT_CARRY_COMPONENT_INTERVALS")
     if record.m1_comparison.method_id != M1_METHOD_ID:
         raise M1ChallengerError("M1_METHOD_ID_MISMATCH")
     if (record.m1_comparison.within_interval != record.m1_result.within_interval
