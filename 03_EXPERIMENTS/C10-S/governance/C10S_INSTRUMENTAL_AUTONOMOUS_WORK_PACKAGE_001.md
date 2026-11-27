@@ -1089,3 +1089,20 @@ M10/R5 is recorded as an unresolved method blocker. Reopen only when a specific 
 **Next operation:** targeted static diagnosis of F5 M30/R20 raw-between only. Preserve the existing M30/R20 within PASS under its declared G7 method/DGP scope. Determine whether the repeated 93.353% G7 and 93.00% C5 raw-between results share a plug-in interval defect, and whether the existing M1-PCT candidate (100% emission, 94% descriptive raw-between coverage on K=50) merits one bounded development-only comparison. Do not touch M30/R20 within.
 
 No simulation, code change, workflow or authorization was performed by this decision. No frozen threshold, estimand, DGP or historical adjudication changed.
+
+
+## 53. Focused F5 M30/R20 raw-between M1-PCT development screen — 2026-11-27
+
+**Protocol:** `03_EXPERIMENTS/C10-S/diagnostics/C10S_F5_M30R20_RAWBETWEEN_M1_DEVELOPMENT_SCREEN_PROTOCOL_001.md`  
+**Runner:** `03_EXPERIMENTS/C10-S/harness/run_c10s_f5_m30r20_raw_between_dev.py`  
+**Workflow:** `c10-s-f5-m30r20-raw-between-m1-development.yml`  
+**Run:** [45976887796](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45976887796)  
+**Code/workflow commit:** `0823d230bb048d73180c7b46a4705c6d22a54a98`.
+
+A single-cell, bounded development screen was dispatched for the actual open deficit: F5 M30/R20 raw-between. It reuses the existing M1-PCT method and fit contract unchanged. The run is K=400, B=100, with new dataset indices 50–449 and a new seed namespace. Its seed audit includes the historical C0/C5/B2/B3/G7 schedules and the previous M1 pilot seeds. The runner reports raw-between emission, conditional coverage, Wilson 95% interval, directional miss/endpoint records, and a post-fit high-concentration decile diagnostic (exploratory only). Within is recorded descriptively and is not a method-selection target.
+
+The prior M1 M30/R20 pilot (K=50, B=100) emitted 50/50 and had 94% descriptive raw-between coverage. This was insufficient to validate the method but justified one bounded fresh-seed development screen. The historical M30/R20 C5 high-concentration tail had 35.6%/35.0% raw-between coverage in calibration/validation; the new run will help determine whether refitting parameters in each bootstrap replicate addresses the broader raw-between deficit without altering the frozen fit/abstention contract.
+
+**Current observed state at record time:** workflow `45976887796` is `in_progress`; no result or artifact is yet available. Do not start a duplicate run. The workflow timeout is 165 minutes, below the three-hour operational ceiling. This is not Tier-A, not confirmatory, and does not authorize Tier-A, Tier-B or causal C10-S execution.
+
+No acceptance threshold, estimand, DGP, interval rule or fit-state/abstention rule was changed.
