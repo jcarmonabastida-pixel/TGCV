@@ -54,7 +54,7 @@ def record(dataset_id="d1", m1_status="EMITTED", interval=(0.1, 0.4)):
     result = fake_m1(status=m1_status, within=interval, between=(0.0, 0.2),
                      failed=2 if m1_status != "EMITTED" else 0)
     m1_comparison = replace(
-        common, method_id=M1,
+        common, method_id=M1, mcse_estimate=None,
         within_interval=result.within_interval,
         between_interval=result.between_interval,
         mcse_interval=None,
