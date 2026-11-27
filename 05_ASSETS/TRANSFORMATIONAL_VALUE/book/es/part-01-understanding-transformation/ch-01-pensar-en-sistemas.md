@@ -5,7 +5,7 @@ title: "Pensar en sistemas"
 language: es
 content_type: chapter
 status: draft
-version: 0.7
+version: 0.8
 created: 2026-11-27
 updated: 2026-11-27
 authors: []
@@ -526,4 +526,79 @@ Toda descripción de un sistema es un modelo selectivo. Su utilidad depende de q
 ### Pregunta de reflexión
 
 Piensa en un sistema que conozcas y en una representación que se utilice para describirlo. ¿Qué pregunta permite responder? ¿Qué supuestos incorpora? ¿Qué aspecto importante deja fuera? ¿En qué situación podría conducir a una conclusión incompleta si se utilizara más allá de su propósito original?
+
+## 1.8. De la optimización de componentes al razonamiento a escala de sistema
+
+### Mejorar una parte no siempre mejora el conjunto
+
+En muchos sistemas, el rendimiento global depende de la contribución coordinada de múltiples componentes. Por eso, una mejora local no garantiza una mejora del sistema. Un componente puede funcionar con mayor eficiencia y, aun así, trasladar costes, restricciones o problemas a otras partes de la configuración.
+
+En una red de suministro de agua, sustituir una bomba por otra de mayor capacidad puede aumentar el caudal disponible en una estación. Pero también puede elevar el consumo energético, modificar las presiones en determinados tramos o exigir cambios en válvulas y controles. Si evaluamos únicamente la bomba, podríamos considerar la intervención un éxito sin comprobar sus consecuencias sobre el servicio completo.
+
+La optimización de componentes sigue siendo necesaria. El problema aparece cuando se toma el rendimiento local como sustituto del rendimiento del sistema.
+
+### Optimización local y rendimiento global
+
+La **optimización local** busca mejorar el comportamiento de un elemento o subsistema respecto a uno o varios criterios. La **optimización a escala de sistema** considera cómo las decisiones afectan al conjunto, teniendo en cuenta las interacciones, dependencias, restricciones y resultados que atraviesan sus fronteras internas.
+
+| Foco de la decisión | Pregunta principal | Riesgo si se analiza de forma aislada |
+|---|---|---|
+| Componente | ¿Cómo puede funcionar mejor este equipo? | Mejorar su rendimiento a costa de otras partes |
+| Subsistema | ¿Cómo coordinamos los elementos que realizan una función? | Desplazar el cuello de botella a otro subsistema |
+| Sistema | ¿Cómo alcanza el conjunto los resultados requeridos? | Ignorar efectos externos o consecuencias a largo plazo si la frontera es demasiado estrecha |
+
+No se trata de elegir siempre el nivel más amplio. Se trata de seleccionar el nivel de análisis adecuado para la decisión y comprobar las consecuencias relevantes en los niveles conectados.
+
+### Interfaces, restricciones y efectos indirectos
+
+Las mejoras locales pueden propagarse a través de las interfaces y dependencias del sistema. Una modificación en un componente puede alterar las condiciones de operación de otros, cambiar la distribución de recursos o generar nuevas necesidades de coordinación.
+
+En la red de agua, aumentar la capacidad de bombeo puede desplazar la limitación desde la estación hacia una conducción, una válvula o la capacidad de almacenamiento. La intervención puede resolver una restricción y hacer visible otra que antes no era determinante. También puede aumentar la demanda de energía o mantenimiento.
+
+Por eso, antes de introducir una mejora conviene identificar:
+
+- qué elementos y funciones se verán afectados;
+- qué restricciones pueden limitar el resultado;
+- dónde podría desplazarse un cuello de botella;
+- qué dependencias o recursos adicionales aparecerán;
+- qué efectos indirectos podrían producirse en otras partes del sistema o en su entorno.
+
+Estas preguntas no exigen modelizarlo todo. Ayudan a evitar que el análisis termine justo en el límite del componente intervenido.
+
+### Los criterios de rendimiento pueden entrar en conflicto
+
+El rendimiento de un sistema rara vez se resume en una única medida. Una red de agua puede evaluarse por continuidad del suministro, calidad, presión, consumo energético, costes de operación, tiempo de recuperación y efectos ambientales. Mejorar uno de estos criterios puede perjudicar otro.
+
+Por ejemplo, mantener presiones elevadas puede facilitar el suministro en determinadas zonas, pero aumentar pérdidas por fugas y consumo energético. Reducir costes de mantenimiento puede mejorar un indicador financiero a corto plazo y elevar el riesgo de interrupciones futuras. No existe una decisión óptima sin especificar qué resultados importan, qué restricciones deben respetarse y qué compromisos son aceptables.
+
+Los criterios deben relacionarse con el propósito del sistema y con las necesidades de los actores relevantes. También conviene distinguir entre requisitos que deben cumplirse, objetivos que se desea mejorar y preferencias que pueden negociarse.
+
+### Razonar a escala de sistema
+
+El razonamiento a escala de sistema amplía la evaluación desde el componente intervenido hacia las consecuencias relevantes para el conjunto. No consiste en ignorar el detalle técnico, sino en situarlo dentro de una configuración de relaciones, objetivos y restricciones.
+
+Un proceso práctico puede seguir esta secuencia:
+
+1. **Definir el resultado requerido:** precisar qué debe conseguir el sistema y para quién.
+2. **Identificar el nivel de intervención:** delimitar el componente o subsistema que se pretende modificar.
+3. **Examinar las interfaces y dependencias:** reconocer qué otras partes condicionan o reciben los efectos del cambio.
+4. **Considerar varios criterios:** evaluar beneficios, costes, riesgos y restricciones relevantes, no solo el indicador local.
+5. **Comprobar efectos sobre el conjunto:** analizar si la mejora se mantiene, se desplaza o genera consecuencias no deseadas.
+6. **Revisar el resultado en contexto:** observar el comportamiento bajo condiciones y horizontes temporales adecuados.
+
+La profundidad de cada paso dependerá de la importancia de la decisión, la incertidumbre y las consecuencias de equivocarse. Una intervención menor puede requerir una comprobación sencilla; un cambio crítico puede exigir análisis integrado y pruebas más rigurosas.
+
+### El valor de una mejora depende de dónde y cómo se manifiesta
+
+Una mejora técnica solo adquiere sentido cuando se relaciona con los resultados que el sistema debe producir. Reducir el consumo de una bomba puede ser positivo, pero su relevancia depende de si mantiene el servicio requerido, de cómo afecta a otros equipos y de qué costes o riesgos introduce.
+
+Del mismo modo, una mejora global no tiene por qué maximizar todos los indicadores. Puede consistir en alcanzar un equilibrio justificable entre resultados, restricciones y necesidades diferentes. Hacer explícitos esos compromisos permite comparar alternativas sin presentar una preferencia particular como si fuera una solución universal.
+
+### Idea clave
+
+Optimizar un componente no equivale a optimizar el sistema. Las decisiones deben evaluarse atendiendo a las interacciones, restricciones, criterios en conflicto y consecuencias que afectan al conjunto y a su entorno relevante.
+
+### Pregunta de reflexión
+
+Piensa en una mejora realizada o propuesta en un componente de un sistema que conozcas. ¿Qué indicador local pretendía mejorar? ¿Qué otras partes podían verse afectadas? ¿Qué criterios globales habría que comprobar para determinar si la intervención mejoró realmente el funcionamiento del sistema?
 
