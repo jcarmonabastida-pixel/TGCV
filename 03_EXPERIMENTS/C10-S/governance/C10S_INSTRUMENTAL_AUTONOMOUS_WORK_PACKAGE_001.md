@@ -1073,3 +1073,19 @@ The P/A functional reconciliation shows that production/analytic parameter diffe
 **Next operation:** design-only comparison of (A) a boundary-aware refitted parametric bootstrap that treats every refit state without dropping/conditioning on failures, versus (B) direct W/B profile likelihood only if Route A cannot provide a defensible interval/emission contract. No simulation until one route is specified with a scientifically defensible repeated-sampling interpretation. If neither route qualifies, record `NO_SUPPORTED_F5_M10R5_CANDIDATE` and stop.
 
 No new simulation, code, workflow or method selection was performed. No historical bank was reused for tuning. No thresholds, estimands, DGPs, adjudications or authorizations changed.
+
+
+## 52. F5 M10/R5 minimum method decision — 2026-11-27
+
+**Decision record:** `03_EXPERIMENTS/C10-S/diagnostics/C10S_F5_M10R5_MINIMUM_METHOD_DECISION_001.md`  
+**Commit:** `fc7ae3a88f8a1799fbfcfb2fb8fb77bbbf9e99e7`.
+
+Disposition: `NO_SUPPORTED_F5_M10R5_CANDIDATE`.
+
+The current evidence does not justify a new M10/R5 simulation or a new interval engine. C5 B2/B3 has adequate emission but fails coverage; G7 v1.1 fails coverage and has method-specific emission below 95%; M1-PCT has 4% emission. Relaxing the M1 contract, dropping failed refits or accepting arbitrary terminal optimizer coordinates would be post-hoc and is not authorized. Profile likelihood remains uncalibrated and is not the default route.
+
+M10/R5 is recorded as an unresolved method blocker. Reopen only when a specific prospectively defined W/B interval procedure can handle boundary/non-identification states without changing the estimands or conditioning on successful fits.
+
+**Next operation:** targeted static diagnosis of F5 M30/R20 raw-between only. Preserve the existing M30/R20 within PASS under its declared G7 method/DGP scope. Determine whether the repeated 93.353% G7 and 93.00% C5 raw-between results share a plug-in interval defect, and whether the existing M1-PCT candidate (100% emission, 94% descriptive raw-between coverage on K=50) merits one bounded development-only comparison. Do not touch M30/R20 within.
+
+No simulation, code change, workflow or authorization was performed by this decision. No frozen threshold, estimand, DGP or historical adjudication changed.
