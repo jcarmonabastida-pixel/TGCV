@@ -640,3 +640,16 @@ The system boundary must not be presented merely as a list of elements classifie
 The boundary may have physical, functional, operational and temporal dimensions; it need not coincide with a physical perimeter. The manuscripts should explain this at an introductory level and preserve equivalent meaning while being authored independently.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.8 Environment and context in section 1.2 — accepted
+
+The author approved the following operational definitions for both language versions:
+
+- **Environment:** external elements, systems and conditions that interact with the system of interest or may be affected by it.
+- **Context:** the set of circumstances, relationships and conditions from which the problem and the system of interest are defined and interpreted.
+
+The chapter must state that this distinction is an editorial working convention adopted for this book to support analysis. It is not presented as a universal separation used identically across all disciplines.
+
+The Spanish and English manuscripts will express these definitions independently while preserving equivalent conceptual scope.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
