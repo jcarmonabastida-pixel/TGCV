@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 0.5
+version: 0.6
 created: 2026-11-27
 updated: 2026-11-27
 authors: []
@@ -451,3 +451,79 @@ Open systems exchange with their environments and operate under conditions that 
 ### Reflection
 
 Choose a system you know. Identify what it receives from and delivers to its environment, which external conditions may change and over what time scales those changes occur. What aspects of its operation would remain unnoticed if you observed it at only one point in time?
+
+## 1.7. System Descriptions Are Models: Scope, Assumptions and Omissions
+
+### Describing a system is not the same as reproducing reality
+
+A description of a system is not the system itself. It is a representation constructed to help us understand some aspect of it. It may take the form of prose, a diagram, a table, a set of variables, a mathematical model or a combination of several resources.
+
+Every representation selects what to show and what to leave out. Even a highly detailed description simplifies reality: it cannot include every possible element, relationship, state, event and condition. This does not automatically make it a poor description. The question is whether its simplifications are appropriate to the purpose of the analysis and whether its limits are made explicit.
+
+In a water supply network, for example, a pipe layout may be sufficient to examine connectivity between reservoirs and consumption areas. It may not be sufficient to analyse the effects of a power interruption, the organisation of maintenance or the consequences of a prolonged change in demand.
+
+### Purpose determines model scope
+
+A model is a selective representation of a system, constructed to answer a question or support a task. Its scope defines which parts, relationships, variables and conditions are included, as well as the level of detail at which they are represented.
+
+There is no single model that is equally useful for every question. Consider several possible representations of the same network:
+
+| Analytical question | Useful representation | What it prioritises | What it may leave out |
+|---|---|---|---|
+| How does water reach each area? | Network layout | Pipes, reservoirs, connections and flow direction | Energy use, maintenance and organisation |
+| How does the network respond to changes in demand? | Hydraulic or operational model | Flows, pressures, levels and operating conditions | Organisational decisions or unmodelled social impacts |
+| What happens if the electricity supply fails? | Dependency and scenario model | Power supply, pumping, controls and interruption consequences | Hydraulic details that do not affect the question |
+| How is continuity of service maintained? | Socio-technical service model | Equipment, staff, procedures, spare parts and coordination | Component details that do not affect continuity |
+
+The representations in the table are not interchangeable. Each makes certain aspects visible and supports a particular kind of reasoning. One may complement another when the question requires different dimensions to be connected.
+
+### Assumptions: what we take as given in order to analyse
+
+Building a model requires assumptions. Some simplify complexity; others establish starting conditions, specify relationships or make it possible to work with incomplete information.
+
+For example, an analysis of the network might assume that demand remains constant over an interval, that certain items of equipment are available or that pipe characteristics do not change during the period under study. Such assumptions may be reasonable for a particular question and a limited time horizon, but not under other circumstances.
+
+An assumption must not be confused with an observed fact. Nor is it the same as quantified uncertainty. If we do not know whether a pump will be available, we cannot present its availability as confirmed data simply because the model requires a starting condition.
+
+Assumptions that may influence results should be recorded, their rationale explained and the conditions under which they would no longer be acceptable identified. Where possible, we can examine how conclusions change when the most relevant assumptions are varied.
+
+### Omissions: what the model does not represent
+
+Omissions are inevitable, but they are not all equally important. Leaving out a detail that is irrelevant to the question can make a model clearer and more manageable. Leaving out a critical dependency, however, may produce an incomplete explanation or a misleading conclusion.
+
+Imagine a model that represents the pumps, pipes and reservoirs in a network but excludes the stations' dependence on electricity supply. It may describe certain hydraulic behaviours under normal conditions adequately, yet prove insufficient for analysing service continuity during a power outage.
+
+Therefore, alongside asking what a representation includes, we should ask what it excludes and what consequences that absence may have. An omission becomes especially important when it could change the interpretation, decisions or conclusions of the analysis.
+
+### Suitability and limits of use
+
+A model's quality does not depend solely on its complexity or the number of variables it contains. It depends on its suitability for the question, the quality of the information used and the clarity with which its limits are stated.
+
+Before using a representation, it is worth checking:
+
+- **Purpose:** What question is it intended to answer?
+- **Scope:** Which elements, relationships and conditions does it include?
+- **Level of detail:** Is it sufficient for the task without adding unnecessary complexity?
+- **Assumptions:** Which conditions are taken as given, and why?
+- **Omissions:** Which relevant aspects are not represented?
+- **Evidence:** What information supports the data and relationships used?
+- **Limits of use:** In which situations should we not use this model to draw conclusions?
+
+These checks do not eliminate uncertainty or guarantee that a model is correct. They help prevent a representation that is useful for one task from being used beyond its intended scope without justification.
+
+### Revisiting the model when the question or system changes
+
+A model should not be treated as final. It may need to be adjusted when the purpose of the analysis changes, new information becomes available, an omitted relationship is identified or the system itself evolves.
+
+If the objective shifts from studying water flow to assessing service resilience, we may need to include energy dependencies, recovery capabilities, staff, procedures and coordination with suppliers. This is not simply a matter of adding detail: the aspects relevant to answering the new question have changed.
+
+It may also be necessary to maintain several complementary representations. A hydraulic model and a socio-technical model may describe different dimensions of the same infrastructure. Bringing them together requires understanding which question each one addresses and how the represented dimensions are related.
+
+### Key idea
+
+Every description of a system is a selective model. Its usefulness depends on whether its scope, assumptions and omissions are appropriate and explicit in relation to the question it is intended to answer.
+
+### Reflection
+
+Think of a system you know and a representation used to describe it. What question can it answer? Which assumptions does it make? What important aspect does it leave out? In what situation might it lead to an incomplete conclusion if used beyond its original purpose?
+
