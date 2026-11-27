@@ -1,7 +1,7 @@
 # TRANSFORMATIONAL VALUE — Content Model & Editorial Workflow
 
 **Identifier:** TGCV-TV-CONTENT-MODEL-001  
-**Version:** 0.5  
+**Version:** 0.6  
 **Date:** 2026-11-26  
 **Status:** CONTENT ARCHITECTURE PROPOSAL — FOR REVIEW  
 **Governing document:** `TRANSFORMATIONAL_VALUE_LEARNING_MASTER_ARCH_v0.1.md`  
@@ -373,6 +373,24 @@ The publishing system may format references differently by language, but referen
 
 A page may return to `needs_revision` at any review stage. Publication is a separate release action; approval alone does not publish it automatically.
 
+#### Chapter-level conceptual review and correction cycle
+
+For substantive book chapters, editorial review must include a distinct conceptual review before corrections are integrated into the canonical manuscripts. This cycle applies independently to the Spanish and English originals while treating them as a paired content unit.
+
+1. **Review the chapter section by section.** Examine the corresponding Spanish and English passages for conceptual accuracy, definitions, reasoning, scope, assumptions, examples, omissions, internal consistency and alignment with authoritative source material.
+2. **Record findings in a persistent review record.** Give the review a stable identifier and record, at minimum, the section/content location, issue or question, rationale, proposed treatment, language-parity implications, relevant sources and resolution status. The review record is a decision and traceability artefact; it is not a substitute for either manuscript.
+3. **Separate findings from decisions.** Distinguish confirmed corrections from editorial suggestions, unresolved conceptual choices, source-verification needs and matters requiring subject-matter authority. Do not silently resolve substantive ambiguity by assumption.
+4. **Resolve open decisions before editing.** Where a finding depends on a choice of scope, definition, model or interpretation, obtain an explicit decision from the responsible owner or reviewer and record it.
+5. **Integrate accepted corrections into both original manuscripts.** Apply the agreed conceptual changes to the relevant Spanish and English texts, composing each naturally in its own language. Do not create the English text by translating the Spanish text, or vice versa.
+6. **Verify the integration.** Re-read the modified passages in both manuscripts, confirm that every accepted finding has been addressed, and check conceptual equivalence, examples, qualifications, references and terminology across languages. Record any intentionally different expression and any deferred item.
+7. **Verify repository persistence.** Re-fetch or otherwise inspect the committed files after changes. A review record marked resolved does not prove that the manuscript was updated; manuscript changes are not complete until the canonical files have been verified.
+8. **Continue the editorial workflow.** Only after this cycle is complete for the chapter should it proceed to the remaining applicable editorial, subject-matter and cross-language review gates. Do not treat completion of one section's review as completion of the whole chapter.
+
+The cycle may be iterative: a later section can reveal a dependency that requires revisiting an earlier finding. Preserve the review history and record superseded decisions rather than erasing their rationale.
+
+**Status distinction:** reviewed means findings have been recorded; decided means the relevant choices have been resolved; integrated means accepted corrections have been applied to the canonical manuscript(s); verified means the committed manuscript(s) have been re-read and checked. These states must not be conflated. The chapter remains in draft/review until its applicable gates are satisfied.
+
+
 ### 11.2 Drafting
 
 1. Confirm the page ID, purpose, audience, prerequisites and source dependencies.
@@ -697,3 +715,4 @@ This editorial gate controls reader-facing clarity and traceability. It does not
 - **v0.3 — 2026-11-26:** Added a binding editorial rule separating reader-facing terminology from internal TGCV research and repository identifiers, including acronym policy and review checks.
 - **v0.4 — 2026-11-26:** Expanded the rule to every reader-facing surface, defined internal identifiers and permitted exceptions, distinguished technical notation from repository codes, and introduced a mandatory independently recorded bilingual approval gate supported by automated checks and human review.
 - **v0.5 — 2026-11-26:** Added a bilingual `learning-resources/research-notes/` structure for reader-facing evidence notes, with independent language status, descriptive public titles and internal provenance retained only in metadata.
+- **v0.6 — 2026-11-27:** Added a mandatory chapter-level conceptual review and correction cycle, including persistent findings, explicit resolution of open decisions, integration into both native-language manuscripts, and post-commit verification.
