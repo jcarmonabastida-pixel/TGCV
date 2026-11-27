@@ -661,3 +661,11 @@ The author approved the criterion that the system boundary is not necessarily de
 Any revision must be justified by its relevance to the problem under examination; it must not become an arbitrary expansion of the system of interest. Both language versions should preserve this qualification and express it naturally in their independently authored text.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.10 Element and component terminology in section 1.3 — accepted
+
+The author approved **element** as the general term for any relevant part of a system identified in the analysis. **Component** may be used as a more specific term, commonly in technical and engineering systems, for a constituent part of the system.
+
+The distinction should remain flexible rather than being imposed as a rigid taxonomy where the disciplinary context does not require it. Both language versions should preserve the same conceptual relationship while using natural, independently authored wording.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
