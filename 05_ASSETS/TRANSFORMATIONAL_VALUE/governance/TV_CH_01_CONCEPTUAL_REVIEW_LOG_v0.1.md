@@ -626,3 +626,17 @@ The author approved the following working distinctions for both language version
 The manuscripts should preserve the distinction between these concepts and should not use the terms interchangeably. The Spanish and English versions will be authored independently while retaining equivalent meaning.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.7 System boundary and relevant interfaces in section 1.2 — accepted
+
+The author approved the following criterion for both language versions:
+
+The system boundary must not be presented merely as a list of elements classified as inside or outside the system. It must also identify relevant interfaces between the system of interest and its environment. In the water-distribution example, these may include:
+- the pumping station's connection to electrical supply;
+- its connection to control systems;
+- connections to upstream supply infrastructure; and
+- connections to downstream networks and consumption points.
+
+The boundary may have physical, functional, operational and temporal dimensions; it need not coincide with a physical perimeter. The manuscripts should explain this at an introductory level and preserve equivalent meaning while being authored independently.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
