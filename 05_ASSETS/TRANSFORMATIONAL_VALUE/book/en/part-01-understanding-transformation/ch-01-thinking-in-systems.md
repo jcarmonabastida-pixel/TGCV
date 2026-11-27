@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 0.1
+version: 0.2
 created: 2026-11-27
 updated: 2026-11-27
 authors: []
@@ -152,3 +152,81 @@ Before explaining how a system behaves, make clear what the system includes, why
 ### Reflection
 
 Choose an installation or service with which you are familiar. Formulate a specific question about its operation and define a boundary suitable for investigating it. Which elements would you include? Which factors would remain in the environment? What contextual circumstances could change the interpretation of your findings?
+
+
+## 1.3. Elements, States, Properties and Behaviours
+
+### Describing what a system consists of and how it operates
+
+Once we have defined the system under study, the next task is to describe its constituent elements and the features that matter to the question we are investigating. Not every element has the same nature, and not every analysis requires the same level of detail. The description should be shaped by the purpose of the investigation.
+
+A water supply network, for example, may include reservoirs, pumps, pipes, valves, sensors, control equipment and delivery points. Its operation may also depend on less tangible elements, such as operating procedures, control rules and information used to make decisions. In a socio-technical system, people and organisations belong in the description whenever their actions, decisions or responsibilities affect the behaviour being examined.
+
+The aim is not to produce an exhaustive inventory of everything that exists. It is to identify the elements needed to explain the system's relevant behaviour.
+
+### Elements and components
+
+We use the term **elements** for the entities or parts distinguished within a system for analytical purposes. Depending on the system and the level of analysis, these may be physical components, people, teams, organisational units, processes, resources, information or subsystems.
+
+The chosen level of decomposition matters. A pumping station may be treated as a single element when examining the overall distribution network. An investigation of energy use or reliability may require us to distinguish its motors, pumps, sensors, power supply and control equipment.
+
+There is no single decomposition that is appropriate for every investigation. A useful description provides enough detail to answer the question without becoming so granular that it obscures the relationships and behaviour we need to understand.
+
+### States: how the system or an element is at a given time
+
+A **state** describes the condition of a system or one of its elements at a particular time or over a defined interval, using variables relevant to the analysis.
+
+In a water network, the state of a reservoir might be described by its water level; the state of a pump by its operating condition and current operating regime; and the state of a network segment by variables such as pressure and flow rate. Describing the state of the network as a whole requires a selected set of variables that captures the aspects of its configuration and operation relevant to the question.
+
+A state is not necessarily a complete account of everything that exists. It is a selective representation: it includes the information needed to distinguish conditions that may have different consequences for the investigation.
+
+It is therefore important to specify which variables are used, how they are observed or estimated, and when the description applies. Different accounts of the same system may use different variables because they address different questions.
+
+### Properties and variables
+
+**Properties** are characteristics attributed to an element or system that help describe it. Some may remain relatively stable over the period of analysis; others vary over time or with operating conditions.
+
+For example, a pipe's diameter and a pump's rated capacity describe characteristics of the equipment. Pressure, temperature, reservoir level and electrical consumption may vary during operation and may be used as state or monitoring variables, depending on the model and the question.
+
+A property should not be confused with the value observed at a particular moment. A pump's rated capacity is not the same as the flow rate it is delivering now. The former characterises the equipment under specified conditions; the latter describes an operating condition.
+
+In practice, the selection of properties and variables should reflect their relevance, availability and quality. A variable that cannot be measured directly may need to be estimated; a characteristic that appears important may prove unnecessary for a particular question. Such choices should be made explicit whenever they affect the conclusions.
+
+### Behaviours: what the system does and how it changes
+
+**Behaviour** describes how a system or one of its elements operates or evolves under particular conditions. It may be observed as a pattern of operation, a response to a disturbance or a change in variables over time.
+
+In the water network, behaviour might include how pressure changes when demand rises, how the control system responds when reservoir levels fall, or how service is restored after a failure. Understanding these patterns requires more than knowing the nominal properties of individual components: we need to examine how they operate within the network's configuration and actual conditions.
+
+It is useful to distinguish state from behaviour. A state describes a condition; behaviour concerns what happens or how that condition evolves. A pressure reading at one moment provides information about a state. A sequence of readings over time may reveal how the network responds to changes in demand.
+
+### Bringing elements, states and behaviours together
+
+These concepts become useful when considered together. Elements tell us which parts we distinguish; their properties describe relevant characteristics; states represent their condition; and behaviours show how they operate or evolve.
+
+Consider a straightforward situation: water consumption increases in one area. Demand is a relevant condition for the analysis. We can observe changes in flow and pressure, identify which pumps and valves are operating, and examine how the control system responds. Explaining what happens requires us to connect the observed variables with the elements and relationships that make up the network.
+
+The same observation may have different explanations if the configuration changes or if information about relevant elements is missing. Describing a system is therefore not a matter of collecting isolated values. It involves organising information so that the system's operation can be interpreted.
+
+### Deciding what to describe
+
+A rigorous description does not need to include every possible property. It should select the features needed to answer the analytical question and record any omissions that may matter.
+
+When preparing an initial description, we can ask:
+
+- Which elements or subsystems need to be distinguished?
+- What level of detail is appropriate?
+- Which properties characterise those elements?
+- Which variables describe the relevant states?
+- Which behaviours need to be observed, and over what period?
+- What information is unavailable or outside the scope of the description?
+
+These questions help produce a coherent account and prevent the information currently available from being mistaken for a complete description of the system.
+
+### Key idea
+
+Describing a system requires us to identify its elements, select relevant properties and variables, represent its states and observe its behaviours. None of these dimensions, taken alone, explains how the whole system operates.
+
+### Reflection
+
+Choose an installation or service you know. Identify some of its elements and select one relevant property and one variable for each. Which states could you describe? What behaviour would you need to observe over time to understand how the system operates?
