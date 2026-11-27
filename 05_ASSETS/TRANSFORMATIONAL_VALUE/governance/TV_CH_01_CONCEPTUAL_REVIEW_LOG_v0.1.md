@@ -653,3 +653,11 @@ The chapter must state that this distinction is an editorial working convention 
 The Spanish and English manuscripts will express these definitions independently while preserving equivalent conceptual scope.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.9 Revisability of the system boundary in section 1.2 — accepted
+
+The author approved the criterion that the system boundary is not necessarily definitive. It may be revised when analysis or evidence reveals relevant dependencies, interfaces or effects that were initially excluded.
+
+Any revision must be justified by its relevance to the problem under examination; it must not become an arbitrary expansion of the system of interest. Both language versions should preserve this qualification and express it naturally in their independently authored text.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
