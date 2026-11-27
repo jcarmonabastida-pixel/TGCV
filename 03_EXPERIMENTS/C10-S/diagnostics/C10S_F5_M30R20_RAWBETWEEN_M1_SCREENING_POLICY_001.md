@@ -46,7 +46,7 @@ Always report: K, B, hits/denominator, point coverage, Wilson 95%, emission and 
 
 ## 6. Current M30/R20 run
 
-Run `45976887796` (K=400, B=100, timeout 165 minutes) is a legacy oversized run and violates this policy. Stop it; do not duplicate or expand it. If GitHub Actions cancellation cannot be performed through the connected integration, report that limitation rather than implying it was cancelled. No subsequent run is permitted until the small-sample runner and checkpoint design are in place.
+Run `45976887796` (K=400, B=100, timeout 165 minutes) was cancelled by the user after exceeding the 30-minute budget. GitHub job audit confirms `conclusion=cancelled`; the calculation step was cancelled and artifact upload skipped. It produced no statistical result and must not be rerun. No subsequent run is permitted until the small-sample runner/checkpoint design is reconciled with canonical C10 methodological recovery and current execution authorization.
 
 ## 7. Governance
 
