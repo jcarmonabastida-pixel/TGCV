@@ -301,7 +301,10 @@ def adjudicate_m1_challenger(
                     errors.append(float(point) - true)
                 interval = getattr(comparison, f"{target}_interval")
                 if interval is None:
-                    reason = comparison.abstention_reason or "INTERVAL_NOT_EMITTED"
+                    reason = (
+                        "POINT_ONLY_BASELINE_NO_INTERVAL" if method_id == C0_METHOD_ID
+                        else comparison.abstention_reason or "INTERVAL_NOT_EMITTED"
+                    )
                     abstentions[reason] = abstentions.get(reason, 0) + 1
                     continue
                 low, high = interval
