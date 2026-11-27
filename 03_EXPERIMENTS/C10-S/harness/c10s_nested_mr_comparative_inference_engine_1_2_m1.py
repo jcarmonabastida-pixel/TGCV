@@ -212,6 +212,15 @@ def _validate_roster(record: M1ChallengerDatasetComparison) -> None:
         raise M1ChallengerError("M1_RESULT_INPUT_DESIGN_MISMATCH")
     if record.m1_comparison.method_id != M1_METHOD_ID:
         raise M1ChallengerError("M1_METHOD_ID_MISMATCH")
+    if (record.m1_comparison.within_interval != record.m1_result.within_interval
+            or record.m1_comparison.between_interval != record.m1_result.between_interval):
+        raise M1ChallengerError("M1_INTERVAL_PROVENANCE_MISMATCH")
+    expected_abstention = (
+        "M1_MCSE_INTERVAL_NOT_IMPLEMENTED" if record.m1_result.status == "EMITTED"
+        else f"M1_{record.m1_result.status}"
+    )
+    if record.m1_comparison.abstention_reason != expected_abstention:
+        raise M1ChallengerError("M1_ABSTENTION_REASON_MISMATCH")
     if record.m1_comparison.mcse_estimate is not None or record.m1_comparison.mcse_interval is not None:
         raise M1ChallengerError("M1_MCSE_MUST_REMAIN_UNAVAILABLE")
     if record.m1_comparison.method_id == C5_METHOD_ID:
