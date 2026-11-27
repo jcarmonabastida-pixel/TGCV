@@ -569,3 +569,49 @@ No external source is required specifically for this synthesis. Any references a
 
 **Decision:** pending author review. No source has yet been formally attached to a claim.
 
+## 5. Author decisions — accepted, pending manuscript integration
+
+The following decisions were explicitly approved by the author during the decision-resolution phase on 2026-11-27. They supersede the corresponding “pending author review” statements in the section review records above. They are **accepted editorial decisions**, not evidence that manuscript changes have been applied. Both manuscripts remain unchanged until the coordinated integration phase.
+
+### 5.1 Scope of the working concept of system — accepted
+
+The chapter's primary scope comprises physical, social, organisational and socio-technical systems. It includes systems whose behaviour is not directly observable, provided that behaviour can be inferred through relevant evidence. Purely conceptual systems may be discussed as representations or analytical constructions, but are not automatically equated with systems operating in the world.
+
+### 5.2 System of interest, unit of analysis and analytical perspective — accepted
+
+The chapter will distinguish:
+- **System of interest:** the particular system to be understood or studied.
+- **Unit of analysis:** what observations or analysis are performed on; this may be the whole system, a subsystem, an actor or an interaction.
+- **Analytical perspective:** the approach from which the system is examined, such as functional, operational, organisational or temporal.
+
+### 5.3 System behaviour and emergent behaviour — accepted
+
+The chapter will distinguish:
+- **System behaviour:** any behaviour of the system that is observable or inferable.
+- **Emergent behaviour:** behaviour or a property arising from the interactions and organisation of the whole, which cannot be adequately explained by examining each element in isolation.
+
+The text must not imply that all system behaviour is emergent.
+
+### 5.4 Operational definition of a system — accepted
+
+The following definition is approved as the common conceptual basis for both language versions. The final Spanish and English wording will be authored independently while preserving its meaning:
+
+> A system is a delimitable set of related and organised elements that interact or maintain relevant dependencies, and whose behaviour can be understood by considering both its elements and the relationships between them, within a given context and over a given period.
+
+This is an introductory operational definition, not a universal definition for every discipline. It does not require every system to have an explicit purpose, every behaviour to be emergent, or every element to interact directly.
+
+### 5.5 Water-distribution network example in section 1.1 — accepted
+
+The author approved a common conceptual scenario for both manuscripts, with equivalent scope and content:
+- water source and treatment;
+- storage and pumping stations;
+- distribution network and its connections;
+- consumption points;
+- demand varying by location and time;
+- pressure, flow and operating conditions;
+- energy and control dependencies; and
+- propagation of failures and possible service interruptions.
+
+The example should remain introductory and explanatory, not become a detailed hydraulic-engineering case. Each language version should express the scenario naturally and independently while retaining the same principal elements, relationships, conditions and consequences.
+
+**Disposition after this decision phase:** decisions 5.1–5.5 are accepted. Manuscript integration, bilingual cross-review and post-integration verification remain pending. No manuscript text has been changed by recording these decisions.
