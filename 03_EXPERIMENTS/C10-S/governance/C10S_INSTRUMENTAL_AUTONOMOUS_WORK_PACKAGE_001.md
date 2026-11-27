@@ -1033,3 +1033,23 @@ F1 within remains closed within its declared Gaussian scope. F5 M30/R20 within r
 **Next operation:** produce the coverage ledger from existing historical results only. No new code, simulation or workflow run is needed for that operation.
 
 No frozen acceptance rule changed. No Tier-A confirmatory, Tier-B or causal C10-S execution is authorized. No canonical/main file was modified.
+
+
+## 50. Historical Tier-A coverage ledger completed — 2026-11-27
+
+**Ledger:** `03_EXPERIMENTS/C10-S/diagnostics/C10S_TIER_A_COVERAGE_LEDGER_001.md`  
+**Ledger commit:** `a86d191b8935d2379f618ecd789eb4f4936bf319`  
+**Controlling focus:** `C10S_COVERAGE_FIRST_EXECUTION_FOCUS_001.md` (updated commit `317896df470c61f8e237018f43b3c8e685ab09ec`).
+
+The ledger reconciles the already available C0, C1, C5 comparative holdout, F5 B2/B3, G7 v1.1 and M1-PCT results. No historical bank was rerun or retuned; no new simulation, code change or workflow was performed.
+
+**Coverage routing confirmed:**
+- F1 within: preserve unchanged; bounded Gaussian evidence passes.
+- F1 raw-between: existing conservative joint-pivot overcovers; inspect/calibrate the already-implemented profile candidate.
+- F5 M10/R5: overcoverage plus emission failure; M1-PCT current refit contract emits only 4%; priority diagnosis.
+- F5 M30/R20 raw-between: separate undercoverage/Wilson failure; preserve M30/R20 within PASS.
+- F5 MCSE and mathematical certification work are not substitutes for within/raw-between coverage.
+
+**Next operation:** targeted F5 M10/R5 diagnosis using existing records only: reconcile the concentration ridge, production-versus-analytic fit divergence, and M1-PCT abstention classes. Deliver one minimum coverage/emission candidate or a clear finding that no candidate is currently supported. No M2 expansion or broad numerical run by default.
+
+No acceptance threshold, estimand, historical result, canonical file or authorization changed. Tier-A confirmatory, Tier-B and C10 causal execution remain unauthorized.
