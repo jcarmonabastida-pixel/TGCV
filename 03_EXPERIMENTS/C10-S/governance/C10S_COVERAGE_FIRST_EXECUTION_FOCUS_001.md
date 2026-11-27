@@ -133,4 +133,4 @@ Every update must start with the coverage question:
 
 If that question has no concrete answer, do not perform the action.
 
-The next operation is the **coverage ledger**, not code, not a new mathematical method, and not a workflow run.
+The historical coverage ledger is now recorded in `03_EXPERIMENTS/C10-S/diagnostics/C10S_TIER_A_COVERAGE_LEDGER_001.md`. The next operation is the targeted F5 M10/R5 coverage/emission diagnosis described in §3, not code expansion, a new mathematical method, or a broad workflow run.
