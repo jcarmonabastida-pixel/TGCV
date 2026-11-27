@@ -28,6 +28,7 @@ def fake_m1(status="EMITTED", within=(0.1, 0.4), between=(0.0, 0.2),
         ),
         bootstrap_replicates=20, valid_replicates=20-failed,
         failed_replicates=failed,
+        replicate_records=tuple({} for _ in range(20)) if original_admissible else (),
         point_within=point_within if original_admissible else None,
         point_between=point_between if original_admissible else None,
         within_interval=within if status == "EMITTED" else None,
@@ -149,8 +150,13 @@ class M1ChallengerContractTests(unittest.TestCase):
 
     def test_13_different_designs_are_not_pooled(self):
         first = record("d1")
-        second = replace(record("d2"), input_m=3)
-        with self.assertRaises(m.M1ChallengerError):
+        second = record("d2")
+        changed_legacy = replace(second.legacy_record, input_m=3)
+        changed_m1 = SimpleNamespace(**vars(second.m1_result))
+        changed_m1.target_m = 3
+        second = replace(second, input_m=3, legacy_record=changed_legacy,
+                         m1_result=changed_m1)
+        with self.assertRaisesRegex(m.M1ChallengerError, "STRATIFY_DIFFERENT_INPUT_OR_TARGET_DESIGNS"):
             m.adjudicate_m1_challenger(
                 (first, second),
                 (TruthTargets("d1", .2, .1, .1), TruthTargets("d2", .2, .1, .1)),
