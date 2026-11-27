@@ -105,7 +105,14 @@ class M1ChallengerContractTests(unittest.TestCase):
             m.adjudicate_m1_challenger((record("d1"),),
                                        (TruthTargets("other", 0.2, 0.1, 0.1),))
 
-    def test_09_interval_emission_uses_all_datasets(self):
+    def test_09_duplicate_dataset_or_truth_ids_fail_closed(self):
+        with self.assertRaises(m.M1ChallengerError):
+            m.adjudicate_m1_challenger(
+                (record("d1"), record("d1")),
+                (TruthTargets("d1", .2, .1, .1), TruthTargets("d2", .2, .1, .1)),
+            )
+
+    def test_10_interval_emission_uses_all_datasets(self):
         items = (record("d1"), record("d2", "ABSTAINED_BOOTSTRAP_FIT_FAILURE"))
         truths = (TruthTargets("d1", 0.2, 0.1, 0.1),
                   TruthTargets("d2", 0.2, 0.1, 0.1))
@@ -114,7 +121,7 @@ class M1ChallengerContractTests(unittest.TestCase):
         self.assertEqual(within.n_datasets, 2)
         self.assertEqual(within.interval_emission_rate, 0.5)
 
-    def test_10_conditional_coverage_uses_emitted_intervals(self):
+    def test_11_conditional_coverage_uses_emitted_intervals(self):
         items = (record("d1"), record("d2", "ABSTAINED_BOOTSTRAP_FIT_FAILURE"))
         truths = (TruthTargets("d1", 0.2, 0.1, 0.1),
                   TruthTargets("d2", 0.2, 0.1, 0.1))
@@ -122,7 +129,7 @@ class M1ChallengerContractTests(unittest.TestCase):
                       if x.method_id == M1 and x.target == "within")
         self.assertEqual(within.conditional_coverage, 1.0)
 
-    def test_11_unconditional_cover_rate_uses_all_datasets(self):
+    def test_12_unconditional_cover_rate_uses_all_datasets(self):
         items = (record("d1"), record("d2", "ABSTAINED_BOOTSTRAP_FIT_FAILURE"))
         truths = (TruthTargets("d1", 0.2, 0.1, 0.1),
                   TruthTargets("d2", 0.2, 0.1, 0.1))
@@ -130,7 +137,7 @@ class M1ChallengerContractTests(unittest.TestCase):
                       if x.method_id == M1 and x.target == "within")
         self.assertEqual(within.unconditional_cover_rate, 0.5)
 
-    def test_12_different_designs_are_not_pooled(self):
+    def test_13_different_designs_are_not_pooled(self):
         first = record("d1")
         second = replace(record("d2"), input_m=3)
         with self.assertRaises(m.M1ChallengerError):
@@ -139,7 +146,7 @@ class M1ChallengerContractTests(unittest.TestCase):
                 (TruthTargets("d1", .2, .1, .1), TruthTargets("d2", .2, .1, .1)),
             )
 
-    def test_13_seed_arguments_are_passed_to_separate_methods(self):
+    def test_14_seed_arguments_are_passed_to_separate_methods(self):
         item = record()
         with patch.object(m, "compare_legacy_dataset", return_value=item.legacy_record) as legacy, \
              patch.object(m, "fitted_functional_refit_percentile_bootstrap",
@@ -161,7 +168,7 @@ class M1ChallengerContractTests(unittest.TestCase):
                 m1_bootstrap_replicates=20, m1_bootstrap_seed=33,
             )
 
-    def test_14_m1_cannot_overwrite_c5_identity(self):
+    def test_15_m1_cannot_overwrite_c5_identity(self):
         item = record()
         self.assertEqual(item.legacy_record.candidates[0].method_id, C5)
         self.assertEqual(item.m1_comparison.method_id, M1)
