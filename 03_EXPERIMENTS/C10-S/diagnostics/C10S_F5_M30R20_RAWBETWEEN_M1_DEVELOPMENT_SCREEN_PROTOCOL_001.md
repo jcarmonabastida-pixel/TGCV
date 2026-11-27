@@ -1,6 +1,6 @@
 # C10-S — F5 M30/R20 raw-between M1 development screen protocol 001
 
-**Status:** DEVELOPMENT-ONLY SCREEN — NOT TIER-A / NOT CONFIRMATORY  
+**Status:** RUNNING — DEVELOPMENT-ONLY SCREEN — NOT TIER-A / NOT CONFIRMATORY  
 **Date:** 2026-11-27  
 **Branch:** `research/c10s-coverage-first-focus-20261127`
 
