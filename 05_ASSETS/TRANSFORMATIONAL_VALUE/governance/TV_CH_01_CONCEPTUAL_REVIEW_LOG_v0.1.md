@@ -13,7 +13,7 @@ This record preserves the findings and open recommendations from the conceptual 
 
 The review assesses conceptual clarity, technical precision, scope, examples and equivalence between the independently authored Spanish and English versions. It does not itself approve claims, references, assets, or manuscript changes.
 
-**Important:** Findings below are review observations and proposed resolutions, not approved editorial decisions. No manuscript text has been changed as a result of these two review steps. Both language versions remain `draft`.
+**Important:** Findings below are review observations and proposed resolutions, not approved editorial decisions. The conceptual review of all nine sections is complete; no manuscript text has been changed as a result of this review. Both language versions remain `draft`.
 
 ## 2. Scope and source manuscripts
 
@@ -38,7 +38,7 @@ Disposition vocabulary:
 
 ### 4.1 Section 1.1 — ¿Qué entendemos por sistema? / What Do We Mean by a System?
 
-**Review status:** open  
+**Review status:** reviewed; decisions pending  
 **Manuscript changes:** none
 
 #### Conceptual assessment
@@ -78,7 +78,7 @@ Bibliographic details, stable URLs, relevant passages and suitability for the sp
 
 ### 4.2 Section 1.2 — Propósito, frontera, entorno y contexto / Purpose, Boundary, Environment and Context
 
-**Review status:** open  
+**Review status:** reviewed; decisions pending  
 **Manuscript changes:** none
 
 #### Conceptual assessment
@@ -125,7 +125,7 @@ Bibliographic details, exact sections, stable URLs and claim-level relevance mus
 
 ### 4.3 Section 1.3 — Elementos, estados, propiedades y comportamientos / Elements, States, Properties and Behaviours
 
-**Review status:** open  
+**Review status:** reviewed; decisions pending  
 **Manuscript changes:** none
 
 #### Conceptual assessment
@@ -169,7 +169,7 @@ No external source has yet been selected for this section. If the author wishes 
 
 ### 4.4 Section 1.4 — Actores, capacidades, recursos y dependencias / Actors, Capabilities, Resources and Dependencies
 
-**Review status:** open  
+**Review status:** reviewed; decisions pending  
 **Manuscript changes:** none
 
 #### Conceptual assessment
@@ -213,21 +213,35 @@ No external source has yet been selected for this section. If formal definitions
 
 **Decision:** pending author review. No source has yet been formally attached to a claim.
 
-## 5. Pending review sequence
+## 5. Review completion status
 
-The remaining sections are to be reviewed in order, one step at a time. No findings are pre-judged here.
+The section-by-section conceptual review is complete for all nine sections. The status below distinguishes review completion from editorial decision, manuscript integration and verification.
 
-| Section | Spanish / English topic | Review status |
-|---|---|---|
-| 1.3 | Elementos, estados, propiedades y comportamientos / Elements, States, Properties and Behaviours | reviewed — decisions pending |
-| 1.4 | Actores, capacidades, recursos y dependencias / Actors, Capabilities, Resources and Dependencies | reviewed — decisions pending |
-| 1.5 | Relaciones, interacciones y estructura del sistema / Relationships, Interactions and System Structure | reviewed — decisions pending |
-| 1.6 | Sistemas abiertos, entornos cambiantes y tiempo / Open Systems, Changing Environments and Time | reviewed — decisions pending |
-| 1.7 | Las descripciones de sistemas son modelos: alcance, supuestos y omisiones / System Descriptions Are Models: Scope, Assumptions and Omissions | reviewed — decisions pending |
-| 1.8 | De la optimización de componentes al razonamiento a escala de sistema / From Component Optimisation to System-Level Reasoning | reviewed — decisions pending |
-| 1.9 | Síntesis y preguntas de reflexión / Chapter Synthesis and Reflection Questions | reviewed — decisions pending |
+| Section | Spanish / English topic | Review status | Manuscript changes |
+|---|---|---|---|
+| 1.1 | ¿Qué entendemos por sistema? / What Do We Mean by a System? | reviewed — decisions pending | none |
+| 1.2 | Propósito, frontera, entorno y contexto / Purpose, Boundary, Environment and Context | reviewed — decisions pending | none |
+| 1.3 | Elementos, estados, propiedades y comportamientos / Elements, States, Properties and Behaviours | reviewed — decisions pending | none |
+| 1.4 | Actores, capacidades, recursos y dependencias / Actors, Capabilities, Resources and Dependencies | reviewed — decisions pending | none |
+| 1.5 | Relaciones, interacciones y estructura del sistema / Relationships, Interactions and System Structure | reviewed — decisions pending | none |
+| 1.6 | Sistemas abiertos, entornos cambiantes y tiempo / Open Systems, Changing Environments and Time | reviewed — decisions pending | none |
+| 1.7 | Las descripciones de sistemas son modelos: alcance, supuestos y omisiones / System Descriptions Are Models: Scope, Assumptions and Omissions | reviewed — decisions pending | none |
+| 1.8 | De la optimización de componentes al razonamiento a escala de sistema / From Component Optimisation to System-Level Reasoning | reviewed — decisions pending | none |
+| 1.9 | Síntesis y preguntas de reflexión / Chapter Synthesis and Reflection Questions | reviewed — decisions pending | none |
 
-Each completed step must be added to this log and committed to the same working branch before moving to the next section. Re-read and verify the updated log after each write.
+## 6. Next phase — editorial decisions
+
+In accordance with the Content Model §11.3, the next phase resolves the findings before any manuscript editing.
+
+1. Work through the sections in chapter order, starting at 1.1.
+2. For each finding, distinguish: accepted correction; accepted editorial refinement; rejected proposal (with rationale); deferred item; or source/domain verification required.
+3. Do not treat a candidate source as authoritative until its bibliographic identity, exact passage and relevance have been checked and, where appropriate, entered in the central reference registry.
+4. Record the author's explicit decision and rationale in this log. A review recommendation does not become an accepted correction by default.
+5. Once the decisions for the chapter are resolved, prepare one coordinated integration pass across both original manuscripts. Do not edit one language as the translation source of the other.
+6. After integration, re-read both manuscripts, verify conceptual equivalence and update the status to integrated and then verified only when the corresponding checks have actually been completed.
+
+**Current phase:** reviewed → decisions pending.  
+**Editing authorisation:** not yet established. No manuscript changes are authorised by this status update.
 
 ## 6. Resolution and manuscript integration
 
