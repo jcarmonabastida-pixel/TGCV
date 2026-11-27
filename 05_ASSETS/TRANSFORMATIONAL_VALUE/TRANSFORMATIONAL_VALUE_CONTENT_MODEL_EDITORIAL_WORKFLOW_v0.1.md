@@ -402,6 +402,23 @@ The cycle may be iterative: a later section can reveal a dependency that require
 
 ### 11.3 Editorial review
 
+#### Chapter-level conceptual review and correction cycle
+
+For substantive book chapters, editorial review must include a distinct conceptual review before corrections are integrated into the canonical manuscripts. This cycle applies independently to the Spanish and English originals while treating them as a paired content unit.
+
+1. **Review the chapter section by section.** Examine corresponding Spanish and English passages for conceptual accuracy, definitions, reasoning, scope, assumptions, examples, omissions, internal consistency and alignment with authoritative source material.
+2. **Record findings in a persistent review record.** Give the review a stable identifier and record the section/location, issue or question, rationale, proposed treatment, language-parity implications, relevant sources and resolution status. The review record is a traceability artefact; it is not a substitute for either manuscript.
+3. **Separate findings from decisions.** Distinguish confirmed corrections from editorial suggestions, unresolved conceptual choices, source-verification needs and matters requiring subject-matter authority. Do not silently resolve substantive ambiguity by assumption.
+4. **Resolve open decisions before editing.** Where a finding depends on a choice of scope, definition, model or interpretation, obtain an explicit decision from the responsible owner or reviewer and record it.
+5. **Integrate accepted corrections into both original manuscripts.** Apply agreed changes to the Spanish and English texts, composing each naturally in its own language. Neither language is the translation source of the other.
+6. **Verify the integration.** Re-read the modified passages in both manuscripts; confirm every accepted finding has been addressed; check conceptual equivalence, examples, qualifications, references and terminology. Record intentionally different expression and deferred items.
+7. **Verify repository persistence.** Re-fetch or otherwise inspect the committed files. A review record marked resolved does not prove that the manuscript was updated; manuscript changes are not complete until the canonical files have been verified.
+8. **Continue the editorial workflow.** Only after this cycle is complete for the chapter should it proceed to the remaining applicable editorial, subject-matter and cross-language review gates. Completion of one section's review does not complete the whole chapter.
+
+The cycle may be iterative: later sections can reveal dependencies that require revisiting earlier findings. Preserve the review history and record superseded decisions rather than erasing their rationale.
+
+**Status distinction:** reviewed means findings have been recorded; decided means relevant choices have been resolved; integrated means accepted corrections have been applied to the canonical manuscript(s); verified means committed manuscripts have been re-read and checked. These states must not be conflated. The chapter remains in draft/review until its applicable gates are satisfied.
+
 Review for:
 - clarity, structure and didactic progression;
 - consistency with the book's editorial voice;
