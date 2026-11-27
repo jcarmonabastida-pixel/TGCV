@@ -976,3 +976,38 @@ The single-case profile has not yet produced a final artifact. Until its progres
 ### Interpretation boundary
 
 No Tier-A/Tier-B/causal execution. No LR cutoff, confidence-set inversion, coverage, Wilson interval or acceptance-rate calculation. The original six-dataset stress remains paused. Do not treat duplicate runs as additional samples.
+
+
+
+## 48. Single-case observability diagnostic — exact bottleneck localized; no statistical result
+
+**Workflow:** [45911655879](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45911655879) — `failure` after the controlled 50-minute command timeout (job completed at 00:24:55 UTC).  
+**Exact source revision:** `ed41155d39896ec53864c5dcd392d30bf227553b`.  
+**Artifact:** [c10s-f5-pointwise-lr-observability-single-case](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/45911655879/artifacts/15162013025), SHA-256 `aafb1a3fb270d55363476caa0433567f470c253fb9c763253e8f2dedbfe0d8dd`.
+
+### Verified execution facts
+
+- Dependency installation, compilation, and deterministic seed/provenance/telemetry tests: PASS.
+- Seed audit: 147,400 historical unique seed values checked; six new development seeds unique; zero collisions.
+- The one M30/R20 dataset was generated in 0.000804 s.
+- Global-MLE certificate completed in 178.096725 s with status `GLOBAL_INTERIOR_MAXIMUM_CERTIFIED`.
+- The W profile began at 23:37:49 UTC but did not complete.
+- The partial checkpoint confirms `completed_stage=SEED_AUDIT`, zero completed datasets, and no profile result. The progress log independently records dataset generation and global-certificate completion.
+- The root-isolation telemetry records a degree-148 polynomial, requested width 1/256, max depth 140 and max intervals 5,000. It emits only the `START` event; it never reaches `STURM_SEQUENCE_READY`.
+- Repeated 60-second stack snapshots show the process inside `_uni_divmod` (line 968) called by `_uni_sturm_sequence` (line 1172), then square-free root isolation and the W-profile maximum. The final snapshots show Python `Fraction` multiplication/division and large-integer division. The command exits with timeout code 124; the partial diagnostic artifact uploads successfully.
+
+### Diagnosis
+
+The expensive stage is now localized: **construction of the exact rational Sturm sequence**, before interval subdivision begins. The global-MLE certificate is costly (about 178 seconds) but is not the stage that exhausted this diagnostic. The root telemetry's lack of a `STURM_SEQUENCE_READY` event, together with repeated stack captures in rational polynomial long division, makes this attribution direct rather than speculative.
+
+The current implementation first constructs the Sturm sequence using `Fraction`-based polynomial division and only afterwards converts it to primitive integer polynomials for sign evaluation. Thus integer Horner evaluation does not remove the dominant rational-arithmetic cost in sequence construction. The degree-148 score polynomial is the observed case; this does not establish a universal runtime bound.
+
+### Decision and next engineering step
+
+- Do not repeat the six-dataset batch or another opaque profile run.
+- Preserve the exact inferential contract, root-isolation width/depth/interval budgets, fail-closed statuses and all frozen thresholds.
+- Investigate an exact signed primitive-integer Sturm/subresultant sequence that is sign-equivalent to the rational Sturm sequence, with explicit handling of pseudo-remainder scaling signs. Do not reuse a positive-leading-coefficient normalization unless its effect on Sturm signs is formally accounted for.
+- Add deterministic cross-checks against the existing rational implementation on low-degree fixtures, repeated roots, negative leading coefficients and endpoint roots; verify identical exact sign-variation counts/root counts at rational endpoints. Add degree/bit-growth tests and preserve the existing root-isolation status semantics.
+- Only after these tests pass, run one bounded development-only diagnostic to compare sequence-construction time and exact root counts. Do not launch the six-dataset batch until the single-case path completes and its checkpoint/progress artifacts reconcile.
+
+**Interpretation boundary:** this run is an engineering diagnostic only. It produces no LR statistic, profile maximum, confidence set, coverage, Wilson interval, method comparison or calibration result. It does not change the F5 candidate's inferential status. Tier-A, Tier-B and causal C10-S remain unauthorized.
