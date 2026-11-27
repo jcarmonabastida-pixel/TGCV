@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 0.3
+version: 0.4
 created: 2026-11-27
 updated: 2026-11-27
 authors: []
@@ -309,3 +309,74 @@ A system's operation may depend not only on its components, but also on the acto
 ### Reflection
 
 Think of a service or installation you know. Choose an activity that is important to its operation and identify who needs to take part, which capabilities are required, what resources are used and which other people, components or conditions the activity depends on. What could prevent the activity from being carried out even if each element existed on its own?
+
+
+## 1.5. Relationships, Interactions and System Structure
+
+### A system is more than a collection of elements
+
+Identifying a system's elements is necessary, but it is not enough to understand how the system operates. We also need to describe how those elements are related, what they exchange and how their relationships shape the behaviour of the whole.
+
+In a water supply network, reservoirs, treatment facilities, pumps, pipes and points of use do not operate in isolation. Water flows between them; sensors transmit information; control systems adjust equipment; and maintenance activities affect infrastructure availability. The system is defined not only by its components, but also by the way they are connected and coordinated.
+
+The **structure of a system** is the organisation of its elements and the relationships between them that matter to the analysis. It is not limited to physical layout: it also includes functional connections, information flows, operational dependencies and coordination mechanisms.
+
+### Relationships and interactions
+
+A **relationship** is a relevant link between two or more elements. It may represent a physical connection, a dependency, an authority relationship, an exchange of information or another association needed to describe the system.
+
+An **interaction** refers to what happens when related elements act on or influence one another. It may involve transferring matter or energy, exchanging information, changing a condition or coordinating an activity.
+
+In a water network, a pipe physically connects two parts of the infrastructure and allows water to flow. A sensor and a monitoring system have an informational relationship: the sensor provides measurements that the monitoring system uses to represent the installation's condition. When a reading triggers an adjustment to a pump or valve, we can observe an operational interaction between measurement, decision and action.
+
+Not every relationship involves continuous interaction. A dependency may exist even if it becomes active only under particular circumstances. Conversely, a one-off interaction does not necessarily produce a lasting change in the system's structure.
+
+### Flows, connections and coordination mechanisms
+
+Relationships take different forms. Common examples include:
+
+- **Physical flows:** the movement of water, materials, energy or products between elements.
+- **Information flows:** the transmission of measurements, commands, alerts and records.
+- **Functional connections:** links between components that work together to perform a function.
+- **Operational dependencies:** conditions or contributions that one element requires from another.
+- **Coordination and authority relationships:** the allocation of responsibilities, permissions and decisions among actors.
+
+Several forms may overlap within the same system. A pumping station may be connected to the network through pipes, receive energy from an external infrastructure, send data to a control centre and depend on a maintenance team. Each link describes a different dimension of its integration into the whole.
+
+To avoid ambiguity, a model should make clear what each connection represents. A line may indicate a physical flow, information transfer, dependency or influence; without an explanation, readers may assign it a meaning that was never intended.
+
+### Structure shapes behaviour
+
+A system's behaviour depends not only on the characteristics of its elements but also on how they are related. Changing a connection, interrupting a flow or modifying a coordination rule may alter the response of the whole, even when the individual components remain unchanged.
+
+Imagine that a main pipe is taken out of service. The effect is not confined to the failed section: flow distribution may change, pressure may fall in some areas, and pumping adjustments or valve operations may become necessary. The scale and extent of these effects depend on the network structure, alternative connections and operating conditions.
+
+A local change may also improve the performance of one component while making the overall system perform worse. Increasing the output of a pumping station, for instance, may raise energy consumption or exceed pressure limits elsewhere in the network. Understanding such consequences requires us to examine relevant relationships rather than focusing only on the component being changed.
+
+### Feedback loops
+
+Some system structures contain **feedback loops**: sequences of relationships in which the result of an activity feeds back into the operating conditions or decisions that follow.
+
+In a water network, a sensor may detect a pressure drop; the control system interprets the signal and adjusts a pump; the change in pumping affects pressure, which is measured again. Information about the result thus informs a further decision or adjustment.
+
+Feedback may help keep a variable within specified limits or, under other circumstances, amplify variations and produce unstable responses. Identifying a loop is not enough: its delays, limits, control rules and operating conditions also matter.
+
+The term should not be applied to every return connection in a drawing. Feedback occurs when the result of a process influences that process again or affects its regulation.
+
+### Representing structure without losing meaning
+
+A diagram can help reveal connections and distinguish types of relationships, but every representation selects part of reality. An infrastructure schematic may emphasise physical flows and omit responsibilities; a control diagram may show signals and commands without representing water distribution; an organisational chart may show authority and coordination but not technical constraints.
+
+A diagram should therefore be read in relation to its purpose, scope and legend. It is important to state what the nodes and connections represent, which relationships have been omitted, and whether arrows indicate flow direction, information transfer or influence.
+
+The supporting diagram in this section uses a simplified water supply network to distinguish physical flows, information and control signals, and selected external dependencies. It is not an engineering drawing and does not attempt to represent every possible relationship in a real installation.
+
+### Key idea
+
+A system's structure consists of its elements and the relationships that connect them. Understanding those relationships—including flows, dependencies, coordination and feedback—is essential to explaining the behaviour of the whole.
+
+### Reflection
+
+Choose a system you know and draw its main elements and connections. Distinguish physical flows from information exchanges and dependencies. Which behaviour would be difficult to explain if you ignored one of those relationships? Which important connections are missing from your representation?
+
+**Supporting diagram:** [TV-DIA-002 — Relationships and structure in a water supply network](../../../assets/diagrams/TV-DIA-002/README.md)
