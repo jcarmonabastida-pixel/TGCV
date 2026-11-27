@@ -2,7 +2,7 @@
 
 **Record:** C10S-THETA-A-BOUNDED-DEVELOPMENT-PILOT-DESIGN-001  
 **Version:** 0.1  
-**Status:** DRAFT FOR DECISION — NO EXECUTION AUTHORIZATION  
+**Status:** SUPERSEDED DRAFT — SEE CORRECTION ADDENDUM AT END — NO EXECUTION AUTHORIZATION  
 **Date:** 2026-11-27  
 **Branch:** `research/c10s-m1-engine12-source-only-20261127`  
 **Scope:** One bounded exploratory screen of the existing direct theta_A pipeline  
@@ -136,6 +136,37 @@ No automatic retries, sample-size reduction, scenario deletion, confidence/toler
 This draft recommends the first screen at **N=700, M=5, R=4 across the existing five scenarios**, with 25 independently checkpointed scenario/world blocks and a three-hour per-run ceiling.
 
 This recommendation is for an exploratory directional screen only. It is not a statistically adequate calibration design and does not resolve inferential sampling assumptions. The user must approve or revise the proposed dimensions and interpretation before a one-use execution authorization can be prepared.
+
+`scientific_execution=false`  
+`execution_authorized=false`
+
+
+---
+
+## 10. Correction after historical cross-check — 2026-11-27
+
+**This section supersedes the proposed numerical dimensions and execution envelope in Sections 3 and 5 above.** The original N=700, M=5, R=4 and 25-block/3-hour proposal must not be treated as an adopted or recommended design.
+
+The subsequent historical reconstruction identified a material gap in the original proposal:
+
+1. The source-level review explicitly states that P178 and earlier Phase-A V_cont N/R values are not automatically transferable to direct theta_A. N=700 was borrowed as an anchor without evidence that it is appropriate for this direct focal DGP. It is therefore withdrawn as a recommendation.
+2. M=5 and R=4 were proposed as convenient exploratory values, not derived from the existing nested precision contract or a measured pilot. They remain unsubstantiated candidates and are withdrawn as recommendations.
+3. The 25-block decomposition and three-hour per-run ceiling were not verified against the actual runner's checkpoint semantics or a resource benchmark. They are not an execution-ready schedule.
+4. The existing direct calibration protocol already requires a staged design: select an N grid against the four primary objectives, estimate within-world variability before selecting R, and justify M under an explicit outer-world target distribution. The design review also states that M<3 is insufficient for outer precision and M=2 is only a smoke/contract check. These requirements take precedence over the arbitrary values above.
+
+### Corrected next operation
+
+Do not freeze N/M/R yet. Reuse the existing direct pipeline and historical contracts to prepare a **dimension-selection note**, not a numerical execution plan:
+
+- N: recover any already specified feasible N grid for this exact direct theta_A DGP; if none exists, identify a minimal candidate grid from the focal DGP's resource/estimand constraints, without importing P178 or F5 values as validated choices.
+- M: retain UNVERIFIED outer-world sampling unless an applicable target distribution and independence basis are explicitly documented. A small M can be used only for descriptive development, not MCSE acceptance.
+- R: retain the full assignment-plus-S3 observation interpretation. Choose R only after a bounded development sample provides an estimate of within-world variability; do not infer IID from distinct seeds.
+- Resource budget: inspect the actual runner's checkpoint granularity and historical runtime evidence before proposing a shard count or ceiling. Preserve the user's <=3-hour preference as a planning constraint, not as evidence that each proposed block will fit.
+- Stopping/acceptance: numerical confidence, coverage, availability, width and MCSE targets remain open and must be justified before any calibration.
+
+### Status
+
+The earlier numeric proposal is retained here only as an auditable superseded draft. No N/M/R design is frozen, no run schedule is approved, and no execution authorization is created.
 
 `scientific_execution=false`  
 `execution_authorized=false`
