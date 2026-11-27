@@ -245,6 +245,18 @@ In accordance with the Content Model §11.3, the next phase resolves the finding
 
 ## 7. Resolution and manuscript integration
 
+### 7.1 Author decisions — section 1.1
+
+**Decision 1.1-SCOPE — accepted by the author (2026-11-27).**
+
+The book's working scope will focus on physical, social, organisational and socio-technical systems, including systems whose behaviour is not directly observable but can be inferred from relevant evidence.
+
+Purely conceptual systems may be mentioned as representations or analytical constructs, but will not automatically be treated as equivalent to systems operating in the world.
+
+**Rationale:** This preserves a broad systems-engineering orientation without unnecessarily restricting the book to directly observable physical systems, while maintaining a useful distinction between systems of interest and conceptual representations.
+
+**Implementation status:** decision recorded; wording not yet integrated into either manuscript. The remaining section 1.1 findings are still unresolved.
+
 After the conceptual review of sections 1.1–1.9 is complete:
 1. Review the accumulated findings for consistency and dependencies across the chapter.
 2. Resolve open recommendations explicitly; do not silently convert suggestions into decisions.
