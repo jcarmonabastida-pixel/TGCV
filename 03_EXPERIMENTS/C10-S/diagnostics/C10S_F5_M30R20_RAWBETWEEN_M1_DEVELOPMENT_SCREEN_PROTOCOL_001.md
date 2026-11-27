@@ -60,3 +60,8 @@ A promising screen requires raw-between point coverage within [93%,97%], Wilson 
 - No Tier-A confirmatory, Tier-B, or C10 causal execution.
 - No further Sturm, topology, global-certification, or generic interval work.
 - Current run `45976887796` retains its original 165-minute workflow timeout as a one-off legacy exception; no automatic rerun, extension or duplicate. All future workflows must use `timeout-minutes: 30`.
+
+
+## 6.1 Cancellation access limitation — 2026-11-27
+
+After the user agreed to stop the oversized run and adopt the small-sample policy, the GitHub run page was checked through an authenticated browser workflow. Run `45976887796` remained `in_progress` after more than 40 minutes. GitHub displayed `Sign in to view logs`; the Cancel workflow control was therefore unavailable in the current browser session. Cancellation was **not completed**. Do not report the run as cancelled. The user must authenticate through the connected browser profile before cancellation can be retried. No replacement run has been launched.
