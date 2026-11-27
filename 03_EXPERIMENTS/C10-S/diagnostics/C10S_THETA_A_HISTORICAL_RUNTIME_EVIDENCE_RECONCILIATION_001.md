@@ -208,3 +208,22 @@ No numerical N/M/R calibration choice is made here. The default 32-unit fixture 
 ### 8.4 Calibration-runner completeness constraint
 
 Static inspection of the current protocol confirms that the calibration design validator rejects M<2 or R<2, and the seed-bank validator rejects any bank missing a declared scenario×N×M×R assignment. This is intentional fail-closed behaviour. A single technical fixture must therefore remain outside both calibration/evaluation banks and must not be routed through `run_theta_a_calibration_replicates()`. The direct DGP factory and `run_pipeline()` can still be reused for a technical-only end-to-end measurement without changing those contracts.
+
+
+## 9. Gated technical-only preflight workflow prepared — 2026-11-28
+
+Following explicit user authorization to **prepare, but not execute**, a one-purpose workflow was added:
+
+- `.github/workflows/c10-s-theta-a-technical-preflight.yml`
+- Trigger: `workflow_dispatch` only; no push, pull-request, schedule or automatic trigger.
+- Branch guard: job runs only on `research/c10s-m1-engine12-source-only-20261127`.
+- Dispatch guard: required `confirm_technical_preflight` choice defaults to `false`; the job runs only when explicitly set to `true`.
+- Runtime ceiling: 12-minute script timeout, 15-minute GitHub Actions job timeout; no retry.
+- Workload: one N=32 positive identified fixture through the existing `ThetaACalibrationDGPFactory.build_fixture()` and `run_pipeline()` path exactly once.
+- Identity: fixed technical-only world, roster, unit-prefix, run, seed and randomization-salt namespace. The technical assignment is not a `ThetaASeedAssignment`, is not placed in either bank, and is never passed to bank validation or the calibration orchestrator.
+- Path exercised: fixture/world construction; direct assignment and S3 observation; complete-world materialization/sealing; Analyzer; Evaluator.
+- Outputs: technical-only JSON manifest and cProfile cumulative report; no sealed evidence, calibration rows, evaluation rows, truth values, point estimates or interval endpoints are exported as artifacts.
+- The 0.95 confidence input and unit-independence flag are explicitly labelled software-path switches only, not adopted statistical assumptions or scientific decisions. cProfile overhead is included in the measured pipeline time.
+- Exclusions: seed-bank validation, calibration orchestration, cross-world aggregation, N-scaling, and any scientific interpretation.
+
+This workflow is now **PREPARED / NOT EXECUTED**. The user authorization received covers creation only. A future dispatch with `confirm_technical_preflight=true` is the separate explicit execution authorization; no such dispatch has been made. Scientific execution and calibration authorization remain false.
