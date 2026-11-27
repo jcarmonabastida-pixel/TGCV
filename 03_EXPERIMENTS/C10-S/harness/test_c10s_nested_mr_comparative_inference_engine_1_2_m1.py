@@ -199,7 +199,17 @@ class M1ChallengerContractTests(unittest.TestCase):
         with self.assertRaises(m.M1ChallengerError):
             m._validate_roster(changed)
 
-    def test_17_m1_cannot_overwrite_c5_identity(self):
+    def test_17_c0_remains_an_explicit_point_only_baseline(self):
+        item = record()
+        metrics = m.adjudicate_m1_challenger(
+            (item,), (TruthTargets("d1", 0.2, 0.1, 0.1),)
+        )
+        within = next(x for x in metrics if x.method_id == C0_METHOD_ID and x.target == "within")
+        self.assertEqual(within.interval_emission_rate, 0.0)
+        self.assertEqual(within.abstention_reasons,
+                         (("POINT_ONLY_BASELINE_NO_INTERVAL", 1),))
+
+    def test_18_m1_cannot_overwrite_c5_identity(self):
         item = record()
         self.assertEqual(item.legacy_record.candidates[0].method_id, C5)
         self.assertEqual(item.m1_comparison.method_id, M1)
