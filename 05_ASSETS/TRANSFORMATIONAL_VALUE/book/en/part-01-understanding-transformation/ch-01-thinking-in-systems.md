@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 0.4
+version: 0.5
 created: 2026-11-27
 updated: 2026-11-27
 authors: []
@@ -380,3 +380,74 @@ A system's structure consists of its elements and the relationships that connect
 Choose a system you know and draw its main elements and connections. Distinguish physical flows from information exchanges and dependencies. Which behaviour would be difficult to explain if you ignored one of those relationships? Which important connections are missing from your representation?
 
 **Supporting diagram:** [TV-DIA-002 — Relationships and structure in a water supply network](../../../assets/diagrams/TV-DIA-002/README.md)
+
+
+## 1.6. Open Systems, Changing Environments and Time
+
+### Systems do not operate in isolation
+
+A system can be bounded for the purpose of analysis without being isolated from everything outside that boundary. Many systems exchange matter, energy, information, resources or services with their environment. They are described as **open systems** when such exchanges are relevant to their operation.
+
+A water supply network, for example, receives water from sources and energy to pump and treat it. It delivers water to users and organisations, generates information about its operation, and depends on external factors such as energy availability, weather conditions, applicable regulations, and the activities of suppliers and maintenance services.
+
+A boundary helps us decide which elements to include in an analysis; it does not remove the relationships that cross that boundary. A sound description should therefore show both the system's internal organisation and the external exchanges and dependencies relevant to the question being studied.
+
+### Inputs, outputs and exchanges
+
+One way to begin describing the relationship between a system and its environment is to identify its **inputs**, **outputs** and **exchanges**. Inputs are what the system receives; outputs are what it delivers or produces; and exchanges also include flows that may move in both directions.
+
+| Type of exchange | Example in a water supply network |
+|---|---|
+| Matter | Water abstracted, treated and distributed; sludge or waste from treatment |
+| Energy | Electricity used by pumps and equipment |
+| Information | Sensor data, demand forecasts, alerts and instructions |
+| Resources and services | Spare parts, technical support and specialist staff |
+| Outputs to the environment | Water supplied, service information and managed waste |
+
+This classification supports analysis; it is not a universal list. In some systems, financial, regulatory, biological or social flows may also be essential. Selection depends on the purpose and level of detail of the study.
+
+Nor should an input be mistaken for a sufficient condition for operation. Receiving energy, for instance, does not guarantee that a station can pump water if a pump has failed, a valve remains closed or no authorised personnel are available to intervene.
+
+### The environment can change
+
+A system's environment is not necessarily stable. Demand, resource availability, physical conditions, technologies, regulations and user expectations may all change.
+
+In a water network, a prolonged drought may reduce water availability; a heatwave may increase demand; a regulatory change may require additional monitoring; and a power outage may temporarily limit pumping. Such external changes can alter the conditions under which the system operates even when its internal configuration has not changed.
+
+Influence can also run in the opposite direction. A system's decisions and operations may affect its environment: infrastructure can influence land use, energy consumption or nearby ecosystems. The relationship between a system and its environment is therefore not always one-way.
+
+### Time is part of the description
+
+A description of a system at a particular moment does not necessarily explain how it operates over time. States, relationships, available resources and environmental conditions may change. To understand a dynamic system, we need to examine not only how it is configured but also how it evolves.
+
+At least three time scales are often useful to distinguish:
+
+- **Short term:** operational variations, daily demand cycles, responses to alarms or temporary interruptions.
+- **Medium term:** maintenance, seasonal changes, equipment replacement, procedural adjustments and resource availability.
+- **Long term:** infrastructure ageing, demographic change, climate trends, technological development and regulatory change.
+
+These scales are not universal and have no fixed durations. A variation that is rapid for one infrastructure may be slow for another system. What matters is choosing a time window suited to the analytical question and not confusing a single observation with a persistent pattern.
+
+### Disturbances, adaptation and evolution
+
+Systems can respond in different ways to environmental changes or disturbances. They may absorb a variation without noticeably changing their operation, adjust how they operate, reorganise some elements or lose the ability to provide the expected service.
+
+For example, in response to a temporary increase in demand, a network may use available pumping capacity, change operating set-points or manage pressure in particular areas. If high demand persists for years, more substantial measures may be needed, such as expanding infrastructure, introducing new sources or changing consumption patterns.
+
+It is useful to distinguish an operational response from a more lasting transformation. Temporarily adjusting a pump is not the same as redesigning the network; likewise, a structural modification does not by itself guarantee successful adaptation. The response must be assessed against expected behaviour, constraints and the time horizon being considered.
+
+### A snapshot and a moving picture of the system
+
+A system can be described through a representation of its configuration at a particular moment, or through a representation showing how its conditions and behaviour change over time. Both perspectives are useful, but they answer different questions.
+
+A snapshot of the water network may show which reservoirs, pumps and pipes are available today. A time-based description may show how reservoir levels, demand, energy use and incidents vary over a week or a season.
+
+A temporal perspective also requires us to state when data were collected, which period they cover and which events might explain observed changes. Without this information, we may attribute to the system's structure what is actually due to a temporary condition or an external disturbance.
+
+### Key idea
+
+Open systems exchange with their environments and operate under conditions that may change. Understanding their behaviour requires more than describing components and relationships at one moment: it also requires attention to flows across the system boundary, environmental variation and the relevant time scale.
+
+### Reflection
+
+Choose a system you know. Identify what it receives from and delivers to its environment, which external conditions may change and over what time scales those changes occur. What aspects of its operation would remain unnoticed if you observed it at only one point in time?
