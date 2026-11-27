@@ -223,7 +223,7 @@ The remaining sections are to be reviewed in order, one step at a time. No findi
 | 1.4 | Actores, capacidades, recursos y dependencias / Actors, Capabilities, Resources and Dependencies | reviewed — decisions pending |
 | 1.5 | Relaciones, interacciones y estructura del sistema / Relationships, Interactions and System Structure | reviewed — decisions pending |
 | 1.6 | Sistemas abiertos, entornos cambiantes y tiempo / Open Systems, Changing Environments and Time | reviewed — decisions pending |
-| 1.7 | To be read from both manuscripts | not_reviewed |
+| 1.7 | Las descripciones de sistemas son modelos: alcance, supuestos y omisiones / System Descriptions Are Models: Scope, Assumptions and Omissions | reviewed — decisions pending |
 | 1.8 | To be read from both manuscripts | not_reviewed |
 | 1.9 | To be read from both manuscripts | not_reviewed |
 
@@ -343,6 +343,58 @@ H. **Bilingual alignment:** make any accepted changes independently in both orig
 #### Candidate sources — verification pending
 
 No external source has yet been selected for this section. If a formal source is considered necessary for open-system boundaries, system-environment exchanges, adaptation or temporal system behaviour, verify an authoritative systems-engineering, systems-theory or systems-dynamics reference and its exact edition and passages before recording it in the central references registry. No source is approved or attached to a claim at this stage.
+
+**Decision:** pending author review. No source has yet been formally attached to a claim.
+
+### 4.7 Section 1.7 — Las descripciones de sistemas son modelos: alcance, supuestos y omisiones / System Descriptions Are Models: Scope, Assumptions and Omissions
+
+**Review status:** reviewed; decisions pending  
+**Manuscript changes:** none
+
+#### Conceptual assessment
+
+- The central proposition—that a system description is a selective representation rather than the system itself—is sound and well placed after sections on boundaries, relationships and temporal behaviour. The section explains why simplification is necessary without equating simplification with poor quality.
+- The relationship between analytical purpose and model scope is clearly presented. The table is useful because it shows that different questions about the same water network call for different representations. Retain it as a teaching device.
+- The term **model** is used broadly to include prose, diagrams, tables, variable sets and mathematical models. This is defensible for an introductory chapter, but readers may associate “model” primarily with formal or mathematical representations. Consider stating explicitly that the chapter uses the term in this broad sense: any purposeful, selective representation can function as a model.
+- The section could make a sharper distinction between **scope**, **boundary** and **level of detail**. Scope concerns what the representation covers for a given question; boundary identifies what is treated as inside or outside the system of interest; level of detail concerns how finely included elements and relationships are represented. They are related but not interchangeable.
+- The treatment of assumptions is particularly strong in distinguishing assumptions from observed facts and quantified uncertainty. It could also distinguish an assumption from a model input or parameter: an input may be measured, estimated, specified or assumed. Not every value supplied to a model is an assumption.
+- The statement that assumptions should be recorded, justified and tested where possible is appropriate. Sensitivity analysis is implied by examining how conclusions change when assumptions vary; the text need not introduce the technical term unless it is useful for the intended audience.
+- The treatment of omissions is sound. A useful further distinction is between something deliberately excluded for scope or simplicity and something absent because it is unknown or not represented due to lack of evidence. These cases should not be conflated: an unknown dependency is not necessarily a deliberate modelling choice. This also connects to section 1.3's distinction between unavailable information and deliberate omission.
+- The example of omitting electricity dependency is effective because it demonstrates how a model can be adequate for one question and inadequate for another. Retain it.
+- The suitability checklist is practical and appropriately avoids claiming that a model can be guaranteed correct by following it. Consider distinguishing **evidence supporting the model's inputs and relationships** from **evidence that the model adequately represents the relevant system behaviour**. The presence of evidence for individual data does not by itself establish model adequacy.
+- The subsection on revisiting models when the question or system changes is valuable. The discussion of complementary hydraulic and socio-technical models could add a concise caution: combining models requires checking differences in boundaries, assumptions, time horizons, terminology and level of detail. Otherwise, integration may create apparent consistency where the underlying representations are not compatible.
+- The section is appropriately introductory and does not need a taxonomy of model types, validation methods or uncertainty analysis. The priority is to clarify the distinctions above without expanding the chapter disproportionately.
+
+#### Example and bilingual-equivalence observations
+
+- The Spanish and English versions are closely aligned in structure, reasoning, table content, examples and learning outcome. No material conceptual divergence was identified.
+- “Modelo” / “model”, “alcance” / “scope”, “supuestos” / “assumptions” and “omisiones” / “omissions” are appropriate equivalents.
+- “Esquema de la red” / “network layout” are functionally equivalent in the table, although “layout” can suggest a spatial arrangement. If the intended representation is specifically connectivity and flow direction, consider a more precise equivalent in both languages.
+- “Zonas de consumo” / “consumption areas” are equivalent in substance. Maintain consistency with the water-network terminology used in earlier sections.
+- The assumption example concerning equipment availability, the electricity-dependency omission and the shift from hydraulic flow to service resilience are equivalent.
+- The distinction between model evidence and model adequacy, and the distinction between deliberate omission and unknown information, should be expressed in both versions if accepted.
+
+#### Proposed resolution
+
+A. **Broad use of model:** retain the broad definition but state briefly that “model” is used here for any purposeful, selective representation, not only mathematical or computational models.
+
+B. **Scope, boundary and detail:** add concise distinctions among the scope of a representation, the system boundary adopted for the analysis and the level of detail used within that scope.
+
+C. **Assumptions and inputs:** retain the distinction between assumptions, observations and quantified uncertainty. Clarify, if useful, that model inputs or parameters may be measured, estimated, specified or assumed; they are not automatically assumptions.
+
+D. **Omissions and unknowns:** distinguish deliberate exclusions from information that is unknown, unavailable or unsupported by evidence. Cross-reference the conceptual distinction established in section 1.3 without repeating it at length.
+
+E. **Evidence and adequacy:** refine the checklist so that evidence for input data and relationships is not confused with evidence that the representation is adequate for the question and relevant behaviour. Do not imply that a checklist guarantees correctness.
+
+F. **Complementary models:** retain the hydraulic and socio-technical examples. Add a brief note that combining representations requires checking compatibility of boundaries, assumptions, time horizons, terminology and levels of detail.
+
+G. **Bilingual alignment:** preserve equivalent conceptual distinctions and examples in both original manuscripts. Review the translation-equivalence of “network layout” / «esquema de la red» if the wording is changed.
+
+H. **Editorial restraint:** do not expand this introductory section into a formal taxonomy of modelling, validation or uncertainty methods. Keep the focus on purpose, scope, assumptions, omissions and limits of use.
+
+#### Candidate sources — verification pending
+
+No external source has yet been selected for this section. If a formal source is considered necessary for model purpose and scope, assumptions, model validation or uncertainty, verify an authoritative systems-engineering or modelling reference and its exact edition and passages before recording it in the central references registry. No source is approved or attached to a claim at this stage.
 
 **Decision:** pending author review. No source has yet been formally attached to a claim.
 
