@@ -225,7 +225,7 @@ The remaining sections are to be reviewed in order, one step at a time. No findi
 | 1.6 | Sistemas abiertos, entornos cambiantes y tiempo / Open Systems, Changing Environments and Time | reviewed — decisions pending |
 | 1.7 | Las descripciones de sistemas son modelos: alcance, supuestos y omisiones / System Descriptions Are Models: Scope, Assumptions and Omissions | reviewed — decisions pending |
 | 1.8 | De la optimización de componentes al razonamiento a escala de sistema / From Component Optimisation to System-Level Reasoning | reviewed — decisions pending |
-| 1.9 | To be read from both manuscripts | not_reviewed |
+| 1.9 | Síntesis y preguntas de reflexión / Chapter Synthesis and Reflection Questions | reviewed — decisions pending |
 
 Each completed step must be added to this log and committed to the same working branch before moving to the next section. Re-read and verify the updated log after each write.
 
@@ -450,6 +450,60 @@ I. **Bilingual alignment and editorial restraint:** apply accepted refinements i
 #### Candidate sources — verification pending
 
 No external source has yet been selected for this section. If a formal source is considered necessary for local versus system-level optimisation, multi-criteria decision-making or systems engineering trade-offs, verify an authoritative reference and its exact edition and passages before recording it in the central references registry. No source is approved or attached to a claim at this stage.
+
+**Decision:** pending author review. No source has yet been formally attached to a claim.
+
+### 4.9 Section 1.9 — Síntesis y preguntas de reflexión / Chapter Synthesis and Reflection Questions
+
+**Review status:** reviewed; decisions pending  
+**Manuscript changes:** none
+
+#### Conceptual assessment
+
+- The synthesis accurately captures the chapter's progression: from system purpose and composition through relationships, boundaries, environment, time, models and evidence, to the evaluation of interventions beyond the component being changed. It is an effective consolidation rather than a new exposition.
+- The integrated table is useful and proportionate. It provides a compact set of dimensions without claiming to be exhaustive. Retain it.
+- The table should be checked against the decisions made in sections 1.1–1.8 before manuscript integration. In particular, terminology for actors and capabilities, boundaries and exchanges, model scope and evidence, and system-level reasoning should use the final agreed formulations. The synthesis should not preserve wording that the detailed reviews later refine.
+- The row “Composition and capabilities” / «Composición y capacidades» is slightly compressed: it combines elements, actors, resources and capabilities. This is appropriate for a summary, but the phrase “what each part contributes” / «qué puede aportar cada parte» may blur the distinction between an actor, a resource contributed by an actor and a system-level capability emerging from coordination. A small wording refinement could preserve the summary while reflecting section 1.4.
+- The “Boundary and environment” row correctly includes exchanges crossing boundaries. Ensure that it remains consistent with the final section 1.6 distinction between exchange types and the direction/role of inputs and outputs.
+- The “Model and evidence” row is strong, but “fitness for purpose” / «adecuación al propósito» should refer to the adequacy of the representation for the analytical question, not to the quality or success of the real system. This distinction should be clear in the final wording.
+- The exercise asking the reader to describe a familiar system is appropriate and actionable. The instruction to distinguish what is known, assumed or not yet examined is especially valuable and consistent with sections 1.3 and 1.7. Retain it.
+- The five reflection questions cover the chapter well. Question 1 could acknowledge that relevant actors may have different or conflicting expectations about outcomes, following the review of section 1.8. Question 2 should preserve the distinction between external dependencies and internal structure. Question 4 appropriately asks about assumptions and omissions; it may also prompt the reader to consider whether omissions are deliberate or due to lack of information. These are refinements, not reasons to add more questions.
+- The closing paragraph is conceptually sound. “The configuration ... that makes a particular behaviour possible” / «la configuración ... que hace posible un determinado comportamiento» is an effective synthesis of the systems perspective.
+- The transition to chapter 2 is logical, but it should be checked against the actual scope and opening of chapter 2 when that chapter is reviewed. In particular, “transformation as a system capability” should not prematurely imply that all transformations are capabilities already available to the system; the next chapter should clarify the difference between existing capability and capability to be developed or enabled.
+- No additional diagram or illustration is needed in this synthesis section. The integrated table already provides the appropriate visual summary.
+
+#### Example and bilingual-equivalence observations
+
+- The Spanish and English versions are closely aligned in structure, dimensions, exercise, reflection questions and closing transition. No material conceptual divergence was identified.
+- “Comprender el sistema antes de intervenir” / “Understanding the system before changing it” are close equivalents, though “intervening” and “changing” have slightly different connotations. Either is acceptable; keep the chosen title aligned with the chapter's established terminology.
+- “Una visión integrada” / “Bringing the dimensions together” are conceptually equivalent.
+- “Rendimiento del conjunto” / “Overall performance” are appropriate equivalents, subject to the terminology decision in section 1.8 about system-level reasoning versus optimisation.
+- “Adecuación al propósito” / “fitness for purpose” are equivalent, but should be anchored to the model/representation rather than to the system itself.
+- “Qué puede aportar cada parte” / “what each part contributes” are equivalent but may obscure the actor/resource/capability distinctions identified in section 1.4. Refine in parallel if accepted.
+- The exercise and five reflection questions are equivalent in substance. Any addition about conflicting actor expectations or deliberate versus information-driven omissions should be made in both original manuscripts.
+- The closing transition is equivalent. Its wording should be reconciled with chapter 2's conceptual framing during cross-chapter review.
+
+#### Proposed resolution
+
+A. **Integrated table:** retain the table, but perform a terminology reconciliation after decisions on sections 1.1–1.8 are resolved. It should reflect the final agreed distinctions and should not introduce new concepts.
+
+B. **Actors, resources and capabilities:** refine the composition/capabilities row so that it does not collapse actors, resources they contribute and system capabilities into one undifferentiated “part”.
+
+C. **Boundary and exchanges:** align the boundary/environment row with the final classification of exchanges, inputs and outputs adopted in section 1.6.
+
+D. **Model adequacy:** make explicit that fitness for purpose concerns whether the representation is adequate for the question and intended use, not whether the real system itself is fit for purpose.
+
+E. **Reflection questions:** retain five questions. Consider adding within the existing questions (not as extra questions) the possibility of conflicting actor expectations and the distinction between deliberate omissions and unknown/unavailable information.
+
+F. **Chapter 2 transition:** retain the transition provisionally. Revisit it when chapter 2 is available for review, checking that “transformation as a system capability” distinguishes existing capability from capability that may need to be developed or enabled.
+
+G. **Visual support:** no additional visual asset is recommended; the synthesis table is sufficient.
+
+H. **Bilingual alignment:** make any accepted changes independently in both original manuscripts, preserving equivalent scope and terminology rather than translating one version from the other.
+
+#### Candidate sources — verification pending
+
+No external source is required specifically for this synthesis. Any references added to support substantive claims in sections 1.1–1.8 should be linked at the relevant point in those sections and registered centrally; the synthesis should not duplicate the references registry or introduce unsupported claims.
 
 **Decision:** pending author review. No source has yet been formally attached to a claim.
 
