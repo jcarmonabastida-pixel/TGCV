@@ -39,9 +39,7 @@ def fake_m1(status="EMITTED", within=(0.1, 0.4), between=(0.0, 0.2),
 
 def record(dataset_id="d1", m1_status="EMITTED", interval=(0.1, 0.4)):
     common = observed_nested_mr_result(ROWS, target_m=2, target_r=2)
-    baseline = replace(common, method_id=C0_METHOD_ID,
-                       within_interval=(0.0, 1.0), between_interval=(0.0, 1.0),
-                       mcse_interval=(0.0, 1.0))
+    baseline = replace(common, method_id=C0_METHOD_ID, abstention_reason=None)
     c5_result = replace(common, method_id=C5,
                         within_interval=(0.0, 0.8), between_interval=(0.0, 0.8),
                         mcse_interval=(0.0, 0.8))
