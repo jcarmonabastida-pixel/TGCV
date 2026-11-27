@@ -12,7 +12,6 @@ from typing import Sequence
 
 from c10s_nested_mr_comparative_inference_engine import (
     C0_METHOD_ID,
-    ComparativeEngineError,
     DatasetComparison as LegacyDatasetComparison,
     MethodTargetMetrics,
     TruthTargets,
@@ -119,6 +118,7 @@ def compare_f5_dataset(
         bootstrap_replicates=c5_bootstrap_replicates,
         bootstrap_seed=c5_bootstrap_seed,
         confidence_level=confidence_level,
+        include_profile_diagnostics=False,
     )
     if legacy.engine_id != "C10S_NESTED_MR_COMPARATIVE_INFERENCE_ENGINE_1.1":
         raise M1ChallengerError("LEGACY_ENGINE_ID_MISMATCH")
