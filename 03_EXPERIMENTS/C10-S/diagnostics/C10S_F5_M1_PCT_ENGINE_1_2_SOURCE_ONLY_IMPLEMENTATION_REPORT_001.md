@@ -38,7 +38,7 @@ M1 MCSE point and interval estimates are explicitly unavailable; the adapter rep
 
 ## 3. Test source
 
-Seventeen source-level contract tests were added, covering:
+Eighteen source-level contract tests were added, covering:
 
 - exact three-method roster;
 - preservation of C0/C5 legacy records;
@@ -51,6 +51,7 @@ Seventeen source-level contract tests were added, covering:
 - conditional and unconditional coverage;
 - design stratification;
 - distinct per-call seed routing;
+- explicit C0 point-only baseline accounting;
 - no overwrite of C5 identity;
 - explicit M1 MCSE non-implementation and interval-provenance consistency.
 
@@ -69,7 +70,11 @@ The adapter requires three distinct caller-supplied C0/C5/M1 seeds per dataset a
 - No writes to `main`.
 - No method-selection or calibration claim.
 
-## 6. Next scientific decision
+## 6. Relevance boundary to the causal calibration path
+
+The separate static crosswalk `C10S_F5_TIERA_TO_THETA_A_CALIBRATION_RELEVANCE_CROSSWALK_DRAFT_001.md` establishes that this adapter is F5-scoped. It does not calibrate the direct theta_A Analyzer/Evaluator interval or replace `theta_a_nested_mc_precision.py`. Do not dispatch an M1 screen as a proxy for theta_A calibration.
+
+## 7. Next scientific decision
 
 The next decision is **not** to expand instrumentation. First review this source-only adapter. If it is retained, separately authorize its deterministic contract tests. After those tests, the work must return to the shortest statistically defensible route for coverage/emission, bias/RMSE and precision assessment of the methods that remain viable.
 
