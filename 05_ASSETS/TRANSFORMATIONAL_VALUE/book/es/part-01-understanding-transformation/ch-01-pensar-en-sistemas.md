@@ -5,7 +5,7 @@ title: "Pensar en sistemas"
 language: es
 content_type: chapter
 status: draft
-version: 0.4
+version: 0.5
 created: 2026-11-27
 updated: 2026-11-27
 authors: []
@@ -309,3 +309,74 @@ El funcionamiento de un sistema puede depender tanto de sus componentes como de 
 ### Pregunta de reflexión
 
 Piensa en un servicio o una instalación que conozcas. Elige una actividad importante para su funcionamiento e identifica quién debe intervenir, qué capacidades necesita, qué recursos utiliza y de qué otras personas, componentes o condiciones depende. ¿Qué podría impedir que esa actividad se realizara, aunque cada elemento existiera por separado?
+
+
+## 1.5. Relaciones, interacciones y estructura del sistema
+
+### Un sistema no es solo un conjunto de elementos
+
+Identificar los elementos de un sistema es necesario, pero no suficiente para comprender cómo funciona. También necesitamos describir cómo se relacionan, qué intercambios mantienen y cómo esas relaciones configuran el comportamiento del conjunto.
+
+En una red de suministro de agua, los depósitos, las estaciones de tratamiento, las bombas, las conducciones y los puntos de consumo no operan de forma aislada. El agua circula entre ellos; los sensores transmiten información; los sistemas de control ajustan equipos; y las actividades de mantenimiento condicionan la disponibilidad de la infraestructura. El sistema se reconoce tanto por sus componentes como por la forma en que están conectados y coordinados.
+
+La **estructura del sistema** es la organización de sus elementos y de las relaciones relevantes entre ellos. No es únicamente su disposición física: incluye también conexiones funcionales, flujos de información, dependencias operativas y mecanismos de coordinación.
+
+### Relaciones e interacciones
+
+Una **relación** expresa un vínculo relevante entre dos o más elementos. Puede representar una conexión física, una dependencia, una relación de autoridad, un intercambio de información o cualquier otra asociación necesaria para describir el sistema.
+
+Una **interacción** se refiere a lo que ocurre cuando elementos relacionados actúan o influyen unos sobre otros. Puede consistir en transferir materia o energía, intercambiar información, modificar una condición o coordinar una actividad.
+
+En la red de agua, una tubería conecta físicamente dos partes de la infraestructura y permite el flujo de agua. Un sensor y un sistema de supervisión mantienen una relación informativa: el primero proporciona mediciones que el segundo utiliza para representar el estado de la instalación. Cuando una lectura desencadena un ajuste de una bomba o una válvula, podemos observar una interacción operativa entre medición, decisión y actuación.
+
+No toda relación implica una interacción continua. Una dependencia puede existir aunque solo se haga efectiva en determinadas circunstancias. Del mismo modo, una interacción puntual no siempre modifica de forma duradera la estructura del sistema.
+
+### Flujos, conexiones y mecanismos de coordinación
+
+Las relaciones pueden adoptar formas diferentes. Algunas de las más habituales son:
+
+- **Flujos físicos:** circulación de agua, materiales, energía o productos entre elementos.
+- **Flujos de información:** transmisión de mediciones, órdenes, avisos y registros.
+- **Conexiones funcionales:** vínculos entre componentes que cooperan para realizar una función.
+- **Dependencias operativas:** condiciones o aportaciones que un elemento necesita de otro.
+- **Relaciones de coordinación y autoridad:** asignación de responsabilidades, permisos y decisiones entre actores.
+
+En muchos sistemas estas relaciones se superponen. Una estación de bombeo puede estar conectada a la red mediante conducciones, recibir energía de una infraestructura externa, transmitir datos a un centro de control y depender de un equipo de mantenimiento. Cada vínculo describe una dimensión distinta de su integración en el conjunto.
+
+Para evitar confusiones, conviene identificar qué representa cada conexión en un modelo. Una línea puede significar flujo físico, transferencia de información, dependencia o influencia; si no se explica, el lector puede atribuirle un significado que no se pretendía.
+
+### La estructura condiciona el comportamiento
+
+El comportamiento de un sistema depende no solo de las características de sus elementos, sino también de cómo están relacionados. Cambiar una conexión, interrumpir un flujo o modificar una regla de coordinación puede alterar la respuesta del conjunto, incluso cuando los componentes individuales permanecen iguales.
+
+Imaginemos que una conducción principal queda fuera de servicio. El efecto no se limita al tramo averiado: puede cambiar la distribución de caudales, reducir la presión en determinadas zonas y exigir ajustes de bombeo o maniobras de válvulas. La magnitud y extensión de esos efectos dependen de la estructura de la red, de las conexiones alternativas y de las condiciones de operación.
+
+También puede ocurrir que una modificación local mejore el funcionamiento de un componente y, sin embargo, perjudique el resultado del conjunto. Por ejemplo, aumentar el caudal impulsado por una estación puede elevar el consumo energético o superar límites de presión en otros tramos. Para comprender estas consecuencias hay que analizar las relaciones relevantes y no solo el componente intervenido.
+
+### Bucles de realimentación
+
+Algunas estructuras incluyen **bucles de realimentación**: secuencias de relaciones en las que el resultado de una actividad vuelve a influir en las condiciones de operación o en decisiones posteriores.
+
+En una red de agua, un sensor puede detectar una caída de presión; el sistema de control interpreta la señal y ajusta el funcionamiento de una bomba; el cambio de bombeo modifica la presión, que vuelve a ser medida. La información sobre el resultado alimenta así una nueva decisión o ajuste.
+
+La realimentación puede contribuir a mantener una variable dentro de ciertos límites o, en otras circunstancias, amplificar variaciones y producir respuestas inestables. No basta con identificar que existe un bucle: también importa conocer sus retardos, límites, reglas de control y condiciones de operación.
+
+Este concepto no debe confundirse con cualquier conexión de retorno en un dibujo. Para hablar de realimentación, el resultado de un proceso debe volver a influir en ese proceso o en su regulación.
+
+### Representar la estructura sin perder el significado
+
+Un diagrama puede ayudar a reconocer conexiones y distinguir tipos de relación, pero toda representación selecciona una parte de la realidad. Un esquema de infraestructura puede destacar flujos físicos y omitir responsabilidades; un diagrama de control puede mostrar señales y órdenes sin representar la distribución del agua; un mapa organizativo puede reflejar autoridad y coordinación, pero no las restricciones técnicas.
+
+Por ello, el diagrama debe leerse junto con su propósito, alcance y leyenda. Es necesario aclarar qué representan los nodos y las conexiones, qué relaciones se han omitido y si las flechas indican dirección de flujo, transferencia de información o influencia.
+
+El esquema de apoyo de este apartado utiliza una red de suministro simplificada para distinguir los flujos físicos, las señales de información y control, y algunas dependencias externas. No pretende ser un plano de ingeniería ni representar todas las relaciones posibles de una instalación real.
+
+### Idea clave
+
+La estructura de un sistema está formada por sus elementos y por las relaciones que los conectan. Comprender esas relaciones —incluidos los flujos, las dependencias, la coordinación y la realimentación— es esencial para explicar el comportamiento del conjunto.
+
+### Pregunta de reflexión
+
+Elige un sistema que conozcas y dibuja sus principales elementos y conexiones. Distingue los flujos físicos de los intercambios de información y de las dependencias. ¿Qué comportamiento sería difícil de explicar si ignoraras alguna de esas relaciones? ¿Qué conexiones importantes no aparecen en tu representación?
+
+**Diagrama de apoyo:** [TV-DIA-002 — Relaciones y estructura de una red de suministro de agua](../../../assets/diagrams/TV-DIA-002/README.md)
