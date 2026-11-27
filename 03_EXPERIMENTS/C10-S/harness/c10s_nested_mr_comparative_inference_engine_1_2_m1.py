@@ -106,6 +106,11 @@ def compare_f5_dataset(
 ) -> M1ChallengerDatasetComparison:
     """Compare frozen C0/C5 through 1.1 and attach M1 intervals without mutation."""
     counts = _binary_count_vector(rows)
+    seeds = (c0_bootstrap_seed, c5_bootstrap_seed, m1_bootstrap_seed)
+    if any(type(seed) is not int or not 0 <= seed < 2**64 for seed in seeds):
+        raise M1ChallengerError("ALL_BOOTSTRAP_SEEDS_MUST_BE_UNSIGNED_64_BIT")
+    if len(set(seeds)) != 3:
+        raise M1ChallengerError("C0_C5_M1_BOOTSTRAP_SEEDS_MUST_BE_DISTINCT")
     legacy = compare_legacy_dataset(
         rows, dataset_id=dataset_id, family="F5",
         target_m=target_m, target_r=target_r,
