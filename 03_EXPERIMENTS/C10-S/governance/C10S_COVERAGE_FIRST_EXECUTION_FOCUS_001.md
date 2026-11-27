@@ -42,14 +42,14 @@ The exact global-MLE certificate improved fit classification/provenance but did 
 
 ## 3. Work scope — only the deficits
 
-### Priority 1 — F5 M10/R5: joint coverage and emission failure
+### Priority 1 — F5 M10/R5: C5 coverage failure; method-specific G7/M1 emission failures
 
-The immediate task is a **coverage diagnosis and minimal candidate comparison**, not a new inference architecture.
+C5 B2/B3 emitted 98.10–98.22% but overcovered both components. G7 v1.1 emitted 88.5%; M1-PCT emitted only 4%. These are different methods/contracts. The immediate task is a **coverage diagnosis and minimal candidate decision**, not a new inference architecture. Do not treat the emission failures of G7/M1 as C5 emission failures.
 
 1. Reconcile the existing G7 v1.1 and M1-PCT records by failure class and target component. Separate genuine boundary/weak-identification states from optimizer termination or numerical warnings.
 2. Use existing B2/B3 and G7 diagnostics only descriptively; do not retune against their exposed outcomes.
-3. Inspect the simplest candidate interval construction that propagates uncertainty in the fitted concentration parameters: a parametric bootstrap with refitting, using the existing likelihood and finite-R oracle. The previous M1-PCT pilot shows that the current strict refit contract has unacceptable emission; it does not license dropping failed refits.
-4. Identify the smallest defensible treatment of boundary/non-identification that can return a valid interval without conditioning on successful interior fits. If that cannot be specified without changing the inferential target, report the incompatibility and stop.
+3. Reconcile the existing production/analytic functional diagnostic: W/B functional differences are negligible for the vast majority of paired M10/R5 records. Do not extend optimizer certification unless a W/B coverage failure is shown to depend on it. The current M1-PCT strict refit contract has unacceptable emission; it does not license dropping failed refits.
+4. Decide, on design grounds only, whether a boundary-aware refitted bootstrap can return valid W/B intervals without conditioning on successful interior fits, dropping replicates, or concealing non-identification. Compare this only against direct W/B profile likelihood if Route A is not defensible. If neither has a clear coverage/emission contract, record NO_SUPPORTED_F5_M10R5_CANDIDATE and stop.
 5. Only after a clear candidate and failure contract exist, run a small, disjoint development-only comparison targeted at the failure mechanism. Report coverage, Wilson interval, emission, width, directional misses, fit-state counts and runtime separately for within and raw-between.
 6. Stop candidate expansion as soon as the comparison discriminates. If the candidate fails coverage or emission, preserve the failure and identify the next specific cause; do not add exact global certificates, profile topology machinery or more precision unless evidence shows that exact item is necessary to fix a coverage/emission failure.
 
