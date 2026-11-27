@@ -28,6 +28,7 @@ content:
       - TV-TERM-001
     assets:
       - TV-DIA-001
+      - TV-DIA-002
   - content_id: TV-TERM-001
     content_type: glossary_entry
     term:
@@ -47,6 +48,16 @@ content:
     sources:
       es: assets/diagrams/TV-DIA-001/source/accessible-transformation-space-sequence.es.mmd
       en: assets/diagrams/TV-DIA-001/source/accessible-transformation-space-sequence.mmd
+    status: draft
+
+  - content_id: TV-DIA-002
+    content_type: diagram
+    title:
+      es: "Relaciones y estructura de una red de suministro de agua"
+      en: "Relationships and structure in a water supply network"
+    sources:
+      es: assets/diagrams/TV-DIA-002/source/system-relationships-water-network.es.mmd
+      en: assets/diagrams/TV-DIA-002/source/system-relationships-water-network.en.mmd
     status: draft
 
   - content_id: TV-LR-001
