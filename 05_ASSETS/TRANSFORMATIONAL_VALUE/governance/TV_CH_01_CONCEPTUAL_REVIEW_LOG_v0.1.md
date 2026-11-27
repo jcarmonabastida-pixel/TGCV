@@ -669,3 +669,13 @@ The author approved **element** as the general term for any relevant part of a s
 The distinction should remain flexible rather than being imposed as a rigid taxonomy where the disciplinary context does not require it. Both language versions should preserve the same conceptual relationship while using natural, independently authored wording.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.11 State and time in section 1.3 — accepted
+
+The author approved the following clarification for both language versions:
+
+A **state** is the condition of a system or element at a specified reference moment. Observations made across an interval form a sequence or trajectory of states, which can be used to examine the system's evolution and behaviour.
+
+The text should not conflate a state with the set of observations collected over a period. Both manuscripts should preserve this distinction with independently authored, natural wording.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
