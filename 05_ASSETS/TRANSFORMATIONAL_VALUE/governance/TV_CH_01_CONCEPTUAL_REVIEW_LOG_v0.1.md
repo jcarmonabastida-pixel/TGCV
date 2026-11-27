@@ -166,6 +166,53 @@ No external source has yet been selected for this section. If the author wishes 
 
 **Decision:** pending author review. No source has yet been formally attached to a claim.
 
+
+### 4.4 Section 1.4 — Actores, capacidades, recursos y dependencias / Actors, Capabilities, Resources and Dependencies
+
+**Review status:** open  
+**Manuscript changes:** none
+
+#### Conceptual assessment
+
+- The section usefully extends the system description beyond physical components, showing how operation may rely on people, organisations, capabilities, resources and dependencies. The integrated water-network example makes the interdependence of these dimensions tangible.
+- The definition of **actor** is centred on people, groups and organisations capable of intervening. This is appropriate for the socio-technical emphasis of the section, but the boundary of the term should be explicit: in some modelling traditions, actor or agent can include non-human or software agents. The chapter should either state that it uses actor in the narrower socio-organisational sense or adopt a broader definition consistently.
+- The text correctly notes that an actor can be outside the system boundary while influencing the system. It should avoid implying that being outside the boundary automatically means belonging to the environment in every model: classification depends on the system of interest and the chosen boundary. The reason for including an external actor in the description should be tied to a relevant interaction, influence or dependency.
+- **Capability** is defined as an ability to perform an activity or fulfil a function under specified conditions. This is useful, but the text should distinguish capability from competence, capacity and currently available operational capability. A person may be competent but lack authority or tools; a technical asset may have a rated capacity that differs from the capability of the wider system to deliver an outcome.
+- The section moves between capabilities of individual actors/components and capabilities arising from an organised combination. That is an important distinction and should be made explicit: system-level capability can depend on coordinated contributions and cannot necessarily be inferred by adding individual capabilities.
+- **Resources** are described as means used to perform activities, including material, energy, financial, human, informational and temporal resources. The category is broad but understandable. The phrase “human resources” can make people sound like interchangeable assets; consider referring instead to personnel, staff availability, skills or time where that is what the example means. Distinguish people as actors from the time, knowledge or services they make available.
+- **Dependencies** are defined in terms of one activity, actor or component requiring another element. The definition is sound but could clarify direction and conditions: A depends on B when A's performance or availability requires a contribution, service, state or condition supplied by B. Some dependencies are conditional, substitutable, time-critical or reciprocal; they need not all be equally critical.
+- Dependencies should not be conflated with relationships in general. A relationship may exist without one party depending on the other for a required contribution. The section could make this distinction briefly, especially because relationships were introduced earlier in the chapter.
+- The section could also distinguish a dependency from a constraint. A dependency identifies something required; a constraint limits the ways or conditions under which an activity can be performed. They may interact, but are not interchangeable.
+
+#### Example and bilingual-equivalence observations
+
+- The Spanish and English versions are closely aligned in structure, reasoning and examples. The main water-network scenario and the repair example convey equivalent dependencies and coordinated action.
+- The heading “Quién interviene y con qué medios” is not an exact rendering of “Who is involved, and what do they need?” The current Spanish heading focuses on means, while English includes needs more broadly. This is a minor editorial difference; align the intended emphasis rather than translating literally.
+- Spanish “personal de mantenimiento” and English “maintenance teams” are close but not identical: one refers to staff, the other to a team as an organised unit. Either can work, but the conceptual unit should remain consistent in the example.
+- The English phrase “operational ability” in the integrated example is broader and less terminologically precise than Spanish “capacidad operativa”. Consider using “operational capability” consistently if capability is the defined term.
+- The two versions both include “human resources” / “recursos humanos”. If revised to avoid treating people as resources, make the adjustment in both languages.
+- The actor definition and the caveat about systems without human or organisational agents are equivalent. Both versions should retain the same declared scope for actor.
+
+#### Proposed resolution
+
+A. **Actor scope:** decide whether actor is used in the narrower sense of human, group and organisational participants, or in a broader agent sense that could include software/autonomous agents. Given the examples and chapter purpose, the narrower socio-organisational convention is a defensible choice, provided it is stated.
+
+B. **Boundary and interaction:** clarify that an actor may be inside or outside the system boundary; include external actors when their interactions, influence or dependencies are relevant to the analysis. Avoid treating “outside boundary” and “environment” as automatic synonyms.
+
+C. **Capability levels:** distinguish individual capability from system-level capability that emerges from coordinated elements and actors. Consider a concise note separating capability from competence, rated capacity and current availability, without overloading this introductory chapter.
+
+D. **Resources and people:** retain the broad resource categories but revise “human resources” where appropriate to refer to staff, skills, availability or time. Keep the distinction between actors (participants) and resources (means they can mobilise).
+
+E. **Dependencies:** clarify the direction of dependence and the required contribution/condition. Distinguish dependencies from relationships in general and, briefly, from constraints. Avoid implying that all dependencies are equally critical or non-substitutable.
+
+F. **Bilingual alignment:** align the heading emphasis, maintenance personnel/team example and the use of “operational capability” / «capacidad operativa» across the two original texts.
+
+#### Candidate sources — verification pending
+
+No external source has yet been selected for this section. If formal definitions are needed, consult and verify authoritative sources on capability, actor/agent, resource, dependency and constraint in systems engineering or enterprise/system architecture. Exact editions, terminology and passages must be checked before adding any citation to the central references registry. No source is approved or attached to a claim at this stage.
+
+**Decision:** pending author review. No source has yet been formally attached to a claim.
+
 ## 5. Pending review sequence
 
 The remaining sections are to be reviewed in order, one step at a time. No findings are pre-judged here.
@@ -173,7 +220,7 @@ The remaining sections are to be reviewed in order, one step at a time. No findi
 | Section | Spanish / English topic | Review status |
 |---|---|---|
 | 1.3 | Elementos, estados, propiedades y comportamientos / Elements, States, Properties and Behaviours | open |
-| 1.4 | To be read from both manuscripts | not_reviewed |
+| 1.4 | Actores, capacidades, recursos y dependencias / Actors, Capabilities, Resources and Dependencies | open |
 | 1.5 | To be read from both manuscripts | not_reviewed |
 | 1.6 | To be read from both manuscripts | not_reviewed |
 | 1.7 | To be read from both manuscripts | not_reviewed |
