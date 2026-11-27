@@ -195,8 +195,21 @@ def _validate_roster(record: M1ChallengerDatasetComparison) -> None:
         raise M1ChallengerError("LEGACY_DATASET_IDENTITY_MISMATCH")
     ids = {legacy.baseline.method_id, *(x.method_id for x in legacy.candidates),
            record.m1_comparison.method_id}
-    if ids != F5_ROSTER or len(ids) != 3:
+    if (legacy.baseline.method_id != C0_METHOD_ID
+            or len(legacy.candidates) != 1
+            or legacy.candidates[0].method_id != C5_METHOD_ID
+            or legacy.candidates[0].comparison.method_id != C5_METHOD_ID
+            or legacy.unavailable_methods
+            or ids != F5_ROSTER or len(ids) != 3):
         raise M1ChallengerError("INCOMPLETE_OR_UNEXPECTED_VERSION_1_2_ROSTER")
+    if (legacy.input_m != record.input_m or legacy.input_r != record.input_r
+            or legacy.target_m != record.target_m or legacy.target_r != record.target_r):
+        raise M1ChallengerError("LEGACY_RECORD_DESIGN_MISMATCH")
+    if record.m1_result.method_id != M1_METHOD_ID or record.m1_result.fit_contract_id != M1_FIT_CONTRACT_ID:
+        raise M1ChallengerError("M1_RESULT_IDENTITY_MISMATCH")
+    if (record.m1_result.target_m != record.input_m
+            or record.m1_result.target_r != record.input_r):
+        raise M1ChallengerError("M1_RESULT_INPUT_DESIGN_MISMATCH")
     if record.m1_comparison.method_id != M1_METHOD_ID:
         raise M1ChallengerError("M1_METHOD_ID_MISMATCH")
     if record.m1_comparison.mcse_estimate is not None or record.m1_comparison.mcse_interval is not None:
