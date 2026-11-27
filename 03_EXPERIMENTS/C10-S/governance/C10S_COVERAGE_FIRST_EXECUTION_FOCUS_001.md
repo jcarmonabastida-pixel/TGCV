@@ -97,7 +97,9 @@ The deliverable for any such refinement must be an observable improvement in cov
 ## 5. Development experiment discipline
 
 - Development runs must use fresh, disjoint development-only seeds and remain clearly separated from every historical/holdout/confirmatory namespace.
-- Each run must be bounded in runtime and dataset count, with checkpoints/progress visibility where feasible.
+- **Hard runtime budget for every new development run: 30 minutes maximum.** A run that cannot complete a useful diagnostic within 30 minutes must be redesigned as smaller staged probes; do not simply raise the timeout. The current K=400/B=100 M30/R20 run 45976887796 is a one-off legacy exception already in progress; do not duplicate or expand it. No further run may use its runtime as precedent.
+- Prefer K=25–50 diagnostic probes and B=25–50 when sufficient to expose gross emission/fit-state problems; report that such probes cannot certify coverage. Increase K/B only with an explicit MCSE/power justification and a demonstrated runtime fit within 30 minutes.
+- Every run must emit per-dataset progress/checkpoints (or at least stage-level progress) so a long silent compute step is not repeated blindly.
 - No parallel duplicate runs. Inspect an existing run before considering another.
 - A pilot may reject a candidate; it cannot establish Tier-A PASS.
 - Report each component/cell separately: K, emission, conditional coverage, Wilson 95%, unconditional cover, interval width, lower/upper misses, abstention classes, runtime and endpoint Monte Carlo error.
@@ -133,4 +135,4 @@ Every update must start with the coverage question:
 
 If that question has no concrete answer, do not perform the action.
 
-The historical coverage ledger is now recorded in `03_EXPERIMENTS/C10-S/diagnostics/C10S_TIER_A_COVERAGE_LEDGER_001.md`. The next operation is the targeted F5 M10/R5 coverage/emission diagnosis described in §3, not code expansion, a new mathematical method, or a broad workflow run.
+The historical coverage ledger is recorded in `03_EXPERIMENTS/C10-S/diagnostics/C10S_TIER_A_COVERAGE_LEDGER_001.md`. M10/R5 is blocked as `NO_SUPPORTED_F5_M10R5_CANDIDATE`. The single M30/R20 raw-between M1-PCT screen (run `45976887796`) is the one-off legacy exception currently in progress; no duplicate is allowed. All subsequent diagnostics must fit the 30-minute cap.
