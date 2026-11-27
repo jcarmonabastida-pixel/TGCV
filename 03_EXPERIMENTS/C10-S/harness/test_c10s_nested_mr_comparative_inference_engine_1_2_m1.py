@@ -185,7 +185,15 @@ class M1ChallengerContractTests(unittest.TestCase):
         self.assertEqual(item.m1_comparison.abstention_reason,
                          "M1_MCSE_INTERVAL_NOT_IMPLEMENTED")
 
-    def test_16_m1_cannot_overwrite_c5_identity(self):
+    def test_16_m1_interval_provenance_mismatch_fails_closed(self):
+        item = record()
+        changed_result = SimpleNamespace(**vars(item.m1_result))
+        changed_result.within_interval = (0.2, 0.3)
+        changed = replace(item, m1_result=changed_result)
+        with self.assertRaises(m.M1ChallengerError):
+            m._validate_roster(changed)
+
+    def test_17_m1_cannot_overwrite_c5_identity(self):
         item = record()
         self.assertEqual(item.legacy_record.candidates[0].method_id, C5)
         self.assertEqual(item.m1_comparison.method_id, M1)
