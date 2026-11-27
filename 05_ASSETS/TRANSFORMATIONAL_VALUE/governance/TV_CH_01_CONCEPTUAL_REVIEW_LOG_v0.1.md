@@ -122,13 +122,57 @@ Bibliographic details, exact sections, stable URLs and claim-level relevance mus
 
 **Decision:** pending author review. No source has yet been formally attached to a claim.
 
+
+### 4.3 Section 1.3 — Elementos, estados, propiedades y comportamientos / Elements, States, Properties and Behaviours
+
+**Review status:** open  
+**Manuscript changes:** none
+
+#### Conceptual assessment
+
+- The section provides a coherent descriptive sequence: identify relevant elements, describe their properties and variables, represent states, and examine behaviour over time. Its central warning against treating isolated data as a complete system description is sound.
+- The distinction between an element and a component is not yet fully explicit. The text uses elements as the broader analytical category, but does not explain whether component is a narrower term or simply a near-synonym. This could leave readers uncertain about the intended terminology.
+- The definition of state as a condition at a moment **or over an interval** is potentially imprecise. In many modelling contexts, a state is specified at a given time; observations over an interval form a sequence or trajectory of states. The wording should avoid implying that a time interval itself is one state, unless a specific convention is introduced.
+- The relationship between properties and variables needs a sharper distinction. A property is a characteristic attributed to an element or system; a variable is a quantity or representation whose value may vary or be used in the model. The current text partly explains this through rated pump capacity versus delivered flow, but could make the conceptual relationship more explicit. Not every property needs to be a variable, and a variable may represent a changing property or condition.
+- The behaviour definition is appropriate, but the section could clarify that behaviour is inferred or described from patterns and changes in states/variables under conditions; a single observation may describe a state but is not usually enough to establish a behavioural pattern.
+- The section appropriately notes that descriptions are selective and question-dependent. It could also distinguish unavailable information from information deliberately excluded by the chosen scope, since these have different implications for confidence and conclusions.
+
+#### Example and bilingual-equivalence observations
+
+- The Spanish and English versions are closely aligned in structure, concepts, sequence and water-network example.
+- The English version introduces “teams” in its list of possible elements, while Spanish lists people and organisations but not teams. This is a minor scope difference; either include teams in both or remove the additional term.
+- “Comportamientos” / “behaviours” is a defensible pairing, though “behaviour” can also be used as a collective or uncountable term in English. Maintain consistent usage in the chapter.
+- The examples of reservoir level, pump operating condition, pressure, flow, rated capacity and delivered flow are conceptually equivalent.
+- The two versions both distinguish a state observation from behaviour observed over time. The precision issue around a state applying “over an interval” is shared by both and should be corrected consistently.
+- The reflection question is equivalent and suitably asks the reader to distinguish elements, properties, variables, states and behaviour.
+
+#### Proposed resolution
+
+A. **Element/component terminology:** retain element as the broad analytical term. Add a concise clarification that component is often used for a constituent part, especially in technical or engineered systems, but that the book uses element as the more general term unless a domain-specific distinction is needed.
+
+B. **State and time:** define a state as the condition represented at a specified time (or at a specified reference point). Explain that observations across an interval form a sequence or trajectory of states and can support analysis of behaviour.
+
+C. **Property and variable:** sharpen the distinction between a characteristic attributed to a system/element and a variable used to represent or track a relevant quantity/condition. Retain the rated-capacity/delivered-flow example because it makes the distinction concrete.
+
+D. **Behaviour and evidence:** clarify that behaviour concerns patterns of operation, responses or changes over time under stated conditions. A single measurement may describe a state; repeated observations or other suitable evidence are generally needed to characterise a pattern.
+
+E. **Information gaps:** distinguish information that is unavailable from aspects intentionally omitted from the model or description. Both should be documented when they could affect interpretation, but they are not the same kind of limitation.
+
+F. **Bilingual alignment:** harmonise the list of socio-technical elements (including or excluding teams consistently) and preserve the same conceptual distinctions and examples in both versions.
+
+#### Candidate sources — verification pending
+
+No external source has yet been selected for this section. If the author wishes to strengthen the formal treatment of state, state variables, system behaviour or component terminology, consult an authoritative systems-engineering or systems-modelling reference and verify the exact edition and passages before adding any citation to the central registry. No source is approved or attached to a claim at this stage.
+
+**Decision:** pending author review. No source has yet been formally attached to a claim.
+
 ## 5. Pending review sequence
 
 The remaining sections are to be reviewed in order, one step at a time. No findings are pre-judged here.
 
 | Section | Spanish / English topic | Review status |
 |---|---|---|
-| 1.3 | To be read from both manuscripts | not_reviewed |
+| 1.3 | Elementos, estados, propiedades y comportamientos / Elements, States, Properties and Behaviours | open |
 | 1.4 | To be read from both manuscripts | not_reviewed |
 | 1.5 | To be read from both manuscripts | not_reviewed |
 | 1.6 | To be read from both manuscripts | not_reviewed |
