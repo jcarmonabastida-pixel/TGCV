@@ -127,3 +127,21 @@ Before any M1 coverage execution, prepare a separate, reviewable candidate-integ
 6. leaves all C10 causal Analyzer/Evaluator and theta_A/V_cont contracts untouched.
 
 Only after that design is reviewed may an explicitly authorized bounded development operation be considered. This document itself authorizes no tests, benchmark, calibration, holdout or simulation.
+
+
+## 9. Additional point-estimator contract mismatch
+
+A further static check of the typed comparison interface identifies a second integration gap.
+
+The existing F5 C5 path replaces the observed-data comparison's interval fields and method ID, but retains the common observed-data point fields from observed_nested_mr_result. In particular, its between_estimate_raw remains the untruncated sample estimator S²(world means) − within/R. The comparative engine therefore reports point bias/RMSE for that common point estimator, while C5's principal candidate contribution is its fitted-model interval.
+
+M1 exposes point_within and point_between from the fitted beta-binomial functionals. Those are model-based point estimators and are not the same point estimators retained by the existing C5 comparison record. The current VarianceComparisonResult also requires finite, non-optional point fields, so it cannot directly represent an M1 point-estimation abstention.
+
+Consequences:
+- an adapter that simply copies M1 point_between into between_estimate_raw would change the point-estimator semantics for the candidate and make its point metrics non-comparable with the existing engine's current C5 semantics;
+- an adapter that retains the common raw point estimate would evaluate M1 intervals but would not evaluate M1's own fitted functional point estimator;
+- an M1 fit abstention cannot be represented as an absent point estimate without a typed interface/engine extension.
+
+This is not a reason to redesign the existing adjudicator now. It is an unresolved integration choice that must be explicit in any future M1 candidate specification: either define M1 as an interval-only challenger using the common raw point estimator for cross-method point metrics, while reporting fitted M1 functionals separately; or extend the typed comparison contract to distinguish candidate point estimators and point-estimation abstentions. The latter is a substantive interface change and requires separate review and tests before any execution.
+
+The current audit therefore classifies the M1-to-Tier-A implementation crosswalk as OPEN, not as a ready-to-adapt mapping.
