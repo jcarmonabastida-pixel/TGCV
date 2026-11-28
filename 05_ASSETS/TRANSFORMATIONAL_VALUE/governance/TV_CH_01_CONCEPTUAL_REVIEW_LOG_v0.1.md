@@ -963,3 +963,17 @@ The TV-DIA-002 reference remains in both sections. The asset itself was not modi
 Both files were fetched again after the commits. Their version metadata and the accepted conceptual changes were checked in the persisted section 1.5 text. The bilingual review confirms equivalent conceptual scope while preserving independent wording.
 
 **Disposition:** section 1.5 integration completed and verified. This does not close the chapter or authorise progression to chapter 2; other section integrations and subsequent editorial phases remain pending.
+
+
+### 5.31 Section 1.6 — openness relative to boundary and analytical purpose — accepted
+
+The author approved the clarification for both language versions that system openness must be understood relative to the selected system boundary and the purpose of the analysis. Relevant exchanges of matter, energy, information, resources or services are identified in relation to that boundary and analytical question.
+
+The text should make clear that:
+- Openness is not an absolute property independent of how the system is delimited.
+- The exchanges considered relevant depend on the chosen boundary and the question guiding the analysis.
+- The section should not impose a rigid open/closed classification; its emphasis is on identifying the exchanges relevant to the analysis.
+
+The example of an organisation considered first as a whole and then through one of its facilities may illustrate how exchanges previously internal to the larger system cross the boundary of the narrower system of interest.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
