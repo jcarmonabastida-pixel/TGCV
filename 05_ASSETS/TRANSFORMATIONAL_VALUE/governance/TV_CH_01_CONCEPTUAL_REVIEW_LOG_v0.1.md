@@ -1378,3 +1378,22 @@ The water-network example has been retained and expanded consistently in both la
 Both files were fetched again from the research branch after the updates. Their version metadata, section boundaries, principal conceptual topics and revised reflection prompts were checked. The bilingual cross-review confirms equivalent conceptual scope and pedagogical intent while preserving independently authored wording.
 
 **Disposition:** section 1.8 integration and bilingual verification completed. Both manuscripts remain `draft`; this does not approve publication or close the chapter. Other chapter-level editorial phases remain pending.
+
+
+### 5.56 Section 1.9 — integrative scope of the chapter synthesis — accepted
+
+The author approved, for both language versions, that the chapter synthesis should not be a linear recap of the individual sections. It should integrate the relationships among the chapter's central dimensions:
+
+- purpose, boundary and context;
+- elements, states, properties and behaviours;
+- actors, capabilities, resources and dependencies;
+- relationships, interactions and system structure;
+- openness, environment and time;
+- models, scope, assumptions and omissions; and
+- local optimisation and system-level reasoning.
+
+The synthesis should help readers leave the chapter with an integrated perspective for describing and understanding a system, rather than only a list of concepts encountered.
+
+**Rationale:** The chapter's learning outcome is the ability to connect these dimensions when forming a system description and interpreting its behaviour. The synthesis should make those connections visible without repeating the chapter section by section.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
