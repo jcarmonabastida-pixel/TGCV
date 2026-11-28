@@ -1414,3 +1414,19 @@ The table should support readers in constructing a description of a system. It i
 **Rationale:** A useful synthesis table should show how analytical dimensions inform one another and help readers frame a system description, while preserving flexibility across different systems and purposes.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.58 Section 1.9 — applied exercise and bounded system description — accepted
+
+The author approved, for both language versions, retaining the exercise in which readers choose a familiar system and prepare a brief description, while making four aspects explicit:
+
+1. the purpose of the description and the question it is intended to answer;
+2. the selected boundary, context and elements or relationships considered relevant;
+3. what is known, which assumptions have been adopted, and what information is still missing or has not been examined; and
+4. the limits of the description: what it helps the reader understand and which conclusions it does not support.
+
+The exercise should not require a formal model or a comprehensive system assessment. Its purpose is to apply the chapter's principles to a proportionate system description whose scope and limitations are clear.
+
+**Rationale:** The exercise turns the chapter's conceptual distinctions into a manageable learning activity and reinforces the need to make analytical choices and epistemic limits explicit.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
