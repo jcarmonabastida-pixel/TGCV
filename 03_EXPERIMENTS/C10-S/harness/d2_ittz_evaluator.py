@@ -198,10 +198,15 @@ class D2ITTZEvaluator:
                 raise ContractError("D2 interval observations violate strict S3 missingness/value semantics")
             any_failure = any(row["observed_compliance"] is False for row in ordered)
             any_missing = any(row["observation_status"] == "MISSING" for row in ordered)
-            y_lower = 0 if any_failure or any_missing else 1
-            y_upper = 0 if any_failure else 1
-            missing_interval_count += sum(row["observation_status"] == "MISSING" for row in ordered)
-            total_interval_count += len(ordered)
+            # Independently reconstruct DEC-C10-100's equal-weight
+            # interval mean, preserving [0,1] completion for missing slots.
+            successes = sum(row["observed_compliance"] is True for row in ordered)
+            missing = sum(row["observation_status"] == "MISSING" for row in ordered)
+            n_intervals = len(ordered)
+            y_lower = successes / n_intervals
+            y_upper = (successes + missing) / n_intervals
+            missing_interval_count += missing
+            total_interval_count += n_intervals
             mass = qx_mass[first["history_ref"]]
             p = assignment.probability_z1 if assignment.assigned_z else assignment.probability_z0
             arm_terms[assignment.assigned_z].append((mass / p, y_lower, y_upper))
