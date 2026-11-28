@@ -1315,3 +1315,21 @@ This clarification should connect section 1.8 with the earlier discussion of sys
 **Rationale:** System-level reasoning must be sufficiently broad to capture decision-relevant effects, but bounded and proportionate rather than exhaustive. Making limitations and residual uncertainty explicit helps prevent conclusions from exceeding the analysis performed.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.53 Section 1.8 — interdependencies and effects across subsystems — accepted
+
+The author approved clarifying, in both language versions, that an improvement to one component or subsystem may change the operating conditions of other parts of the system, including parts that were not directly modified.
+
+The section should explain that:
+
+- local improvements may alter flows, loads, dependencies or operating conditions elsewhere in the system;
+- these effects depend on the system's configuration and relationships;
+- an improvement may create benefits, costs or new trade-offs in other subsystems; and
+- interdependencies should not automatically be assumed to produce negative effects, since they may also create synergies.
+
+The water-network example should be used to illustrate the point at an introductory level, without introducing quantitative methods for analysing effect propagation.
+
+**Rationale:** This makes the consequences of system interdependence concrete while avoiding the assumption that local changes have either isolated or necessarily adverse effects.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
