@@ -1,7 +1,7 @@
 # C10-S — Static delta reconciliation: direct theta_A pipeline against Gates 129–131
 
 **Date:** 2026-11-28  
-**Status:** STATIC SOURCE REVIEW COMPLETE / DIRECT theta_A PATH IMPLEMENTED IN RESEARCH BRANCH / SEMANTIC RECONCILIATION PARTIAL / PREFLIGHT NOT AUTHORIZED / NO SCIENTIFIC EXECUTION  
+**Status:** STATIC SOURCE REVIEW UPDATED AGAINST CURRENT CONTRACT SET / DIRECT theta_A PATH IMPLEMENTED IN RESEARCH BRANCH / MATERIAL ESTIMAND CONFORMANCE NOT ESTABLISHED / PREFLIGHT NOT AUTHORIZED / NO SCIENTIFIC EXECUTION  
 **Branch reviewed:** `research/c10s-m1-engine12-source-only-20261127`  
 **Historical governance branch:** `research/c10-s-consolidation-draft` · PR #116 (Draft)  
 **Scope:** Compare the newer direct-`g_A` DGP/Analyzer/Evaluator path with the already completed Gate 129–133 historical work and the canonical methodological boundaries of Gates 130–131.  
@@ -19,7 +19,7 @@ The current research branch contains a **genuine direct theta_A pipeline**, whic
 
 This is a real implementation advance over Gate 129's historical finding that the then-current Analyzer did not estimate theta_A and over Gates 132–135's historical `theta_a_truth=None` state.
 
-**It does not, by source presence alone, close Gate 129/130 or validate S3.** The current DGP materializes a particular synthetic `q_X`, a particular direct policy pair and `r_common` certificates. Their correspondence to the accepted DEC-C10-103 target and the no-substitution constraints in Gate 130 has not been established by an accepted decision or an independent semantic audit. The interval S3 route is explicitly an ideal/perfect-complete benchmark path; imperfect-measurement correction remains open. The truth path uses strict EventHistory interval adjudication but remains binary and does not represent functional UNKNOWN.
+**It does not, by source presence alone, close Gate 129/130 or validate S3.** The current DGP materializes a particular synthetic `q_X`, a particular direct policy pair and `r_common` certificates. Their correspondence to the accepted DEC-C10-103 target and the no-substitution constraints in Gate 130 has not been established by an accepted decision or an independent semantic audit. The interval S3 route is explicitly an ideal/perfect-complete benchmark path; imperfect-measurement correction remains open. The truth path uses strict EventHistory interval adjudication over complete deterministic histories and emits 1/0. Under the later Gate 206 rule this is conformant for the current DGP scope: functional UNKNOWN is not generated unless an intrinsic truth indeterminacy is explicitly stipulated and accepted. Observation missingness remains separate.
 
 **Disposition:** the direct pipeline is IMPLEMENTED IN THIS RESEARCH BRANCH at source level; the intended estimand's semantic/materialization conformance remains PARTIAL/OPEN; the technical preflight must not be interpreted as closing those questions.
 
@@ -111,7 +111,7 @@ The newer direct path is stronger than the earlier slot-binary harness in one im
 
 This is a material source-level advance toward the strict-continuity requirement identified in Gates 134–135.
 
-One substantive gap remains: `EventHistory.validate(require_complete=True)` is required and `adjudicate_intervals()` emits only 1 or 0. The direct theta_A truth path does not currently preserve functional UNKNOWN (?), nor compute per-unit truth bounds `[n1/K,(n1+n?)/K]`. Therefore it does not yet satisfy the full tri-valued V_cont truth semantics recorded in Gate 134. S3 missingness remains a separate observation state, correctly not converted into functional UNKNOWN.
+Correction under the later accepted logical scope: `EventHistory.validate(require_complete=True)` and `adjudicate_intervals()` emitting 1/0 are consistent with Gate 206 for complete, deterministic histories. Gate 206 explicitly limits functional `?` to an intrinsic truth indeterminacy explicitly stipulated by the DGP; omissions, S3 missingness, timestamps, harness defects or observation limits must not create functional `?`. No such intrinsic-UNKNOWN scenario is currently approved in this path. Consequently, the absence of a functional-UNKNOWN fixture is **not** a present conformance defect. If a future DGP explicitly introduces intrinsic UNKNOWN, the corresponding V_cont bounds must be implemented under its own accepted specification. S3 missingness remains a separate observation state and must lead to analytical abstention/indeterminacy where identification is insufficient.
 
 The fixture's two-interval grid is a software/DGP fixture choice, not a scientifically selected K, horizon or temporal resolution.
 
@@ -166,3 +166,58 @@ No code, workflow, schema, DEC, test register, RMA, Evidence→Claim Matrix, STA
 - `c10s_synthetic_components.py`: `876c406e99ee855b25bbe0e0b1cb53eb35f7ef3d`.
 - `c10s_world_pipeline.py`: `192086604283d38930de75284cb8aedbf85515a8`.
 - `theta_a_calibration_protocol.py`: `5076df64cb2c9a486d1855600699bcc1a824210e`.
+
+## 9. Mandatory update against the latest recovered C10-S contracts — 2026-11-28
+
+This section supersedes any earlier interpretation in this review that did not incorporate the later logical B1/V_cont decisions. The current canonical governance state was reloaded from main: RMA v3.38, Evidence→Claim Matrix v1.47 and STATUS 2026-11-06. C09 remains PASS at bounded empirical causal-support level; C10 remains OPEN; no C10 value claim or execution authorization is created.
+
+### 9.1 Later B1/V_cont contracts — what the current source does conform to
+
+The historical C10-S consolidation branch contains later accepted logical scope decisions after Gate 131:
+- Gate 154 accepts the bounded temporal scope of A_B1/V_cont: effective admission/non-admission required by ENABLED; PROFILE remains declared configuration/contractual obligation but has no independent temporal truth trajectory in the current DGP.
+- Gates 151–152 preserve that separation and require EventHistory to represent functional transitions, not process events or PROFILE exposure.
+- Gate 206 specifies the composition A_B1 → EventHistory → IntervalAdjudication → V_cont. Complete, deterministic histories yield 1/0; functional ? is allowed only for explicitly accepted intrinsic DGP indeterminacy, never for missing S3 or defects.
+- Gate 208 R208-A1…A6 is recorded as accepted logical design scope, not implementation/design-freeze authorization. It keeps runtime mechanisms only when explicitly declared/versioned and causally determinative of admission; a single standardized opportunity remains a discrete probe, not a continuous monitor.
+
+The current source implements FunctionalState.compliant as admission matching ENABLED, retains PROFILE as declarative configuration, validates complete EventHistory, and applies strict interval adjudication. This is materially aligned with the later Gate 154/206 scope. The previous report's characterization of the missing functional-UNKNOWN state as a defect is withdrawn. The path does not validate PROFILE exposure, and must not claim that it does.
+
+Sources: Gate 154; Gates 151–152; Gate 206; Gate 208 R208-A acceptance and integrated B1 audit.
+
+### 9.2 The later contracts do not close the direct theta_A estimand
+
+The direct-g_A code is still not materially conformant to the accepted theta_A(q_X*, r_common; V_cont) target. The precise mismatches are:
+
+1. **Target population / q_X*.** The DGP sets q_x_mass_by_unit=(1/N,…,1/N) in SyntheticWorldConfig. Gate 130 defines q_X* = Law(X,H0,C_c | i ∈ P*_τ2) and explicitly prohibits treating unit count, harness roster or simulation frequency as q_X* or inferring its masses from them. The target-history rows must be derived from an approved, versioned pre-Z eligible population and its baseline histories. Gate 80/130 report that the approved B1/UE roster and corresponding baseline snapshots are absent; no authorization to materialize them was present in that cycle.
+
+2. **Policy pair.** The current positive/null/negative fixture uses g_A0=(0,0,0,0) and g_A1=(1,0,0,0); the alternative fixture uses (0,1,0,0) and (1,1,0,0). Gate 130 requires two explicit, versioned, jointly feasible interventions over the complete vector ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*), conditional on each target history. Even the previously proposed extreme pair (0,0,0,0) versus (1,1,1,1) was explicitly not ratified; Gate 130 prohibits selecting a substitute pair or kernel merely to create positivity. The current pair is therefore a DGP fixture choice, not an accepted operational intervention pair.
+
+3. **Support.** The source declares feasibility through its own feasible_vectors_by_history fixture and builds support rows from the same synthetic histories. This checks internal contract consistency but does not independently establish that both policies are structurally feasible and counterfactually evaluable in the accepted target population. The three states remain separate: structural feasibility, Generator counterfactual evaluability, and Analyzer identification support.
+
+4. **Common non-focal regime.** The DGP creates per-history RCommonPairCertificate rows by repeating the same fingerprint on both sides and labelling them COMMON_FIXED. Gate 130 explicitly says that equal fingerprints, labels or shared seeds do not prove invariance. It requires the non-focal structural functions and versions to be invariant under both potential interventions, or any differential path to be separately identified/unresolved. The source does not provide that independent invariance evidence.
+
+5. **D2 and focal intervention are not reconciled.** The same fixture contains a D2 mechanism with programmed_probability_by_z=(0,1) and a D2 functional rule that changes admission when w_programmed=True, alongside a separately randomized direct-g_A policy. This is not automatically wrong as a synthetic world, but it means the non-focal D2 path must be shown to be held under the same r_common for the two g_A potential outcomes. A duplicated r_common digest does not demonstrate that. The current master C10-S Draft 004 and Gate 208 routing require D2, population, isolation, support and estimands to be reconciled together.
+
+6. **Full ΔT_acc* versus focal projection.** C10-S Draft 004 §§32.1–32.3, consistent with DEC-C10S-D2-ESTIMAND-SEPARATION-001, distinguishes full ΔT_acc* from focal A_f*. A focal τ2 contrast must remain labelled θ_Af(q_X*) until its relation to the general θ_A(q) is justified. The direct DGP's first-coordinate intervention cannot be presented as a general test of all ΔT_acc* contributions.
+
+### 9.3 Correct scientific disposition
+
+- The direct Analyzer/Evaluator is a real software implementation advance over the historical integrated ITT-G Analyzer.
+- The ideal interval S3 path is a legitimate best-case software benchmark within Gate 131's boundary.
+- The EventHistory/strict-admission path is materially aligned with later Gate 154/206/208 logical scope; no extra UNKNOWN implementation should be invented now.
+- **The present fixture is not yet a valid calibration instance for the accepted focal estimand.** Its q_X masses, policy pair and r_common invariance are not established under the governing contracts, and the D2-to-focal mapping remains unresolved.
+- The technical preflight workflow, if run, would measure only the cost of this currently instantiated software path. It would not resolve the scientific mismatches and should not be used to authorize or tune scientific calibration.
+
+### 9.4 Minimum next operation — one integrated design closure, not another instrumentation gate
+
+Do not create another Analyzer, S3 model, test family, ledger or gate sequence. Reuse Gate 130, DEC-C10-103, DEC-C10S-D2-ESTIMAND-SEPARATION-001, the AB residual ledger, C10-S Draft 004 §§30–32 and Gate 208.
+
+The single remaining design operation is to reconcile, as one connected decision package:
+1. the approved pre-Z target population/UE roster and baseline-history basis for P*_τ2 and q_X*;
+2. the exact versioned joint g_A0/g_A1 pair over the complete ΔT_acc* vector, with history-specific structural feasibility and Generator evaluability;
+3. the non-focal regime r_common, including D2 policy/provisioning and all non-focal structural functions, with evidence of invariance rather than matching labels;
+4. the distinction between the D2 assignment ITT/package effect, focal θ_Af(q_X*), and the general θ_A(q);
+5. the V_cont measurement boundary: ideal perfect/complete interval S3 only for a best-case benchmark; imperfect S3 remains unvalidated and must not yield point identification.
+
+This package must first establish whether the direct-g_A calibration is scientifically admissible as the intended estimand or only a software-method benchmark. It must not choose arbitrary policy vectors or infer q_X* from N. If the required population/policy decisions cannot be justified from existing accepted contracts, they must be presented together for explicit user decision before materialization or implementation.
+
+**No tests, fixture generation, seed generation, workflow dispatch, calibration or scientific execution were performed.** No code or canonical main artifact was modified. scientific_execution=false, execution_authorized=false, and implementation_authorized=false remain in force.
