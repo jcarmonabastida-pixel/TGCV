@@ -1831,3 +1831,20 @@ The review confirmed that the definition:
 - preserves the book's operational distinction between environment and context, without claiming that this distinction is universal across disciplines.
 
 No change to the terminology registry was required because the approved definitions already match the current entry. No manuscript changes were made. The term remains in `draft` pending completion of the terminology review and approval of the terminology set.
+
+
+### 5.72 Terminology definition review — TV-TERM-005 approved
+
+The author approved the revised bilingual definition of `TV-TERM-005 — context`.
+
+**Approved Spanish definition:**
+
+> Conjunto de circunstancias, relaciones y condiciones relevantes que permiten situar y comprender el problema, propósito o situación objeto de análisis. Puede incluir actores, otros sistemas y condiciones de operación, tanto dentro como fuera de la frontera del sistema de interés.
+
+**Approved English definition:**
+
+> The set of relevant circumstances, relationships and conditions that provide the setting for understanding the problem, purpose or situation being analysed. It may include actors, other systems and operating conditions, both inside and outside the boundary of the system of interest.
+
+The revision makes the interpretive function of context explicit: it situates and supports understanding of the problem, purpose or situation being analysed. It also clarifies that relevant actors, systems and operating conditions may lie either inside or outside the system-of-interest boundary. This preserves the chapter's operational distinction between context and environment without treating context as a synonym for the system's physical surroundings.
+
+The approved definitions were updated in the shared terminology registry and re-fetched from the research branch. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript changes were made in this step.
