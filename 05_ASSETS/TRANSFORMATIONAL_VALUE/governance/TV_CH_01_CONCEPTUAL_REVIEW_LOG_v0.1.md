@@ -2109,17 +2109,17 @@ The author approved the bilingual definition of `TV-TERM-013 — bottleneck` dur
 
 **Approved Spanish definition**
 
-> Elemento, capacidad o proceso cuya limitación restringe de manera significativa el rendimiento del conjunto respecto a un resultado determinado.
+> Elemento, capacidad o proceso cuya limitación restringe de manera significativa el rendimiento del sistema en relación con un resultado determinado y bajo unas condiciones específicas. Su identificación depende de cómo se organiza y opera el conjunto, y puede cambiar cuando se modifican sus capacidades, configuración o condiciones de funcionamiento.
 
 **Approved English definition**
 
-> An element, capability or process whose limitation significantly constrains the performance of the whole in relation to a specified outcome.
+> An element, capability or process whose limitation significantly constrains system performance in relation to a specified outcome and under particular conditions. Its identification depends on how the whole is organised and operates, and may change when its capabilities, configuration or operating conditions are modified.
 
 **Conceptual distinctions preserved**
 - A bottleneck is defined relative to a specified outcome.
 - Not every constraint is a bottleneck.
 - The bottleneck may shift when the system configuration or operating conditions change.
 
-The wording above matches the bilingual definition currently stored in the shared terminology registry. This entry records the author's prior conceptual approval; it does not change the terminology registry, whose status remains `draft`, nor does it imply publication approval.
+The expanded wording above is the author's previously approved definition. The short wording initially transcribed in this entry was an erroneous fallback to the abbreviated registry text and is superseded by this correction. The shared terminology registry has now been aligned with the expanded approved wording. Its status remains `draft`; conceptual approval does not imply publication approval.
 
 **Disposition:** definition review approved and traceability entry restored. Registry status remains `draft` pending the applicable formal terminology approval/integration procedure.
