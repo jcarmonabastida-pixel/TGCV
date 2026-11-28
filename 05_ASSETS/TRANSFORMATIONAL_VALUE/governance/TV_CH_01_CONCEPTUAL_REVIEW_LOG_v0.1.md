@@ -1191,3 +1191,27 @@ The author approved closing the conceptual decision phase for section 1.7 after 
 The accepted decisions apply to both language versions. The next stage is to integrate them independently into each original-language manuscript, then verify the persisted changes and their bilingual conceptual equivalence. The introductory scope should be maintained; no unnecessary expansion into formal modelling methods is authorised by this closure.
 
 **Disposition:** conceptual decision phase closed for section 1.7. Manuscript integration and verification remain pending. No manuscript text has been changed by this closure decision.
+
+
+### 5.46 Section 1.7 — manuscript integration and bilingual verification — completed
+
+The accepted conceptual decisions recorded in sections 5.39–5.45 have been integrated independently into the Spanish and English manuscripts. Each version was revised as an original-language text; neither was produced by translating the other.
+
+The integrated section now:
+- defines **model** broadly as a deliberately constructed, selective representation, including prose, diagrams, tables, variable sets, and mathematical or computational models;
+- distinguishes representation scope, system boundary and level of detail;
+- clarifies that model inputs and parameters may be measured, estimated, specified or assumed, and retains the distinction between assumptions and quantified uncertainty;
+- distinguishes deliberate omissions from unknown or unavailable information, and cautions that absence from a model does not establish non-existence;
+- separates evidence supporting model data and relationships from evidence that the representation is adequate for its intended question;
+- clarifies that a checklist supports examination but does not guarantee correctness; and
+- adds compatibility checks for boundaries, assumptions, time horizons, terminology and levels of detail when complementary models are combined.
+
+The water-network examples and introductory pedagogical scope have been retained. The revisions do not introduce a formal taxonomy of modelling methods or model integration.
+
+**Manuscripts updated:**
+- Spanish: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/es/part-01-understanding-transformation/ch-01-pensar-en-sistemas.md`, version 1.3, blob SHA `dcf83f7d79e5964ebf9d0b4170efb495028963ad`.
+- English: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/en/part-01-understanding-transformation/ch-01-thinking-in-systems.md`, version 1.2, blob SHA `09f532dfaf070e730ca349520ebf58f2d7fb6fb1`.
+
+Both manuscripts were fetched again from the research branch after the updates. The version metadata and the accepted conceptual changes were checked in each persisted section. The bilingual cross-review confirms equivalent conceptual scope and examples while preserving independently authored wording.
+
+**Disposition:** section 1.7 integration and bilingual verification completed. Both manuscripts remain `draft`; this does not approve publication or close the chapter. Other chapter-level editorial phases and unresolved section integrations remain pending.
