@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 1.9
+version: 1.10
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -644,7 +644,7 @@ The point is not always to choose the broadest level. It is to select the level 
 
 ### Constraints, bottlenecks and interdependencies
 
-A **constraint** is a condition that limits available alternatives, performance or possible outcomes. A **bottleneck** is an element, capacity or process whose limitation significantly restricts the performance of the whole in relation to a specified outcome. Some constraints may not be the dominant limiting factor, and a bottleneck may shift as the system configuration changes.
+A **constraint** is a condition that limits available alternatives, performance or possible outcomes. A **bottleneck** is an element, capability or process whose limitation significantly constrains system performance in relation to a specified outcome and under particular conditions. Its identification depends on how the whole is organised and operates, and may change when its capabilities, configuration or operating conditions are modified. Some constraints may not be the dominant limiting factor, and a bottleneck may shift as the system configuration changes.
 
 Local improvements may change the operating conditions of other parts, including parts that are not directly modified. Through relationships, interfaces and dependencies, they may alter flows, loads, resource distribution or coordination requirements. These effects may create benefits, costs or new trade-offs; they may also produce synergies and should not automatically be assumed to be negative.
 
