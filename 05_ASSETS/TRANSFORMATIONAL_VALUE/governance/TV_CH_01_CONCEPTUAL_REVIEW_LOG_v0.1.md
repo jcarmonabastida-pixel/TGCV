@@ -1899,3 +1899,18 @@ The author approved the revised bilingual definition of `TV-TERM-008 — depende
 The revision makes dependency more specific than a generic relationship: it conditions operation, availability or the ability to achieve an outcome. It recognises dependencies that are total or partial, critical or substitutable, and potentially asymmetric rather than necessarily reciprocal. The distinction from a constraint is preserved: a dependency describes a conditioning relationship, whereas a constraint limits available alternatives or achievable performance or outcomes.
 
 The approved bilingual definitions were updated in the shared terminology registry and re-fetched from the research branch. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
+
+
+### 5.76 Terminology definition review — TV-TERM-009 approved
+
+The author approved the revised bilingual definition of `TV-TERM-009 — feedback loop`.
+
+**Approved Spanish definition:**
+
+> Estructura de relaciones causales cerrada en la que los efectos de un proceso, directa o indirectamente, vuelven a influir en las condiciones o procesos que contribuyeron a generarlos, afectando así al comportamiento posterior del sistema. Los bucles de realimentación pueden ser reforzadores, cuando amplifican una tendencia o cambio, o compensadores, cuando contrarrestan una desviación o contribuyen a regular una variable. Estas denominaciones describen el comportamiento del bucle, no su carácter beneficioso o perjudicial.
+
+**Approved English definition:**
+
+> A closed structure of causal relationships in which the effects of a process, directly or indirectly, feed back to influence the conditions or processes that contributed to generating them, thereby affecting the subsequent behaviour of the system. Feedback loops may be reinforcing, when they amplify a trend or change, or balancing, when they counteract a deviation or contribute to regulating a variable. These terms describe the behaviour of the loop, not whether it is beneficial or harmful.
+
+The definition distinguishes a feedback loop from a one-way causal sequence by requiring effects to feed back into conditions or processes that contributed to generating them. It identifies reinforcing and balancing loops without assigning positive or negative value judgements. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
