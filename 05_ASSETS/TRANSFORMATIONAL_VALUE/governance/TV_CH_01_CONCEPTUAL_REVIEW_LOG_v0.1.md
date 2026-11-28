@@ -1333,3 +1333,23 @@ The water-network example should be used to illustrate the point at an introduct
 **Rationale:** This makes the consequences of system interdependence concrete while avoiding the assumption that local changes have either isolated or necessarily adverse effects.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.54 Section 1.8 — conceptual decision phase closed — accepted
+
+The author approved closing the conceptual decision phase for section 1.8 after resolving the review areas recorded in sections 5.47–5.53:
+
+1. Local optimisation and system-level reasoning.
+2. Constraints and bottlenecks.
+3. Requirements, performance objectives and preferences.
+4. Direct, indirect and unintended effects.
+5. Time horizons in intervention evaluation.
+6. Scope, proportionality and limits of the analysis.
+7. Interdependencies and effects across subsystems.
+8. Conceptual equivalence across the independently authored Spanish and English versions.
+
+The accepted decisions apply to both language versions. The next stage is to integrate them independently into each original-language manuscript, then verify the persisted changes and their bilingual conceptual equivalence.
+
+The section should retain its introductory purpose. The accepted decisions do not authorise expansion into formal global optimisation, quantitative effect-propagation methods or a formal risk-assessment methodology.
+
+**Disposition:** conceptual decision phase closed for section 1.8. Manuscript integration and verification remain pending. No manuscript text has been changed by this closure decision.
