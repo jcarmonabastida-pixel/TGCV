@@ -1264,3 +1264,18 @@ The text must also avoid implying that every requirement is absolute in every co
 **Rationale:** This distinction makes trade-offs more transparent and prevents compensatory comparisons from obscuring non-negotiable conditions, while recognising that requirement status is context-dependent.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.50 Section 1.8 — direct, indirect and unintended effects — accepted
+
+The author approved clarifying the analysis of intervention consequences in both language versions:
+
+1. **Direct effects:** consequences occurring in the element or subsystem being changed.
+2. **Indirect effects:** consequences arising elsewhere in the system through relationships, interfaces or dependencies.
+3. **Unintended effects:** consequences, whether direct or indirect, that harm relevant outcomes or create risks that were not anticipated.
+
+These categories are not mutually exclusive: an unintended effect may be either direct or indirect. The text must not imply that every consequence can be anticipated. Analysis can identify plausible effects, while subsequent observation may reveal additional consequences.
+
+**Rationale:** This distinguishes where an effect occurs and how it relates to the intervention from whether it was intended, while recognising the limits of prediction.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
