@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 1.6
+version: 1.7
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -20,7 +20,10 @@ tags:
 concepts: []
 prerequisites: []
 related: []
-references: []
+references:
+  - TV-REF-007
+  - TV-REF-008
+  - TV-REF-009
 epistemic_status:
   - established_external_knowledge
 source_assets:
@@ -98,6 +101,8 @@ An initial system description should answer at least three questions:
 3. What behaviour do they exhibit under the conditions we want to understand?
 
 The first question helps us build an inventory. The other two allow us to begin explaining how the whole operates.
+
+For complementary reading on systems thinking and its relationship to systems engineering, see Meadows (2008) and INCOSE (2023).
 
 ### Key idea
 
@@ -177,6 +182,8 @@ A sound system description should state:
 - which exclusions may limit the analysis or its conclusions.
 
 There is no single boundary that is correct for every question. There is a boundary that is more or less appropriate and defensible for a particular analytical purpose, and it may be revised if relevant reasons emerge.
+
+The delimitation of the system of interest and the identification of its interfaces are also addressed by INCOSE (2023) and NASA's systems engineering guidance (2016).
 
 ### Key idea
 
@@ -405,6 +412,8 @@ A diagram can help reveal connections and distinguish types of relationships, bu
 A diagram should therefore be read in relation to its purpose, scope and legend. It is important to state what the nodes and connections represent, which relationships have been omitted, and whether arrows indicate flow direction, information transfer or influence.
 
 The supporting diagram in this section uses a simplified water supply network to distinguish physical flows, information and control signals, and selected external dependencies. It is not an engineering drawing and does not attempt to represent every possible relationship in a real installation.
+
+For further discussion of relationships and feedback, see Meadows (2008); INCOSE (2023) also provides a systems-engineering perspective on these concepts.
 
 ### Key idea
 
@@ -688,6 +697,8 @@ A technical improvement becomes meaningful when related to the outcomes the syst
 
 Likewise, an improvement to the whole need not maximise every indicator. It may consist of reaching a defensible balance among different outcomes, constraints and needs. Making these trade-offs explicit allows alternatives to be compared without presenting one particular preference as a universal solution.
 
+The evaluation of alternatives and decision analysis in systems engineering are developed, among other sources, in NASA (2016, §6.8).
+
 ### Key idea
 
 Optimising a component does not necessarily improve the system. System-level reasoning examines relevant interdependencies, requirements, objectives, constraints, effects and time horizons. Its scope should be proportionate to the decision, and its limits and uncertainties should be made explicit.
@@ -744,3 +755,12 @@ The important task is to justify your analytical choices and distinguish what ha
 Thinking in systems means understanding components in relation to the capabilities, interactions and conditions that make the system's operation possible. The configuration of elements, resources and relationships shapes what a system can do, as well as the options for change available to it. A useful description supports reasoning about those possibilities without confusing what is known with what is assumed or concealing the limits of the analysis.
 
 The next chapter will examine transformation in relation to system capability: how a system can change and what determines the transformations genuinely within its reach. Not every change necessarily constitutes a transformation, and not every transformation creates value in itself.
+
+
+## References and Further Reading
+
+- Meadows, D. H. (2008). *Thinking in Systems: A Primer* (D. Wright, Ed.). Chelsea Green Publishing. ISBN 978-1-60358-055-7. [TV-REF-007]
+- International Council on Systems Engineering (INCOSE). (2023). *Systems Engineering Handbook: A Guide for System Life Cycle Processes and Activities* (5th ed.; D. D. Walden, T. M. Shortell, G. J. Roedler, B. A. Delicado, O. Mornas, Y. Yew-Seng, & D. Endler, Eds.). John Wiley & Sons. INCOSE-TP-2003-002-05. ISBN 978-1-119-81429-0. [TV-REF-008]
+- Hirshorn, S. R., Voss, L. D., & Bromley, L. K. (2016). *NASA Systems Engineering Handbook* (NASA/SP-2016-6105 Rev 2). National Aeronautics and Space Administration. [TV-REF-009]
+
+These sources provide complementary foundations and further reading. They do not imply that every working definition or editorial distinction in this chapter is prescribed by the cited publications.
