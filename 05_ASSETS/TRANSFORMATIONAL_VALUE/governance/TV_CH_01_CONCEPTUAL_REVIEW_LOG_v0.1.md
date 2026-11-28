@@ -852,3 +852,17 @@ H. **Bilingual alignment:** make any accepted changes independently in both orig
 No external source is required specifically for this synthesis. Any references added to support substantive claims in sections 1.1–1.8 should be linked at the relevant point in those sections and registered centrally; the synthesis should not duplicate the references registry or introduce unsupported claims.
 
 **Decision:** pending author review. No source has yet been formally attached to a claim.
+
+
+### 5.23 Section 1.5 — relationship and interaction directionality — accepted
+
+The author approved the proposed clarification for both language versions:
+
+- **Relationship:** a relevant link between two or more elements.
+- **Interaction:** an action, exchange or influence occurring between related elements. An interaction may be unidirectional, reciprocal or asymmetric; it does not require equivalent influence in both directions.
+
+The examples of a sensor transmitting a measurement to a monitoring system, a control system sending a command to a pump, and a manager's decision changing a team's activity illustrate directional interactions.
+
+**Rationale:** The wording must not imply that interaction necessarily involves mutual or reciprocal influence.
+
+**Disposition:** accepted. Manuscript integration remains pending; no manuscript text has been changed by this decision.
