@@ -589,7 +589,7 @@ Following the author's explicit authorisation to integrate section 1.4, the acce
 
 - **v0.1 — 2026-11-27:** Created the Chapter 1 conceptual review record; preserved the findings, bilingual observations, proposed resolutions and unverified source candidates for sections 1.1 and 1.2; recorded that manuscript changes have not been applied.
 - **2026-11-27:** Completed the conceptual review records for sections 1.3–1.9; reconciled the completion status for all nine sections and documented the decision-resolution phase. No manuscript changes were made.
-- **2026-11-28:** Integrated the accepted section 1.4 decisions independently into the Spanish and English manuscripts; updated versions to ES 1.0 and EN 0.9; re-fetched and verified both files; recorded section-level integration and verification in §7.2. Other sections remain pending integration.
+- **2026-11-28:** Integrated the accepted section 1.4 decisions independently into the Spanish and English manuscripts; updated versions to ES 1.0 and EN 0.9; re-fetched and verified both files; recorded section-level integration and verification in §8.2. Other sections remain pending integration.
 
 ### 4.5 Section 1.5 — Relaciones, interacciones y estructura del sistema / Relationships, Interactions and System Structure
 
