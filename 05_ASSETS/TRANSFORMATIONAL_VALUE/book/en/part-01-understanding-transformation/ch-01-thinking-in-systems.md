@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 1.7
+version: 1.8
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -17,7 +17,22 @@ parent_id: TV-P1-OV
 tags:
   - systems-thinking
   - systems-engineering
-concepts: []
+concepts:
+  - TV-TERM-002
+  - TV-TERM-003
+  - TV-TERM-004
+  - TV-TERM-005
+  - TV-TERM-006
+  - TV-TERM-007
+  - TV-TERM-008
+  - TV-TERM-009
+  - TV-TERM-010
+  - TV-TERM-011
+  - TV-TERM-012
+  - TV-TERM-013
+  - TV-TERM-014
+  - TV-TERM-015
+  - TV-TERM-016
 prerequisites: []
 related: []
 references:
