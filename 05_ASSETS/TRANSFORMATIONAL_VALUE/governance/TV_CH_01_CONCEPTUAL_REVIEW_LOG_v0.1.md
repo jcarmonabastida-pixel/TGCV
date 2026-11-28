@@ -2067,3 +2067,34 @@ The current manuscript blob SHAs observed during this reconciliation were:
 **Traceability note:** the terminology review log contains individual definition-review entries for `TV-TERM-002` through `TV-TERM-012` except `TV-TERM-013`, and then `TV-TERM-014` through `TV-TERM-016`. The omission of an individual `TV-TERM-013` review entry remains an unresolved documentation gap. No approval is inferred from its presence in the terminology register or its use in the manuscript.
 
 **Disposition:** follow-up corrections approved; integration and verification pending. No manuscript text or terminology-register entry was changed by this record.
+
+
+### 5.84 Sections 1.4, 1.5, 1.7 and 1.9 — follow-up corrections integrated and verified
+
+The author-approved corrections recorded in section 5.83 have been integrated into the two original-language Chapter 1 manuscripts. The Spanish and English texts were updated independently.
+
+**Section 1.4 — Dependency / Dependencia**
+- Replaced the previous formulation centred on the outcome of an activity, actor or component with the approved formulation covering the operation, availability or ability of an element, process or system to achieve an outcome.
+- The examples involving actors and activities remain in the explanatory text.
+
+**Section 1.5 — Feedback loops / Bucles de realimentación**
+- Replaced “estabilizadores o amplificadores” / “stabilising or amplifying” with the approved reinforcing/balancing distinction: “reforzadores/compensadores” in Spanish and “reinforcing/balancing” in English.
+- Retained the explanation that effects depend on relationships, delays, control rules and operating conditions.
+
+**Section 1.7 — Assumptions / Supuestos**
+- Retained the preceding explanation distinguishing observed values, estimates, technical specifications and assumptions.
+- Replaced the repeated warning with the approved example requiring an unknown pump-availability condition to be recorded as unknown or explicitly formulated as an assumption.
+
+**Section 1.9 — Chapter closure / Cierre del capítulo**
+- Applied the approved Spanish wording “opciones de cambio que tiene a su alcance”.
+- Retained the existing English wording, which already expresses the approved meaning.
+
+**Manuscripts updated and re-fetched from the research branch:**
+- Spanish: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/es/part-01-understanding-transformation/ch-01-pensar-en-sistemas.md`, version 1.10, blob SHA `64d92d86fe442475ba448830866afeac9599db6a`.
+- English: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/en/part-01-understanding-transformation/ch-01-thinking-in-systems.md`, version 1.9, blob SHA `6818962f964e243ebcbd8387d078473db85de02d`.
+
+Post-update retrieval confirmed the new version metadata and the approved wording in both manuscripts. The section-specific checks confirmed the revised dependency formulation, reinforcing/balancing feedback terminology, consolidated assumption warning and aligned chapter closure. The English closing sentence was intentionally left unchanged. This verification is limited to the approved follow-up corrections; it is not a fresh full-chapter proofread or publication approval.
+
+Both manuscripts remain `draft`.
+
+**Disposition:** the four follow-up corrections are integrated and verified. The separate `TV-TERM-013` review-log traceability gap identified in section 5.83 remains unresolved and must be addressed from an authoritative author-approval record; no approval is inferred.
