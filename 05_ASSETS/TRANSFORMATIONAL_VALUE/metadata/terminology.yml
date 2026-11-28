@@ -95,8 +95,8 @@ terms:
       es: "dependencia"
       en: "dependency"
     definition:
-      es: "Relación en la que el funcionamiento, la disponibilidad o el resultado de un elemento, proceso o sistema depende de una condición, recurso, capacidad o contribución proporcionada por otro."
-      en: "A relationship in which the operation, availability or outcome of an element, process or system relies on a condition, resource, capability or contribution provided by another."
+      es: "Relación en la que el funcionamiento, la disponibilidad o la capacidad de un elemento, proceso o sistema para alcanzar un resultado está condicionada por una condición, recurso, capacidad o contribución de otro elemento, proceso o sistema. La dependencia puede ser total o parcial, crítica o sustituible, y no implica necesariamente una relación recíproca."
+      en: "A relationship in which the operation, availability or ability of an element, process or system to achieve an outcome is conditioned by a condition, resource, capability or contribution from another element, process or system. The dependency may be total or partial, critical or substitutable, and does not necessarily imply a reciprocal relationship."
     related_terms: [TV-TERM-007]
     status: draft
     notes: "Chapter 1. More specific than a generic relationship; do not treat every relationship as a dependency."
