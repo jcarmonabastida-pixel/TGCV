@@ -275,6 +275,13 @@ class ThetaACalibrationDGPFactory:
         fixture_need_states = (
             "FOCAL_INCLUSION", "FOCAL_EXCLUSION", "SEMANTIC_INDETERMINACY",
         )
+        monitor_seeds = (
+            s3_seeds_by_unit(seed_assignment.s3_seed, tuple(unit.unit_id for unit in world.units))
+            if seed_assignment is not None else {
+                unit.unit_id: 9000 + index
+                for index, unit in enumerate(world.units)
+            }
+        )
         return {
             "world": world,
             "world_config": world_config,
@@ -333,23 +340,11 @@ class ThetaACalibrationDGPFactory:
                 )
                 for row in world.q_x
             },
-            "monitor_seeds": (
-                s3_seeds_by_unit(seed_assignment.s3_seed, tuple(unit.unit_id for unit in world.units))
-                if seed_assignment is not None else {
-                    unit.unit_id: 9000 + index
-                    for index, unit in enumerate(world.units)
-                }
-            ),
+            "monitor_seeds": monitor_seeds,
             # D2 package ITT uses a distinct interval-monitor stream from the
             # direct-g_A focal measurement lane, while sharing the frozen grid.
             "d2_monitor_seeds": {
-                unit.unit_id: seed + 100000
-                for unit, seed in zip(
-                    world.units,
-                    (s3_seeds_by_unit(seed_assignment.s3_seed, tuple(x.unit_id for x in world.units)).values()
-                     if seed_assignment is not None else
-                     (9000 + index for index, _ in enumerate(world.units))),
-                )
+                unit_id: seed + 100000 for unit_id, seed in monitor_seeds.items()
             },
         }
 
