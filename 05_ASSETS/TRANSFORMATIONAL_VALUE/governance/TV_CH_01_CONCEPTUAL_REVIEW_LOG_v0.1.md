@@ -1944,3 +1944,18 @@ The author approved the revised bilingual definition of `TV-TERM-011 — deliber
 > The deliberate exclusion of a known or recognised element, relationship, process or aspect from a description, analysis or model, according to its purpose, scope, level of detail or simplification criterion. The omission may be justified by the needs of the work, but it does not imply that the excluded aspect does not exist or has no effects on the system. Where it may affect the interpretation of results, it should be made explicit.
 
 The definition distinguishes a conscious, purpose-related exclusion from unknown, unavailable or not-yet-investigated information. It also makes clear that omission does not establish non-existence or absence of effects, and that material omissions should be made explicit when they may affect interpretation. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
+
+
+### 5.79 Terminology definition review — TV-TERM-012 approved
+
+The author approved the revised bilingual definition of `TV-TERM-012 — constraint`.
+
+**Approved Spanish definition:**
+
+> Condición, límite o regla, de origen interno o externo al sistema, que reduce las alternativas, acciones o condiciones de operación disponibles, o limita el rendimiento o los resultados que pueden alcanzarse en una situación determinada. Su efecto debe interpretarse en relación con el propósito y las condiciones del análisis.
+
+**Approved English definition:**
+
+> A condition, limit or rule, originating within or outside the system, that reduces the available alternatives, actions or operating conditions, or constrains the performance or outcomes that can be achieved in a given situation. Its effect must be interpreted in relation to the purpose and conditions of the analysis.
+
+The definition makes the internal or external origin explicit and frames the effect of a constraint relative to the purpose and conditions of analysis. It preserves the distinction from a bottleneck: a constraint need not be the dominant factor limiting system performance. A dependency may give rise to or transmit a constraint, but the concepts are not equivalent. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
