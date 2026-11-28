@@ -13,7 +13,7 @@ This record preserves the findings and open recommendations from the conceptual 
 
 The review assesses conceptual clarity, technical precision, scope, examples and equivalence between the independently authored Spanish and English versions. It does not itself approve claims, references, assets, or manuscript changes.
 
-**Important:** Findings below are review observations and proposed resolutions, not approved editorial decisions. The conceptual review of all nine sections is complete; no manuscript text has been changed as a result of this review. Both language versions remain `draft`.
+**Important:** Findings below are review observations and proposed resolutions, not approved editorial decisions. The conceptual review of all nine sections is complete. Accepted decisions have been integrated into the manuscripts in successive, independently authored language updates, with the completion of each integration stage recorded below. Both language versions remain `draft` pending the remaining chapter-level editorial workflow.
 
 ## 2. Scope and source manuscripts
 
@@ -1499,3 +1499,25 @@ The integration includes:
 Post-update verification checked both files' metadata and section boundaries, and confirmed the principal accepted distinctions and examples in each language. A bilingual cross-review confirmed equivalent conceptual scope and pedagogical intent while preserving independently authored wording.
 
 **Disposition:** sections 1.1–1.3 integrated and verified. Both manuscripts remain `draft`. This completion does not close Chapter 1 or authorise progression to Chapter 2 while section 1.9 integration and chapter-level editorial checks remain pending.
+
+
+### 5.62 Section 1.9 — manuscript integration and bilingual verification — completed
+
+The accepted decisions recorded in sections 5.56–5.60 have been integrated independently into the Spanish and English manuscripts. Both versions were revised as original-language texts; neither was produced by translating the other.
+
+The revised synthesis now:
+- integrates the relationships among purpose and context; composition and capabilities; organisation and interactions; boundary and environment; time and change; model and evidence; and system-level performance;
+- revises the integrative table so each dimension connects a guiding question, its analytical contribution and its relationship to other dimensions;
+- retains the applied exercise and makes its four required aspects explicit: purpose and question, boundary and context, knowledge and assumptions, and scope and limits;
+- retains five reflection questions, each requiring contextual reasoning across multiple dimensions and avoiding duplication of the applied exercise; and
+- closes the chapter by relating system configuration and capabilities to the transformations within a system's reach, without implying that every change is a transformation or that every transformation creates value.
+
+The Spanish and English versions preserve equivalent conceptual scope and pedagogical intent while using independently authored wording. The exercise remains proportionate and does not require a formal model or comprehensive system assessment. The reflection questions include the approved integration of intervention effects across subsystems, trade-offs, uncertainty and time horizons.
+
+**Manuscripts updated and re-fetched from the research branch:**
+- Spanish: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/es/part-01-understanding-transformation/ch-01-pensar-en-sistemas.md`, version 1.6, blob SHA `ba3672fa3e663f9b457fc46ea66d8550ab28f72e`.
+- English: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/en/part-01-understanding-transformation/ch-01-thinking-in-systems.md`, version 1.5, blob SHA `d81a5d9ea5dc20261cc063feee0c51c0979bab13`.
+
+Post-update verification checked the current metadata, section headings and boundaries, table structure, four exercise requirements, five reflection questions, chapter closure and transition question in both files. Both manuscripts remain `draft`.
+
+**Disposition:** section 1.9 integration and bilingual verification completed. Chapter 1 is not yet editorially closed. The remaining chapter-level editorial workflow must be completed before progression to Chapter 2.
