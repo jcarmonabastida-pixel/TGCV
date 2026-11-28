@@ -155,8 +155,8 @@ terms:
       es: "cuello de botella"
       en: "bottleneck"
     definition:
-      es: "Elemento, capacidad o proceso cuya limitación restringe de manera significativa el rendimiento del conjunto respecto de un resultado determinado."
-      en: "An element, capability or process whose limitation significantly constrains the performance of the whole in relation to a specified outcome."
+      es: "Elemento, capacidad o proceso cuya limitación restringe de manera significativa el rendimiento del sistema en relación con un resultado determinado y bajo unas condiciones específicas. Su identificación depende de cómo se organiza y opera el conjunto, y puede cambiar cuando se modifican sus capacidades, configuración o condiciones de funcionamiento."
+      en: "An element, capability or process whose limitation significantly constrains system performance in relation to a specified outcome and under particular conditions. Its identification depends on how the whole is organised and operates, and may change when its capabilities, configuration or operating conditions are modified."
     related_terms: [TV-TERM-012, TV-TERM-007]
     status: draft
     notes: "Chapter 1. A bottleneck is defined relative to a result and may shift when the system changes; not every constraint is a bottleneck."
