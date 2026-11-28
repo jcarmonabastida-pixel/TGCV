@@ -5,7 +5,7 @@ title: "Pensar en sistemas"
 language: es
 content_type: chapter
 status: draft
-version: 1.7
+version: 1.8
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -20,7 +20,10 @@ tags:
 concepts: []
 prerequisites: []
 related: []
-references: []
+references:
+  - TV-REF-007
+  - TV-REF-008
+  - TV-REF-009
 epistemic_status:
   - established_external_knowledge
 source_assets:
@@ -98,6 +101,8 @@ Una descripción inicial debería responder, al menos, a tres preguntas:
 3. ¿Qué comportamiento presentan bajo las condiciones que queremos comprender?
 
 La primera pregunta ayuda a construir un inventario. Las otras dos permiten empezar a explicar el funcionamiento del conjunto.
+
+Como lecturas complementarias para ampliar la perspectiva de pensamiento sistémico y su relación con la ingeniería de sistemas, pueden consultarse Meadows (2008) e INCOSE (2023).
 
 ### Idea clave
 
@@ -177,6 +182,8 @@ Una descripción rigurosa debería indicar:
 - qué exclusiones pueden limitar el análisis o sus conclusiones.
 
 No existe una frontera correcta para todas las preguntas. Existe una delimitación más o menos adecuada y defendible para un propósito concreto, que puede revisarse si aparecen razones relevantes para hacerlo.
+
+La delimitación del sistema de interés y la identificación de sus interfaces también se abordan en INCOSE (2023) y en la guía de ingeniería de sistemas de NASA (2016).
 
 ### Idea clave
 
@@ -405,6 +412,8 @@ Un diagrama puede ayudar a reconocer conexiones y distinguir tipos de relación,
 Por ello, el diagrama debe leerse junto con su propósito, alcance y leyenda. Es necesario aclarar qué representan los nodos y las conexiones, qué relaciones se han omitido y si las flechas indican dirección de flujo, transferencia de información o influencia.
 
 El esquema de apoyo de este apartado utiliza una red de suministro simplificada para distinguir los flujos físicos, las señales de información y control, y algunas dependencias externas. No pretende ser un plano de ingeniería ni representar todas las relaciones posibles de una instalación real.
+
+Para ampliar el tratamiento de las relaciones y la realimentación, véase Meadows (2008); INCOSE (2023) ofrece además una perspectiva de ingeniería de sistemas sobre estos conceptos.
 
 ### Idea clave
 
@@ -688,6 +697,8 @@ Una mejora técnica adquiere sentido cuando se relaciona con los resultados que 
 
 Del mismo modo, una mejora del conjunto no tiene por qué maximizar todos los indicadores. Puede consistir en alcanzar un equilibrio justificable entre resultados, restricciones y necesidades diferentes. Hacer explícitos esos compromisos permite comparar alternativas sin presentar una preferencia particular como si fuera una solución universal.
 
+La evaluación de alternativas y el análisis de decisiones en ingeniería de sistemas se desarrollan, entre otras fuentes, en NASA (2016, §6.8).
+
 ### Idea clave
 
 Optimizar un componente no equivale a mejorar necesariamente el sistema. El razonamiento a escala de sistema examina las interdependencias, los requisitos, los objetivos, las restricciones, los efectos y los horizontes temporales relevantes. Su alcance debe ser proporcional a la decisión y sus límites e incertidumbres deben quedar explícitos.
@@ -744,3 +755,12 @@ Lo importante es justificar las decisiones de análisis y distinguir lo observad
 Pensar en sistemas significa comprender los componentes en relación con las capacidades, las interacciones y las condiciones que hacen posible su funcionamiento. La configuración de elementos, recursos y relaciones condiciona lo que un sistema puede hacer, así como las opciones de cambio que puede llevar a cabo. Una descripción útil permite razonar sobre esas posibilidades sin confundir lo que se conoce con lo que se supone ni ocultar los límites del análisis.
 
 El capítulo siguiente examinará la transformación como una cuestión relacionada con la capacidad del sistema: cómo puede cambiar y qué determina las transformaciones que están realmente a su alcance. No todo cambio constituye necesariamente una transformación, ni toda transformación genera por sí misma valor.
+
+
+## Fuentes y lecturas complementarias
+
+- Meadows, D. H. (2008). *Thinking in Systems: A Primer* (D. Wright, Ed.). Chelsea Green Publishing. ISBN 978-1-60358-055-7. [TV-REF-007]
+- International Council on Systems Engineering (INCOSE). (2023). *Systems Engineering Handbook: A Guide for System Life Cycle Processes and Activities* (5th ed.; D. D. Walden, T. M. Shortell, G. J. Roedler, B. A. Delicado, O. Mornas, Y. Yew-Seng, & D. Endler, Eds.). John Wiley & Sons. INCOSE-TP-2003-002-05. ISBN 978-1-119-81429-0. [TV-REF-008]
+- Hirshorn, S. R., Voss, L. D., & Bromley, L. K. (2016). *NASA Systems Engineering Handbook* (NASA/SP-2016-6105 Rev 2). National Aeronautics and Space Administration. [TV-REF-009]
+
+These sources provide complementary foundations and further reading. They do not imply that every working definition or editorial distinction in this chapter is prescribed by the cited publications.
