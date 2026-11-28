@@ -1959,3 +1959,18 @@ The author approved the revised bilingual definition of `TV-TERM-012 — constra
 > A condition, limit or rule, originating within or outside the system, that reduces the available alternatives, actions or operating conditions, or constrains the performance or outcomes that can be achieved in a given situation. Its effect must be interpreted in relation to the purpose and conditions of the analysis.
 
 The definition makes the internal or external origin explicit and frames the effect of a constraint relative to the purpose and conditions of analysis. It preserves the distinction from a bottleneck: a constraint need not be the dominant factor limiting system performance. A dependency may give rise to or transmit a constraint, but the concepts are not equivalent. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
+
+
+### 5.80 Terminology definition review — TV-TERM-014 approved
+
+The author approved the revised bilingual definition of `TV-TERM-014 — requirement`.
+
+**Approved Spanish definition:**
+
+> Condición, capacidad o característica especificada que una solución, sistema o alternativa debe satisfacer para considerarse aceptable dentro de un marco de decisión determinado, de acuerdo con los criterios de aceptación aplicables.
+
+**Approved English definition:**
+
+> A specified condition, capability or characteristic that a solution, system or alternative must satisfy to be considered acceptable within a given decision framework, in accordance with the applicable acceptance criteria.
+
+The revision makes the link to applicable acceptance criteria explicit and broadens the specified subject from a condition or capability to include a characteristic. It preserves the distinction between requirements that establish acceptability, performance objectives that express intended outcomes or levels, and preferences used to compare acceptable alternatives. Whether a requirement is mandatory remains dependent on the applicable decision framework; stronger performance elsewhere does not automatically compensate for failure to meet a mandatory requirement. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
