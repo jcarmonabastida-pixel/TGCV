@@ -1043,3 +1043,18 @@ Duration may be relevant evidence, but it is not the decisive criterion. A brief
 **Rationale:** This avoids classifying changes as transformations merely because they persist over time and keeps the distinction focused on changes to the system's organisation and capabilities.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+### 5.37 Section 1.6 — conceptual decision phase closed — accepted
+
+The author approved closing the conceptual decision phase for section 1.6 after resolving all six review questions:
+
+1. System openness relative to the selected boundary and analytical purpose.
+2. The distinction between inputs, outputs and types of exchange.
+3. The difference between receiving an input and having the conditions required to use it.
+4. The distinction between observation time, data coverage period and conclusion horizon.
+5. The distinction between response to change and adaptation.
+6. The distinction between operational adjustment and transformation, based on the nature and scope of change rather than duration alone.
+
+The accepted decisions apply to both the Spanish and English manuscripts. The next stage is to integrate the decisions independently into each original-language manuscript, then verify their conceptual equivalence and update this log with the integration and verification evidence.
+
+**Disposition:** conceptual decision phase closed for section 1.6. Manuscript integration and verification remain pending. No manuscript text has been changed by this closure decision.
