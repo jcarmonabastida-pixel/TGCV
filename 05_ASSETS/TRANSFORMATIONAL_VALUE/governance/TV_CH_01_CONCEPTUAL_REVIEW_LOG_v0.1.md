@@ -1233,3 +1233,17 @@ The wording should avoid presenting system-level reasoning as synonymous with fo
 **Rationale:** This preserves the practical systems-engineering distinction between local performance and consequences for the wider system, while avoiding an unjustified implication that a global mathematical optimum is always definable or attainable.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.48 Section 1.8 — constraints and bottlenecks — accepted
+
+The author approved distinguishing a **constraint** from a **bottleneck** in both language versions:
+
+- **Constraint:** a condition that limits the available alternatives, the performance or the possible outcomes of a system.
+- **Bottleneck:** an element, capacity or process whose limitation significantly restricts the performance of the whole in relation to a specified outcome.
+
+A constraint may exist without being the dominant limiting factor. A bottleneck may shift when the system is changed. The water-network example should illustrate this possibility without implying that every local improvement necessarily creates or moves a bottleneck.
+
+**Rationale:** This prevents the terms from being treated as interchangeable and makes clear that bottleneck identification depends on the outcome being considered and the system's current configuration.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
