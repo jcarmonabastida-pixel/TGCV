@@ -38,7 +38,7 @@ M1 MCSE point and interval estimates are explicitly unavailable; the adapter rep
 
 ## 3. Test source
 
-Eighteen source-level contract tests were added, covering:
+Nineteen source-level contract tests are now defined, covering:
 
 - exact three-method roster;
 - preservation of C0/C5 legacy records;
