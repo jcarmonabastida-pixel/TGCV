@@ -1105,3 +1105,19 @@ The explanation may note that a model can have broad scope while representing so
 **Rationale:** These distinctions prevent scope, analytical delimitation and granularity from being treated as synonyms, and help readers understand that they are separate modelling choices.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+### 5.41 Section 1.7 — assumptions, observations and model inputs — accepted
+
+The author approved retaining the distinction between assumptions, observed facts and quantified uncertainty, and clarifying in both language versions that **model inputs or parameters are not necessarily assumptions**. Their values may be measured, estimated, specified or assumed.
+
+The water-network examples illustrate the distinction:
+- a flow rate measured at a point may be an observed value;
+- future demand may be an estimate;
+- a pump's rated capacity may come from a technical specification; and
+- the assumption that a pump will remain available throughout the analysis period is an assumption.
+
+The text should avoid classifying every value entered into a model as an assumption. It should also preserve the distinction between an assumption and quantified uncertainty.
+
+**Rationale:** The origin and epistemic status of an input value should be made explicit. A model input may be supported by observation or specification, estimated from evidence, or adopted as an assumption; these are not interchangeable categories.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
