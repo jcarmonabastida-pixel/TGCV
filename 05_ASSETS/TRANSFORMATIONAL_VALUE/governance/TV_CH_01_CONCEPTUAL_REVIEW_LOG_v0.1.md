@@ -1215,3 +1215,21 @@ The water-network examples and introductory pedagogical scope have been retained
 Both manuscripts were fetched again from the research branch after the updates. The version metadata and the accepted conceptual changes were checked in each persisted section. The bilingual cross-review confirms equivalent conceptual scope and examples while preserving independently authored wording.
 
 **Disposition:** section 1.7 integration and bilingual verification completed. Both manuscripts remain `draft`; this does not approve publication or close the chapter. Other chapter-level editorial phases and unresolved section integrations remain pending.
+
+
+### 5.47 Section 1.8 — local optimisation and system-level reasoning — accepted
+
+The author approved clarifying, in both language versions, the distinction between local optimisation and system-level reasoning without implying that system-level reasoning necessarily means solving a formal mathematical global optimisation problem.
+
+The section should establish that:
+- **Local optimisation** seeks to improve one or more criteria for a component or subsystem.
+- **System-level reasoning** evaluates the consequences of decisions for the relevant whole, its dependencies and its relevant environment.
+- A system-level decision does not necessarily maximise all performance criteria simultaneously; criteria may conflict.
+- Decisions should make explicit the relevant outcomes, mandatory requirements, constraints and acceptable trade-offs.
+- The scale and breadth of analysis should be proportionate to the decision; a broader boundary is not automatically a better or more appropriate analysis.
+
+The wording should avoid presenting system-level reasoning as synonymous with formal global optimisation.
+
+**Rationale:** This preserves the practical systems-engineering distinction between local performance and consequences for the wider system, while avoiding an unjustified implication that a global mathematical optimum is always definable or attainable.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
