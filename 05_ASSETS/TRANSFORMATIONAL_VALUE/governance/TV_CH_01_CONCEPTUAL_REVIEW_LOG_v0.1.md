@@ -1989,3 +1989,18 @@ The author approved the revised bilingual definition of `TV-TERM-015 — perform
 > An outcome or level of performance that a system, solution or alternative is intended to achieve or improve. Its degree of attainment may be assessed using appropriate criteria or indicators and may vary across alternatives, without the objective necessarily constituting a mandatory acceptance condition.
 
 The revision makes clear that a performance objective concerns an intended outcome or level rather than merely an activity, allows its attainment to be assessed using appropriate criteria or indicators, and does not require the objective to be quantitative. It also preserves the distinction between requirements that establish acceptability and preferences used to compare acceptable alternatives. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
+
+
+### 5.82 Terminology definition review — TV-TERM-016 approved
+
+The author approved the revised bilingual definition of `TV-TERM-016 — preference`.
+
+**Approved Spanish definition:**
+
+> Criterio o prioridad que expresa qué atributos, condiciones o resultados se valoran más al comparar alternativas que cumplen los requisitos aplicables. Las preferencias pueden tener distinta importancia, ser cualitativas o cuantificables y entrar en conflicto entre sí, dando lugar a compromisos entre alternativas. Por sí mismas, no constituyen necesariamente condiciones obligatorias de aceptación.
+
+**Approved English definition:**
+
+> A criterion or priority expressing which attributes, conditions or outcomes are valued more when comparing alternatives that meet the applicable requirements. Preferences may differ in importance, be qualitative or quantifiable, and conflict with one another, resulting in trade-offs between alternatives. In themselves, they do not necessarily constitute mandatory acceptance conditions.
+
+The revision clarifies the comparative role of preferences among alternatives that satisfy applicable requirements, while allowing qualitative or quantitative expression, differing importance and conflicts that require trade-offs. Preferences do not by themselves override mandatory acceptance requirements. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
