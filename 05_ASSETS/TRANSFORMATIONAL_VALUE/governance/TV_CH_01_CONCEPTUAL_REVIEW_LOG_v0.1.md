@@ -991,3 +991,15 @@ The existing table should be reorganised so that direction (input/output) is not
 **Rationale:** This separates two different classification dimensions and avoids presenting “results towards the environment” as if it were the same kind of category as matter, energy or information.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+### 5.33 Section 1.6 — inputs and effective operating conditions — accepted
+
+The author approved clarifying in both language versions that receiving an input does not, by itself, mean that the system has the conditions required to use it or operate effectively.
+
+For example, a facility may receive an electricity supply but remain unable to operate because personnel are unavailable, its control system is faulty, or an operational constraint prevents use.
+
+The explanation should distinguish the existence of an exchange across the system boundary from the system's effective ability to make use of that input under the relevant operating conditions.
+
+**Rationale:** The presence of a resource or service at the boundary does not establish that the system can access, integrate or use it to perform its functions.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
