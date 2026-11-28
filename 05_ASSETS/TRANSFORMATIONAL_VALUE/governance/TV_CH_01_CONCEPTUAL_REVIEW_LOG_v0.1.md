@@ -1397,3 +1397,20 @@ The synthesis should help readers leave the chapter with an integrated perspecti
 **Rationale:** The chapter's learning outcome is the ability to connect these dimensions when forming a system description and interpreting its behaviour. The synthesis should make those connections visible without repeating the chapter section by section.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.57 Section 1.9 — purpose and structure of the integrative table — accepted
+
+The author approved, for both language versions, retaining and revising the existing integrative table so that it functions as a practical reference rather than a simple index of concepts.
+
+Each row should connect:
+- a dimension of system analysis;
+- a guiding question that supports reasoning;
+- what the dimension helps the reader understand or examine; and
+- its relationship with other dimensions, where relevant.
+
+The table should support readers in constructing a description of a system. It is not an exhaustive checklist and should not be presented as a mandatory procedure.
+
+**Rationale:** A useful synthesis table should show how analytical dimensions inform one another and help readers frame a system description, while preserving flexibility across different systems and purposes.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
