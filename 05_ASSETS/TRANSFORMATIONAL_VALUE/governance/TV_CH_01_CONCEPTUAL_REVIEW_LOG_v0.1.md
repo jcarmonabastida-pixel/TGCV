@@ -802,3 +802,22 @@ Dependencies and constraints may coexist. For example, an activity may depend on
 Both manuscripts should preserve this distinction and the example's meaning through natural, independently authored wording. The text should not imply that dependencies and constraints are mutually exclusive.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+
+### 5.22 Bilingual terminology baseline for section 1.4 — accepted
+
+The author approved the following common terminology baseline for the Spanish and English manuscripts:
+
+| Spanish | English |
+|---|---|
+| actor | actor |
+| competencia | competence |
+| capacidad | capability |
+| disponibilidad efectiva | effective availability |
+| recurso | resource |
+| dependencia | dependency |
+| restricción | constraint |
+
+These terms establish conceptual equivalence, not a requirement for literal or mechanically identical phrasing. Each manuscript should retain natural language-specific wording while preserving the agreed distinctions and scope. Where a term has a different established meaning in a particular technical discipline, the chapter should make the intended working meaning clear.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
