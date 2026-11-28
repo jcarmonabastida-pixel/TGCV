@@ -102,7 +102,7 @@ jobs:
           }
           output = Path(os.environ["RUNNER_TEMP"]) / "c10s-m1-positive-n32" / "result.json"
           output.write_text(
-              json.dumps(report, indent=2, sort_keys=True, default=str, allow_nan=False) + "\\n",
+              json.dumps(report, indent=2, sort_keys=True, default=str, allow_nan=False) + "\n",
               encoding="utf-8"
           )
           print(json.dumps({
