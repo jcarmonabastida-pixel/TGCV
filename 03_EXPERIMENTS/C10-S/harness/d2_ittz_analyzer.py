@@ -246,13 +246,17 @@ class D2ITTZAnalyzer:
             if any(row["observation_status"] == "OBSERVED" and type(row["observed_compliance"]) is not bool
                    for row in ordered):
                 raise ContractError("ITT-Z observed compliance must be Boolean")
-            # Strict continuity is a conjunction across time, not an interval mean.
-            any_failure = any(row["observed_compliance"] is False for row in ordered)
-            any_missing = any(row["observation_status"] == "MISSING" for row in ordered)
-            y_lower = 0 if any_failure or any_missing else 1
-            y_upper = 0 if any_failure else 1
-            missing_count += sum(row["observation_status"] == "MISSING" for row in ordered)
-            total_count += len(ordered)
+            # DEC-C10-100 defines V_cont as the equal-weight mean of
+            # interval-level A_B1 states. Missing intervals contribute [0,1]
+            # completion bounds; one failed interval does not erase the
+            # contribution of the other observed intervals.
+            successes = sum(row["observed_compliance"] is True for row in ordered)
+            missing = sum(row["observation_status"] == "MISSING" for row in ordered)
+            n_intervals = len(ordered)
+            y_lower = successes / n_intervals
+            y_upper = (successes + missing) / n_intervals
+            missing_count += missing
+            total_count += n_intervals
             mass = qx[first["history_ref"]]
             arm[z].append((mass / p, y_lower, y_upper))
             p1 = first["probability_z1"]
