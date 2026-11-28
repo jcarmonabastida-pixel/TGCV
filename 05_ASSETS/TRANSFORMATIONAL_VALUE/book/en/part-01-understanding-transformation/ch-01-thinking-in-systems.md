@@ -5,9 +5,9 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 0.8
+version: 0.9
 created: 2026-11-27
-updated: 2026-11-27
+updated: 2026-11-28
 authors: []
 reviewers: []
 summary: "Introduces the foundations for understanding and describing systems as organised configurations of elements and relationships."
@@ -234,81 +234,80 @@ Choose an installation or service you know. Identify some of its elements and se
 
 ## 1.4. Actors, Capabilities, Resources and Dependencies
 
-### Who is involved, and what do they need?
+### Who takes part, and what makes their contribution possible?
 
-So far, we have described a system in terms of its elements, states and behaviours. In many real-world systems—particularly those combining technology, people and organisations—we also need to identify who takes part, what they are able to do and which means they depend on.
+So far, we have described a system in terms of its elements, states and behaviours. In many real-world systems—particularly those combining technology, people and organisations—we also need to understand who takes part, what they can do, which means they can draw on and what other contributions their activities rely on.
 
-A water supply network illustrates this well. Its operation requires infrastructure and equipment, but it also relies on operators who monitor the installation, maintenance teams who respond to incidents, managers who make decisions, and organisations that provide energy, materials or specialist services. The physical infrastructure alone cannot explain how the service is sustained.
+A water supply network illustrates this well. Its operation requires infrastructure and equipment, but it also relies on operators who monitor the installation, maintenance personnel who respond to incidents, decision-makers who authorise action, and organisations that provide energy, materials or specialist services. The physical infrastructure alone cannot explain how the service is sustained.
 
-This perspective extends a component-based description by recognising the contribution of participants and the means that support their activities.
+### Actors: people, groups and organisations involved
 
-### Actors: participants who can intervene
+In this chapter, **actor** is used in a socio-organisational sense: a person, group or organisation that participates in the system or has a relevant influence on how it operates. Actors may have operational, technical, decision-making, regulatory, supplier or user roles, among others.
 
-We use **actors** to refer to people, groups or organisations able to intervene in the system or in aspects of its operation. Their roles may include operating, maintaining, deciding, regulating, supplying or using the system.
+In a water network, operators monitor alarms and adjust settings; maintenance personnel inspect and repair equipment; managers set priorities and authorise interventions; suppliers provide equipment and spare parts; and users generate demand patterns and may report incidents.
 
-In a water network, operators may adjust settings and monitor alarms; maintenance teams inspect and repair equipment; managers set priorities and allocate budgets; suppliers provide equipment and spare parts; and users generate demand patterns and report problems.
+An actor may be located inside or outside the boundary of the system of interest. Whether that actor belongs in the system description depends on the relevance of their interaction, influence or dependency in relation to the problem being analysed—not simply on their physical or organisational location. Being outside the boundary does not automatically make an actor part of the environment in every model: that classification depends on how the system has been bounded and on the purpose of the analysis.
 
-Actors do not all have the same authority, information or degree of involvement. Nor must every actor fall within the system boundary chosen for a particular analysis. Some may belong to the environment while still having a significant influence on the system. Their role should therefore be identified, along with the reason for including them in the description.
+Autonomous systems, software agents and other non-human elements may also form part of the system, perform functions and produce effects, but they are not automatically classified as actors under the convention used here. If **agent** is used in a broader technical sense, that meaning should be made explicit.
 
-The category is not useful in every kind of system. In systems without human or organisational agents—for example, some physical systems or automated processes—it may be unnecessary to force an actor-based description. The concept is most relevant where agents can make decisions or carry out intentional interventions.
+### Capabilities: what an element can do and what the system can achieve
 
-### Capabilities: what a participant or component can do
+A **capability** is the ability or possibility to perform an activity or fulfil a function under specified conditions. It may belong to an individual actor, a component or the organised system as a whole.
 
-A **capability** is the ability of an actor, component or organised combination of elements to perform an activity or fulfil a function under specified conditions.
+Three related ideas should be distinguished. **Competence** refers to the knowledge and skills a person or organisation has to perform an activity. **Capability** also takes into account the means and conditions required to perform it. **Effective availability** indicates whether that capability can actually be exercised at a particular time and in a particular context, considering factors such as authority, access, resources, workload and operational state.
 
-In a water supply installation, an operator may be capable of interpreting control-system signals and following adjustment procedures. A maintenance team may have the technical capability to diagnose particular failures. A pump has a pumping capability determined by its characteristics and operating conditions; a control system may regulate its operation within defined limits.
+For example, a technician may have the knowledge and skills needed to repair a pump but lack authorisation or the required tools. The technician has the competence, but does not have the conditions needed to exercise that capability effectively at that time.
 
-Capability should be distinguished from observed activity. The fact that a person or component can perform a task does not mean that it is performing that task now. Likewise, a capability described in a procedure or specification may not be practically available if training, authorisation, tools or suitable conditions are missing.
+We should also distinguish the capability of an individual element from the **capability of the system**. An operator may interpret signals, a pump may move water and a control system may regulate its operation. Yet maintaining service continuity may require these contributions to be combined and coordinated through suitable procedures, interfaces, resources and operating conditions. System-level capability is not simply the sum of individual capabilities: it depends on how the elements are integrated and coordinated.
 
-Capabilities may reside in an individual element or depend on the combination of several. Maintaining service continuity, for example, may require operators who can interpret information, monitoring systems that provide it, and procedures that coordinate a response. No single participant necessarily provides everything required.
+### Resources: the means that can be mobilised
 
-### Resources: the means available for action
+**Resources** are means that can be used to perform activities and sustain system operation. They may include material, energy, financial, informational and time-related resources, among others.
 
-**Resources** are the means that can be used to perform activities and sustain system operation. They may be material, energetic, financial, human, informational or temporal.
-
-In a water network, physical resources include pumps, tools, spare parts and facilities; energy resources include the electricity supply; human resources include staff time and availability; and information resources include network plans, operating records, sensor data and technical documentation.
+In a water network, physical resources include pumps, tools, spare parts and facilities; energy resources include the electricity supply; and information resources include network plans, operating records, measurements and technical documentation. People are actors in the system, not interchangeable resources. However, they may contribute means needed for an activity through their time, knowledge, experience, skills or availability. The description should identify these specific contributions without confusing them with people's role as actors.
 
 The existence of a resource does not guarantee that it is available for every purpose. It may already be committed to another activity, out of service, inaccessible when needed or subject to authorisation. A description should therefore distinguish between resources that exist, those that are available and those that can actually be mobilised for a particular task.
 
-Resources should also not be confused with capabilities. Diagnostic equipment is a resource; knowing how to use it and interpret its results is a capability. A task may require both.
+Resources should not be confused with capabilities. Diagnostic equipment is a resource; knowing how to use it and interpret its results forms part of the competence and capability required to perform the activity. A task may require both.
 
-### Dependencies: what an activity relies on
+### Dependencies and constraints: what is required and what limits action
 
-A **dependency** exists when an activity, actor or component requires another element to provide something, perform a task or maintain a condition for the first to operate as intended.
+A **dependency** exists when the functioning, availability or outcome of an activity, actor or component requires a contribution, service, state or condition provided by another element.
 
-For example, a repair may depend on spare parts being available, the maintenance team having access to the site, and the possibility of temporarily interrupting supply. The operation of a pumping station may depend on electricity, water availability and the correct functioning of its control systems.
+For example, a repair may depend on spare parts being available, maintenance personnel having access to the site, and the possibility of temporarily interrupting supply. The operation of a pumping station may depend on electricity, water availability and the functioning of its control systems.
 
-Dependencies may be technical, operational, organisational, informational or external. Some are direct and visible; others become apparent only when an incident occurs. Their significance may also vary with the task and the circumstances.
+A dependency is not the same as a generic relationship. Two elements may be related without one requiring the other in order to function or achieve an outcome. Dependencies may also be conditional, substitutable, reciprocal or time-sensitive, and they do not all have the same degree of criticality.
 
-Identifying dependencies helps explain why having a component or capability is not always enough to carry out an activity. Operation may rely on several contributions being available and coordinated.
+A **constraint** should also be distinguished from a dependency. A dependency identifies a contribution or condition that is required; a constraint sets a limit or condition that reduces the options or ways in which an activity can be performed. Both may coexist: a pumping station may depend on the electricity supply while also being subject to consumption limits, regulatory requirements or safety conditions.
 
-### An integrated view of operation
+### Bringing the dimensions together
 
-Actors, capabilities, resources and dependencies are not separate categories to be examined in isolation. They are complementary dimensions of how an activity is supported within a system.
+Actors, capabilities, resources and dependencies describe complementary dimensions of how an activity is sustained within a system. It is not enough for each element to exist separately: the necessary contributions must be available and coordinated under suitable conditions.
 
-Imagine a failure in a main water pipe. Detecting it may require sensors and monitoring systems; interpreting it requires people with technical knowledge; planning the response requires decision-making authority and operational coordination; and carrying out the repair requires tools, spare parts, access and time. The response depends on these capabilities and resources being connected through appropriate procedures and responsibilities.
+Imagine a failure in a main water pipe. Detecting it may require sensors and monitoring systems; interpreting it requires people with technical knowledge; planning the intervention requires decision-makers with the authority to act; and carrying out the repair requires tools, spare parts, access and time. The response depends on the required competence and capability being effectively available, resources being mobilisable and dependencies being satisfied.
 
-This example shows why it is not enough to say that an organisation has qualified staff or modern equipment. To understand its operational ability, we need to ask which tasks it can perform, with what means, under which conditions and with which dependencies.
+To understand the system's operational capability, we need to ask which activities it can perform, which actors take part, which individual and collective capabilities are required, what resources are available, which contributions or conditions are needed, and which constraints shape the response.
 
-### Bringing these dimensions into a system description
+### Including these dimensions in a system description
 
 When analysing a system involving people or organisations, it may be useful to record:
 
-- which actors are involved and what roles they perform;
-- which capabilities matter to the activities under study;
-- which resources those activities require and which are actually available;
-- which people, components, services or conditions they depend on;
-- which responsibilities, permissions or limits shape their involvement.
+- which actors are involved, where they are located in relation to the boundary and what roles they perform;
+- which competences and capabilities matter to the activities under study;
+- whether those capabilities are effectively available under the operating conditions being considered;
+- which resources the activities require, which exist and which can be mobilised;
+- which contributions, services or conditions the activities depend on;
+- which constraints, responsibilities or authorisations shape their involvement.
 
-This does not mean producing an organisation chart or resource inventory by default. It means including the information needed to explain how activities are carried out and where critical limitations or dependencies may arise.
+This does not mean producing an organisation chart or exhaustive resource inventory by default. It means including the information needed to explain how activities are carried out and where critical limitations or dependencies may arise.
 
 ### Key idea
 
-A system's operation may depend not only on its components, but also on the actors involved, the capabilities they bring, the resources they can mobilise and the dependencies that condition their actions.
+A system's operation may depend on the actors involved, the competences and capabilities they can bring to bear, the resources available and the dependencies and constraints that shape their actions. System-level capability arises from integrating and coordinating these contributions, not merely adding them together.
 
 ### Reflection
 
-Think of a service or installation you know. Choose an activity that is important to its operation and identify who needs to take part, which capabilities are required, what resources are used and which other people, components or conditions the activity depends on. What could prevent the activity from being carried out even if each element existed on its own?
+Think of a service or installation you know. Choose an activity that is important to its operation and identify who needs to take part, which competences and capabilities are required, what resources can be mobilised and which contributions or conditions the activity depends on. What constraints could prevent the activity from being carried out even if the actors and necessary elements existed separately?
 
 
 ## 1.5. Relationships, Interactions and System Structure
