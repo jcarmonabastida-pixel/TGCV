@@ -891,3 +891,12 @@ Structure may be relatively stable, but it is not necessarily fixed or immutable
 **Rationale:** This clarifies the different analytical roles of structure and interaction while recognising that interactions can reproduce or alter structural relationships over time.
 
 **Disposition:** accepted. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.26 Section 1.5 — dependencies as structural relationships — accepted
+
+The author approved treating dependencies in section 1.5 as a relevant form of structural relationship, without redefining the term. The operational definition established in section 1.4 remains authoritative for this chapter. Section 1.5 should focus on how dependencies connect system elements and how they are represented as part of system structure.
+
+**Rationale:** This maintains conceptual continuity between sections 1.4 and 1.5, avoids unnecessary repetition, and keeps the focus of section 1.5 on relationships and their structural representation.
+
+**Disposition:** accepted. Manuscript integration remains pending; no manuscript text has been changed by this decision.
