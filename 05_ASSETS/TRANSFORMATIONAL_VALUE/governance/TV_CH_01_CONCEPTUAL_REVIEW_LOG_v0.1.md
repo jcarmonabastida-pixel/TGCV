@@ -1578,3 +1578,25 @@ The chapter currently contains no diagram or image. The chapter template calls f
 Both manuscripts retain `status: draft`, empty author/reviewer arrays, and empty references/concepts/related metadata. The draft status is consistent with the current workflow. Authors, reviewers and publication metadata must be resolved at the appropriate later review and approval stages; they are not silently inferred in this pass.
 
 **Next review sequence:** resolve the learning-objective proposal; complete the source and terminology registry audit; then continue with the remaining editorial criteria (clarity, readability, accessibility, consistency of editorial voice, examples, terminology and duplication) before routing any required subject-matter review. Cross-language review remains a distinct gate. Chapter 1 remains `draft`; Chapter 2 must not begin until the applicable Chapter 1 editorial workflow is complete.
+
+
+### 5.64 Chapter 1 learning objectives — approved, integrated and verified
+
+The author approved the five proposed learning objectives for Chapter 1. They have been added to both manuscripts immediately after the chapter title and before section 1.1.
+
+The objectives cover the reader's ability to:
+1. define and delimit a system in relation to analytical purpose, boundary, environment and context;
+2. describe system composition and organisation, including elements, states, properties, behaviour, actors, capabilities, resources, dependencies and relationships;
+3. interpret the operation of open systems over time, including exchanges, changing conditions, responses and trajectories;
+4. construct and assess a system description suited to a question, including information sources, assumptions, omissions, uncertainty and limitations; and
+5. reason about system-level interventions, including interdependencies, constraints, direct and indirect effects, trade-offs and time horizons.
+
+The Spanish and English versions were authored independently and preserve equivalent learning outcomes.
+
+**Manuscripts updated and re-fetched from the research branch:**
+- Spanish: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/es/part-01-understanding-transformation/ch-01-pensar-en-sistemas.md`, version 1.7, blob SHA `0cc38d87371e480806eeb7ade007886795dc4b0e`.
+- English: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/en/part-01-understanding-transformation/ch-01-thinking-in-systems.md`, version 1.6, blob SHA `4fff179e32df23cdd49e1c341dd66c28786973ef`.
+
+Post-update verification confirmed the objective headings, all five outcomes in each language, their placement before section 1.1, and the continued `draft` status of both manuscripts.
+
+**Disposition:** learning-objective gap resolved for the current draft. The remaining global editorial findings in §5.63 remain open or deferred according to their stated status. Chapter 1 is not yet editorially closed; do not begin Chapter 2.
