@@ -1296,3 +1296,22 @@ The evaluation should not present an initial improvement as sustained improvemen
 **Rationale:** This makes temporal scope explicit and prevents short-term performance from being treated as proof of durable system-level improvement.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.52 Section 1.8 — scope and proportionality of system-level reasoning — accepted
+
+The author approved clarifying, in both language versions, that system-level reasoning does not require analysing every possible element, relationship or consequence. It requires identifying and examining those relevant to the decision, considering:
+
+- the importance of the outcomes affected;
+- the magnitude and likelihood of potential consequences;
+- uncertainty in the available information;
+- the reversibility of the intervention; and
+- the consequences of an incorrect decision.
+
+The depth and breadth of analysis should be proportionate to the importance and risk of the decision. The analysis should also state its boundaries and the uncertainties that remain unresolved.
+
+This clarification should connect section 1.8 with the earlier discussion of system boundaries, representation scope and models, without turning the section into a formal risk-assessment methodology.
+
+**Rationale:** System-level reasoning must be sufficiently broad to capture decision-relevant effects, but bounded and proportionate rather than exhaustive. Making limitations and residual uncertainty explicit helps prevent conclusions from exceeding the analysis performed.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
