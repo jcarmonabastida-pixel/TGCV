@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 1.2
+version: 1.3
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -562,78 +562,103 @@ Think of a system you know and a representation used to describe it. What questi
 
 ### Improving a part does not always improve the whole
 
-In many systems, overall performance depends on the coordinated contribution of multiple components. A local improvement therefore does not guarantee a system-level improvement. A component may become more efficient while transferring costs, constraints or problems to other parts of the configuration.
+In many systems, overall performance depends on the coordinated contribution of multiple components. A local improvement therefore does not guarantee a system-level improvement. A component may become more efficient while transferring costs, constraints or problems to other parts.
 
-In a water supply network, replacing a pump with a higher-capacity unit may increase the flow available at a pumping station. It may also raise energy consumption, change pressures in certain sections or require modifications to valves and controls. If we assess only the pump, we might consider the intervention successful without checking its consequences for the service as a whole.
+In a water supply network, replacing a pump with a higher-capacity unit may increase the flow available at a pumping station. However, it may also raise energy consumption, change pressures in certain sections or require changes to valves, pipes and controls. Assessing only the pump could lead us to consider the intervention successful without checking its consequences for the service as a whole.
 
 Component optimisation remains necessary. The problem arises when local performance is treated as a substitute for system performance.
 
-### Local optimisation and overall performance
+### Local optimisation and system-level reasoning
 
-**Local optimisation** seeks to improve the behaviour of an element or subsystem against one or more criteria. **System-level optimisation** considers how decisions affect the whole, taking account of interactions, dependencies, constraints and outcomes that cross internal boundaries.
+**Local optimisation** seeks to improve one or more criteria for a component or subsystem. **System-level reasoning** examines the consequences of decisions for the relevant whole, its dependencies and the environment insofar as these matter to the decision.
+
+System-level reasoning does not necessarily mean solving a mathematical global optimisation problem. Nor does it imply that every criterion can be maximised at the same time: some criteria may conflict.
 
 | Decision focus | Main question | Risk if considered in isolation |
 |---|---|---|
 | Component | How can this item of equipment perform better? | Improving its performance at the expense of other parts |
-| Subsystem | How can we coordinate the elements that perform a function? | Moving the bottleneck to another subsystem |
-| System | How does the whole achieve its required outcomes? | Ignoring external effects or long-term consequences if the boundary is too narrow |
+| Subsystem | How can we coordinate the elements that perform a function? | Shifting a significant limitation to another subsystem |
+| System | How does the whole achieve its required outcomes? | Ignoring dependencies, external effects or later consequences |
 
-The point is not always to choose the broadest level. It is to select the level of analysis appropriate to the decision and check relevant consequences at connected levels.
+The point is not always to choose the broadest level. It is to select the level of analysis appropriate to the decision and examine relevant consequences at connected levels.
 
-### Interfaces, constraints and indirect effects
+### Constraints, bottlenecks and interdependencies
 
-Local improvements can propagate through system interfaces and dependencies. A change to one component may alter the operating conditions of others, change resource distribution or create new coordination requirements.
+A **constraint** is a condition that limits available alternatives, performance or possible outcomes. A **bottleneck** is an element, capacity or process whose limitation significantly restricts the performance of the whole in relation to a specified outcome. Some constraints may not be the dominant limiting factor, and a bottleneck may shift as the system configuration changes.
 
-In the water network, increasing pumping capacity may shift the constraint from the station to a pipe, valve or storage capacity. The intervention may resolve one limitation and reveal another that was previously less significant. It may also increase energy or maintenance requirements.
+Local improvements may change the operating conditions of other parts, including parts that are not directly modified. Through relationships, interfaces and dependencies, they may alter flows, loads, resource distribution or coordination requirements. These effects may create benefits, costs or new trade-offs; they may also produce synergies and should not automatically be assumed to be negative.
 
-Before introducing an improvement, it is therefore useful to identify:
+In the water network, increasing pumping capacity may ease a limitation at the station and make the capacity of a pipe, valve or storage tank more significant. It may also improve supply in one area while increasing energy consumption or maintenance needs. The effect depends on the configuration and relationships among the parts.
 
-- which elements and functions will be affected;
-- which constraints may limit the result;
-- where a bottleneck might move;
-- which additional dependencies or resources may arise;
-- which indirect effects could occur elsewhere in the system or its environment.
+It is therefore useful to identify which elements and functions may be affected, which dependencies condition the outcome, which additional resources may be needed and which indirect effects may arise. Not every local improvement necessarily shifts a bottleneck, and not every interdependency produces an adverse effect.
 
-These questions do not require us to model everything. They help prevent the analysis from stopping at the boundary of the component being changed.
-
-### Performance criteria can conflict
+### Requirements, performance objectives and preferences
 
 System performance is rarely captured by a single measure. A water network may be assessed in terms of supply continuity, quality, pressure, energy consumption, operating costs, recovery time and environmental effects. Improving one criterion may worsen another.
 
-For example, maintaining high pressure may help supply certain areas but increase leakage losses and energy use. Reducing maintenance costs may improve a short-term financial indicator while increasing the risk of future interruptions. There is no optimal decision without specifying which outcomes matter, which constraints must be respected and which trade-offs are acceptable.
+When comparing alternatives, it is useful to distinguish:
 
-Criteria should be related to the system's purpose and the needs of relevant actors. It is also useful to distinguish requirements that must be met, objectives to be improved and preferences that may be negotiated.
+- **Requirements:** conditions that must be met for the system or solution to be acceptable.
+- **Performance objectives:** outcomes that a decision seeks to achieve or improve, allowing for different degrees of attainment.
+- **Preferences:** criteria used to compare alternatives that meet the applicable requirements but involve different trade-offs.
+
+These categories are not interchangeable. Failure to meet an applicable mandatory requirement cannot simply be compensated for by better results on other indicators. Whether a requirement is mandatory depends on the decision framework and relevant conditions.
+
+For example, maintaining high pressure may help supply certain areas but increase leakage losses and energy use. Reducing maintenance costs may improve a short-term financial indicator while increasing the risk of future interruptions. A decision requires making explicit the outcomes sought, the constraints that must be respected and the trade-offs that are acceptable.
+
+### Direct, indirect and unintended effects
+
+When assessing an intervention, it is useful to distinguish among:
+
+- **Direct effects:** consequences occurring in the element or subsystem being changed.
+- **Indirect effects:** consequences arising elsewhere in the system through relationships, interfaces or dependencies.
+- **Unintended effects:** consequences that harm relevant outcomes or create risks that were not anticipated, whether direct or indirect.
+
+These categories can overlap. An unintended effect may be direct or indirect. Analysis can identify plausible consequences, but it cannot guarantee that every effect will be anticipated; subsequent observation may reveal additional effects.
+
+### Time horizons for evaluation
+
+The results of an intervention also depend on the time horizon considered:
+
+- **Short term:** immediate effects of the intervention and its commissioning or initial operation.
+- **Medium term:** consequences emerging during operation and the adjustment or adaptation of affected parts.
+- **Long term:** cumulative effects, changing needs, wear, maintenance and evolution of the environment.
+
+These horizons are analytical references, not universal time intervals. Their duration depends on the system, the intervention and the decision being evaluated. An initial improvement should not be presented as sustained improvement without sufficient evidence of subsequent behaviour.
+
+### Scope and proportionality of the analysis
+
+System-level reasoning does not require analysing every possible element, relationship and consequence. It requires identifying and examining those relevant to the decision. To determine the necessary depth and breadth, consider the importance of the outcomes affected, the magnitude and likelihood of potential consequences, uncertainty in the available information, the reversibility of the intervention and the consequences of an incorrect decision.
+
+The analysis should be proportionate to the importance and risk of the decision. It should also make explicit the boundary and scope considered, as well as the uncertainties that remain unresolved. A minor intervention may require a simple check; a critical change may call for broader analysis and more rigorous testing. Widening the boundary does not always improve an analysis: it should be done when it provides information relevant to the decision.
 
 ### Reasoning at system level
 
-System-level reasoning extends evaluation beyond the component being changed to the consequences that matter for the whole. It does not mean ignoring technical detail, but placing that detail within a configuration of relationships, objectives and constraints.
+System-level reasoning places technical detail within a configuration of relationships, objectives, constraints and operating conditions. As a guide, it can be organised around the following questions:
 
-A practical process can follow this sequence:
+1. **What outcome is sought, and for whom?** Clarify the relevant outcomes and conditions for acceptability.
+2. **What is being changed?** Define the component or subsystem targeted by the intervention.
+3. **Which other parts are connected?** Examine interfaces, dependencies and interactions that may constrain or receive the effects of the change.
+4. **Which criteria and trade-offs matter?** Distinguish requirements, objectives and preferences, and identify potential conflicts.
+5. **What effects may arise, and when?** Consider direct, indirect and unintended effects, together with appropriate time horizons.
+6. **What depth of analysis is proportionate?** Consider importance, consequences, uncertainty and reversibility, and state the limits of the analysis.
+7. **What should be checked afterwards?** Observe whether expected outcomes are sustained and whether additional consequences emerge.
 
-1. **Define the required outcome:** clarify what the system must achieve and for whom.
-2. **Identify the intervention level:** define the component or subsystem to be changed.
-3. **Examine interfaces and dependencies:** identify which other parts constrain or receive the effects of the change.
-4. **Consider multiple criteria:** assess relevant benefits, costs, risks and constraints, not only the local indicator.
-5. **Check effects on the whole:** analyse whether the improvement is sustained, shifted elsewhere or creates unintended consequences.
-6. **Review the result in context:** observe behaviour under appropriate conditions and time horizons.
-
-The depth of each step depends on the importance of the decision, uncertainty and the consequences of being wrong. A minor intervention may require a simple check; a critical change may call for integrated analysis and more rigorous testing.
+These questions are not an exhaustive method and do not guarantee that every effect will be identified. They help organise analysis around the consequences that matter to the decision.
 
 ### The value of an improvement depends on where and how it appears
 
 A technical improvement becomes meaningful when related to the outcomes the system is expected to produce. Reducing a pump's energy consumption may be positive, but its significance depends on whether the required service is maintained, how other equipment is affected and which costs or risks are introduced.
 
-Likewise, an overall improvement need not maximise every indicator. It may consist of reaching a defensible balance among different outcomes, constraints and needs. Making these trade-offs explicit allows alternatives to be compared without presenting one particular preference as a universal solution.
+Likewise, an improvement to the whole need not maximise every indicator. It may consist of reaching a defensible balance among different outcomes, constraints and needs. Making these trade-offs explicit allows alternatives to be compared without presenting one particular preference as a universal solution.
 
 ### Key idea
 
-Optimising a component is not the same as optimising the system. Decisions should be assessed in terms of interactions, constraints, conflicting criteria and consequences that affect the whole and its relevant environment.
+Optimising a component does not necessarily improve the system. System-level reasoning examines relevant interdependencies, requirements, objectives, constraints, effects and time horizons. Its scope should be proportionate to the decision, and its limits and uncertainties should be made explicit.
 
 ### Reflection
 
-Think of an improvement made or proposed to a component of a system you know. Which local indicator was it intended to improve? Which other parts could be affected? Which system-level criteria would need to be checked to determine whether the intervention genuinely improved the system's performance?
-
-
+Think of an improvement made or proposed to a component of a system you know. Which local indicator was it intended to improve? Which other parts could be affected, and how? Which requirements, objectives, preferences and time horizons would need to be considered to determine whether the intervention genuinely improved the system's performance?
 
 ## 1.9. Chapter Synthesis and Reflection Questions
 
