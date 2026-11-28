@@ -1290,6 +1290,30 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             result.d2_analyzer_result.input_sha256,
             result.d2_observed_lane.sealed_evidence.sha256,
         )
+        # DEC-C10-100 defines V_cont as the mean of interval-level A_B1,
+        # not a binary all-or-nothing horizon conjunction.
+        self.assertTrue(any(
+            0.0 < row.v_cont_truth < 1.0
+            for row in result.d2_vcont_truth.potential_truth
+        ))
+        qx_mass = dict(result.d2_analysis_contract.q_x_mass_by_history)
+        d2_rows_by_unit = {}
+        for row in result.d2_observed_lane.sealed_evidence.rows:
+            d2_rows_by_unit.setdefault(row["unit_id"], []).append(row)
+        expected_d2_arm = [0.0, 0.0]
+        for unit_rows in d2_rows_by_unit.values():
+            first = unit_rows[0]
+            ordered = sorted(unit_rows, key=lambda row: row["interval_index"])
+            interval_mean = sum(
+                row["observed_compliance"] is True for row in ordered
+            ) / len(ordered)
+            expected_d2_arm[first["assigned_z"]] += (
+                qx_mass[first["history_ref"]] / first["assignment_probability"]
+            ) * interval_mean
+        self.assertAlmostEqual(
+            result.d2_analyzer_result.point_estimate,
+            expected_d2_arm[1] - expected_d2_arm[0],
+        )
         self.assertIn(
             result.d2_evaluator_result.disposition,
             (
