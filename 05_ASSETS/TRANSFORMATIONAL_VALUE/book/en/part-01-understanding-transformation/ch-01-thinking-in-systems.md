@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 1.0
+version: 1.1
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -382,29 +382,34 @@ Choose a system you know and draw its main elements and connections. Distinguish
 
 ## 1.6. Open Systems, Changing Environments and Time
 
-### Systems do not operate in isolation
+### Openness depends on the boundary and the purpose of the analysis
 
-A system can be bounded for the purpose of analysis without being isolated from everything outside that boundary. Many systems exchange matter, energy, information, resources or services with their environment. They are described as **open systems** when such exchanges are relevant to their operation.
+A system can be bounded for the purpose of analysis without being isolated from everything outside that boundary. To understand its relationship with its environment, we need to identify the exchanges that matter to the analytical question.
 
-A water supply network, for example, receives water from sources and energy to pump and treat it. It delivers water to users and organisations, generates information about its operation, and depends on external factors such as energy availability, weather conditions, applicable regulations, and the activities of suppliers and maintenance services.
+Openness is not an absolute property independent of how the system is delimited. The exchanges considered relevant depend on the selected boundary and the purpose of the analysis. Rather than imposing a rigid classification of systems as open or closed, this section focuses on identifying what crosses the boundary and why it matters to the operation we want to understand.
 
-A boundary helps us decide which elements to include in an analysis; it does not remove the relationships that cross that boundary. A sound description should therefore show both the system's internal organisation and the external exchanges and dependencies relevant to the question being studied.
+Consider an organisation that includes several facilities. When we analyse it as a whole, exchanges among its facilities are internal to the bounded system. If we then examine one particular facility, some of those same exchanges—for example, energy supply, shared services or operating instructions from another unit—cross the boundary of the system of interest. The exchange itself has not necessarily changed; the analytical boundary from which we observe it has.
 
-### Inputs, outputs and exchanges
+### Inputs, outputs and types of exchange
 
-One way to begin describing the relationship between a system and its environment is to identify its **inputs**, **outputs** and **exchanges**. Inputs are what the system receives; outputs are what it delivers or produces; and exchanges also include flows that may move in both directions.
+To describe the relationship between a system and what lies beyond its boundary, we need to distinguish two dimensions:
 
-| Type of exchange | Example in a water supply network |
-|---|---|
-| Matter | Water abstracted, treated and distributed; sludge or waste from treatment |
-| Energy | Electricity used by pumps and equipment |
-| Information | Sensor data, demand forecasts, alerts and instructions |
-| Resources and services | Spare parts, technical support and specialist staff |
-| Outputs to the environment | Water supplied, service information and managed waste |
+- **Inputs:** what crosses the boundary into the system of interest.
+- **Outputs:** what crosses the boundary from the system of interest into its environment.
+- **Types of exchange:** the nature of what is exchanged, such as matter, energy, information, resources or services. Any of these may be an input or an output, depending on the system and the selected boundary.
 
-This classification supports analysis; it is not a universal list. In some systems, financial, regulatory, biological or social flows may also be essential. Selection depends on the purpose and level of detail of the study.
+The table illustrates this distinction. It is not intended as a universal or exhaustive classification; the examples depend on the purpose and level of detail of the analysis.
 
-Nor should an input be mistaken for a sufficient condition for operation. Receiving energy, for instance, does not guarantee that a station can pump water if a pump has failed, a valve remains closed or no authorised personnel are available to intervene.
+| Type of exchange | Possible input | Possible output |
+|---|---|---|
+| Matter | Water abstracted for treatment | Distributed water, sludge or waste |
+| Energy | Electricity supplied to pumps and equipment | Energy dissipated or transferred to the environment |
+| Information | Sensor data, forecasts and incoming instructions | Alerts, measurements, reports or service information |
+| Resources and services | Spare parts, technical support or specialist services | Services provided or resources transferred to other systems |
+
+This way of organising exchanges avoids confusing their direction with the nature of what is exchanged. In some systems, financial, regulatory, biological or social flows may also be relevant. Their inclusion should be justified by the analytical question.
+
+Nor should receiving an input be confused with having the conditions required to use it effectively. A facility may receive an electricity supply and still be unable to operate because personnel are unavailable, its control system is faulty or an operational constraint prevents its use. The existence of an exchange does not, by itself, demonstrate that the system can access, integrate or make use of that input to perform its functions.
 
 ### The environment can change
 
@@ -418,37 +423,50 @@ Influence can also run in the opposite direction. A system's decisions and opera
 
 A description of a system at a particular moment does not necessarily explain how it operates over time. States, relationships, available resources and environmental conditions may change. To understand a dynamic system, we need to examine not only how it is configured but also how it evolves.
 
-At least three time scales are often useful to distinguish:
+Three temporal references should be distinguished. They are related, but they are not interchangeable:
+
+- **Observation time:** when a measurement is taken or a system state is recorded.
+- **Data coverage period:** the time interval from which the evidence used in the analysis is drawn.
+- **Conclusion horizon:** the period to which the analysis's interpretations or conclusions apply.
+
+A point measurement may describe a condition at the time of observation, but it does not, by itself, show that the condition or a particular behaviour persists for months. Conclusions should be proportionate to the temporal coverage and nature of the available evidence.
+
+It may also be useful to distinguish time scales when organising the analysis:
 
 - **Short term:** operational variations, daily demand cycles, responses to alarms or temporary interruptions.
 - **Medium term:** maintenance, seasonal changes, equipment replacement, procedural adjustments and resource availability.
 - **Long term:** infrastructure ageing, demographic change, climate trends, technological development and regulatory change.
 
-These scales are not universal and have no fixed durations. A variation that is rapid for one infrastructure may be slow for another system. What matters is choosing a time window suited to the analytical question and not confusing a single observation with a persistent pattern.
+These scales are not universal and have no fixed durations. A variation that is rapid for one infrastructure may be slow for another system. What matters is choosing a time window suited to the analytical question and not extending conclusions beyond what the evidence supports.
 
-### Disturbances, adaptation and evolution
+### Response to change, adaptation and transformation
 
-Systems can respond in different ways to environmental changes or disturbances. They may absorb a variation without noticeably changing their operation, adjust how they operate, reorganise some elements or lose the ability to provide the expected service.
+Systems can respond in different ways to environmental changes or disturbances. A **response to change** is a modification in the system's state or behaviour following an internal or external variation. It may involve absorbing a disturbance, adjusting operations, reorganising elements or losing the ability to provide the expected service.
 
-For example, in response to a temporary increase in demand, a network may use available pumping capacity, change operating set-points or manage pressure in particular areas. If high demand persists for years, more substantial measures may be needed, such as expanding infrastructure, introducing new sources or changing consumption patterns.
+**Adaptation** involves a response that modifies characteristics, capabilities, relationships or ways of operating so that the system can cope with changing conditions. Not every response is an adaptation, and adaptation is not necessarily successful, beneficial or intentional. It may be insufficient, fail or produce unintended consequences; it may also emerge through distributed adjustments or unplanned processes.
 
-It is useful to distinguish an operational response from a more lasting transformation. Temporarily adjusting a pump is not the same as redesigning the network; likewise, a structural modification does not by itself guarantee successful adaptation. The response must be assessed against expected behaviour, constraints and the time horizon being considered.
+We should also distinguish an **operational adjustment** from a **transformation**. The decisive criterion is not how long the change lasts, but its nature and scope:
 
-### A snapshot and a moving picture of the system
+- An operational adjustment modifies the system's state, behaviour or operating parameters without necessarily changing its fundamental configuration.
+- A transformation significantly modifies the system's configuration, organisation, relationships or capabilities and may change what the system is able to do.
 
-A system can be described through a representation of its configuration at a particular moment, or through a representation showing how its conditions and behaviour change over time. Both perspectives are useful, but they answer different questions.
+For example, temporarily changing a pump's operating set-points may be an operational adjustment. Redesigning the network, reorganising its dependencies or introducing capabilities that change the operations it can perform may constitute a transformation. A brief change may trigger a structural transformation, while a prolonged modification may remain an operational adjustment. Likewise, a transformation does not, by itself, guarantee successful adaptation.
 
-A snapshot of the water network may show which reservoirs, pumps and pipes are available today. A time-based description may show how reservoir levels, demand, energy use and incidents vary over a week or a season.
+### A snapshot and a trajectory of the system
 
-A temporal perspective also requires us to state when data were collected, which period they cover and which events might explain observed changes. Without this information, we may attribute to the system's structure what is actually due to a temporary condition or an external disturbance.
+A system can be described through a representation of its configuration at a particular moment, or through another representation showing how its conditions and behaviour change over time. Both perspectives are useful, but they answer different questions.
+
+A snapshot of the water network may show which reservoirs, pumps and pipes are available at a particular time. A time-based description may show how reservoir levels, demand, energy use and incidents vary over a week or a season.
+
+A temporal account should also state when data were collected, which period they cover and the horizon to which the conclusions apply. Without this information, we may attribute to the system's structure what is actually due to a temporary condition or an external disturbance.
 
 ### Key idea
 
-Open systems exchange with their environments and operate under conditions that may change. Understanding their behaviour requires more than describing components and relationships at one moment: it also requires attention to flows across the system boundary, environmental variation and the relevant time scale.
+To understand how a system relates to its environment, identify the exchanges that cross the selected boundary and distinguish their direction from their nature. We must also consider changing conditions, the temporal coverage of the evidence, and the difference between responding to change, adapting and transforming.
 
 ### Reflection
 
-Choose a system you know. Identify what it receives from and delivers to its environment, which external conditions may change and over what time scales those changes occur. What aspects of its operation would remain unnoticed if you observed it at only one point in time?
+Choose a system you know. First define the boundary and purpose of your analysis. Which inputs and outputs would you identify, and what types of exchange do they represent? What conditions might prevent the system from using an input it receives? What temporal evidence would you need to distinguish a short-term response, adaptation and transformation?
 
 ## 1.7. System Descriptions Are Models: Scope, Assumptions and Omissions
 
