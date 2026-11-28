@@ -1677,3 +1677,56 @@ The registry uses the stable IDs above and records publisher/issuing organisatio
 Post-update checks confirmed all three registry IDs, the metadata reference lists, the in-text source notes, the bibliography sections and the continued `draft` status of both manuscripts.
 
 **Disposition:** the approved reference-integration task is complete. This does not resolve the separate terminology/glossary audit, does not constitute subject-matter approval, and does not close Chapter 1 editorially.
+
+
+### 5.67 Chapter 1 — terminology and glossary audit
+
+The current bilingual manuscripts and the shared terminology register were inspected against Content Model §§4.1 and 8 and the Detailed TOC §§3 and 4.1. This entry records the audit and a proposed shortlist for author decision. No terminology records or manuscript metadata have been changed in this stage.
+
+**5.67.1 — Current registry state**
+
+The shared terminology register `metadata/terminology.yml` contains only `TV-TERM-001`, a draft entry for “espacio de transformaciones accesibles” / “accessible transformation space”. It is a TGCV-specific concept intended for later material, not a Chapter 1 systems concept. It remains unchanged.
+
+The glossary directory contains only its orientation README. No bilingual glossary entry files currently exist. The two Chapter 1 manuscripts still declare `concepts: []`.
+
+**5.67.2 — Audit principle**
+
+The chapter uses many ordinary systems and engineering terms. Their presence does not automatically justify a canonical glossary entry. In line with the Content Model, register only concepts that need stable bilingual equivalents, a definition reused across chapters, or an explicit distinction that readers could otherwise conflate. Do not duplicate textbook definitions for ordinary vocabulary or create entries solely to populate the glossary.
+
+**5.67.3 — Proposed canonical glossary shortlist**
+
+The following concepts are recommended for controlled bilingual treatment because they anchor the chapter's analytical distinctions and are likely to recur in later chapters:
+
+| Proposed concept | Preferred Spanish | Preferred English | Reason for controlled treatment |
+|---|---|---|---|
+| System of interest | sistema de interés | system of interest | Distinguishes the system being examined from the unit and perspective of analysis |
+| System boundary | frontera del sistema | system boundary | Core delimitation concept; not necessarily a physical or administrative perimeter |
+| Environment | entorno | environment | Must preserve the chapter's operational distinction from context |
+| Context | contexto | context | Must preserve the chapter's operational distinction from environment |
+| Emergent behaviour | comportamiento emergente | emergent behaviour | A specific kind of system behaviour; must not be used as a synonym for all system behaviour |
+| System capability | capacidad del sistema | system capability | Refers to what the system is able to do under relevant conditions; avoid conflating with a resource, an individual competence or nominal capacity |
+| Dependency | dependencia | dependency | More specific than a generic relationship; denotes a condition in which one element's operation or outcome relies on another |
+| Feedback loop | bucle de realimentación | feedback loop | A closed chain of influence; not merely a return arrow or any generic interaction |
+| Assumption | supuesto | assumption | Must be distinguished from measured, estimated or specified input values and from uncertainty |
+| Deliberate omission | omisión deliberada | deliberate omission | Must be distinguished from information that is unknown or unavailable |
+| Constraint | restricción | constraint | A condition limiting alternatives or outcomes; not necessarily the dominant limiting factor |
+| Bottleneck | cuello de botella | bottleneck | A limiting element, capacity or process relative to a specified system result; may shift as the system changes |
+| Requirement | requisito | requirement | An acceptability condition that must be met when applicable and mandatory |
+| Performance objective | objetivo de rendimiento | performance objective | A result to be achieved or improved, potentially to different degrees |
+| Preference | preferencia | preference | A criterion for comparing alternatives that meet applicable requirements but involve different trade-offs |
+
+These are proposed terms, not approved definitions. Their eventual definitions must be drafted in Spanish and English independently, preserve the chapter's working distinctions, include accepted synonyms/terms to avoid where useful, and carry a review status. The three concepts in the final cluster (requirement, performance objective and preference) should be cross-linked so the distinctions remain visible.
+
+**5.67.4 — Terms not recommended for separate canonical entries at this stage**
+
+The following are important chapter vocabulary but do not currently require a shared glossary record: system, element, component, state, property, behaviour, actor, resource, relationship, interaction, system structure, input, output, adaptation, transformation, model, scope, level of detail, evidence, uncertainty, local optimisation and system-level reasoning. These terms should still be used consistently and explained at first use where needed. Reconsider them only if later chapters establish a specialised definition or recurring distinction that warrants canonical control.
+
+“Unit of analysis” / “unidad de análisis” is also not proposed as a glossary entry at this stage: it is used as a methodological phrase and is already distinguished in §1.1. Reconsider if it becomes a recurring analytical construct in later chapters.
+
+**5.67.5 — Bilingual equivalence observations**
+
+The chapter currently uses British English spellings and terminology (for example, “behaviour”, “optimisation” and “organisation”). The English glossary should preserve this editorial convention. The preferred equivalents above match the current manuscripts. No automatic word-for-word mapping should be applied where the concept requires a definition to preserve its scope.
+
+**Disposition and next decision**
+
+The audit is complete. The recommended shortlist comprises 15 controlled concepts. No IDs have been allocated and no entries have been added. The next step is author approval or amendment of the shortlist. Following approval, create bilingual definitions and stable IDs in the central terminology register, then update the `concepts` metadata in both manuscripts and create glossary pages only if the agreed publishing workflow requires them. Chapter 1 remains `draft` and is not editorially closed.
