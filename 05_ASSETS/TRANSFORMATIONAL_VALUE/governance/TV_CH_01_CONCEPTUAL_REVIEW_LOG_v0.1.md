@@ -1081,3 +1081,13 @@ The snapshot/time-based explanation and the environmental examples have been ret
 Both files were fetched again from the research branch after the updates. The persisted section headings, revised table structure, temporal distinctions and response/adaptation/transformation content were checked. The bilingual cross-review confirms equivalent conceptual scope, while preserving independently authored wording.
 
 **Disposition:** section 1.6 integration and bilingual verification completed. The manuscripts remain `draft`; this does not approve publication or close the chapter. Other chapter-level editorial phases and unresolved section integrations remain pending.
+
+### 5.39 Section 1.7 — broad working meaning of model — accepted
+
+The author approved retaining and explicitly clarifying the broad use of **model** in both language versions. In this book, a model means any deliberately constructed, selective representation used to understand particular aspects of a system, answer a question or support a task.
+
+This includes written descriptions, diagrams, tables, sets of variables and mathematical or computational models. The wording should make clear that a model need not be mathematical, computational or formally expressed.
+
+**Rationale:** This broad working meaning supports the introductory purpose of the chapter and prevents readers from interpreting every use of “model” as referring only to formal quantitative or computational models.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
