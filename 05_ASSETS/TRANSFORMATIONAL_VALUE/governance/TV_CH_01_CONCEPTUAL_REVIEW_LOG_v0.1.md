@@ -788,3 +788,17 @@ A dependency must be distinguished from a generic relationship: two elements may
 Dependencies may be conditional, substitutable, reciprocal or time-sensitive, and they do not all have the same degree of criticality. Both manuscripts should preserve these distinctions with natural, independently authored wording and equivalent conceptual scope.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+
+### 5.21 Dependencies and constraints in section 1.4 — accepted
+
+The author approved the following distinction for both language versions:
+
+- **Dependency:** identifies a contribution, service, state or condition that is required for an activity to be performed or an outcome to be achieved.
+- **Constraint:** establishes a limit or condition that reduces the options or ways in which an activity can be performed.
+
+Dependencies and constraints may coexist. For example, an activity may depend on an electricity supply while also being constrained by consumption limits, regulation or safety conditions.
+
+Both manuscripts should preserve this distinction and the example's meaning through natural, independently authored wording. The text should not imply that dependencies and constraints are mutually exclusive.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
