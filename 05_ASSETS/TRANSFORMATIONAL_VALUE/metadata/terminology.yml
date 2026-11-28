@@ -131,8 +131,8 @@ terms:
       es: "omisión deliberada"
       en: "deliberate omission"
     definition:
-      es: "Exclusión intencionada de un aspecto conocido o reconocido de una descripción o modelo debido a su propósito, alcance, nivel de detalle o criterio de simplificación."
-      en: "The intentional exclusion from a description or model of an aspect that is known or recognised, because of its purpose, scope, level of detail or simplification criterion."
+      es: "Exclusión consciente de un elemento, relación, proceso o aspecto conocido o reconocido de una descripción, análisis o modelo, en función de su propósito, alcance, nivel de detalle o criterio de simplificación. La omisión puede justificarse por las necesidades del trabajo, pero no implica que el aspecto excluido no exista o carezca de efectos sobre el sistema. Cuando pueda afectar a la interpretación de los resultados, debe hacerse explícita."
+      en: "The deliberate exclusion of a known or recognised element, relationship, process or aspect from a description, analysis or model, according to its purpose, scope, level of detail or simplification criterion. The omission may be justified by the needs of the work, but it does not imply that the excluded aspect does not exist or has no effects on the system. Where it may affect the interpretation of results, it should be made explicit."
     related_terms: [TV-TERM-010]
     status: draft
     notes: "Chapter 1. Distinguish from information that is unknown, unavailable or not yet examined; absence from a model does not establish non-existence."
