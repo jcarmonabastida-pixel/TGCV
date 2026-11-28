@@ -1974,3 +1974,18 @@ The author approved the revised bilingual definition of `TV-TERM-014 — require
 > A specified condition, capability or characteristic that a solution, system or alternative must satisfy to be considered acceptable within a given decision framework, in accordance with the applicable acceptance criteria.
 
 The revision makes the link to applicable acceptance criteria explicit and broadens the specified subject from a condition or capability to include a characteristic. It preserves the distinction between requirements that establish acceptability, performance objectives that express intended outcomes or levels, and preferences used to compare acceptable alternatives. Whether a requirement is mandatory remains dependent on the applicable decision framework; stronger performance elsewhere does not automatically compensate for failure to meet a mandatory requirement. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
+
+
+### 5.81 Terminology definition review — TV-TERM-015 approved
+
+The author approved the revised bilingual definition of `TV-TERM-015 — performance objective`.
+
+**Approved Spanish definition:**
+
+> Resultado o nivel de rendimiento que se pretende alcanzar o mejorar en un sistema, solución o alternativa. Su grado de consecución puede evaluarse mediante criterios o indicadores apropiados y variar entre alternativas, sin que el objetivo constituya necesariamente una condición obligatoria de aceptación.
+
+**Approved English definition:**
+
+> An outcome or level of performance that a system, solution or alternative is intended to achieve or improve. Its degree of attainment may be assessed using appropriate criteria or indicators and may vary across alternatives, without the objective necessarily constituting a mandatory acceptance condition.
+
+The revision makes clear that a performance objective concerns an intended outcome or level rather than merely an activity, allows its attainment to be assessed using appropriate criteria or indicators, and does not require the objective to be quantitative. It also preserves the distinction between requirements that establish acceptability and preferences used to compare acceptable alternatives. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
