@@ -50,7 +50,10 @@ jobs:
           from types import SimpleNamespace
 
           from theta_a_calibration_dgp import ThetaACalibrationDGPFactory
-          from theta_a_calibration_protocol import build_theta_a_candidate_scenario_roster
+          from theta_a_calibration_protocol import (
+    ThetaASeedAssignment,
+    build_theta_a_candidate_scenario_roster,
+)
 
           # Use the existing typed roster and its equal-support contract. This
           # keeps the reserved oracle separate from Analyzer inputs.
@@ -69,18 +72,26 @@ jobs:
 
           # One deterministic world and one pipeline invocation; no calibration
           # bank, replay, additional scenario, or inferential CI is created.
-          assignment = SimpleNamespace(
+          assignment = ThetaASeedAssignment(
+              bank="evaluation",
+              scenario_id=scenario.scenario_id,
+              scenario_version=scenario.scenario_version,
               n_units=32,
+              outer_world_id="outer-m1-000001",
+              assignment_replicate=0,
+              world_family_id=scenario.world_family_id or scenario.scenario_id,
               world_id="C10S-M1-POSITIVE-N32",
+              roster_id="C10S-M1-POSITIVE-N32-ROSTER",
               world_version=scenario.world_version,
               dgp_id=scenario.dgp_id,
               dgp_version=scenario.dgp_version,
-              roster_id="C10S-M1-POSITIVE-N32-ROSTER",
               roster_version=scenario.roster_version,
               unit_id_prefix="M1",
+              run_id="C10S-M1-POSITIVE-N32-RUN",
               world_seed=20261128,
-              randomization_salt="C10S-M1-POSITIVE-N32-ASSIGNMENT",
+              randomization_salt="c10s-m1-positive-n32-assignment-seed-20261128",
               s3_seed=2026112801,
+              dgp_profile_sha256=scenario.dgp_profile_sha256,
           )
           factory = ThetaACalibrationDGPFactory()
           result = factory.execute_calibration_scenario(
