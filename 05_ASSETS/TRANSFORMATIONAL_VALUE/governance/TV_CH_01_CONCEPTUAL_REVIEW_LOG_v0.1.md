@@ -643,8 +643,8 @@ No external source has yet been selected for this section. If a formal source is
 
 ### 4.6 Section 1.6 — Sistemas abiertos, entornos cambiantes y tiempo / Open Systems, Changing Environments and Time
 
-**Review status:** reviewed; decisions pending  
-**Manuscript changes:** none
+**Review status:** conceptual decisions accepted; integrated and verified in both language manuscripts  
+**Manuscript changes:** section 1.6 integrated in Spanish v1.2 and English v1.1; both files re-fetched and checked
 
 #### Conceptual assessment
 
@@ -1058,3 +1058,26 @@ The author approved closing the conceptual decision phase for section 1.6 after 
 The accepted decisions apply to both the Spanish and English manuscripts. The next stage is to integrate the decisions independently into each original-language manuscript, then verify their conceptual equivalence and update this log with the integration and verification evidence.
 
 **Disposition:** conceptual decision phase closed for section 1.6. Manuscript integration and verification remain pending. No manuscript text has been changed by this closure decision.
+
+### 5.38 Section 1.6 — manuscript integration and bilingual verification — completed
+
+The six accepted conceptual decisions recorded in sections 5.31–5.37 have been integrated independently into the Spanish and English manuscripts. The section was rewritten in each language as an original-language text; neither version was produced by translating the other.
+
+The integrated text now covers:
+- openness as relative to the selected system boundary and analytical purpose, including the organisation/facility example;
+- inputs and outputs as directions across the boundary, distinguished from the nature or type of exchange;
+- matter, energy, information, resources and services as exchange types that may enter or leave the system;
+- the distinction between receiving an input and having the effective operating conditions to use it;
+- observation time, data coverage period and conclusion horizon, alongside relative short-, medium- and long-term scales;
+- response to change versus adaptation, including the possibility of insufficient, unsuccessful, unintended or unplanned adaptation; and
+- operational adjustment versus transformation, based on the nature and scope of change rather than duration alone.
+
+The snapshot/time-based explanation and the environmental examples have been retained and reconciled with the accepted temporal distinctions. The former mixed table category “outputs to the environment” / «resultados hacia el entorno» has been removed and replaced with a table that separates exchange type from direction.
+
+**Manuscripts updated:**
+- Spanish: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/es/part-01-understanding-transformation/ch-01-pensar-en-sistemas.md`, version 1.2, blob SHA `c7e9dec4f643f836c040a4f8f2006398367dde6a`.
+- English: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/en/part-01-understanding-transformation/ch-01-thinking-in-systems.md`, version 1.1, blob SHA `3205749b77eb80262399ed157dd207a193a0a957`.
+
+Both files were fetched again from the research branch after the updates. The persisted section headings, revised table structure, temporal distinctions and response/adaptation/transformation content were checked. The bilingual cross-review confirms equivalent conceptual scope, while preserving independently authored wording.
+
+**Disposition:** section 1.6 integration and bilingual verification completed. The manuscripts remain `draft`; this does not approve publication or close the chapter. Other chapter-level editorial phases and unresolved section integrations remain pending.
