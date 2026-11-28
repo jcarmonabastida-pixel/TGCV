@@ -1810,3 +1810,24 @@ The author approved the revised bilingual definition of `TV-TERM-003 — system_
 The revised wording makes the boundary explicitly dependent on the purpose and question of the analysis, covers elements, relationships, processes and aspects considered inside or outside the system of interest, recognises physical, functional, operational and temporal dimensions, and states that the boundary may be revised when necessary. It avoids implying that interfaces are necessarily internal to the system and preserves the distinction from a physical or administrative perimeter.
 
 The definitions were updated in the shared terminology registry and re-fetched from the research branch. The entry remains in `draft` pending completion of the full terminology review and subsequent approval of the terminology set. No manuscript prose or metadata was changed in this step.
+
+
+### 5.71 Terminology definition review — TV-TERM-004 approved
+
+The author approved retaining the current bilingual definitions of `TV-TERM-004 — environment` without changes.
+
+**Spanish definition:**
+
+> Conjunto de elementos, sistemas y condiciones situados fuera de la frontera seleccionada que interactúan con el sistema de interés, influyen en él o reciben sus efectos.
+
+**English definition:**
+
+> The set of elements, systems and conditions outside the selected boundary that interact with, influence or are affected by the system of interest.
+
+The review confirmed that the definition:
+- treats the environment relative to the selected system boundary rather than as an absolute category;
+- includes external elements, other systems and conditions, not only physical objects;
+- covers interaction, influence and effects received from the system; and
+- preserves the book's operational distinction between environment and context, without claiming that this distinction is universal across disciplines.
+
+No change to the terminology registry was required because the approved definitions already match the current entry. No manuscript changes were made. The term remains in `draft` pending completion of the terminology review and approval of the terminology set.
