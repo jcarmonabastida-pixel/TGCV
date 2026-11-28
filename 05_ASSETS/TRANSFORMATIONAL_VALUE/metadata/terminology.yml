@@ -83,8 +83,8 @@ terms:
       es: "capacidad del sistema"
       en: "system capability"
     definition:
-      es: "Aptitud del sistema, considerada como conjunto, para realizar una acción o alcanzar un resultado bajo determinadas condiciones. Su disponibilidad efectiva depende de la combinación y coordinación de recursos, competencias, relaciones y condiciones operativas pertinentes."
-      en: "The ability of the system, considered as a whole, to perform an action or achieve an outcome under specified conditions. Its effective availability depends on the combination and coordination of relevant resources, competencies, relationships and operating conditions."
+      es: "Aptitud del sistema, considerado como conjunto, para realizar una acción o alcanzar un resultado bajo determinadas condiciones. Esta capacidad depende de la combinación y coordinación de sus recursos, competencias, relaciones y condiciones operativas. Que exista una capacidad no implica que esté siempre disponible o pueda ejercerse efectivamente en cualquier situación."
+      en: "The ability of the system, considered as a whole, to perform an action or achieve an outcome under specified conditions. This capability depends on the combination and coordination of its resources, competencies, relationships and operating conditions. The existence of a capability does not mean that it is always available or can be exercised effectively in every situation."
     related_terms: []
     status: draft
     notes: "Chapter 1. Distinguish system capability from an individual competence, a resource and a component's nominal capacity."
