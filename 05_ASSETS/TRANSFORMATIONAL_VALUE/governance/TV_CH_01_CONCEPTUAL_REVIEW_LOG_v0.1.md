@@ -1929,3 +1929,18 @@ The author approved the revised bilingual definition of `TV-TERM-010 — assumpt
 > A proposition explicitly adopted as valid for constructing, using or interpreting a description, analysis or model, even though its validity has not been established as fact for that purpose. Assumptions define the conditions under which the work is carried out and may be revised when available information changes or their validity is questioned.
 
 The review preserves the distinction between an assumption and a measured datum, estimate, specified parameter or uncertainty. An input or parameter is not automatically an assumption; its provenance must be identified. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
+
+
+### 5.78 Terminology definition review — TV-TERM-011 approved
+
+The author approved the revised bilingual definition of `TV-TERM-011 — deliberate omission`.
+
+**Approved Spanish definition:**
+
+> Exclusión consciente de un elemento, relación, proceso o aspecto conocido o reconocido de una descripción, análisis o modelo, en función de su propósito, alcance, nivel de detalle o criterio de simplificación. La omisión puede justificarse por las necesidades del trabajo, pero no implica que el aspecto excluido no exista o carezca de efectos sobre el sistema. Cuando pueda afectar a la interpretación de los resultados, debe hacerse explícita.
+
+**Approved English definition:**
+
+> The deliberate exclusion of a known or recognised element, relationship, process or aspect from a description, analysis or model, according to its purpose, scope, level of detail or simplification criterion. The omission may be justified by the needs of the work, but it does not imply that the excluded aspect does not exist or has no effects on the system. Where it may affect the interpretation of results, it should be made explicit.
+
+The definition distinguishes a conscious, purpose-related exclusion from unknown, unavailable or not-yet-investigated information. It also makes clear that omission does not establish non-existence or absence of effects, and that material omissions should be made explicit when they may affect interpretation. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
