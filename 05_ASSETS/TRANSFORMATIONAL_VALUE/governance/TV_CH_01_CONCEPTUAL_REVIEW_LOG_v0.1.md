@@ -977,3 +977,17 @@ The text should make clear that:
 The example of an organisation considered first as a whole and then through one of its facilities may illustrate how exchanges previously internal to the larger system cross the boundary of the narrower system of interest.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+### 5.32 Section 1.6 — direction and nature of exchanges — accepted
+
+The author approved the distinction for both language versions between the direction of an exchange and the nature of what is exchanged:
+
+- **Inputs:** what crosses the selected system boundary into the system of interest.
+- **Outputs:** what crosses the selected system boundary from the system of interest into its environment.
+- **Types of exchange:** matter, energy, information, resources or services. Any of these may be an input or an output depending on the system and the analytical boundary.
+
+The existing table should be reorganised so that direction (input/output) is not mixed with the nature or category of the exchanged item. The wording should remain consistent with the boundary-relative treatment of openness accepted in section 5.31.
+
+**Rationale:** This separates two different classification dimensions and avoids presenting “results towards the environment” as if it were the same kind of category as matter, energy or information.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
