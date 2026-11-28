@@ -915,3 +915,12 @@ The explanation should remain introductory and should not expand into a technica
 **Rationale:** This provides a more precise operational explanation of feedback while preventing readers from equating it with any graphical return connection or assuming that all feedback is corrective.
 
 **Disposition:** accepted. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.28 Section 1.5 — measurements and system state — accepted
+
+The author approved clarifying the sensor example in both language versions: a **measurement reading is not equivalent to the complete state of the system**. A measurement provides information about a particular variable or condition. It may be used, together with other measurements, observations and knowledge of system operation, to monitor or infer the network's operating conditions. By itself, however, it does not represent every relevant dimension of the system's state.
+
+**Rationale:** This prevents a single sensor reading from being treated as a complete representation of a complex system and reinforces the distinction between measured variables and system state.
+
+**Disposition:** accepted. Manuscript integration remains pending; no manuscript text has been changed by this decision.
