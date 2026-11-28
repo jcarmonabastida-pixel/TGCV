@@ -1353,3 +1353,28 @@ The accepted decisions apply to both language versions. The next stage is to int
 The section should retain its introductory purpose. The accepted decisions do not authorise expansion into formal global optimisation, quantitative effect-propagation methods or a formal risk-assessment methodology.
 
 **Disposition:** conceptual decision phase closed for section 1.8. Manuscript integration and verification remain pending. No manuscript text has been changed by this closure decision.
+
+
+### 5.55 Section 1.8 — manuscript integration and bilingual verification — completed
+
+The accepted conceptual decisions recorded in sections 5.47–5.54 have been integrated independently into the Spanish and English manuscripts. Each version was revised as an original-language text; neither was produced by translating the other.
+
+The integrated section now covers:
+- the distinction between local optimisation and system-level reasoning, without equating the latter with formal mathematical global optimisation;
+- constraints and bottlenecks, including the possibility that a bottleneck may shift as the system configuration changes;
+- interdependencies across subsystems, including changes to flows, loads, resource distribution and operating conditions, and the possibility of benefits, costs, trade-offs or synergies;
+- requirements, performance objectives and preferences, including the context-dependent status of mandatory requirements;
+- direct, indirect and unintended effects, while acknowledging that not all consequences can be anticipated;
+- short-, medium- and long-term evaluation horizons, without treating them as universal fixed intervals;
+- proportionality of analytical scope and depth to decision importance and risk, including uncertainty, reversibility, explicit boundaries and residual limitations; and
+- a practical set of guiding questions and a revised reflection prompt.
+
+The water-network example has been retained and expanded consistently in both languages. The section remains introductory and does not introduce formal global optimisation, quantitative effect-propagation methods or a formal risk-assessment methodology.
+
+**Manuscripts updated:**
+- Spanish: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/es/part-01-understanding-transformation/ch-01-pensar-en-sistemas.md`, version 1.4, blob SHA `8023735e8e9ce65bdfc5fc9005886691148dcdf8`.
+- English: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/en/part-01-understanding-transformation/ch-01-thinking-in-systems.md`, version 1.3, blob SHA `55ee3476f187f31c2e92beeaadbc67cab0d67954`.
+
+Both files were fetched again from the research branch after the updates. Their version metadata, section boundaries, principal conceptual topics and revised reflection prompts were checked. The bilingual cross-review confirms equivalent conceptual scope and pedagogical intent while preserving independently authored wording.
+
+**Disposition:** section 1.8 integration and bilingual verification completed. Both manuscripts remain `draft`; this does not approve publication or close the chapter. Other chapter-level editorial phases remain pending.
