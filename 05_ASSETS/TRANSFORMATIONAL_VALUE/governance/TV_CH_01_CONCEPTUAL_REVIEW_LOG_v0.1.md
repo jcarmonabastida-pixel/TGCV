@@ -1776,3 +1776,20 @@ The author approved the 15-concept shortlist in §5.67.3, including the preferre
 - English manuscript: version 1.8, blob SHA `b2af3616c9f70f5e75a87296df21f832912f29b1`.
 
 **Disposition:** the approved shortlist is registered and linked from both manuscripts. The bilingual definitions remain drafts and require review before approval. The next step is to review the 15 definition pairs for conceptual precision and bilingual equivalence, then check whether the manuscript's first-use wording aligns with the preferred terms. Chapter 1 remains `draft`; this operation does not close the chapter.
+
+
+### 5.69 Terminology definition review — TV-TERM-002 approved
+
+The author approved the revised bilingual definition of `TV-TERM-002 — system_of_interest`.
+
+**Approved Spanish definition:**
+
+> Sistema que se selecciona como objeto de interés para un análisis o una descripción determinados. Los aspectos que se consideran parte del sistema y su delimitación se establecen en función del propósito y de la pregunta que orientan el trabajo.
+
+**Approved English definition:**
+
+> The system selected as the object of interest for a particular analysis or description. The aspects considered part of the system and its delimitation are established in relation to the purpose and question guiding the work.
+
+The revised wording makes explicit that the system is the object of interest, while the aspects considered part of it and its delimitation are established for the purpose and question at hand. It preserves the distinction from the unit of analysis and analytical perspective, and links naturally to `TV-TERM-003 — system_boundary`.
+
+The definitions were updated in the shared terminology registry and re-fetched from the research branch. The entry remains in `draft` pending completion of the full terminology review and subsequent approval of the terminology set. No manuscript prose or metadata was changed in this step.
