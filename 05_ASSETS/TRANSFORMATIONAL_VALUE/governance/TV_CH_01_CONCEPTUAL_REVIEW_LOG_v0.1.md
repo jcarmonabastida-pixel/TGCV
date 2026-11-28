@@ -746,6 +746,112 @@ Both manuscripts should preserve this distinction with independently authored wo
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
 
+### 5.15 Actor scope in section 1.4 — accepted
+
+The author approved the use of **actor** in the socio-organisational sense for both language versions: a person, group or organisation that participates in the system or has a relevant influence on its functioning.
+
+Autonomous systems, software agents and other non-human elements may form part of the system, perform functions or produce effects, but they will not automatically be classified as actors in this introductory chapter. If **agent** is used in a broader technical sense, that meaning must be made explicit.
+
+This terminology choice is intended to keep the introductory vocabulary clear and avoid conflating socio-organisational analysis with the different conventions used in agent-based modelling. Both manuscripts should preserve the same scope and distinction, using natural, independently authored wording.
+
+**Disposition:** accepted, integrated and verified in both language manuscripts. The Spanish and English wording was authored independently and checked for equivalent conceptual scope.
+
+
+### 5.16 Actors inside or outside the system boundary in section 1.4 — accepted
+
+The author approved the criterion that an actor may be located inside or outside the boundary of the system of interest. Whether an actor is included in the system description depends on the relevance of their interaction, influence or dependency in relation to the problem being analysed, not merely on their physical or organisational location.
+
+Both language versions should preserve this distinction and explain that the system boundary and the analytical relevance of an actor are related but separate questions. Wording should be natural and independently authored in each language.
+
+**Disposition:** accepted, integrated and verified in both language manuscripts. The Spanish and English wording was authored independently and checked for equivalent conceptual scope.
+
+
+### 5.17 Individual and system-level capabilities in section 1.4 — accepted
+
+The author approved the distinction for both language versions:
+
+- **Individual capability:** the ability of an actor or component to perform an activity under specified conditions.
+- **System-level capability:** the ability of the organised whole to perform an activity or achieve an outcome through the combination and coordination of its elements.
+
+System-level capability must not be presented as the simple sum of individual capabilities. It may depend on coordination, interfaces, resources and operating conditions.
+
+Both manuscripts should preserve this distinction with natural, independently authored wording and equivalent conceptual scope.
+
+**Disposition:** accepted, integrated and verified in both language manuscripts. The Spanish and English wording was authored independently and checked for equivalent conceptual scope.
+
+
+### 5.18 Competence, capability and effective availability in section 1.4 — accepted
+
+The author approved the following distinction for both language versions:
+
+- **Competence:** the knowledge and skills a person or organisation has to perform an activity.
+- **Capability:** the ability or possibility to perform that activity, taking into account the means and conditions required.
+- **Effective availability:** whether that capability can actually be exercised at a particular time and in a particular context, considering constraints such as authority, access, resources, workload or operational state.
+
+The illustrative example may describe a technician who has the competence to repair a pump but lacks authorisation or tools, and therefore cannot effectively perform the repair at that moment.
+
+Both manuscripts should preserve the conceptual distinctions and the example's meaning, using natural, independently authored wording. The text should avoid implying that these terms have one universal definition across all disciplines; they are working distinctions for this introductory chapter.
+
+**Disposition:** accepted, integrated and verified in both language manuscripts. The Spanish and English wording was authored independently and checked for equivalent conceptual scope.
+
+
+### 5.19 People as actors and as contributors of resources in section 1.4 — accepted
+
+The author approved the following criterion for both language versions:
+
+People should be treated first and foremost as **actors** in the system, not reduced to interchangeable resources. At the same time, people may contribute resources needed for system activities, including their time, knowledge, experience, skills or availability.
+
+When discussing resources, the manuscripts should identify the specific contribution being made rather than referring to people themselves as resources. The distinction between a person's role as an actor and the resources they make available should remain clear.
+
+Both versions should preserve equivalent conceptual scope through natural, independently authored wording.
+
+**Disposition:** accepted, integrated and verified in both language manuscripts. The Spanish and English wording was authored independently and checked for equivalent conceptual scope.
+
+
+### 5.20 Dependency in section 1.4 — accepted
+
+The author approved the following working definition for both language versions:
+
+A **dependency** exists when the functioning, availability or outcome of an activity, actor or component requires a contribution, service, state or condition provided by another element.
+
+A dependency must be distinguished from a generic relationship: two elements may be related without one requiring the other in order to function or achieve an outcome.
+
+Dependencies may be conditional, substitutable, reciprocal or time-sensitive, and they do not all have the same degree of criticality. Both manuscripts should preserve these distinctions with natural, independently authored wording and equivalent conceptual scope.
+
+**Disposition:** accepted, integrated and verified in both language manuscripts. The Spanish and English wording was authored independently and checked for equivalent conceptual scope.
+
+
+### 5.21 Dependencies and constraints in section 1.4 — accepted
+
+The author approved the following distinction for both language versions:
+
+- **Dependency:** identifies a contribution, service, state or condition that is required for an activity to be performed or an outcome to be achieved.
+- **Constraint:** establishes a limit or condition that reduces the options or ways in which an activity can be performed.
+
+Dependencies and constraints may coexist. For example, an activity may depend on an electricity supply while also being constrained by consumption limits, regulation or safety conditions.
+
+Both manuscripts should preserve this distinction and the example's meaning through natural, independently authored wording. The text should not imply that dependencies and constraints are mutually exclusive.
+
+**Disposition:** accepted, integrated and verified in both language manuscripts. The Spanish and English wording was authored independently and checked for equivalent conceptual scope.
+
+
+### 5.22 Bilingual terminology baseline for section 1.4 — accepted
+
+The author approved the following common terminology baseline for the Spanish and English manuscripts:
+
+| Spanish | English |
+|---|---|
+| actor | actor |
+| competencia | competence |
+| capacidad | capability |
+| disponibilidad efectiva | effective availability |
+| recurso | resource |
+| dependencia | dependency |
+| restricción | constraint |
+
+These terms establish conceptual equivalence, not a requirement for literal or mechanically identical phrasing. Each manuscript should retain natural language-specific wording while preserving the agreed distinctions and scope. Where a term has a different established meaning in a particular technical discipline, the chapter should make the intended working meaning clear.
+
+**Disposition:** accepted, integrated and verified in both language manuscripts. The Spanish and English wording was authored independently and checked for equivalent conceptual scope.
 
 ## 5. Review completion status
 
@@ -1102,256 +1208,3 @@ H. **Bilingual alignment:** make any accepted changes independently in both orig
 No external source is required specifically for this synthesis. Any references added to support substantive claims in sections 1.1–1.8 should be linked at the relevant point in those sections and registered centrally; the synthesis should not duplicate the references registry or introduce unsupported claims.
 
 **Decision:** pending author review. No source has yet been formally attached to a claim.
-
-## 5. Author decisions — accepted, pending manuscript integration
-
-The following decisions were explicitly approved by the author during the decision-resolution phase on 2026-11-27. They supersede the corresponding “pending author review” statements in the section review records above. They are **accepted editorial decisions**, not evidence that manuscript changes have been applied. Both manuscripts remain unchanged until the coordinated integration phase.
-
-### 5.1 Scope of the working concept of system — accepted
-
-The chapter's primary scope comprises physical, social, organisational and socio-technical systems. It includes systems whose behaviour is not directly observable, provided that behaviour can be inferred through relevant evidence. Purely conceptual systems may be discussed as representations or analytical constructions, but are not automatically equated with systems operating in the world.
-
-### 5.2 System of interest, unit of analysis and analytical perspective — accepted
-
-The chapter will distinguish:
-- **System of interest:** the particular system to be understood or studied.
-- **Unit of analysis:** what observations or analysis are performed on; this may be the whole system, a subsystem, an actor or an interaction.
-- **Analytical perspective:** the approach from which the system is examined, such as functional, operational, organisational or temporal.
-
-### 5.3 System behaviour and emergent behaviour — accepted
-
-The chapter will distinguish:
-- **System behaviour:** any behaviour of the system that is observable or inferable.
-- **Emergent behaviour:** behaviour or a property arising from the interactions and organisation of the whole, which cannot be adequately explained by examining each element in isolation.
-
-The text must not imply that all system behaviour is emergent.
-
-### 5.4 Operational definition of a system — accepted
-
-The following definition is approved as the common conceptual basis for both language versions. The final Spanish and English wording will be authored independently while preserving its meaning:
-
-> A system is a delimitable set of related and organised elements that interact or maintain relevant dependencies, and whose behaviour can be understood by considering both its elements and the relationships between them, within a given context and over a given period.
-
-This is an introductory operational definition, not a universal definition for every discipline. It does not require every system to have an explicit purpose, every behaviour to be emergent, or every element to interact directly.
-
-### 5.5 Water-distribution network example in section 1.1 — accepted
-
-The author approved a common conceptual scenario for both manuscripts, with equivalent scope and content:
-- water source and treatment;
-- storage and pumping stations;
-- distribution network and its connections;
-- consumption points;
-- demand varying by location and time;
-- pressure, flow and operating conditions;
-- energy and control dependencies; and
-- propagation of failures and possible service interruptions.
-
-The example should remain introductory and explanatory, not become a detailed hydraulic-engineering case. Each language version should express the scenario naturally and independently while retaining the same principal elements, relationships, conditions and consequences.
-
-**Disposition after this decision phase:** decisions 5.1–5.5 are accepted. Manuscript integration, bilingual cross-review and post-integration verification remain pending. No manuscript text has been changed by recording these decisions.
-
-### 5.6 Purpose, function and objectives in section 1.2 — accepted
-
-The author approved the following working distinctions for both language versions:
-- **Purpose:** the declared or attributed reason for the system's existence.
-- **Function:** an activity or contribution performed by the system.
-- **Objectives:** intended results, which may be multiple and may conflict.
-
-The manuscripts should preserve the distinction between these concepts and should not use the terms interchangeably. The Spanish and English versions will be authored independently while retaining equivalent meaning.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-### 5.7 System boundary and relevant interfaces in section 1.2 — accepted
-
-The author approved the following criterion for both language versions:
-
-The system boundary must not be presented merely as a list of elements classified as inside or outside the system. It must also identify relevant interfaces between the system of interest and its environment. In the water-distribution example, these may include:
-- the pumping station's connection to electrical supply;
-- its connection to control systems;
-- connections to upstream supply infrastructure; and
-- connections to downstream networks and consumption points.
-
-The boundary may have physical, functional, operational and temporal dimensions; it need not coincide with a physical perimeter. The manuscripts should explain this at an introductory level and preserve equivalent meaning while being authored independently.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-### 5.8 Environment and context in section 1.2 — accepted
-
-The author approved the following operational definitions for both language versions:
-
-- **Environment:** external elements, systems and conditions that interact with the system of interest or may be affected by it.
-- **Context:** the set of circumstances, relationships and conditions from which the problem and the system of interest are defined and interpreted.
-
-The chapter must state that this distinction is an editorial working convention adopted for this book to support analysis. It is not presented as a universal separation used identically across all disciplines.
-
-The Spanish and English manuscripts will express these definitions independently while preserving equivalent conceptual scope.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-### 5.9 Revisability of the system boundary in section 1.2 — accepted
-
-The author approved the criterion that the system boundary is not necessarily definitive. It may be revised when analysis or evidence reveals relevant dependencies, interfaces or effects that were initially excluded.
-
-Any revision must be justified by its relevance to the problem under examination; it must not become an arbitrary expansion of the system of interest. Both language versions should preserve this qualification and express it naturally in their independently authored text.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-### 5.10 Element and component terminology in section 1.3 — accepted
-
-The author approved **element** as the general term for any relevant part of a system identified in the analysis. **Component** may be used as a more specific term, commonly in technical and engineering systems, for a constituent part of the system.
-
-The distinction should remain flexible rather than being imposed as a rigid taxonomy where the disciplinary context does not require it. Both language versions should preserve the same conceptual relationship while using natural, independently authored wording.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-### 5.11 State and time in section 1.3 — accepted
-
-The author approved the following clarification for both language versions:
-
-A **state** is the condition of a system or element at a specified reference moment. Observations made across an interval form a sequence or trajectory of states, which can be used to examine the system's evolution and behaviour.
-
-The text should not conflate a state with the set of observations collected over a period. Both manuscripts should preserve this distinction with independently authored, natural wording.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-### 5.12 Properties and variables in section 1.3 — accepted
-
-The author approved the following distinction for both language versions:
-
-- **Property:** a characteristic attributed to an element or system, such as a pump's rated capacity.
-- **Variable:** a quantity or representation used to describe or track a relevant characteristic or condition, such as the flow delivered at a given moment.
-
-The text should clarify that not every property needs to be represented by a variable, and that a variable may be used to observe changes in a property or condition over time. Both manuscripts should retain this conceptual distinction and use equivalent examples, with independently authored wording.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-### 5.13 System behaviour and evidence in section 1.3 — accepted
-
-The author approved the following clarification for both language versions:
-
-System **behaviour** is characterised through patterns of operation, responses or changes in state observed or inferred under specified conditions. A single observation or measurement may describe a state, but is not normally sufficient on its own to establish a pattern of behaviour. Repeated observations or other evidence appropriate to the phenomenon are generally needed.
-
-The wording should avoid turning this into an absolute rule: the type and amount of evidence depend on the phenomenon and the question being examined. Both manuscripts should preserve the same qualification and conceptual scope, using independently authored wording.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-### 5.14 Unknown or unavailable information and deliberate omissions in section 1.3 — accepted
-
-The author approved the following distinction for both language versions:
-
-- **Unknown or unavailable information:** aspects for which sufficient information or accessible evidence is not available.
-- **Deliberate omissions:** aspects that are known or recognised but intentionally excluded from a description or model because of its scope, purpose or chosen level of detail.
-
-Both kinds of limitation should be documented when they may affect interpretation or conclusions. They must not be conflated: one concerns an information or evidence gap; the other concerns a representational decision.
-
-Both manuscripts should preserve this distinction with independently authored wording and equivalent conceptual scope.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-
-### 5.15 Actor scope in section 1.4 — accepted
-
-The author approved the use of **actor** in the socio-organisational sense for both language versions: a person, group or organisation that participates in the system or has a relevant influence on its functioning.
-
-Autonomous systems, software agents and other non-human elements may form part of the system, perform functions or produce effects, but they will not automatically be classified as actors in this introductory chapter. If **agent** is used in a broader technical sense, that meaning must be made explicit.
-
-This terminology choice is intended to keep the introductory vocabulary clear and avoid conflating socio-organisational analysis with the different conventions used in agent-based modelling. Both manuscripts should preserve the same scope and distinction, using natural, independently authored wording.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-
-### 5.16 Actors inside or outside the system boundary in section 1.4 — accepted
-
-The author approved the criterion that an actor may be located inside or outside the boundary of the system of interest. Whether an actor is included in the system description depends on the relevance of their interaction, influence or dependency in relation to the problem being analysed, not merely on their physical or organisational location.
-
-Both language versions should preserve this distinction and explain that the system boundary and the analytical relevance of an actor are related but separate questions. Wording should be natural and independently authored in each language.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-
-### 5.17 Individual and system-level capabilities in section 1.4 — accepted
-
-The author approved the distinction for both language versions:
-
-- **Individual capability:** the ability of an actor or component to perform an activity under specified conditions.
-- **System-level capability:** the ability of the organised whole to perform an activity or achieve an outcome through the combination and coordination of its elements.
-
-System-level capability must not be presented as the simple sum of individual capabilities. It may depend on coordination, interfaces, resources and operating conditions.
-
-Both manuscripts should preserve this distinction with natural, independently authored wording and equivalent conceptual scope.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-
-### 5.18 Competence, capability and effective availability in section 1.4 — accepted
-
-The author approved the following distinction for both language versions:
-
-- **Competence:** the knowledge and skills a person or organisation has to perform an activity.
-- **Capability:** the ability or possibility to perform that activity, taking into account the means and conditions required.
-- **Effective availability:** whether that capability can actually be exercised at a particular time and in a particular context, considering constraints such as authority, access, resources, workload or operational state.
-
-The illustrative example may describe a technician who has the competence to repair a pump but lacks authorisation or tools, and therefore cannot effectively perform the repair at that moment.
-
-Both manuscripts should preserve the conceptual distinctions and the example's meaning, using natural, independently authored wording. The text should avoid implying that these terms have one universal definition across all disciplines; they are working distinctions for this introductory chapter.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-
-### 5.19 People as actors and as contributors of resources in section 1.4 — accepted
-
-The author approved the following criterion for both language versions:
-
-People should be treated first and foremost as **actors** in the system, not reduced to interchangeable resources. At the same time, people may contribute resources needed for system activities, including their time, knowledge, experience, skills or availability.
-
-When discussing resources, the manuscripts should identify the specific contribution being made rather than referring to people themselves as resources. The distinction between a person's role as an actor and the resources they make available should remain clear.
-
-Both versions should preserve equivalent conceptual scope through natural, independently authored wording.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-
-### 5.20 Dependency in section 1.4 — accepted
-
-The author approved the following working definition for both language versions:
-
-A **dependency** exists when the functioning, availability or outcome of an activity, actor or component requires a contribution, service, state or condition provided by another element.
-
-A dependency must be distinguished from a generic relationship: two elements may be related without one requiring the other in order to function or achieve an outcome.
-
-Dependencies may be conditional, substitutable, reciprocal or time-sensitive, and they do not all have the same degree of criticality. Both manuscripts should preserve these distinctions with natural, independently authored wording and equivalent conceptual scope.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-
-### 5.21 Dependencies and constraints in section 1.4 — accepted
-
-The author approved the following distinction for both language versions:
-
-- **Dependency:** identifies a contribution, service, state or condition that is required for an activity to be performed or an outcome to be achieved.
-- **Constraint:** establishes a limit or condition that reduces the options or ways in which an activity can be performed.
-
-Dependencies and constraints may coexist. For example, an activity may depend on an electricity supply while also being constrained by consumption limits, regulation or safety conditions.
-
-Both manuscripts should preserve this distinction and the example's meaning through natural, independently authored wording. The text should not imply that dependencies and constraints are mutually exclusive.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
-
-
-### 5.22 Bilingual terminology baseline for section 1.4 — accepted
-
-The author approved the following common terminology baseline for the Spanish and English manuscripts:
-
-| Spanish | English |
-|---|---|
-| actor | actor |
-| competencia | competence |
-| capacidad | capability |
-| disponibilidad efectiva | effective availability |
-| recurso | resource |
-| dependencia | dependency |
-| restricción | constraint |
-
-These terms establish conceptual equivalence, not a requirement for literal or mechanically identical phrasing. Each manuscript should retain natural language-specific wording while preserving the agreed distinctions and scope. Where a term has a different established meaning in a particular technical discipline, the chapter should make the intended working meaning clear.
-
-**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
