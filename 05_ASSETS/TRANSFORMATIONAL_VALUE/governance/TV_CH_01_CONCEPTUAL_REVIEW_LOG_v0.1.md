@@ -169,8 +169,8 @@ No external source has yet been selected for this section. If the author wishes 
 
 ### 4.4 Section 1.4 — Actores, capacidades, recursos y dependencias / Actors, Capabilities, Resources and Dependencies
 
-**Review status:** reviewed; decisions pending  
-**Manuscript changes:** none
+**Review status:** reviewed; decisions accepted; integrated and verified in both language manuscripts  
+**Manuscript changes:** section 1.4 integrated in Spanish v1.0 and English v0.9; both files re-fetched and checked
 
 #### Conceptual assessment
 
@@ -222,7 +222,541 @@ The section-by-section conceptual review is complete for all nine sections. The 
 | 1.1 | ¿Qué entendemos por sistema? / What Do We Mean by a System? | reviewed — decisions pending | none |
 | 1.2 | Propósito, frontera, entorno y contexto / Purpose, Boundary, Environment and Context | reviewed — decisions pending | none |
 | 1.3 | Elementos, estados, propiedades y comportamientos / Elements, States, Properties and Behaviours | reviewed — decisions pending | none |
-| 1.4 | Actores, capacidades, recursos y dependencias / Actors, Capabilities, Resources and Dependencies | reviewed — decisions pending | none |
+| 1.4 | Actores, capacidades, recursos y dependencias / Actors, Capabilities, Resources and Dependencies | integrated and verified | Spanish v1.0; English v0.9 |
+| 1.5 | Relaciones, interacciones y estructura del sistema / Relationships, Interactions and System Structure | reviewed — decisions pending | none |
+| 1.6 | Sistemas abiertos, entornos cambiantes y tiempo / Open Systems, Changing Environments and Time | reviewed — decisions pending | none |
+| 1.7 | Las descripciones de sistemas son modelos: alcance, supuestos y omisiones / System Descriptions Are Models: Scope, Assumptions and Omissions | reviewed — decisions pending | none |
+| 1.8 | De la optimización de componentes al razonamiento a escala de sistema / From Component Optimisation to System-Level Reasoning | reviewed — decisions pending | none |
+| 1.9 | Síntesis y preguntas de reflexión / Chapter Synthesis and Reflection Questions | reviewed — decisions pending | none |
+
+## 6. Next phase — editorial decisions
+
+In accordance with the Content Model §11.3, the next phase resolves the findings before any manuscript editing.
+
+1. Work through the sections in chapter order, starting at 1.1.
+2. For each finding, distinguish: accepted correction; accepted editorial refinement; rejected proposal (with rationale); deferred item; or source/domain verification required.
+3. Do not treat a candidate source as authoritative until its bibliographic identity, exact passage and relevance have been checked and, where appropriate, entered in the central reference registry.
+4. Record the author's explicit decision and rationale in this log. A review recommendation does not become an accepted correction by default.
+5. Once the decisions for the chapter are resolved, prepare one coordinated integration pass across both original manuscripts. Do not edit one language as the translation source of the other.
+6. After integration, re-read both manuscripts, verify conceptual equivalence and update the status to integrated and then verified only when the corresponding checks have actually been completed.
+
+**Current phase:** reviewed → decisions pending.  
+**Editing authorisation:** not yet established. No manuscript changes are authorised by this status update.
+
+## 7. Resolution and manuscript integration
+
+### 7.1 Author decisions — section 1.1
+
+**Decision 1.1-SCOPE — accepted by the author (2026-11-27).**
+
+The book's working scope will focus on physical, social, organisational and socio-technical systems, including systems whose behaviour is not directly observable but can be inferred from relevant evidence.
+
+Purely conceptual systems may be mentioned as representations or analytical constructs, but will not automatically be treated as equivalent to systems operating in the world.
+
+**Rationale:** This preserves a broad systems-engineering orientation without unnecessarily restricting the book to directly observable physical systems, while maintaining a useful distinction between systems of interest and conceptual representations.
+
+**Implementation status:** decision recorded; wording not yet integrated into either manuscript. The remaining section 1.1 findings are still unresolved.
+
+**Decision 1.1-ANALYTICAL-UNIT — accepted by the author (2026-11-27).**
+
+The chapter will distinguish three concepts:
+- **System of interest:** the concrete system we seek to understand or study.
+- **Unit of analysis:** what observations or analysis are performed on; this may be the whole system, a subsystem, an actor or an interaction.
+- **Analytical perspective:** the approach from which the system is examined, for example functional, operational, organisational or temporal.
+
+**Rationale:** These concepts must not be conflated. The system being studied is distinct from the analytical scale or perspective selected to investigate it.
+
+**Implementation status:** decision recorded; wording not yet integrated into either manuscript.
+
+**Decision 1.1-EMERGENCE — accepted by the author (2026-11-27).**
+
+The chapter will distinguish:
+- **System behaviour:** any behaviour that can be observed or inferred at the system level.
+- **Emergent behaviour:** behaviour or a property arising from the interactions and organisation of the whole, which cannot be adequately explained by examining each element independently.
+
+The text must not imply that all system behaviour is necessarily emergent.
+
+**Rationale:** This preserves emergence as an important systems concept without making it a defining feature of every system behaviour.
+
+**Implementation status:** decision recorded; wording not yet integrated into either manuscript.
+
+**Decision 1.1-OPERATIONAL-DEFINITION — accepted by the author (2026-11-27).**
+
+The following working definition is accepted as the basis for both language versions:
+
+> A system is a delimitable set of related and organised elements that interact or maintain relevant dependencies, and whose behaviour can be understood by considering both its elements and the relationships between them, within a context and over a given period.
+
+The definition does not require every system to have an explicit purpose, all system behaviours to be emergent, or all elements to interact directly.
+
+**Rationale:** This definition consolidates the agreed scope and the distinctions among system of interest, analytical unit, analytical perspective, system behaviour and emergent behaviour. It is intended as an operational introductory definition, not as a universal definition binding every discipline.
+
+**Implementation status:** decision recorded; wording not yet integrated into either manuscript.
+
+After the conceptual review of sections 1.1–1.9 is complete:
+1. Review the accumulated findings for consistency and dependencies across the chapter.
+2. Resolve open recommendations explicitly; do not silently convert suggestions into decisions.
+3. Verify candidate sources and create or update central reference records where justified.
+4. Agree the required edits for Spanish and English independently, preserving equivalent conceptual scope without translation-first drafting.
+5. Apply approved changes to both manuscripts, update their versions and metadata as required, and verify the resulting files.
+6. Conduct the subsequent editorial and cross-language checks under the governing Content Model.
+
+Until that integration step is authorised and completed, the findings in this log do not alter the manuscripts or their `draft` status.
+
+
+### 7.2 Section 1.4 — decisions integrated and verified (2026-11-28)
+
+Following the author's explicit authorisation to integrate section 1.4, the accepted decisions recorded in §§5.15–5.22 were applied to both native-language manuscripts in one coordinated section-level pass.
+
+**Spanish manuscript**
+- Path: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/es/part-01-understanding-transformation/ch-01-pensar-en-sistemas.md`
+- Version updated: 0.9 → 1.0
+- Commit: `74f933a530a183d1195554aed1260c6e53358553`
+- Blob SHA after re-fetch: `8fe4f457ebf89df72b4d03674bfddb19ed9b8860`
+
+**English manuscript**
+- Path: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/en/part-01-understanding-transformation/ch-01-thinking-in-systems.md`
+- Version updated: 0.8 → 0.9
+- Commit: `b6ba1f6acbea0624e1a4ecbd515b018e2ec2bacc`
+- Blob SHA after re-fetch: `1600198265b56566afabbb2181b3b0ba44bc7b21`
+
+**Integration checks completed**
+- Actor is consistently defined in the agreed socio-organisational sense; non-human and software agents are not automatically classified as actors.
+- Actors may be inside or outside the system boundary; relevance to the analytical problem, rather than location alone, determines inclusion in the description.
+- Individual and system-level capabilities are distinguished; system-level capability is not treated as the sum of individual capabilities.
+- Competence, capability and effective availability are distinguished.
+- People are treated as actors while their specific contributions (time, knowledge, experience, skills and availability) may be described as resources.
+- Dependencies are distinguished from generic relationships and from constraints; relevant dependency characteristics are retained.
+- Both manuscripts express equivalent conceptual scope through independently authored wording.
+- The section boundaries and surrounding chapter content were preserved; no other section was intentionally edited in this integration.
+
+**Verification:** both files were re-fetched from the target branch after their commits. The section text, version metadata and key conceptual distinctions were checked in both files.
+
+**Scope limitation:** this completes integration and verification for section 1.4 only. It does not complete the chapter's editorial, subject-matter or overall cross-language review gates. Sections 1.1–1.3 and 1.5–1.9 still require their accepted decisions to be integrated, followed by the applicable chapter-level reviews. Both manuscripts remain in `draft` status.
+
+## 8. Change history
+
+- **v0.1 — 2026-11-27:** Created the Chapter 1 conceptual review record; preserved the findings, bilingual observations, proposed resolutions and unverified source candidates for sections 1.1 and 1.2; recorded that manuscript changes have not been applied.
+- **2026-11-27:** Completed the conceptual review records for sections 1.3–1.9; reconciled the completion status for all nine sections and documented the decision-resolution phase. No manuscript changes were made.
+- **2026-11-28:** Integrated the accepted section 1.4 decisions independently into the Spanish and English manuscripts; updated versions to ES 1.0 and EN 0.9; re-fetched and verified both files; recorded section-level integration and verification in §7.2. Other sections remain pending integration.
+
+### 4.5 Section 1.5 — Relaciones, interacciones y estructura del sistema / Relationships, Interactions and System Structure
+
+**Review status:** reviewed; decisions pending  
+**Manuscript changes:** none
+
+#### Conceptual assessment
+
+- The section develops a coherent progression from elements to relationships, interactions and system structure. Its central claim—that system behaviour depends on how elements are connected and coordinated, not only on their individual characteristics—is appropriate and consistent with sections 1.1–1.4.
+- The distinction between **relationship** and **interaction** is useful: a relationship identifies a relevant link, while an interaction describes something that happens through influence or action. The distinction should be retained. However, the current wording “act or influence one another” / “actúan o influyen unos sobre otros” may suggest that interaction must be reciprocal. Interactions can be directional or asymmetric; the definition should allow one element to act on or influence another.
+- The statement that a dependency can exist without continuous interaction is sound and usefully connects to section 1.4. To avoid repetition, section 1.5 should use dependency as one kind of relationship and focus on how it is represented in structure, rather than redefining it.
+- The list of relationship forms is useful and appropriately illustrative, not exhaustive. Some categories can overlap: a functional connection may also carry a physical flow or embody a dependency; coordination/authority relationships may include information exchanges. The text already notes overlap, but could say explicitly that the categories are analytical lenses, not mutually exclusive classes.
+- The section's definition of **system structure** is sound and broader than physical layout. It appropriately includes functional connections, information flows, operational dependencies and coordination mechanisms. Consider keeping the distinction between structure (the relatively enduring configuration of relationships) and interactions (activities or influences occurring through those relationships) clear without suggesting that structure is necessarily static.
+- The discussion of structure shaping behaviour is strong. The water-network failure and local optimisation examples demonstrate propagation and system-level trade-offs. The examples should remain illustrative rather than imply that every local change produces a system-wide adverse effect.
+- The feedback-loop explanation is broadly correct for an introductory chapter: an outcome returns to influence a process or its regulation. The definition could be made slightly more precise by referring to a closed chain of influence in which a change in an outcome affects subsequent operation. The distinction from a mere return arrow in a diagram is important and should remain.
+- The feedback example is understandable, but the diagram and prose should not imply that a sensor reading alone establishes the full state of the network. Measurements are information used to infer or monitor operating conditions; this nuance may be worth retaining if the section is revised.
+- The representation guidance is particularly valuable: node and edge meanings, directionality, omitted relationships and diagram scope must be explicit. This should be retained as a general modelling principle.
+
+#### Example and bilingual-equivalence observations
+
+- The Spanish and English versions are closely aligned in structure, argument, examples and learning outcome. No material conceptual divergence was identified.
+- “Relación” / “relationship” and “interacción” / “interaction” are appropriate equivalents. Both versions should make the directionality point consistently.
+- The examples of physical flow, sensor information, control action, maintenance dependency, network failure and local optimisation are equivalent in substance.
+- “Puntos de consumo” / “points of use” are broadly equivalent in this section's context. Maintain consistent naming for the water-network entities across the chapter, but no section-specific correction is essential here.
+- “Bucles de realimentación” / “feedback loops” are suitable equivalents. The definition and example should be adjusted in parallel if the author accepts the precision improvement.
+- Both versions refer to the supporting visual as TV-DIA-002. The asset README identifies it as **Draft — conceptual and visual review pending**. The chapter must not imply that the diagram is approved or publication-ready. Its status and pending checks must be respected; do not modify or remove the asset without separate explicit authorisation.
+
+#### Proposed resolution
+
+A. **Relationship and interaction:** retain the distinction, but revise the interaction definition in both languages so that an interaction may be directional or asymmetric; it need not involve reciprocal influence.
+
+B. **Relationship categories:** retain the illustrative list and state that categories may overlap and are not mutually exclusive. Keep physical flows, information flows, functional connections, dependencies and coordination/authority relationships distinguishable by their meaning in a particular model.
+
+C. **Structure and interaction:** clarify, if needed, that structure describes the configuration of relevant relationships, while interactions describe actions, exchanges or influences occurring through or changing those relationships. Avoid presenting structure as necessarily fixed.
+
+D. **Dependencies:** refer back to section 1.4 for the concept of dependency. In 1.5, focus on dependencies as a structural relationship and on their representation, avoiding unnecessary duplication.
+
+E. **Feedback:** retain the closed-loop criterion and the warning against interpreting any return arrow as feedback. Consider tightening the definition to make clear that an outcome influences subsequent operation or regulation. Preserve the possibility of both stabilising and amplifying effects without introducing a full treatment of feedback-loop taxonomy at this stage.
+
+F. **Measurements:** where the sensor example is refined, describe readings as evidence used to monitor or infer operating conditions, not as a complete representation of system state.
+
+G. **Diagram governance:** retain the TV-DIA-002 reference provisionally, but treat the visual as a draft asset. Its conceptual/visual review, bilingual rendering, accessibility, provenance/licensing and publication checks remain open under its own asset record. No change to TV-DIA-002 is authorised by this chapter review.
+
+H. **Bilingual alignment:** apply any accepted conceptual edits independently to both original manuscripts, preserving equivalent scope and examples rather than translating one version from the other.
+
+#### Candidate sources — verification pending
+
+No external source has yet been selected for this section. If a formal source is considered necessary for feedback, system structure or relationship/interaction distinctions, verify an authoritative systems-engineering or systems-dynamics reference and its exact edition and passages before recording it in the central references registry. No source is approved or attached to a claim at this stage.
+
+**Decision:** pending author review. No source has yet been formally attached to a claim.
+
+### 4.6 Section 1.6 — Sistemas abiertos, entornos cambiantes y tiempo / Open Systems, Changing Environments and Time
+
+**Review status:** reviewed; decisions pending  
+**Manuscript changes:** none
+
+#### Conceptual assessment
+
+- The section provides a coherent account of systems as bounded for analysis yet connected to their environments through exchanges. It correctly avoids treating a boundary as a barrier that eliminates external dependencies.
+- The working definition of an **open system** is suitable for this introductory chapter: exchanges of matter, energy, information, resources or services are relevant to operation. It may be useful to signal that openness is considered relative to the chosen system boundary and analytical purpose; the same system may be modelled with different boundaries and exchange sets for different questions. Avoid turning this into a rigid binary classification.
+- The distinction among inputs, outputs and exchanges is useful, but the table currently mixes exchange categories with a final row labelled “outputs to the environment” / «resultados hacia el entorno». Outputs are already part of the input/output framing, whereas the other rows classify types of flow. Consider either making the table consistently about exchange types or explicitly distinguishing inputs and outputs from the types of exchanged content. The current text defines these terms but does not fully clarify the table's mixed classification.
+- The warning that an input is not necessarily a sufficient condition for operation is important and should be retained. It connects well with section 1.4's treatment of capabilities and dependencies: availability of one required input does not guarantee that the system can perform its function.
+- The treatment of environmental change is sound and includes relevant external drivers. The reciprocal influence between system and environment is also important; retain the point that system-environment influence need not be one-way.
+- The temporal discussion correctly distinguishes short-, medium- and long-term scales as relative to the system and analytical question. It appropriately warns against interpreting a point observation as a persistent pattern. A concise clarification could distinguish the observation time, the period represented by the data and the time horizon over which a conclusion is intended to apply.
+- The discussion of disturbances and responses is useful, but **adaptation** should not be read as necessarily intentional, successful or beneficial. A system may adjust, reorganise or fail to maintain expected performance. If the term is retained, clarify that the section describes different response patterns rather than presuming that every response constitutes successful adaptation.
+- The contrast between an operational response and a more lasting transformation is valuable and relevant to the wider book. However, the text should avoid implying that duration alone defines transformation: a structural change may be rapid, and a long-lasting operational adjustment may not amount to a structural transformation. The distinction should be tied to the nature and persistence of the change, not only to elapsed time.
+- The “snapshot and moving picture” explanation is accessible and pedagogically effective. It reinforces the earlier treatment of states and behaviour and should be retained. Its value depends on maintaining the distinction between a configuration observed at one time and evidence of change or behaviour across a defined period.
+
+#### Example and bilingual-equivalence observations
+
+- The Spanish and English versions are closely aligned in structure, reasoning, examples and learning outcome. No major conceptual divergence was identified.
+- “Sistemas abiertos” / “open systems”, “entradas” / “inputs”, “salidas” / “outputs” and “intercambios” / “exchanges” are appropriate equivalents.
+- The table's final row, “Resultados hacia el entorno” / “Outputs to the environment”, is broadly equivalent but not perfectly parallel in terminology. Align the Spanish label with the chosen input/output/exchange structure.
+- The examples of drought, heatwave, regulatory change and power interruption are equivalent in substance.
+- “Perturbaciones” / “disturbances” and “adaptación” / “adaptation” are suitable equivalents, but any clarification that adaptation is not necessarily intentional or successful should be made in both texts.
+- The contrast between a temporary pump adjustment and a more lasting network redesign is equivalent. If the conceptual distinction is refined, both versions should make clear that structural nature and persistence matter more than duration alone.
+- The snapshot/time-based representation and the reflection question are equivalent and appropriately reinforce the same temporal reasoning.
+
+#### Proposed resolution
+
+A. **Openness and boundary:** retain the working definition of open systems, while briefly clarifying that relevant exchanges are identified relative to the chosen boundary and analytical purpose. Avoid treating openness as an absolute property independent of the model.
+
+B. **Inputs, outputs and exchanges:** revise the table so that its organising principle is consistent. Either classify rows by type of exchanged content and label inputs/outputs separately, or make clear that inputs and outputs are directions/roles of exchange rather than additional material categories. Harmonise the Spanish and English labels.
+
+C. **Input versus sufficiency:** retain the warning that receiving an input does not guarantee operation. Preserve the link to capabilities and dependencies developed in section 1.4 without repeating their definitions.
+
+D. **System-environment influence:** retain the bidirectional influence point and the examples of effects a system may have on its environment.
+
+E. **Temporal evidence:** preserve the relative short-, medium- and long-term scales. Consider stating explicitly the distinction among the time of observation, the period covered by evidence and the horizon to which conclusions apply.
+
+F. **Adaptation and response:** clarify that the response categories (absorbing variation, adjusting operation, reorganising, or losing expected performance) do not all imply successful adaptation. Avoid anthropomorphic or teleological wording.
+
+G. **Operational response and transformation:** retain the distinction, but do not define transformation by duration alone. Consider distinguishing temporary operating adjustments from changes in system configuration or organisation that persist, while recognising that persistence and structural significance are separate dimensions.
+
+H. **Bilingual alignment:** make any accepted changes independently in both original manuscripts, maintaining equivalent concepts, table logic and examples rather than translating one version from the other.
+
+#### Candidate sources — verification pending
+
+No external source has yet been selected for this section. If a formal source is considered necessary for open-system boundaries, system-environment exchanges, adaptation or temporal system behaviour, verify an authoritative systems-engineering, systems-theory or systems-dynamics reference and its exact edition and passages before recording it in the central references registry. No source is approved or attached to a claim at this stage.
+
+**Decision:** pending author review. No source has yet been formally attached to a claim.
+
+### 4.7 Section 1.7 — Las descripciones de sistemas son modelos: alcance, supuestos y omisiones / System Descriptions Are Models: Scope, Assumptions and Omissions
+
+**Review status:** reviewed; decisions pending  
+**Manuscript changes:** none
+
+#### Conceptual assessment
+
+- The central proposition—that a system description is a selective representation rather than the system itself—is sound and well placed after sections on boundaries, relationships and temporal behaviour. The section explains why simplification is necessary without equating simplification with poor quality.
+- The relationship between analytical purpose and model scope is clearly presented. The table is useful because it shows that different questions about the same water network call for different representations. Retain it as a teaching device.
+- The term **model** is used broadly to include prose, diagrams, tables, variable sets and mathematical models. This is defensible for an introductory chapter, but readers may associate “model” primarily with formal or mathematical representations. Consider stating explicitly that the chapter uses the term in this broad sense: any purposeful, selective representation can function as a model.
+- The section could make a sharper distinction between **scope**, **boundary** and **level of detail**. Scope concerns what the representation covers for a given question; boundary identifies what is treated as inside or outside the system of interest; level of detail concerns how finely included elements and relationships are represented. They are related but not interchangeable.
+- The treatment of assumptions is particularly strong in distinguishing assumptions from observed facts and quantified uncertainty. It could also distinguish an assumption from a model input or parameter: an input may be measured, estimated, specified or assumed. Not every value supplied to a model is an assumption.
+- The statement that assumptions should be recorded, justified and tested where possible is appropriate. Sensitivity analysis is implied by examining how conclusions change when assumptions vary; the text need not introduce the technical term unless it is useful for the intended audience.
+- The treatment of omissions is sound. A useful further distinction is between something deliberately excluded for scope or simplicity and something absent because it is unknown or not represented due to lack of evidence. These cases should not be conflated: an unknown dependency is not necessarily a deliberate modelling choice. This also connects to section 1.3's distinction between unavailable information and deliberate omission.
+- The example of omitting electricity dependency is effective because it demonstrates how a model can be adequate for one question and inadequate for another. Retain it.
+- The suitability checklist is practical and appropriately avoids claiming that a model can be guaranteed correct by following it. Consider distinguishing **evidence supporting the model's inputs and relationships** from **evidence that the model adequately represents the relevant system behaviour**. The presence of evidence for individual data does not by itself establish model adequacy.
+- The subsection on revisiting models when the question or system changes is valuable. The discussion of complementary hydraulic and socio-technical models could add a concise caution: combining models requires checking differences in boundaries, assumptions, time horizons, terminology and level of detail. Otherwise, integration may create apparent consistency where the underlying representations are not compatible.
+- The section is appropriately introductory and does not need a taxonomy of model types, validation methods or uncertainty analysis. The priority is to clarify the distinctions above without expanding the chapter disproportionately.
+
+#### Example and bilingual-equivalence observations
+
+- The Spanish and English versions are closely aligned in structure, reasoning, table content, examples and learning outcome. No material conceptual divergence was identified.
+- “Modelo” / “model”, “alcance” / “scope”, “supuestos” / “assumptions” and “omisiones” / “omissions” are appropriate equivalents.
+- “Esquema de la red” / “network layout” are functionally equivalent in the table, although “layout” can suggest a spatial arrangement. If the intended representation is specifically connectivity and flow direction, consider a more precise equivalent in both languages.
+- “Zonas de consumo” / “consumption areas” are equivalent in substance. Maintain consistency with the water-network terminology used in earlier sections.
+- The assumption example concerning equipment availability, the electricity-dependency omission and the shift from hydraulic flow to service resilience are equivalent.
+- The distinction between model evidence and model adequacy, and the distinction between deliberate omission and unknown information, should be expressed in both versions if accepted.
+
+#### Proposed resolution
+
+A. **Broad use of model:** retain the broad definition but state briefly that “model” is used here for any purposeful, selective representation, not only mathematical or computational models.
+
+B. **Scope, boundary and detail:** add concise distinctions among the scope of a representation, the system boundary adopted for the analysis and the level of detail used within that scope.
+
+C. **Assumptions and inputs:** retain the distinction between assumptions, observations and quantified uncertainty. Clarify, if useful, that model inputs or parameters may be measured, estimated, specified or assumed; they are not automatically assumptions.
+
+D. **Omissions and unknowns:** distinguish deliberate exclusions from information that is unknown, unavailable or unsupported by evidence. Cross-reference the conceptual distinction established in section 1.3 without repeating it at length.
+
+E. **Evidence and adequacy:** refine the checklist so that evidence for input data and relationships is not confused with evidence that the representation is adequate for the question and relevant behaviour. Do not imply that a checklist guarantees correctness.
+
+F. **Complementary models:** retain the hydraulic and socio-technical examples. Add a brief note that combining representations requires checking compatibility of boundaries, assumptions, time horizons, terminology and levels of detail.
+
+G. **Bilingual alignment:** preserve equivalent conceptual distinctions and examples in both original manuscripts. Review the translation-equivalence of “network layout” / «esquema de la red» if the wording is changed.
+
+H. **Editorial restraint:** do not expand this introductory section into a formal taxonomy of modelling, validation or uncertainty methods. Keep the focus on purpose, scope, assumptions, omissions and limits of use.
+
+#### Candidate sources — verification pending
+
+No external source has yet been selected for this section. If a formal source is considered necessary for model purpose and scope, assumptions, model validation or uncertainty, verify an authoritative systems-engineering or modelling reference and its exact edition and passages before recording it in the central references registry. No source is approved or attached to a claim at this stage.
+
+**Decision:** pending author review. No source has yet been formally attached to a claim.
+
+### 4.8 Section 1.8 — De la optimización de componentes al razonamiento a escala de sistema / From Component Optimisation to System-Level Reasoning
+
+**Review status:** reviewed; decisions pending  
+**Manuscript changes:** none
+
+#### Conceptual assessment
+
+- The central argument is sound and well positioned: improving a component or subsystem does not guarantee improvement in overall system performance. The water-pump example makes the possibility of transferred costs, constraints and effects concrete without requiring advanced technical knowledge.
+- The section correctly avoids the opposite error of dismissing component optimisation. Local optimisation remains necessary; the issue is treating a local indicator as a proxy for system performance. Retain this qualification.
+- There is a terminology inconsistency between the section's framing as **system-level reasoning** and the table's definition of **system-level optimisation**. These are related but not identical. Reasoning at system level is an approach to framing and evaluating decisions; optimisation is a more specific task of selecting the best feasible option against defined criteria and constraints. The text should either define the relationship or use “system-level reasoning” consistently where it describes the broader approach.
+- The table's three levels (component, subsystem, system) are useful as analytical levels, not as a mandatory hierarchy or mutually exclusive decomposition. It may help to state that the appropriate level depends on the decision and that relevant effects can cross levels and boundaries. The existing paragraph already points in this direction.
+- The phrase “results that cross internal boundaries” / «resultados que atraviesan sus fronteras internas» is potentially imprecise: results do not necessarily cross boundaries; interactions, flows, constraints and effects may cross interfaces or boundaries between components and subsystems. Consider revising the wording in both languages.
+- The treatment of interfaces, constraints and bottleneck displacement is strong. The example correctly illustrates that resolving one constraint can reveal another, but this is not inevitable in every intervention. The conditional wording should be retained and examples should not be read as universal laws.
+- The section identifies multiple performance criteria and trade-offs, including service continuity, quality, pressure, energy, operating cost, recovery time and environmental effects. This is a valuable corrective to single-metric optimisation. Consider distinguishing **requirements** (conditions that must be met), **objectives** (outcomes to improve) and **preferences** (trade-offs that may be negotiated), as the text already begins to do. Ensure that non-negotiable safety, regulatory or service constraints are not presented as ordinary preferences.
+- The process sequence is practical and coherent. Step 1, “what the system must achieve and for whom”, should not imply that a system always has one uncontested purpose or a single beneficiary. Relevant actors may have different or conflicting needs. A concise acknowledgement of this would strengthen the connection with sections 1.2 and 1.4.
+- Step 5's “whether the improvement is sustained, shifted elsewhere or creates unintended consequences” is useful, but should not suggest that every consequence can be predicted in advance. It is an invitation to examine plausible effects and monitor actual outcomes under appropriate conditions.
+- The paragraph on the value of an improvement is important as a bridge to the book's wider subject. However, the wording “a technical improvement becomes meaningful when related to the outcomes...” should not be read as a full definition of value or as a claim that technical performance automatically creates value. The relevance of an outcome depends on whose needs are considered, which constraints apply and how benefits, costs and risks are distributed. Keep this as an introductory bridge, not a premature definition of value construction.
+- The closing idea is appropriate. No additional diagram is necessary: the existing table and six-step sequence provide sufficient visual/structural support for this section.
+
+#### Example and bilingual-equivalence observations
+
+- The Spanish and English versions are closely aligned in structure, reasoning, examples, table and practical sequence. No material conceptual divergence was identified.
+- “Optimización local” / “local optimisation”, “optimización a escala de sistema” / “system-level optimisation” and “razonamiento a escala de sistema” / “system-level reasoning” are natural equivalents, but the conceptual distinction between optimisation and reasoning should be made explicit in both versions.
+- The phrase “resultados que atraviesan sus fronteras internas” / “outcomes that cross internal boundaries” is equivalent but potentially imprecise in both languages. Revise both consistently if accepted.
+- The pump capacity, pressure, energy, maintenance and bottleneck examples are equivalent in substance.
+- “Requisitos, objetivos y preferencias” / “requirements, objectives and preferences” are appropriate equivalents. Any clarification that mandatory constraints are not negotiable preferences should be made in both.
+- “Para quién” / “for whom” is equivalent. Both versions should acknowledge that relevant actors may have different or conflicting needs if this point is added.
+- The final discussion of the value of an improvement is aligned. Any qualification that this is not yet a definition of value or proof of value creation should be expressed in both versions.
+
+#### Proposed resolution
+
+A. **Local optimisation:** retain the statement that component optimisation remains necessary. The section critiques isolated evaluation, not technical improvement at component level.
+
+B. **Optimisation versus reasoning:** distinguish system-level reasoning from system-level optimisation. Use the former for the broad decision approach; reserve the latter for explicit optimisation against defined objectives and constraints. Align the table terminology with this distinction.
+
+C. **Analytical levels:** retain component, subsystem and system as useful levels of analysis, while clarifying that they are not a compulsory hierarchy and that relevant effects may cross their interfaces.
+
+D. **Interfaces and boundaries:** revise the wording about “outcomes crossing internal boundaries” so it refers more accurately to interactions, flows, constraints or effects crossing interfaces/boundaries.
+
+E. **Constraints and trade-offs:** retain the multi-criteria discussion and distinguish mandatory requirements/constraints from objectives and negotiable preferences. Do not imply that safety, regulatory or essential service requirements can be traded away as preferences.
+
+F. **Purpose and beneficiaries:** qualify “what the system must achieve and for whom” to recognise that relevant actors may have different or conflicting needs. Preserve the link to sections 1.2 and 1.4 without duplicating them.
+
+G. **Consequences and evidence:** retain the review of sustained, displaced and unintended effects, but present it as analysis of plausible consequences followed by observation/monitoring, not as a guarantee that all effects can be predicted.
+
+H. **Bridge to value:** retain the final subsection, but make clear that technical improvement is not automatically value creation and that outcomes must be considered in relation to relevant actors, needs, constraints and distribution of benefits, costs and risks. Do not introduce a full definition of value in this chapter.
+
+I. **Bilingual alignment and editorial restraint:** apply accepted refinements independently to both original manuscripts. The existing table and process sequence are sufficient; no additional visual asset is recommended for this section.
+
+#### Candidate sources — verification pending
+
+No external source has yet been selected for this section. If a formal source is considered necessary for local versus system-level optimisation, multi-criteria decision-making or systems engineering trade-offs, verify an authoritative reference and its exact edition and passages before recording it in the central references registry. No source is approved or attached to a claim at this stage.
+
+**Decision:** pending author review. No source has yet been formally attached to a claim.
+
+### 4.9 Section 1.9 — Síntesis y preguntas de reflexión / Chapter Synthesis and Reflection Questions
+
+**Review status:** reviewed; decisions pending  
+**Manuscript changes:** none
+
+#### Conceptual assessment
+
+- The synthesis accurately captures the chapter's progression: from system purpose and composition through relationships, boundaries, environment, time, models and evidence, to the evaluation of interventions beyond the component being changed. It is an effective consolidation rather than a new exposition.
+- The integrated table is useful and proportionate. It provides a compact set of dimensions without claiming to be exhaustive. Retain it.
+- The table should be checked against the decisions made in sections 1.1–1.8 before manuscript integration. In particular, terminology for actors and capabilities, boundaries and exchanges, model scope and evidence, and system-level reasoning should use the final agreed formulations. The synthesis should not preserve wording that the detailed reviews later refine.
+- The row “Composition and capabilities” / «Composición y capacidades» is slightly compressed: it combines elements, actors, resources and capabilities. This is appropriate for a summary, but the phrase “what each part contributes” / «qué puede aportar cada parte» may blur the distinction between an actor, a resource contributed by an actor and a system-level capability emerging from coordination. A small wording refinement could preserve the summary while reflecting section 1.4.
+- The “Boundary and environment” row correctly includes exchanges crossing boundaries. Ensure that it remains consistent with the final section 1.6 distinction between exchange types and the direction/role of inputs and outputs.
+- The “Model and evidence” row is strong, but “fitness for purpose” / «adecuación al propósito» should refer to the adequacy of the representation for the analytical question, not to the quality or success of the real system. This distinction should be clear in the final wording.
+- The exercise asking the reader to describe a familiar system is appropriate and actionable. The instruction to distinguish what is known, assumed or not yet examined is especially valuable and consistent with sections 1.3 and 1.7. Retain it.
+- The five reflection questions cover the chapter well. Question 1 could acknowledge that relevant actors may have different or conflicting expectations about outcomes, following the review of section 1.8. Question 2 should preserve the distinction between external dependencies and internal structure. Question 4 appropriately asks about assumptions and omissions; it may also prompt the reader to consider whether omissions are deliberate or due to lack of information. These are refinements, not reasons to add more questions.
+- The closing paragraph is conceptually sound. “The configuration ... that makes a particular behaviour possible” / «la configuración ... que hace posible un determinado comportamiento» is an effective synthesis of the systems perspective.
+- The transition to chapter 2 is logical, but it should be checked against the actual scope and opening of chapter 2 when that chapter is reviewed. In particular, “transformation as a system capability” should not prematurely imply that all transformations are capabilities already available to the system; the next chapter should clarify the difference between existing capability and capability to be developed or enabled.
+- No additional diagram or illustration is needed in this synthesis section. The integrated table already provides the appropriate visual summary.
+
+#### Example and bilingual-equivalence observations
+
+- The Spanish and English versions are closely aligned in structure, dimensions, exercise, reflection questions and closing transition. No material conceptual divergence was identified.
+- “Comprender el sistema antes de intervenir” / “Understanding the system before changing it” are close equivalents, though “intervening” and “changing” have slightly different connotations. Either is acceptable; keep the chosen title aligned with the chapter's established terminology.
+- “Una visión integrada” / “Bringing the dimensions together” are conceptually equivalent.
+- “Rendimiento del conjunto” / “Overall performance” are appropriate equivalents, subject to the terminology decision in section 1.8 about system-level reasoning versus optimisation.
+- “Adecuación al propósito” / “fitness for purpose” are equivalent, but should be anchored to the model/representation rather than to the system itself.
+- “Qué puede aportar cada parte” / “what each part contributes” are equivalent but may obscure the actor/resource/capability distinctions identified in section 1.4. Refine in parallel if accepted.
+- The exercise and five reflection questions are equivalent in substance. Any addition about conflicting actor expectations or deliberate versus information-driven omissions should be made in both original manuscripts.
+- The closing transition is equivalent. Its wording should be reconciled with chapter 2's conceptual framing during cross-chapter review.
+
+#### Proposed resolution
+
+A. **Integrated table:** retain the table, but perform a terminology reconciliation after decisions on sections 1.1–1.8 are resolved. It should reflect the final agreed distinctions and should not introduce new concepts.
+
+B. **Actors, resources and capabilities:** refine the composition/capabilities row so that it does not collapse actors, resources they contribute and system capabilities into one undifferentiated “part”.
+
+C. **Boundary and exchanges:** align the boundary/environment row with the final classification of exchanges, inputs and outputs adopted in section 1.6.
+
+D. **Model adequacy:** make explicit that fitness for purpose concerns whether the representation is adequate for the question and intended use, not whether the real system itself is fit for purpose.
+
+E. **Reflection questions:** retain five questions. Consider adding within the existing questions (not as extra questions) the possibility of conflicting actor expectations and the distinction between deliberate omissions and unknown/unavailable information.
+
+F. **Chapter 2 transition:** retain the transition provisionally. Revisit it when chapter 2 is available for review, checking that “transformation as a system capability” distinguishes existing capability from capability that may need to be developed or enabled.
+
+G. **Visual support:** no additional visual asset is recommended; the synthesis table is sufficient.
+
+H. **Bilingual alignment:** make any accepted changes independently in both original manuscripts, preserving equivalent scope and terminology rather than translating one version from the other.
+
+#### Candidate sources — verification pending
+
+No external source is required specifically for this synthesis. Any references added to support substantive claims in sections 1.1–1.8 should be linked at the relevant point in those sections and registered centrally; the synthesis should not duplicate the references registry or introduce unsupported claims.
+
+**Decision:** pending author review. No source has yet been formally attached to a claim.
+
+## 5. Author decisions — accepted, pending manuscript integration
+
+The following decisions were explicitly approved by the author during the decision-resolution phase on 2026-11-27. They supersede the corresponding “pending author review” statements in the section review records above. They are **accepted editorial decisions**, not evidence that manuscript changes have been applied. Both manuscripts remain unchanged until the coordinated integration phase.
+
+### 5.1 Scope of the working concept of system — accepted
+
+The chapter's primary scope comprises physical, social, organisational and socio-technical systems. It includes systems whose behaviour is not directly observable, provided that behaviour can be inferred through relevant evidence. Purely conceptual systems may be discussed as representations or analytical constructions, but are not automatically equated with systems operating in the world.
+
+### 5.2 System of interest, unit of analysis and analytical perspective — accepted
+
+The chapter will distinguish:
+- **System of interest:** the particular system to be understood or studied.
+- **Unit of analysis:** what observations or analysis are performed on; this may be the whole system, a subsystem, an actor or an interaction.
+- **Analytical perspective:** the approach from which the system is examined, such as functional, operational, organisational or temporal.
+
+### 5.3 System behaviour and emergent behaviour — accepted
+
+The chapter will distinguish:
+- **System behaviour:** any behaviour of the system that is observable or inferable.
+- **Emergent behaviour:** behaviour or a property arising from the interactions and organisation of the whole, which cannot be adequately explained by examining each element in isolation.
+
+The text must not imply that all system behaviour is emergent.
+
+### 5.4 Operational definition of a system — accepted
+
+The following definition is approved as the common conceptual basis for both language versions. The final Spanish and English wording will be authored independently while preserving its meaning:
+
+> A system is a delimitable set of related and organised elements that interact or maintain relevant dependencies, and whose behaviour can be understood by considering both its elements and the relationships between them, within a given context and over a given period.
+
+This is an introductory operational definition, not a universal definition for every discipline. It does not require every system to have an explicit purpose, every behaviour to be emergent, or every element to interact directly.
+
+### 5.5 Water-distribution network example in section 1.1 — accepted
+
+The author approved a common conceptual scenario for both manuscripts, with equivalent scope and content:
+- water source and treatment;
+- storage and pumping stations;
+- distribution network and its connections;
+- consumption points;
+- demand varying by location and time;
+- pressure, flow and operating conditions;
+- energy and control dependencies; and
+- propagation of failures and possible service interruptions.
+
+The example should remain introductory and explanatory, not become a detailed hydraulic-engineering case. Each language version should express the scenario naturally and independently while retaining the same principal elements, relationships, conditions and consequences.
+
+**Disposition after this decision phase:** decisions 5.1–5.5 are accepted. Manuscript integration, bilingual cross-review and post-integration verification remain pending. No manuscript text has been changed by recording these decisions.
+
+### 5.6 Purpose, function and objectives in section 1.2 — accepted
+
+The author approved the following working distinctions for both language versions:
+- **Purpose:** the declared or attributed reason for the system's existence.
+- **Function:** an activity or contribution performed by the system.
+- **Objectives:** intended results, which may be multiple and may conflict.
+
+The manuscripts should preserve the distinction between these concepts and should not use the terms interchangeably. The Spanish and English versions will be authored independently while retaining equivalent meaning.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.7 System boundary and relevant interfaces in section 1.2 — accepted
+
+The author approved the following criterion for both language versions:
+
+The system boundary must not be presented merely as a list of elements classified as inside or outside the system. It must also identify relevant interfaces between the system of interest and its environment. In the water-distribution example, these may include:
+- the pumping station's connection to electrical supply;
+- its connection to control systems;
+- connections to upstream supply infrastructure; and
+- connections to downstream networks and consumption points.
+
+The boundary may have physical, functional, operational and temporal dimensions; it need not coincide with a physical perimeter. The manuscripts should explain this at an introductory level and preserve equivalent meaning while being authored independently.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.8 Environment and context in section 1.2 — accepted
+
+The author approved the following operational definitions for both language versions:
+
+- **Environment:** external elements, systems and conditions that interact with the system of interest or may be affected by it.
+- **Context:** the set of circumstances, relationships and conditions from which the problem and the system of interest are defined and interpreted.
+
+The chapter must state that this distinction is an editorial working convention adopted for this book to support analysis. It is not presented as a universal separation used identically across all disciplines.
+
+The Spanish and English manuscripts will express these definitions independently while preserving equivalent conceptual scope.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.9 Revisability of the system boundary in section 1.2 — accepted
+
+The author approved the criterion that the system boundary is not necessarily definitive. It may be revised when analysis or evidence reveals relevant dependencies, interfaces or effects that were initially excluded.
+
+Any revision must be justified by its relevance to the problem under examination; it must not become an arbitrary expansion of the system of interest. Both language versions should preserve this qualification and express it naturally in their independently authored text.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.10 Element and component terminology in section 1.3 — accepted
+
+The author approved **element** as the general term for any relevant part of a system identified in the analysis. **Component** may be used as a more specific term, commonly in technical and engineering systems, for a constituent part of the system.
+
+The distinction should remain flexible rather than being imposed as a rigid taxonomy where the disciplinary context does not require it. Both language versions should preserve the same conceptual relationship while using natural, independently authored wording.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.11 State and time in section 1.3 — accepted
+
+The author approved the following clarification for both language versions:
+
+A **state** is the condition of a system or element at a specified reference moment. Observations made across an interval form a sequence or trajectory of states, which can be used to examine the system's evolution and behaviour.
+
+The text should not conflate a state with the set of observations collected over a period. Both manuscripts should preserve this distinction with independently authored, natural wording.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.12 Properties and variables in section 1.3 — accepted
+
+The author approved the following distinction for both language versions:
+
+- **Property:** a characteristic attributed to an element or system, such as a pump's rated capacity.
+- **Variable:** a quantity or representation used to describe or track a relevant characteristic or condition, such as the flow delivered at a given moment.
+
+The text should clarify that not every property needs to be represented by a variable, and that a variable may be used to observe changes in a property or condition over time. Both manuscripts should retain this conceptual distinction and use equivalent examples, with independently authored wording.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.13 System behaviour and evidence in section 1.3 — accepted
+
+The author approved the following clarification for both language versions:
+
+System **behaviour** is characterised through patterns of operation, responses or changes in state observed or inferred under specified conditions. A single observation or measurement may describe a state, but is not normally sufficient on its own to establish a pattern of behaviour. Repeated observations or other evidence appropriate to the phenomenon are generally needed.
+
+The wording should avoid turning this into an absolute rule: the type and amount of evidence depend on the phenomenon and the question being examined. Both manuscripts should preserve the same qualification and conceptual scope, using independently authored wording.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+### 5.14 Unknown or unavailable information and deliberate omissions in section 1.3 — accepted
+
+The author approved the following distinction for both language versions:
+
+- **Unknown or unavailable information:** aspects for which sufficient information or accessible evidence is not available.
+- **Deliberate omissions:** aspects that are known or recognised but intentionally excluded from a description or model because of its scope, purpose or chosen level of detail.
+
+Both kinds of limitation should be documented when they may affect interpretation or conclusions. They must not be conflated: one concerns an information or evidence gap; the other concerns a representational decision.
+
+Both manuscripts should preserve this distinction with independently authored wording and equivalent conceptual scope.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+
+## 5. Review completion status
+
+The section-by-section conceptual review is complete for all nine sections. The status below distinguishes review completion from editorial decision, manuscript integration and verification.
+
+| Section | Spanish / English topic | Review status | Manuscript changes |
+|---|---|---|---|
+| 1.1 | ¿Qué entendemos por sistema? / What Do We Mean by a System? | reviewed — decisions pending | none |
+| 1.2 | Propósito, frontera, entorno y contexto / Purpose, Boundary, Environment and Context | reviewed — decisions pending | none |
+| 1.3 | Elementos, estados, propiedades y comportamientos / Elements, States, Properties and Behaviours | reviewed — decisions pending | none |
+| 1.4 | Actores, capacidades, recursos y dependencias / Actors, Capabilities, Resources and Dependencies | integrated and verified | Spanish v1.0; English v0.9 |
 | 1.5 | Relaciones, interacciones y estructura del sistema / Relationships, Interactions and System Structure | reviewed — decisions pending | none |
 | 1.6 | Sistemas abiertos, entornos cambiantes y tiempo / Open Systems, Changing Environments and Time | reviewed — decisions pending | none |
 | 1.7 | Las descripciones de sistemas son modelos: alcance, supuestos y omisiones / System Descriptions Are Models: Scope, Assumptions and Omissions | reviewed — decisions pending | none |
