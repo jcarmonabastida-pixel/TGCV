@@ -1030,3 +1030,16 @@ The text should not imply that every response is an adaptation or that adaptatio
 **Rationale:** This preserves the distinction between reacting to a change and developing or modifying the system in ways that affect how it copes with changing conditions, without assuming that such changes lead to improved performance.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+### 5.36 Section 1.6 — operational response and transformation — accepted
+
+The author approved distinguishing an **operational response or adjustment** from a **transformation** in both language versions. The distinction should be based on the nature and scope of the change, not solely on how long it lasts:
+
+- **Operational response or adjustment:** a modification of the system's state, behaviour or operating parameters that does not necessarily alter its fundamental configuration.
+- **Transformation:** a change that significantly modifies the system's configuration, organisation, relationships or capabilities and may therefore alter what the system is able to do.
+
+Duration may be relevant evidence, but it is not the decisive criterion. A brief change may trigger a structural transformation, while a prolonged modification may remain an operational adjustment.
+
+**Rationale:** This avoids classifying changes as transformations merely because they persist over time and keeps the distinction focused on changes to the system's organisation and capabilities.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
