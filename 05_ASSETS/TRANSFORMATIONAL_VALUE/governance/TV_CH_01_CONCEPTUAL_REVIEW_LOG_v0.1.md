@@ -924,3 +924,25 @@ The author approved clarifying the sensor example in both language versions: a *
 **Rationale:** This prevents a single sensor reading from being treated as a complete representation of a complex system and reinforces the distinction between measured variables and system state.
 
 **Disposition:** accepted. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.29 Section 1.5 — bilingual terminology and conceptual review closure — accepted
+
+The author approved the following common terminology baseline for both language versions:
+
+| Español | English |
+|---|---|
+| relación | relationship |
+| interacción | interaction |
+| estructura del sistema | system structure |
+| dependencia | dependency |
+| realimentación | feedback |
+| bucle de realimentación | feedback loop |
+| medición | measurement |
+| estado del sistema | system state |
+
+The equivalence is conceptual rather than a requirement for literal translation. Each manuscript should retain natural, independently authored wording while preserving the agreed distinctions and equivalent scope.
+
+The author also approved closing the **conceptual decision phase** for section 1.5, subject to manuscript integration and subsequent editorial checks. TV-DIA-002 remains a draft asset; this decision does not modify it or authorise its publication.
+
+**Disposition:** terminology baseline accepted; conceptual review decisions for section 1.5 closed. Manuscript integration remains pending. No manuscript text or visual asset has been changed by this decision.
