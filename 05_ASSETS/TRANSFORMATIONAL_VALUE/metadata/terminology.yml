@@ -119,8 +119,8 @@ terms:
       es: "supuesto"
       en: "assumption"
     definition:
-      es: "Proposición adoptada provisionalmente como válida para construir, utilizar o interpretar una descripción, análisis o modelo, sin que su validez haya quedado establecida como hecho para ese uso."
-      en: "A proposition provisionally taken to be valid when constructing, using or interpreting a description, analysis or model, without its validity having been established as fact for that use."
+      es: "Proposición adoptada explícitamente como válida para construir, utilizar o interpretar una descripción, análisis o modelo, aunque su validez no haya sido establecida como un hecho para ese propósito. Los supuestos delimitan las condiciones bajo las que se desarrolla el trabajo y pueden revisarse cuando cambia la información disponible o se cuestiona su validez."
+      en: "A proposition explicitly adopted as valid for constructing, using or interpreting a description, analysis or model, even though its validity has not been established as fact for that purpose. Assumptions define the conditions under which the work is carried out and may be revised when available information changes or their validity is questioned."
     related_terms: [TV-TERM-011]
     status: draft
     notes: "Chapter 1. A measured, estimated or specified input or parameter is not automatically an assumption; distinguish assumptions from quantified uncertainty."
