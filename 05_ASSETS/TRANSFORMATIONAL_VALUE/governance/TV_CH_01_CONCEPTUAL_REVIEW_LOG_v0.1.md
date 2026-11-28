@@ -900,3 +900,18 @@ The author approved treating dependencies in section 1.5 as a relevant form of s
 **Rationale:** This maintains conceptual continuity between sections 1.4 and 1.5, avoids unnecessary repetition, and keeps the focus of section 1.5 on relationships and their structural representation.
 
 **Disposition:** accepted. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.27 Section 1.5 — feedback-loop definition — accepted
+
+The author approved the following clarification for both language versions: a **feedback loop** exists when a closed chain of influences causes an outcome of the system to affect its subsequent operation or regulation.
+
+Two qualifications must be retained:
+- A return arrow in a diagram is not sufficient by itself; there must be a chain of influence that closes the loop.
+- Feedback may have stabilising or amplifying effects. It does not necessarily correct or reduce variation.
+
+The explanation should remain introductory and should not expand into a technical taxonomy of feedback loops.
+
+**Rationale:** This provides a more precise operational explanation of feedback while preventing readers from equating it with any graphical return connection or assuming that all feedback is corrective.
+
+**Disposition:** accepted. Manuscript integration remains pending; no manuscript text has been changed by this decision.
