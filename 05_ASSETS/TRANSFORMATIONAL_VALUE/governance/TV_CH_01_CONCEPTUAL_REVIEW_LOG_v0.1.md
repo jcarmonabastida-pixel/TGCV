@@ -2004,3 +2004,66 @@ The author approved the revised bilingual definition of `TV-TERM-016 — prefere
 > A criterion or priority expressing which attributes, conditions or outcomes are valued more when comparing alternatives that meet the applicable requirements. Preferences may differ in importance, be qualitative or quantifiable, and conflict with one another, resulting in trade-offs between alternatives. In themselves, they do not necessarily constitute mandatory acceptance conditions.
 
 The revision clarifies the comparative role of preferences among alternatives that satisfy applicable requirements, while allowing qualitative or quantitative expression, differing importance and conflicts that require trade-offs. Preferences do not by themselves override mandatory acceptance requirements. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
+
+
+### 5.83 Sections 1.4, 1.5, 1.7 and 1.9 — author-approved follow-up editorial corrections
+
+Following the section-by-section bilingual review, the author approved the following additional corrections for integration into the Spanish and English Chapter 1 manuscripts.
+
+**Section 1.4 — Dependency / Dependencia**
+
+The author approved aligning the opening formulation with the canonical scope of `TV-TERM-008`, while retaining actors and activities as examples in the explanatory text.
+
+Approved Spanish wording:
+
+> Existe una **dependencia** cuando el funcionamiento, la disponibilidad o la capacidad de un elemento, proceso o sistema para alcanzar un resultado está condicionada por una contribución, servicio, estado o condición proporcionada por otro elemento.
+
+Approved English wording:
+
+> A **dependency** exists when the operation, availability or ability of an element, process or system to achieve an outcome is conditioned by a contribution, service, state or condition provided by another element.
+
+**Section 1.5 — Feedback loops / Bucles de realimentación**
+
+The author approved replacing the imprecise expression “estabilizadores o amplificadores” / “stabilising or amplifying” with the canonical distinction between reinforcing and balancing loops.
+
+Approved Spanish wording:
+
+> Los bucles de realimentación pueden ser reforzadores, cuando amplifican una tendencia o cambio, o compensadores, cuando contrarrestan una desviación o contribuyen a regular una variable. Su efecto depende de las relaciones, los retardos, las reglas de control y las condiciones de operación.
+
+Approved English wording:
+
+> Feedback loops may be reinforcing, when they amplify a trend or change, or balancing, when they counteract a deviation or contribute to regulating a variable. Their effects depend on the relationships, delays, control rules and operating conditions involved.
+
+**Section 1.7 — Assumptions / Supuestos**
+
+The author approved consolidating the repeated warning about assumptions. The explanatory distinction among observed facts, estimates, technical specifications, assumptions and quantified uncertainty is to be retained. The repeated warning is to be replaced by the following concise example.
+
+Approved Spanish wording:
+
+> Si no sabemos si una bomba estará disponible, debemos registrar esa condición como desconocida o formular explícitamente un supuesto. No podemos presentarla como un dato confirmado simplemente porque el modelo necesite una condición de partida.
+
+Approved English wording:
+
+> If we do not know whether a pump will be available, we should record that condition as unknown or explicitly formulate an assumption. We cannot present it as confirmed data simply because the model requires a starting condition.
+
+**Section 1.9 — Chapter closure / Cierre del capítulo**
+
+The author approved a precision adjustment in Spanish. The English wording already expresses the intended meaning and is to remain unchanged.
+
+Approved Spanish wording:
+
+> La configuración de elementos, recursos y relaciones condiciona lo que un sistema puede hacer, así como las opciones de cambio que tiene a su alcance.
+
+English disposition: retain the existing wording, “The configuration of elements, resources and relationships shapes what a system can do, as well as the options for change available to it.”
+
+**Integration and verification status**
+
+These are author-approved editorial decisions, not evidence of manuscript integration. They must be incorporated independently into the original-language manuscripts, then re-fetched and checked. Until that work is completed, these corrections remain pending integration and bilingual verification.
+
+The current manuscript blob SHAs observed during this reconciliation were:
+- Spanish: `4cef1705a4c84c55a8b37932eacacaf3708e5d36` (version 1.9).
+- English: `b2af3616c9f70f5e75a87296df21f832912f29b1` (version 1.8).
+
+**Traceability note:** the terminology review log contains individual definition-review entries for `TV-TERM-002` through `TV-TERM-012` except `TV-TERM-013`, and then `TV-TERM-014` through `TV-TERM-016`. The omission of an individual `TV-TERM-013` review entry remains an unresolved documentation gap. No approval is inferred from its presence in the terminology register or its use in the manuscript.
+
+**Disposition:** follow-up corrections approved; integration and verification pending. No manuscript text or terminology-register entry was changed by this record.
