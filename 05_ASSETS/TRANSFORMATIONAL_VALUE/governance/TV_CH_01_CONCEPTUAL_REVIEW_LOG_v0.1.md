@@ -2098,3 +2098,28 @@ Post-update retrieval confirmed the new version metadata and the approved wordin
 Both manuscripts remain `draft`.
 
 **Disposition:** the four follow-up corrections are integrated and verified. The separate `TV-TERM-013` review-log traceability gap identified in section 5.83 remains unresolved and must be addressed from an authoritative author-approval record; no approval is inferred.
+
+### 5.85 Terminology definition review — TV-TERM-013 approved
+
+The author approved the bilingual definition of `TV-TERM-013 — bottleneck` during the Chapter 1 terminology review. This entry restores the missing individual traceability record between the approved reviews of `TV-TERM-012` (§5.79) and `TV-TERM-014` (§5.80).
+
+**Canonical preferred terms**
+- Spanish: cuello de botella
+- English: bottleneck
+
+**Approved Spanish definition**
+
+> Elemento, capacidad o proceso cuya limitación restringe de manera significativa el rendimiento del conjunto respecto a un resultado determinado.
+
+**Approved English definition**
+
+> An element, capability or process whose limitation significantly constrains the performance of the whole in relation to a specified outcome.
+
+**Conceptual distinctions preserved**
+- A bottleneck is defined relative to a specified outcome.
+- Not every constraint is a bottleneck.
+- The bottleneck may shift when the system configuration or operating conditions change.
+
+The wording above matches the bilingual definition currently stored in the shared terminology registry. This entry records the author's prior conceptual approval; it does not change the terminology registry, whose status remains `draft`, nor does it imply publication approval.
+
+**Disposition:** definition review approved and traceability entry restored. Registry status remains `draft` pending the applicable formal terminology approval/integration procedure.
