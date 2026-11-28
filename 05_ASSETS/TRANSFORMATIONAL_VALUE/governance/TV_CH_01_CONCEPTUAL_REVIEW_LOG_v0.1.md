@@ -1003,3 +1003,17 @@ The explanation should distinguish the existence of an exchange across the syste
 **Rationale:** The presence of a resource or service at the boundary does not establish that the system can access, integrate or use it to perform its functions.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+### 5.34 Section 1.6 — temporal references in system analysis — accepted
+
+The author approved distinguishing three temporal references in both language versions:
+
+1. **Observation time:** when a measurement is taken or a system state is recorded.
+2. **Data coverage period:** the time interval from which the evidence used in the analysis is drawn.
+3. **Conclusion horizon:** the period to which the analysis's interpretations or conclusions apply.
+
+The explanation should make clear that these references are related but not interchangeable. A point measurement does not, by itself, establish that an operating condition or behaviour persists over a longer period. Conclusions should be proportionate to the temporal coverage and nature of the available evidence.
+
+**Rationale:** This prevents a measurement taken at one moment, or evidence covering a limited interval, from being used to support conclusions that imply persistence or validity over a substantially longer horizon without adequate justification.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
