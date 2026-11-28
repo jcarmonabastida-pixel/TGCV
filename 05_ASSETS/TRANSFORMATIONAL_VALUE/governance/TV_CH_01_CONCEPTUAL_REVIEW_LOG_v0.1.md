@@ -747,3 +747,18 @@ System-level capability must not be presented as the simple sum of individual ca
 Both manuscripts should preserve this distinction with natural, independently authored wording and equivalent conceptual scope.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+
+### 5.18 Competence, capability and effective availability in section 1.4 — accepted
+
+The author approved the following distinction for both language versions:
+
+- **Competence:** the knowledge and skills a person or organisation has to perform an activity.
+- **Capability:** the ability or possibility to perform that activity, taking into account the means and conditions required.
+- **Effective availability:** whether that capability can actually be exercised at a particular time and in a particular context, considering constraints such as authority, access, resources, workload or operational state.
+
+The illustrative example may describe a technician who has the competence to repair a pump but lacks authorisation or tools, and therefore cannot effectively perform the repair at that moment.
+
+Both manuscripts should preserve the conceptual distinctions and the example's meaning, using natural, independently authored wording. The text should avoid implying that these terms have one universal definition across all disciplines; they are working distinctions for this introductory chapter.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
