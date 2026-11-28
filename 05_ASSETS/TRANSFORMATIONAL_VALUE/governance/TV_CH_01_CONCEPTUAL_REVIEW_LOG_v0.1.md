@@ -1865,3 +1865,20 @@ The author approved the revised bilingual definition of `TV-TERM-006 — emergen
 The revision emphasises that emergence concerns behaviour or patterns arising from interactions among system elements and their organisation, rather than system behaviour in general. It also distinguishes limited explanatory power of isolated element-level descriptions from absolute unpredictability or inexplicability. The term's note that not all system behaviour is emergent remains applicable.
 
 The approved definitions were updated in the shared terminology registry and re-fetched from the research branch. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript changes were made in this step.
+
+
+### 5.74 Terminology definition review — TV-TERM-007 approved
+
+The author approved the revised bilingual definition of `TV-TERM-007 — system_capability`.
+
+**Approved Spanish definition:**
+
+> Aptitud del sistema, considerado como conjunto, para realizar una acción o alcanzar un resultado bajo determinadas condiciones. Esta capacidad depende de la combinación y coordinación de sus recursos, competencias, relaciones y condiciones operativas. Que exista una capacidad no implica que esté siempre disponible o pueda ejercerse efectivamente en cualquier situación.
+
+**Approved English definition:**
+
+> The ability of the system, considered as a whole, to perform an action or achieve an outcome under specified conditions. This capability depends on the combination and coordination of its resources, competencies, relationships and operating conditions. The existence of a capability does not mean that it is always available or can be exercised effectively in every situation.
+
+The revision defines capability at system level and makes clear that its existence does not imply continuous availability or effective exercise under every situation. It retains the role of resources, competencies, relationships and operating conditions, while preserving the distinction from individual competence and a component's nominal technical capacity.
+
+The approved definitions were updated in the shared terminology registry and re-fetched from the research branch. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript changes were made in this step.
