@@ -1,0 +1,13 @@
+name: C10-S M1 launch
+
+on: [push, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm workflow registration only
+        run: echo "Workflow registered. Push does not execute the experiment."
