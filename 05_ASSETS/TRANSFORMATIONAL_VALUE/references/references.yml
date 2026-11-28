@@ -1,5 +1,5 @@
 schema_version: 0.1
-last_updated: 2026-11-26
+last_updated: 2026-11-28
 references:
   - id: TV-REF-001
     type: impact_evaluation_report
@@ -66,3 +66,52 @@ references:
     url: "https://springernature.figshare.com/articles/dataset/Full_dataset/21345990"
     licence: "CC0"
     note: "Published source archive used for the bounded temporal software-package analysis. The retained local archive was matched to the published file by filename, size and MD5. The licence statement applies to the dataset item; it does not automatically license every derived artefact or software product."
+
+  - id: TV-REF-007
+    type: book
+    authors:
+      - Donella H. Meadows
+    editors:
+      - Diana Wright
+    year: 2008
+    title: "Thinking in Systems: A Primer"
+    publication: "Chelsea Green Publishing"
+    isbn: "978-1-60358-055-7"
+    url: "https://www.chelseagreen.com/product/thinking-in-systems/"
+    language: en
+    note: "Introductory systems-thinking reference, particularly relevant to relationships, feedback and system behaviour. Recommended as complementary reading for Chapter 1; it is not the authority for every working definition adopted in the chapter."
+  - id: TV-REF-008
+    type: technical_handbook
+    authors:
+      - "International Council on Systems Engineering (INCOSE)"
+    editors:
+      - David D. Walden
+      - Thomas M. Shortell
+      - Garry J. Roedler
+      - Bernardo A. Delicado
+      - Odile Mornas
+      - Yip Yew-Seng
+      - David Endler
+    year: 2023
+    title: "Systems Engineering Handbook: A Guide for System Life Cycle Processes and Activities"
+    edition: "5th"
+    publication: "John Wiley & Sons"
+    report_number: "INCOSE-TP-2003-002-05"
+    isbn: "978-1-119-81429-0"
+    url: "https://www.wiley.com/en-us/INCOSE%2BSystems%2BEngineering%2BHandbook%2C%2B5th%2BEdition-p-9781119814290"
+    language: en
+    note: "Core systems-engineering reference for system concepts, system boundary and system of interest, emergence, interfacing systems, states and modes, and systems thinking. Recommended for selective use across Chapter 1; working definitions in the chapter remain editorial formulations."
+  - id: TV-REF-009
+    type: technical_handbook
+    authors:
+      - Steven R. Hirshorn
+      - Linda D. Voss
+      - Linda K. Bromley
+    year: 2016
+    title: "NASA Systems Engineering Handbook"
+    publication: "National Aeronautics and Space Administration"
+    report_number: "NASA/SP-2016-6105 Rev 2"
+    url: "https://ntrs.nasa.gov/citations/20170001761"
+    full_text_url: "https://ntrs.nasa.gov/api/citations/20170001761/downloads/20170001761.pdf"
+    language: en
+    note: "NASA systems-engineering handbook relevant to fundamentals, stakeholder expectations, interface management and decision analysis. The report identifier carries 2016; the NASA Technical Reports Server catalogue records a publication date of 2017-02-17."
