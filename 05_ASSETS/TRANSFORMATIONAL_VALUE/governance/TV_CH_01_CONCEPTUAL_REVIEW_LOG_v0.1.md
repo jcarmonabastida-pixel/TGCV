@@ -1882,3 +1882,20 @@ The author approved the revised bilingual definition of `TV-TERM-007 — system_
 The revision defines capability at system level and makes clear that its existence does not imply continuous availability or effective exercise under every situation. It retains the role of resources, competencies, relationships and operating conditions, while preserving the distinction from individual competence and a component's nominal technical capacity.
 
 The approved definitions were updated in the shared terminology registry and re-fetched from the research branch. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript changes were made in this step.
+
+
+### 5.75 Terminology definition review — TV-TERM-008 approved
+
+The author approved the revised bilingual definition of `TV-TERM-008 — dependency`.
+
+**Approved Spanish definition:**
+
+> Relación en la que el funcionamiento, la disponibilidad o la capacidad de un elemento, proceso o sistema para alcanzar un resultado está condicionada por una condición, recurso, capacidad o contribución de otro elemento, proceso o sistema. La dependencia puede ser total o parcial, crítica o sustituible, y no implica necesariamente una relación recíproca.
+
+**Approved English definition:**
+
+> A relationship in which the operation, availability or ability of an element, process or system to achieve an outcome is conditioned by a condition, resource, capability or contribution from another element, process or system. The dependency may be total or partial, critical or substitutable, and does not necessarily imply a reciprocal relationship.
+
+The revision makes dependency more specific than a generic relationship: it conditions operation, availability or the ability to achieve an outcome. It recognises dependencies that are total or partial, critical or substitutable, and potentially asymmetric rather than necessarily reciprocal. The distinction from a constraint is preserved: a dependency describes a conditioning relationship, whereas a constraint limits available alternatives or achievable performance or outcomes.
+
+The approved bilingual definitions were updated in the shared terminology registry and re-fetched from the research branch. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
