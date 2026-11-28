@@ -107,8 +107,8 @@ terms:
       es: "bucle de realimentación"
       en: "feedback loop"
     definition:
-      es: "Cadena cerrada de influencias entre elementos o variables de un sistema en la que un resultado, directa o indirectamente, vuelve a afectar a las condiciones o al comportamiento que contribuyeron a producirlo."
-      en: "A closed chain of influences among system elements or variables in which an outcome, directly or indirectly, feeds back to affect the conditions or behaviour that contributed to producing it."
+      es: "Estructura de relaciones causales cerrada en la que los efectos de un proceso, directa o indirectamente, vuelven a influir en las condiciones o procesos que contribuyeron a generarlos, afectando así al comportamiento posterior del sistema. Los bucles de realimentación pueden ser reforzadores, cuando amplifican una tendencia o cambio, o compensadores, cuando contrarrestan una desviación o contribuyen a regular una variable. Estas denominaciones describen el comportamiento del bucle, no su carácter beneficioso o perjudicial."
+      en: "A closed structure of causal relationships in which the effects of a process, directly or indirectly, feed back to influence the conditions or processes that contributed to generating them, thereby affecting the subsequent behaviour of the system. Feedback loops may be reinforcing, when they amplify a trend or change, or balancing, when they counteract a deviation or contribute to regulating a variable. These terms describe the behaviour of the loop, not whether it is beneficial or harmful."
     related_terms: [TV-TERM-006]
     status: draft
     notes: "Chapter 1. A return arrow alone does not establish a feedback loop; loops may reinforce or counteract change."
