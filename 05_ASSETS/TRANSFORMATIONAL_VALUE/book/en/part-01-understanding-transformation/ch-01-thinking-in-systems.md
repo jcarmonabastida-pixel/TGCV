@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 1.8
+version: 1.9
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -330,7 +330,7 @@ Resources should not be confused with capabilities. Diagnostic equipment is a re
 
 ### Dependencies and constraints: what is required and what limits action
 
-A **dependency** exists when the functioning, availability or outcome of an activity, actor or component requires a contribution, service, state or condition provided by another element.
+A **dependency** exists when the operation, availability or ability of an element, process or system to achieve an outcome is conditioned by a contribution, service, state or condition provided by another element.
 
 For example, a repair may depend on spare parts being available, maintenance personnel having access to the site, and the possibility of temporarily interrupting supply. The operation of a pumping station may depend on electricity, water availability and the functioning of its control systems.
 
@@ -416,7 +416,7 @@ A **feedback loop** exists when a closed chain of influences causes an outcome o
 
 In a water network, a sensor may detect a pressure drop; the control system interprets the signal and adjusts a pump; the change in pumping affects pressure, which is measured again. Information about the result thus influences a subsequent decision or action and closes the chain of influences.
 
-A return arrow pointing to an earlier element in a diagram is not, by itself, enough to identify feedback: there must be a chain of influences that closes the loop. Feedback may have stabilising or amplifying effects; it does not necessarily correct or reduce variation. Its effect depends on the relationships, delays, control rules and operating conditions involved.
+A return arrow pointing to an earlier element in a diagram is not, by itself, enough to identify feedback: there must be a chain of influences that closes the loop. Feedback loops may be reinforcing, when they amplify a trend or change, or balancing, when they counteract a deviation or contribute to regulating a variable. Their effects depend on the relationships, delays, control rules and operating conditions involved.
 
 ### Measuring and representing structure without losing meaning
 
@@ -569,7 +569,7 @@ Assumptions are conditions adopted for the purpose of analysis. Some simplify co
 
 For example, an analysis of the network might assume that demand remains constant over an interval, that certain items of equipment are available or that pipe characteristics do not change during the period under study. Such assumptions may be reasonable for a particular question and a limited time horizon, but not under other circumstances.
 
-An assumption must not be confused with an observed fact. Nor is it the same as quantified uncertainty. If we do not know whether a pump will be available, we cannot present its availability as confirmed data simply because the model requires a starting condition.
+If we do not know whether a pump will be available, we should record that condition as unknown or explicitly formulate an assumption. We cannot present it as confirmed data simply because the model requires a starting condition.
 
 Assumptions that may influence results should be recorded, their rationale explained and the conditions under which they would no longer be acceptable identified. Where possible, we can examine how conclusions change when the most relevant assumptions are varied.
 
