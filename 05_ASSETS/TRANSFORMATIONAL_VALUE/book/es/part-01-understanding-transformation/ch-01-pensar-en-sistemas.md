@@ -5,7 +5,7 @@ title: "Pensar en sistemas"
 language: es
 content_type: chapter
 status: draft
-version: 1.10
+version: 1.11
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -644,7 +644,7 @@ No se trata de elegir siempre el nivel más amplio. Se trata de seleccionar el n
 
 ### Restricciones, cuellos de botella e interdependencias
 
-Una **restricción** es una condición que limita las alternativas disponibles, el rendimiento o los resultados posibles. Un **cuello de botella** es un elemento, capacidad o proceso cuya limitación restringe de forma significativa el rendimiento del conjunto respecto a un resultado determinado. Puede haber restricciones que no sean el factor limitante dominante, y un cuello de botella puede desplazarse cuando cambia la configuración del sistema.
+Una **restricción** es una condición que limita las alternativas disponibles, el rendimiento o los resultados posibles. Un **cuello de botella** es un elemento, capacidad o proceso cuya limitación restringe de manera significativa el rendimiento del sistema en relación con un resultado determinado y bajo unas condiciones específicas. Su identificación depende de cómo se organiza y opera el conjunto, y puede cambiar cuando se modifican sus capacidades, configuración o condiciones de funcionamiento. Puede haber restricciones que no sean el factor limitante dominante, y un cuello de botella puede desplazarse cuando cambia la configuración del sistema.
 
 Las mejoras locales pueden modificar las condiciones de funcionamiento de otras partes, incluso si estas no se intervienen directamente. A través de las relaciones, interfaces y dependencias, pueden cambiar los flujos, las cargas, la distribución de recursos o las necesidades de coordinación. Estos efectos pueden generar beneficios, costes o nuevos compromisos; también pueden producir sinergias y no deben suponerse necesariamente negativos.
 
