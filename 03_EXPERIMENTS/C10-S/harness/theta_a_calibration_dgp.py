@@ -173,7 +173,7 @@ class ThetaACalibrationDGPFactory:
         d2_assignment_config = D2ObservedAssignmentConfig(
             mechanism_id="D2-PACKAGE-Z-RANDOMIZATION",
             mechanism_version="1",
-            randomization_salt=f"D2-PACKAGE-Z-SALT-{theta_a_mode.upper()}",
+            randomization_salt="D2-PACKAGE-Z-SALT",
             probability_z1_by_history=tuple(
                 (row.history_ref, 0.5) for row in world.q_x
             ),
