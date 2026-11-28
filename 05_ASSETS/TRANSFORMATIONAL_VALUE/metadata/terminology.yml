@@ -143,8 +143,8 @@ terms:
       es: "restricción"
       en: "constraint"
     definition:
-      es: "Condición, límite o regla que reduce las alternativas disponibles o limita el rendimiento o los resultados que pueden alcanzarse en una situación determinada."
-      en: "A condition, limit or rule that reduces the available alternatives or constrains the performance or outcomes that can be achieved in a given situation."
+      es: "Condición, límite o regla, de origen interno o externo al sistema, que reduce las alternativas, acciones o condiciones de operación disponibles, o limita el rendimiento o los resultados que pueden alcanzarse en una situación determinada. Su efecto debe interpretarse en relación con el propósito y las condiciones del análisis."
+      en: "A condition, limit or rule, originating within or outside the system, that reduces the available alternatives, actions or operating conditions, or constrains the performance or outcomes that can be achieved in a given situation. Its effect must be interpreted in relation to the purpose and conditions of the analysis."
     related_terms: [TV-TERM-013, TV-TERM-014, TV-TERM-015, TV-TERM-016]
     status: draft
     notes: "Chapter 1. A constraint is not necessarily the dominant limiting factor or a bottleneck."
