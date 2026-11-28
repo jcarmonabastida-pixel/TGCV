@@ -1730,3 +1730,49 @@ The chapter currently uses British English spellings and terminology (for exampl
 **Disposition and next decision**
 
 The audit is complete. The recommended shortlist comprises 15 controlled concepts. No IDs have been allocated and no entries have been added. The next step is author approval or amendment of the shortlist. Following approval, create bilingual definitions and stable IDs in the central terminology register, then update the `concepts` metadata in both manuscripts and create glossary pages only if the agreed publishing workflow requires them. Chapter 1 remains `draft` and is not editorially closed.
+
+
+### 5.68 Chapter 1 terminology — approved shortlist registered and linked
+
+The author approved the 15-concept shortlist in §5.67.3, including the preferred Spanish and English labels. The concepts have now been added to the shared terminology registry with stable IDs and independently drafted bilingual definitions.
+
+**Canonical terminology records created:**
+
+| ID | Concept | Spanish preferred term | English preferred term |
+|---|---|---|---|
+| TV-TERM-002 | System of interest | sistema de interés | system of interest |
+| TV-TERM-003 | System boundary | frontera del sistema | system boundary |
+| TV-TERM-004 | Environment | entorno | environment |
+| TV-TERM-005 | Context | contexto | context |
+| TV-TERM-006 | Emergent behaviour | comportamiento emergente | emergent behaviour |
+| TV-TERM-007 | System capability | capacidad del sistema | system capability |
+| TV-TERM-008 | Dependency | dependencia | dependency |
+| TV-TERM-009 | Feedback loop | bucle de realimentación | feedback loop |
+| TV-TERM-010 | Assumption | supuesto | assumption |
+| TV-TERM-011 | Deliberate omission | omisión deliberada | deliberate omission |
+| TV-TERM-012 | Constraint | restricción | constraint |
+| TV-TERM-013 | Bottleneck | cuello de botella | bottleneck |
+| TV-TERM-014 | Requirement | requisito | requirement |
+| TV-TERM-015 | Performance objective | objetivo de rendimiento | performance objective |
+| TV-TERM-016 | Preference | preferencia | preference |
+
+**Definition and governance status**
+
+- Each record contains an independently authored Spanish and English working definition, related-term links and a note preserving the distinctions established in Chapter 1.
+- The definitions are marked `draft`. Author approval of the shortlist and preferred labels does not imply approval of the proposed definition wording or publication readiness.
+- Environment/context are explicitly documented as the chapter's operational editorial convention, not a universal disciplinary distinction.
+- Requirement, performance objective and preference are cross-linked.
+- The existing `TV-TERM-001` record remains unchanged.
+- No separate language-specific glossary pages have been created: the shared terminology registry is the canonical definition source, consistent with the glossary README instruction not to duplicate definitions across language folders.
+
+**Manuscript metadata linked:**
+- Spanish manuscript updated to version 1.9; `concepts` now lists `TV-TERM-002` through `TV-TERM-016`.
+- English manuscript updated to version 1.8; `concepts` now lists the same stable IDs.
+- The prose has not been rewritten in this operation. Existing chapter wording remains subject to the later terminology and editorial consistency review.
+
+**Files updated and re-fetched from the research branch:**
+- Shared terminology registry: `05_ASSETS/TRANSFORMATIONAL_VALUE/metadata/terminology.yml`, blob SHA `fac979d637e31c3908b4236e762dd9bf2145e52d`.
+- Spanish manuscript: version 1.9, blob SHA `4cef1705a4c84c55a8b37932eacacaf3708e5d36`.
+- English manuscript: version 1.8, blob SHA `b2af3616c9f70f5e75a87296df21f832912f29b1`.
+
+**Disposition:** the approved shortlist is registered and linked from both manuscripts. The bilingual definitions remain drafts and require review before approval. The next step is to review the 15 definition pairs for conceptual precision and bilingual equivalence, then check whether the manuscript's first-use wording aligns with the preferred terms. Chapter 1 remains `draft`; this operation does not close the chapter.
