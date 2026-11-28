@@ -1121,3 +1121,19 @@ The text should avoid classifying every value entered into a model as an assumpt
 **Rationale:** The origin and epistemic status of an input value should be made explicit. A model input may be supported by observation or specification, estimated from evidence, or adopted as an assumption; these are not interchangeable categories.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.42 Section 1.7 — deliberate omissions and unknown information — accepted
+
+The author approved clarifying in both language versions the distinction between a **deliberate omission** and **unknown or unavailable information**:
+
+- **Deliberate omission:** an aspect that is known or recognised but intentionally excluded from the representation for reasons of scope, purpose or simplicity.
+- **Unknown or unavailable information:** an aspect for which sufficient information or accessible evidence is not available to represent it adequately.
+
+The text must not describe an unknown dependency as though it had been deliberately excluded. Nor should the absence of an element or relationship from a model be treated as evidence that the element or relationship does not exist.
+
+Section 1.7 should briefly refer back to the distinction established in section 1.3 rather than repeat its full explanation.
+
+**Rationale:** This preserves the epistemic distinction between a conscious modelling choice and a limitation arising from insufficient knowledge or evidence, while maintaining continuity across the chapter.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
