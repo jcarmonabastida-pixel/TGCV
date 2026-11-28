@@ -5,7 +5,7 @@ title: "Pensar en sistemas"
 language: es
 content_type: chapter
 status: draft
-version: 1.3
+version: 1.4
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -562,78 +562,103 @@ Piensa en un sistema que conozcas y en una representación que se utilice para d
 
 ### Mejorar una parte no siempre mejora el conjunto
 
-En muchos sistemas, el rendimiento global depende de la contribución coordinada de múltiples componentes. Por eso, una mejora local no garantiza una mejora del sistema. Un componente puede funcionar con mayor eficiencia y, aun así, trasladar costes, restricciones o problemas a otras partes de la configuración.
+En muchos sistemas, el rendimiento del conjunto depende de la contribución coordinada de múltiples componentes. Por eso, una mejora local no garantiza una mejora del sistema. Un componente puede funcionar con mayor eficiencia y, aun así, trasladar costes, restricciones o problemas a otras partes.
 
-En una red de suministro de agua, sustituir una bomba por otra de mayor capacidad puede aumentar el caudal disponible en una estación. Pero también puede elevar el consumo energético, modificar las presiones en determinados tramos o exigir cambios en válvulas y controles. Si evaluamos únicamente la bomba, podríamos considerar la intervención un éxito sin comprobar sus consecuencias sobre el servicio completo.
+En una red de suministro de agua, sustituir una bomba por otra de mayor capacidad puede aumentar el caudal disponible en una estación. Sin embargo, también puede elevar el consumo energético, modificar las presiones en determinados tramos o exigir cambios en válvulas, conducciones y controles. Evaluar únicamente la bomba podría llevarnos a considerar exitosa la intervención sin comprobar sus consecuencias sobre el servicio completo.
 
-La optimización de componentes sigue siendo necesaria. El problema aparece cuando se toma el rendimiento local como sustituto del rendimiento del sistema.
+La optimización de componentes sigue siendo necesaria. El problema aparece cuando el rendimiento local se toma como sustituto del rendimiento del sistema.
 
-### Optimización local y rendimiento global
+### Optimización local y razonamiento a escala de sistema
 
-La **optimización local** busca mejorar el comportamiento de un elemento o subsistema respecto a uno o varios criterios. La **optimización a escala de sistema** considera cómo las decisiones afectan al conjunto, teniendo en cuenta las interacciones, dependencias, restricciones y resultados que atraviesan sus fronteras internas.
+La **optimización local** busca mejorar uno o varios criterios de un componente o subsistema. El **razonamiento a escala de sistema** examina las consecuencias de las decisiones para el conjunto relevante, sus dependencias y el entorno que resulte pertinente para la decisión.
+
+Razonar a escala de sistema no significa necesariamente resolver un problema matemático de optimización global. Tampoco implica que todos los criterios puedan maximizarse simultáneamente: algunos pueden entrar en conflicto.
 
 | Foco de la decisión | Pregunta principal | Riesgo si se analiza de forma aislada |
 |---|---|---|
 | Componente | ¿Cómo puede funcionar mejor este equipo? | Mejorar su rendimiento a costa de otras partes |
-| Subsistema | ¿Cómo coordinamos los elementos que realizan una función? | Desplazar el cuello de botella a otro subsistema |
-| Sistema | ¿Cómo alcanza el conjunto los resultados requeridos? | Ignorar efectos externos o consecuencias a largo plazo si la frontera es demasiado estrecha |
+| Subsistema | ¿Cómo coordinamos los elementos que realizan una función? | Desplazar una limitación relevante a otro subsistema |
+| Sistema | ¿Cómo alcanza el conjunto los resultados requeridos? | Ignorar dependencias, efectos externos o consecuencias posteriores |
 
-No se trata de elegir siempre el nivel más amplio. Se trata de seleccionar el nivel de análisis adecuado para la decisión y comprobar las consecuencias relevantes en los niveles conectados.
+No se trata de elegir siempre el nivel más amplio. Se trata de seleccionar el nivel de análisis adecuado para la decisión y examinar las consecuencias relevantes en los niveles conectados.
 
-### Interfaces, restricciones y efectos indirectos
+### Restricciones, cuellos de botella e interdependencias
 
-Las mejoras locales pueden propagarse a través de las interfaces y dependencias del sistema. Una modificación en un componente puede alterar las condiciones de operación de otros, cambiar la distribución de recursos o generar nuevas necesidades de coordinación.
+Una **restricción** es una condición que limita las alternativas disponibles, el rendimiento o los resultados posibles. Un **cuello de botella** es un elemento, capacidad o proceso cuya limitación restringe de forma significativa el rendimiento del conjunto respecto a un resultado determinado. Puede haber restricciones que no sean el factor limitante dominante, y un cuello de botella puede desplazarse cuando cambia la configuración del sistema.
 
-En la red de agua, aumentar la capacidad de bombeo puede desplazar la limitación desde la estación hacia una conducción, una válvula o la capacidad de almacenamiento. La intervención puede resolver una restricción y hacer visible otra que antes no era determinante. También puede aumentar la demanda de energía o mantenimiento.
+Las mejoras locales pueden modificar las condiciones de funcionamiento de otras partes, incluso si estas no se intervienen directamente. A través de las relaciones, interfaces y dependencias, pueden cambiar los flujos, las cargas, la distribución de recursos o las necesidades de coordinación. Estos efectos pueden generar beneficios, costes o nuevos compromisos; también pueden producir sinergias y no deben suponerse necesariamente negativos.
 
-Por eso, antes de introducir una mejora conviene identificar:
+En la red de agua, aumentar la capacidad de bombeo puede aliviar una limitación en la estación y hacer más relevante la capacidad de una conducción, una válvula o un depósito. También puede mejorar el suministro en una zona y, al mismo tiempo, aumentar el consumo energético o las necesidades de mantenimiento. El efecto depende de la configuración y de las relaciones entre las partes.
 
-- qué elementos y funciones se verán afectados;
-- qué restricciones pueden limitar el resultado;
-- dónde podría desplazarse un cuello de botella;
-- qué dependencias o recursos adicionales aparecerán;
-- qué efectos indirectos podrían producirse en otras partes del sistema o en su entorno.
+Por ello, conviene identificar qué elementos y funciones pueden verse afectados, qué dependencias condicionan el resultado, qué recursos adicionales podrían necesitarse y qué efectos indirectos podrían aparecer. No toda mejora local desplaza necesariamente un cuello de botella ni toda interdependencia produce un efecto adverso.
 
-Estas preguntas no exigen modelizarlo todo. Ayudan a evitar que el análisis termine justo en el límite del componente intervenido.
+### Requisitos, objetivos de rendimiento y preferencias
 
-### Los criterios de rendimiento pueden entrar en conflicto
+El rendimiento de un sistema rara vez se resume en una única medida. Una red de agua puede evaluarse por la continuidad del suministro, la calidad, la presión, el consumo energético, los costes de operación, el tiempo de recuperación y los efectos ambientales. Mejorar un criterio puede perjudicar otro.
 
-El rendimiento de un sistema rara vez se resume en una única medida. Una red de agua puede evaluarse por continuidad del suministro, calidad, presión, consumo energético, costes de operación, tiempo de recuperación y efectos ambientales. Mejorar uno de estos criterios puede perjudicar otro.
+Para comparar alternativas conviene distinguir:
 
-Por ejemplo, mantener presiones elevadas puede facilitar el suministro en determinadas zonas, pero aumentar pérdidas por fugas y consumo energético. Reducir costes de mantenimiento puede mejorar un indicador financiero a corto plazo y elevar el riesgo de interrupciones futuras. No existe una decisión óptima sin especificar qué resultados importan, qué restricciones deben respetarse y qué compromisos son aceptables.
+- **Requisitos:** condiciones que deben cumplirse para que el sistema o la solución sean aceptables.
+- **Objetivos de rendimiento:** resultados que se busca alcanzar o mejorar, con distintos grados posibles de consecución.
+- **Preferencias:** criterios utilizados para comparar alternativas que cumplen los requisitos aplicables, pero presentan compromisos diferentes.
 
-Los criterios deben relacionarse con el propósito del sistema y con las necesidades de los actores relevantes. También conviene distinguir entre requisitos que deben cumplirse, objetivos que se desea mejorar y preferencias que pueden negociarse.
+Estas categorías no son intercambiables. El incumplimiento de un requisito obligatorio aplicable no queda compensado simplemente por mejores resultados en otros indicadores. Que un requisito sea obligatorio depende del marco de decisión y de las condiciones pertinentes.
+
+Por ejemplo, mantener presiones elevadas puede facilitar el suministro en determinadas zonas, pero aumentar las pérdidas por fugas y el consumo energético. Reducir los costes de mantenimiento puede mejorar un indicador financiero a corto plazo y elevar el riesgo de interrupciones futuras. La decisión exige hacer explícitos los resultados buscados, las restricciones que deben respetarse y los compromisos aceptables.
+
+### Efectos directos, indirectos y no deseados
+
+Al evaluar una intervención, es útil distinguir entre:
+
+- **Efectos directos:** consecuencias que se producen en el elemento o subsistema modificado.
+- **Efectos indirectos:** consecuencias que aparecen en otras partes del sistema a través de relaciones, interfaces o dependencias.
+- **Efectos no deseados:** consecuencias que perjudican resultados relevantes o generan riesgos que no se habían previsto, sean directas o indirectas.
+
+Estas categorías pueden solaparse. Un efecto no deseado puede ser directo o indirecto. El análisis permite identificar consecuencias plausibles, pero no garantiza que todas puedan anticiparse; la observación posterior puede revelar efectos adicionales.
+
+### Horizonte temporal de evaluación
+
+Los resultados de una intervención también dependen del horizonte temporal considerado:
+
+- **Corto plazo:** efectos inmediatos de la intervención y de su puesta en funcionamiento.
+- **Medio plazo:** consecuencias que aparecen durante la operación y el ajuste o adaptación de las partes afectadas.
+- **Largo plazo:** efectos acumulados, cambios en las necesidades, desgaste, mantenimiento y evolución del entorno.
+
+Estos horizontes son referencias analíticas, no intervalos universales. Su duración depende del sistema, de la intervención y de la decisión evaluada. Una mejora inicial no debe presentarse como una mejora sostenida sin evidencia suficiente sobre su comportamiento posterior.
+
+### Alcance y proporcionalidad del análisis
+
+Razonar a escala de sistema no exige analizar todos los elementos, relaciones y consecuencias posibles. Exige identificar y examinar aquellos que son relevantes para la decisión. Para determinar la profundidad y amplitud necesarias, conviene considerar la importancia de los resultados afectados, la magnitud y probabilidad de las consecuencias, la incertidumbre de la información disponible, la reversibilidad de la intervención y las consecuencias de una decisión equivocada.
+
+El análisis debe ser proporcional a la importancia y al riesgo de la decisión. También debe hacer explícitos la frontera y el alcance considerados, así como las incertidumbres que permanecen abiertas. Una intervención menor puede requerir una comprobación sencilla; un cambio crítico puede exigir un análisis más amplio y pruebas más rigurosas. Ampliar la frontera no siempre mejora el análisis: debe hacerse cuando aporta información relevante para la decisión.
 
 ### Razonar a escala de sistema
 
-El razonamiento a escala de sistema amplía la evaluación desde el componente intervenido hacia las consecuencias relevantes para el conjunto. No consiste en ignorar el detalle técnico, sino en situarlo dentro de una configuración de relaciones, objetivos y restricciones.
+Un razonamiento a escala de sistema sitúa el detalle técnico dentro de una configuración de relaciones, objetivos, restricciones y condiciones de operación. Como orientación, puede seguir estas preguntas:
 
-Un proceso práctico puede seguir esta secuencia:
+1. **¿Qué resultado se busca y para quién?** Precisar los resultados relevantes y las condiciones de aceptabilidad.
+2. **¿Qué se va a modificar?** Delimitar el componente o subsistema objeto de la intervención.
+3. **¿Qué otras partes están conectadas?** Examinar interfaces, dependencias e interacciones que puedan condicionar o recibir los efectos del cambio.
+4. **¿Qué criterios y compromisos importan?** Distinguir requisitos, objetivos y preferencias, e identificar posibles conflictos.
+5. **¿Qué efectos pueden aparecer y cuándo?** Considerar efectos directos, indirectos y no deseados, junto con horizontes temporales adecuados.
+6. **¿Qué profundidad de análisis es proporcionada?** Tener en cuenta importancia, consecuencias, incertidumbre y reversibilidad, y declarar los límites del análisis.
+7. **¿Qué debe comprobarse después?** Observar si los resultados previstos se mantienen y si aparecen consecuencias adicionales.
 
-1. **Definir el resultado requerido:** precisar qué debe conseguir el sistema y para quién.
-2. **Identificar el nivel de intervención:** delimitar el componente o subsistema que se pretende modificar.
-3. **Examinar las interfaces y dependencias:** reconocer qué otras partes condicionan o reciben los efectos del cambio.
-4. **Considerar varios criterios:** evaluar beneficios, costes, riesgos y restricciones relevantes, no solo el indicador local.
-5. **Comprobar efectos sobre el conjunto:** analizar si la mejora se mantiene, se desplaza o genera consecuencias no deseadas.
-6. **Revisar el resultado en contexto:** observar el comportamiento bajo condiciones y horizontes temporales adecuados.
-
-La profundidad de cada paso dependerá de la importancia de la decisión, la incertidumbre y las consecuencias de equivocarse. Una intervención menor puede requerir una comprobación sencilla; un cambio crítico puede exigir análisis integrado y pruebas más rigurosas.
+Estas preguntas no constituyen un método exhaustivo ni garantizan que se identifiquen todos los efectos. Ayudan a organizar el análisis alrededor de las consecuencias relevantes para la decisión.
 
 ### El valor de una mejora depende de dónde y cómo se manifiesta
 
-Una mejora técnica solo adquiere sentido cuando se relaciona con los resultados que el sistema debe producir. Reducir el consumo de una bomba puede ser positivo, pero su relevancia depende de si mantiene el servicio requerido, de cómo afecta a otros equipos y de qué costes o riesgos introduce.
+Una mejora técnica adquiere sentido cuando se relaciona con los resultados que el sistema debe producir. Reducir el consumo de una bomba puede ser positivo, pero su relevancia depende de si se mantiene el servicio requerido, de cómo afecta a otros equipos y de qué costes o riesgos introduce.
 
-Del mismo modo, una mejora global no tiene por qué maximizar todos los indicadores. Puede consistir en alcanzar un equilibrio justificable entre resultados, restricciones y necesidades diferentes. Hacer explícitos esos compromisos permite comparar alternativas sin presentar una preferencia particular como si fuera una solución universal.
+Del mismo modo, una mejora del conjunto no tiene por qué maximizar todos los indicadores. Puede consistir en alcanzar un equilibrio justificable entre resultados, restricciones y necesidades diferentes. Hacer explícitos esos compromisos permite comparar alternativas sin presentar una preferencia particular como si fuera una solución universal.
 
 ### Idea clave
 
-Optimizar un componente no equivale a optimizar el sistema. Las decisiones deben evaluarse atendiendo a las interacciones, restricciones, criterios en conflicto y consecuencias que afectan al conjunto y a su entorno relevante.
+Optimizar un componente no equivale a mejorar necesariamente el sistema. El razonamiento a escala de sistema examina las interdependencias, los requisitos, los objetivos, las restricciones, los efectos y los horizontes temporales relevantes. Su alcance debe ser proporcional a la decisión y sus límites e incertidumbres deben quedar explícitos.
 
 ### Pregunta de reflexión
 
-Piensa en una mejora realizada o propuesta en un componente de un sistema que conozcas. ¿Qué indicador local pretendía mejorar? ¿Qué otras partes podían verse afectadas? ¿Qué criterios globales habría que comprobar para determinar si la intervención mejoró realmente el funcionamiento del sistema?
-
-
+Piensa en una mejora realizada o propuesta en un componente de un sistema que conozcas. ¿Qué indicador local pretendía mejorar? ¿Qué otras partes podían verse afectadas y de qué manera? ¿Qué requisitos, objetivos, preferencias y horizontes temporales habría que considerar para determinar si la intervención mejoró realmente el funcionamiento del sistema?
 
 ## 1.9. Síntesis y preguntas de reflexión
 
