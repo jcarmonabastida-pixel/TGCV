@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 1.5
+version: 1.6
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -30,6 +30,17 @@ license: null
 ---
 
 # Thinking in Systems
+
+## Learning objectives
+
+By the end of this chapter, you should be able to:
+
+1. **Define and delimit a system** in relation to the purpose of the analysis, its boundary, environment and context.
+2. **Describe the composition and organisation of a system**, identifying its elements, states, properties, behaviours, actors, capabilities, resources, dependencies and relationships.
+3. **Interpret how open systems operate over time**, considering exchanges, changing conditions, responses and trajectories.
+4. **Construct and assess a system description** suited to a particular question, identifying its information sources, assumptions, omissions and uncertainties, and recognising its limitations.
+5. **Reason about interventions at the system level**, considering interdependencies, constraints, direct and indirect effects, trade-offs among criteria and time horizons.
+
 
 ## 1.1. What Do We Mean by a System?
 
