@@ -213,6 +213,19 @@ class M1ChallengerContractTests(unittest.TestCase):
         self.assertEqual(item.m1_comparison.method_id, M1)
         self.assertNotEqual(item.m1_comparison.method_id, C5)
 
+    def test_19_m1_cannot_mutate_common_raw_point_estimators(self):
+        item = record()
+        changed_comparison = replace(
+            item.m1_comparison,
+            between_estimate_raw=item.m1_comparison.between_estimate_raw + 0.01,
+        )
+        changed = replace(item, m1_comparison=changed_comparison)
+        with self.assertRaisesRegex(
+            m.M1ChallengerError,
+            "M1_COMMON_POINT_ESTIMATOR_CONTRACT_MISMATCH",
+        ):
+            m._validate_roster(changed)
+
 
 if __name__ == "__main__":
     unittest.main()
