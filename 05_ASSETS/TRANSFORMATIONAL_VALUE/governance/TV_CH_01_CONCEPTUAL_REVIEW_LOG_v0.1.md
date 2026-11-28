@@ -1247,3 +1247,20 @@ A constraint may exist without being the dominant limiting factor. A bottleneck 
 **Rationale:** This prevents the terms from being treated as interchangeable and makes clear that bottleneck identification depends on the outcome being considered and the system's current configuration.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.49 Section 1.8 — requirements, performance objectives and preferences — accepted
+
+The author approved clarifying the different status of requirements, performance objectives and preferences in both language versions:
+
+- **Requirements:** conditions that must be met for the system or solution to be acceptable.
+- **Performance objectives:** outcomes that the decision seeks to achieve or improve, allowing for different degrees of attainment.
+- **Preferences:** criteria used to compare alternatives when several options meet the applicable requirements, but may involve conflicting considerations.
+
+These criteria should not be treated as interchangeable. An alternative that fails an applicable mandatory requirement should not be presented as equivalent to one that satisfies it merely because it performs better on other indicators.
+
+The text must also avoid implying that every requirement is absolute in every context: whether a requirement is mandatory depends on the decision framework and applicable conditions.
+
+**Rationale:** This distinction makes trade-offs more transparent and prevents compensatory comparisons from obscuring non-negotiable conditions, while recognising that requirement status is context-dependent.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
