@@ -1173,3 +1173,21 @@ The explanation should remain introductory and should not expand into formal met
 **Rationale:** Complementary models can provide different but useful views of a system; their combination is meaningful only when relevant differences in scope and modelling choices are recognised and addressed.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.45 Section 1.7 — conceptual decision phase closed — accepted
+
+The author approved closing the conceptual decision phase for section 1.7 after resolving the eight review areas recorded for the section:
+
+1. The broad working meaning of model.
+2. The distinctions among representation scope, system boundary and level of detail.
+3. The status of model inputs and parameters, including assumptions, observations, estimates, specifications and quantified uncertainty.
+4. Deliberate omissions versus unknown or unavailable information.
+5. Evidence supporting model data and relationships versus evidence of model adequacy for the intended question.
+6. Compatibility checks when combining complementary models.
+7. Retention and appropriate use of the section's examples and pedagogical intent.
+8. Conceptual equivalence across the independently authored Spanish and English versions.
+
+The accepted decisions apply to both language versions. The next stage is to integrate them independently into each original-language manuscript, then verify the persisted changes and their bilingual conceptual equivalence. The introductory scope should be maintained; no unnecessary expansion into formal modelling methods is authorised by this closure.
+
+**Disposition:** conceptual decision phase closed for section 1.7. Manuscript integration and verification remain pending. No manuscript text has been changed by this closure decision.
