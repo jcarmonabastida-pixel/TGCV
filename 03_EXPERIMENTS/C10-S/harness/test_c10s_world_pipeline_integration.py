@@ -776,6 +776,33 @@ class CompleteWorldIntervalIntegrationTests(unittest.TestCase):
             result.d2_vcont_truth.finite_population_itt_z_v_cont,
             result.theta_a_truth.theta_a_truth.theta_a_truth,
         )
+        # The complete-world envelope now carries the randomized D2 package
+        # ITT lane and the direct-g_A focal lane side by side. They share the
+        # synthetic world but retain separate assignments, evidence and truth.
+        self.assertEqual(
+            result.d2_analysis_contract.estimand_id,
+            "ITT_Z_D2_VCONT_QX",
+        )
+        self.assertEqual(
+            result.d2_observed_lane.sealed_evidence.manifest["temporal_resolution"],
+            "INTERVAL_LEVEL",
+        )
+        self.assertEqual(
+            result.d2_analyzer_result.input_sha256,
+            result.d2_observed_lane.sealed_evidence.sha256,
+        )
+        self.assertEqual(
+            result.d2_evaluator_result.truth_itt_z,
+            result.d2_vcont_truth.finite_population_itt_z_v_cont,
+        )
+        self.assertEqual(
+            result.d2_evaluator_result.evidence_sha256,
+            result.d2_observed_lane.sealed_evidence.sha256,
+        )
+        self.assertNotEqual(
+            result.d2_observed_lane.assignments.result_sha256,
+            result.theta_a_assignments.result_sha256,
+        )
         self.assertEqual(
             {row.assigned_arm for row in result.theta_a_assignments.assignments},
             {0, 1},
