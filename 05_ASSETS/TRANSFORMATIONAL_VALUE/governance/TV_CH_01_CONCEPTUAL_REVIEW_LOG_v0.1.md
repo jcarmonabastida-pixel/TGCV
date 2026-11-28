@@ -775,3 +775,16 @@ When discussing resources, the manuscripts should identify the specific contribu
 Both versions should preserve equivalent conceptual scope through natural, independently authored wording.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+
+### 5.20 Dependency in section 1.4 — accepted
+
+The author approved the following working definition for both language versions:
+
+A **dependency** exists when the functioning, availability or outcome of an activity, actor or component requires a contribution, service, state or condition provided by another element.
+
+A dependency must be distinguished from a generic relationship: two elements may be related without one requiring the other in order to function or achieve an outcome.
+
+Dependencies may be conditional, substitutable, reciprocal or time-sensitive, and they do not all have the same degree of criticality. Both manuscripts should preserve these distinctions with natural, independently authored wording and equivalent conceptual scope.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
