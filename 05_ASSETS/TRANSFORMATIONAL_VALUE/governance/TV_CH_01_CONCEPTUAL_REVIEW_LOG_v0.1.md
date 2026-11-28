@@ -471,15 +471,15 @@ The section-by-section conceptual review is complete for all nine sections. The 
 
 | Section | Spanish / English topic | Review status | Manuscript changes |
 |---|---|---|---|
-| 1.1 | ¿Qué entendemos por sistema? / What Do We Mean by a System? | reviewed — decisions pending | none |
-| 1.2 | Propósito, frontera, entorno y contexto / Purpose, Boundary, Environment and Context | reviewed — decisions pending | none |
-| 1.3 | Elementos, estados, propiedades y comportamientos / Elements, States, Properties and Behaviours | reviewed — decisions pending | none |
+| 1.1 | ¿Qué entendemos por sistema? / What Do We Mean by a System? | integrated and verified | Spanish v1.5; English v1.4 |
+| 1.2 | Propósito, frontera, entorno y contexto / Purpose, Boundary, Environment and Context | integrated and verified | Spanish v1.5; English v1.4 |
+| 1.3 | Elementos, estados, propiedades y comportamientos / Elements, States, Properties and Behaviours | integrated and verified | Spanish v1.5; English v1.4 |
 | 1.4 | Actores, capacidades, recursos y dependencias / Actors, Capabilities, Resources and Dependencies | integrated and verified | Spanish v1.0; English v0.9 |
-| 1.5 | Relaciones, interacciones y estructura del sistema / Relationships, Interactions and System Structure | reviewed — decisions pending | none |
-| 1.6 | Sistemas abiertos, entornos cambiantes y tiempo / Open Systems, Changing Environments and Time | reviewed — decisions pending | none |
-| 1.7 | Las descripciones de sistemas son modelos: alcance, supuestos y omisiones / System Descriptions Are Models: Scope, Assumptions and Omissions | reviewed — decisions pending | none |
-| 1.8 | De la optimización de componentes al razonamiento a escala de sistema / From Component Optimisation to System-Level Reasoning | reviewed — decisions pending | none |
-| 1.9 | Síntesis y preguntas de reflexión / Chapter Synthesis and Reflection Questions | reviewed — decisions pending | none |
+| 1.5 | Relaciones, interacciones y estructura del sistema / Relationships, Interactions and System Structure | integrated and verified | Spanish v1.1; English v1.0 |
+| 1.6 | Sistemas abiertos, entornos cambiantes y tiempo / Open Systems, Changing Environments and Time | integrated and verified | Spanish v1.2; English v1.1 |
+| 1.7 | Las descripciones de sistemas son modelos: alcance, supuestos y omisiones / System Descriptions Are Models: Scope, Assumptions and Omissions | integrated and verified | Spanish v1.3; English v1.2 |
+| 1.8 | De la optimización de componentes al razonamiento a escala de sistema / From Component Optimisation to System-Level Reasoning | integrated and verified | Spanish v1.4; English v1.3 |
+| 1.9 | Síntesis y preguntas de reflexión / Chapter Synthesis and Reflection Questions | decisions accepted; integration pending | no manuscript changes yet |
 
 ## 7. Next phase — editorial decisions
 
@@ -492,8 +492,8 @@ In accordance with the Content Model §11.3, the next phase resolves the finding
 5. Once the decisions for the chapter are resolved, prepare one coordinated integration pass across both original manuscripts. Do not edit one language as the translation source of the other.
 6. After integration, re-read both manuscripts, verify conceptual equivalence and update the status to integrated and then verified only when the corresponding checks have actually been completed.
 
-**Current phase:** decision resolution and section-level integration in progress. Sections 1.1–1.3 and 1.5–1.9 remain to be resolved and integrated. Section 1.4 has been integrated and verified in both manuscripts.  
-**Editing authorisation:** granted by the author for section 1.4 only; no authorisation is implied for other sections.
+**Current phase:** sections 1.1–1.8 have accepted decisions and are integrated and verified in both manuscripts. Section 1.9 has accepted conceptual decisions; its integration and verification remain pending. The chapter is not yet editorially closed.  
+**Editing authorisation:** the author has authorised integration of accepted decisions into sections 1.1–1.8 and approved the section 1.9 criteria; the section 1.9 manuscript integration remains to be completed.
 
 ## 8. Resolution and manuscript integration
 
@@ -1464,3 +1464,38 @@ The transition should leave the following question open:
 **Sequencing constraint:** Chapter 2 must not begin until the pending integration work for sections 1.1–1.3 has been completed and verified in both original-language manuscripts. The approved conceptual decisions for sections 1.4–1.9 do not waive this requirement. Chapter 1 must complete its outstanding integration and verification work before progression to Chapter 2.
 
 **Disposition:** closure and transition criterion accepted for ES/EN. Integration into section 1.9 remains pending. Sections 1.1–1.3 integration and verification remain mandatory before Chapter 2. No manuscript text has been changed by this decision.
+
+
+### 5.61 Sections 1.1–1.3 — manuscript integration and bilingual verification — completed
+
+Following the author's explicit instruction that Chapter 2 must not begin before sections 1.1–1.3 are integrated, the accepted decisions recorded in sections 5.1–5.14 were integrated independently into both original-language manuscripts.
+
+The integration includes:
+
+**Section 1.1**
+- An operational definition of a system as a delimitable set of related and organised elements that interact or maintain relevant dependencies, interpreted within a context and period.
+- The distinction among system of interest, unit of analysis and analytical perspective.
+- The distinction between system behaviour and emergent behaviour, avoiding the claim that all system behaviour is emergent.
+- The declared scope covering physical, social, organisational and socio-technical systems, while treating purely conceptual systems as representations or analytical constructions unless otherwise established.
+- An aligned water-network example covering source and treatment, storage and pumping, distribution connections, consumption points, variable demand, pressure, flow, operating conditions, energy and control dependencies, and possible failure propagation or service interruption.
+
+**Section 1.2**
+- Distinctions among purpose, function and objectives, and between the purpose of the analysis and the purpose attributed to the system.
+- The system boundary as an analytical choice that includes relevant interfaces and may have physical, functional, operational and temporal dimensions.
+- The operational editorial convention distinguishing environment from context, explicitly not presented as universal across disciplines.
+- The revisability of a boundary when relevant dependencies, interfaces or effects are revealed, subject to justification.
+
+**Section 1.3**
+- Element as the general analytical term and component as a more specific term commonly used in technical and engineering contexts.
+- State as a condition at a specified reference time; observations over an interval form a sequence or trajectory of states.
+- The distinction between properties and variables.
+- Behaviour characterised through patterns, responses or changes under specified conditions, with evidence proportionate to the phenomenon and question; a single observation is not automatically sufficient to establish a pattern.
+- The distinction between unknown or unavailable information and deliberate omissions.
+
+**Manuscripts updated and re-fetched from the research branch:**
+- Spanish: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/es/part-01-understanding-transformation/ch-01-pensar-en-sistemas.md`, version 1.5, blob SHA `4dadec09697e4bf038e846b6745e9e50ce81985c`.
+- English: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/en/part-01-understanding-transformation/ch-01-thinking-in-systems.md`, version 1.4, blob SHA `f34811bc4c0dbf69ef96d1e64f58251518c3b3d7`.
+
+Post-update verification checked both files' metadata and section boundaries, and confirmed the principal accepted distinctions and examples in each language. A bilingual cross-review confirmed equivalent conceptual scope and pedagogical intent while preserving independently authored wording.
+
+**Disposition:** sections 1.1–1.3 integrated and verified. Both manuscripts remain `draft`. This completion does not close Chapter 1 or authorise progression to Chapter 2 while section 1.9 integration and chapter-level editorial checks remain pending.
