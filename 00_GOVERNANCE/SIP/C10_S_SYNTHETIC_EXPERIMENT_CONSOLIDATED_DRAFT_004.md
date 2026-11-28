@@ -3969,3 +3969,49 @@ La implementación y §389 permanecen en `research/c10-s-consolidation-draft`. `
 ### 389.8. Siguiente gate
 
 La pieza integrada está construida y supera PASS_STATIC. La siguiente operación es una revisión final del contrato de ejecución y de los artefactos de código, sin reabrir el diseño científico del protocolo v002. Después se podrá solicitar autorización explícita para un solo tier. Hasta entonces, el workflow numérico permanecerá inactivo.
+
+
+## 390. Delimitación del endpoint de valor y corrección de conformidad del ITT-D2 (2026-11-28)
+
+**Estado:** SCOPE_ACCEPTED / D2_VCONT_ANALYZER_EVALUATOR_SOURCE_CORRECTED / REGRESSION_DEFINED_NOT_EXECUTED / NO_CALIBRATION / NO_SCIENTIFIC_EXECUTION.
+
+### 390.1. Delimitación aceptada
+
+Se acepta para la continuidad del carril S la separación siguiente, sin modificar DEC-C10-099…103 ni Gate 128:
+
+- **Dimensión primaria de valor acotado:** `V_cont`, bajo la estipulación normativa `VCONT-B1-MIN` ya aceptada. Su alcance sigue limitado a continuidad funcional desde la perspectiva sintética B1; no representa Value general.
+- **Estimando causal focal:** `θ_A(q_X*, r_common; V_cont)`, estimado por la asignación directa `g_A0/g_A1`; no se sustituye por Z ni por el efecto de paquete.
+- **Efecto de política:** `ITT_Z^{D2}(V_cont)`, informado separadamente como efecto total de la política D2.
+- **Outcome técnico:** O-CONF se mantiene como candidato secundario. No está operacionalizado ni validado; por tanto, no se añade como endpoint ejecutable ni confirmatorio. F* y O-CONF no se duplican como dos resultados técnicos independientes.
+
+No se añade otra dimensión de Value, función cardinal, peso, umbral, índice, compensación ni consecuencia inferida por conveniencia.
+
+### 390.2. Discrepancia de implementación detectada
+
+La inspección de `d2_ittz_analyzer.py` y `d2_ittz_evaluator.py` detectó que ambos trataban el resultado de cada unidad como una conjunción binaria de éxito en todos los intervalos. Esa operación no reproduce DEC-C10-100, que define:
+
+`V_cont(i) = (1/K) Σ_k A_B1(i,k)`.
+
+La conjunción local que adjudica cada intervalo se conserva; lo incorrecto era colapsar después todos los intervalos de una unidad a un único 0/1.
+
+### 390.3. Corrección fuente realizada
+
+Se corrigieron Analyzer y Evaluator de forma simétrica:
+
+- Para cada unidad, el límite inferior observado es `successes/K`.
+- El límite superior es `(successes + missing)/K`.
+- Con observación completa, el estimando usa la media de cumplimiento de intervalos.
+- La ausencia de una unidad completa sigue aportando el intervalo lógico [0,1] al contraste realizado.
+- Se preservan la separación de missingness, los bounds, el soporte por brazo y la abstención; no se convierten desconocidos en ceros.
+
+Se añadió una regresión al test integrado D2 existente para reconstruir independientemente el contraste HT desde las medias por intervalo y exigir una fixture con valores fraccionales de `V_cont`.
+
+### 390.4. Alcance y estado de verificación
+
+Los cambios de código y la definición de regresión están persistidos en `research/c10-s-consolidation-draft`. **No se han ejecutado tests ni compilación** en esta operación. Por tanto, el estado es SOURCE_CORRECTED / TEST_DEFINED / NOT_EXECUTED, no PASS.
+
+La revisión detectó la incompatibilidad antes de incorporar el ITT-D2 a `C10SCompleteWorldResult`; cualquier integración conjunta queda condicionada a que el carril D2 reproduzca primero la verdad de DEC-C10-100. No se conserva ninguna modificación de integración prematura.
+
+No se ha añadido O-CONF al código: su ficha, predicados, mapping, evento terminal y oráculo siguen sin cierre. No se han ejecutado Generator, Analyzer, Evaluator, DGP, calibración, Monte Carlo ni experimento científico. `main`, RMA, Evidence→Claim Matrix, STATUS y TGCV Core permanecen intactos. PR #116 sigue Draft. `scientific_execution=false`; `execution_authorized=false`.
+
+**Siguiente operación:** revisión estática del diff de los dos módulos D2 y de la regresión añadida; después, solicitar autorización separada para ejecutar únicamente las pruebas técnicas afectadas. No iniciar calibración ni ejecución científica.
