@@ -167,8 +167,8 @@ terms:
       es: "requisito"
       en: "requirement"
     definition:
-      es: "Condición o capacidad especificada que una solución, sistema o alternativa debe satisfacer para considerarse aceptable dentro de un marco de decisión determinado."
-      en: "A specified condition or capability that a solution, system or alternative must satisfy to be considered acceptable within a given decision framework."
+      es: "Condición, capacidad o característica especificada que una solución, sistema o alternativa debe satisfacer para considerarse aceptable dentro de un marco de decisión determinado, de acuerdo con los criterios de aceptación aplicables."
+      en: "A specified condition, capability or characteristic that a solution, system or alternative must satisfy to be considered acceptable within a given decision framework, in accordance with the applicable acceptance criteria."
     related_terms: [TV-TERM-015, TV-TERM-016, TV-TERM-012]
     status: draft
     notes: "Chapter 1. Whether a requirement is mandatory depends on the applicable decision framework and conditions; stronger performance elsewhere does not automatically compensate for failure to meet a mandatory requirement."
