@@ -1,0 +1,54 @@
+{
+  "R_per_cell": 10000,
+  "assignment": "balanced 1:1, independent UE; N total even",
+  "central_curve_K": 10,
+  "central_curve_N": [100, 200, 400, 800, 1200, 1600, 2400, 3200],
+  "central_curve_pi0": 0.5,
+  "execution_capture": {
+    "stdout_file": "p178_stdout.txt",
+    "stdout_sha256": "1778ad31ed59513faad98a4154fff87e36ba31a38f2d700f9abfe72ed652df62",
+    "stderr_file": "p178_stderr.txt",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_bytes": 0
+  },
+  "git_blob_sha1": {
+    "p178_focal_monte_carlo.py": "6a1467883299248cc629c02f7de1c13556e9c2fd",
+    "p178_reference_N700.csv": "e8f4a58303e831c26e78f67931d7d337f9d5ef51",
+    "p178_central_N_theta_curve.csv": "3f8e14851cfd02bea0f2f407fed4aa106d6459c9",
+    "p178_continuous_mcse_diagnostics.csv": "20d7144139a1b627765006c86c4a008d2c27c73b",
+    "p178_stdout.txt": "12a2dc19d46953869e688d16b7ca710201f337f6",
+    "p178_stderr.txt": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+  },
+  "limitation": "benchmark estimator only; no TGCV Analyzer, no adversarial measurement scenarios, no confirmatory experiment",
+  "method": "exact DP marginal pmf for Q_B1 per UE; independent sampling of Q values; Welch two-sample t CI; two-sided alpha=.05",
+  "numpy": "2.3.5",
+  "outputs": ["p178_reference_N700.csv", "p178_central_N_theta_curve.csv", "p178_continuous_mcse_diagnostics.csv"],
+  "parameters": {
+    "K_grid": [2, 10, 50],
+    "b01": -1.3862943611198906,
+    "b10": -1.3862943611198906,
+    "baseline_transition_p01": 0.2,
+    "baseline_transition_p10": 0.2,
+    "lambda0": 0.25,
+    "lambda1": 0.75,
+    "pi0_grid": [0.2, 0.5, 0.8],
+    "scenarios": {
+      "negative": [-1.0, 1.0],
+      "null": [0.0, 0.0],
+      "positive": [1.0, -1.0],
+      "weak_signal": [1.0, 0.99]
+    }
+  },
+  "protocol": "TGCV-C10-S-P178-FOCAL-MC-REPRO-001",
+  "python": "3.13.5",
+  "reference_seed_rule": "20261118 + 29*index; index order K={2,10,50}, pi0={.2,.5,.8}, scenario={null,positive,negative}",
+  "rng": "numpy.random.default_rng / PCG64",
+  "scipy": "1.17.0",
+  "script_sha256": "712deedba154561a2f02df2d7c6bbd5a3a108e9a58d8782cb4ac3cb736e8a290",
+  "repository_text_representation": "GitHub Contents API stores UTF-8 CSV/text with LF line endings; runtime SHA-256 values refer to original local execution files. Git blob SHA-1 values identify the exact canonical repository text.",
+  "sha256": {
+    "p178_central_N_theta_curve.csv": "ef9515d2880719729800bdd99463b2db867ed619598640b75fbd929874a3be45",
+    "p178_continuous_mcse_diagnostics.csv": "00372e1594dbb3bca0f1d3257035b6e9978575efaf7b0cc0eb4fb6560942a911",
+    "p178_reference_N700.csv": "280dbb4f979fa4936feffe3ff22ecde55abdd9ec8b7abfaf5a9208366e7cb155"
+  }
+}
