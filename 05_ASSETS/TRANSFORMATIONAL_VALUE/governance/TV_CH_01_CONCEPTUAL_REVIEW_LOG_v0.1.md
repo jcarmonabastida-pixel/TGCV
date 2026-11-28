@@ -1650,3 +1650,30 @@ The chapter's treatment of system descriptions as selective models, and its dist
 **Disposition and next decision**
 
 The registry audit is complete. Proposed reference records are not yet approved or entered. The next step is to approve or amend the three candidate references and their intended role; after approval, create the central records with stable IDs, update both chapter metadata blocks and add selective source attribution/further-reading presentation in both original-language manuscripts. Chapter 1 remains `draft`; the source audit does not constitute subject-matter approval or editorial closure.
+
+
+### 5.66 Chapter 1 references — author-approved, registered, integrated and verified
+
+The author approved the three candidate references and their proposed complementary roles in Chapter 1. The approval has been implemented in the central bibliographic registry and both original-language manuscripts.
+
+**Central registry records created:**
+- `TV-REF-007` — Donella H. Meadows, `Thinking in Systems: A Primer` (2008), edited by Diana Wright, Chelsea Green Publishing, ISBN 978-1-60358-055-7.
+- `TV-REF-008` — International Council on Systems Engineering (INCOSE), `Systems Engineering Handbook: A Guide for System Life Cycle Processes and Activities` (5th ed., 2023), compiled and edited by the named editors, INCOSE-TP-2003-002-05, ISBN 978-1-119-81429-0.
+- `TV-REF-009` — Steven R. Hirshorn, Linda D. Voss and Linda K. Bromley, `NASA Systems Engineering Handbook`, NASA/SP-2016-6105 Rev 2. The report identifier carries 2016; the NASA Technical Reports Server catalogue record gives a publication date of 2017-02-17. This bibliographic date distinction is retained in the registry note.
+
+The registry uses the stable IDs above and records publisher/issuing organisation, bibliographic identity, stable URL and relevance/limitations notes. The registry `last_updated` field is 2026-11-28.
+
+**Manuscript integration:**
+- Both metadata blocks now list `TV-REF-007`, `TV-REF-008` and `TV-REF-009` in `references`.
+- Both manuscripts include a final references/further-reading section with the bibliographic entries and stable IDs.
+- Selective source notes were added in sections 1.1, 1.2, 1.5 and 1.8, corresponding to the approved source-to-section mapping. Meadows and INCOSE are presented as complementary systems-thinking/systems-engineering reading; NASA is cited for system interfaces and decision analysis.
+- Both language versions explicitly state that the sources do not prescribe every working definition or editorial distinction adopted in the chapter.
+
+**Files updated and re-fetched from the research branch:**
+- Registry: `05_ASSETS/TRANSFORMATIONAL_VALUE/references/references.yml`, blob SHA `63b52ecc0d12e000e52ddb116b9deda98827feb8`.
+- Spanish manuscript: version 1.8, blob SHA `8b46279b103d07f8e4800e6376f7c08a48bfeb97`.
+- English manuscript: version 1.7, blob SHA `79e0c0c6bf2fcc6e9efee4f3b4681e97ae48ba47`.
+
+Post-update checks confirmed all three registry IDs, the metadata reference lists, the in-text source notes, the bibliography sections and the continued `draft` status of both manuscripts.
+
+**Disposition:** the approved reference-integration task is complete. This does not resolve the separate terminology/glossary audit, does not constitute subject-matter approval, and does not close Chapter 1 editorially.
