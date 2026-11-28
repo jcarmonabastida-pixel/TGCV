@@ -179,8 +179,8 @@ terms:
       es: "objetivo de rendimiento"
       en: "performance objective"
     definition:
-      es: "Resultado o nivel de rendimiento que se pretende alcanzar o mejorar y cuyo grado de consecución puede variar entre alternativas."
-      en: "An outcome or level of performance that is intended to be achieved or improved and whose degree of attainment may vary across alternatives."
+      es: "Resultado o nivel de rendimiento que se pretende alcanzar o mejorar en un sistema, solución o alternativa. Su grado de consecución puede evaluarse mediante criterios o indicadores apropiados y variar entre alternativas, sin que el objetivo constituya necesariamente una condición obligatoria de aceptación."
+      en: "An outcome or level of performance that a system, solution or alternative is intended to achieve or improve. Its degree of attainment may be assessed using appropriate criteria or indicators and may vary across alternatives, without the objective necessarily constituting a mandatory acceptance condition."
     related_terms: [TV-TERM-014, TV-TERM-016]
     status: draft
     notes: "Chapter 1. Distinguish from requirements that define acceptability and from preferences used to compare alternatives."
