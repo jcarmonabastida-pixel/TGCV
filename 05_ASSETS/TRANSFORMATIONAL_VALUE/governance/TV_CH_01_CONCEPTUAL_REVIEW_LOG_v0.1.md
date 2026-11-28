@@ -1279,3 +1279,20 @@ These categories are not mutually exclusive: an unintended effect may be either 
 **Rationale:** This distinguishes where an effect occurs and how it relates to the intervention from whether it was intended, while recognising the limits of prediction.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.51 Section 1.8 — time horizons in intervention evaluation — accepted
+
+The author approved clarifying in both language versions that an intervention may produce different results depending on the time horizon considered:
+
+- **Short term:** immediate effects of the intervention and its commissioning or initial operation.
+- **Medium term:** consequences emerging during operation and the adjustment or adaptation of affected parts.
+- **Long term:** cumulative effects, changing needs, wear, maintenance and evolution of the environment.
+
+These are analytical horizons, not universal fixed time intervals. Their duration depends on the system, the intervention and the decision being evaluated.
+
+The evaluation should not present an initial improvement as sustained improvement without sufficient evidence of subsequent behaviour.
+
+**Rationale:** This makes temporal scope explicit and prevents short-term performance from being treated as proof of durable system-level improvement.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
