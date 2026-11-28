@@ -5,9 +5,9 @@ title: "Pensar en sistemas"
 language: es
 content_type: chapter
 status: draft
-version: 0.9
+version: 1.0
 created: 2026-11-27
-updated: 2026-11-27
+updated: 2026-11-28
 authors: []
 reviewers: []
 summary: "Introduce los fundamentos para comprender y describir sistemas como conjuntos organizados de elementos y relaciones."
@@ -234,81 +234,80 @@ Elige una instalación o un servicio que conozcas. Identifica algunos de sus ele
 
 ## 1.4. Actores, capacidades, recursos y dependencias
 
-### Quién interviene y con qué medios
+### Quién interviene y qué hace posible su intervención
 
-Hasta ahora hemos descrito los elementos de un sistema, sus estados y comportamientos. En muchos sistemas reales, especialmente en los que combinan tecnología, personas y organizaciones, necesitamos identificar además quién interviene, qué puede hacer y de qué medios depende para hacerlo.
+Hasta ahora hemos descrito los elementos de un sistema, sus estados y comportamientos. En muchos sistemas reales, especialmente en los que combinan tecnología, personas y organizaciones, también necesitamos comprender quién interviene, qué puede hacer, con qué medios cuenta y de qué contribuciones depende.
 
-Una red de suministro de agua ilustra bien esta dimensión. Su funcionamiento requiere infraestructuras y equipos, pero también operadores que supervisan la instalación, personal de mantenimiento que responde ante incidencias, responsables que toman decisiones y organizaciones que proporcionan energía, materiales o servicios especializados. La infraestructura física no explica por sí sola cómo se mantiene el servicio.
+Una red de suministro de agua lo ilustra bien. Su funcionamiento requiere infraestructuras y equipos, pero también operadores que supervisan la instalación, personal de mantenimiento que responde ante incidencias, responsables que toman decisiones y organizaciones que proporcionan energía, materiales o servicios especializados. La infraestructura física, por sí sola, no explica cómo se mantiene el servicio.
 
-Esta perspectiva permite pasar de una descripción centrada en componentes a otra que también reconoce la contribución de los participantes y los medios que hacen posible la operación.
+### Actores: personas, grupos y organizaciones que intervienen
 
-### Actores: participantes con capacidad de intervención
+En este capítulo utilizamos **actor** en sentido socio-organizativo: una persona, grupo u organización que participa en el sistema o influye de manera relevante en su funcionamiento. Sus papeles pueden ser operativos, técnicos, decisorios, reguladores, proveedores o usuarios, entre otros.
 
-Llamaremos **actores** a las personas, grupos u organizaciones que pueden intervenir en el sistema o en aspectos relevantes de su funcionamiento. Su papel puede ser operativo, técnico, decisorio, regulador, proveedor o usuario, entre otros.
+En la red de agua, los operadores supervisan alarmas y ajustan parámetros; el personal de mantenimiento inspecciona y repara equipos; los responsables establecen prioridades y autorizan intervenciones; los proveedores suministran equipos y repuestos; y los usuarios generan patrones de demanda y pueden comunicar incidencias.
 
-En la red de agua, los operadores pueden ajustar parámetros y supervisar alarmas; los equipos de mantenimiento inspeccionan y reparan componentes; la dirección establece prioridades y asigna presupuestos; los proveedores suministran equipos y repuestos; y los usuarios generan patrones de demanda y pueden comunicar incidencias.
+Un actor puede encontrarse dentro o fuera de la frontera del sistema de interés. Su inclusión en la descripción depende de que mantenga una interacción, influencia o dependencia relevante para el problema analizado, no simplemente de su ubicación física u organizativa. Estar fuera de la frontera no convierte automáticamente a un actor en parte del entorno en cualquier modelo: esa clasificación depende de cómo se haya delimitado el sistema y del propósito del análisis.
 
-No todos los actores tienen la misma autoridad, información o grado de intervención. Tampoco todos forman necesariamente parte de la frontera del sistema definida para un análisis concreto. Algunos pueden pertenecer al entorno y, aun así, influir de manera decisiva en el funcionamiento. Por eso conviene identificar su papel y explicar por qué se incluyen en la descripción.
+Los sistemas autónomos, los agentes de software y otros elementos no humanos también pueden formar parte del sistema, realizar funciones y producir efectos, pero no se clasifican automáticamente como actores en el sentido adoptado aquí. Si se utiliza el término **agente** con un significado técnico más amplio, debe explicitarse.
 
-En sistemas que no tienen actores humanos —por ejemplo, ciertos sistemas físicos o procesos automatizados— puede no ser útil forzar esta categoría. La noción de actor es especialmente relevante cuando existen agentes capaces de tomar decisiones o realizar intervenciones intencionales.
+### Capacidades: qué puede hacer cada elemento y qué puede lograr el sistema
 
-### Capacidades: qué puede hacer cada participante o componente
+Una **capacidad** expresa la posibilidad de realizar una actividad o desempeñar una función bajo determinadas condiciones. Puede corresponder a un actor, a un componente o al sistema organizado en su conjunto.
 
-Una **capacidad** expresa la aptitud de un actor, componente o conjunto organizado para realizar una actividad o desempeñar una función bajo determinadas condiciones.
+Conviene distinguir tres ideas relacionadas. La **competencia** se refiere a los conocimientos y habilidades que una persona u organización posee para realizar una actividad. La **capacidad** considera también los medios y las condiciones necesarios para poder realizarla. La **disponibilidad efectiva** indica si esa capacidad puede ejercerse realmente en un momento y contexto concretos, teniendo en cuenta factores como la autoridad, el acceso, los recursos, la carga de trabajo o el estado operativo.
 
-En una instalación de suministro, un operador puede tener capacidad para interpretar las señales del sistema de control y ejecutar procedimientos de ajuste. Un equipo de mantenimiento puede disponer de la capacidad técnica para diagnosticar determinados fallos. Una bomba tiene una capacidad de impulsión definida por sus características y condiciones de operación; el sistema de control puede regular su funcionamiento dentro de ciertos límites.
+Por ejemplo, un técnico puede tener los conocimientos y habilidades necesarios para reparar una bomba, pero carecer de autorización o de las herramientas requeridas. Tiene la competencia, pero no dispone de las condiciones para ejercer efectivamente esa capacidad en ese momento.
 
-Conviene distinguir capacidad de actividad observada. Que un equipo o una persona tenga capacidad para realizar una tarea no significa que la esté realizando en este momento. Del mismo modo, una capacidad descrita en un procedimiento o en una especificación puede no estar disponible en la práctica si faltan formación, autorización, herramientas o condiciones adecuadas.
+También debemos distinguir entre la capacidad de un elemento individual y la **capacidad del sistema**. Un operador puede interpretar señales, una bomba puede impulsar agua y un sistema de control puede regular su funcionamiento. Sin embargo, mantener la continuidad del servicio puede requerir que esas contribuciones se combinen y coordinen con procedimientos, interfaces, recursos y condiciones operativas adecuados. La capacidad del sistema no es una simple suma de capacidades individuales: depende de cómo se integran y coordinan sus elementos.
 
-Las capacidades pueden residir en un elemento individual o depender de la combinación de varios. La continuidad del servicio, por ejemplo, puede requerir que los operadores sepan interpretar información, que los sistemas de supervisión la proporcionen y que existan procedimientos para coordinar una respuesta. Ningún participante aislado reúne necesariamente todo lo necesario.
+### Recursos: los medios que pueden movilizarse
 
-### Recursos: con qué se cuenta para actuar
+Los **recursos** son los medios que pueden utilizarse para realizar actividades y sostener el funcionamiento del sistema. Pueden ser materiales, energéticos, financieros, informativos o temporales, entre otros.
 
-Los **recursos** son los medios que pueden utilizarse para realizar actividades y sostener el funcionamiento del sistema. Pueden ser materiales, energéticos, financieros, humanos, informativos o temporales.
+En la red de agua encontramos recursos físicos como bombas, herramientas, repuestos e instalaciones; recursos energéticos como el suministro eléctrico; y recursos informativos como planos, registros de operación, mediciones y documentación técnica. Las personas son actores del sistema, no recursos intercambiables. No obstante, pueden aportar medios necesarios para una actividad mediante su tiempo, conocimientos, experiencia, habilidades o disponibilidad. Conviene identificar esas contribuciones concretas sin confundirlas con la condición de las personas como actores.
 
-En la red de agua encontramos recursos físicos como bombas, herramientas, repuestos e instalaciones; recursos energéticos como el suministro eléctrico; recursos humanos como el tiempo y la disponibilidad del personal; y recursos informativos como planos, registros de operación, sensores y documentación técnica.
+La existencia de un recurso no garantiza que esté disponible para cualquier uso. Puede estar comprometido en otra actividad, encontrarse fuera de servicio, no ser accesible cuando se necesita o requerir autorización. Por tanto, al describir los recursos conviene distinguir entre los que existen, los que están disponibles y los que pueden movilizarse para una tarea concreta.
 
-La mera existencia de un recurso no garantiza que esté disponible para cualquier uso. Puede estar comprometido en otra actividad, encontrarse fuera de servicio, no ser accesible en el momento necesario o requerir autorización. Por tanto, al describir los recursos conviene distinguir entre los que existen, los que están disponibles y los que pueden movilizarse para una tarea concreta.
+Tampoco debemos confundir recursos y capacidades. Un equipo de diagnóstico es un recurso; saber utilizarlo e interpretar sus resultados forma parte de la competencia y capacidad necesarias para realizar la actividad. Una tarea puede requerir ambos.
 
-También debemos evitar confundir recursos con capacidades. Un equipo de diagnóstico es un recurso; saber utilizarlo e interpretar sus resultados es una capacidad. Para realizar una tarea pueden ser necesarios ambos.
+### Dependencias y restricciones: qué se necesita y qué limita la actuación
 
-### Dependencias: qué necesita una actividad de otras
+Existe una **dependencia** cuando el funcionamiento, la disponibilidad o el resultado de una actividad, actor o componente requiere una contribución, servicio, estado o condición proporcionada por otro elemento.
 
-Una **dependencia** expresa que una actividad, actor o componente necesita que otro elemento aporte algo, realice una tarea o mantenga una condición para que el primero pueda operar como se espera.
+Por ejemplo, una reparación puede depender de que haya repuestos disponibles, de que el equipo de mantenimiento tenga acceso a la instalación y de que se pueda interrumpir temporalmente el suministro. La operación de una estación de bombeo puede depender de la energía eléctrica, de la disponibilidad de agua y del funcionamiento de sus sistemas de control.
 
-Por ejemplo, una reparación puede depender de que haya repuestos disponibles, de que el equipo de mantenimiento tenga acceso a la instalación y de que se pueda interrumpir temporalmente el suministro. La operación de una estación de bombeo puede depender de la energía eléctrica, de la disponibilidad de agua y de que los sistemas de control funcionen correctamente.
+Una dependencia no es lo mismo que una relación genérica. Dos elementos pueden estar relacionados sin que uno necesite del otro para funcionar o alcanzar un resultado. Además, las dependencias pueden ser condicionales, sustituibles, recíprocas o sensibles al tiempo, y no todas tienen el mismo grado de criticidad.
 
-Las dependencias pueden ser técnicas, operativas, organizativas, informativas o externas. Algunas son directas y visibles; otras solo se hacen evidentes cuando se produce una incidencia. También pueden variar en importancia según la tarea y las circunstancias.
-
-Identificarlas ayuda a comprender por qué disponer de un componente o de una capacidad no siempre basta para realizar una actividad. El funcionamiento puede depender de una combinación de aportaciones que deben estar disponibles de forma coordinada.
+También conviene distinguir una dependencia de una **restricción**. La dependencia identifica una contribución o condición necesaria; la restricción establece un límite o condición que reduce las opciones o formas en que puede realizarse una actividad. Ambas pueden coexistir: una estación puede depender del suministro eléctrico y, al mismo tiempo, estar sujeta a límites de consumo, requisitos regulatorios o condiciones de seguridad.
 
 ### Una visión integrada de la operación
 
-Actores, capacidades, recursos y dependencias no son categorías independientes que deban estudiarse por separado. Describen dimensiones complementarias de cómo se sostiene una actividad dentro del sistema.
+Actores, capacidades, recursos y dependencias describen dimensiones complementarias de cómo se sostiene una actividad dentro del sistema. No basta con que cada elemento exista por separado: las contribuciones necesarias deben estar disponibles y coordinadas bajo las condiciones adecuadas.
 
-Imaginemos una avería en una conducción principal. Detectarla puede requerir sensores y sistemas de supervisión; interpretarla, personal con conocimiento técnico; planificar la intervención, autoridad para tomar decisiones y coordinar operaciones; y repararla, herramientas, repuestos, acceso y tiempo. La respuesta depende de que esas capacidades y recursos estén conectados mediante procedimientos y responsabilidades adecuados.
+Imaginemos una avería en una conducción principal. Detectarla puede requerir sensores y sistemas de supervisión; interpretarla, personas con conocimientos técnicos; planificar la intervención, responsables con autoridad para tomar decisiones; y repararla, herramientas, repuestos, acceso y tiempo. La respuesta depende de que las competencias y capacidades necesarias puedan ejercerse efectivamente, de que los recursos puedan movilizarse y de que las dependencias estén satisfechas.
 
-Este ejemplo muestra por qué no basta con afirmar que una organización dispone de personal cualificado o de equipamiento moderno. Para comprender su capacidad operativa debemos preguntar qué tareas puede realizar, con qué medios, bajo qué condiciones y de qué otras contribuciones depende.
+Para comprender la capacidad operativa del sistema debemos preguntar qué actividades puede realizar, qué actores intervienen, qué capacidades individuales y colectivas requiere, con qué recursos cuenta, qué contribuciones necesita y qué restricciones condicionan su actuación.
 
 ### Cómo incorporar estas dimensiones a una descripción
 
 Al analizar un sistema con participación humana u organizativa, puede resultar útil registrar:
 
-- qué actores intervienen y qué papel desempeñan;
-- qué capacidades son relevantes para las actividades estudiadas;
-- qué recursos requieren y cuáles están realmente disponibles;
-- de qué personas, componentes, servicios o condiciones dependen;
-- qué responsabilidades, autorizaciones o límites condicionan su intervención.
+- qué actores intervienen, dónde se sitúan respecto a la frontera y qué papel desempeñan;
+- qué competencias y capacidades son relevantes para las actividades estudiadas;
+- si esas capacidades están efectivamente disponibles en las condiciones de operación consideradas;
+- qué recursos requieren las actividades, cuáles existen y cuáles pueden movilizarse;
+- de qué contribuciones, servicios o condiciones dependen;
+- qué restricciones, responsabilidades o autorizaciones condicionan su intervención.
 
-No se trata de elaborar un organigrama o un inventario de recursos por defecto. Se trata de incluir la información necesaria para explicar cómo se realizan las actividades y dónde pueden aparecer limitaciones o dependencias críticas.
+No se trata de elaborar por defecto un organigrama o un inventario exhaustivo de recursos. Se trata de incluir la información necesaria para explicar cómo se realizan las actividades y dónde pueden aparecer limitaciones o dependencias críticas.
 
 ### Idea clave
 
-El funcionamiento de un sistema puede depender tanto de sus componentes como de los actores que intervienen, las capacidades que reúnen, los recursos que pueden movilizar y las dependencias que condicionan su actuación.
+El funcionamiento de un sistema puede depender de los actores que intervienen, de las competencias y capacidades que pueden movilizar, de los recursos disponibles y de las dependencias y restricciones que condicionan su actuación. La capacidad del sistema surge de la integración y coordinación de esas contribuciones, no de su mera suma.
 
 ### Pregunta de reflexión
 
-Piensa en un servicio o una instalación que conozcas. Elige una actividad importante para su funcionamiento e identifica quién debe intervenir, qué capacidades necesita, qué recursos utiliza y de qué otras personas, componentes o condiciones depende. ¿Qué podría impedir que esa actividad se realizara, aunque cada elemento existiera por separado?
+Piensa en un servicio o una instalación que conozcas. Elige una actividad importante para su funcionamiento e identifica quién debe intervenir, qué competencias y capacidades necesita, qué recursos puede movilizar y de qué contribuciones o condiciones depende. ¿Qué restricciones podrían impedir que la actividad se realizara, aunque los actores y los elementos necesarios existieran por separado?
 
 
 ## 1.5. Relaciones, interacciones y estructura del sistema
