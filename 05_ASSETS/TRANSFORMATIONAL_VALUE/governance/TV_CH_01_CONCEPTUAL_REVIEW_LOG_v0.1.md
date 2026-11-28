@@ -1914,3 +1914,18 @@ The author approved the revised bilingual definition of `TV-TERM-009 — feedbac
 > A closed structure of causal relationships in which the effects of a process, directly or indirectly, feed back to influence the conditions or processes that contributed to generating them, thereby affecting the subsequent behaviour of the system. Feedback loops may be reinforcing, when they amplify a trend or change, or balancing, when they counteract a deviation or contribute to regulating a variable. These terms describe the behaviour of the loop, not whether it is beneficial or harmful.
 
 The definition distinguishes a feedback loop from a one-way causal sequence by requiring effects to feed back into conditions or processes that contributed to generating them. It identifies reinforcing and balancing loops without assigning positive or negative value judgements. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
+
+
+### 5.77 Terminology definition review — TV-TERM-010 approved
+
+The author approved the revised bilingual definition of `TV-TERM-010 — assumption`.
+
+**Approved Spanish definition:**
+
+> Proposición adoptada explícitamente como válida para construir, utilizar o interpretar una descripción, análisis o modelo, aunque su validez no haya sido establecida como un hecho para ese propósito. Los supuestos delimitan las condiciones bajo las que se desarrolla el trabajo y pueden revisarse cuando cambia la información disponible o se cuestiona su validez.
+
+**Approved English definition:**
+
+> A proposition explicitly adopted as valid for constructing, using or interpreting a description, analysis or model, even though its validity has not been established as fact for that purpose. Assumptions define the conditions under which the work is carried out and may be revised when available information changes or their validity is questioned.
+
+The review preserves the distinction between an assumption and a measured datum, estimate, specified parameter or uncertainty. An input or parameter is not automatically an assumption; its provenance must be identified. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript prose or metadata was changed in this step.
