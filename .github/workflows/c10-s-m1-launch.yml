@@ -1,4 +1,4 @@
-name: C10-S M1 manual positive N32
+name: C10-S M1 launch
 
 on: [push, workflow_dispatch]
 
@@ -10,32 +10,12 @@ jobs:
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Workflow registered. No scientific execution on push."
-
-  positive-n32:
+      - run: echo "Workflow registered. No experiment on push."
+  manual:
     if: ${{ github.event_name == 'workflow_dispatch' }}
-    name: One positive DGP run (N=32)
-    runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout selected research branch
+      - name: Checkout selected branch
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           ref: ${{ github.ref }}
-          persist-credentials: false
-
-      - name: Set up Python
-        uses: actions/setup-python@83679a892e2d95755f2dacacb0bfd1e9ac5d548
-        with:
-          python-version: '3.12.10'
-
-      - name: Install pinned harness dependencies
-        working-directory: 03_EXPERIMENTS/C10-S/harness
-        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
-
-      - name: Run exactly one positive N=32 pipeline
-        working-directory: 03_EXPERIMENTS/C10-S/harness
-        shell: bash
-        run: |
-          set -euo pipefail
-          python -B -c 'import dataclasses, json; from theta_a_calibration_dgp import ThetaACalibrationDGPFactory; f=ThetaACalibrationDGPFactory(); x=f.build_fixture(theta_a_mode="positive", n_units=32); r=f.run_pipeline(x, theta_a_confidence_level=None, theta_a_unit_independence_certified=False, point_s3=False); assert r is not None and r.analyzer_result is not None and r.evaluator_result is not None; print(json.dumps({"analyzer":dataclasses.asdict(r.analyzer_result),"independent_evaluator":dataclasses.asdict(r.evaluator_result)},default=str,sort_keys=True)); print("PIPELINE_INVOCATIONS=1 REPLAY=0 ADDITIONAL_SCENARIOS=0")'
