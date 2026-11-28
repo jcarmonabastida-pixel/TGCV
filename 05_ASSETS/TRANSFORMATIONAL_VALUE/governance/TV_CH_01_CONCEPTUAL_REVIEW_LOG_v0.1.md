@@ -1137,3 +1137,19 @@ Section 1.7 should briefly refer back to the distinction established in section 
 **Rationale:** This preserves the epistemic distinction between a conscious modelling choice and a limitation arising from insufficient knowledge or evidence, while maintaining continuity across the chapter.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.43 Section 1.7 — evidence for model content and model adequacy — accepted
+
+The author approved distinguishing two questions in both language versions:
+
+1. **Evidence supporting the model's data and relationships:** for example, measurements, technical specifications, estimates grounded in evidence, or observations supporting dependencies between system elements.
+2. **Evidence that the model is adequate for the question being addressed:** whether the representation captures the aspects and behaviour relevant to the intended analysis.
+
+Reliable data do not, by themselves, demonstrate that a model is adequate. A model may use accurate measurements and still omit an important dependency or represent relevant system behaviour insufficiently.
+
+The suitability checklist should help readers examine both questions. It must not imply that following the checklist guarantees that a model is correct or adequate.
+
+**Rationale:** This distinguishes the evidential support for individual model contents from the adequacy of the overall representation for its intended purpose, avoiding an inference from accurate inputs to model validity.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
