@@ -35,7 +35,7 @@ jobs:
         run: |
           python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
 
-      - name: Run exactly one positive N=32 pipeline
+      - name: Run exactly one typed positive N=32 pipeline
         working-directory: 03_EXPERIMENTS/C10-S/harness
         shell: bash
         run: |
@@ -47,18 +47,64 @@ jobs:
           import os
           import platform
           from pathlib import Path
-          from theta_a_calibration_dgp import ThetaACalibrationDGPFactory
+          from types import SimpleNamespace
 
+          from theta_a_calibration_dgp import ThetaACalibrationDGPFactory
+          from theta_a_calibration_protocol import build_theta_a_candidate_scenario_roster
+
+          # Use the existing typed roster and its equal-support contract. This
+          # keeps the reserved oracle separate from Analyzer inputs.
+          scenario = next(
+              item for item in build_theta_a_candidate_scenario_roster()
+              if item.scenario_id == "THETA_A_POSITIVE_V1"
+          )
+          if scenario.dgp_profile is None:
+              raise RuntimeError("Positive scenario has no typed DGP profile")
+          if scenario.dgp_profile.expected_theta_a_truth != 0.5:
+              raise RuntimeError("Positive scenario contract does not declare theta_A truth +0.5")
+          if scenario.dgp_profile.support_relation != "EQUAL":
+              raise RuntimeError("M1 requires the declared equal-support benchmark")
+          if not scenario.unit_independence_certified:
+              raise RuntimeError("Positive scenario lacks its unit-independence design declaration")
+
+          # One deterministic world and one pipeline invocation; no calibration
+          # bank, replay, additional scenario, or inferential CI is created.
+          assignment = SimpleNamespace(
+              n_units=32,
+              world_id="C10S-M1-POSITIVE-N32",
+              world_version=scenario.world_version,
+              dgp_id=scenario.dgp_id,
+              dgp_version=scenario.dgp_version,
+              roster_id="C10S-M1-POSITIVE-N32-ROSTER",
+              roster_version=scenario.roster_version,
+              unit_id_prefix="M1",
+              world_seed=20261128,
+              randomization_salt="C10S-M1-POSITIVE-N32-ASSIGNMENT",
+              s3_seed=2026112801,
+          )
           factory = ThetaACalibrationDGPFactory()
-          fixture = factory.build_fixture(theta_a_mode="positive", n_units=32)
-          result = factory.run_pipeline(
-              fixture,
-              theta_a_confidence_level=None,
-              theta_a_unit_independence_certified=False,
-              point_s3=False,
+          result = factory.execute_calibration_scenario(
+              assignment,
+              scenario,
+              {
+                  "theta_a_confidence_level": None,
+                  "theta_a_unit_independence_certified": True,
+              },
           )
           if result is None or result.analyzer_result is None or result.evaluator_result is None:
               raise RuntimeError("Pipeline did not return both Analyzer and independent Evaluator results")
+
+          # Read truth only from the reserved evaluator-only oracle bundle.
+          oracle_truth = result.theta_a_truth.theta_a_truth.theta_a_truth
+          evaluator_truth = result.evaluator_result.truth
+          if abs(oracle_truth - 0.5) > 1e-12:
+              raise RuntimeError(f"Reserved DGP truth is {oracle_truth}, expected +0.5")
+          if abs(evaluator_truth - oracle_truth) > 1e-12:
+              raise RuntimeError("Independent Evaluator truth differs from reserved DGP oracle")
+          if not result.evaluator_result.correct_adjudication:
+              raise RuntimeError("Independent Evaluator rejected the Analyzer adjudication")
+          if not result.evaluator_result.truth_within_bounds:
+              raise RuntimeError("Analyzer bounds do not contain the reserved DGP truth")
 
           report = {
               "classification": "SINGLE_EXPLORATORY_SYNTHETIC_CAUSAL_RECOVERY_CHECK",
@@ -68,15 +114,27 @@ jobs:
               "selected_ref": os.environ.get("GITHUB_REF"),
               "python": platform.python_version(),
               "design": {
-                  "scenario": "positive",
+                  "scenario_id": scenario.scenario_id,
+                  "scenario_version": scenario.scenario_version,
+                  "dgp_id": scenario.dgp_id,
+                  "dgp_version": scenario.dgp_version,
                   "n_units": 32,
-                  "expected_dgp_effect": 0.5,
+                  "expected_theta_a_truth": 0.5,
+                  "structural_support_contract_id": scenario.dgp_profile.structural_support_contract_id,
+                  "support_relation": scenario.dgp_profile.support_relation,
                   "observation": "complete_interval_best_case",
                   "pipeline_invocations": 1,
                   "replay": False,
                   "additional_scenarios": False,
                   "confidence_interval": None,
-                  "unit_independence_certified": False
+                  "unit_independence_design_declared": True
+              },
+              "truth_audit": {
+                  "reserved_oracle_truth": oracle_truth,
+                  "independent_evaluator_truth": evaluator_truth,
+                  "truth_match": True,
+                  "truth_within_analyzer_bounds": result.evaluator_result.truth_within_bounds,
+                  "correct_adjudication": result.evaluator_result.correct_adjudication
               },
               "analyzer": dataclasses.asdict(result.analyzer_result),
               "independent_evaluator": dataclasses.asdict(result.evaluator_result)
@@ -87,6 +145,7 @@ jobs:
               encoding="utf-8"
           )
           print(json.dumps({
+              "truth_audit": report["truth_audit"],
               "analyzer": report["analyzer"],
               "independent_evaluator": report["independent_evaluator"]
           }, sort_keys=True, default=str), flush=True)
