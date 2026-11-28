@@ -5,7 +5,7 @@ title: "Pensar en sistemas"
 language: es
 content_type: chapter
 status: draft
-version: 1.9
+version: 1.10
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -330,7 +330,7 @@ Tampoco debemos confundir recursos y capacidades. Un equipo de diagnóstico es u
 
 ### Dependencias y restricciones: qué se necesita y qué limita la actuación
 
-Existe una **dependencia** cuando el funcionamiento, la disponibilidad o el resultado de una actividad, actor o componente requiere una contribución, servicio, estado o condición proporcionada por otro elemento.
+Existe una **dependencia** cuando el funcionamiento, la disponibilidad o la capacidad de un elemento, proceso o sistema para alcanzar un resultado está condicionada por una contribución, servicio, estado o condición proporcionada por otro elemento.
 
 Por ejemplo, una reparación puede depender de que haya repuestos disponibles, de que el equipo de mantenimiento tenga acceso a la instalación y de que se pueda interrumpir temporalmente el suministro. La operación de una estación de bombeo puede depender de la energía eléctrica, de la disponibilidad de agua y del funcionamiento de sus sistemas de control.
 
@@ -416,7 +416,7 @@ Un **bucle de realimentación** existe cuando una cadena cerrada de influencias 
 
 En una red de agua, un sensor puede detectar una caída de presión; el sistema de control interpreta la señal y ajusta el funcionamiento de una bomba; el cambio de bombeo modifica la presión, que vuelve a medirse. La información sobre el resultado influye así en una decisión o actuación posterior y cierra la cadena de influencias.
 
-Una flecha que vuelve a un elemento anterior en un diagrama no basta, por sí sola, para identificar realimentación: debe existir una cadena de influencias que cierre el circuito. La realimentación puede tener efectos estabilizadores o amplificadores; no necesariamente corrige o reduce las variaciones. Su efecto depende de las relaciones, los retardos, las reglas de control y las condiciones de operación.
+Una flecha que vuelve a un elemento anterior en un diagrama no basta, por sí sola, para identificar realimentación: debe existir una cadena de influencias que cierre el circuito. Los bucles de realimentación pueden ser reforzadores, cuando amplifican una tendencia o cambio, o compensadores, cuando contrarrestan una desviación o contribuyen a regular una variable. Su efecto depende de las relaciones, los retardos, las reglas de control y las condiciones de operación.
 
 ### Medir y representar la estructura sin perder el significado
 
@@ -569,7 +569,7 @@ Los supuestos son condiciones que adoptamos para poder analizar. Algunos simplif
 
 Por ejemplo, un análisis de la red podría suponer que la demanda permanece constante durante un intervalo, que determinados equipos están disponibles o que las características de las tuberías no cambian durante el periodo estudiado. Estos supuestos pueden ser razonables para una pregunta concreta y un horizonte temporal limitado, pero dejarían de serlo en otras circunstancias.
 
-Un supuesto no debe confundirse con un hecho observado. Tampoco equivale a una incertidumbre cuantificada. Si no sabemos si una bomba estará disponible, no podemos presentar su disponibilidad como un dato confirmado simplemente porque el modelo necesite una condición de partida.
+Si no sabemos si una bomba estará disponible, debemos registrar esa condición como desconocida o formular explícitamente un supuesto. No podemos presentarla como un dato confirmado simplemente porque el modelo necesite una condición de partida.
 
 Conviene registrar los supuestos que puedan influir en los resultados, explicar por qué se adoptan y señalar bajo qué condiciones dejarían de ser aceptables. Cuando sea posible, podemos comprobar cómo cambian las conclusiones al modificar los supuestos más relevantes.
 
@@ -767,7 +767,7 @@ Lo importante es justificar las decisiones de análisis y distinguir lo observad
 
 ### Cierre del capítulo
 
-Pensar en sistemas significa comprender los componentes en relación con las capacidades, las interacciones y las condiciones que hacen posible su funcionamiento. La configuración de elementos, recursos y relaciones condiciona lo que un sistema puede hacer, así como las opciones de cambio que puede llevar a cabo. Una descripción útil permite razonar sobre esas posibilidades sin confundir lo que se conoce con lo que se supone ni ocultar los límites del análisis.
+Pensar en sistemas significa comprender los componentes en relación con las capacidades, las interacciones y las condiciones que hacen posible su funcionamiento. La configuración de elementos, recursos y relaciones condiciona lo que un sistema puede hacer, así como las opciones de cambio que tiene a su alcance. Una descripción útil permite razonar sobre esas posibilidades sin confundir lo que se conoce con lo que se supone ni ocultar los límites del análisis.
 
 El capítulo siguiente examinará la transformación como una cuestión relacionada con la capacidad del sistema: cómo puede cambiar y qué determina las transformaciones que están realmente a su alcance. No todo cambio constituye necesariamente una transformación, ni toda transformación genera por sí misma valor.
 
