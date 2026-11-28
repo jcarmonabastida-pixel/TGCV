@@ -1,0 +1,134 @@
+name: C10-S single positive theta_A exploratory run (temporary)
+
+on:
+  push:
+    branches:
+      - research/c10s-m1-engine12-source-only-20261127
+    paths:
+      - .github/workflows/c10-s-theta-a-positive-exploratory-temporary.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: c10s-theta-a-positive-exploratory-temporary
+  cancel-in-progress: false
+
+jobs:
+  positive-n32-single-run:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact pushed commit
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Set up pinned Python
+        uses: actions/setup-python@83679a892e2d95755f2dacacb0bfd1e9ac5d548
+        with:
+          python-version: '3.12.10'
+
+      - name: Install locked harness dependencies
+        working-directory: 03_EXPERIMENTS/C10-S/harness
+        run: python -m pip install --require-hashes --only-binary=:all: -r requirements-vcont-integrated.lock
+
+      - name: Execute one positive N=32 DGP-to-Analyzer-to-Evaluator run
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/c10s-theta-a-positive-exploratory"
+          timeout --signal=TERM --kill-after=20s 12m python -B - <<'PY'
+          import hashlib
+          import json
+          import os
+          import platform
+          import sys
+          from dataclasses import asdict
+          from pathlib import Path
+          from types import SimpleNamespace
+
+          harness = Path("03_EXPERIMENTS/C10-S/harness").resolve()
+          sys.path.insert(0, str(harness))
+          from theta_a_calibration_dgp import ThetaACalibrationDGPFactory
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "c10s-theta-a-positive-exploratory"
+          assignment = SimpleNamespace(
+              world_id="EXP-THETA-A-POSITIVE-N32-20261128-001",
+              world_version="1",
+              dgp_id="DGP-INTERVAL-INTEGRATION-INTERACTION",
+              dgp_version="1",
+              roster_id="EXP-THETA-A-POSITIVE-N32-ROSTER-001",
+              roster_version="1",
+              unit_id_prefix="EXP-UE",
+              n_units=32,
+              world_seed=20261128,
+              randomization_salt=hashlib.sha256(
+                  b"TGCV-C10S-THETA-A-POSITIVE-EXPLORATORY-20261128-001"
+              ).hexdigest(),
+              s3_seed=20261129,
+              run_id="EXP-THETA-A-POSITIVE-N32-RUN-001",
+          )
+
+          factory = ThetaACalibrationDGPFactory()
+          fixture = factory.build_fixture(
+              theta_a_mode="positive",
+              seed_assignment=assignment,
+              n_units=32,
+          )
+          # No inferential confidence interval is imposed here: this single
+          # exploratory recovery check must not invent a calibrated CI or
+          # assert an independence certification.
+          result = factory.run_pipeline(fixture)
+          if result is None or result.analyzer_result is None or result.evaluator_result is None:
+              raise SystemExit("INCOMPLETE: Analyzer/Evaluator result missing")
+
+          analysis = asdict(result.analyzer_result)
+          evaluation = asdict(result.evaluator_result)
+          report = {
+              "classification": "SINGLE_EXPLORATORY_SYNTHETIC_CAUSAL_RECOVERY_CHECK",
+              "scientific_status": "EXPLORATORY_NOT_CONFIRMATORY",
+              "source_commit": os.environ.get("GITHUB_SHA"),
+              "workflow_run_id": os.environ.get("GITHUB_RUN_ID"),
+              "python": platform.python_version(),
+              "design": {
+                  "scenario": "positive",
+                  "n_units": 32,
+                  "expected_dgp_effect": 0.5,
+                  "world_seed": 20261128,
+                  "s3_seed": 20261129,
+                  "interval_observation": "complete_best_case",
+                  "pipeline_invocations": 1,
+                  "replay": False,
+                  "additional_scenarios": False,
+                  "confidence_interval_requested": False
+              },
+              "analyzer": analysis,
+              "independent_evaluator": evaluation,
+              "interpretation": {
+                  "estimated_effect": analysis.get("point_estimate"),
+                  "reserved_dgp_truth": evaluation.get("truth"),
+                  "absolute_error": evaluation.get("absolute_error"),
+                  "tolerance": evaluation.get("tolerance"),
+                  "disposition": evaluation.get("disposition"),
+                  "causal_recovery_within_tolerance": evaluation.get("absolute_error") is not None and evaluation.get("absolute_error") <= evaluation.get("tolerance", -1)
+              }
+          }
+          (out / "exploratory_result.json").write_text(
+              json.dumps(report, indent=2, sort_keys=True, allow_nan=False) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(report["interpretation"], sort_keys=True), flush=True)
+          print("PIPELINE_INVOCATIONS=1 REPLAY=0 ADDITIONAL_SCENARIOS=0", flush=True)
+          PY
+
+      - name: Upload the single-run result
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: c10s-theta-a-positive-exploratory-${{ github.sha }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/c10s-theta-a-positive-exploratory/**
+          if-no-files-found: warn
+          retention-days: 14
