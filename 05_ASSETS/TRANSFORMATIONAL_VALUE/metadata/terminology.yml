@@ -35,8 +35,8 @@ terms:
       es: "frontera del sistema"
       en: "system boundary"
     definition:
-      es: "Delimitación que establece qué elementos, relaciones, procesos o aspectos se consideran dentro del sistema de interés y cuáles quedan fuera para un propósito de análisis determinado. Puede incluir interfaces y dimensiones físicas, funcionales, operativas o temporales; no tiene por qué coincidir con un perímetro físico o administrativo."
-      en: "The delimitation that establishes which elements, relationships, processes or aspects are considered inside the system of interest and which are outside it for a particular analytical purpose. It may include interfaces and physical, functional, operational or temporal dimensions; it need not coincide with a physical or administrative perimeter."
+      es: "Delimitación que establece qué elementos, relaciones, procesos y aspectos se consideran dentro del sistema de interés y cuáles quedan fuera, en función del propósito y de la pregunta del análisis. Puede considerar interfaces y dimensiones físicas, funcionales, operativas o temporales, y revisarse cuando resulte necesario. No tiene por qué coincidir con un perímetro físico o administrativo."
+      en: "The delimitation that establishes which elements, relationships, processes and aspects are considered inside the system of interest and which are outside it, according to the purpose and question of the analysis. It may account for interfaces and physical, functional, operational or temporal dimensions, and may be revised when necessary. It need not coincide with a physical or administrative perimeter."
     related_terms: [TV-TERM-002, TV-TERM-004, TV-TERM-005]
     status: draft
     notes: "Chapter 1. The boundary is purpose-dependent and may be revised when relevant dependencies or interfaces become apparent."
