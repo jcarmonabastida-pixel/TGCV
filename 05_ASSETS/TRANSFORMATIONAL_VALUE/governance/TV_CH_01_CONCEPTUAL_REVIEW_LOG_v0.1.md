@@ -1153,3 +1153,23 @@ The suitability checklist should help readers examine both questions. It must no
 **Rationale:** This distinguishes the evidential support for individual model contents from the adequacy of the overall representation for its intended purpose, avoiding an inference from accurate inputs to model validity.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.44 Section 1.7 — compatibility when combining complementary models — accepted
+
+The author approved adding a concise caution in both language versions that combining complementary representations of the same system requires checking their compatibility.
+
+Before combining, compare at least:
+- the system boundaries represented;
+- the assumptions adopted;
+- the time horizons covered;
+- the terminology used; and
+- the levels of detail.
+
+Without these checks, combining models may create an appearance of coherence between representations that describe different scopes or rely on incompatible choices.
+
+The explanation should remain introductory and should not expand into formal methods for model integration.
+
+**Rationale:** Complementary models can provide different but useful views of a system; their combination is meaningful only when relevant differences in scope and modelling choices are recognised and addressed.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
