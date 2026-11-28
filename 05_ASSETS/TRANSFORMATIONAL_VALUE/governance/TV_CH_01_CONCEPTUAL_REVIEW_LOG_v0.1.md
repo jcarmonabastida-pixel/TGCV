@@ -1091,3 +1091,17 @@ This includes written descriptions, diagrams, tables, sets of variables and math
 **Rationale:** This broad working meaning supports the introductory purpose of the chapter and prevents readers from interpreting every use of “model” as referring only to formal quantitative or computational models.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+### 5.40 Section 1.7 — scope, system boundary and level of detail — accepted
+
+The author approved explicitly distinguishing three related but non-interchangeable aspects of a system representation in both language versions:
+
+- **Scope of the representation:** the aspects of the system that the model is intended to cover in order to address a particular question.
+- **System boundary:** what is treated as inside and outside the system of interest for the analysis.
+- **Level of detail:** how finely the elements and relationships included within that scope are represented.
+
+The explanation may note that a model can have broad scope while representing some aspects at a low level of detail, or examine a subsystem in considerable detail without covering the entire system.
+
+**Rationale:** These distinctions prevent scope, analytical delimitation and granularity from being treated as synonyms, and help readers understand that they are separate modelling choices.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
