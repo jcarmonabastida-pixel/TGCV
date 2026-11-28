@@ -877,3 +877,17 @@ For example, a functional relationship may also involve a physical flow and a de
 **Rationale:** The classification is intended to help readers examine relationships from different analytical perspectives, not to impose a rigid or exhaustive taxonomy.
 
 **Disposition:** accepted. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.25 Section 1.5 — system structure and interaction — accepted
+
+The author approved the following distinction for both language versions:
+
+- **System structure:** the configuration of relevant relationships among the system's elements.
+- **Interactions:** actions, exchanges or influences occurring through those relationships, which may affect how the system operates and, in some circumstances, may change the structure itself.
+
+Structure may be relatively stable, but it is not necessarily fixed or immutable. The wording should preserve the distinction between the configuration of relationships and what happens through them, without presenting the two as wholly independent.
+
+**Rationale:** This clarifies the different analytical roles of structure and interaction while recognising that interactions can reproduce or alter structural relationships over time.
+
+**Disposition:** accepted. Manuscript integration remains pending; no manuscript text has been changed by this decision.
