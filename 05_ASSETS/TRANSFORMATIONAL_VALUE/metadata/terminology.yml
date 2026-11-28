@@ -71,8 +71,8 @@ terms:
       es: "comportamiento emergente"
       en: "emergent behaviour"
     definition:
-      es: "Comportamiento o patrón del sistema que resulta de las interacciones y la organización de sus elementos y que no se explica adecuadamente considerando cada elemento por separado. No todo comportamiento del sistema es necesariamente emergente."
-      en: "System behaviour or a pattern arising from the interactions and organisation of its elements that cannot be adequately explained by considering each element separately. Not all system behaviour is necessarily emergent."
+      es: "Comportamiento o patrón del sistema que surge de las interacciones entre sus elementos y de la forma en que están organizados, y que no puede explicarse adecuadamente considerando esos elementos de manera aislada. Aunque puede resultar difícil de anticipar a partir de las características de cada elemento, no es necesariamente imprevisible ni inexplicable."
+      en: "System behaviour or a pattern that arises from interactions among its elements and the way they are organised, and that cannot be adequately explained by considering those elements in isolation. Although it may be difficult to anticipate from the characteristics of individual elements, it is not necessarily unpredictable or inexplicable."
     related_terms: []
     status: draft
     notes: "Chapter 1. Do not use as a synonym for system behaviour in general."
