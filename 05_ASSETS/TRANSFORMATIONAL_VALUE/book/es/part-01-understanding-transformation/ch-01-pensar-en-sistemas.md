@@ -5,7 +5,7 @@ title: "Pensar en sistemas"
 language: es
 content_type: chapter
 status: draft
-version: 1.4
+version: 1.5
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -35,202 +35,227 @@ license: null
 
 ### Mirar más allá de los componentes
 
-Un sistema no es simplemente una colección de componentes. Es una unidad que podemos estudiar a partir de sus elementos, de la organización que mantienen entre sí y de las relaciones que condicionan su funcionamiento.
+Cuando observamos una instalación, un servicio o una organización, podemos empezar enumerando las partes que la componen. Ese inventario es útil, pero todavía no explica cómo funciona el conjunto. Para comprenderlo necesitamos examinar también cómo están organizadas esas partes, qué relaciones mantienen y bajo qué condiciones operan.
 
-Pensemos, por ejemplo, en una red de suministro de agua. Podemos identificar depósitos, estaciones de bombeo, tuberías, válvulas y puntos de consumo. Sin embargo, enumerar esos componentes no basta para comprender cómo se suministra el agua, cómo responde la red a los cambios de demanda o cómo puede propagarse una avería. Para entenderlo necesitamos observar también cómo están organizados y relacionados esos elementos.
+Pensemos en una red de suministro de agua. Podemos identificar la fuente de captación, las instalaciones de tratamiento, los depósitos, las estaciones de bombeo, las tuberías, las válvulas y los puntos de consumo. Sin embargo, enumerar esos elementos no explica cómo llega el agua a cada zona, cómo responde la red cuando cambia la demanda o cómo una avería puede provocar interrupciones en otros lugares. Para responder a esas preguntas debemos considerar la configuración de la red, sus conexiones, las condiciones de operación y las dependencias de energía y control.
 
-Por tanto, para estudiar un sistema no basta con preguntar qué componentes lo forman. También debemos preguntarnos cómo se relacionan y qué comportamiento presenta el conjunto.
+Un sistema es, por tanto, algo más que una colección de elementos presentes en un mismo lugar. Lo reconocemos como un conjunto organizado porque sus elementos mantienen relaciones o dependencias relevantes y, al interactuar o condicionarse entre sí, contribuyen al comportamiento que queremos comprender.
 
 ### Una definición operativa
 
-A efectos de este libro, podemos utilizar la siguiente definición:
+A efectos de este libro, utilizaremos la siguiente definición:
 
-> Un sistema es una unidad de análisis formada por elementos organizados y relacionados, cuyo comportamiento se estudia en función de su configuración y de las condiciones en las que opera.
+> Un sistema es un conjunto delimitable de elementos relacionados y organizados que interactúan o mantienen dependencias relevantes, y cuyo comportamiento puede comprenderse considerando tanto sus elementos como las relaciones entre ellos, dentro de un contexto y durante un periodo determinados.
 
-Esta definición destaca tres aspectos:
+Esta definición es una herramienta introductoria de trabajo, no una definición universal aplicable sin matices a todas las disciplinas. Nos permite orientar el análisis hacia cuatro aspectos:
 
-- **Elementos:** los componentes, entidades o partes que identificamos como integrantes del sistema.
-- **Organización:** la forma en que esos elementos se disponen y articulan.
-- **Relaciones:** los vínculos y dependencias que conectan los elementos y condicionan su funcionamiento.
+- **Elementos:** las partes, entidades o componentes que distinguimos como relevantes para el sistema de interés.
+- **Organización:** la configuración mediante la que esos elementos se disponen y coordinan.
+- **Relaciones y dependencias:** los vínculos e interacciones que conectan los elementos o condicionan lo que pueden hacer.
+- **Comportamiento:** lo que el sistema hace, cómo responde o cómo evoluciona bajo determinadas condiciones.
 
-La definición es deliberadamente operativa. No pretende resolver todas las discusiones teóricas sobre qué es un sistema, sino establecer una base de trabajo útil para analizar sistemas reales.
+No es necesario que todos los elementos interactúen directamente ni que el sistema tenga un propósito explícito. Tampoco todo comportamiento del sistema es necesariamente emergente.
 
-### El comportamiento del conjunto
+### Sistema de interés y perspectiva de análisis
 
-El comportamiento de un sistema no siempre puede explicarse sumando las propiedades o los comportamientos aislados de sus componentes. La organización y las relaciones entre ellos pueden producir efectos que solo se aprecian al considerar el conjunto.
+Conviene distinguir el **sistema de interés** de la **unidad de análisis** y de la **perspectiva analítica**.
 
-En la red de suministro de agua, por ejemplo, la capacidad de atender la demanda no depende únicamente de la capacidad individual de cada bomba o del diámetro de cada tubería. También depende de cómo se conectan los distintos tramos, de la distribución de la demanda y de cómo responde la red ante cambios o incidencias.
+El sistema de interés es el sistema concreto que queremos comprender. La unidad de análisis indica sobre qué realizamos observaciones o análisis: puede ser el sistema completo, un subsistema, un actor o una interacción. La perspectiva analítica es el enfoque desde el que lo examinamos, por ejemplo, funcional, operativo, organizativo o temporal.
 
-Esto no significa que los componentes dejen de ser importantes. Significa que su contribución debe entenderse dentro de la configuración en la que operan.
+Así, podemos estudiar una red de agua como sistema de interés y centrar una investigación en una estación de bombeo como unidad de análisis. También podemos examinar esa misma red desde una perspectiva hidráulica, energética, organizativa o de continuidad del servicio. Estas elecciones no cambian necesariamente el sistema de interés, pero sí determinan qué aspectos observamos y qué conclusiones podemos sostener.
 
-### Una distinción fundamental
+### Comportamiento del sistema y comportamiento emergente
 
-Al describir un sistema conviene mantener separadas tres preguntas:
+El **comportamiento del sistema** comprende las pautas de funcionamiento, respuestas o cambios que podemos observar o inferir. El **comportamiento emergente** es un caso más específico: aparece como resultado de las interacciones y de la organización del conjunto, y no puede explicarse adecuadamente examinando cada elemento por separado.
 
-1. ¿Qué elementos o componentes lo forman?
+Por ejemplo, una variación de presión en una tubería puede explicarse en gran medida por las condiciones locales. En cambio, la capacidad de una red para mantener el suministro en distintas zonas durante un aumento de demanda puede depender de la interacción entre depósitos, bombas, conexiones, controles y patrones de consumo. No debemos llamar emergente a cualquier comportamiento del sistema: el término resulta útil cuando la organización y las interacciones del conjunto son esenciales para explicar el fenómeno.
+
+### El alcance del concepto de sistema
+
+En este libro nos centraremos principalmente en sistemas físicos, sociales, organizativos y socio-técnicos. Algunos aspectos de su comportamiento pueden no ser directamente observables y, aun así, pueden estudiarse mediante evidencias pertinentes, como registros, mediciones, decisiones o patrones de actividad.
+
+También podemos utilizar sistemas conceptuales como representaciones o construcciones analíticas. Sin embargo, no los equipararemos automáticamente a sistemas que operan en el mundo. Cuando hablemos de un sistema, el tipo de realidad al que nos referimos y la evidencia que permite estudiarlo deberán resultar claros en el contexto.
+
+### Por qué importa el conjunto
+
+Las propiedades de los componentes siguen siendo importantes, pero su contribución depende de la configuración en la que operan. En la red de agua, la capacidad nominal de una bomba o el diámetro de una tubería no bastan para determinar el servicio que recibe cada zona. También importan la topología de la red, la localización y el momento de la demanda, las condiciones de presión y caudal, las reglas de operación y las dependencias de energía y control.
+
+Una descripción inicial debería responder, al menos, a tres preguntas:
+
+1. ¿Qué elementos forman parte del sistema de interés?
 2. ¿Cómo están organizados y relacionados?
-3. ¿Qué comportamiento presenta el conjunto bajo determinadas condiciones?
+3. ¿Qué comportamiento presentan bajo las condiciones que queremos comprender?
 
-Responder solo a la primera permite elaborar un inventario. Responder también a las otras dos permite empezar a construir una descripción del sistema.
+La primera pregunta ayuda a construir un inventario. Las otras dos permiten empezar a explicar el funcionamiento del conjunto.
 
 ### Idea clave
 
-Un sistema debe estudiarse como un conjunto organizado de elementos y relaciones, no como una simple suma de componentes.
+Comprender un sistema exige examinar sus elementos, su organización y las relaciones o dependencias relevantes entre ellos. El comportamiento del conjunto no siempre puede explicarse estudiando cada parte por separado.
 
 ### Pregunta de reflexión
 
-Piensa en un sistema que conozcas —una instalación, un servicio, una organización o una infraestructura— cuyo funcionamiento no pueda explicarse observando sus componentes por separado. ¿Qué relaciones y aspectos de su organización necesitas considerar para comprender su comportamiento?
+Piensa en una instalación, un servicio o una organización que conozcas. ¿Qué parte considerarías el sistema de interés? ¿Podrías estudiarla utilizando distintas unidades de análisis o perspectivas? ¿Qué comportamientos pueden explicarse por las características de elementos concretos y cuáles dependen de la organización y las interacciones del conjunto?
 
 ## 1.2. Propósito, frontera, entorno y contexto
 
-### Antes de analizar, hay que decidir qué estamos estudiando
+### Decidir qué sistema queremos comprender
 
-No podemos analizar un sistema sin establecer primero qué unidad queremos comprender. En muchos casos, los límites físicos parecen evidentes: una máquina, un edificio o una instalación pueden identificarse a simple vista. Pero incluso entonces, decidir dónde termina el sistema y dónde empieza aquello que lo rodea depende de la pregunta que queremos responder.
+Antes de analizar un sistema debemos establecer qué queremos comprender y qué vamos a considerar como parte del objeto de estudio. Los límites físicos de una máquina o un edificio pueden parecer evidentes, pero la frontera de un sistema de interés no siempre coincide con el perímetro de una instalación, una organización o un contrato. Depende de la pregunta que guía el análisis.
 
-Consideremos de nuevo una red de suministro de agua. Si queremos estudiar el funcionamiento hidráulico de una zona, podemos delimitar el análisis alrededor de depósitos, estaciones de bombeo, tuberías, válvulas y puntos de entrega. Si queremos estudiar la continuidad del servicio, quizá debamos incluir también los equipos de mantenimiento, los procedimientos de respuesta ante averías y los mecanismos de coordinación. Si la pregunta se refiere a la relación entre consumo y disponibilidad, los usuarios y sus patrones de demanda adquieren una relevancia directa.
+En una red de suministro de agua, un estudio del comportamiento hidráulico puede centrarse en depósitos, estaciones de bombeo, tuberías, válvulas y conexiones. Si queremos comprender la continuidad del servicio, también pueden ser relevantes los equipos de mantenimiento, los procedimientos de respuesta y los sistemas de control. Si investigamos cómo la demanda afecta a la disponibilidad, tendremos que considerar los puntos de consumo y los patrones de uso.
 
-No necesariamente estamos describiendo tres sistemas completamente distintos. Estamos estableciendo tres delimitaciones analíticas diferentes, cada una adecuada para una pregunta concreta.
+Son delimitaciones distintas de un mismo sistema de interés, seleccionadas para responder a preguntas diferentes.
 
-### El propósito: ¿para qué estudiamos el sistema?
+### Propósito, función y objetivos
 
-El propósito del análisis expresa qué queremos comprender, explicar o evaluar. Orienta la selección de los elementos relevantes, el nivel de detalle y la información que necesitamos recoger.
+El **propósito del análisis** expresa qué queremos comprender, explicar o evaluar. Orienta la selección del sistema de interés, la frontera, el nivel de detalle y la información necesaria.
 
-Conviene distinguir entre el propósito que se declara y el que se observa en la práctica. Una organización puede afirmar que su objetivo es garantizar un servicio continuo, mientras que sus decisiones operativas priorizan reducir costes o limitar determinados riesgos. Ambas dimensiones pueden coexistir, pero no son equivalentes.
+No debe confundirse con el **propósito del sistema**, que es la razón de existencia declarada o atribuida al sistema. Tampoco debemos utilizar como sinónimos propósito, función y objetivos:
 
-En el análisis de sistemas, atribuir un propósito requiere cuidado. Algunos sistemas tienen objetivos explícitos, establecidos por personas u organizaciones. En otros casos, hablamos de funciones o efectos observados sin que exista necesariamente una intención unificada. Por eso debemos indicar si estamos describiendo un propósito declarado, una función asignada o un comportamiento que observamos.
+- **Propósito:** razón de existencia declarada o atribuida al sistema.
+- **Función:** actividad o contribución que realiza el sistema.
+- **Objetivos:** resultados que se pretende alcanzar; pueden ser varios y entrar en conflicto.
 
-El propósito del análisis tampoco debe confundirse con el propósito del propio sistema. Podemos estudiar una instalación para evaluar su consumo energético aunque su función principal sea suministrar agua. La pregunta del analista y la finalidad de la instalación son cosas distintas.
+Una organización que gestiona una red de agua puede declarar como propósito garantizar un suministro fiable. Entre sus funciones se encuentran captar, tratar, almacenar y distribuir agua. Sus objetivos pueden incluir continuidad del servicio, calidad, eficiencia energética y control de costes. Estos objetivos pueden reforzarse entre sí o exigir compromisos.
 
-### La frontera: ¿qué incluimos en el sistema?
+El propósito del análisis es otra cosa: podemos estudiar esa red para comprender su consumo energético, aunque su función principal sea distribuir agua. Mantener separadas estas nociones evita atribuir al sistema una intención que quizá no tenga o confundir la pregunta del análisis con los resultados que el sistema debe producir.
 
-La frontera establece qué elementos y relaciones vamos a considerar como parte de la unidad analizada. No siempre coincide con un límite físico, administrativo o contractual.
+### La frontera y sus interfaces
 
-En una red de agua, por ejemplo, podemos incluir las instalaciones de tratamiento y distribución, pero dejar fuera los hogares que reciben el suministro. Para estudiar la prestación completa del servicio, en cambio, puede ser necesario incorporar los puntos de consumo y determinados procesos que tienen lugar en ellos.
+La **frontera del sistema** establece qué elementos y relaciones se consideran dentro o fuera del sistema de interés. Es una decisión analítica que debe justificarse, no necesariamente un límite físico o administrativo.
 
-Una frontera útil no es necesariamente la más amplia. Si incluimos demasiados elementos, el análisis puede volverse inmanejable y perder precisión. Si incluimos demasiado pocos, podemos dejar fuera dependencias que explican el comportamiento que intentamos comprender.
+La frontera también debe permitir identificar las **interfaces relevantes**: los puntos en los que el sistema se conecta o intercambia algo con otros elementos o sistemas. En una estación de bombeo, por ejemplo, pueden ser relevantes la conexión con el suministro eléctrico, los sistemas de control, la infraestructura que aporta el agua y las conducciones que la reciben.
 
-La frontera debe justificarse por su relación con el propósito del análisis. También debe hacerse explícita: dos estudios pueden llegar a conclusiones diferentes porque han delimitado de forma distinta el sistema, no necesariamente porque uno de ellos sea incorrecto.
+La frontera puede tener dimensiones físicas, funcionales, operativas y temporales. Una instalación puede estar físicamente delimitada, pero su funcionamiento depender de servicios externos, reglas operativas o procesos que quedan fuera de ese perímetro.
 
-### El entorno: aquello con lo que el sistema se relaciona
+Una frontera demasiado amplia puede hacer que el análisis resulte inmanejable; una demasiado estrecha puede excluir dependencias o interfaces necesarias para explicar el comportamiento. Por ello, debemos seleccionar una frontera adecuada a la pregunta, hacer explícitas las exclusiones relevantes y justificar el nivel de detalle elegido.
 
-El entorno comprende los elementos y condiciones externos a la frontera del sistema que pueden influir en él o verse afectados por su funcionamiento.
+La frontera tampoco tiene por qué ser definitiva. Puede revisarse si el análisis o la evidencia revelan dependencias, interfaces o efectos relevantes que inicialmente quedaron fuera. Esa revisión debe justificarse por su relación con el problema, no convertirse en una ampliación arbitraria del sistema de interés.
 
-En el ejemplo de la red de agua, el entorno puede incluir las condiciones meteorológicas, la disponibilidad de agua en las fuentes de captación, el suministro eléctrico, las normas aplicables y la evolución de la demanda. Aunque estos factores queden fuera de la frontera elegida, pueden condicionar de forma decisiva el comportamiento de la red.
+### El entorno: elementos y condiciones externos relevantes
 
-La distinción entre sistema y entorno no significa que ambos estén aislados. Precisamente, parte del análisis consiste en identificar qué intercambios, influencias o dependencias atraviesan la frontera: entradas de recursos, información, energía, demandas, restricciones o efectos sobre otros sistemas.
+En este libro utilizaremos **entorno** para referirnos a los elementos, sistemas y condiciones externos a la frontera que interactúan con el sistema de interés o pueden verse afectados por él.
 
-### El contexto: las circunstancias que dan sentido al análisis
+En una red de agua, el entorno puede incluir la disponibilidad de agua en las fuentes de captación, las condiciones meteorológicas, el suministro eléctrico, las normas aplicables y los cambios en la demanda. Estos factores pueden permanecer fuera de la frontera y, aun así, influir de forma significativa en el funcionamiento de la red.
 
-El contexto reúne las circunstancias relevantes para interpretar el sistema y su comportamiento en una situación determinada. Puede incluir condiciones técnicas, económicas, sociales, institucionales, ambientales, históricas o temporales.
+La frontera no implica aislamiento. Parte del análisis consiste precisamente en identificar los intercambios, influencias e interfaces que la atraviesan: materia, energía, información, recursos, servicios, demandas, restricciones o efectos.
 
-Entorno y contexto están relacionados, pero no significan exactamente lo mismo. El entorno se refiere a aquello que rodea al sistema delimitado y mantiene con él relaciones relevantes. El contexto es el marco de circunstancias desde el que interpretamos el sistema, formulamos la pregunta y valoramos qué aspectos son significativos.
+### El contexto: circunstancias desde las que interpretamos el sistema
 
-Por ejemplo, una reducción de la disponibilidad de agua puede ser una condición del entorno. Que esa reducción se produzca durante una sequía prolongada, bajo determinadas restricciones regulatorias y con una demanda estacional elevada forma parte del contexto en el que debemos interpretar la respuesta de la red.
+Utilizaremos **contexto** para referirnos al conjunto de circunstancias, relaciones y condiciones desde las que se define e interpreta el problema y el sistema de interés. Puede incluir aspectos técnicos, económicos, sociales, institucionales, ambientales, históricos y temporales.
 
-No todo lo que sucede alrededor de un sistema tiene la misma relevancia. El análisis debe identificar qué circunstancias afectan a la pregunta planteada y explicar por qué se consideran pertinentes.
+Entorno y contexto están relacionados, pero cumplen funciones distintas en esta convención editorial. El entorno identifica elementos, sistemas y condiciones externos que interactúan con el sistema o pueden verse afectados por él. El contexto sitúa la pregunta y ayuda a interpretar qué aspectos son relevantes y por qué.
 
-### Las decisiones de delimitación condicionan las conclusiones
+Por ejemplo, la disponibilidad de agua en una fuente de captación puede ser una condición del entorno. Una sequía prolongada, un aumento estacional de la demanda y determinadas restricciones regulatorias conforman circunstancias contextuales importantes para interpretar la respuesta de la red.
 
-Propósito, frontera, entorno y contexto están conectados. El propósito orienta la frontera; la frontera permite distinguir el sistema de su entorno; y el contexto ayuda a interpretar las condiciones bajo las que se estudia su comportamiento.
+Esta distinción es una convención de trabajo adoptada en este libro para facilitar el análisis; no pretende establecer una separación universal utilizada del mismo modo en todas las disciplinas.
 
-Estas decisiones no son un trámite previo que podamos olvidar después. Condicionan qué datos recogemos, qué relaciones observamos y hasta dónde podemos extender nuestras conclusiones.
+### Estas decisiones condicionan lo que podemos concluir
 
-Por ello, una descripción rigurosa debería dejar claro:
+Propósito, frontera, entorno y contexto están conectados. El propósito del análisis orienta la frontera; la frontera distingue el sistema de interés de los elementos y condiciones externos; y el contexto permite interpretar el problema y las condiciones bajo las que observamos el comportamiento.
 
-- qué sistema se está analizando y con qué propósito;
-- qué elementos y relaciones quedan dentro de la frontera;
-- qué factores externos se consideran relevantes;
-- en qué circunstancias y horizonte temporal se interpreta su comportamiento;
-- qué aspectos se han dejado fuera y cómo podrían limitar las conclusiones.
+Estas decisiones afectan a la evidencia que recogemos, las relaciones que examinamos y el alcance de nuestras conclusiones. Dos análisis pueden llegar a resultados diferentes porque han delimitado sistemas de interés distintos o han respondido a preguntas diferentes. Para interpretar sus conclusiones debemos conocer esas decisiones.
 
-No existe una única delimitación correcta para todas las preguntas. Existe una delimitación más o menos adecuada y justificable para cada propósito de análisis.
+Una descripción rigurosa debería indicar:
+
+- qué sistema de interés se estudia y cuál es el propósito del análisis;
+- qué elementos y relaciones se incluyen en la frontera;
+- qué interfaces e intercambios externos son relevantes;
+- qué elementos, sistemas y condiciones se consideran parte del entorno;
+- qué circunstancias forman el contexto de interpretación; y
+- qué exclusiones pueden limitar el análisis o sus conclusiones.
+
+No existe una frontera correcta para todas las preguntas. Existe una delimitación más o menos adecuada y defendible para un propósito concreto, que puede revisarse si aparecen razones relevantes para hacerlo.
 
 ### Idea clave
 
-Antes de explicar cómo funciona un sistema, debemos declarar qué estamos considerando como sistema, para qué lo estudiamos y bajo qué circunstancias interpretamos su comportamiento.
+La comprensión de un sistema depende de cómo definimos el propósito del análisis, seleccionamos su frontera e interfaces y distinguimos el entorno del contexto. Estas decisiones deben ser explícitas porque condicionan la evidencia y las conclusiones.
 
 ### Pregunta de reflexión
 
-Elige una instalación o un servicio que conozcas. Define una pregunta concreta sobre su funcionamiento y establece una frontera de análisis adecuada. ¿Qué elementos incluirías? ¿Qué factores dejarías en el entorno? ¿Qué circunstancias del contexto podrían cambiar la interpretación de tus conclusiones?
-
+Elige un servicio o una instalación que conozcas y formula una pregunta concreta sobre su funcionamiento. ¿Qué sistema de interés delimitarías para responderla? ¿Qué interfaces y dependencias incluirías en la descripción? ¿Qué factores pertenecen al entorno y qué circunstancias forman parte del contexto? ¿Qué evidencia podría llevarte a revisar la frontera inicial?
 
 ## 1.3. Elementos, estados, propiedades y comportamientos
 
-### De qué está compuesto un sistema y cómo podemos describirlo
+### Describir qué forma un sistema y cómo funciona
 
-Una vez delimitado el sistema que queremos estudiar, necesitamos describir qué lo compone y qué aspectos de sus elementos son relevantes para comprender su funcionamiento. No todos los elementos tienen la misma naturaleza ni necesitamos describirlos con el mismo nivel de detalle. La descripción depende de la pregunta de análisis.
+Una vez definido el sistema de interés, necesitamos describir los elementos que lo forman y las características relevantes para la pregunta que queremos responder. No todos los elementos tienen la misma naturaleza ni necesitamos representarlos con el mismo nivel de detalle. La descripción debe ser selectiva y coherente con el propósito del análisis.
 
-En una red de suministro de agua podemos identificar depósitos, bombas, tuberías, válvulas, sensores, equipos de control y puntos de entrega. También podemos reconocer elementos no físicos, como procedimientos operativos, reglas de control o información utilizada para tomar decisiones. En un sistema socio-técnico, las personas y organizaciones que intervienen forman parte de la descripción cuando sus acciones, decisiones o responsabilidades son relevantes.
+Una red de suministro de agua puede incluir depósitos, bombas, tuberías, válvulas, sensores, equipos de control y puntos de consumo. También depende de procedimientos, reglas de operación e información utilizada para tomar decisiones. En sistemas socio-técnicos, las personas, los equipos y las organizaciones deben formar parte de la descripción cuando sus acciones, decisiones o responsabilidades influyen en el comportamiento estudiado.
 
-El objetivo no es elaborar un inventario exhaustivo de todo lo que existe. Es identificar los elementos que necesitamos para explicar el comportamiento que estamos estudiando.
+El objetivo no es elaborar un inventario exhaustivo de todo lo que existe, sino identificar las partes necesarias para comprender los aspectos relevantes del sistema.
 
 ### Elementos y componentes
 
-Llamaremos **elementos** a las entidades o partes que distinguimos dentro del sistema para describirlo. Según el sistema y el nivel de análisis, pueden ser componentes físicos, personas, equipos, unidades organizativas, procesos, recursos, información o subsistemas.
+Utilizaremos **elemento** como término general para cualquier parte o entidad relevante que distinguimos al analizar un sistema. Según el sistema y el nivel de análisis, puede tratarse de una persona, un grupo, una organización, un proceso, un recurso, información, un subsistema o una parte física.
 
-La elección del nivel de detalle importa. Una estación de bombeo puede tratarse como un único elemento si analizamos la distribución general de la red. Si estudiamos su consumo energético o su fiabilidad, quizá necesitemos distinguir motores, bombas, sensores, sistemas de alimentación y controles.
+El término **componente** puede utilizarse de forma más específica, especialmente en sistemas técnicos o de ingeniería, para referirse a una parte constituyente del sistema. La distinción no constituye una taxonomía rígida: cuando el contexto disciplinar no requiera diferenciarlos, ambos términos pueden aparecer próximos en su significado. En este capítulo, elemento será el término general.
 
-No existe una descomposición única válida para cualquier análisis. Una descripción útil debe ser suficientemente detallada para responder a la pregunta, pero no tan minuciosa que oculte las relaciones y el comportamiento que queremos comprender.
+La elección del nivel de descomposición importa. Una estación de bombeo puede tratarse como un único elemento al estudiar el funcionamiento general de la red. Si analizamos su consumo energético o su fiabilidad, quizá necesitemos distinguir motores, bombas, sensores, alimentación eléctrica y equipos de control. Una descripción útil ofrece el detalle necesario para responder a la pregunta sin ocultar las relaciones relevantes bajo un inventario excesivamente minucioso.
 
-### Estados: cómo se encuentra el sistema o uno de sus elementos
+### Estados: la condición en un momento de referencia
 
-El **estado** describe cómo se encuentra un sistema o un elemento en un momento o intervalo determinado, atendiendo a las variables que resultan relevantes para el análisis.
+El **estado** describe la condición de un sistema o de uno de sus elementos en un momento de referencia determinado, utilizando las variables pertinentes para el análisis.
 
-En una red de agua, el estado de un depósito podría describirse mediante su nivel de llenado; el de una bomba, mediante su condición operativa y su régimen de funcionamiento; y el de un tramo de red, mediante variables como presión y caudal. Para describir el estado de la red en su conjunto necesitaríamos seleccionar un conjunto de variables que representase los aspectos relevantes de su configuración y operación.
+En una red de agua, el estado de un depósito puede describirse mediante su nivel; el de una bomba, mediante su condición operativa y régimen de funcionamiento; y el de un tramo de red, mediante la presión y el caudal. Para describir el estado de la red en su conjunto seleccionamos las variables que representan los aspectos de su configuración y operación relevantes para la pregunta.
 
-Un estado no es necesariamente una descripción completa de todo lo que existe. Es una representación selectiva: incluye la información que necesitamos para distinguir situaciones que pueden tener consecuencias diferentes para la pregunta estudiada.
+Un estado es una representación selectiva, no una descripción completa de todo lo que existe. Por ello debemos indicar qué variables utilizamos, cómo se observan o estiman y a qué momento se refieren.
 
-Por eso conviene especificar qué variables se utilizan, cómo se observan o estiman y en qué momento se refieren. Dos descripciones del mismo sistema pueden utilizar variables distintas porque responden a preguntas diferentes.
+Cuando recogemos observaciones durante un intervalo, obtenemos una secuencia o trayectoria de estados. Esa secuencia permite examinar la evolución del sistema y estudiar su comportamiento. El intervalo de observación no debe confundirse con un único estado.
 
 ### Propiedades y variables
 
-Las **propiedades** son características que atribuimos a un elemento o sistema y que ayudan a describirlo. Algunas pueden considerarse relativamente estables durante el análisis; otras varían con el tiempo o con las condiciones de operación.
+Una **propiedad** es una característica que atribuimos a un elemento o sistema. Una **variable** es una cantidad o representación que utilizamos para describir o seguir una característica o condición relevante.
 
-Por ejemplo, el diámetro de una tubería y la capacidad nominal de una bomba describen características del equipamiento. La presión, la temperatura, el nivel de un depósito o el consumo eléctrico pueden variar durante la operación y utilizarse como variables de estado o de seguimiento, según el modelo y la pregunta.
+Por ejemplo, el diámetro de una tubería o la capacidad nominal de una bomba son propiedades del equipamiento. El caudal entregado en un momento determinado es una variable que permite describir una condición de funcionamiento. La capacidad nominal caracteriza la bomba bajo unas condiciones especificadas; no equivale al caudal que está suministrando en ese instante.
 
-Es útil no confundir una propiedad con el valor que observamos en un momento concreto. La capacidad nominal de una bomba no es lo mismo que el caudal que está entregando ahora. La primera caracteriza al equipo bajo unas condiciones especificadas; el segundo describe una condición de funcionamiento.
+No todas las propiedades necesitan representarse mediante una variable. A su vez, una variable puede utilizarse para observar cómo cambia una propiedad o condición a lo largo del tiempo. La elección depende de la pregunta, la disponibilidad de información y la calidad de la evidencia. Cuando una variable se estima en lugar de medirse directamente, esa circunstancia debe quedar clara si afecta a la interpretación.
 
-En la práctica, la selección de propiedades y variables debe atender a su relevancia, disponibilidad y calidad. Una variable que no podemos medir directamente quizá deba estimarse; una característica que parece importante puede resultar innecesaria para una pregunta concreta. Estas decisiones deben hacerse explícitas cuando condicionen las conclusiones.
+### Comportamientos: pautas, respuestas y cambios
 
-### Comportamientos: qué hace y cómo cambia
+El **comportamiento** describe las pautas de funcionamiento, respuestas o cambios de un sistema o de sus elementos bajo determinadas condiciones. Se caracteriza a partir de observaciones o inferencias sobre cómo evolucionan sus estados y variables.
 
-El **comportamiento** describe cómo actúa o evoluciona el sistema, o alguno de sus elementos, bajo determinadas condiciones. Puede observarse como una pauta de funcionamiento, una respuesta ante una perturbación o una variación de las variables a lo largo del tiempo.
+En la red de agua, podemos examinar cómo cambia la presión cuando aumenta la demanda, cómo responde el control cuando desciende el nivel de un depósito o cómo se recupera el servicio después de una avería. Una lectura aislada de presión puede describir un estado, pero normalmente no basta por sí sola para establecer una pauta de comportamiento. Para caracterizarla suelen ser necesarias observaciones repetidas u otras evidencias adecuadas al fenómeno y a la pregunta.
 
-En la red de suministro, el comportamiento puede incluir la forma en que cambia la presión cuando aumenta la demanda, cómo responde el control al descender el nivel de un depósito o cómo se recupera el servicio después de una avería. Para comprenderlo no basta con conocer las propiedades nominales de los componentes: necesitamos observar cómo funcionan en su configuración y condiciones reales.
+Esto no constituye una regla absoluta: el tipo y la cantidad de evidencia dependen de lo que queremos comprender. Lo importante es no presentar una observación puntual como si demostrara por sí sola un patrón estable.
 
-Conviene distinguir entre estado y comportamiento. El estado describe una situación; el comportamiento se refiere a lo que ocurre o a cómo evoluciona esa situación. Una lectura de presión en un instante informa sobre un estado. Una serie de lecturas durante un periodo puede mostrar cómo responde la red a cambios de demanda.
+### Relacionar elementos, propiedades, estados y comportamientos
 
-### Relacionar elementos, estados y comportamientos
+Estas dimensiones adquieren sentido cuando se consideran conjuntamente. Identificamos los elementos relevantes, describimos algunas de sus propiedades, utilizamos variables para representar condiciones y estados, y examinamos las pautas de funcionamiento que aparecen a lo largo del tiempo.
 
-Estos conceptos adquieren sentido cuando se utilizan conjuntamente. Los elementos nos dicen qué partes distinguimos; sus propiedades describen características relevantes; los estados representan cómo se encuentran; y los comportamientos muestran cómo actúan o evolucionan.
+Supongamos que aumenta el consumo de agua en una zona. Podemos observar cambios en el caudal y la presión, identificar las bombas y válvulas que están operando y examinar la respuesta del sistema de control. Para explicar lo que sucede necesitamos relacionar las variables observadas con los elementos, las conexiones y las condiciones de operación de la red.
 
-Consideremos una situación sencilla: aumenta el consumo de agua en una zona. La demanda constituye una condición relevante para el análisis. Podemos observar cambios en el caudal y la presión, identificar qué bombas y válvulas están operando y examinar cómo responde el sistema de control. La explicación requiere conectar las variables observadas con los elementos y las relaciones que forman parte de la red.
+Una misma observación puede admitir explicaciones distintas si cambia la configuración o si falta información sobre elementos relevantes. Describir un sistema no consiste, por tanto, en reunir valores aislados, sino en organizarlos de modo que permitan interpretar su funcionamiento.
 
-La misma observación puede tener explicaciones distintas si cambia la configuración o si faltan datos sobre determinados elementos. Por eso, describir un sistema no consiste en reunir valores aislados, sino en organizarlos de modo que permitan interpretar su funcionamiento.
+### Información disponible y aspectos omitidos
+
+Una descripción rigurosa no necesita incluir todas las propiedades posibles, pero debe distinguir entre dos situaciones diferentes:
+
+- **Información desconocida o no disponible:** no contamos con información suficiente o con evidencia accesible sobre un aspecto del sistema.
+- **Omisiones deliberadas:** conocemos o reconocemos un aspecto, pero decidimos excluirlo por el propósito, el alcance o el nivel de detalle de la descripción.
+
+La ausencia de un aspecto en una descripción no demuestra que ese aspecto no exista. Tampoco debemos presentar una dependencia desconocida como si la hubiéramos excluido deliberadamente. Cuando estas limitaciones puedan afectar a la interpretación o a las conclusiones, conviene documentarlas y explicar su relevancia.
 
 ### Elegir qué describir
-
-Una descripción rigurosa no necesita incluir todas las propiedades posibles. Debe seleccionar las que permitan responder a la pregunta de análisis y dejar constancia de las omisiones relevantes.
 
 Al preparar una descripción inicial, podemos preguntarnos:
 
 - ¿Qué elementos o subsistemas necesitamos distinguir?
-- ¿Qué nivel de detalle resulta adecuado?
+- ¿Qué nivel de detalle resulta adecuado para la pregunta?
 - ¿Qué propiedades caracterizan a esos elementos?
-- ¿Qué variables permiten describir los estados relevantes?
-- ¿Qué comportamientos necesitamos observar y durante qué periodo?
-- ¿Qué información no está disponible o queda fuera de la descripción?
+- ¿Qué variables permiten representar los estados relevantes?
+- ¿Qué observaciones o evidencias necesitamos para examinar su comportamiento?
+- ¿Qué información no está disponible y qué aspectos hemos decidido omitir?
 
-Estas preguntas ayudan a construir una representación coherente y evitan confundir la información disponible con una descripción completa del sistema.
+Estas preguntas ayudan a construir una representación coherente y a evitar que la información disponible se confunda con una descripción completa del sistema.
 
 ### Idea clave
 
-Para describir un sistema necesitamos identificar sus elementos, seleccionar las propiedades y variables relevantes, representar sus estados y observar sus comportamientos. Ninguna de estas dimensiones, por sí sola, explica el funcionamiento del conjunto.
+Para describir un sistema identificamos elementos relevantes, atribuimos propiedades, utilizamos variables para representar estados y examinamos pautas de comportamiento. También debemos distinguir entre información que falta y aspectos que hemos decidido omitir.
 
 ### Pregunta de reflexión
 
-Elige una instalación o un servicio que conozcas. Identifica algunos de sus elementos y selecciona una propiedad y una variable relevante para cada uno. ¿Qué estados podrías describir? ¿Qué comportamiento necesitarías observar a lo largo del tiempo para comprender cómo funciona el sistema?
-
+Piensa en una instalación o un servicio que conozcas. Elige uno de sus elementos y distingue una propiedad del equipo de una variable que permita observar su condición. ¿Qué estado podrías describir en un momento concreto? ¿Qué observaciones necesitarías para caracterizar su comportamiento? ¿Qué información podría faltar y qué aspectos podrías decidir omitir por el propósito de tu análisis?
 
 ## 1.4. Actores, capacidades, recursos y dependencias
 
