@@ -946,3 +946,20 @@ The equivalence is conceptual rather than a requirement for literal translation.
 The author also approved closing the **conceptual decision phase** for section 1.5, subject to manuscript integration and subsequent editorial checks. TV-DIA-002 remains a draft asset; this decision does not modify it or authorise its publication.
 
 **Disposition:** terminology baseline accepted; conceptual review decisions for section 1.5 closed. Manuscript integration remains pending. No manuscript text or visual asset has been changed by this decision.
+
+
+### 5.30 Section 1.5 — manuscript integration and verification — completed
+
+The approved section 1.5 decisions have been integrated independently into both original-language manuscripts. The Spanish and English texts were revised as separate authored versions and then checked for conceptual equivalence.
+
+Integration includes: relationship versus interaction; directional, reciprocal and asymmetric interactions; overlapping relationship categories; structure as the configuration of relevant relationships; interaction as activity occurring through those relationships and potentially changing them; dependencies treated structurally without redefining the term from section 1.4; feedback-loop closure and stabilising/amplifying effects; and the distinction between an individual measurement and the system's complete state.
+
+The TV-DIA-002 reference remains in both sections. The asset itself was not modified, and this integration does not approve its publication or change its draft status.
+
+**Manuscripts updated:**
+- Spanish: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/es/part-01-understanding-transformation/ch-01-pensar-en-sistemas.md`, version 1.1.
+- English: `05_ASSETS/TRANSFORMATIONAL_VALUE/book/en/part-01-understanding-transformation/ch-01-thinking-in-systems.md`, version 1.0.
+
+Both files were fetched again after the commits. Their version metadata and the accepted conceptual changes were checked in the persisted section 1.5 text. The bilingual review confirms equivalent conceptual scope while preserving independent wording.
+
+**Disposition:** section 1.5 integration completed and verified. This does not close the chapter or authorise progression to chapter 2; other section integrations and subsequent editorial phases remain pending.
