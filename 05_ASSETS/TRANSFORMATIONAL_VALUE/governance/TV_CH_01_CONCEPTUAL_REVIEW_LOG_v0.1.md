@@ -1793,3 +1793,20 @@ The author approved the revised bilingual definition of `TV-TERM-002 — system_
 The revised wording makes explicit that the system is the object of interest, while the aspects considered part of it and its delimitation are established for the purpose and question at hand. It preserves the distinction from the unit of analysis and analytical perspective, and links naturally to `TV-TERM-003 — system_boundary`.
 
 The definitions were updated in the shared terminology registry and re-fetched from the research branch. The entry remains in `draft` pending completion of the full terminology review and subsequent approval of the terminology set. No manuscript prose or metadata was changed in this step.
+
+
+### 5.70 Terminology definition review — TV-TERM-003 approved
+
+The author approved the revised bilingual definition of `TV-TERM-003 — system_boundary`.
+
+**Approved Spanish definition:**
+
+> Delimitación que establece qué elementos, relaciones, procesos y aspectos se consideran dentro del sistema de interés y cuáles quedan fuera, en función del propósito y de la pregunta del análisis. Puede considerar interfaces y dimensiones físicas, funcionales, operativas o temporales, y revisarse cuando resulte necesario. No tiene por qué coincidir con un perímetro físico o administrativo.
+
+**Approved English definition:**
+
+> The delimitation that establishes which elements, relationships, processes and aspects are considered inside the system of interest and which are outside it, according to the purpose and question of the analysis. It may account for interfaces and physical, functional, operational or temporal dimensions, and may be revised when necessary. It need not coincide with a physical or administrative perimeter.
+
+The revised wording makes the boundary explicitly dependent on the purpose and question of the analysis, covers elements, relationships, processes and aspects considered inside or outside the system of interest, recognises physical, functional, operational and temporal dimensions, and states that the boundary may be revised when necessary. It avoids implying that interfaces are necessarily internal to the system and preserves the distinction from a physical or administrative perimeter.
+
+The definitions were updated in the shared terminology registry and re-fetched from the research branch. The entry remains in `draft` pending completion of the full terminology review and subsequent approval of the terminology set. No manuscript prose or metadata was changed in this step.
