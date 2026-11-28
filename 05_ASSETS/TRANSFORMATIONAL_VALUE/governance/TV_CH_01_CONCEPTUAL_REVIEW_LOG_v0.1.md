@@ -1521,3 +1521,60 @@ The Spanish and English versions preserve equivalent conceptual scope and pedago
 Post-update verification checked the current metadata, section headings and boundaries, table structure, four exercise requirements, five reflection questions, chapter closure and transition question in both files. Both manuscripts remain `draft`.
 
 **Disposition:** section 1.9 integration and bilingual verification completed. Chapter 1 is not yet editorially closed. The remaining chapter-level editorial workflow must be completed before progression to Chapter 2.
+
+
+### 5.63 Chapter 1 — initial global editorial review: structure and learning design findings
+
+This entry records findings from the first chapter-level editorial pass against the current Content Model & Editorial Workflow, Learning Master Architecture and Detailed TOC. It is a findings record, not an approval or a set of manuscript corrections. No manuscript text has been changed in this review stage.
+
+**Scope inspected:** both current original-language manuscripts, their section hierarchy and metadata, the chapter template and cross-cutting learning-design requirements.
+
+**Finding 5.63.1 — chapter sequence and progression — no correction currently indicated**
+
+The nine-section progression is coherent: system definition; purpose and analytical boundary; elements and states; actors, capabilities and resources; relationships and structure; openness and time; models and limitations; system-level reasoning; and integrated synthesis. The sequence supports the chapter purpose stated in the Detailed TOC. No reordering is proposed on the evidence of this pass.
+
+**Finding 5.63.2 — explicit learning objectives — confirmed editorial gap**
+
+The Detailed TOC §4.3 states that each chapter should have explicit learning objectives. The recommended chapter template also includes learning objectives. Neither the Spanish nor English manuscript currently contains an explicit learning-objectives section or an equivalent clearly identifiable set of outcomes.
+
+The existing explanations, key ideas, exercises and reflection questions provide material from which objectives can be formulated, but they do not replace the explicit statement required by the learning-design criterion.
+
+**Status:** finding confirmed; wording and placement of objectives not yet decided. No manuscript change authorised by this finding alone.
+
+**Finding 5.63.3 — opening question or motivating situation — partial fulfilment / editorial option**
+
+The chapter opens with the situation of examining an installation, service or organisation and then introduces a water-network example. This provides a concrete entry point consistent with the recommended template's motivating-situation criterion. However, the opening does not frame an explicit question for the reader.
+
+This is not treated as a structural defect. Consider whether a concise opening question would materially improve orientation without repeating the reflection prompt at the end of §1.1.
+
+**Status:** editorial option; decision deferred.
+
+**Finding 5.63.4 — references and source traceability — confirmed completion gap**
+
+Both manuscript metadata blocks currently declare `references: []`. Neither manuscript includes a references or source-notes section. The chapter presents substantive systems concepts and technical distinctions, while the Content Model §9 requires central reference records and traceability appropriate to substantive claims.
+
+A search of the current branch did not locate the expected central `references.yml` or `terminology.yml` records. This search result is not sufficient to conclude that no equivalent registry exists elsewhere; the canonical location and relevant sources must be confirmed before adding or citing records.
+
+**Status:** source audit required. No references are to be invented or inserted without verification.
+
+**Finding 5.63.5 — glossary and related-content links — pending content architecture dependency**
+
+The current metadata declares `concepts: []` and `related: []`. The chapter's closing paragraph names the transition to Chapter 2, but the manuscripts do not yet provide navigable cross-links or glossary references. The Detailed TOC template recommends related chapters and glossary links, and the Content Model defines shared terminology as a governed resource.
+
+The expected glossary and terminology registry locations were not found by the initial branch search. Confirm whether these resources have been created or whether the links must remain deferred until their records exist.
+
+**Status:** dependency check required; do not create placeholder links or invent glossary IDs.
+
+**Finding 5.63.6 — chapter-level synthesis and application — satisfactory in the current draft**
+
+Section 1.9 now includes an integrative synthesis, a table connecting dimensions and their relationships, a bounded applied exercise, and five reflection questions. These elements provide the chapter-level synthesis and application components recommended by the Detailed TOC. The existing section-level key ideas and reflection prompts in §§1.1–1.8 provide progressive reinforcement. No duplication correction is proposed at this stage.
+
+**Finding 5.63.7 — visual assets — no automatic gap**
+
+The chapter currently contains no diagram or image. The chapter template calls for a diagram or model only where it materially improves understanding, and the Content Model requires governance controls if a substantive reusable visual asset is created. The absence of a visual asset is therefore not, by itself, a defect. Any proposal must demonstrate learning value and follow the applicable asset review process.
+
+**Finding 5.63.8 — draft metadata and review readiness**
+
+Both manuscripts retain `status: draft`, empty author/reviewer arrays, and empty references/concepts/related metadata. The draft status is consistent with the current workflow. Authors, reviewers and publication metadata must be resolved at the appropriate later review and approval stages; they are not silently inferred in this pass.
+
+**Next review sequence:** resolve the learning-objective proposal; complete the source and terminology registry audit; then continue with the remaining editorial criteria (clarity, readability, accessibility, consistency of editorial voice, examples, terminology and duplication) before routing any required subject-matter review. Cross-language review remains a distinct gate. Chapter 1 remains `draft`; Chapter 2 must not begin until the applicable Chapter 1 editorial workflow is complete.
