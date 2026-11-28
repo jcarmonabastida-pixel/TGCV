@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 1.3
+version: 1.4
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -33,204 +33,229 @@ license: null
 
 ## 1.1. What Do We Mean by a System?
 
-### From a collection of parts to an organised whole
+### Looking beyond the components
 
-When we encounter a complex installation or service, it is tempting to begin by listing its components. That inventory is useful, but it does not yet tell us how the system works.
+When we examine an installation, a service or an organisation, we may begin by listing its constituent parts. That inventory is useful, but it does not yet explain how the whole works. To understand the system, we also need to examine how its parts are organised, what relationships they maintain and the conditions under which they operate.
 
-Take a municipal water supply network. Its physical components may include reservoirs, treatment facilities, pumping stations, pipes, valves and delivery points. Knowing that these components exist does not explain how water reaches a particular neighbourhood, how the network copes with a peak in demand, or why a failure in one location can disrupt service elsewhere. Those questions require us to examine how the components are arranged and how they depend on one another.
+Consider a water supply network. We can identify the water source, treatment facilities, reservoirs, pumping stations, pipes, valves and consumption points. Yet listing these elements does not explain how water reaches each area, how the network responds when demand changes or how a failure may cause interruptions elsewhere. To answer these questions, we need to consider the network configuration, its connections, operating conditions, and its energy and control dependencies.
 
-A system is therefore more than a collection of things that happen to be present in the same place. It is an organised whole whose elements are connected in ways that matter to the behaviour we want to understand.
+A system is therefore more than a collection of elements located in the same place. We recognise it as an organised whole because its elements maintain relevant relationships or dependencies and, through their interactions or mutual constraints, contribute to the behaviour we want to understand.
 
 ### A working definition
 
-For the purposes of this book, we will use the following working definition:
+For the purposes of this book, we will use the following definition:
 
-> A system is an analytical unit comprising organised and related elements, whose behaviour is examined in terms of its configuration and the conditions under which it operates.
+> A system is a delimitable set of related and organised elements that interact or maintain relevant dependencies, and whose behaviour can be understood by considering both its elements and the relationships between them, within a given context and over a given period.
 
-Three ideas are central to this definition:
+This is an introductory working definition, not a universal definition that applies without qualification across all disciplines. It directs attention to four aspects:
 
-- **Elements** are the components, entities or parts identified as belonging to the system.
-- **Organisation** describes how those elements are arranged and coordinated.
-- **Relationships** are the connections and dependencies through which elements affect one another and contribute to the operation of the whole.
+- **Elements:** the parts, entities or components we distinguish as relevant to the system of interest.
+- **Organisation:** the configuration through which those elements are arranged and coordinated.
+- **Relationships and dependencies:** the connections and interactions that link elements or condition what they can do.
+- **Behaviour:** what the system does, how it responds or how it evolves under specified conditions.
 
-This is a practical definition rather than an attempt to settle every theoretical debate about systems. It gives us a consistent starting point for examining real installations, infrastructures, services and socio-technical arrangements.
+Not every element needs to interact directly, and a system does not necessarily have an explicit purpose. Nor is all system behaviour necessarily emergent.
+
+### System of interest and analytical perspective
+
+It is useful to distinguish the **system of interest** from the **unit of analysis** and the **analytical perspective**.
+
+The system of interest is the particular system we want to understand. The unit of analysis identifies what observations or analyses are performed on: it may be the whole system, a subsystem, an actor or an interaction. The analytical perspective is the approach from which we examine it, such as a functional, operational, organisational or temporal perspective.
+
+For example, we may take a water network as the system of interest while focusing an investigation on one pumping station as the unit of analysis. We may also examine the same network from hydraulic, energy, organisational or service-continuity perspectives. These choices do not necessarily change the system of interest, but they determine which aspects we observe and which conclusions we can support.
+
+### System behaviour and emergent behaviour
+
+**System behaviour** includes the patterns of operation, responses or changes that we can observe or infer. **Emergent behaviour** is more specific: it arises from the interactions and organisation of the whole and cannot be adequately explained by examining each element in isolation.
+
+For example, a pressure variation in a pipe may be explained largely by local conditions. By contrast, a network's ability to maintain supply across different areas during a rise in demand may depend on interactions among reservoirs, pumps, connections, controls and consumption patterns. We should not describe every system behaviour as emergent. The term is useful when the organisation and interactions of the whole are essential to explaining the phenomenon.
+
+### The scope of the system concept
+
+This book focuses primarily on physical, social, organisational and socio-technical systems. Some aspects of their behaviour may not be directly observable and can nevertheless be studied through relevant evidence, such as records, measurements, decisions or activity patterns.
+
+We may also use conceptual systems as representations or analytical constructions. However, we will not automatically equate them with systems operating in the world. The kind of reality to which we refer, and the evidence through which it can be studied, should be clear from the context.
 
 ### Why the whole matters
 
-The behaviour of a system cannot always be understood by examining each component in isolation and then adding the results together. The way components are connected can create constraints, dependencies and effects that are visible only at the level of the whole.
+Component properties remain important, but their contribution depends on the configuration in which they operate. In a water network, the rated capacity of a pump or the diameter of a pipe is not enough to determine the service received in each area. Network topology, the location and timing of demand, pressure and flow conditions, operating rules, and energy and control dependencies also matter.
 
-In a water network, for instance, the ability to maintain pressure and deliver the required flow depends not only on the capacity of individual pumps or the dimensions of particular pipes. It also depends on network topology, the location and timing of demand, operating arrangements and the consequences of changes elsewhere in the network.
+An initial system description should answer at least three questions:
 
-This does not make component-level analysis irrelevant. On the contrary, component properties often matter greatly. The point is that their significance must be interpreted within the configuration in which they operate.
+1. Which elements belong to the system of interest?
+2. How are they organised and related?
+3. What behaviour do they exhibit under the conditions we want to understand?
 
-### Three questions for an initial system description
-
-A useful first description should answer three different questions:
-
-1. Which elements are included?
-2. How are those elements organised and connected?
-3. What behaviour does the resulting whole exhibit under the conditions being considered?
-
-The first question produces an inventory. The second and third begin to explain how the system operates.
+The first question helps us build an inventory. The other two allow us to begin explaining how the whole operates.
 
 ### Key idea
 
-To understand a system, examine its organised configuration and the relationships among its elements—not merely the elements considered separately.
+Understanding a system requires examining its elements, their organisation and the relevant relationships or dependencies among them. The behaviour of the whole cannot always be explained by studying each part separately.
 
 ### Reflection
 
-Think of an installation, service or infrastructure you know well. Can its performance be explained by looking at its components one by one? Which connections, dependencies or features of its organisation must also be considered?
+Think of an installation, service or organisation you know. What would you consider the system of interest? Could you study it using different units of analysis or analytical perspectives? Which behaviours can be explained by the characteristics of particular elements, and which depend on the organisation and interactions of the whole?
 
 ## 1.2. Purpose, Boundary, Environment and Context
 
-### Defining the object of analysis
+### Deciding which system we want to understand
 
-Before analysing a system, we need to decide what exactly we are trying to understand. Physical objects may appear to have obvious limits, but the boundary of an analytical system is not always the same as the edge of a building, a piece of equipment or an organisation.
+Before analysing a system, we need to establish what we want to understand and what we will treat as part of the object of study. The physical limits of a machine or building may seem obvious, but the boundary of a system of interest does not always coincide with the perimeter of an installation, an organisation or a contract. It depends on the question guiding the analysis.
 
-Return to the water supply network. An investigation into hydraulic performance might focus on reservoirs, pumps, pipes, valves and delivery points. An investigation into service continuity may also need to consider maintenance teams, operating procedures and incident-response arrangements. If the question concerns how demand affects availability, consumers and their patterns of use become important to the analysis.
+In a water supply network, a study of hydraulic behaviour may focus on reservoirs, pumping stations, pipes, valves and connections. If we want to understand service continuity, maintenance teams, response procedures and control systems may also be relevant. If we are investigating how demand affects availability, consumption points and usage patterns need to be considered.
 
-These are different ways of defining the object of study. The appropriate choice depends on the question being asked.
+These are different ways of delimiting the same system of interest, selected to answer different questions.
 
-### Purpose: what is the analysis intended to establish?
+### Purpose, function and objectives
 
-The purpose of an analysis states what we want to understand, explain or assess. It guides decisions about the system boundary, the level of detail required and the information that needs to be collected.
+The **purpose of the analysis** states what we want to understand, explain or assess. It guides the selection of the system of interest, its boundary, the required level of detail and the information we need.
 
-We should also be careful when describing the purpose of the system itself. Some systems have explicit objectives established by people or institutions. Others are assigned a function by an external observer, or are studied in terms of effects and patterns that do not imply a single intention.
+It should not be confused with the **purpose of the system**, meaning the declared or attributed reason for its existence. Nor should purpose, function and objectives be used interchangeably:
 
-Even where an organisation has a declared objective, its actual priorities may be more complicated. A water utility may state that reliable supply is its principal aim, while operational decisions also reflect cost limits, energy constraints, regulatory obligations and risk management. These considerations may reinforce or compete with one another.
+- **Purpose:** the declared or attributed reason for the system's existence.
+- **Function:** an activity or contribution performed by the system.
+- **Objectives:** intended outcomes, which may be multiple and may conflict.
 
-Finally, the purpose of the analysis is not necessarily the purpose of the system. We may examine a water network to understand its energy consumption, even though its primary service is water distribution. Keeping these two meanings separate prevents the analytical question from being confused with the system's stated function.
+An organisation managing a water network may declare reliable supply as its purpose. Its functions include collecting, treating, storing and distributing water. Its objectives may include service continuity, quality, energy efficiency and cost control. These objectives may reinforce one another or require trade-offs.
 
-### Boundary: what belongs inside the system?
+The purpose of the analysis is different: we may study the network to understand its energy consumption, even though its main function is water distribution. Keeping these notions separate prevents us from attributing an intention to a system that may not have one, or confusing the analyst's question with the outcomes the system is expected to produce.
 
-The system boundary identifies the elements and relationships included in the unit of analysis. It is an analytical decision, not always a physical or administrative fact.
+### The boundary and its interfaces
 
-For a study of water distribution, we might include treatment and distribution infrastructure but exclude household plumbing. If the purpose is to understand the end-to-end delivery of water as experienced by consumers, the boundary may need to extend further.
+The **system boundary** establishes which elements and relationships are treated as inside or outside the system of interest. It is an analytical decision that needs justification, not necessarily a physical or administrative limit.
 
-A boundary that is too broad can make an investigation unwieldy and obscure the issue under examination. One that is too narrow may exclude dependencies that are essential to explaining the observed behaviour.
+The boundary should also help identify relevant **interfaces**: points at which the system connects or exchanges something with other elements or systems. For a pumping station, relevant interfaces may include its connection to the electricity supply, control systems, infrastructure providing incoming water and the pipes that carry water away.
 
-The boundary should therefore be justified in relation to the purpose of the analysis and made explicit. Two studies can reach different conclusions because they have included different elements or relationships. That difference does not automatically make either study invalid; it does mean that their findings may apply to different analytical objects.
+A boundary may have physical, functional, operational and temporal dimensions. An installation may be physically bounded while its operation depends on external services, operating rules or processes beyond that perimeter.
 
-### Environment: what lies beyond the boundary but matters?
+A boundary that is too broad may make an analysis unwieldy; one that is too narrow may exclude dependencies or interfaces needed to explain the behaviour. We should therefore select a boundary appropriate to the question, make relevant exclusions explicit and justify the chosen level of detail.
 
-The environment consists of external elements and conditions that are relevant to the system because they influence it or are affected by it.
+The boundary need not be definitive. It may be revised if analysis or evidence reveals relevant dependencies, interfaces or effects that were initially excluded. Such a revision should be justified by its relevance to the problem, rather than becoming an arbitrary expansion of the system of interest.
 
-For a water network, these may include the availability of raw water, weather conditions, electricity supply, regulatory requirements and changes in demand. Such factors may lie outside the chosen system boundary while still having a substantial influence on its operation.
+### The environment: relevant external elements and conditions
 
-A boundary does not imply isolation. An important part of systems analysis is identifying the exchanges and dependencies that cross it: flows of materials, energy, information, resources, demand, constraints or effects.
+In this book, **environment** refers to the elements, systems and conditions outside the boundary that interact with the system of interest or may be affected by it.
 
-### Context: under what circumstances should the system be understood?
+For a water network, the environment may include the availability of water at source, weather conditions, electricity supply, applicable regulations and changes in demand. These factors may remain outside the selected boundary while still having a significant influence on the network's operation.
 
-Context refers to the circumstances that shape how we frame and interpret the system and its behaviour. Depending on the question, these circumstances may be technical, economic, social, institutional, environmental, historical or temporal.
+A boundary does not imply isolation. Part of the analysis is precisely to identify the exchanges, influences and interfaces that cross it: matter, energy, information, resources, services, demand, constraints or effects.
 
-Environment and context are related, but they serve different analytical purposes. The environment concerns what surrounds the bounded system and interacts with it. Context is the wider set of circumstances through which we decide what is relevant and interpret what we observe.
+### Context: the circumstances from which we interpret the system
 
-For example, reduced water availability may be an environmental condition. A prolonged drought, seasonal demand peaks and specific regulatory restrictions provide context for understanding the network's response to that condition.
+We use **context** to refer to the set of circumstances, relationships and conditions from which the problem and system of interest are defined and interpreted. It may include technical, economic, social, institutional, environmental, historical and temporal aspects.
 
-Not every surrounding circumstance deserves equal attention. The analyst must identify which contextual factors matter to the question and explain why they have been included.
+Environment and context are related, but they serve different purposes in this editorial convention. The environment identifies external elements, systems and conditions that interact with the system or may be affected by it. Context situates the question and helps us interpret which aspects are relevant and why.
 
-### These choices shape what can be concluded
+For example, the availability of water at a source may be an environmental condition. A prolonged drought, a seasonal rise in demand and particular regulatory restrictions form contextual circumstances that matter when interpreting the network's response.
 
-Purpose, boundary, environment and context are closely connected. The analytical purpose informs the boundary; the boundary distinguishes the system from its environment; and the context helps explain the conditions under which the system is being examined.
+This distinction is a working convention adopted in this book to support analysis; it is not intended as a universal separation used in the same way across all disciplines.
 
-These are not preliminary formalities that can be ignored once data collection begins. They affect what evidence is gathered, which relationships are investigated and how far the conclusions can reasonably extend.
+### These decisions shape what we can conclude
 
-A clear system description should therefore state:
+Purpose, boundary, environment and context are connected. The purpose of the analysis guides the boundary; the boundary distinguishes the system of interest from external elements and conditions; and context helps us interpret the problem and the conditions under which behaviour is observed.
 
-- what is being studied and for what analytical purpose;
-- which elements and relationships fall within the boundary;
-- which external factors are considered relevant;
-- the circumstances and time horizon used to interpret behaviour;
-- which aspects have been excluded and how those exclusions may limit the findings.
+These decisions affect the evidence we collect, the relationships we examine and the scope of our conclusions. Two analyses may reach different results because they have delimited different systems of interest or answered different questions. To interpret their conclusions, we need to understand those choices.
 
-There is no single boundary that is correct for every investigation. There is a boundary that can be made more or less appropriate and defensible for a particular purpose.
+A sound system description should state:
+
+- which system of interest is being studied and the purpose of the analysis;
+- which elements and relationships are included within the boundary;
+- which external interfaces and exchanges are relevant;
+- which external elements, systems and conditions are considered part of the environment;
+- which circumstances form the interpretive context; and
+- which exclusions may limit the analysis or its conclusions.
+
+There is no single boundary that is correct for every question. There is a boundary that is more or less appropriate and defensible for a particular analytical purpose, and it may be revised if relevant reasons emerge.
 
 ### Key idea
 
-Before explaining how a system behaves, make clear what the system includes, why it is being examined and the circumstances in which its behaviour is interpreted.
+Understanding a system depends on how we define the purpose of the analysis, select its boundary and interfaces, and distinguish the environment from the context. These choices must be explicit because they shape the evidence and conclusions.
 
 ### Reflection
 
-Choose an installation or service with which you are familiar. Formulate a specific question about its operation and define a boundary suitable for investigating it. Which elements would you include? Which factors would remain in the environment? What contextual circumstances could change the interpretation of your findings?
-
+Choose a service or installation you know and formulate a specific question about its operation. What system of interest would you delimit to answer it? Which interfaces and dependencies would you include in the description? Which factors belong to the environment, and which circumstances form part of the context? What evidence might lead you to revise the initial boundary?
 
 ## 1.3. Elements, States, Properties and Behaviours
 
-### Describing what a system consists of and how it operates
+### Describing what makes up a system and how it works
 
-Once we have defined the system under study, the next task is to describe its constituent elements and the features that matter to the question we are investigating. Not every element has the same nature, and not every analysis requires the same level of detail. The description should be shaped by the purpose of the investigation.
+Once the system of interest has been defined, we need to describe its constituent elements and the characteristics relevant to the question we want to answer. Elements do not all have the same nature, and we do not need to represent them at the same level of detail. The description should be selective and consistent with the purpose of the analysis.
 
-A water supply network, for example, may include reservoirs, pumps, pipes, valves, sensors, control equipment and delivery points. Its operation may also depend on less tangible elements, such as operating procedures, control rules and information used to make decisions. In a socio-technical system, people and organisations belong in the description whenever their actions, decisions or responsibilities affect the behaviour being examined.
+A water supply network may include reservoirs, pumps, pipes, valves, sensors, control equipment and consumption points. It also depends on procedures, operating rules and information used to make decisions. In socio-technical systems, people, teams and organisations should be included when their actions, decisions or responsibilities influence the behaviour being studied.
 
-The aim is not to produce an exhaustive inventory of everything that exists. It is to identify the elements needed to explain the system's relevant behaviour.
+The aim is not to produce an exhaustive inventory of everything that exists, but to identify the parts needed to understand the relevant aspects of the system.
 
 ### Elements and components
 
-We use the term **elements** for the entities or parts distinguished within a system for analytical purposes. Depending on the system and the level of analysis, these may be physical components, people, teams, organisational units, processes, resources, information or subsystems.
+We use **element** as the general term for any relevant part or entity distinguished when analysing a system. Depending on the system and level of analysis, an element may be a person, group, organisation, process, resource, item of information, subsystem or physical part.
 
-The chosen level of decomposition matters. A pumping station may be treated as a single element when examining the overall distribution network. An investigation of energy use or reliability may require us to distinguish its motors, pumps, sensors, power supply and control equipment.
+The term **component** may be used more specifically, particularly in technical and engineering systems, to refer to a constituent part of the system. This distinction is flexible rather than a rigid taxonomy: where the disciplinary context does not require a distinction, the terms may have closely related meanings. In this chapter, element is the general term.
 
-There is no single decomposition that is appropriate for every investigation. A useful description provides enough detail to answer the question without becoming so granular that it obscures the relationships and behaviour we need to understand.
+The choice of decomposition level matters. A pumping station may be treated as a single element when examining the overall operation of the network. If we are analysing its energy consumption or reliability, we may need to distinguish motors, pumps, sensors, power supply and control equipment. A useful description provides enough detail to answer the question without hiding relevant relationships beneath an excessively granular inventory.
 
-### States: how the system or an element is at a given time
+### States: the condition at a reference time
 
-A **state** describes the condition of a system or one of its elements at a particular time or over a defined interval, using variables relevant to the analysis.
+A **state** describes the condition of a system or one of its elements at a specified reference time, using the variables relevant to the analysis.
 
-In a water network, the state of a reservoir might be described by its water level; the state of a pump by its operating condition and current operating regime; and the state of a network segment by variables such as pressure and flow rate. Describing the state of the network as a whole requires a selected set of variables that captures the aspects of its configuration and operation relevant to the question.
+In a water network, the state of a reservoir may be described by its level; the state of a pump by its operating condition and regime; and the state of a network section by pressure and flow. To describe the state of the network as a whole, we select variables that represent the aspects of its configuration and operation relevant to the question.
 
-A state is not necessarily a complete account of everything that exists. It is a selective representation: it includes the information needed to distinguish conditions that may have different consequences for the investigation.
+A state is a selective representation, not a complete account of everything that exists. We should therefore state which variables are used, how they are observed or estimated and the time to which they refer.
 
-It is therefore important to specify which variables are used, how they are observed or estimated, and when the description applies. Different accounts of the same system may use different variables because they address different questions.
+When observations are collected over an interval, they form a sequence or trajectory of states. This sequence allows us to examine the system's evolution and study its behaviour. The observation interval should not be confused with a single state.
 
 ### Properties and variables
 
-**Properties** are characteristics attributed to an element or system that help describe it. Some may remain relatively stable over the period of analysis; others vary over time or with operating conditions.
+A **property** is a characteristic attributed to an element or system. A **variable** is a quantity or representation used to describe or track a relevant characteristic or condition.
 
-For example, a pipe's diameter and a pump's rated capacity describe characteristics of the equipment. Pressure, temperature, reservoir level and electrical consumption may vary during operation and may be used as state or monitoring variables, depending on the model and the question.
+For example, the diameter of a pipe or the rated capacity of a pump are properties of the equipment. The flow delivered at a particular time is a variable that helps describe an operating condition. Rated capacity characterises the pump under specified conditions; it is not the same as the flow it is delivering at that moment.
 
-A property should not be confused with the value observed at a particular moment. A pump's rated capacity is not the same as the flow rate it is delivering now. The former characterises the equipment under specified conditions; the latter describes an operating condition.
+Not every property needs to be represented by a variable. In turn, a variable may be used to observe how a property or condition changes over time. The choice depends on the question, the availability of information and the quality of the evidence. If a variable is estimated rather than measured directly, that should be made clear when it affects interpretation.
 
-In practice, the selection of properties and variables should reflect their relevance, availability and quality. A variable that cannot be measured directly may need to be estimated; a characteristic that appears important may prove unnecessary for a particular question. Such choices should be made explicit whenever they affect the conclusions.
+### Behaviours: patterns, responses and changes
 
-### Behaviours: what the system does and how it changes
+**Behaviour** describes patterns of operation, responses or changes in a system or its elements under specified conditions. It is characterised through observations or inferences about how states and variables evolve.
 
-**Behaviour** describes how a system or one of its elements operates or evolves under particular conditions. It may be observed as a pattern of operation, a response to a disturbance or a change in variables over time.
+In a water network, we may examine how pressure changes when demand rises, how the control system responds when a reservoir level falls or how service is restored after a failure. A single pressure reading may describe a state, but it is not normally sufficient on its own to establish a pattern of behaviour. Repeated observations or other evidence appropriate to the phenomenon and question are generally needed.
 
-In the water network, behaviour might include how pressure changes when demand rises, how the control system responds when reservoir levels fall, or how service is restored after a failure. Understanding these patterns requires more than knowing the nominal properties of individual components: we need to examine how they operate within the network's configuration and actual conditions.
+This is not an absolute rule: the type and amount of evidence depend on what we want to understand. The important point is not to present a single observation as if it demonstrated a stable pattern.
 
-It is useful to distinguish state from behaviour. A state describes a condition; behaviour concerns what happens or how that condition evolves. A pressure reading at one moment provides information about a state. A sequence of readings over time may reveal how the network responds to changes in demand.
+### Connecting elements, properties, states and behaviours
 
-### Bringing elements, states and behaviours together
+These dimensions become meaningful when considered together. We identify relevant elements, describe some of their properties, use variables to represent conditions and states, and examine patterns of operation over time.
 
-These concepts become useful when considered together. Elements tell us which parts we distinguish; their properties describe relevant characteristics; states represent their condition; and behaviours show how they operate or evolve.
+Suppose water consumption increases in one area. We may observe changes in flow and pressure, identify which pumps and valves are operating and examine the response of the control system. To explain what happens, we need to relate the observed variables to the elements, connections and operating conditions of the network.
 
-Consider a straightforward situation: water consumption increases in one area. Demand is a relevant condition for the analysis. We can observe changes in flow and pressure, identify which pumps and valves are operating, and examine how the control system responds. Explaining what happens requires us to connect the observed variables with the elements and relationships that make up the network.
+The same observation may have different explanations if the configuration changes or if information about relevant elements is missing. Describing a system is therefore not a matter of collecting isolated values, but of organising them so that its operation can be interpreted.
 
-The same observation may have different explanations if the configuration changes or if information about relevant elements is missing. Describing a system is therefore not a matter of collecting isolated values. It involves organising information so that the system's operation can be interpreted.
+### Available information and deliberate omissions
 
-### Deciding what to describe
+A sound description does not need to include every possible property, but it should distinguish between two different situations:
 
-A rigorous description does not need to include every possible property. It should select the features needed to answer the analytical question and record any omissions that may matter.
+- **Unknown or unavailable information:** we do not have sufficient information or accessible evidence about an aspect of the system.
+- **Deliberate omissions:** we know or recognise an aspect but intentionally exclude it because of the purpose, scope or level of detail of the description.
+
+The absence of an aspect from a description does not demonstrate that it does not exist. Nor should an unknown dependency be presented as if it had been deliberately excluded. When these limitations may affect interpretation or conclusions, they should be documented and their relevance explained.
+
+### Choosing what to describe
 
 When preparing an initial description, we can ask:
 
 - Which elements or subsystems need to be distinguished?
-- What level of detail is appropriate?
+- What level of detail is appropriate for the question?
 - Which properties characterise those elements?
-- Which variables describe the relevant states?
-- Which behaviours need to be observed, and over what period?
-- What information is unavailable or outside the scope of the description?
+- Which variables represent the relevant states?
+- What observations or evidence are needed to examine their behaviour?
+- What information is unavailable, and which aspects have we chosen to omit?
 
-These questions help produce a coherent account and prevent the information currently available from being mistaken for a complete description of the system.
+These questions help build a coherent representation and prevent the information available from being mistaken for a complete description of the system.
 
 ### Key idea
 
-Describing a system requires us to identify its elements, select relevant properties and variables, represent its states and observe its behaviours. None of these dimensions, taken alone, explains how the whole system operates.
+To describe a system, we identify relevant elements, attribute properties, use variables to represent states and examine patterns of behaviour. We must also distinguish information that is missing from aspects we have deliberately chosen to omit.
 
 ### Reflection
 
-Choose an installation or service you know. Identify some of its elements and select one relevant property and one variable for each. Which states could you describe? What behaviour would you need to observe over time to understand how the system operates?
-
+Think of an installation or service you know. Choose one of its elements and distinguish a property of the equipment from a variable that can be used to observe its condition. What state could you describe at a particular time? What observations would you need to characterise its behaviour? What information might be missing, and which aspects might you deliberately omit because of the purpose of your analysis?
 
 ## 1.4. Actors, Capabilities, Resources and Dependencies
 
