@@ -196,8 +196,6 @@ class D2ITTZEvaluator:
                        and type(row["observed_compliance"]) is not bool)
                    for row in ordered):
                 raise ContractError("D2 interval observations violate strict S3 missingness/value semantics")
-            any_failure = any(row["observed_compliance"] is False for row in ordered)
-            any_missing = any(row["observation_status"] == "MISSING" for row in ordered)
             # Independently reconstruct DEC-C10-100's equal-weight
             # interval mean, preserving [0,1] completion for missing slots.
             successes = sum(row["observed_compliance"] is True for row in ordered)
