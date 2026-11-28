@@ -1848,3 +1848,20 @@ The author approved the revised bilingual definition of `TV-TERM-005 — context
 The revision makes the interpretive function of context explicit: it situates and supports understanding of the problem, purpose or situation being analysed. It also clarifies that relevant actors, systems and operating conditions may lie either inside or outside the system-of-interest boundary. This preserves the chapter's operational distinction between context and environment without treating context as a synonym for the system's physical surroundings.
 
 The approved definitions were updated in the shared terminology registry and re-fetched from the research branch. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript changes were made in this step.
+
+
+### 5.73 Terminology definition review — TV-TERM-006 approved
+
+The author approved the revised bilingual definition of `TV-TERM-006 — emergent_behaviour`.
+
+**Approved Spanish definition:**
+
+> Comportamiento o patrón del sistema que surge de las interacciones entre sus elementos y de la forma en que están organizados, y que no puede explicarse adecuadamente considerando esos elementos de manera aislada. Aunque puede resultar difícil de anticipar a partir de las características de cada elemento, no es necesariamente imprevisible ni inexplicable.
+
+**Approved English definition:**
+
+> System behaviour or a pattern that arises from interactions among its elements and the way they are organised, and that cannot be adequately explained by considering those elements in isolation. Although it may be difficult to anticipate from the characteristics of individual elements, it is not necessarily unpredictable or inexplicable.
+
+The revision emphasises that emergence concerns behaviour or patterns arising from interactions among system elements and their organisation, rather than system behaviour in general. It also distinguishes limited explanatory power of isolated element-level descriptions from absolute unpredictability or inexplicability. The term's note that not all system behaviour is emergent remains applicable.
+
+The approved definitions were updated in the shared terminology registry and re-fetched from the research branch. The entry remains in `draft` pending completion of the terminology review and approval of the terminology set. No manuscript changes were made in this step.
