@@ -1446,3 +1446,21 @@ The final question should especially integrate intervention decisions, effects a
 **Rationale:** Reflection questions should test whether readers can use the chapter's concepts together in context, not simply reproduce terminology or repeat the applied exercise.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.60 Section 1.9 — chapter closure and transition to Chapter 2 — accepted
+
+The author approved, for both language versions, that the end of Chapter 1 should:
+
+- reaffirm that understanding a system requires constructing a purpose-oriented representation with an explicit boundary and awareness of its assumptions and limitations;
+- highlight that components, capabilities and relationships condition what a system can do;
+- introduce transformation as change in states, behaviours, relationships or configuration, without developing the conceptual framework prematurely; and
+- avoid implying that every change constitutes a transformation or that every transformation creates value.
+
+The transition should leave the following question open:
+
+> How can a system change, and what determines the transformations that are genuinely within its reach?
+
+**Sequencing constraint:** Chapter 2 must not begin until the pending integration work for sections 1.1–1.3 has been completed and verified in both original-language manuscripts. The approved conceptual decisions for sections 1.4–1.9 do not waive this requirement. Chapter 1 must complete its outstanding integration and verification work before progression to Chapter 2.
+
+**Disposition:** closure and transition criterion accepted for ES/EN. Integration into section 1.9 remains pending. Sections 1.1–1.3 integration and verification remain mandatory before Chapter 2. No manuscript text has been changed by this decision.
