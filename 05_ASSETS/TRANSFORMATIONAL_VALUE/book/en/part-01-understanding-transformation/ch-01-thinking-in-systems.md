@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 1.1
+version: 1.2
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -472,7 +472,7 @@ Choose a system you know. First define the boundary and purpose of your analysis
 
 ### Describing a system is not the same as reproducing reality
 
-A description of a system is not the system itself. It is a representation constructed to help us understand some aspect of it. It may take the form of prose, a diagram, a table, a set of variables, a mathematical model or a combination of several resources.
+A description of a system is not the system itself. It is a selective representation deliberately constructed to help us understand particular aspects of it, answer a question or support a task. In this chapter, we use **model** in this broad sense: it may take the form of prose, a diagram, a table, a set of variables, or a mathematical or computational model. It need not be expressed through equations or implemented in software to function as a model.
 
 Every representation selects what to show and what to leave out. Even a highly detailed description simplifies reality: it cannot include every possible element, relationship, state, event and condition. This does not automatically make it a poor description. The question is whether its simplifications are appropriate to the purpose of the analysis and whether its limits are made explicit.
 
@@ -480,7 +480,13 @@ In a water supply network, for example, a pipe layout may be sufficient to exami
 
 ### Purpose determines model scope
 
-A model is a selective representation of a system, constructed to answer a question or support a task. Its scope defines which parts, relationships, variables and conditions are included, as well as the level of detail at which they are represented.
+A model is a selective representation of a system, constructed to answer a question or support a task. Three related but distinct aspects help describe the choices involved:
+
+- **Scope of the representation:** the aspects of the system the model is intended to cover in order to address the question.
+- **System boundary:** what is treated as inside and outside the system of interest for the analysis.
+- **Level of detail:** how finely the included elements and relationships are represented.
+
+A model may have broad scope while representing some aspects at a low level of detail, or examine a subsystem in considerable detail without covering the entire system.
 
 There is no single model that is equally useful for every question. Consider several possible representations of the same network:
 
@@ -495,7 +501,11 @@ The representations in the table are not interchangeable. Each makes certain asp
 
 ### Assumptions: what we take as given in order to analyse
 
-Building a model requires assumptions. Some simplify complexity; others establish starting conditions, specify relationships or make it possible to work with incomplete information.
+A model may use inputs or parameter values that come from different sources. They may be measured, estimated, specified in technical documentation or adopted as assumptions. A value entered into a model is therefore not necessarily an assumption.
+
+For example, a flow rate measured at a point in the network is an observed value; future demand may be an estimate; a pump's rated capacity may come from its technical specification; and treating the pump as available throughout the analysis period is an assumption.
+
+Assumptions are conditions adopted for the purpose of analysis. Some simplify complexity; others establish starting conditions or specify relationships when sufficient information is unavailable. They should be distinguished both from observed facts and from quantified uncertainty: the latter expresses a range or distribution of possible values, rather than a condition simply taken as given.
 
 For example, an analysis of the network might assume that demand remains constant over an interval, that certain items of equipment are available or that pipe characteristics do not change during the period under study. Such assumptions may be reasonable for a particular question and a limited time horizon, but not under other circumstances.
 
@@ -505,7 +515,11 @@ Assumptions that may influence results should be recorded, their rationale expla
 
 ### Omissions: what the model does not represent
 
-Omissions are inevitable, but they are not all equally important. Leaving out a detail that is irrelevant to the question can make a model clearer and more manageable. Leaving out a critical dependency, however, may produce an incomplete explanation or a misleading conclusion.
+Omissions are inevitable, but it is important to distinguish a **deliberate omission** from **unknown or unavailable information**, as discussed in section 1.3. A deliberate omission is an aspect that is known or recognised but intentionally excluded for reasons of scope, purpose or simplicity. Unknown or unavailable information concerns an aspect for which sufficient information or evidence is not available.
+
+An unknown dependency should not be described as though it had been deliberately excluded. Likewise, the absence of an element or relationship from a model does not demonstrate that it does not exist.
+
+Leaving out a detail that is irrelevant to the question can make a model clearer and more manageable. Excluding a critical dependency, however, may produce an incomplete explanation or a misleading conclusion.
 
 Imagine a model that represents the pumps, pipes and reservoirs in a network but excludes the stations' dependence on electricity supply. It may describe certain hydraulic behaviours under normal conditions adequately, yet prove insufficient for analysing service continuity during a power outage.
 
@@ -513,7 +527,7 @@ Therefore, alongside asking what a representation includes, we should ask what i
 
 ### Suitability and limits of use
 
-A model's quality does not depend solely on its complexity or the number of variables it contains. It depends on its suitability for the question, the quality of the information used and the clarity with which its limits are stated.
+A model's quality does not depend solely on its complexity or the number of variables it contains. It depends on its suitability for the question, the quality of the information used and the clarity with which its limits are stated. Evidence supporting the data and relationships does not, by itself, demonstrate that the model is adequate: even with accurate measurements, a representation may omit an important dependency or insufficiently describe relevant behaviour. A checklist can help examine these issues, but it cannot guarantee that the model is correct.
 
 Before using a representation, it is worth checking:
 
@@ -522,7 +536,8 @@ Before using a representation, it is worth checking:
 - **Level of detail:** Is it sufficient for the task without adding unnecessary complexity?
 - **Assumptions:** Which conditions are taken as given, and why?
 - **Omissions:** Which relevant aspects are not represented?
-- **Evidence:** What information supports the data and relationships used?
+- **Evidence for data and relationships:** Which measurements, specifications, estimates or observations support the values and connections used?
+- **Model adequacy:** Is there a basis for considering that the representation captures the aspects and behaviour relevant to the question?
 - **Limits of use:** In which situations should we not use this model to draw conclusions?
 
 These checks do not eliminate uncertainty or guarantee that a model is correct. They help prevent a representation that is useful for one task from being used beyond its intended scope without justification.
@@ -533,7 +548,7 @@ A model should not be treated as final. It may need to be adjusted when the purp
 
 If the objective shifts from studying water flow to assessing service resilience, we may need to include energy dependencies, recovery capabilities, staff, procedures and coordination with suppliers. This is not simply a matter of adding detail: the aspects relevant to answering the new question have changed.
 
-It may also be necessary to maintain several complementary representations. A hydraulic model and a socio-technical model may describe different dimensions of the same infrastructure. Bringing them together requires understanding which question each one addresses and how the represented dimensions are related.
+It may also be necessary to maintain several complementary representations. A hydraulic model and a socio-technical model may describe different dimensions of the same infrastructure. Before combining them, it is worth checking whether their boundaries, assumptions, time horizons, terminology and levels of detail are compatible. Otherwise, combining them may create an appearance of coherence between representations that cover different scopes or rely on incompatible choices.
 
 ### Key idea
 
