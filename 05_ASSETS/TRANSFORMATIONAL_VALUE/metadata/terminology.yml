@@ -191,8 +191,8 @@ terms:
       es: "preferencia"
       en: "preference"
     definition:
-      es: "Criterio o prioridad utilizado para comparar alternativas aceptables cuando difieren en atributos, resultados o compromisos, sin que por sí mismo constituya necesariamente un requisito obligatorio."
-      en: "A criterion or priority used to compare acceptable alternatives when they differ in attributes, outcomes or trade-offs, without necessarily constituting a mandatory requirement in itself."
+      es: "Criterio o prioridad que expresa qué atributos, condiciones o resultados se valoran más al comparar alternativas que cumplen los requisitos aplicables. Las preferencias pueden tener distinta importancia, ser cualitativas o cuantificables y entrar en conflicto entre sí, dando lugar a compromisos entre alternativas. Por sí mismas, no constituyen necesariamente condiciones obligatorias de aceptación."
+      en: "A criterion or priority expressing which attributes, conditions or outcomes are valued more when comparing alternatives that meet the applicable requirements. Preferences may differ in importance, be qualitative or quantifiable, and conflict with one another, resulting in trade-offs between alternatives. In themselves, they do not necessarily constitute mandatory acceptance conditions."
     related_terms: [TV-TERM-014, TV-TERM-015]
     status: draft
     notes: "Chapter 1. Use to compare alternatives that meet applicable mandatory requirements; preferences do not by themselves override those requirements."
