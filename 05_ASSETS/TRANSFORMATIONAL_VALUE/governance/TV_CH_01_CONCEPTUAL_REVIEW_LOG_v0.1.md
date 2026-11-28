@@ -1600,3 +1600,53 @@ The Spanish and English versions were authored independently and preserve equiva
 Post-update verification confirmed the objective headings, all five outcomes in each language, their placement before section 1.1, and the continued `draft` status of both manuscripts.
 
 **Disposition:** learning-objective gap resolved for the current draft. The remaining global editorial findings in §5.63 remain open or deferred according to their stated status. Chapter 1 is not yet editorially closed; do not begin Chapter 2.
+
+
+### 5.65 Chapter 1 — source and reference registry audit
+
+This audit corrects and refines the preliminary findings in §5.63.4 and §5.63.5. The initial search did not inspect the canonical Learning reference and terminology locations defined by the Content Model. The following findings supersede the corresponding preliminary search statements; the earlier review history is retained.
+
+**5.65.1 — Central reference registry exists; current entries do not cover Chapter 1**
+
+The canonical shared reference registry is present at `05_ASSETS/TRANSFORMATIONAL_VALUE/references/references.yml`. It currently contains six records (TV-REF-001 through TV-REF-006), primarily supporting existing TGCV applied examples, empirical analyses and source datasets. None of these six records is an appropriate general systems-thinking or systems-engineering source for Chapter 1.
+
+The registry's existence means the statement in §5.63.4 that the expected central registry had not been located is superseded. The actual gap is narrower: Chapter 1 has no linked reference IDs and the existing registry contains no suitable Chapter 1 sources.
+
+**Status:** registry located and inspected; Chapter 1 reference coverage gap confirmed.
+
+**5.65.2 — Shared terminology registry exists; Chapter 1 glossary coverage remains incomplete**
+
+The shared terminology registry is present at `05_ASSETS/TRANSFORMATIONAL_VALUE/metadata/terminology.yml`. It currently contains one draft term, `TV-TERM-001` (“espacio de transformaciones accesibles” / “accessible transformation space”), which belongs to later TGCV content and is not a Chapter 1 systems-thinking term. The glossary directory contains its orientation README but no bilingual glossary entries were found in the expected location.
+
+The statement in §5.63.5 that the expected terminology registry had not been located is therefore superseded. The current issue is that Chapter 1's metadata declares `concepts: []`, no Chapter 1 glossary entries are registered, and the book's shared register does not yet cover the key systems concepts introduced in this chapter.
+
+**Status:** registry and glossary location confirmed; Chapter 1 terminology coverage gap confirmed. Do not invent term IDs or duplicate definitions in the chapter.
+
+**5.65.3 — Verified candidate references for Chapter 1**
+
+The following three sources have been bibliographically checked against publisher or issuing-organisation records and are recommended for addition to the central registry. These are candidates for the author's approval; no new records have yet been added.
+
+1. **Donella H. Meadows (2008), _Thinking in Systems: A Primer_.** Edited by Diana Wright. Chelsea Green Publishing. ISBN 978-1-60358-055-7. The publisher confirms the author, editor, publisher, publication date and ISBN. Relevance: introductory systems thinking, relationships, feedback and system behaviour. Candidate coverage: §§1.1, 1.5, 1.6 and selected parts of 1.9. Treat as a foundational complementary reading, not as the authority for every operational definition adopted in this book.
+
+2. **International Council on Systems Engineering (INCOSE) (2023), _Systems Engineering Handbook: A Guide for System Life Cycle Processes and Activities_ (5th ed.), INCOSE-TP-2003-002-05.** Compiled and edited by David D. Walden, Thomas M. Shortell, Garry J. Roedler, Bernardo A. Delicado, Odile Mornas, Yip Yew-Seng and David Endler. Wiley. ISBN 978-1-119-81429-0. The issuing organisation and publisher confirm the fifth edition, publication date and bibliographic identity. The available contents identify relevant sections on system boundary and system of interest, emergence, interfacing systems, system states and modes, and systems science/systems thinking. Candidate coverage: §§1.1–1.8.
+
+3. **National Aeronautics and Space Administration (NASA) (2016), _NASA Systems Engineering Handbook_, NASA/SP-2016-6105 Rev 2.** The official NASA PDF confirms the report identifier and revision. Relevant material includes §2.0 (Fundamentals of Systems Engineering), §4.1 (Stakeholder Expectations Definition), §6.3 (Interface Management) and §6.8 (Decision Analysis). Candidate coverage: §§1.1, 1.2, 1.4, 1.5 and 1.8.
+
+**5.65.4 — Source-to-section mapping and limitations**
+
+The candidate sources are complementary rather than interchangeable:
+- Meadows provides an accessible systems-thinking foundation, particularly for relationships and feedback.
+- INCOSE provides the closest domain-free systems-engineering reference for the chapter's system concepts, boundary, interfaces, states and system-level perspective.
+- NASA provides authoritative engineering guidance on system-level results, stakeholder expectations, interfaces and trade-offs.
+
+The proposed mapping is a guide for selective in-text attribution and further reading, not a claim that the chapter's editorial working definitions are copied from or formally prescribed by these sources. The distinctions adopted in this book (including its operational convention for environment versus context) must remain identified as editorial conventions where appropriate.
+
+ISO/IEC/IEEE 15288:2023 was also checked. It is an active international standard establishing system life-cycle process descriptions, but it is not necessary as a core Chapter 1 reference: the chapter does not teach a life-cycle process framework. It may be more appropriate in later chapters or as optional further reading if the relevant content warrants it.
+
+**5.65.5 — Section 1.7 requires careful source framing**
+
+The chapter's treatment of system descriptions as selective models, and its distinctions among scope, boundary, level of detail, evidence, assumptions and omissions, should not be attributed wholesale to the three general references. These are useful editorial distinctions developed for this book. Either retain them explicitly as the book's working analytical guidance, or undertake a targeted source search if a stronger external methodological claim is introduced. No additional reference is recommended at this stage without a specific claim requiring it.
+
+**Disposition and next decision**
+
+The registry audit is complete. Proposed reference records are not yet approved or entered. The next step is to approve or amend the three candidate references and their intended role; after approval, create the central records with stable IDs, update both chapter metadata blocks and add selective source attribution/further-reading presentation in both original-language manuscripts. Chapter 1 remains `draft`; the source audit does not constitute subject-matter approval or editorial closure.
