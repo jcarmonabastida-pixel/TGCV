@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 1.10
+version: 1.11
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -316,7 +316,7 @@ Three related ideas should be distinguished. **Competence** refers to the knowle
 
 For example, a technician may have the knowledge and skills needed to repair a pump but lack authorisation or the required tools. The technician has the competence, but does not have the conditions needed to exercise that capability effectively at that time.
 
-We should also distinguish the capability of an individual element from the **capability of the system**. An operator may interpret signals, a pump may move water and a control system may regulate its operation. Yet maintaining service continuity may require these contributions to be combined and coordinated through suitable procedures, interfaces, resources and operating conditions. System-level capability is not simply the sum of individual capabilities: it depends on how the elements are integrated and coordinated.
+We should also distinguish between the capability of an individual element and **system capability**. An operator may interpret signals, a pump may move water and a control system may regulate its operation. Yet maintaining service continuity may require these contributions to be combined and coordinated through suitable procedures, interfaces, resources and operating conditions. System-level capability is not simply the sum of individual capabilities: it depends on how the elements are integrated and coordinated.
 
 ### Resources: the means that can be mobilised
 
