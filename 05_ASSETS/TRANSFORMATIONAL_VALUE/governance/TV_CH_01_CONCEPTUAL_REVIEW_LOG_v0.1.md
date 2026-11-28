@@ -866,3 +866,14 @@ The examples of a sensor transmitting a measurement to a monitoring system, a co
 **Rationale:** The wording must not imply that interaction necessarily involves mutual or reciprocal influence.
 
 **Disposition:** accepted. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.24 Section 1.5 — relationship categories may overlap — accepted
+
+The author approved retaining the illustrative relationship forms in both language versions: physical flows, information flows, functional connections, dependencies, and coordination or authority relationships. These are analytical perspectives that may overlap; they are not mutually exclusive categories.
+
+For example, a functional relationship may also involve a physical flow and a dependency, while an authority relationship may include information exchanges. The categories should remain distinguishable by the meaning they serve in a particular system representation, without implying that each relationship belongs to only one class.
+
+**Rationale:** The classification is intended to help readers examine relationships from different analytical perspectives, not to impose a rigid or exhaustive taxonomy.
+
+**Disposition:** accepted. Manuscript integration remains pending; no manuscript text has been changed by this decision.
