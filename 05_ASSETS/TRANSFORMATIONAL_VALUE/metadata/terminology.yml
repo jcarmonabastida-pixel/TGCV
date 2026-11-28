@@ -23,8 +23,8 @@ terms:
       es: "sistema de interés"
       en: "system of interest"
     definition:
-      es: "Sistema seleccionado para ser considerado en un análisis, descripción o actividad determinados. Su delimitación depende del propósito y de la pregunta que orientan ese trabajo."
-      en: "The system selected for consideration in a particular analysis, description or activity. Its delimitation depends on the purpose and question guiding that work."
+      es: "Sistema que se selecciona como objeto de interés para un análisis o una descripción determinados. Los aspectos que se consideran parte del sistema y su delimitación se establecen en función del propósito y de la pregunta que orientan el trabajo."
+      en: "The system selected as the object of interest for a particular analysis or description. The aspects considered part of the system and its delimitation are established in relation to the purpose and question guiding the work."
     related_terms: [TV-TERM-003, TV-TERM-004, TV-TERM-005]
     status: draft
     notes: "Chapter 1. Distinguish the system of interest from the unit of analysis and the analytical perspective."
