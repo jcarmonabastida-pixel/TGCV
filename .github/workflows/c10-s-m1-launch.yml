@@ -47,13 +47,12 @@ jobs:
           import os
           import platform
           from pathlib import Path
-          from types import SimpleNamespace
 
           from theta_a_calibration_dgp import ThetaACalibrationDGPFactory
           from theta_a_calibration_protocol import (
-    ThetaASeedAssignment,
-    build_theta_a_candidate_scenario_roster,
-)
+              ThetaASeedAssignment,
+              build_theta_a_candidate_scenario_roster,
+          )
 
           # Use the existing typed roster and its equal-support contract. This
           # keeps the reserved oracle separate from Analyzer inputs.
