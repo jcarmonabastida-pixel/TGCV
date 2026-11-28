@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 1.4
+version: 1.5
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -687,44 +687,49 @@ Think of an improvement made or proposed to a component of a system you know. Wh
 
 ## 1.9. Chapter Synthesis and Reflection Questions
 
-### Understanding the system before changing it
+### Understanding a system as a connected configuration
 
-This chapter has developed a way of looking at systems that goes beyond identifying their components. To understand a system, we need to relate its purpose to the elements it comprises, the conditions under which it operates and the interactions that shape its behaviour.
+Understanding a system involves more than identifying its components. It requires relating the purpose guiding the analysis to the elements, actors, resources and capabilities involved; to the relationships, interactions and dependencies that connect them; and to the environmental and contextual conditions in which the system operates. These dimensions shape one another: a capability depends on resources and relationships, while a change in one part may alter the operating conditions of others.
 
-Describing a system also involves making deliberate choices. We define what falls within the analytical boundary, which aspects of the environment matter, what time horizon is relevant and how much detail the question requires. Every representation selects information. Its usefulness depends on whether its assumptions and omissions are appropriate for the intended purpose.
+This understanding is always developed from a particular perspective and in response to a particular question. Describing a system therefore involves deciding what falls inside and outside the boundary, which interfaces and exchanges matter, what period is being considered and what level of detail is appropriate. A representation selects information and may combine observations, estimates, specifications and assumptions. Distinguishing what is known from what is unknown and what has been deliberately omitted helps prevent conclusions from exceeding the representation's scope.
 
-Finally, an intervention cannot be assessed solely by the result achieved in the element being changed. Relationships, dependencies, constraints and potentially conflicting criteria make it necessary to examine effects on the whole and on its relevant context.
+Behaviour is understood by examining how states change and how relationships among parts shape those changes over time. Similarly, assessing an intervention requires looking beyond the component being modified. Dependencies, constraints, direct and indirect effects, trade-offs among criteria and consequences emerging over different time horizons all matter. The depth of analysis should be proportionate to the decision, and its limits should be made explicit.
 
 ### Bringing the dimensions together
 
-The table below brings together the questions that should remain connected when describing and analysing a system. It is not an exhaustive checklist; it is a guide to help prevent an important dimension from being overlooked.
+The table connects dimensions that should remain in view when describing and analysing a system. The questions guide inquiry, while the final column highlights relevant links among dimensions. It is neither an exhaustive checklist nor a mandatory procedure: its usefulness depends on the system and the purpose of the analysis.
 
-| Dimension | Guiding question | What it helps us examine |
-|---|---|---|
-| Purpose and context | What is the system intended for, and in what context does it operate? | Expected outcomes, relevant actors and external conditions |
-| Composition and capabilities | Which elements, actors, resources and capabilities are involved? | What is present, what each part contributes and what it depends on |
-| Organisation and interactions | How are the elements related and coordinated? | Flows, dependencies, interfaces and effects between components |
-| Boundary and environment | What is included in the analysis, and which exchanges cross its boundaries? | Inputs, outputs, external dependencies and relevant impacts |
-| Time and change | What varies, and over what time horizons? | Changing states, disturbances, responses and trends |
-| Model and evidence | What does our description represent, what does it assume and what does it omit? | Fitness for purpose, limits of interpretation and information quality |
-| Overall performance | How do decisions affect the system beyond the component being changed? | Constraints, shifting bottlenecks, trade-offs and indirect effects |
+| Dimension | Guiding question | What it helps us examine | Relationship to other dimensions |
+|---|---|---|---|
+| Purpose and context | Which outcomes matter, for whom and under what conditions? | The purpose of the analysis and of the system, relevant actors and contextual conditions | Guides the boundary, performance criteria and selection of information for the model |
+| Composition and capabilities | Which elements, actors, resources and capabilities are involved? | What is present, what each part can contribute and what it depends on | Capabilities rely on resources, relationships and interfaces |
+| Organisation and interactions | How are the parts related and coordinated? | Flows, dependencies, interfaces, authority and effects between components | Shapes behaviour and constrains or enables available capabilities |
+| Boundary and environment | What is included in the analysis, and which exchanges cross its boundaries? | Inputs, outputs, external dependencies and relevant impacts | Determines which relationships are treated as internal or external and which context matters |
+| Time and change | What varies, how does the system respond and over what horizon? | States, trajectories, disturbances, responses and trends | Supports interpretation of behaviour and evaluation of intervention effects over time |
+| Model and evidence | What does the description represent, what is it based on and what does it leave out? | Fitness for purpose, data, estimates, assumptions, omissions and uncertainty | Makes explicit the limits within which the other dimensions should be interpreted |
+| Overall performance | How do decisions affect system outcomes and connected parts? | Requirements, objectives, constraints, bottlenecks, trade-offs and indirect effects | Integrates capabilities, interdependencies, evaluation criteria and time horizons |
 
 ### Applying the perspective to a familiar system
 
-These dimensions can be brought together in a straightforward exercise. Choose a system you know — a facility, a service, an organisational process or an infrastructure network — and prepare a short description that would help another person understand how it works and where the limits of that description lie.
+Choose a system you know — a facility, a service, an organisational process or an infrastructure network — and prepare a short description that would help another person understand it. You do not need to build a formal model or assess the system comprehensively. Make four things explicit:
 
-There is no need to build a complex model. The important task is to explain your analytical choices and distinguish what is known from what is assumed or has not yet been examined.
+1. **Purpose and question:** why you are preparing the description and what question it is intended to answer.
+2. **Boundary and context:** what you include, what you leave out, and which elements, actors, relationships or conditions you consider relevant.
+3. **Knowledge and assumptions:** what information you know, which values or relationships you are assuming, and what information is missing or has not yet been examined.
+4. **Scope and limits:** what your description helps explain and which conclusions it would not justify.
+
+The important task is to justify your analytical choices and distinguish what has been observed or supported from what is estimated, assumed or still unknown.
 
 ### Reflection questions
 
-1. **Purpose and boundary:** What outcome is the system expected to provide, and for whom? Which elements have you included in your analysis and which have you left out? How would your description change if you drew the boundary differently?
-2. **Relationships and dependencies:** Which relationships are essential to the system's operation? Does it depend on external resources, actors or services that are not part of its internal structure?
-3. **Time and environment:** Which conditions may change, and over what time scales? What might you misinterpret if you observed the system at only one point in time?
-4. **Models and omissions:** Which representation would be suitable for the question you want to answer? What assumptions does it introduce, and which relevant aspects does it leave out?
-5. **System-level performance:** Consider a local improvement. What effects might it have on other parts of the system? Which criteria and trade-offs would need to be considered before concluding that the whole has improved?
+1. **Purpose, actors and boundary:** Imagine a service used by several groups with different needs. How might those perspectives change the definition of relevant outcomes and the boundary you would choose for analysing the service?
+2. **Capabilities and dependencies:** If an organisation has qualified staff and suitable equipment but depends on an external supplier for a critical resource, what would support the claim that it can deliver the service, and what conditions might limit that capability?
+3. **Model, evidence and time:** A system description is based on measurements collected over one week. Which aspects of its behaviour might it represent adequately, and which might remain hidden because of the observation period, assumptions or missing information?
+4. **Interdependencies and performance:** A water network increases pumping capacity to improve supply in one area. Which other parts might be affected, and how would you compare the benefits with changes in pressure, energy use, maintenance and operating constraints?
+5. **Intervention and time-based evaluation:** Before concluding that an intervention has improved the system, which outcomes and criteria should be observed, over what time horizons, and with what uncertainties or indirect effects in mind? What evidence would distinguish an initial improvement from a sustained one?
 
 ### Closing the chapter
 
-Thinking in systems means shifting our attention from an isolated component to the configuration of elements, relationships and conditions that makes a particular behaviour possible. This perspective does not remove the need to examine individual parts; it helps us understand them in relation to the whole to which they contribute.
+Thinking in systems means understanding components in relation to the capabilities, interactions and conditions that make the system's operation possible. The configuration of elements, resources and relationships shapes what a system can do, as well as the options for change available to it. A useful description supports reasoning about those possibilities without confusing what is known with what is assumed or concealing the limits of the analysis.
 
-With this foundation in place, the next chapter will examine transformation as a system capability. Starting from a description of the system and its conditions, we will consider what it means for that system to be able to perform a particular change.
+The next chapter will examine transformation in relation to system capability: how a system can change and what determines the transformations genuinely within its reach. Not every change necessarily constitutes a transformation, and not every transformation creates value in itself.
