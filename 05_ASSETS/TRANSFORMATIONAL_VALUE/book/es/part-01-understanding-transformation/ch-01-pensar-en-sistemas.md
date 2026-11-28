@@ -5,7 +5,7 @@ title: "Pensar en sistemas"
 language: es
 content_type: chapter
 status: draft
-version: 1.0
+version: 1.1
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
