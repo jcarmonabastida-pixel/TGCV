@@ -5,7 +5,7 @@ title: "Pensar en sistemas"
 language: es
 content_type: chapter
 status: draft
-version: 1.6
+version: 1.7
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
@@ -30,6 +30,17 @@ license: null
 ---
 
 # Pensar en sistemas
+
+## Objetivos de aprendizaje
+
+Al finalizar este capítulo, podrás:
+
+1. **Definir y delimitar un sistema** en relación con el propósito del análisis, su frontera, entorno y contexto.
+2. **Describir la composición y organización de un sistema**, identificando sus elementos, estados, propiedades, comportamientos, actores, capacidades, recursos, dependencias y relaciones.
+3. **Interpretar el funcionamiento de sistemas abiertos en el tiempo**, considerando intercambios, condiciones cambiantes, respuestas y trayectorias.
+4. **Construir y evaluar una descripción de un sistema** adecuada a una pregunta, identificando sus fuentes de información, supuestos, omisiones e incertidumbres y reconociendo sus límites.
+5. **Razonar sobre intervenciones a escala de sistema**, considerando interdependencias, restricciones, efectos directos e indirectos, compromisos entre criterios y horizontes temporales.
+
 
 ## 1.1. ¿Qué entendemos por sistema?
 
