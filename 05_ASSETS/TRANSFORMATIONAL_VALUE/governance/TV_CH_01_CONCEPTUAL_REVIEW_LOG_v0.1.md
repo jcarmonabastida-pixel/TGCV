@@ -762,3 +762,16 @@ The illustrative example may describe a technician who has the competence to rep
 Both manuscripts should preserve the conceptual distinctions and the example's meaning, using natural, independently authored wording. The text should avoid implying that these terms have one universal definition across all disciplines; they are working distinctions for this introductory chapter.
 
 **Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
+
+
+### 5.19 People as actors and as contributors of resources in section 1.4 — accepted
+
+The author approved the following criterion for both language versions:
+
+People should be treated first and foremost as **actors** in the system, not reduced to interchangeable resources. At the same time, people may contribute resources needed for system activities, including their time, knowledge, experience, skills or availability.
+
+When discussing resources, the manuscripts should identify the specific contribution being made rather than referring to people themselves as resources. The distinction between a person's role as an actor and the resources they make available should remain clear.
+
+Both versions should preserve equivalent conceptual scope through natural, independently authored wording.
+
+**Disposition:** accepted; manuscript integration and bilingual cross-review remain pending. No manuscript text has been changed by recording this decision.
