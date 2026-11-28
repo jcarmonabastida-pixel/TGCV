@@ -237,6 +237,22 @@ def _validate_roster(record: M1ChallengerDatasetComparison) -> None:
         raise M1ChallengerError("M1_ABSTENTION_MUST_NOT_CARRY_COMPONENT_INTERVALS")
     if record.m1_comparison.method_id != M1_METHOD_ID:
         raise M1ChallengerError("M1_METHOD_ID_MISMATCH")
+    # Engine 1.2 is interval-only: all three methods must retain the exact
+    # common observed-data point functionals. M1's fitted model points remain
+    # auxiliary diagnostics and must never enter cross-method point scoring.
+    c0_common = legacy.baseline
+    c5_common = legacy.candidates[0].comparison
+    for field in (
+        "within_estimate",
+        "observed_world_variance",
+        "between_estimate_raw",
+        "boundary_flags",
+    ):
+        expected = getattr(c0_common, field)
+        if getattr(c5_common, field) != expected:
+            raise M1ChallengerError("LEGACY_C0_C5_COMMON_POINT_CONTRACT_MISMATCH")
+        if getattr(record.m1_comparison, field) != expected:
+            raise M1ChallengerError("M1_COMMON_POINT_ESTIMATOR_CONTRACT_MISMATCH")
     if (record.m1_comparison.within_interval != record.m1_result.within_interval
             or record.m1_comparison.between_interval != record.m1_result.between_interval):
         raise M1ChallengerError("M1_INTERVAL_PROVENANCE_MISMATCH")
