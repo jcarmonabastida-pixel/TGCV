@@ -69,18 +69,6 @@ from theta_a_evaluator import (
     ThetaAObservationEvaluation,
     ThetaAObservationEvaluator,
 )
-from d2_observed_assignment import D2ObservedAssignmentConfig
-from d2_interval_observation import (
-    D2ObservedIntervalLaneResult,
-    materialize_d2_observed_interval_lane,
-)
-from d2_ittz_analyzer import (
-    D2ITTZAnalysisContract,
-    D2ITTZAnalysisResult,
-    D2ITTZAnalyzer,
-    analysis_contract_from_world,
-)
-from d2_ittz_evaluator import D2ITTZEvaluation, D2ITTZEvaluator
 
 
 @dataclass(frozen=True)
@@ -128,10 +116,6 @@ class C10SCompleteWorldResult:
     reachability: SyntheticWorldReachabilityContrast
     trajectories: SyntheticWorldTrajectoryBundle
     d2_vcont_truth: D2VContTruthBundle
-    d2_observed_lane: D2ObservedIntervalLaneResult
-    d2_analysis_contract: D2ITTZAnalysisContract
-    d2_analyzer_result: D2ITTZAnalysisResult
-    d2_evaluator_result: D2ITTZEvaluation
     d2_histories_by_unit_z: tuple[tuple[tuple[str, int], EventHistory], ...]
     theta_a_truth: ThetaAVContTruthBundle
     theta_a_assignments: ThetaAPolicyAssignmentBundle
@@ -187,15 +171,6 @@ class C10SCompleteWorldResult:
         self.trajectories.validate(world, self.reachability, reach_config)
         d2_histories = dict(self.d2_histories_by_unit_z)
         self.d2_vcont_truth.validate(world, d2_histories, grid)
-        self.d2_observed_lane.validate(world, self.d2_vcont_truth, d2_histories, grid)
-        if self.d2_analyzer_result.input_sha256 != self.d2_observed_lane.sealed_evidence.sha256:
-            raise ContractError("D2 ITT-Z Analyzer result is detached from its sealed evidence")
-        if self.d2_evaluator_result.evidence_sha256 != self.d2_observed_lane.sealed_evidence.sha256:
-            raise ContractError("D2 ITT-Z Evaluator result is detached from its sealed evidence")
-        if self.d2_evaluator_result.analyzer_output_sha256 != self.d2_analyzer_result.output_sha256:
-            raise ContractError("D2 ITT-Z Evaluator result is detached from its Analyzer output")
-        if self.d2_evaluator_result.truth_itt_z != self.d2_vcont_truth.finite_population_itt_z_v_cont:
-            raise ContractError("D2 ITT-Z Evaluator truth differs from reserved D2 V_cont truth")
         self.theta_a_truth.validate()
         if (self.theta_a_truth.world_id, self.theta_a_truth.world_version,
                 self.theta_a_truth.dgp_id, self.theta_a_truth.dgp_version) != (
@@ -244,9 +219,6 @@ def materialize_c10s_complete_world(
     reach_config: D2ReachGenerationConfig,
     trajectory_config: D2TrajectoryGenerationConfig,
     d2_histories_by_unit_z: dict[tuple[str, int], EventHistory],
-    d2_assignment_config: D2ObservedAssignmentConfig,
-    d2_interval_monitor_configs_by_history_ref: dict[str, IntervalMonitorConfig] | IntervalMonitorConfig,
-    d2_interval_monitor_seeds_by_unit: dict[str, int],
     need_pre_z_stipulations: Sequence[NeedPreZStipulation],
     grid: IntervalGrid,
     g_a0: Sequence[JointPolicyHistory],
@@ -298,36 +270,6 @@ def materialize_c10s_complete_world(
     ):
         raise ContractError("D2 EventHistory identity differs from its exact world/unit/Z potential")
     d2_truth = builder.evaluate_complete_vcont_truth(world, d2_histories_by_unit_z, grid)
-    d2_observed_lane = materialize_d2_observed_interval_lane(
-        world=world, truth=d2_truth, histories_by_unit_z=d2_histories_by_unit_z,
-        assignment_config=d2_assignment_config, grid=grid,
-        monitor_config_by_history_ref=d2_interval_monitor_configs_by_history_ref,
-        seeds_by_unit=d2_interval_monitor_seeds_by_unit,
-    )
-    if isinstance(d2_interval_monitor_configs_by_history_ref, IntervalMonitorConfig):
-        d2_monitor_config = d2_interval_monitor_configs_by_history_ref
-    else:
-        d2_monitor_configs = tuple(d2_interval_monitor_configs_by_history_ref.values())
-        if not d2_monitor_configs:
-            raise ContractError("D2 interval monitor configuration roster must not be empty")
-        d2_monitor_config = d2_monitor_configs[0]
-        if any((row.monitor_id, row.monitor_version) !=
-               (d2_monitor_config.monitor_id, d2_monitor_config.monitor_version)
-               for row in d2_monitor_configs):
-            raise ContractError("D2 ITT-Z requires one common monitor identity/version across q_X*")
-    d2_contract = analysis_contract_from_world(
-        world, d2_observed_lane.assignments.result_sha256,
-        d2_observed_lane.assignments.mechanism_id,
-        d2_observed_lane.assignments.mechanism_version,
-        grid.grid_id, grid.grid_version,
-        d2_monitor_config.monitor_id, d2_monitor_config.monitor_version,
-    )
-    d2_analysis = D2ITTZAnalyzer().analyze(d2_observed_lane.sealed_evidence, d2_contract)
-    d2_evaluation = D2ITTZEvaluator().evaluate(
-        world=world, truth=d2_truth, assignments=d2_observed_lane.assignments,
-        evidence=d2_observed_lane.sealed_evidence, contract=d2_contract,
-        result=d2_analysis, tolerance=evaluation_tolerance,
-    )
     structural_deltas = evaluate_d2_structural_deltas(world, structural_pairs)
 
     target_q_x = tuple(theta_a_q_x) if theta_a_q_x is not None else world.q_x
@@ -461,10 +403,6 @@ def materialize_c10s_complete_world(
         reachability=reachability,
         trajectories=trajectories,
         d2_vcont_truth=d2_truth,
-        d2_observed_lane=d2_observed_lane,
-        d2_analysis_contract=d2_contract,
-        d2_analyzer_result=d2_analysis,
-        d2_evaluator_result=d2_evaluation,
         d2_histories_by_unit_z=tuple(sorted(d2_histories_by_unit_z.items())),
         theta_a_truth=theta_truth,
         theta_a_assignments=assignments,
@@ -504,9 +442,6 @@ def materialize_c10s_complete_world_from_dgp(
     reach_config: D2ReachGenerationConfig,
     trajectory_config: D2TrajectoryGenerationConfig,
     functional_history_config: FunctionalHistoryDGPConfig,
-    d2_assignment_config: D2ObservedAssignmentConfig,
-    d2_interval_monitor_configs_by_history_ref: dict[str, IntervalMonitorConfig] | IntervalMonitorConfig,
-    d2_interval_monitor_seeds_by_unit: dict[str, int],
     initial_state_by_unit_z: dict[tuple[str, int], FunctionalState],
     initial_state_by_history: dict[str, FunctionalState],
     need_pre_z_stipulations: Sequence[NeedPreZStipulation],
@@ -610,9 +545,6 @@ def materialize_c10s_complete_world_from_dgp(
         structural_config=structural_config, reach_config=reach_config,
         trajectory_config=trajectory_config,
         d2_histories_by_unit_z=d2_histories,
-        d2_assignment_config=d2_assignment_config,
-        d2_interval_monitor_configs_by_history_ref=d2_interval_monitor_configs_by_history_ref,
-        d2_interval_monitor_seeds_by_unit=d2_interval_monitor_seeds_by_unit,
         need_pre_z_stipulations=need_pre_z_stipulations, grid=grid,
         g_a0=g_a0, g_a1=g_a1,
         feasible_vectors_by_history=feasible_vectors_by_history,

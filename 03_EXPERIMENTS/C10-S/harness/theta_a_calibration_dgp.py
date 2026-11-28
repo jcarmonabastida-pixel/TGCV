@@ -34,7 +34,6 @@ from c10s_world_pipeline import (
     materialize_c10s_complete_world_from_dgp,
 )
 from theta_a_interval_observation import IntervalMonitorConfig
-from d2_observed_assignment import D2ObservedAssignmentConfig
 from theta_a_calibration_protocol import ThetaACalibrationScenario, ThetaASeedAssignment, s3_seeds_by_unit
 
 
@@ -170,14 +169,6 @@ class ThetaACalibrationDGPFactory:
             )
             if theta_a_mode != "null" else ()
         )
-        d2_assignment_config = D2ObservedAssignmentConfig(
-            mechanism_id="D2-PACKAGE-Z-RANDOMIZATION",
-            mechanism_version="1",
-            randomization_salt="D2-PACKAGE-Z-SALT",
-            probability_z1_by_history=tuple(
-                (row.history_ref, 0.5) for row in world.q_x
-            ),
-        )
         assignment_config = ThetaAPolicyAssignmentConfig(
             mechanism_id="DIRECT-GA-RANDOMIZATION",
             mechanism_version="1",
@@ -275,13 +266,6 @@ class ThetaACalibrationDGPFactory:
         fixture_need_states = (
             "FOCAL_INCLUSION", "FOCAL_EXCLUSION", "SEMANTIC_INDETERMINACY",
         )
-        monitor_seeds = (
-            s3_seeds_by_unit(seed_assignment.s3_seed, tuple(unit.unit_id for unit in world.units))
-            if seed_assignment is not None else {
-                unit.unit_id: 9000 + index
-                for index, unit in enumerate(world.units)
-            }
-        )
         return {
             "world": world,
             "world_config": world_config,
@@ -318,7 +302,6 @@ class ThetaACalibrationDGPFactory:
             "feasible": feasible,
             "r_common": r_common,
             "assignment_config": assignment_config,
-            "d2_assignment_config": d2_assignment_config,
             "monitor_configs": {
                 row.history_ref: monitor for row in world.q_x
             },
@@ -340,12 +323,13 @@ class ThetaACalibrationDGPFactory:
                 )
                 for row in world.q_x
             },
-            "monitor_seeds": monitor_seeds,
-            # D2 package ITT uses a distinct interval-monitor stream from the
-            # direct-g_A focal measurement lane, while sharing the frozen grid.
-            "d2_monitor_seeds": {
-                unit_id: seed + 100000 for unit_id, seed in monitor_seeds.items()
-            },
+            "monitor_seeds": (
+                s3_seeds_by_unit(seed_assignment.s3_seed, tuple(unit.unit_id for unit in world.units))
+                if seed_assignment is not None else {
+                    unit.unit_id: 9000 + index
+                    for index, unit in enumerate(world.units)
+                }
+            ),
         }
 
     def run_pipeline(
@@ -370,9 +354,6 @@ class ThetaACalibrationDGPFactory:
             reach_config=fixture["reach_config"],
             trajectory_config=fixture["trajectory_config"],
             functional_history_config=fixture["functional_config"],
-            d2_assignment_config=fixture["d2_assignment_config"],
-            d2_interval_monitor_configs_by_history_ref=fixture["monitor_configs"],
-            d2_interval_monitor_seeds_by_unit=fixture["d2_monitor_seeds"],
             initial_state_by_unit_z=fixture["initial_by_unit_z"],
             initial_state_by_history=fixture["initial_by_history"],
             need_pre_z_stipulations=fixture["need_pre_z_stipulations"],
