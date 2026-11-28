@@ -316,17 +316,17 @@ Piensa en un servicio o una instalación que conozcas. Elige una actividad impor
 
 Identificar los elementos de un sistema es necesario, pero no suficiente para comprender cómo funciona. También necesitamos describir cómo se relacionan, qué intercambios mantienen y cómo esas relaciones configuran el comportamiento del conjunto.
 
-En una red de suministro de agua, los depósitos, las estaciones de tratamiento, las bombas, las conducciones y los puntos de consumo no operan de forma aislada. El agua circula entre ellos; los sensores transmiten información; los sistemas de control ajustan equipos; y las actividades de mantenimiento condicionan la disponibilidad de la infraestructura. El sistema se reconoce tanto por sus componentes como por la forma en que están conectados y coordinados.
+En una red de suministro de agua, los depósitos, las estaciones de tratamiento, las bombas, las conducciones y los puntos de consumo no operan de forma aislada. El agua circula entre ellos; los sensores transmiten información; los sistemas de control ajustan equipos; y las actividades de mantenimiento condicionan la disponibilidad de la infraestructura. El sistema se reconoce tanto por sus componentes como por la configuración de las relaciones que los conectan y coordinan.
 
-La **estructura del sistema** es la organización de sus elementos y de las relaciones relevantes entre ellos. No es únicamente su disposición física: incluye también conexiones funcionales, flujos de información, dependencias operativas y mecanismos de coordinación.
+La **estructura del sistema** es la configuración de las relaciones relevantes entre sus elementos. No se limita a su disposición física: incluye también conexiones funcionales, flujos de información, dependencias y mecanismos de coordinación. Puede ser relativamente estable, pero no es necesariamente fija o inmutable.
 
 ### Relaciones e interacciones
 
 Una **relación** expresa un vínculo relevante entre dos o más elementos. Puede representar una conexión física, una dependencia, una relación de autoridad, un intercambio de información o cualquier otra asociación necesaria para describir el sistema.
 
-Una **interacción** se refiere a lo que ocurre cuando elementos relacionados actúan o influyen unos sobre otros. Puede consistir en transferir materia o energía, intercambiar información, modificar una condición o coordinar una actividad.
+Una **interacción** es una acción, intercambio o influencia que se produce entre elementos relacionados. Puede ser unidireccional, recíproca o asimétrica: no requiere que la influencia se ejerza de manera equivalente en ambas direcciones.
 
-En la red de agua, una tubería conecta físicamente dos partes de la infraestructura y permite el flujo de agua. Un sensor y un sistema de supervisión mantienen una relación informativa: el primero proporciona mediciones que el segundo utiliza para representar el estado de la instalación. Cuando una lectura desencadena un ajuste de una bomba o una válvula, podemos observar una interacción operativa entre medición, decisión y actuación.
+En la red de agua, una tubería conecta físicamente dos partes de la infraestructura y permite el flujo de agua. Un sensor transmite una medición a un sistema de supervisión; un sistema de control envía una orden a una bomba; y una decisión de un responsable puede modificar la actividad de un equipo. Son ejemplos de interacciones cuya dirección y naturaleza dependen de la relación considerada.
 
 No toda relación implica una interacción continua. Una dependencia puede existir aunque solo se haga efectiva en determinadas circunstancias. Del mismo modo, una interacción puntual no siempre modifica de forma duradera la estructura del sistema.
 
@@ -337,16 +337,16 @@ Las relaciones pueden adoptar formas diferentes. Algunas de las más habituales 
 - **Flujos físicos:** circulación de agua, materiales, energía o productos entre elementos.
 - **Flujos de información:** transmisión de mediciones, órdenes, avisos y registros.
 - **Conexiones funcionales:** vínculos entre componentes que cooperan para realizar una función.
-- **Dependencias operativas:** condiciones o aportaciones que un elemento necesita de otro.
+- **Dependencias:** relaciones estructurales en las que un elemento requiere una contribución o condición de otro. El significado operativo de dependencia se ha definido en el apartado 1.4.
 - **Relaciones de coordinación y autoridad:** asignación de responsabilidades, permisos y decisiones entre actores.
 
-En muchos sistemas estas relaciones se superponen. Una estación de bombeo puede estar conectada a la red mediante conducciones, recibir energía de una infraestructura externa, transmitir datos a un centro de control y depender de un equipo de mantenimiento. Cada vínculo describe una dimensión distinta de su integración en el conjunto.
+Estas formas son perspectivas analíticas, no categorías mutuamente excluyentes. Una misma relación puede combinar, por ejemplo, una conexión funcional, un flujo físico y una dependencia. Una relación de autoridad puede incluir también intercambios de información. Lo importante es identificar qué significado tiene cada vínculo en la representación concreta.
 
-Para evitar confusiones, conviene identificar qué representa cada conexión en un modelo. Una línea puede significar flujo físico, transferencia de información, dependencia o influencia; si no se explica, el lector puede atribuirle un significado que no se pretendía.
+Para evitar confusiones, conviene indicar qué representa cada conexión en un modelo. Una línea puede significar flujo físico, transferencia de información, dependencia o influencia; si no se explica, el lector puede atribuirle un significado que no se pretendía.
 
-### La estructura condiciona el comportamiento
+### La estructura y las interacciones condicionan el comportamiento
 
-El comportamiento de un sistema depende no solo de las características de sus elementos, sino también de cómo están relacionados. Cambiar una conexión, interrumpir un flujo o modificar una regla de coordinación puede alterar la respuesta del conjunto, incluso cuando los componentes individuales permanecen iguales.
+La estructura describe la configuración de las relaciones relevantes; las interacciones describen las acciones, intercambios e influencias que se producen a través de ellas. Ambas dimensiones están conectadas: las interacciones pueden reproducir las relaciones existentes o, en determinadas circunstancias, modificarlas. Por tanto, la estructura puede condicionar el comportamiento del sistema y también cambiar como consecuencia de su funcionamiento.
 
 Imaginemos que una conducción principal queda fuera de servicio. El efecto no se limita al tramo averiado: puede cambiar la distribución de caudales, reducir la presión en determinadas zonas y exigir ajustes de bombeo o maniobras de válvulas. La magnitud y extensión de esos efectos dependen de la estructura de la red, de las conexiones alternativas y de las condiciones de operación.
 
@@ -354,15 +354,15 @@ También puede ocurrir que una modificación local mejore el funcionamiento de u
 
 ### Bucles de realimentación
 
-Algunas estructuras incluyen **bucles de realimentación**: secuencias de relaciones en las que el resultado de una actividad vuelve a influir en las condiciones de operación o en decisiones posteriores.
+Un **bucle de realimentación** existe cuando una cadena cerrada de influencias hace que un resultado del sistema afecte a su funcionamiento posterior o a su regulación.
 
-En una red de agua, un sensor puede detectar una caída de presión; el sistema de control interpreta la señal y ajusta el funcionamiento de una bomba; el cambio de bombeo modifica la presión, que vuelve a ser medida. La información sobre el resultado alimenta así una nueva decisión o ajuste.
+En una red de agua, un sensor puede detectar una caída de presión; el sistema de control interpreta la señal y ajusta el funcionamiento de una bomba; el cambio de bombeo modifica la presión, que vuelve a medirse. La información sobre el resultado influye así en una decisión o actuación posterior y cierra la cadena de influencias.
 
-La realimentación puede contribuir a mantener una variable dentro de ciertos límites o, en otras circunstancias, amplificar variaciones y producir respuestas inestables. No basta con identificar que existe un bucle: también importa conocer sus retardos, límites, reglas de control y condiciones de operación.
+Una flecha que vuelve a un elemento anterior en un diagrama no basta, por sí sola, para identificar realimentación: debe existir una cadena de influencias que cierre el circuito. La realimentación puede tener efectos estabilizadores o amplificadores; no necesariamente corrige o reduce las variaciones. Su efecto depende de las relaciones, los retardos, las reglas de control y las condiciones de operación.
 
-Este concepto no debe confundirse con cualquier conexión de retorno en un dibujo. Para hablar de realimentación, el resultado de un proceso debe volver a influir en ese proceso o en su regulación.
+### Medir y representar la estructura sin perder el significado
 
-### Representar la estructura sin perder el significado
+Las mediciones ayudan a observar el funcionamiento del sistema, pero una lectura aislada no equivale a su estado completo. Una medición proporciona información sobre una variable o condición concreta. Combinada con otras mediciones, observaciones y conocimiento del funcionamiento, puede utilizarse para monitorizar o inferir las condiciones operativas de la red. Por sí sola no representa todas las dimensiones relevantes del estado del sistema.
 
 Un diagrama puede ayudar a reconocer conexiones y distinguir tipos de relación, pero toda representación selecciona una parte de la realidad. Un esquema de infraestructura puede destacar flujos físicos y omitir responsabilidades; un diagrama de control puede mostrar señales y órdenes sin representar la distribución del agua; un mapa organizativo puede reflejar autoridad y coordinación, pero no las restricciones técnicas.
 
@@ -372,14 +372,13 @@ El esquema de apoyo de este apartado utiliza una red de suministro simplificada 
 
 ### Idea clave
 
-La estructura de un sistema está formada por sus elementos y por las relaciones que los conectan. Comprender esas relaciones —incluidos los flujos, las dependencias, la coordinación y la realimentación— es esencial para explicar el comportamiento del conjunto.
+La estructura de un sistema es la configuración de las relaciones relevantes entre sus elementos; las interacciones son las acciones, intercambios e influencias que se producen a través de ellas. Comprender los flujos, las dependencias, la coordinación y la realimentación permite explicar mejor el comportamiento del conjunto.
 
 ### Pregunta de reflexión
 
 Elige un sistema que conozcas y dibuja sus principales elementos y conexiones. Distingue los flujos físicos de los intercambios de información y de las dependencias. ¿Qué comportamiento sería difícil de explicar si ignoraras alguna de esas relaciones? ¿Qué conexiones importantes no aparecen en tu representación?
 
 **Diagrama de apoyo:** [TV-DIA-002 — Relaciones y estructura de una red de suministro de agua](../../../assets/diagrams/TV-DIA-002/README.md)
-
 
 ## 1.6. Sistemas abiertos, entornos cambiantes y tiempo
 
