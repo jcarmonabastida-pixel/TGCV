@@ -59,8 +59,8 @@ terms:
       es: "contexto"
       en: "context"
     definition:
-      es: "Conjunto de circunstancias, relaciones y condiciones desde las que se define o interpreta el problema, propósito o situación analizada. Puede incluir actores, otros sistemas y condiciones de operación relevantes."
-      en: "The circumstances, relationships and conditions from which the problem, purpose or situation being analysed is defined or interpreted. It may include relevant actors, other systems and operating conditions."
+      es: "Conjunto de circunstancias, relaciones y condiciones relevantes que permiten situar y comprender el problema, propósito o situación objeto de análisis. Puede incluir actores, otros sistemas y condiciones de operación, tanto dentro como fuera de la frontera del sistema de interés."
+      en: "The set of relevant circumstances, relationships and conditions that provide the setting for understanding the problem, purpose or situation being analysed. It may include actors, other systems and operating conditions, both inside and outside the boundary of the system of interest."
     related_terms: [TV-TERM-002, TV-TERM-003, TV-TERM-004]
     status: draft
     notes: "Chapter 1 editorial convention. Preserve the distinction from environment without implying that it is universally standardised."
