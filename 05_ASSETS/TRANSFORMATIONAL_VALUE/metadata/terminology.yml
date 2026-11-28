@@ -16,3 +16,183 @@ terms:
       - "TGCV Core current"
       - "Chapter 3 source-readiness record"
     notes: "Bilingual draft definitions v0.2. The criterion must be specified independently of realisation and downstream outcomes; not approved for publication."
+
+  - term_id: TV-TERM-002
+    concept: system_of_interest
+    preferred:
+      es: "sistema de interés"
+      en: "system of interest"
+    definition:
+      es: "Sistema seleccionado para ser considerado en un análisis, descripción o actividad determinados. Su delimitación depende del propósito y de la pregunta que orientan ese trabajo."
+      en: "The system selected for consideration in a particular analysis, description or activity. Its delimitation depends on the purpose and question guiding that work."
+    related_terms: [TV-TERM-003, TV-TERM-004, TV-TERM-005]
+    status: draft
+    notes: "Chapter 1. Distinguish the system of interest from the unit of analysis and the analytical perspective."
+
+  - term_id: TV-TERM-003
+    concept: system_boundary
+    preferred:
+      es: "frontera del sistema"
+      en: "system boundary"
+    definition:
+      es: "Delimitación que establece qué elementos, relaciones, procesos o aspectos se consideran dentro del sistema de interés y cuáles quedan fuera para un propósito de análisis determinado. Puede incluir interfaces y dimensiones físicas, funcionales, operativas o temporales; no tiene por qué coincidir con un perímetro físico o administrativo."
+      en: "The delimitation that establishes which elements, relationships, processes or aspects are considered inside the system of interest and which are outside it for a particular analytical purpose. It may include interfaces and physical, functional, operational or temporal dimensions; it need not coincide with a physical or administrative perimeter."
+    related_terms: [TV-TERM-002, TV-TERM-004, TV-TERM-005]
+    status: draft
+    notes: "Chapter 1. The boundary is purpose-dependent and may be revised when relevant dependencies or interfaces become apparent."
+
+  - term_id: TV-TERM-004
+    concept: environment
+    preferred:
+      es: "entorno"
+      en: "environment"
+    definition:
+      es: "Conjunto de elementos, sistemas y condiciones situados fuera de la frontera seleccionada que interactúan con el sistema de interés, influyen en él o reciben sus efectos."
+      en: "The set of elements, systems and conditions outside the selected boundary that interact with, influence or are affected by the system of interest."
+    related_terms: [TV-TERM-002, TV-TERM-003, TV-TERM-005]
+    status: draft
+    notes: "Chapter 1 editorial convention. The term is used in a specific operational distinction from context; this distinction is not claimed to be universal across disciplines."
+
+  - term_id: TV-TERM-005
+    concept: context
+    preferred:
+      es: "contexto"
+      en: "context"
+    definition:
+      es: "Conjunto de circunstancias, relaciones y condiciones desde las que se define o interpreta el problema, propósito o situación analizada. Puede incluir actores, otros sistemas y condiciones de operación relevantes."
+      en: "The circumstances, relationships and conditions from which the problem, purpose or situation being analysed is defined or interpreted. It may include relevant actors, other systems and operating conditions."
+    related_terms: [TV-TERM-002, TV-TERM-003, TV-TERM-004]
+    status: draft
+    notes: "Chapter 1 editorial convention. Preserve the distinction from environment without implying that it is universally standardised."
+
+  - term_id: TV-TERM-006
+    concept: emergent_behaviour
+    preferred:
+      es: "comportamiento emergente"
+      en: "emergent behaviour"
+    definition:
+      es: "Comportamiento o patrón del sistema que resulta de las interacciones y la organización de sus elementos y que no se explica adecuadamente considerando cada elemento por separado. No todo comportamiento del sistema es necesariamente emergente."
+      en: "System behaviour or a pattern arising from the interactions and organisation of its elements that cannot be adequately explained by considering each element separately. Not all system behaviour is necessarily emergent."
+    related_terms: []
+    status: draft
+    notes: "Chapter 1. Do not use as a synonym for system behaviour in general."
+
+  - term_id: TV-TERM-007
+    concept: system_capability
+    preferred:
+      es: "capacidad del sistema"
+      en: "system capability"
+    definition:
+      es: "Aptitud del sistema, considerada como conjunto, para realizar una acción o alcanzar un resultado bajo determinadas condiciones. Su disponibilidad efectiva depende de la combinación y coordinación de recursos, competencias, relaciones y condiciones operativas pertinentes."
+      en: "The ability of the system, considered as a whole, to perform an action or achieve an outcome under specified conditions. Its effective availability depends on the combination and coordination of relevant resources, competencies, relationships and operating conditions."
+    related_terms: []
+    status: draft
+    notes: "Chapter 1. Distinguish system capability from an individual competence, a resource and a component's nominal capacity."
+
+  - term_id: TV-TERM-008
+    concept: dependency
+    preferred:
+      es: "dependencia"
+      en: "dependency"
+    definition:
+      es: "Relación en la que el funcionamiento, la disponibilidad o el resultado de un elemento, proceso o sistema depende de una condición, recurso, capacidad o contribución proporcionada por otro."
+      en: "A relationship in which the operation, availability or outcome of an element, process or system relies on a condition, resource, capability or contribution provided by another."
+    related_terms: [TV-TERM-007]
+    status: draft
+    notes: "Chapter 1. More specific than a generic relationship; do not treat every relationship as a dependency."
+
+  - term_id: TV-TERM-009
+    concept: feedback_loop
+    preferred:
+      es: "bucle de realimentación"
+      en: "feedback loop"
+    definition:
+      es: "Cadena cerrada de influencias entre elementos o variables de un sistema en la que un resultado, directa o indirectamente, vuelve a afectar a las condiciones o al comportamiento que contribuyeron a producirlo."
+      en: "A closed chain of influences among system elements or variables in which an outcome, directly or indirectly, feeds back to affect the conditions or behaviour that contributed to producing it."
+    related_terms: [TV-TERM-006]
+    status: draft
+    notes: "Chapter 1. A return arrow alone does not establish a feedback loop; loops may reinforce or counteract change."
+
+  - term_id: TV-TERM-010
+    concept: assumption
+    preferred:
+      es: "supuesto"
+      en: "assumption"
+    definition:
+      es: "Proposición adoptada provisionalmente como válida para construir, utilizar o interpretar una descripción, análisis o modelo, sin que su validez haya quedado establecida como hecho para ese uso."
+      en: "A proposition provisionally taken to be valid when constructing, using or interpreting a description, analysis or model, without its validity having been established as fact for that use."
+    related_terms: [TV-TERM-011]
+    status: draft
+    notes: "Chapter 1. A measured, estimated or specified input or parameter is not automatically an assumption; distinguish assumptions from quantified uncertainty."
+
+  - term_id: TV-TERM-011
+    concept: deliberate_omission
+    preferred:
+      es: "omisión deliberada"
+      en: "deliberate omission"
+    definition:
+      es: "Exclusión intencionada de un aspecto conocido o reconocido de una descripción o modelo debido a su propósito, alcance, nivel de detalle o criterio de simplificación."
+      en: "The intentional exclusion from a description or model of an aspect that is known or recognised, because of its purpose, scope, level of detail or simplification criterion."
+    related_terms: [TV-TERM-010]
+    status: draft
+    notes: "Chapter 1. Distinguish from information that is unknown, unavailable or not yet examined; absence from a model does not establish non-existence."
+
+  - term_id: TV-TERM-012
+    concept: constraint
+    preferred:
+      es: "restricción"
+      en: "constraint"
+    definition:
+      es: "Condición, límite o regla que reduce las alternativas disponibles o limita el rendimiento o los resultados que pueden alcanzarse en una situación determinada."
+      en: "A condition, limit or rule that reduces the available alternatives or constrains the performance or outcomes that can be achieved in a given situation."
+    related_terms: [TV-TERM-013, TV-TERM-014, TV-TERM-015, TV-TERM-016]
+    status: draft
+    notes: "Chapter 1. A constraint is not necessarily the dominant limiting factor or a bottleneck."
+
+  - term_id: TV-TERM-013
+    concept: bottleneck
+    preferred:
+      es: "cuello de botella"
+      en: "bottleneck"
+    definition:
+      es: "Elemento, capacidad o proceso cuya limitación restringe de manera significativa el rendimiento del conjunto respecto de un resultado determinado."
+      en: "An element, capability or process whose limitation significantly constrains the performance of the whole in relation to a specified outcome."
+    related_terms: [TV-TERM-012, TV-TERM-007]
+    status: draft
+    notes: "Chapter 1. A bottleneck is defined relative to a result and may shift when the system changes; not every constraint is a bottleneck."
+
+  - term_id: TV-TERM-014
+    concept: requirement
+    preferred:
+      es: "requisito"
+      en: "requirement"
+    definition:
+      es: "Condición o capacidad especificada que una solución, sistema o alternativa debe satisfacer para considerarse aceptable dentro de un marco de decisión determinado."
+      en: "A specified condition or capability that a solution, system or alternative must satisfy to be considered acceptable within a given decision framework."
+    related_terms: [TV-TERM-015, TV-TERM-016, TV-TERM-012]
+    status: draft
+    notes: "Chapter 1. Whether a requirement is mandatory depends on the applicable decision framework and conditions; stronger performance elsewhere does not automatically compensate for failure to meet a mandatory requirement."
+
+  - term_id: TV-TERM-015
+    concept: performance_objective
+    preferred:
+      es: "objetivo de rendimiento"
+      en: "performance objective"
+    definition:
+      es: "Resultado o nivel de rendimiento que se pretende alcanzar o mejorar y cuyo grado de consecución puede variar entre alternativas."
+      en: "An outcome or level of performance that is intended to be achieved or improved and whose degree of attainment may vary across alternatives."
+    related_terms: [TV-TERM-014, TV-TERM-016]
+    status: draft
+    notes: "Chapter 1. Distinguish from requirements that define acceptability and from preferences used to compare alternatives."
+
+  - term_id: TV-TERM-016
+    concept: preference
+    preferred:
+      es: "preferencia"
+      en: "preference"
+    definition:
+      es: "Criterio o prioridad utilizado para comparar alternativas aceptables cuando difieren en atributos, resultados o compromisos, sin que por sí mismo constituya necesariamente un requisito obligatorio."
+      en: "A criterion or priority used to compare acceptable alternatives when they differ in attributes, outcomes or trade-offs, without necessarily constituting a mandatory requirement in itself."
+    related_terms: [TV-TERM-014, TV-TERM-015]
+    status: draft
+    notes: "Chapter 1. Use to compare alternatives that meet applicable mandatory requirements; preferences do not by themselves override those requirements."
