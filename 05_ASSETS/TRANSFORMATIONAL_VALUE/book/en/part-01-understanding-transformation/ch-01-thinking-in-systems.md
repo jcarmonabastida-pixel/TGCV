@@ -5,7 +5,7 @@ title: "Thinking in Systems"
 language: en
 content_type: chapter
 status: draft
-version: 0.9
+version: 1.0
 created: 2026-11-27
 updated: 2026-11-28
 authors: []
