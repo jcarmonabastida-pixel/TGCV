@@ -5,6 +5,7 @@ on:
   # the dedicated research branch. It never executes the experiment.
   push:
     branches:
+      - main
       - research/c10s-m1-engine12-source-only-20261127
   workflow_dispatch:
     inputs:
