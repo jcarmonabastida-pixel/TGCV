@@ -1017,3 +1017,16 @@ The explanation should make clear that these references are related but not inte
 **Rationale:** This prevents a measurement taken at one moment, or evidence covering a limited interval, from being used to support conclusions that imply persistence or validity over a substantially longer horizon without adequate justification.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+### 5.35 Section 1.6 — response to change and adaptation — accepted
+
+The author approved distinguishing **response to change** from **adaptation** in both language versions:
+
+- **Response to change:** a modification in the system's behaviour or state following an internal or external variation.
+- **Adaptation:** a response that modifies characteristics, capabilities, relationships or ways of operating so that the system can cope with changing conditions.
+
+The text should not imply that every response is an adaptation or that adaptation is necessarily successful, beneficial or intentional. An adaptation may be insufficient, unsuccessful or produce unintended consequences. It may also emerge through distributed adjustments or unplanned processes rather than deliberate action.
+
+**Rationale:** This preserves the distinction between reacting to a change and developing or modifying the system in ways that affect how it copes with changing conditions, without assuming that such changes lead to improved performance.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
