@@ -1430,3 +1430,19 @@ The exercise should not require a formal model or a comprehensive system assessm
 **Rationale:** The exercise turns the chapter's conceptual distinctions into a manageable learning activity and reinforces the need to make analytical choices and epistemic limits explicit.
 
 **Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
+
+
+### 5.59 Section 1.9 — reflection questions and integrative reasoning — accepted
+
+The author approved, for both language versions, retaining the five-question structure while revising the questions so that each:
+
+- requires the reader to connect at least two dimensions of the chapter;
+- presents a situation or decision that calls for reasoning rather than merely recalling definitions;
+- allows different answers to be justified by the system and purpose selected; and
+- avoids duplicating the preceding applied system-description exercise.
+
+The final question should especially integrate intervention decisions, effects across subsystems, trade-offs among criteria and evaluation time horizons.
+
+**Rationale:** Reflection questions should test whether readers can use the chapter's concepts together in context, not simply reproduce terminology or repeat the applied exercise.
+
+**Disposition:** accepted for ES/EN. Manuscript integration remains pending; no manuscript text has been changed by this decision.
